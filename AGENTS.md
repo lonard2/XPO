@@ -61,7 +61,22 @@ All three portals (Attendee, Organizer, and Admin) must be fully responsive and 
 
 ---
 
-## 5. Directory Structure & AGENTS.md Hierarchy
+## 5. Sub-Agent Orchestration & Team Roster
+
+The project utilizes specialized sub-agents working as an integrated engineering team:
+
+| Agent Name | Role | Core Focus Area |
+|---|---|---|
+| `tech-lead` | **Technical Lead & Architect** | High-level system architecture, cross-cutting standards, review gates, Next.js App Router conventions |
+| `backend-engineer` | **Senior Backend Engineer** | Prisma data modeling, database seeding, API routes, RBAC auth middleware, cryptographic QR pass hashing, crawler pipeline |
+| `frontend-engineer` | **Senior Frontend & UI/UX Engineer** | Accessible React components, 9 MICE archetype view engines, responsive multi-device UX (mobile/tablet/desktop), dynamic theming, next-intl i18n |
+| `ai-engineer` | **AI & Intelligence Systems Engineer** | OpenRouter multi-model gateway, Attendee AI Concierge, Organizer AI analytics reports, structured Zod schemas |
+| `qa-engineer` | **Lead QA & Automation Engineer** | Vitest unit/integration test suites, QR verification tests, a11y checks, zero-emoji compliance audits, E2E user journeys |
+| `docs-engineer` | **Documentation & Educational Engineer** | Phase-by-phase educational guides (`docs/guides/phase-XX-*.md`), architectural diagrams, CHECKLIST.md & README.md maintenance |
+
+---
+
+## 6. Directory Structure & AGENTS.md Hierarchy
 
 ```
 XPO/
@@ -115,7 +130,7 @@ XPO/
 
 ---
 
-## 6. Operational Workflow for Phased Development
+## 7. Operational Workflow for Phased Development
 
 For every phase:
 1. **Reference the Checklist**: Check `CHECKLIST.md` for current phase tasks and dependencies.
