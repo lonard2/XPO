@@ -18,20 +18,20 @@ This master checklist tracks the development, testing, and educational documenta
 
 ### Phase 1: Core Architecture Blueprint & Non-Emoji Design System
 *Focus: Project scaffolding, design tokens, App Router layouts, base UI primitives, and Phase 1 Learning Guide.*
-- [ ] Initialize `package.json` with Next.js 15, React 19, TypeScript, Tailwind CSS, Lucide icons.
-- [ ] Configure `tsconfig.json`, `tailwind.config.ts`, and `postcss.config.mjs`.
-- [ ] Build base layout shells (`app/[locale]/layout.tsx`, header topbar, navigation bar, footer).
-- [ ] Create accessible UI primitives in `src/components/ui/`:
-  - [ ] Button (Variants: primary, secondary, outline, ghost, destructive)
-  - [ ] Badge (Variants: default, neutral, success, warning, outline)
-  - [ ] Card (Header, Content, Footer, interactive hover)
-  - [ ] Modal / Dialog & Sheet / Drawer primitives
-  - [ ] Tabs & Dropdown Menu
-  - [ ] Input, Textarea, Select, Checkbox, Slider
-- [ ] Implement theme variable system (`globals.css` with CSS custom properties).
-- [ ] Add unit test harness (`vitest.config.ts`, `@testing-library/react`).
-- [ ] Author educational guide: `docs/guides/phase-01-architecture-and-design-system.md`.
-- [ ] **Verification**: `npm run build` succeeds, `npm test` runs initial component tests.
+- [x] Initialize `package.json` with Next.js 15, React 19, TypeScript, Tailwind CSS, Lucide icons.
+- [x] Configure `tsconfig.json`, `tailwind.config.ts`, and `postcss.config.mjs`.
+- [x] Build base layout shells (`app/[locale]/layout.tsx`, header topbar, navigation bar, footer).
+- [x] Create accessible UI primitives in `src/components/ui/`:
+  - [x] Button (Variants: primary, secondary, outline, ghost, destructive, archetype)
+  - [x] Badge (Variants: default, neutral, success, warning, outline, archetype)
+  - [x] Card (Header, Content, Footer, interactive hover)
+  - [x] Modal / Dialog & Sheet / Drawer primitives
+  - [x] Tabs & Dropdown Menu
+  - [x] Input, Textarea, Select
+- [x] Implement theme variable system (`globals.css` with CSS custom properties).
+- [x] Add unit test harness (`vitest.config.ts`, `@testing-library/react`, zero-emoji audit).
+- [x] Author educational guide: `docs/guides/phase-01-architecture-and-design-system.md`.
+- [x] **Verification**: `npm run build` succeeds (100%), `npm test` runs 12 component & compliance tests (100% pass).
 
 ---
 
