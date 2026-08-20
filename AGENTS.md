@@ -14,43 +14,60 @@ XPO is a next-generation, multi-sided MICE (Meetings, Incentives, Conferences, a
 
 ---
 
-## 2. Core Non-Negotiable Rules
+## 2. Coding Notes & Standards
 
-### A. Zero-Emoji Design Craft
-* **Strict Rule**: DO NOT use Unicode emojis in any user-facing UI component, button, badge, header, or notification.
-* **Solution**: Always use vector SVG icons from `lucide-react`. Maintain an institutional, modern, ultra-clean aesthetic.
-
-### B. Type Safety & TypeScript Strict Mode
-* Every interface, model, function argument, and API route must be strictly typed.
-* Never use `any`. Use TypeScript generics, `unknown` with type narrowing, or specific interface types in `src/types/`.
-
-### C. Category Archetypes & Theming
-* Events belong to one of 9 domain archetypes (`INDUSTRIAL_B2B`, `TECH_DEV_SUMMIT`, `MEDICAL_SYMPOSIUM`, `FINANCE_INVESTOR`, `POP_CULTURE_GAMING`, `MUSIC_FESTIVAL`, `MEGA_EXPO_PAVILION`, `GOVERNMENT_DIPLOMATIC`, `INCENTIVE_RETREAT`).
-* Always respect archetype layout structures and CSS variable theming. Do not hardcode static colors that break theme overrides.
-
-### D. Multi-Model OpenRouter AI Standard
-* AI capabilities are routed through OpenRouter (`OPENROUTER_API_KEY`).
-* Supported models:
-  * `google/gemini-3.5-flash-lite`
-  * `google/gemini-3.7-flash`
-  * `deepseek/deepseek-v4-pro-0813`
-  * `qwen/qwen3.7-plus`
-  * `openai/gpt-5.6-luna`
-  * `google/gemma-4-26b-a4b-it`
-* Always implement error handling, schema parsing, and graceful fallbacks for LLM calls.
-
-### E. Internationalization & Regional Localization
-* Support localized routing (`/en`, `/ja`, `/zh-CN`, `/id`, `/de`, `/es`) via `next-intl`.
-* Regional hubs (`/id`, `/jp`, `/global`) must highlight accurate local venues, exact halls, and transit lines.
+1. **Maintain active codebase hygiene without placeholder stubs**: Implement real, functional logic and production-ready data pipelines; do not leave empty mockup stubs or non-functional placeholders.
+2. **Avoid using emoji in production code or artificial AI quirks**: Strictly use vector SVG icons from `lucide-react`. Maintain an institutional, modern, ultra-clean aesthetic without emojis or conversational quirks.
+3. **Provide comprehensive testing across unit, UI, and integration layers**: Every phase must contain automated unit and integration tests verifying correctness, hash validation, theming logic, and route behavior.
+4. **Always diagnose issues with concrete evidence before applying fixes**: Investigate root causes and inspect logs/types before applying targeted, minimal code modifications.
+5. **Use the latest stable versions of libraries and frameworks**: Next.js 15+ App Router, React 19, TypeScript strict mode, Prisma ORM, and Tailwind CSS.
+6. **Avoid overengineering; prioritize simple, robust implementations**: Favor standard library utilities, direct component compositions, and clean modular services over speculative abstractions.
+7. **Maintain a concise and informative `README.md`**: Keep documentation up-to-date, clear, and actionable.
 
 ---
 
-## 3. Directory Structure & AGENTS.md Hierarchy
+## 3. Responsive & Adaptive Multi-Device UX Guidelines
+
+All three portals (Attendee, Organizer, and Admin) must be fully responsive and adapt gracefully to device viewports:
+
+### A. Mobile Interface (`< 768px`):
+* **Bottom Navigation & Thumb-Zone Ergonomics**: Core navigation tabs anchored to the bottom for single-handed mobile use.
+* **Sticky Action Drawer**: Single-click "Book Pass" / "View Pass" sticky bottom bar on event pages.
+* **Touch Optimization**: Minimum touch target size of 44x44px. Full-width swipeable cards and bottom-sheet drawers instead of bulky modals.
+* **Compact Data Density**: Simplified cards with essential tags; expandable accordion rows for event agendas.
+
+### B. Tablet Interface (`768px - 1024px`):
+* **Hybrid Dual-Pane Layout**: Collapsible sidebars, 2-column event discovery grids, and split-view agenda schedules.
+* **Balanced Density**: Touch-friendly buttons paired with expanded tabular data for exhibitor lists and ticket tiers.
+
+### C. Desktop & Large Displays (`> 1024px / 1280px+`):
+* **Full Multi-Column Experience**: Persistent navigation sidebars for Organizer & Admin command centers.
+* **Side-by-Side Live Preview**: Real-time visual branding customizer with live preview frame and device toggle.
+* **High-Density Data Grids**: Comprehensive faceted filter bars, multi-stage timetables, interactive floor maps, and multi-model AI comparison panes.
+
+---
+
+## 4. Multi-Model OpenRouter AI Standard
+
+* AI capabilities are routed through OpenRouter (`OPENROUTER_API_KEY`).
+* Supported models:
+  * `google/gemini-3.5-flash-lite` (Fast attendee concierge & real-time digests)
+  * `google/gemini-3.7-flash` (Balanced multi-modal reporting)
+  * `deepseek/deepseek-v4-pro-0813` (Deep reasoning & anomaly detection)
+  * `qwen/qwen3.7-plus` (Multilingual & trade synthesis)
+  * `openai/gpt-5.6-luna` (Executive reporting)
+  * `google/gemma-4-26b-a4b-it` (Edge analytics)
+* Always implement error handling, schema parsing, and graceful fallbacks for LLM calls.
+
+---
+
+## 5. Directory Structure & AGENTS.md Hierarchy
 
 ```
 XPO/
 ├── AGENTS.md                # Root agent instructions (this file)
 ├── CHECKLIST.md             # 12-Phase progress & verification checklist
+├── README.md                # Project summary, architecture, and setup instructions
 ├── docs/                    # Architectural specs and educational guides
 │   ├── AGENTS.md            # Documentation standards
 │   ├── superpowers/specs/   # Formal technical specs
@@ -98,7 +115,7 @@ XPO/
 
 ---
 
-## 4. Operational Workflow for Phased Development
+## 6. Operational Workflow for Phased Development
 
 For every phase:
 1. **Reference the Checklist**: Check `CHECKLIST.md` for current phase tasks and dependencies.
