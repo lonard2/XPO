@@ -37,21 +37,21 @@ This master checklist tracks the development, testing, and educational documenta
 
 ### Phase 2: Relational Data Modeling with Prisma & Global/Indonesian MICE Seeding
 *Focus: PostgreSQL schema, relational modeling, venue/hall hierarchies, realistic seed data, and Phase 2 Guide.*
-- [ ] Configure Prisma ORM (`prisma/schema.prisma`) with models:
-  - [ ] `User`, `Role` (ATTENDEE, ORGANIZER, ADMIN)
-  - [ ] `Region` (`id`, `jp`, `global`)
-  - [ ] `Venue` & `VenueHall` (1-to-many relationship with capacity, transit data)
-  - [ ] `Event` & `EventArchetype` (9 MICE categories)
-  - [ ] `TicketTier`, `Booking`, `TicketStatus`
-  - [ ] `AgendaItem`, `BoothTenant`, `EventPerk`, `AIReport`
-- [ ] Implement `src/lib/db.ts` (Prisma singleton).
-- [ ] Build robust seed script (`prisma/seed.ts`):
-  - [ ] Seed Indonesian venues & exact halls: JIExpo Kemayoran, ICE BSD City, JICC Senayan, NICE PIK 2, GBK Complex, JIS.
-  - [ ] Seed Japan venues & exact halls: Tokyo Big Sight, Makuhari Messe, Pacifico Yokohama.
-  - [ ] Seed Global venues: Marina Bay Sands Expo, Messe Frankfurt, ExCeL London, McCormick Place.
-  - [ ] Seed realistic events spanning all 9 category archetypes (e.g. Manufacturing Expo, AI Summit, Medical Congress, Jakarta Fair mega expo).
-- [ ] Author educational guide: `docs/guides/phase-02-prisma-modeling-and-mice-seeding.md`.
-- [ ] **Verification**: Seed script populates database without foreign key errors; DB query integration test passes.
+- [x] Configure Prisma ORM (`prisma/schema.prisma`) with models:
+  - [x] `User`, `Role` (ATTENDEE, ORGANIZER, ADMIN)
+  - [x] `Region` (`id`, `jp`, `global`)
+  - [x] `Venue` & `VenueHall` (1-to-many relationship with capacity, transit data)
+  - [x] `Event` & `EventArchetype` (9 MICE categories)
+  - [x] `TicketTier`, `Booking`, `TicketStatus`
+  - [x] `AgendaItem`, `BoothTenant`, `EventPerk`, `AIReport`
+- [x] Implement `src/lib/db.ts` (Prisma singleton).
+- [x] Build robust seed script (`prisma/seed.ts`):
+  - [x] Seed Indonesian venues & exact halls: JIExpo Kemayoran, ICE BSD City, JICC Senayan, NICE PIK 2, GBK Complex, JIS.
+  - [x] Seed Japan venues & exact halls: Tokyo Big Sight, Makuhari Messe, Pacifico Yokohama.
+  - [x] Seed Global venues: Marina Bay Sands Expo, Messe Frankfurt, ExCeL London, McCormick Place.
+  - [x] Seed realistic events spanning all 9 category archetypes (Manufacturing Expo, AI Summit, Jakarta Fair mega expo).
+- [x] Author educational guide: `docs/guides/phase-02-prisma-modeling-and-mice-seeding.md`.
+- [x] **Verification**: Seed script populates database without foreign key errors; DB query integration test passes (`tests/integration/db.test.ts`).
 
 ---
 

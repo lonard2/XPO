@@ -1,0 +1,172 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String      @id @default(cuid())
+  email           String      @unique
+  name            String
+  role            String      @default("ATTENDEE") // "ATTENDEE", "ORGANIZER", "ADMIN"
+  organization    String?
+  jobTitle        String?
+  avatarUrl       String?
+  settingsJson    String?     // UI/UX & Account Preferences JSON
+  interestsJson   String      @default("[]") // JSON Array of MICE interest tags
+  organizedEvents Event[]     @relation("OrganizerEvents")
+  bookings        Booking[]
+  aiReports       AIReport[]
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model Region {
+  id          String   @id // "id", "jp", "global"
+  name        String   // "Indonesia", "Japan", "Global"
+  code        String   @unique // "ID", "JP", "GL"
+  currency    String   @default("IDR") // "IDR", "JPY", "USD"
+  description String?
+  venues      Venue[]
+  events      Event[]
+}
+
+model Venue {
+  id          String      @id @default(cuid())
+  regionId    String
+  region      Region      @relation(fields: [regionId], references: [id])
+  name        String      // e.g. "JIExpo Kemayoran"
+  slug        String      @unique
+  city        String
+  address     String
+  latitude    Float?
+  longitude   Float?
+  transitInfo String      // Transit instructions (KRL, MRT, TransJakarta)
+  imageUrl    String?
+  halls       VenueHall[]
+  events      Event[]
+  createdAt   DateTime    @default(now())
+}
+
+model VenueHall {
+  id           String   @id @default(cuid())
+  venueId      String
+  venue        Venue    @relation(fields: [venueId], references: [id], onDelete: Cascade)
+  name         String   // e.g. "Hall A1", "Nusantara Hall 2", "Plenary Hall"
+  capacity     Int?
+  floorAreaSqm Float?
+  description  String?
+  events       Event[]
+}
+
+model Event {
+  id                 String       @id @default(cuid())
+  organizerId        String
+  organizer          User         @relation("OrganizerEvents", fields: [organizerId], references: [id])
+  regionId           String
+  region             Region       @relation(fields: [regionId], references: [id])
+  venueId            String
+  venue              Venue        @relation(fields: [venueId], references: [id])
+  venueHallId        String?
+  venueHall          VenueHall?   @relation(fields: [venueHallId], references: [id])
+  title              String
+  slug               String       @unique
+  tagline            String?
+  description        String
+  archetype          String       @default("INDUSTRIAL_B2B") // INDUSTRIAL_B2B, TECH_DEV_SUMMIT, MEDICAL_SYMPOSIUM, FINANCE_INVESTOR, POP_CULTURE_GAMING, MUSIC_FESTIVAL, MEGA_EXPO_PAVILION, GOVERNMENT_DIPLOMATIC, INCENTIVE_RETREAT
+  startDate          DateTime
+  endDate            DateTime
+  isFeatured         Boolean      @default(false)
+  heroImageUrl       String?
+  brandingConfigJson String?      // Custom primary color, accent, hero override JSON
+  scale              String       @default("LARGE") // "GLOBAL_MEGA", "LARGE", "MEDIUM", "EXECUTIVE"
+  format             String       @default("IN_PERSON") // "IN_PERSON", "HYBRID", "VIRTUAL"
+  ticketTiers        TicketTier[]
+  agendaItems        AgendaItem[]
+  booths             BoothTenant[]
+  perks              EventPerk[]
+  aiReports          AIReport[]
+  bookings           Booking[]
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+}
+
+model TicketTier {
+  id           String    @id @default(cuid())
+  eventId      String
+  event        Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  name         String    // "Standard Pass", "VIP Delegate", "Exhibitor Pass"
+  price        Float     @default(0)
+  currency     String    @default("IDR")
+  capacity     Int
+  soldCount    Int       @default(0)
+  benefitsJson String    @default("[]") // JSON array of perk descriptions
+  bookings     Booking[]
+}
+
+model Booking {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+  eventId       String
+  event         Event     @relation(fields: [eventId], references: [id])
+  ticketTierId  String
+  ticketTier    TicketTier @relation(fields: [ticketTierId], references: [id])
+  status        String    @default("CONFIRMED") // "RESERVED", "CONFIRMED", "CHECKED_IN", "CANCELLED"
+  qrCodeHash    String    @unique
+  attendeeName  String
+  attendeeEmail String
+  checkedInAt   DateTime?
+  createdAt     DateTime  @default(now())
+}
+
+model AgendaItem {
+  id          String   @id @default(cuid())
+  eventId     String
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  title       String
+  speakerName String?
+  speakerRole String?
+  location    String   // "Main Stage - Hall A1"
+  startTime   DateTime
+  endTime     DateTime
+  track       String?
+}
+
+model BoothTenant {
+  id          String   @id @default(cuid())
+  eventId     String
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  companyName String
+  boothNumber String   // "Hall A2 - B12"
+  hallName    String   // "Hall A2"
+  industry    String?
+  websiteUrl  String?
+  logoUrl     String?
+  description String?
+}
+
+model EventPerk {
+  id           String   @id @default(cuid())
+  eventId      String
+  event        Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  title        String   // "VIP Lounge Access & Barista Coffee"
+  description  String
+  tierRequired String?  // "VIP" or null for all tiers
+  iconName     String   @default("Coffee")
+}
+
+model AIReport {
+  id          String   @id @default(cuid())
+  eventId     String
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  authorId    String
+  author      User     @relation(fields: [authorId], references: [id])
+  modelUsed   String   // e.g. "google/gemini-3.7-flash"
+  reportType  String   // "DAILY_DIGEST", "SENTIMENT", "FOOT_TRAFFIC"
+  contentJson String   // Structured metrics & analysis markdown
+  createdAt   DateTime @default(now())
+}
