@@ -11,14 +11,15 @@ import {
   Settings as SettingsIcon,
   Sun,
   Moon,
-  Globe,
   Menu,
   X,
   Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
 import { cn } from "@/lib/utils";
+import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
+import { RegionSwitcher } from "@/components/layout/RegionSwitcher";
+import { useSettings } from "@/components/settings/SettingsProvider";
 
 interface NavbarProps {
   locale?: string;
@@ -27,22 +28,43 @@ interface NavbarProps {
 export function Navbar({ locale = "en" }: NavbarProps) {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
-  const [isDarkMode, setIsDarkMode] = React.useState(false);
+  
+  let settings: ReturnType<typeof useSettings> | null = null;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    settings = useSettings();
+  } catch {
+    // Fallback if rendered outside provider in isolated tests
+  }
+
+  const [localDarkMode, setLocalDarkMode] = React.useState(false);
+
+  // Extract region if on a regional page
+  const regionMatch = pathname?.match(/\/region\/(id|jp|global)/i);
+  const activeRegion = regionMatch ? regionMatch[1].toLowerCase() : undefined;
 
   React.useEffect(() => {
     const isDark = document.documentElement.classList.contains("dark");
-    setIsDarkMode(isDark);
-  }, []);
+    setLocalDarkMode(isDark);
+  }, [settings?.theme]);
+
+  const isDarkMode = settings?.isMounted
+    ? settings.theme === "dark" || (settings.theme === "system" && localDarkMode)
+    : localDarkMode;
 
   const toggleDarkMode = () => {
-    const newMode = !isDarkMode;
-    setIsDarkMode(newMode);
-    if (newMode) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("xpo_theme", "dark");
+    if (settings) {
+      settings.setTheme(isDarkMode ? "light" : "dark");
     } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("xpo_theme", "light");
+      const newMode = !localDarkMode;
+      setLocalDarkMode(newMode);
+      if (newMode) {
+        document.documentElement.classList.add("dark");
+        localStorage.setItem("xpo_theme", "dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+        localStorage.setItem("xpo_theme", "light");
+      }
     }
   };
 
@@ -83,7 +105,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "flex items-center gap-2 px-3.5 py-2 rounded-md text-xs lg:text-sm font-medium transition-colors",
+                    "flex items-center gap-2 px-3 py-2 rounded-md text-xs lg:text-sm font-medium transition-colors",
                     isActive
                       ? "bg-accent text-accent-foreground font-semibold"
                       : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
@@ -99,15 +121,13 @@ export function Navbar({ locale = "en" }: NavbarProps) {
 
         {/* Right Actions */}
         <div className="flex items-center gap-2">
-          {/* Region / Locale Indicator */}
-          <Link
-            href={`/${locale}/settings`}
-            className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-            title="Switch Language & Region"
-          >
-            <Globe className="h-4 w-4" />
-            <span className="uppercase">{locale}</span>
-          </Link>
+          {/* Regional Hub Switcher */}
+          <div className="hidden lg:block">
+            <RegionSwitcher currentLocale={locale} activeRegionCode={activeRegion} />
+          </div>
+
+          {/* Language Switcher */}
+          <LanguageSwitcher currentLocale={locale} />
 
           {/* Theme Toggle */}
           <Button
@@ -143,39 +163,53 @@ export function Navbar({ locale = "en" }: NavbarProps) {
 
       {/* Mobile Dropdown Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden border-b border-border bg-card p-4 space-y-2 animate-fade-in">
-          {navLinks.map((link) => {
-            const Icon = link.icon;
-            const isActive = pathname === link.href;
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={cn(
-                  "flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors",
-                  isActive
-                    ? "bg-primary/10 text-primary font-semibold"
-                    : "text-foreground hover:bg-accent"
-                )}
-              >
-                <Icon className="h-5 w-5" />
-                <span>{link.label}</span>
-              </Link>
-            );
-          })}
+        <div className="md:hidden border-b border-border bg-card p-4 space-y-3 animate-fade-in">
+          {/* Navigation Links */}
+          <div className="space-y-1">
+            {navLinks.map((link) => {
+              const Icon = link.icon;
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={cn(
+                    "flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                    isActive
+                      ? "bg-primary/10 text-primary font-semibold"
+                      : "text-foreground hover:bg-accent"
+                  )}
+                >
+                  <Icon className="h-4 w-4" />
+                  <span>{link.label}</span>
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Regional Hub Selector in Mobile */}
+          <div className="pt-2 border-t border-border space-y-2">
+            <span className="text-[11px] font-semibold uppercase text-muted-foreground tracking-wider block px-1">
+              Select Regional Hub
+            </span>
+            <RegionSwitcher
+              currentLocale={locale}
+              activeRegionCode={activeRegion}
+              variant="pills"
+            />
+          </div>
+
+          {/* Footer Settings & Language Info */}
           <div className="pt-2 border-t border-border flex items-center justify-between">
             <Link
               href={`/${locale}/settings`}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground py-2"
+              className="flex items-center gap-2 text-xs font-medium text-muted-foreground hover:text-foreground py-1.5"
             >
               <SettingsIcon className="h-4 w-4" />
               <span>UI & Account Settings</span>
             </Link>
-            <Badge variant="outline" className="uppercase text-[10px]">
-              {locale}
-            </Badge>
           </div>
         </div>
       )}

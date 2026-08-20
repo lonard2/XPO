@@ -98,3 +98,4 @@ temp/
 .temp/
 .eslintcache
 .stylelintcache
+.agents/

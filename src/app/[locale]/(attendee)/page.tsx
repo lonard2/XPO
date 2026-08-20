@@ -1,4 +1,5 @@
-import Link from "next/link";
+import Link from 'next/link';
+import { setRequestLocale, getTranslations } from 'next-intl/server';
 import {
   Compass,
   Building2,
@@ -12,82 +13,210 @@ import {
   Tablet,
   Laptop,
   CheckCircle2,
-} from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
+  Globe,
+} from 'lucide-react';
+import { db } from '@/lib/db';
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
+import { BannerCarousel } from '@/components/discovery/BannerCarousel';
+import { VenueSpotlightSection } from '@/components/discovery/VenueSpotlightSection';
+import { EventCard } from '@/components/discovery/EventCard';
+import { ALL_MICE_ARCHETYPES, ARCHETYPE_DEFAULTS } from '@/lib/theming';
+import { FALLBACK_BANNER_SLIDES, FALLBACK_EVENTS, FALLBACK_VENUES } from '@/lib/discovery/fallbackData';
+import { type BannerSlide, type DiscoveryEvent, type VenueSummary } from '@/types/discovery';
 
-export default async function HomePage({
-  params,
-}: {
+export interface HomePageProps {
   params: Promise<{ locale: string }>;
-}) {
+}
+
+export default async function HomePage({ params }: HomePageProps) {
   const { locale } = await params;
+  setRequestLocale(locale);
+
+  // Fetch live data from Prisma with graceful fallback
+  let bannerSlides: BannerSlide[] = FALLBACK_BANNER_SLIDES;
+  let spotlightVenues: VenueSummary[] = FALLBACK_VENUES;
+  let featuredEvents: DiscoveryEvent[] = FALLBACK_EVENTS;
+
+  try {
+    const dbEvents = await db.event.findMany({
+      where: { isFeatured: true },
+      include: {
+        venue: {
+          include: {
+            halls: true,
+            region: true,
+          },
+        },
+        venueHall: true,
+        region: true,
+        ticketTiers: true,
+      },
+      orderBy: { startDate: 'asc' },
+      take: 6,
+    });
+
+    if (dbEvents.length > 0) {
+      featuredEvents = dbEvents as unknown as DiscoveryEvent[];
+      bannerSlides = dbEvents.map((evt) => {
+        const lowestTier = evt.ticketTiers?.sort((a, b) => a.price - b.price)[0];
+        return {
+          id: evt.id,
+          title: evt.title,
+          tagline: evt.tagline,
+          slug: evt.slug,
+          heroImageUrl: evt.heroImageUrl,
+          archetype: evt.archetype,
+          startDate: evt.startDate,
+          endDate: evt.endDate,
+          venueName: evt.venue?.name,
+          cityName: evt.venue?.city,
+          regionCode: evt.region?.code || 'ID',
+          format: evt.format,
+          scale: evt.scale,
+          minPrice: lowestTier?.price ?? 0,
+          currency: lowestTier?.currency || 'IDR',
+          isFeatured: evt.isFeatured,
+        };
+      });
+    }
+
+    const dbVenues = await db.venue.findMany({
+      include: {
+        halls: true,
+        region: true,
+      },
+      orderBy: { name: 'asc' },
+      take: 6,
+    });
+
+    if (dbVenues.length > 0) {
+      spotlightVenues = dbVenues as unknown as VenueSummary[];
+    }
+  } catch {
+    // Rely on pre-populated realistic fallback datasets
+  }
 
   return (
-    <div className="flex flex-col gap-12 sm:gap-16 pb-12">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-primary/5 via-background to-background py-16 sm:py-24">
-        <div className="container relative z-10 flex flex-col items-center text-center space-y-6 max-w-4xl mx-auto px-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-semibold animate-fade-in">
-            <Sparkles className="h-3.5 w-3.5" />
-            <span>XPO Digital MICE Ecosystem • Phase 1 Active</span>
+    <div className="flex flex-col gap-12 sm:gap-16 pb-16">
+      {/* 1. Hero Banner Carousel */}
+      <section className="container px-4 pt-4 sm:pt-6">
+        <BannerCarousel slides={bannerSlides} locale={locale} />
+      </section>
+
+      {/* 2. Fast Regional Portal Jump & Category Chips */}
+      <section className="container px-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 rounded-2xl border border-border/80 bg-card p-4 sm:p-5 shadow-xs">
+          <div className="flex items-center gap-2 text-xs font-semibold text-foreground">
+            <Globe className="h-4 w-4 text-primary shrink-0" />
+            <span>Regional Localization Hubs:</span>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground leading-[1.15]">
-            Global Events, Conventions & Expos, <span className="text-primary">Reimagined</span>.
-          </h1>
-
-          <p className="text-sm sm:text-lg text-muted-foreground max-w-2xl leading-relaxed">
-            The multi-sided digital platform connecting attendees, organizers, and world-class venues across Indonesia, Japan, and the globe.
-          </p>
-
-          {/* Action Buttons */}
-          <div className="flex flex-wrap items-center justify-center gap-3 pt-2 w-full sm:w-auto">
-            <Link href={`/${locale}/events`} className="w-full sm:w-auto">
-              <Button size="lg" className="w-full sm:w-auto gap-2 font-semibold shadow-md">
-                <Compass className="h-4 w-4" />
-                <span>Explore Events</span>
-                <ArrowRight className="h-4 w-4 ml-1" />
-              </Button>
-            </Link>
-            <Link href={`/${locale}/venues`} className="w-full sm:w-auto">
-              <Button size="lg" variant="outline" className="w-full sm:w-auto gap-2">
-                <Building2 className="h-4 w-4" />
-                <span>Venue Directory</span>
-              </Button>
-            </Link>
-          </div>
-
-          {/* Fast Region Selector Chips */}
-          <div className="pt-6 flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground">
-            <span className="font-medium">Spotlight Hubs:</span>
+          <div className="flex flex-wrap items-center gap-2">
             <Link href={`/${locale}/region/id`}>
-              <Badge variant="outline" className="hover:border-primary cursor-pointer transition-colors py-1 px-2.5">
+              <Badge variant="outline" className="hover:border-primary cursor-pointer transition-colors py-1.5 px-3 text-xs">
                 Indonesia (JIExpo, ICE BSD, JICC, NICE)
               </Badge>
             </Link>
             <Link href={`/${locale}/region/jp`}>
-              <Badge variant="outline" className="hover:border-primary cursor-pointer transition-colors py-1 px-2.5">
+              <Badge variant="outline" className="hover:border-primary cursor-pointer transition-colors py-1.5 px-3 text-xs">
                 Japan (Tokyo Big Sight, Makuhari)
               </Badge>
             </Link>
             <Link href={`/${locale}/region/global`}>
-              <Badge variant="outline" className="hover:border-primary cursor-pointer transition-colors py-1 px-2.5">
-                Global (MBS, Messe Frankfurt)
+              <Badge variant="outline" className="hover:border-primary cursor-pointer transition-colors py-1.5 px-3 text-xs">
+                Global (MBS Singapore, Frankfurt)
               </Badge>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* 3-Sided Multi-Portal Architecture Showcase */}
+      {/* 3. Featured MICE Exhibitions Grid */}
+      <section className="container px-4 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-border pb-4">
+          <div>
+            <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider mb-1">
+              <Sparkles className="h-4 w-4" />
+              <span>Featured & High-Priority Exhibitions</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+              Scheduled International Trade Expos & Summits
+            </h2>
+          </div>
+
+          <Link href={`/${locale}/events`}>
+            <Button variant="outline" size="sm" className="gap-1.5 text-xs font-semibold">
+              <span>View All Events</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Button>
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {featuredEvents.map((event) => (
+            <EventCard key={event.id} event={event} locale={locale} />
+          ))}
+        </div>
+      </section>
+
+      {/* 4. 9-Archetype Domain Taxonomy Navigation */}
+      <section className="container px-4 space-y-6">
+        <div className="text-center space-y-2 max-w-2xl mx-auto">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-semibold">
+            <Layers className="h-3.5 w-3.5" />
+            <span>9 Specialized MICE Domains</span>
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+            Explore Events by Industry Archetype
+          </h2>
+          <p className="text-xs sm:text-sm text-muted-foreground">
+            Tailored layout view engines, dedicated deal-rooms, and specialized agendas for every MICE vertical.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {ALL_MICE_ARCHETYPES.map((archKey) => {
+            const archetype = ARCHETYPE_DEFAULTS[archKey];
+            return (
+              <Link
+                key={archKey}
+                href={`/${locale}/events?archetype=${archKey}`}
+                className="group flex items-start gap-3.5 rounded-2xl border border-border/80 bg-card p-4 transition-all duration-200 hover:border-primary/50 hover:shadow-md hover:-translate-y-0.5"
+              >
+                <div
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-transform group-hover:scale-105"
+                  style={{ backgroundColor: `${archetype.primary}18`, color: archetype.primary }}
+                >
+                  <Sparkles className="h-5 w-5" />
+                </div>
+                <div className="space-y-1 min-w-0">
+                  <h3 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors truncate">
+                    {archetype.displayName}
+                  </h3>
+                  <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                    {archetype.tagline}
+                  </p>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* 5. World-Class Venue Spotlights */}
       <section className="container px-4">
-        <div className="text-center space-y-2 mb-10">
+        <VenueSpotlightSection venues={spotlightVenues} locale={locale} />
+      </section>
+
+      {/* 6. Multi-Sided Multi-Portal Architecture Showcase */}
+      <section className="container px-4 space-y-8">
+        <div className="text-center space-y-2 max-w-xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             Multi-Sided Platform Architecture
           </h2>
-          <p className="text-xs sm:text-sm text-muted-foreground max-w-xl mx-auto">
+          <p className="text-xs sm:text-sm text-muted-foreground">
             Engineered with dedicated portals tailored for every participant in the MICE lifecycle.
           </p>
         </div>
@@ -147,7 +276,7 @@ export default async function HomePage({
             </CardContent>
           </Card>
 
-          {/* Admin & Ingestion */}
+          {/* Admin & Governance */}
           <Card interactive className="flex flex-col justify-between">
             <CardHeader>
               <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 mb-2">
@@ -176,58 +305,7 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* Adaptive Responsive Multi-Device Standard */}
-      <section className="container px-4">
-        <div className="rounded-2xl border border-border bg-card p-6 sm:p-10">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-            <div className="lg:col-span-1 space-y-4">
-              <Badge variant="outline" className="text-primary border-primary/30">
-                Responsive Design Engine
-              </Badge>
-              <h3 className="text-xl sm:text-2xl font-bold text-foreground">
-                Device-Tailored Ergonomics
-              </h3>
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                Every screen is engineered with viewport-specific UX: single-handed thumb zones for phones, dual-pane layouts for tablets, and high-density command consoles for desktop monitors.
-              </p>
-            </div>
-
-            <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="rounded-xl border border-border/80 bg-background p-4 space-y-2.5">
-                <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-                  <Smartphone className="h-4 w-4" />
-                  <span>Mobile Viewport</span>
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  Bottom navigation bar, sticky booking drawer, swipeable cards, 44px touch targets.
-                </p>
-              </div>
-
-              <div className="rounded-xl border border-border/80 bg-background p-4 space-y-2.5">
-                <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-                  <Tablet className="h-4 w-4" />
-                  <span>Tablet Viewport</span>
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  Hybrid 2-column event discovery grids, collapsible sidebars, and split-view timetables.
-                </p>
-              </div>
-
-              <div className="rounded-xl border border-border/80 bg-background p-4 space-y-2.5">
-                <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-                  <Laptop className="h-4 w-4" />
-                  <span>Desktop Viewport</span>
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  Persistent command sidebars, side-by-side live customizer frame, high-density data tables.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Multi-Model OpenRouter AI Showcase Banner */}
+      {/* 7. Multi-Model OpenRouter AI Intelligence Banner */}
       <section className="container px-4">
         <div className="rounded-2xl border border-primary/20 bg-primary/5 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="space-y-2 text-center sm:text-left">

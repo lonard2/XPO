@@ -44,6 +44,10 @@
     /* Fonts & Typography Default */
     --font-scale: 1;
     --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-serif: "Newsreader", "Charter", "Georgia", "Times New Roman", serif;
+    --font-mono: "JetBrains Mono", "Fira Code", "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+    --font-legible: "Atkinson Hyperlegible", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-active: var(--font-sans);
   }
 
   .dark {
@@ -98,8 +102,29 @@
 
   body {
     @apply bg-background text-foreground antialiased min-h-screen selection:bg-primary/20 selection:text-primary;
-    font-family: var(--font-sans);
+    font-family: var(--font-active, var(--font-sans));
   }
+}
+
+/* Typography Engine Modifiers */
+.typography-modern-sans,
+.typography-sans {
+  --font-active: var(--font-sans);
+}
+
+.typography-editorial-serif,
+.typography-serif {
+  --font-active: var(--font-serif);
+}
+
+.typography-technical-mono,
+.typography-mono {
+  --font-active: var(--font-mono);
+}
+
+.typography-atkinson-hyperlegible,
+.typography-legible {
+  --font-active: var(--font-legible);
 }
 
 /* Density Modifiers */
