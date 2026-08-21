@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { setRequestLocale } from 'next-intl/server';
+import { headers, cookies } from 'next/headers';
 import {
   Compass,
   Building2,
@@ -10,15 +11,13 @@ import {
   ArrowRight,
   ShieldCheck,
   Globe,
-  Calendar,
   CheckCircle2,
 } from 'lucide-react';
 import { db } from '@/lib/db';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
-import { BannerCarousel } from '@/components/discovery/BannerCarousel';
-import { MajorVenuesUpcomingSection } from '@/components/discovery/MajorVenuesUpcomingSection';
+import { HeroSection } from '@/components/discovery/HeroSection';
 import { EventCategoryPills } from '@/components/discovery/EventCategoryPills';
 import { EventCalendarWidget } from '@/components/discovery/EventCalendarWidget';
 import { VenueSpotlightSection } from '@/components/discovery/VenueSpotlightSection';
@@ -38,7 +37,19 @@ export interface HomePageProps {
 export default async function HomePage({ params, searchParams }: HomePageProps) {
   const { locale } = await params;
   const resolvedSearchParams = searchParams ? await searchParams : undefined;
-  const activeRegionCode = (resolvedSearchParams?.region || 'id').toLowerCase();
+
+  // 1. Resolve active region: explicit URL param > cookie > geo header > default 'id'
+  const headerList = await headers();
+  const cookieStore = await cookies();
+  const geoHeaderRegion = headerList.get('x-xpo-region');
+  const cookieRegion = cookieStore.get('xpo_region')?.value;
+
+  const activeRegionCode = (
+    resolvedSearchParams?.region ||
+    cookieRegion ||
+    geoHeaderRegion ||
+    'id'
+  ).toLowerCase();
 
   setRequestLocale(locale);
 
@@ -141,77 +152,29 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
   const regionNames: Record<string, string> = {
     id: 'Indonesia',
     jp: 'Japan',
-    global: 'Global Hubs',
+    global: 'Global',
   };
 
-  const currentEditionName = regionNames[activeRegionCode] || 'Indonesia';
+  const currentRegionName = regionNames[activeRegionCode] || 'Indonesia';
 
   return (
     <div className="flex flex-col gap-10 sm:gap-14 pb-16">
-      {/* 1. Hero Banner Carousel with High-Contrast Scrim & Mobile Ergonomics */}
+      {/* 1. Unified Modern Hero Section: Banner Carousel + Stuck Horizontal Venue Quick-Glance Rail */}
       <section className="container pt-3 sm:pt-6">
-        <BannerCarousel slides={bannerSlides} locale={locale} />
+        <HeroSection
+          slides={bannerSlides}
+          venues={majorVenuesWithEvents}
+          locale={locale}
+          regionCode={activeRegionCode}
+        />
       </section>
 
-      {/* 2. Dedicated Country Editions Switcher & Status Bar */}
-      <section className="container">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 rounded-2xl border border-border/80 bg-card p-4 sm:p-5 shadow-xs">
-          <div className="flex items-center gap-2.5 text-xs sm:text-sm font-semibold text-foreground">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <Globe className="h-4 w-4" />
-            </div>
-            <div>
-              <span>Country Edition: </span>
-              <span className="text-primary font-bold">{currentEditionName}</span>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2">
-            <Link href={`/${locale}?region=id`}>
-              <Badge
-                variant={activeRegionCode === 'id' ? 'default' : 'outline'}
-                className="hover:border-primary cursor-pointer transition-all py-1.5 px-3 text-xs"
-              >
-                Indonesia Edition (JIExpo, ICE BSD, JICC)
-              </Badge>
-            </Link>
-            <Link href={`/${locale}?region=jp`}>
-              <Badge
-                variant={activeRegionCode === 'jp' ? 'default' : 'outline'}
-                className="hover:border-primary cursor-pointer transition-all py-1.5 px-3 text-xs"
-              >
-                Japan Edition (Tokyo Big Sight, Makuhari)
-              </Badge>
-            </Link>
-            <Link href={`/${locale}?region=global`}>
-              <Badge
-                variant={activeRegionCode === 'global' ? 'default' : 'outline'}
-                className="hover:border-primary cursor-pointer transition-all py-1.5 px-3 text-xs"
-              >
-                Global Edition (MBS Singapore, Frankfurt)
-              </Badge>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. Major Venues Current & Near-Upcoming Quick-Glance (Below Banner) */}
-      {majorVenuesWithEvents.length > 0 && (
-        <section className="container">
-          <MajorVenuesUpcomingSection
-            venues={majorVenuesWithEvents}
-            locale={locale}
-            regionCode={activeRegionCode}
-          />
-        </section>
-      )}
-
-      {/* 4. Event Category Quick Pills with Distinct Sector Identities */}
+      {/* 2. Event Category Quick Pills with Distinct Sector Identities */}
       <section className="container">
         <EventCategoryPills locale={locale} />
       </section>
 
-      {/* 5. Integrated Interactive Event Calendar Guide */}
+      {/* 3. Integrated Interactive Event Calendar Guide */}
       <section className="container">
         <EventCalendarWidget
           events={featuredEvents.map((e) => ({
@@ -233,7 +196,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         />
       </section>
 
-      {/* 6. Featured Trade Expos & Conferences Grid (Widescreen Multi-Column) */}
+      {/* 4. Featured Trade Expos & Conferences Grid (Widescreen Multi-Column) */}
       <section className="container space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-border/80 pb-4">
           <div>
@@ -242,7 +205,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
               <span>Upcoming Trade Shows & Conventions</span>
             </div>
             <h2 className="text-xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-              Featured Exhibitions in {currentEditionName}
+              Featured Exhibitions in {currentRegionName}
             </h2>
           </div>
 
@@ -261,12 +224,12 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         </div>
       </section>
 
-      {/* 7. Convention Venue Spotlights */}
+      {/* 5. Convention Venue Spotlights */}
       <section className="container">
         <VenueSpotlightSection venues={spotlightVenues} locale={locale} />
       </section>
 
-      {/* 8. Multi-Sided Platform Portals (Humanized Copywriting) */}
+      {/* 6. Multi-Sided Platform Portals (Humanized Copywriting) */}
       <section className="container space-y-8">
         <div className="text-center space-y-2 max-w-xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
@@ -361,7 +324,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         </div>
       </section>
 
-      {/* 9. Event AI Assistant Banner */}
+      {/* 7. Event AI Assistant Banner */}
       <section className="container">
         <div className="rounded-2xl border border-primary/20 bg-primary/5 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="space-y-2 text-center sm:text-left">
