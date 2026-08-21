@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { MapPin, Check, ChevronDown, Building2, Globe, Coins, Clock } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
@@ -28,7 +28,7 @@ export const REGION_OPTIONS: readonly RegionOption[] = [
     code: "id",
     label: "Indonesia",
     nativeName: "Indonesia",
-    editionTitle: "Indonesia Edition",
+    editionTitle: "Indonesia",
     currency: "IDR",
     timezone: "Asia/Jakarta",
     timezoneName: "WIB (UTC+7)",
@@ -41,7 +41,7 @@ export const REGION_OPTIONS: readonly RegionOption[] = [
     code: "jp",
     label: "Japan",
     nativeName: "日本",
-    editionTitle: "Japan Edition",
+    editionTitle: "Japan",
     currency: "JPY",
     timezone: "Asia/Tokyo",
     timezoneName: "JST (UTC+9)",
@@ -54,7 +54,7 @@ export const REGION_OPTIONS: readonly RegionOption[] = [
     code: "global",
     label: "Global Hubs",
     nativeName: "Global",
-    editionTitle: "Global Edition",
+    editionTitle: "Global Hubs",
     currency: "USD",
     timezone: "UTC",
     timezoneName: "UTC",
@@ -79,16 +79,53 @@ export function RegionSwitcher({
   className,
 }: RegionSwitcherProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
+  // Derive initial region
+  const [currentRegion, setCurrentRegion] = React.useState<string>(() => {
+    if (activeRegionCode) return activeRegionCode.toLowerCase();
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const queryReg = urlParams.get("region");
+      if (queryReg && ["id", "jp", "global"].includes(queryReg.toLowerCase())) {
+        return queryReg.toLowerCase();
+      }
+      const match = document.cookie.match(/xpo_region=([^;]+)/);
+      if (match && ["id", "jp", "global"].includes(match[1].toLowerCase())) {
+        return match[1].toLowerCase();
+      }
+    }
+    return "id";
+  });
+
+  // Sync state whenever activeRegionCode, pathname, or window search changes
+  React.useEffect(() => {
+    if (activeRegionCode && ["id", "jp", "global"].includes(activeRegionCode.toLowerCase())) {
+      setCurrentRegion(activeRegionCode.toLowerCase());
+      return;
+    }
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const queryReg = urlParams.get("region");
+      if (queryReg && ["id", "jp", "global"].includes(queryReg.toLowerCase())) {
+        setCurrentRegion(queryReg.toLowerCase());
+        return;
+      }
+      const match = document.cookie.match(/xpo_region=([^;]+)/);
+      if (match && ["id", "jp", "global"].includes(match[1].toLowerCase())) {
+        setCurrentRegion(match[1].toLowerCase());
+      }
+    }
+  }, [activeRegionCode, pathname]);
+
   const selectedRegion =
-    REGION_OPTIONS.find(
-      (r) => r.code === (activeRegionCode || "").toLowerCase()
-    ) || REGION_OPTIONS[0];
+    REGION_OPTIONS.find((r) => r.code === currentRegion) || REGION_OPTIONS[0];
 
   const handleRegionChange = (regionCode: "id" | "jp" | "global") => {
     setIsOpen(false);
+    setCurrentRegion(regionCode);
     if (typeof document !== "undefined") {
       document.cookie = `xpo_region=${regionCode}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
     }
@@ -122,7 +159,7 @@ export function RegionSwitcher({
     return (
       <div className={cn("grid grid-cols-1 md:grid-cols-3 gap-4", className)}>
         {REGION_OPTIONS.map((region) => {
-          const isSelected = region.code === activeRegionCode?.toLowerCase();
+          const isSelected = region.code === currentRegion;
           return (
             <Card
               key={region.code}
@@ -152,7 +189,7 @@ export function RegionSwitcher({
                   </div>
                   {isSelected && (
                     <Badge variant="archetype" className="text-[10px] uppercase">
-                      Active Edition
+                      Active
                     </Badge>
                   )}
                 </div>
@@ -186,10 +223,10 @@ export function RegionSwitcher({
       <div
         className={cn("flex flex-wrap items-center gap-2", className)}
         role="radiogroup"
-        aria-label="Country Edition selection"
+        aria-label="Country selection"
       >
         {REGION_OPTIONS.map((region) => {
-          const isSelected = region.code === activeRegionCode?.toLowerCase();
+          const isSelected = region.code === currentRegion;
           return (
             <button
               key={region.code}
@@ -223,7 +260,7 @@ export function RegionSwitcher({
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
-        aria-label={`Select Country Edition, active: ${selectedRegion.editionTitle}`}
+        aria-label={`Select Country, active: ${selectedRegion.editionTitle}`}
         className="h-9 px-2.5 gap-1.5 text-xs font-medium border border-border/60 hover:bg-accent hover:text-accent-foreground"
       >
         <Globe className="h-3.5 w-3.5 text-primary" />
@@ -238,17 +275,17 @@ export function RegionSwitcher({
       {isOpen && (
         <div
           role="listbox"
-          aria-label="Supported Country Editions"
+          aria-label="Supported Countries"
           className="absolute right-0 mt-1.5 w-64 origin-top-right rounded-xl border border-border bg-card p-1.5 shadow-xl z-50 animate-in fade-in-0 zoom-in-95 duration-100"
         >
           <div className="px-2.5 py-1.5 border-b border-border/50 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
             <Globe className="h-3 w-3 text-primary" />
-            <span>Select Country Edition</span>
+            <span>Select Country / Region</span>
           </div>
 
           <div className="py-1 space-y-1 max-h-72 overflow-y-auto">
             {REGION_OPTIONS.map((region) => {
-              const isSelected = region.code === activeRegionCode?.toLowerCase();
+              const isSelected = region.code === currentRegion;
               return (
                 <button
                   key={region.code}

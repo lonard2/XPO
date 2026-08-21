@@ -5,12 +5,12 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("🌱 Starting XPO MICE Relational Database Seeding...");
 
-  // 1. Clean existing records safely
+  // 1. Clean existing tables in reverse dependency order
   await prisma.aIReport.deleteMany();
+  await prisma.booking.deleteMany();
   await prisma.eventPerk.deleteMany();
   await prisma.boothTenant.deleteMany();
   await prisma.agendaItem.deleteMany();
-  await prisma.booking.deleteMany();
   await prisma.ticketTier.deleteMany();
   await prisma.event.deleteMany();
   await prisma.venueHall.deleteMany();
@@ -18,16 +18,13 @@ async function main() {
   await prisma.region.deleteMany();
   await prisma.user.deleteMany();
 
-  // 2. Seed Users (Roles: ATTENDEE, ORGANIZER, ADMIN)
+  // 2. Seed Core Users (RBAC: ORGANIZER, ATTENDEE, ADMIN)
   const organizerUser = await prisma.user.create({
     data: {
       email: "organizer@xpo.com",
-      name: "PT Pamerindo MICE International",
+      name: "Sari Dewi",
       role: "ORGANIZER",
-      organization: "Pamerindo Global Exhibitions",
-      jobTitle: "Head of Operations & Exhibitions",
-      avatarUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150",
-      interestsJson: JSON.stringify(["INDUSTRIAL_B2B", "TECH_DEV_SUMMIT", "MEGA_EXPO_PAVILION"]),
+      organization: "Dyandra Promosindo & Global Expo Group",
     },
   });
 
@@ -36,34 +33,29 @@ async function main() {
       email: "alex@xpo.com",
       name: "Alex Pratama",
       role: "ATTENDEE",
-      organization: "Nusantara Tech Labs",
-      jobTitle: "Senior Solutions Architect",
-      avatarUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150",
-      interestsJson: JSON.stringify(["TECH_DEV_SUMMIT", "FINANCE_INVESTOR", "POP_CULTURE_GAMING"]),
+      organization: "Nusantara Industrial Automation",
     },
   });
 
   const adminUser = await prisma.user.create({
     data: {
       email: "admin@xpo.com",
-      name: "Platform Governance Team",
+      name: "Admin Governance Council",
       role: "ADMIN",
-      organization: "XPO Governance Council",
-      jobTitle: "Chief Governance Officer",
-      avatarUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150",
+      organization: "XPO MICE Secretariat",
     },
   });
 
-  console.log("✓ Users created: Organizer, Attendee, Admin");
+  console.log("✓ Users created: Organizer, Attendee (alex@xpo.com), Admin");
 
-  // 3. Seed Regions (id, jp, global)
+  // 3. Seed Regional Country Editions
   const regionId = await prisma.region.create({
     data: {
       id: "id",
       code: "ID",
       name: "Indonesia",
       currency: "IDR",
-      description: "Center of Southeast Asian MICE trade, industrial conventions, and mega exhibitions.",
+      description: "Indonesia premier MICE ecosystem spanning Jakarta, Tangerang, and Bali convention corridors.",
     },
   });
 
@@ -73,7 +65,7 @@ async function main() {
       code: "JP",
       name: "Japan",
       currency: "JPY",
-      description: "Global epicenter for robotics, developer summits, anime expos, and clean technology.",
+      description: "Japan flagship robotics, precision manufacturing, gaming, and tech convention epicenters.",
     },
   });
 
@@ -89,7 +81,7 @@ async function main() {
 
   console.log("✓ Regions created: Indonesia (/id), Japan (/jp), Global (/global)");
 
-  // 4. Seed Indonesian Major Venues with Exact Halls & Transit
+  // 4. Seed Indonesian Major Venues (6 Venues)
   // 4.1 JIExpo Kemayoran
   const venueJIExpo = await prisma.venue.create({
     data: {
@@ -139,8 +131,8 @@ async function main() {
     },
   });
 
-  // 4.3 JICC Senayan (Balai Sidang Jakarta)
-  const venueJICC = await prisma.venue.create({
+  // 4.3 JICC (Jakarta International Convention Center)
+  const venueJCC = await prisma.venue.create({
     data: {
       regionId: regionId.id,
       name: "JICC (Jakarta International Convention Center / Balai Sidang)",
@@ -185,7 +177,7 @@ async function main() {
     },
   });
 
-  // 4.5 GBK Sports Complex (Gelora Bung Karno)
+  // 4.5 GBK Complex
   const venueGBK = await prisma.venue.create({
     data: {
       regionId: regionId.id,
@@ -201,8 +193,6 @@ async function main() {
         create: [
           { name: "Istora Senayan", capacity: 10000, floorAreaSqm: 6000, description: "Historic arena for electrifying music concerts and esports finals." },
           { name: "Stadion Utama GBK", capacity: 78000, floorAreaSqm: 50000, description: "Mega stadium concerts and nation-scale gatherings." },
-          { name: "Tennis Indoor Senayan", capacity: 4500, floorAreaSqm: 3500, description: "Intimate fan meetings and esports tournaments." },
-          { name: "Parkir Timur GBK (Outdoor Expo)", capacity: 25000, floorAreaSqm: 20000, description: "Open-air automotive and culinary festival grounds." },
         ],
       },
     },
@@ -222,9 +212,8 @@ async function main() {
       imageUrl: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1200",
       halls: {
         create: [
-          { name: "Main Arena Stadium (Retractable Roof)", capacity: 82000, floorAreaSqm: 55000, description: "Asia's premier retractable-roof stadium for world tours." },
+          { name: "Main Arena Stadium (Retractable Roof)", capacity: 82000, floorAreaSqm: 55000, description: "Asia premier retractable-roof stadium for world tours." },
           { name: "West VIP Lounge", capacity: 1500, floorAreaSqm: 2000, description: "Executive hospitality suites and private brand lounges." },
-          { name: "Concourse Level 3", capacity: 15000, floorAreaSqm: 12000, description: "Panoramic fan zones and brand activation booths." },
         ],
       },
     },
@@ -245,7 +234,7 @@ async function main() {
       imageUrl: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=1200",
       halls: {
         create: [
-          { name: "East Exhibition Halls 1-8", capacity: 40000, floorAreaSqm: 38000, description: "Japan's largest exhibition hall complex." },
+          { name: "East Exhibition Halls 1-8", capacity: 40000, floorAreaSqm: 38000, description: "Japan largest exhibition hall complex." },
           { name: "West Exhibition Halls 1-4", capacity: 25000, floorAreaSqm: 22000, description: "Atrium-connected multi-tier tech halls." },
           { name: "South Exhibition Halls 1-4", capacity: 22000, floorAreaSqm: 20000, description: "Ultra-modern robotics and AI conference facilities." },
           { name: "Conference Tower (Inverted Pyramid)", capacity: 5000, floorAreaSqm: 6000, description: "International symposiums and executive committee rooms." },
@@ -254,7 +243,49 @@ async function main() {
     },
   });
 
-  // 5.2 Marina Bay Sands Expo (Singapore / Global)
+  // 5.2 Makuhari Messe (Japan)
+  const venueMakuhari = await prisma.venue.create({
+    data: {
+      regionId: regionJp.id,
+      name: "Makuhari Messe International Convention Complex",
+      slug: "makuhari-messe",
+      city: "Chiba / Tokyo Bay",
+      address: "2-1 Nakase, Mihama Ward, Chiba, 261-8550, Japan",
+      latitude: 35.6483,
+      longitude: 140.0347,
+      transitInfo: "JR Keiyo Line (Kaihimmakuhari Station, 5 mins walk). Direct Narita/Haneda Airport Limousine bus.",
+      imageUrl: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200",
+      halls: {
+        create: [
+          { name: "International Exhibition Halls 1-8", capacity: 38000, floorAreaSqm: 35000, description: "High-ceiling column-free halls for Tokyo Game Show." },
+          { name: "Makuhari Event Hall (Arena)", capacity: 9000, floorAreaSqm: 7000, description: "Oval multipurpose arena for concerts and esports." },
+        ],
+      },
+    },
+  });
+
+  // 5.3 Pacifico Yokohama (Japan)
+  const venuePacifico = await prisma.venue.create({
+    data: {
+      regionId: regionJp.id,
+      name: "Pacifico Yokohama Convention Center",
+      slug: "pacifico-yokohama",
+      city: "Yokohama (Minato Mirai)",
+      address: "1-1-1 Minatomirai, Nishi Ward, Yokohama, Kanagawa 220-0012, Japan",
+      latitude: 35.4593,
+      longitude: 139.6366,
+      transitInfo: "Minatomirai Line (Minatomirai Station, 5 mins walk). JR Sakuragicho Station (12 mins walk).",
+      imageUrl: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1200",
+      halls: {
+        create: [
+          { name: "National Convention Hall of Yokohama", capacity: 5000, floorAreaSqm: 5000, description: "One of the largest international convention halls in Asia." },
+          { name: "Exhibition Hall A-D", capacity: 20000, floorAreaSqm: 20000, description: "Spacious ocean-view exhibition floor." },
+        ],
+      },
+    },
+  });
+
+  // 5.4 Marina Bay Sands Expo (Singapore / Global)
   const venueMBS = await prisma.venue.create({
     data: {
       regionId: regionGlobal.id,
@@ -269,16 +300,61 @@ async function main() {
       halls: {
         create: [
           { name: "Sands Expo Halls A-F (Basement 2)", capacity: 20000, floorAreaSqm: 30000, description: "Integrated flexible trade hall." },
-          { name: "Grand Ballroom Level 5 (Sands Grand)", capacity: 8000, floorAreaSqm: 8000, description: "Southeast Asia's largest ballroom." },
+          { name: "Grand Ballroom Level 5 (Sands Grand)", capacity: 8000, floorAreaSqm: 8000, description: "Southeast Asia largest ballroom." },
         ],
       },
     },
   });
 
-  console.log("✓ Venues and exact halls created across Indonesia, Japan, and Global hubs");
+  // 5.5 Messe Frankfurt (Germany / Global)
+  const venueFrankfurt = await prisma.venue.create({
+    data: {
+      regionId: regionGlobal.id,
+      name: "Messe Frankfurt Exhibition Centre",
+      slug: "messe-frankfurt",
+      city: "Frankfurt am Main, Germany",
+      address: "Ludwig-Erhard-Anlage 1, 60327 Frankfurt am Main, Germany",
+      latitude: 50.1115,
+      longitude: 8.6515,
+      transitInfo: "S-Bahn lines S3, S4, S5, S6 (Frankfurt Messe Station direct access). Frankfurt Airport 15 mins.",
+      imageUrl: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=1200",
+      halls: {
+        create: [
+          { name: "Hall 12 (Ultra-Modern Pavilion)", capacity: 25000, floorAreaSqm: 33000, description: "State-of-the-art dual-level trade exhibition hall." },
+          { name: "Hall 3 (Automotive Mega Stage)", capacity: 20000, floorAreaSqm: 28000, description: "Iconic multistory venue for international mobility expos." },
+        ],
+      },
+    },
+  });
 
-  // 6. Seed Events Spanning All 9 Domain Archetypes
-  // 6.1 Archetype 1: INDUSTRIAL_B2B
+  // 5.6 ExCeL London (UK / Global)
+  const venueExcel = await prisma.venue.create({
+    data: {
+      regionId: regionGlobal.id,
+      name: "ExCeL London International Convention Centre",
+      slug: "excel-london",
+      city: "London, United Kingdom",
+      address: "Royal Victoria Dock, 1 Western Gateway, London E16 1XL, UK",
+      latitude: 51.5074,
+      longitude: 0.0298,
+      transitInfo: "Elizabeth Line & DLR Custom House for ExCeL station (12 mins from Central London).",
+      imageUrl: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1200",
+      halls: {
+        create: [
+          { name: "ICC London Auditorium", capacity: 5000, floorAreaSqm: 6000, description: "UK premier plenary convention theatre." },
+          { name: "Event Halls North & South", capacity: 35000, floorAreaSqm: 40000, description: "Continuous column-free international event space." },
+        ],
+      },
+    },
+  });
+
+  console.log("✓ Venues and exact halls created across Indonesia (6), Japan (3), and Global (3)");
+
+  // =========================================================================
+  // 6. Seed Events Spanning All Regions
+  // =========================================================================
+
+  // 6.1 INDONESIA EVENTS
   const jiexpoHalls = await prisma.venueHall.findMany({ where: { venueId: venueJIExpo.id } });
   const hallA1 = jiexpoHalls.find((h) => h.name.includes("Hall A1")) || jiexpoHalls[0];
 
@@ -291,7 +367,7 @@ async function main() {
       title: "Manufacturing Indonesia & Industrial Automation Expo 2026",
       slug: "manufacturing-indonesia-2026",
       tagline: "The 36th International Manufacturing, Machinery, Equipment & Materials Exhibition",
-      description: "Southeast Asia's most prominent industrial gathering. Experience live demonstrations of CNC robotics, metallurgy, smart factory automation, and heavy machine tools with over 1,500 global exhibitors.",
+      description: "Southeast Asia most prominent industrial gathering. Experience live demonstrations of CNC robotics, metallurgy, smart factory automation, and heavy machine tools with over 1,500 global exhibitors.",
       archetype: "INDUSTRIAL_B2B",
       startDate: new Date("2026-09-14T09:00:00Z"),
       endDate: new Date("2026-09-17T18:00:00Z"),
@@ -308,14 +384,13 @@ async function main() {
         create: [
           { name: "Trade Visitor Pass", price: 0, currency: "IDR", capacity: 15000, benefitsJson: JSON.stringify(["Full 4-day Exhibition Floor Access", "Digital Exhibitor Directory", "Standard B2B Matchmaking App"]) },
           { name: "VIP Procurement Buyer Pass", price: 450000, currency: "IDR", capacity: 1200, benefitsJson: JSON.stringify(["VIP Buyer Lounge with Barista", "Fast-track Gate 2 Priority Lane", "Machine Spec Sheet Pre-downloads", "Exclusive 1-on-1 Deal Room Booking"]) },
-          { name: "Exhibitor Delegate Pass", price: 1200000, currency: "IDR", capacity: 3000, benefitsJson: JSON.stringify(["Booth Staff Credential", "Freight Loading Access", "Lead Retrieval Barcode Scanner App", "Gala Dinner Invitation"]) },
+          { name: "Exhibitor Delegate Pass", price: 1200000, currency: "IDR", capacity: 3000, benefitsJson: JSON.stringify(["Full Access + Booth Staff Badges", "Loading Dock Clearance", "Lead Retrieval Barcode Scanner"]) },
         ],
       },
       agendaItems: {
         create: [
-          { title: "Keynote: Smart Robotics & Industry 4.0 in Southeast Asia", speakerName: "Ir. Hendra Kusuma", speakerRole: "Chairman, Indonesian Automation Council", location: "Stage A - Hall A1", startTime: new Date("2026-09-14T10:00:00Z"), endTime: new Date("2026-09-14T11:30:00Z"), track: "Automation Keynote" },
-          { title: "Precision Metallurgy & CNC High-Speed Milling Masterclass", speakerName: "Kenji Takahashi", speakerRole: "Chief Engineer, DMG Mori Japan", location: "Demo Zone - Hall A2", startTime: new Date("2026-09-14T14:00:00Z"), endTime: new Date("2026-09-14T15:30:00Z"), track: "Machinery Demo" },
-          { title: "B2B Supply Chain Sourcing Matchmaking Session", speakerName: "Procurement Committee", speakerRole: "B2B Council", location: "B2B Deal Room - Hall C1", startTime: new Date("2026-09-15T11:00:00Z"), endTime: new Date("2026-09-15T13:00:00Z"), track: "Procurement" },
+          { title: "Opening Plenary: Industrial AI & Precision Tooling in Southeast Asia", speakerName: "Ir. Hendra Wijaya", speakerRole: "Chairman of Indonesian Machine Tool Association", location: "Plenary Stage - Hall A1", startTime: new Date("2026-09-14T09:30:00Z"), endTime: new Date("2026-09-14T11:00:00Z"), track: "Plenary Keynote" },
+          { title: "Smart Factory Automation & CNC Multi-Axis Live Demo", speakerName: "Klaus Schneider", speakerRole: "Chief Automation Architect, DMG MORI", location: "Live Arena - Hall A2", startTime: new Date("2026-09-14T13:30:00Z"), endTime: new Date("2026-09-14T15:00:00Z"), track: "Technical Workshop" },
         ],
       },
       booths: {
@@ -323,7 +398,6 @@ async function main() {
           { companyName: "DMG MORI Precision Tools", boothNumber: "Hall A1 - Booth 102", hallName: "Hall A1", industry: "CNC Machining", websiteUrl: "https://dmgmori.com" },
           { companyName: "Siemens Smart Factory Solutions", boothNumber: "Hall A1 - Booth 204", hallName: "Hall A1", industry: "Automation & Digital Twins", websiteUrl: "https://siemens.com" },
           { companyName: "Fanuc Robotics Indonesia", boothNumber: "Hall A2 - Booth 310", hallName: "Hall A2", industry: "Industrial Robotics", websiteUrl: "https://fanuc.co.jp" },
-          { companyName: "Krakatau Steel Metallurgy", boothNumber: "Hall A3 - Booth 415", hallName: "Hall A3", industry: "Raw Metallurgy & Steel", websiteUrl: "https://krakatausteel.com" },
         ],
       },
       perks: {
@@ -336,7 +410,6 @@ async function main() {
     },
   });
 
-  // 6.2 Archetype 2: TECH_DEV_SUMMIT
   const iceHalls = await prisma.venueHall.findMany({ where: { venueId: venueICE.id } });
   const nusantaraHall = iceHalls.find((h) => h.name.includes("Nusantara")) || iceHalls[0];
 
@@ -349,7 +422,7 @@ async function main() {
       title: "Asia AI & Cloud Developer Summit 2026",
       slug: "asia-ai-summit-2026",
       tagline: "Building Autonomous Multi-Agent Systems, LLMs & Next-Gen Cloud Infrastructure",
-      description: "Asia's premier technical gathering for software engineers, AI researchers, and cloud architects. Featuring deep-dive keynotes, live code teardowns, multi-model LLM workshops, and an overnight 24-hour hackathon.",
+      description: "Asia premier technical gathering for software engineers, AI researchers, and cloud architects. Featuring deep-dive keynotes, live code teardowns, multi-model LLM workshops, and an overnight 24-hour hackathon.",
       archetype: "TECH_DEV_SUMMIT",
       startDate: new Date("2026-10-08T08:30:00Z"),
       endDate: new Date("2026-10-10T20:00:00Z"),
@@ -364,35 +437,28 @@ async function main() {
       }),
       ticketTiers: {
         create: [
-          { name: "Builder Pass", price: 250000, currency: "IDR", capacity: 4000, benefitsJson: JSON.stringify(["Access to all 4 Keynote Tracks", "Hackathon Entry Eligibility", "Official Dev Swag Bag & T-Shirt", "Cloud Sandbox Credits ($100)"]) },
-          { name: "VIP Full Access & Speaker Dinner", price: 1250000, currency: "IDR", capacity: 500, benefitsJson: JSON.stringify(["VIP Speaker Lounge Access", "Reserved Front-Row Keynote Seating", "Speaker Gala Dinner at BSD Club", "1-on-1 VC Pitch Sessions"]) },
-          { name: "Virtual Livestream Pass", price: 0, currency: "IDR", capacity: 20000, benefitsJson: JSON.stringify(["HD Livestream Access", "Discord Private Developer Channel", "Slide Deck Downloads"]) },
+          { name: "Builder Pass", price: 250000, currency: "IDR", capacity: 4000, benefitsJson: JSON.stringify(["Access to all 4 Keynote Tracks", "Hackathon Entry Eligibility", "Official Dev Swag Bag & T-Shirt"]) },
+          { name: "VIP Full Access & Speaker Dinner", price: 1250000, currency: "IDR", capacity: 500, benefitsJson: JSON.stringify(["VIP Speaker Lounge Access", "Reserved Front-Row Keynote Seating", "Speaker Gala Dinner"]) },
         ],
       },
       agendaItems: {
         create: [
-          { title: "Opening Keynote: The Frontier of Multi-Model Agent Orchestration", speakerName: "Dr. Maya Sastro", speakerRole: "VP of Artificial Intelligence, DeepMind Asia", location: "Nusantara Hall 2", startTime: new Date("2026-10-08T09:00:00Z"), endTime: new Date("2026-10-08T10:30:00Z"), track: "AI Keynote" },
-          { title: "Deploying Edge LLMs on WebAssembly & React 19 Server Components", speakerName: "Tatsuya Mori", speakerRole: "Lead Runtime Engineer, Vercel", location: "Track 2 - Hall 1", startTime: new Date("2026-10-08T11:00:00Z"), endTime: new Date("2026-10-08T12:30:00Z"), track: "Web & Architecture" },
-          { title: "24-Hour Autonomous Agent Hackathon Kickoff", speakerName: "Hackathon Council", speakerRole: "DevRel Lead", location: "Hacker Arena - Hall 3", startTime: new Date("2026-10-09T10:00:00Z"), endTime: new Date("2026-10-10T10:00:00Z"), track: "Hackathon" },
+          { title: "Opening Keynote: Autonomous Multi-Agent Orchestration", speakerName: "Dr. Maya Sastro", speakerRole: "VP AI Research", location: "Nusantara Hall 2", startTime: new Date("2026-10-08T09:00:00Z"), endTime: new Date("2026-10-08T10:30:00Z"), track: "AI Keynote" },
         ],
       },
       booths: {
         create: [
           { companyName: "Google Cloud & Antigravity Labs", boothNumber: "Tech Pavilion A1", hallName: "Hall 1", industry: "Cloud AI Infrastructure", websiteUrl: "https://cloud.google.com" },
-          { companyName: "OpenRouter Multi-Model Gateway", boothNumber: "Tech Pavilion A2", hallName: "Hall 1", industry: "LLM Infrastructure & API", websiteUrl: "https://openrouter.ai" },
-          { companyName: "Supabase & Postgres Ecosystem", boothNumber: "Tech Pavilion B4", hallName: "Hall 2", industry: "Database & Open Source", websiteUrl: "https://supabase.com" },
         ],
       },
       perks: {
         create: [
           { title: "VIP Speaker Lounge & High-Speed Fiber WiFi", description: "Dedicated quiet zone with 10Gbps dedicated fiber internet.", tierRequired: "VIP", iconName: "Wifi" },
-          { title: "Exclusive Developer Swag Kit", description: "Includes mechanical keyboard keycaps, hoodie, and NFC developer pass badge.", iconName: "Gift" },
         ],
       },
     },
   });
 
-  // 6.3 Archetype 7: MEGA_EXPO_PAVILION (Jakarta Fair Kemayoran)
   const event3 = await prisma.event.create({
     data: {
       organizerId: organizerUser.id,
@@ -401,7 +467,7 @@ async function main() {
       title: "Pekan Raya Jakarta (Jakarta Fair Kemayoran 2026)",
       slug: "pekan-raya-jakarta-2026",
       tagline: "The Largest & Longest-Running Consumer Mega Fair in Southeast Asia",
-      description: "Celebrate Jakarta's anniversary with 33 consecutive days of mega consumer expositions, 500+ culinary tenants, massive automotive launches, nightly open-air music concerts, and grand midnight fireworks.",
+      description: "Celebrate Jakarta anniversary with 33 consecutive days of mega consumer expositions, 500+ culinary tenants, massive automotive launches, nightly open-air music concerts, and grand midnight fireworks.",
       archetype: "MEGA_EXPO_PAVILION",
       startDate: new Date("2026-06-10T10:00:00Z"),
       endDate: new Date("2026-07-12T23:00:00Z"),
@@ -412,32 +478,220 @@ async function main() {
       brandingConfigJson: JSON.stringify({
         primaryColor: "#dc2626",
         accentColor: "#f59e0b",
-        heroBadge: "33-Day Mega Expo • Nightly Concerts",
+        heroBadge: "33-Day Mega Fair",
       }),
       ticketTiers: {
         create: [
-          { name: "General Fair Entry (Non-Concert)", price: 40000, currency: "IDR", capacity: 100000, benefitsJson: JSON.stringify(["Full Access to Halls A, B, C, D & Open Space", "Access to Culinary Pasar Malam Festival", "Nightly Fireworks Display Viewer"]) },
-          { name: "Fair Entry + Main Concert Pass", price: 100000, currency: "IDR", capacity: 25000, benefitsJson: JSON.stringify(["Full Fair Access", "Open Space Concert Arena Entry", "Access to F&B Beverage Stalls inside Arena"]) },
-          { name: "Season VIP Mega Pass (33 Days)", price: 650000, currency: "IDR", capacity: 2500, benefitsJson: JSON.stringify(["Unlimited 33-Day Entry", "VIP Fast Track Gate 1 & 7", "VIP Concert Front Section Access", "Special Tenant Coupon Voucher Pack (Rp 500,000)"]) },
+          { name: "General Fair Entry (Non-Concert)", price: 40000, currency: "IDR", capacity: 100000, benefitsJson: JSON.stringify(["Full Access to Halls A, B, C, D & Open Space"]) },
+          { name: "Fair Entry + Main Concert Pass", price: 100000, currency: "IDR", capacity: 25000, benefitsJson: JSON.stringify(["Full Fair Access", "Open Space Concert Arena Entry"]) },
         ],
       },
       agendaItems: {
         create: [
-          { title: "Grand Opening Ceremony & Pyro-Musical Fireworks Show", speakerName: "Governor of Jakarta & Organizing Committee", location: "Open Space Stage", startTime: new Date("2026-06-10T19:00:00Z"), endTime: new Date("2026-06-10T21:00:00Z"), track: "Ceremony" },
-          { title: "Midnight Carnival & Lantern Parade", speakerName: "Carnival Performers", location: "Central Avenue Promenade", startTime: new Date("2026-06-20T21:00:00Z"), endTime: new Date("2026-06-20T22:30:00Z"), track: "Carnival" },
+          { title: "Grand Opening Ceremony & Pyro-Musical Fireworks Show", speakerName: "Governor of Jakarta", location: "Open Space Stage", startTime: new Date("2026-06-10T19:00:00Z"), endTime: new Date("2026-06-10T21:00:00Z"), track: "Ceremony" },
         ],
       },
       booths: {
         create: [
-          { companyName: "Astra Honda Motor Mega Pavilion", boothNumber: "Hall A1 - Mega 01", hallName: "Hall A1", industry: "Automotive & Motorcycles", websiteUrl: "https://astra-honda.com" },
-          { companyName: "Indofood Culinary Nusantara", boothNumber: "Open Space Food Zone 1", hallName: "Open Space", industry: "F&B & Gastronomy", websiteUrl: "https://indofood.com" },
-          { companyName: "Electronic City Flash Sale Hub", boothNumber: "Hall D1 - Booth 10", hallName: "Hall D1", industry: "Consumer Electronics", websiteUrl: "https://electronic-city.com" },
+          { companyName: "Astra Honda Motor Mega Pavilion", boothNumber: "Hall A1 - Mega 01", hallName: "Hall A1", industry: "Automotive", websiteUrl: "https://astra-honda.com" },
         ],
       },
       perks: {
         create: [
-          { title: "Grand Tenant Discount & Promo Radar", description: "Exclusive digital coupon book with discounts up to 70% across 500+ merchants.", iconName: "Tag" },
-          { title: "Real-Time Parking & Gate Density Heatmap", description: "Check real-time parking lot availability at Gates 1, 2, 6, and 9.", iconName: "MapPin" },
+          { title: "Grand Tenant Discount & Promo Radar", description: "Exclusive digital coupon book with discounts up to 70%.", iconName: "Tag" },
+        ],
+      },
+    },
+  });
+
+  // 6.2 JAPAN EVENTS
+  const tokyoHalls = await prisma.venueHall.findMany({ where: { venueId: venueTokyo.id } });
+  const eastHalls = tokyoHalls.find((h) => h.name.includes("East")) || tokyoHalls[0];
+
+  await prisma.event.create({
+    data: {
+      organizerId: organizerUser.id,
+      regionId: regionJp.id,
+      venueId: venueTokyo.id,
+      venueHallId: eastHalls.id,
+      title: "Tokyo International Robotics & Mechatronics Expo 2026",
+      slug: "tokyo-robotics-expo-2026",
+      tagline: "Humanoid Robotics, Autonomous Mobility & Industrial AI Automation",
+      description: "The world foremost robotics exhibition held at Tokyo Big Sight East Halls. Discover breakthrough humanoid robots, collaborative arms, surgical mechatronics, and autonomous factory logistics.",
+      archetype: "TECH_DEV_SUMMIT",
+      startDate: new Date("2026-11-18T10:00:00Z"),
+      endDate: new Date("2026-11-21T17:00:00Z"),
+      isFeatured: true,
+      scale: "LARGE",
+      format: "IN_PERSON",
+      heroImageUrl: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200",
+      brandingConfigJson: JSON.stringify({
+        primaryColor: "#2563eb",
+        accentColor: "#06b6d4",
+        heroBadge: "Tokyo Big Sight • Robotics Keynote",
+      }),
+      ticketTiers: {
+        create: [
+          { name: "General Trade Pass", price: 3000, currency: "JPY", capacity: 30000, benefitsJson: JSON.stringify(["All East Halls Access", "Live Demonstration Arena", "Robotics Industry Guidebook"]) },
+          { name: "Executive Delegate & Lab Tour", price: 15000, currency: "JPY", capacity: 2000, benefitsJson: JSON.stringify(["VIP Lounge Access", "Exclusive Lab Guided Tour", "Executive Reception Dinner"]) },
+        ],
+      },
+      agendaItems: {
+        create: [
+          { title: "Humanoid Robot Autonomy & Physical AI Keynote", speakerName: "Dr. Kenji Takahashi", speakerRole: "Director of Robotics Research, University of Tokyo", location: "East Hall 1 Stage", startTime: new Date("2026-11-18T10:30:00Z"), endTime: new Date("2026-11-18T12:00:00Z"), track: "Humanoid AI" },
+        ],
+      },
+      booths: {
+        create: [
+          { companyName: "Fanuc Corporation Tokyo", boothNumber: "East Hall 2 - Booth 201", hallName: "East Hall 2", industry: "Robotics", websiteUrl: "https://fanuc.co.jp" },
+          { companyName: "Yaskawa Electric Robotics", boothNumber: "East Hall 3 - Booth 310", hallName: "East Hall 3", industry: "Mechatronics", websiteUrl: "https://yaskawa.co.jp" },
+        ],
+      },
+      perks: {
+        create: [
+          { title: "VIP Robot Lab Tour & Private Hospitality Lounge", description: "Exclusive tour of experimental humanoid robotics testbeds with engineering leads.", tierRequired: "VIP", iconName: "Cpu" },
+        ],
+      },
+    },
+  });
+
+  const makuhariHalls = await prisma.venueHall.findMany({ where: { venueId: venueMakuhari.id } });
+  await prisma.event.create({
+    data: {
+      organizerId: organizerUser.id,
+      regionId: regionJp.id,
+      venueId: venueMakuhari.id,
+      venueHallId: makuhariHalls[0]?.id,
+      title: "Tokyo Comic & Gaming Championship 2026",
+      slug: "tokyo-gaming-championship-2026",
+      tagline: "Esports Championship Arena, Indie Creator Alley & Anime Premieres",
+      description: "Japan premier digital entertainment festival at Makuhari Messe with world championship esports finals, voice actor panels, and massive merchandise booths.",
+      archetype: "POP_CULTURE_GAMING",
+      startDate: new Date("2026-09-24T09:30:00Z"),
+      endDate: new Date("2026-09-27T18:30:00Z"),
+      isFeatured: true,
+      scale: "LARGE",
+      format: "IN_PERSON",
+      heroImageUrl: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1200",
+      brandingConfigJson: JSON.stringify({
+        primaryColor: "#e11d48",
+        accentColor: "#ec4899",
+        heroBadge: "Makuhari Messe • Esports Arena",
+      }),
+      ticketTiers: {
+        create: [
+          { name: "Standard Day Pass", price: 3500, currency: "JPY", capacity: 50000, benefitsJson: JSON.stringify(["Exhibition Halls 1-8 Access", "Cosplay Area", "Creator Alley"]) },
+          { name: "VIP Fast-Pass & Creator Alley Meetup", price: 18000, currency: "JPY", capacity: 3000, benefitsJson: JSON.stringify(["Priority Gate 1 Entry", "Esports Reserved Seating", "Official Swag Pack"]) },
+        ],
+      },
+      agendaItems: {
+        create: [
+          { title: "Grand Esports Finals & Championship Trophy Ceremony", speakerName: "Esports League Council", location: "Makuhari Event Hall", startTime: new Date("2026-09-27T15:00:00Z"), endTime: new Date("2026-09-27T18:00:00Z"), track: "Esports Finals" },
+        ],
+      },
+      booths: {
+        create: [
+          { companyName: "Bandai Namco Entertainment", boothNumber: "Hall 1 - Mega 01", hallName: "Hall 1", industry: "Gaming", websiteUrl: "https://bandainamcoent.co.jp" },
+        ],
+      },
+      perks: {
+        create: [
+          { title: "Limited Edition Collector Merchandise Voucher", description: "Redeem commemorative artbook and character figures at Hall 5 Official Store.", iconName: "Gift" },
+        ],
+      },
+    },
+  });
+
+  // 6.3 GLOBAL EVENTS
+  const mbsHalls = await prisma.venueHall.findMany({ where: { venueId: venueMBS.id } });
+  await prisma.event.create({
+    data: {
+      organizerId: organizerUser.id,
+      regionId: regionGlobal.id,
+      venueId: venueMBS.id,
+      venueHallId: mbsHalls[0]?.id,
+      title: "Global FinTech & Institutional Investment Summit 2026",
+      slug: "singapore-fintech-summit-2026",
+      tagline: "Cross-Border Capital, Sovereign Wealth & AI-Driven Asset Management",
+      description: "High-level financial assembly bringing together central bank governors, institutional investors, sovereign wealth funds, and leading fintech innovators at Marina Bay Sands.",
+      archetype: "FINANCE_INVESTOR",
+      startDate: new Date("2026-11-04T09:00:00Z"),
+      endDate: new Date("2026-11-06T18:00:00Z"),
+      isFeatured: true,
+      scale: "LARGE",
+      format: "HYBRID",
+      heroImageUrl: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=1200",
+      brandingConfigJson: JSON.stringify({
+        primaryColor: "#059669",
+        accentColor: "#d97706",
+        heroBadge: "Marina Bay Sands • Sovereign Wealth",
+      }),
+      ticketTiers: {
+        create: [
+          { name: "Executive Delegate Pass", price: 495, currency: "USD", capacity: 2500, benefitsJson: JSON.stringify(["All Plenary Stages", "Networking App Access", "Financial Tech Report"]) },
+          { name: "VIP Investor Deal-Room Pass", price: 1250, currency: "USD", capacity: 400, benefitsJson: JSON.stringify(["Sands Grand Ballroom VIP Table", "Private 1-on-1 VC Deal-Rooms", "Gala Networking Dinner"]) },
+        ],
+      },
+      agendaItems: {
+        create: [
+          { title: "Sovereign Wealth Keynote: Cross-Border Liquidity in Asian Markets", speakerName: "Elena Rostova", speakerRole: "Managing Director, Global Capital Partners", location: "Sands Grand Ballroom Level 5", startTime: new Date("2026-11-04T09:30:00Z"), endTime: new Date("2026-11-04T11:00:00Z"), track: "Institutional Capital" },
+        ],
+      },
+      booths: {
+        create: [
+          { companyName: "Temasek Digital Assets Hub", boothNumber: "Sands Pavilion A1", hallName: "Sands Expo Hall A", industry: "Investment & VC", websiteUrl: "https://temasek.com.sg" },
+        ],
+      },
+      perks: {
+        create: [
+          { title: "VIP Private Deal-Room & Executive Lounge Access", description: "Private soundproof conference suite with concierge refreshments at Level 5.", tierRequired: "VIP", iconName: "Briefcase" },
+        ],
+      },
+    },
+  });
+
+  const frankfurtHalls = await prisma.venueHall.findMany({ where: { venueId: venueFrankfurt.id } });
+  await prisma.event.create({
+    data: {
+      organizerId: organizerUser.id,
+      regionId: regionGlobal.id,
+      venueId: venueFrankfurt.id,
+      venueHallId: frankfurtHalls[0]?.id,
+      title: "Frankfurt Smart Factory & Heavy Machinery Expo 2026",
+      slug: "frankfurt-smart-factory-2026",
+      tagline: "Industry 4.0, Additive Manufacturing & Precision Tooling at Messe Frankfurt",
+      description: "Europe premier industrial trade fair at Messe Frankfurt showcasing automated assembly lines, digital twin simulations, and high-precision CNC tooling.",
+      archetype: "INDUSTRIAL_B2B",
+      startDate: new Date("2026-10-14T09:00:00Z"),
+      endDate: new Date("2026-10-17T18:00:00Z"),
+      isFeatured: true,
+      scale: "LARGE",
+      format: "IN_PERSON",
+      heroImageUrl: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1200",
+      brandingConfigJson: JSON.stringify({
+        primaryColor: "#0284c7",
+        accentColor: "#0369a1",
+        heroBadge: "Messe Frankfurt • Industry 4.0",
+      }),
+      ticketTiers: {
+        create: [
+          { name: "Trade Visitor 3-Day Pass", price: 120, currency: "USD", capacity: 45000, benefitsJson: JSON.stringify(["Hall 12 & Hall 3 Floor Access", "Digital Machinery Catalogue"]) },
+          { name: "VIP Buyer Executive Lounge", price: 650, currency: "USD", capacity: 2000, benefitsJson: JSON.stringify(["Fast-Track North Gate Entry", "Messe Club Lounge Access", "Supplier Matchmaking Concierge"]) },
+        ],
+      },
+      agendaItems: {
+        create: [
+          { title: "European Industrial Digital Twins & Robotics Summit", speakerName: "Dr. Johann Weber", speakerRole: "Head of Advanced Manufacturing, Fraunhofer", location: "Hall 12 Main Forum", startTime: new Date("2026-10-14T10:00:00Z"), endTime: new Date("2026-10-14T11:30:00Z"), track: "Industry 4.0" },
+        ],
+      },
+      booths: {
+        create: [
+          { companyName: "Bosch Rexroth Industrial Drive", boothNumber: "Hall 12 - Stand A15", hallName: "Hall 12", industry: "Automation", websiteUrl: "https://boschrexroth.com" },
+        ],
+      },
+      perks: {
+        create: [
+          { title: "VIP Executive Buyer Lounge & Fast-Track Entry", description: "Priority check-in and complimentary refreshments in the Messe Club.", tierRequired: "VIP", iconName: "ShieldCheck" },
         ],
       },
     },
@@ -447,7 +701,7 @@ async function main() {
   const tiersEvent1 = await prisma.ticketTier.findMany({ where: { eventId: event1.id } });
   const vipTierEvent1 = tiersEvent1.find((t) => t.name.includes("VIP")) || tiersEvent1[0];
 
-  const booking1 = await prisma.booking.create({
+  await prisma.booking.create({
     data: {
       userId: attendeeUser.id,
       eventId: event1.id,
@@ -479,7 +733,7 @@ async function main() {
     },
   });
 
-  console.log("✓ Seeded realistic events across archetypes: Industrial B2B, Tech Summit, Mega Fair");
+  console.log("✓ Seeded realistic events across Indonesia, Japan, and Global hubs");
   console.log("✓ Seeded sample Attendee booking with SVG QR Hash and Organizer AI Report");
   console.log("🎉 Seeding complete successfully!");
 }

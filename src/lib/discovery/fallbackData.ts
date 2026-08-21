@@ -1,13 +1,16 @@
 /**
- * XPO MICE Ecosystem: Fallback Datasets for Discovery Engine & Venue Hubs
+ * XPO MICE Ecosystem: Fallback Datasets for Discovery Engine & Regional Hubs
  *
  * Provides realistic MICE venues with exact hall specifications, transit guides,
- * and multi-archetype exhibitions matching the Prisma seed schema.
+ * and multi-archetype exhibitions across Indonesia (ID), Japan (JP), and Global Hubs (GL).
  */
 
 import { type DiscoveryEvent, type VenueSummary, type BannerSlide } from '@/types/discovery';
 
 export const FALLBACK_VENUES: VenueSummary[] = [
+  // =========================================================================
+  // 1. INDONESIA VENUES (ID)
+  // =========================================================================
   {
     id: 'venue-jiexpo',
     name: 'JIExpo Kemayoran (Jakarta International Expo)',
@@ -87,6 +90,10 @@ export const FALLBACK_VENUES: VenueSummary[] = [
       { id: 'nice-atrium', name: 'Atrium Central', capacity: 8000, floorAreaSqm: 6000, description: 'Natural light architectural center atrium.' },
     ],
   },
+
+  // =========================================================================
+  // 2. JAPAN VENUES (JP)
+  // =========================================================================
   {
     id: 'venue-tokyo',
     name: 'Tokyo Big Sight (Tokyo International Exhibition Center)',
@@ -107,6 +114,44 @@ export const FALLBACK_VENUES: VenueSummary[] = [
     ],
   },
   {
+    id: 'venue-makuhari',
+    name: 'Makuhari Messe International Convention Complex',
+    slug: 'makuhari-messe',
+    city: 'Chiba / Tokyo Bay',
+    address: '2-1 Nakase, Mihama Ward, Chiba, 261-8550, Japan',
+    latitude: 35.6483,
+    longitude: 140.0347,
+    regionId: 'jp',
+    region: { id: 'jp', code: 'JP', name: 'Japan', currency: 'JPY' },
+    transitInfo: 'JR Keiyo Line (Kaihimmakuhari Station, 5 mins walk). Direct Narita/Haneda Airport Limousine bus.',
+    imageUrl: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200',
+    halls: [
+      { id: 'makuhari-1-8', name: 'International Exhibition Halls 1-8', capacity: 38000, floorAreaSqm: 35000, description: 'High-ceiling column-free halls for Tokyo Game Show.' },
+      { id: 'makuhari-event', name: 'Makuhari Event Hall (Arena)', capacity: 9000, floorAreaSqm: 7000, description: 'Oval multipurpose arena for concerts and esports.' },
+    ],
+  },
+  {
+    id: 'venue-pacifico',
+    name: 'Pacifico Yokohama Convention Center',
+    slug: 'pacifico-yokohama',
+    city: 'Yokohama (Minato Mirai)',
+    address: '1-1-1 Minatomirai, Nishi Ward, Yokohama, Kanagawa 220-0012, Japan',
+    latitude: 35.4593,
+    longitude: 139.6366,
+    regionId: 'jp',
+    region: { id: 'jp', code: 'JP', name: 'Japan', currency: 'JPY' },
+    transitInfo: 'Minatomirai Line (Minatomirai Station, 5 mins walk). JR Sakuragicho Station (12 mins walk).',
+    imageUrl: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1200',
+    halls: [
+      { id: 'pacifico-hall', name: 'National Convention Hall of Yokohama', capacity: 5000, floorAreaSqm: 5000, description: 'One of the largest international convention halls in Asia.' },
+      { id: 'pacifico-expo', name: 'Exhibition Hall A-D', capacity: 20000, floorAreaSqm: 20000, description: 'Spacious ocean-view exhibition floor.' },
+    ],
+  },
+
+  // =========================================================================
+  // 3. GLOBAL GATEWAY VENUES (GLOBAL)
+  // =========================================================================
+  {
     id: 'venue-mbs',
     name: 'Marina Bay Sands Expo & Convention Centre',
     slug: 'marina-bay-sands-expo',
@@ -123,9 +168,46 @@ export const FALLBACK_VENUES: VenueSummary[] = [
       { id: 'mbs-ballroom', name: 'Grand Ballroom Level 5 (Sands Grand)', capacity: 8000, floorAreaSqm: 8000, description: 'Southeast Asia largest ballroom.' },
     ],
   },
+  {
+    id: 'venue-messe-frankfurt',
+    name: 'Messe Frankfurt Exhibition Centre',
+    slug: 'messe-frankfurt',
+    city: 'Frankfurt am Main, Germany',
+    address: 'Ludwig-Erhard-Anlage 1, 60327 Frankfurt am Main, Germany',
+    latitude: 50.1115,
+    longitude: 8.6515,
+    regionId: 'global',
+    region: { id: 'global', code: 'GL', name: 'Global Hubs', currency: 'USD' },
+    transitInfo: 'S-Bahn lines S3, S4, S5, S6 (Frankfurt Messe Station direct access). Frankfurt Airport 15 mins.',
+    imageUrl: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=1200',
+    halls: [
+      { id: 'frankfurt-hall-12', name: 'Hall 12 (Ultra-Modern Pavilion)', capacity: 25000, floorAreaSqm: 33000, description: 'State-of-the-art dual-level trade exhibition hall.' },
+      { id: 'frankfurt-hall-3', name: 'Hall 3 (Automotive Mega Stage)', capacity: 20000, floorAreaSqm: 28000, description: 'Iconic multistory venue for international mobility expos.' },
+    ],
+  },
+  {
+    id: 'venue-excel-london',
+    name: 'ExCeL London International Convention Centre',
+    slug: 'excel-london',
+    city: 'London, United Kingdom',
+    address: 'Royal Victoria Dock, 1 Western Gateway, London E16 1XL, UK',
+    latitude: 51.5074,
+    longitude: 0.0298,
+    regionId: 'global',
+    region: { id: 'global', code: 'GL', name: 'Global Hubs', currency: 'USD' },
+    transitInfo: 'Elizabeth Line & DLR Custom House for ExCeL station (12 mins from Central London).',
+    imageUrl: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1200',
+    halls: [
+      { id: 'excel-icc', name: 'ICC London Auditorium', capacity: 5000, floorAreaSqm: 6000, description: 'UK premier plenary convention theatre.' },
+      { id: 'excel-event-halls', name: 'Event Halls North & South', capacity: 35000, floorAreaSqm: 40000, description: 'Continuous column-free international event space.' },
+    ],
+  },
 ];
 
 export const FALLBACK_EVENTS: DiscoveryEvent[] = [
+  // -------------------------------------------------------------------------
+  // INDONESIA EVENTS (ID)
+  // -------------------------------------------------------------------------
   {
     id: 'event-mfg-2026',
     title: 'Manufacturing Indonesia & Industrial Automation Expo 2026',
@@ -195,6 +277,10 @@ export const FALLBACK_EVENTS: DiscoveryEvent[] = [
       { id: 'tier-prj-vip', name: 'Season VIP Mega Pass (33 Days)', price: 650000, currency: 'IDR', capacity: 2500 },
     ],
   },
+
+  // -------------------------------------------------------------------------
+  // JAPAN EVENTS (JP)
+  // -------------------------------------------------------------------------
   {
     id: 'event-tokyo-robotics-2026',
     title: 'Tokyo International Robotics & Mechatronics Expo 2026',
@@ -218,6 +304,54 @@ export const FALLBACK_EVENTS: DiscoveryEvent[] = [
     ],
   },
   {
+    id: 'event-japan-game-expo-2026',
+    title: 'Tokyo Comic & Gaming Championship 2026',
+    slug: 'tokyo-gaming-championship-2026',
+    tagline: 'Esports Championship Arena, Indie Creator Alley & Anime Premieres',
+    description: 'Japan premier digital entertainment festival at Makuhari Messe with world championship esports finals, voice actor panels, and massive merchandise booths.',
+    archetype: 'POP_CULTURE_GAMING',
+    startDate: new Date('2026-09-24T09:30:00Z'),
+    endDate: new Date('2026-09-27T18:30:00Z'),
+    isFeatured: true,
+    scale: 'LARGE',
+    format: 'IN_PERSON',
+    heroImageUrl: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1200',
+    regionId: 'jp',
+    region: { id: 'jp', code: 'JP', name: 'Japan', currency: 'JPY' },
+    venueId: 'venue-makuhari',
+    venue: FALLBACK_VENUES[5],
+    ticketTiers: [
+      { id: 'tier-jp-game-std', name: 'Standard Day Pass', price: 3500, currency: 'JPY', capacity: 50000 },
+      { id: 'tier-jp-game-vip', name: 'VIP Fast-Pass & Creator Alley Meetup', price: 18000, currency: 'JPY', capacity: 3000 },
+    ],
+  },
+  {
+    id: 'event-japan-ev-mobility-2026',
+    title: 'Japan Clean EV & Future Mobility Show 2026',
+    slug: 'japan-ev-mobility-2026',
+    tagline: 'Solid-State Battery Tech, Hydrogen Fuel Cells & Autonomous Driving',
+    description: 'Leading mobility exhibition at Pacifico Yokohama with test drive circuits, hydrogen fuel cell reveals, and direct OEM procurement.',
+    archetype: 'AUTOMOTIVE_MOBILITY',
+    startDate: new Date('2026-10-28T09:00:00Z'),
+    endDate: new Date('2026-10-31T17:00:00Z'),
+    isFeatured: true,
+    scale: 'LARGE',
+    format: 'HYBRID',
+    heroImageUrl: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1200',
+    regionId: 'jp',
+    region: { id: 'jp', code: 'JP', name: 'Japan', currency: 'JPY' },
+    venueId: 'venue-pacifico',
+    venue: FALLBACK_VENUES[6],
+    ticketTiers: [
+      { id: 'tier-jp-auto-trade', name: 'OEM Industry Pass', price: 5000, currency: 'JPY', capacity: 20000 },
+      { id: 'tier-jp-auto-vip', name: 'VIP Test-Track & Executive Lounge', price: 25000, currency: 'JPY', capacity: 1500 },
+    ],
+  },
+
+  // -------------------------------------------------------------------------
+  // GLOBAL EVENTS (GLOBAL / GL)
+  // -------------------------------------------------------------------------
+  {
     id: 'event-singapore-fintech-2026',
     title: 'Global FinTech & Institutional Investment Summit 2026',
     slug: 'singapore-fintech-summit-2026',
@@ -233,39 +367,64 @@ export const FALLBACK_EVENTS: DiscoveryEvent[] = [
     regionId: 'global',
     region: { id: 'global', code: 'GL', name: 'Global Hubs', currency: 'USD' },
     venueId: 'venue-mbs',
-    venue: FALLBACK_VENUES[5],
+    venue: FALLBACK_VENUES[7],
     ticketTiers: [
       { id: 'tier-fintech-delegate', name: 'Executive Delegate Pass', price: 495, currency: 'USD', capacity: 2500 },
       { id: 'tier-fintech-vip', name: 'VIP Investor Deal-Room Pass', price: 1250, currency: 'USD', capacity: 400 },
     ],
   },
   {
-    id: 'event-medical-symposium-2026',
-    title: 'ASEAN International Clinical Oncology & Genomics Congress 2026',
-    slug: 'asean-clinical-oncology-2026',
-    tagline: 'Precision Oncology, mRNA Therapeutics & CME Accredited Medical Science',
-    description: 'Prestigious clinical congress for oncologists, geneticists, and healthcare researchers with peer-reviewed clinical research presentations and CME accreditation.',
-    archetype: 'MEDICAL_SYMPOSIUM',
-    startDate: new Date('2026-10-22T08:00:00Z'),
-    endDate: new Date('2026-10-25T17:00:00Z'),
-    isFeatured: false,
-    scale: 'MEDIUM',
+    id: 'event-frankfurt-industry-2026',
+    title: 'Frankfurt International Smart Factory & Heavy Machinery Expo 2026',
+    slug: 'frankfurt-smart-factory-2026',
+    tagline: 'Industry 4.0, Additive Manufacturing & Global Supply Chain Resilience',
+    description: 'Europe premier industrial trade fair at Messe Frankfurt showcasing automated assembly lines, digital twin simulations, and high-precision CNC tooling.',
+    archetype: 'INDUSTRIAL_B2B',
+    startDate: new Date('2026-10-14T09:00:00Z'),
+    endDate: new Date('2026-10-17T18:00:00Z'),
+    isFeatured: true,
+    scale: 'LARGE',
     format: 'IN_PERSON',
-    heroImageUrl: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200',
-    regionId: 'id',
-    region: { id: 'id', code: 'ID', name: 'Indonesia', currency: 'IDR' },
-    venueId: 'venue-jcc',
-    venue: FALLBACK_VENUES[2],
+    heroImageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1200',
+    regionId: 'global',
+    region: { id: 'global', code: 'GL', name: 'Global Hubs', currency: 'USD' },
+    venueId: 'venue-messe-frankfurt',
+    venue: FALLBACK_VENUES[8],
     ticketTiers: [
-      { id: 'tier-med-clinician', name: 'Physician / Clinician Pass (12 CME)', price: 750000, currency: 'IDR', capacity: 1500 },
-      { id: 'tier-med-student', name: 'Medical Resident Pass', price: 250000, currency: 'IDR', capacity: 600 },
+      { id: 'tier-ff-trade', name: 'Trade Visitor 3-Day Pass', price: 120, currency: 'USD', capacity: 45000 },
+      { id: 'tier-ff-vip', name: 'VIP Buyer Executive Lounge', price: 650, currency: 'USD', capacity: 2000 },
+    ],
+  },
+  {
+    id: 'event-london-energy-2026',
+    title: 'London Global Clean Energy & Green Infrastructure Forum 2026',
+    slug: 'london-clean-energy-2026',
+    tagline: 'Offshore Wind, Carbon Capture & Sovereign Green Bond Financing',
+    description: 'Flagship European energy summit at ExCeL London with ministerial roundtables, renewable grid developers, and climate investment funds.',
+    archetype: 'ENERGY_INFRASTRUCTURE',
+    startDate: new Date('2026-11-25T08:30:00Z'),
+    endDate: new Date('2026-11-27T17:30:00Z'),
+    isFeatured: true,
+    scale: 'LARGE',
+    format: 'HYBRID',
+    heroImageUrl: 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1200',
+    regionId: 'global',
+    region: { id: 'global', code: 'GL', name: 'Global Hubs', currency: 'USD' },
+    venueId: 'venue-excel-london',
+    venue: FALLBACK_VENUES[9],
+    ticketTiers: [
+      { id: 'tier-lon-delegate', name: 'Summit Delegate Pass', price: 380, currency: 'USD', capacity: 3500 },
+      { id: 'tier-lon-vip', name: 'VIP Ministerial & Gala Pass', price: 950, currency: 'USD', capacity: 500 },
     ],
   },
 ];
 
 export const FALLBACK_BANNER_SLIDES: BannerSlide[] = [
+  // -------------------------------------------------------------------------
+  // INDONESIA BANNER SLIDES (ID)
+  // -------------------------------------------------------------------------
   {
-    id: 'slide-1',
+    id: 'slide-id-1',
     title: 'Manufacturing Indonesia & Automation Expo 2026',
     tagline: '36th International Machinery, CNC Tooling & Industrial Robotics Exhibition',
     slug: 'manufacturing-indonesia-2026',
@@ -283,7 +442,7 @@ export const FALLBACK_BANNER_SLIDES: BannerSlide[] = [
     isFeatured: true,
   },
   {
-    id: 'slide-2',
+    id: 'slide-id-2',
     title: 'Asia AI & Cloud Developer Summit 2026',
     tagline: 'Autonomous Multi-Agent Architectures, Edge LLMs & Cloud Engineering Keynotes',
     slug: 'asia-ai-summit-2026',
@@ -301,7 +460,7 @@ export const FALLBACK_BANNER_SLIDES: BannerSlide[] = [
     isFeatured: true,
   },
   {
-    id: 'slide-3',
+    id: 'slide-id-3',
     title: 'Pekan Raya Jakarta (Jakarta Fair 2026)',
     tagline: '33 Days of Mega Consumer Exhibitions, 500+ Tenants & Nightly Live Concerts',
     slug: 'pekan-raya-jakarta-2026',
@@ -316,6 +475,122 @@ export const FALLBACK_BANNER_SLIDES: BannerSlide[] = [
     scale: 'GLOBAL_MEGA',
     minPrice: 40000,
     currency: 'IDR',
+    isFeatured: true,
+  },
+
+  // -------------------------------------------------------------------------
+  // JAPAN BANNER SLIDES (JP)
+  // -------------------------------------------------------------------------
+  {
+    id: 'slide-jp-1',
+    title: 'Tokyo International Robotics & Mechatronics Expo 2026',
+    tagline: 'Next-Gen Humanoid Robots, Autonomous Mobility & Industrial AI at Tokyo Big Sight',
+    slug: 'tokyo-robotics-expo-2026',
+    heroImageUrl: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1600',
+    archetype: 'TECH_DEV_SUMMIT',
+    startDate: new Date('2026-11-18T10:00:00Z'),
+    endDate: new Date('2026-11-21T17:00:00Z'),
+    venueName: 'Tokyo Big Sight',
+    cityName: 'Tokyo',
+    regionCode: 'JP',
+    format: 'IN_PERSON',
+    scale: 'LARGE',
+    minPrice: 3000,
+    currency: 'JPY',
+    isFeatured: true,
+  },
+  {
+    id: 'slide-jp-2',
+    title: 'Tokyo Comic & Gaming Championship 2026',
+    tagline: 'Esports Championship Arena, Indie Creator Alley & Anime Premieres at Makuhari Messe',
+    slug: 'tokyo-gaming-championship-2026',
+    heroImageUrl: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1600',
+    archetype: 'POP_CULTURE_GAMING',
+    startDate: new Date('2026-09-24T09:30:00Z'),
+    endDate: new Date('2026-09-27T18:30:00Z'),
+    venueName: 'Makuhari Messe',
+    cityName: 'Chiba',
+    regionCode: 'JP',
+    format: 'IN_PERSON',
+    scale: 'LARGE',
+    minPrice: 3500,
+    currency: 'JPY',
+    isFeatured: true,
+  },
+  {
+    id: 'slide-jp-3',
+    title: 'Japan Clean EV & Future Mobility Show 2026',
+    tagline: 'Solid-State Battery Tech, Hydrogen Fuel Cells & Autonomous Driving at Pacifico Yokohama',
+    slug: 'japan-ev-mobility-2026',
+    heroImageUrl: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1600',
+    archetype: 'AUTOMOTIVE_MOBILITY',
+    startDate: new Date('2026-10-28T09:00:00Z'),
+    endDate: new Date('2026-10-31T17:00:00Z'),
+    venueName: 'Pacifico Yokohama',
+    cityName: 'Yokohama',
+    regionCode: 'JP',
+    format: 'HYBRID',
+    scale: 'LARGE',
+    minPrice: 5000,
+    currency: 'JPY',
+    isFeatured: true,
+  },
+
+  // -------------------------------------------------------------------------
+  // GLOBAL BANNER SLIDES (GLOBAL / GL)
+  // -------------------------------------------------------------------------
+  {
+    id: 'slide-gl-1',
+    title: 'Global FinTech & Institutional Investment Summit 2026',
+    tagline: 'Cross-Border Capital, Sovereign Wealth & AI-Driven Asset Management at Marina Bay Sands',
+    slug: 'singapore-fintech-summit-2026',
+    heroImageUrl: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=1600',
+    archetype: 'FINANCE_INVESTOR',
+    startDate: new Date('2026-11-04T09:00:00Z'),
+    endDate: new Date('2026-11-06T18:00:00Z'),
+    venueName: 'Marina Bay Sands Expo',
+    cityName: 'Singapore',
+    regionCode: 'GL',
+    format: 'HYBRID',
+    scale: 'LARGE',
+    minPrice: 495,
+    currency: 'USD',
+    isFeatured: true,
+  },
+  {
+    id: 'slide-gl-2',
+    title: 'Frankfurt Smart Factory & Heavy Machinery Expo 2026',
+    tagline: 'Industry 4.0, Additive Manufacturing & Precision Tooling at Messe Frankfurt',
+    slug: 'frankfurt-smart-factory-2026',
+    heroImageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1600',
+    archetype: 'INDUSTRIAL_B2B',
+    startDate: new Date('2026-10-14T09:00:00Z'),
+    endDate: new Date('2026-10-17T18:00:00Z'),
+    venueName: 'Messe Frankfurt',
+    cityName: 'Frankfurt am Main',
+    regionCode: 'GL',
+    format: 'IN_PERSON',
+    scale: 'LARGE',
+    minPrice: 120,
+    currency: 'USD',
+    isFeatured: true,
+  },
+  {
+    id: 'slide-gl-3',
+    title: 'London Global Clean Energy & Green Infrastructure Forum 2026',
+    tagline: 'Offshore Wind, Carbon Capture & Green Bond Financing at ExCeL London',
+    slug: 'london-clean-energy-2026',
+    heroImageUrl: 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1600',
+    archetype: 'ENERGY_INFRASTRUCTURE',
+    startDate: new Date('2026-11-25T08:30:00Z'),
+    endDate: new Date('2026-11-27T17:30:00Z'),
+    venueName: 'ExCeL London',
+    cityName: 'London',
+    regionCode: 'GL',
+    format: 'HYBRID',
+    scale: 'LARGE',
+    minPrice: 380,
+    currency: 'USD',
     isFeatured: true,
   },
 ];
