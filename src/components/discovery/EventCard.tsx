@@ -15,7 +15,7 @@ import {
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/Card';
-import { formatCurrency, formatDateRange, getTimeZoneForRegion, type SupportedCurrency } from '@/lib/i18n/formatters';
+import { formatCurrency, formatDateRange, getTimeZoneForRegion, getEventTemporalStatus, type SupportedCurrency } from '@/lib/i18n/formatters';
 import { getArchetypeTokens } from '@/lib/theming';
 import { type DiscoveryEvent } from '@/types/discovery';
 import { cn } from '@/lib/utils';
@@ -36,6 +36,7 @@ export function EventCard({
   const archetypeTokens = getArchetypeTokens(event.archetype);
   const regionCode = (event.region?.code || event.regionId || 'id').toLowerCase();
   const timezone = getTimeZoneForRegion(regionCode);
+  const temporal = getEventTemporalStatus(event.startDate, event.endDate);
 
   // Price Calculation
   const sortedTiers = event.ticketTiers && event.ticketTiers.length > 0
@@ -104,7 +105,20 @@ export function EventCard({
             {archetypeTokens.displayName.split('&')[0].trim()}
           </Badge>
 
-          {event.isFeatured && (
+          {temporal.isLive && (
+            <Badge className="bg-emerald-600 text-white text-[10px] font-bold gap-1 shadow-sm">
+              <span className="h-1.5 w-1.5 rounded-full bg-white inline-block animate-ping" />
+              <span>Live Now</span>
+            </Badge>
+          )}
+
+          {temporal.isPast && (
+            <Badge variant="secondary" className="text-[10px] font-medium bg-black/70 text-slate-300 border border-slate-700 shadow-sm backdrop-blur-xs">
+              <span>Concluded</span>
+            </Badge>
+          )}
+
+          {temporal.isUpcoming && event.isFeatured && (
             <Badge variant="warning" className="text-[10px] font-semibold gap-1 shadow-sm">
               <Sparkles className="h-2.5 w-2.5" />
               <span>Featured</span>
@@ -159,17 +173,17 @@ export function EventCard({
         <CardFooter className="p-0 pt-3 border-t border-border/60 flex items-center justify-between">
           <div className="flex flex-col">
             <span className="text-[10px] uppercase font-semibold text-muted-foreground tracking-wider">
-              {lowestPrice > 0 ? 'Starting From' : 'Admission'}
+              {temporal.isPast ? 'Status' : lowestPrice > 0 ? 'Starting From' : 'Admission'}
             </span>
             <span className="text-sm font-extrabold text-foreground">
-              {priceDisplay}
+              {temporal.isPast ? 'Concluded' : priceDisplay}
             </span>
           </div>
 
           <Link href={`/${locale}/events/${event.slug}`}>
-            <Button size="sm" className="gap-1 text-xs font-semibold shadow-sm">
+            <Button size="sm" variant={temporal.isPast ? 'outline' : 'default'} className="gap-1 text-xs font-semibold shadow-sm">
               <Ticket className="h-3.5 w-3.5" />
-              <span>View Pass</span>
+              <span>{temporal.isPast ? 'View Recap' : temporal.isLive ? 'Enter Pass' : 'View Pass'}</span>
               <ArrowRight className="h-3 w-3 ml-0.5 transition-transform group-hover:translate-x-0.5" />
             </Button>
           </Link>

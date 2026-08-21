@@ -11,6 +11,7 @@ import {
   isValidLocale,
   isValidCurrency,
   normalizeLocale,
+  getEventTemporalStatus,
   SUPPORTED_LOCALES,
   SUPPORTED_CURRENCIES,
 } from "@/lib/i18n/formatters";
@@ -196,3 +197,49 @@ describe("i18n Formatters: Direction & Regional Mapping", () => {
     expect(formattedDe).toMatch(/1[.\s]250[.\s]000/);
   });
 });
+
+describe("i18n Formatters: Temporal Status Calculation (getEventTemporalStatus)", () => {
+  it("accurately detects UPCOMING events with countdown parameters", () => {
+    const now = new Date("2026-08-21T10:00:00Z");
+    const start = new Date("2026-09-14T09:00:00Z");
+    const end = new Date("2026-09-17T18:00:00Z");
+
+    const res = getEventTemporalStatus(start, end, now);
+    expect(res.status).toBe("UPCOMING");
+    expect(res.isUpcoming).toBe(true);
+    expect(res.isLive).toBe(false);
+    expect(res.isPast).toBe(false);
+    expect(res.label).toBe("Upcoming");
+    expect(res.daysRemaining).toBe(23);
+    expect(res.timeRemaining?.days).toBe(23);
+  });
+
+  it("accurately detects LIVE events currently in progress", () => {
+    const now = new Date("2026-09-15T12:00:00Z");
+    const start = new Date("2026-09-14T09:00:00Z");
+    const end = new Date("2026-09-17T18:00:00Z");
+
+    const res = getEventTemporalStatus(start, end, now);
+    expect(res.status).toBe("LIVE");
+    expect(res.isUpcoming).toBe(false);
+    expect(res.isLive).toBe(true);
+    expect(res.isPast).toBe(false);
+    expect(res.label).toBe("Happening Now");
+    expect(res.badgeVariant).toBe("archetype");
+  });
+
+  it("accurately detects PAST (lapsed / concluded) events", () => {
+    const now = new Date("2026-09-18T09:00:00Z");
+    const start = new Date("2026-09-14T09:00:00Z");
+    const end = new Date("2026-09-17T18:00:00Z");
+
+    const res = getEventTemporalStatus(start, end, now);
+    expect(res.status).toBe("PAST");
+    expect(res.isUpcoming).toBe(false);
+    expect(res.isLive).toBe(false);
+    expect(res.isPast).toBe(true);
+    expect(res.label).toBe("Concluded");
+    expect(res.badgeVariant).toBe("secondary");
+  });
+});
+

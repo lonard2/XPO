@@ -14,10 +14,13 @@ import {
   Globe,
   Pause,
   Play,
+  CheckCheck,
+  Radio,
+  History,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
-import { formatDateRange, getTimeZoneForRegion } from '@/lib/i18n/formatters';
+import { formatDateRange, getTimeZoneForRegion, getEventTemporalStatus, type EventTemporalDetails } from '@/lib/i18n/formatters';
 import { getArchetypeTokens } from '@/lib/theming';
 import { type BannerSlide } from '@/types/discovery';
 import { cn } from '@/lib/utils';
@@ -27,31 +30,6 @@ export interface BannerCarouselProps {
   locale: string;
   autoPlayInterval?: number; // default: 7000ms
   className?: string;
-}
-
-interface TimeRemaining {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
-  isPast: boolean;
-}
-
-function calculateTimeRemaining(targetDate: Date | string): TimeRemaining {
-  const target = typeof targetDate === 'string' ? new Date(targetDate) : targetDate;
-  const now = new Date();
-  const diff = target.getTime() - now.getTime();
-
-  if (diff <= 0) {
-    return { days: 0, hours: 0, minutes: 0, seconds: 0, isPast: true };
-  }
-
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-  return { days, hours, minutes, seconds, isPast: false };
 }
 
 export function BannerCarousel({
@@ -144,6 +122,11 @@ export function BannerCarousel({
     timezone
   );
 
+  const temporalStatus = getEventTemporalStatus(
+    currentSlide.startDate,
+    currentSlide.endDate
+  );
+
   return (
     <div
       className={cn(
@@ -167,7 +150,10 @@ export function BannerCarousel({
             key={currentSlide.id}
             src={currentSlide.heroImageUrl}
             alt={currentSlide.title}
-            className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-1000 scale-[1.02]"
+            className={cn(
+              "absolute inset-0 h-full w-full object-cover object-center transition-transform duration-1000 scale-[1.02]",
+              temporalStatus.isPast && "grayscale-[35%] opacity-75"
+            )}
           />
         ) : (
           <div
@@ -183,7 +169,7 @@ export function BannerCarousel({
 
         {/* Foreground Content Card */}
         <div className="relative z-10 max-w-2xl space-y-3.5 sm:space-y-4">
-          {/* Top Category & Region Badges */}
+          {/* Top Category, Temporal Status & Region Badges */}
           <div className="flex flex-wrap items-center gap-2">
             <Badge
               variant="default"
@@ -195,10 +181,25 @@ export function BannerCarousel({
 
             <Badge variant="outline" className="bg-black/60 text-white text-[11px] sm:text-xs font-medium gap-1 border-white/20 backdrop-blur-sm">
               <Globe className="h-3 w-3 text-primary" />
-              <span>{regionCode} Edition</span>
+              <span>{regionCode}</span>
             </Badge>
 
-            {currentSlide.isFeatured && (
+            {/* Differentiated Temporal Badges */}
+            {temporalStatus.isLive && (
+              <Badge className="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] sm:text-xs font-bold gap-1.5 shadow-md animate-pulse">
+                <span className="h-2 w-2 rounded-full bg-white inline-block animate-ping" />
+                <span>Happening Now</span>
+              </Badge>
+            )}
+
+            {temporalStatus.isPast && (
+              <Badge variant="secondary" className="bg-slate-800 text-slate-300 border border-slate-600 text-[11px] sm:text-xs font-semibold gap-1 backdrop-blur-sm">
+                <CheckCheck className="h-3 w-3 text-slate-400" />
+                <span>Event Concluded</span>
+              </Badge>
+            )}
+
+            {temporalStatus.isUpcoming && currentSlide.isFeatured && (
               <Badge variant="warning" className="text-[11px] sm:text-xs font-semibold gap-1 shadow-sm">
                 <Sparkles className="h-3 w-3" />
                 <span>Featured Spotlight</span>
@@ -236,26 +237,64 @@ export function BannerCarousel({
             )}
           </div>
 
-          {/* Countdown Widget */}
+          {/* Temporal Status / Countdown Widget */}
           <div className="pt-1">
-            <CountdownTimer targetDate={currentSlide.startDate} />
+            <BannerTemporalWidget
+              startDate={currentSlide.startDate}
+              endDate={currentSlide.endDate}
+            />
           </div>
 
           {/* Action CTAs */}
           <div className="flex flex-wrap items-center gap-3 pt-2">
-            <Link href={`/${locale}/events/${currentSlide.slug}`}>
-              <Button size="lg" className="gap-2 font-semibold shadow-lg bg-primary hover:bg-primary/90 text-white border-0">
-                <Ticket className="h-4 w-4" />
-                <span>Get Event Pass</span>
-                <ArrowRight className="h-4 w-4 ml-0.5" />
-              </Button>
-            </Link>
-
-            <Link href={`/${locale}/events`}>
-              <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/30 backdrop-blur-md">
-                <span>View Full Schedule</span>
-              </Button>
-            </Link>
+            {temporalStatus.isPast ? (
+              <>
+                <Link href={`/${locale}/events/${currentSlide.slug}`}>
+                  <Button size="lg" variant="outline" className="gap-2 font-semibold bg-white/10 hover:bg-white/20 text-white border-white/30 backdrop-blur-md">
+                    <History className="h-4 w-4" />
+                    <span>View Event Recap</span>
+                    <ArrowRight className="h-4 w-4 ml-0.5" />
+                  </Button>
+                </Link>
+                <Link href={`/${locale}/events`}>
+                  <Button size="lg" className="gap-2 font-semibold shadow-lg bg-primary hover:bg-primary/90 text-white border-0">
+                    <Calendar className="h-4 w-4" />
+                    <span>Explore Upcoming Events</span>
+                  </Button>
+                </Link>
+              </>
+            ) : temporalStatus.isLive ? (
+              <>
+                <Link href={`/${locale}/events/${currentSlide.slug}`}>
+                  <Button size="lg" className="gap-2 font-semibold shadow-lg bg-emerald-600 hover:bg-emerald-700 text-white border-0 animate-pulse">
+                    <Ticket className="h-4 w-4" />
+                    <span>Get Pass & Enter Doors</span>
+                    <ArrowRight className="h-4 w-4 ml-0.5" />
+                  </Button>
+                </Link>
+                <Link href={`/${locale}/events/${currentSlide.slug}#agenda`}>
+                  <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/30 backdrop-blur-md">
+                    <Radio className="h-4 w-4 text-emerald-400 mr-1" />
+                    <span>Live Timetable</span>
+                  </Button>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link href={`/${locale}/events/${currentSlide.slug}`}>
+                  <Button size="lg" className="gap-2 font-semibold shadow-lg bg-primary hover:bg-primary/90 text-white border-0">
+                    <Ticket className="h-4 w-4" />
+                    <span>Get Event Pass</span>
+                    <ArrowRight className="h-4 w-4 ml-0.5" />
+                  </Button>
+                </Link>
+                <Link href={`/${locale}/events`}>
+                  <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/30 backdrop-blur-md">
+                    <span>View Full Schedule</span>
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
 
@@ -314,25 +353,49 @@ export function BannerCarousel({
   );
 }
 
-function CountdownTimer({ targetDate }: { targetDate: Date | string }) {
-  const [time, setTime] = React.useState<TimeRemaining>(() => calculateTimeRemaining(targetDate));
+function BannerTemporalWidget({
+  startDate,
+  endDate,
+}: {
+  startDate: Date | string;
+  endDate: Date | string;
+}) {
+  const [temporal, setTemporal] = React.useState<EventTemporalDetails>(() =>
+    getEventTemporalStatus(startDate, endDate)
+  );
 
   React.useEffect(() => {
+    setTemporal(getEventTemporalStatus(startDate, endDate));
     const timer = setInterval(() => {
-      setTime(calculateTimeRemaining(targetDate));
+      setTemporal(getEventTemporalStatus(startDate, endDate));
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [targetDate]);
+  }, [startDate, endDate]);
 
-  if (time.isPast) {
+  if (temporal.isPast) {
     return (
-      <div className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/40 bg-emerald-950/60 px-3 py-1 text-xs font-semibold text-emerald-300 backdrop-blur-sm">
-        <Sparkles className="h-3.5 w-3.5" />
-        <span>Event is Happening Now</span>
+      <div className="inline-flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-900/80 px-3 py-1.5 text-xs font-medium text-slate-300 backdrop-blur-sm">
+        <CheckCheck className="h-3.5 w-3.5 text-slate-400" />
+        <span>This event has concluded. Pass registration is closed.</span>
       </div>
     );
   }
+
+  if (temporal.isLive) {
+    return (
+      <div className="inline-flex items-center gap-2 rounded-lg border border-emerald-500/40 bg-emerald-950/70 px-3 py-1.5 text-xs font-semibold text-emerald-300 backdrop-blur-sm shadow-md">
+        <span className="flex h-2 w-2 relative">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+        </span>
+        <span>Event is Happening Now — Doors Open</span>
+      </div>
+    );
+  }
+
+  const time = temporal.timeRemaining;
+  if (!time) return null;
 
   return (
     <div className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-black/60 px-3 py-1.5 backdrop-blur-md shadow-sm">

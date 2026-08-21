@@ -264,3 +264,75 @@ export function formatNumber(
     return num.toString();
   }
 }
+
+export type EventTemporalStatus = 'UPCOMING' | 'LIVE' | 'PAST';
+
+export interface EventTemporalDetails {
+  status: EventTemporalStatus;
+  isUpcoming: boolean;
+  isLive: boolean;
+  isPast: boolean;
+  label: string;
+  badgeVariant: 'default' | 'outline' | 'secondary' | 'warning' | 'destructive' | 'archetype';
+  daysRemaining?: number;
+  timeRemaining?: {
+    days: number;
+    hours: number;
+    minutes: number;
+    seconds: number;
+  };
+}
+
+/**
+ * Accurately determines whether an event is UPCOMING, LIVE (happening now), or PAST (concluded).
+ */
+export function getEventTemporalStatus(
+  startDate: Date | string,
+  endDate: Date | string,
+  now: Date = new Date()
+): EventTemporalDetails {
+  const start = typeof startDate === 'string' ? new Date(startDate) : startDate;
+  const end = typeof endDate === 'string' ? new Date(endDate) : endDate;
+  const currentTime = now.getTime();
+  const startTime = start.getTime();
+  const endTime = end.getTime();
+
+  if (currentTime < startTime) {
+    const diff = startTime - currentTime;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    return {
+      status: 'UPCOMING',
+      isUpcoming: true,
+      isLive: false,
+      isPast: false,
+      label: 'Upcoming',
+      badgeVariant: 'default',
+      daysRemaining: days,
+      timeRemaining: { days, hours, minutes, seconds },
+    };
+  }
+
+  if (currentTime >= startTime && currentTime <= endTime) {
+    return {
+      status: 'LIVE',
+      isUpcoming: false,
+      isLive: true,
+      isPast: false,
+      label: 'Happening Now',
+      badgeVariant: 'archetype',
+    };
+  }
+
+  return {
+    status: 'PAST',
+    isUpcoming: false,
+    isLive: false,
+    isPast: true,
+    label: 'Concluded',
+    badgeVariant: 'secondary',
+  };
+}
+
