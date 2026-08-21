@@ -12,6 +12,12 @@ import {
   Tent,
   Landmark,
   Palmtree,
+  Car,
+  Zap,
+  Sprout,
+  Plane,
+  GraduationCap,
+  Sparkles,
   Layers,
   ArrowRight,
   ChevronLeft,
@@ -102,13 +108,79 @@ export const EVENT_CATEGORIES: CategoryItem[] = [
   {
     id: 'MEGA_EXPO_PAVILION',
     name: 'Mega Expos & Multi-Pavilion Fairs',
-    shortName: 'Mega Expos (PRJ)',
+    shortName: 'Mega Expos & Fairs',
     tagline: 'Multi-hectare public fairs, night fireworks & 500+ tenants.',
     highlights: ['Pavilion Maps', 'Fireworks Schedules', 'Tenant Promos'],
     icon: Tent,
     color: '#ea580c', // Orange
     bgGradient: 'from-orange-500/10 via-orange-500/5 to-transparent',
     borderColor: '#fb923c',
+  },
+  {
+    id: 'AUTOMOTIVE_MOBILITY',
+    name: 'Automotive, EV & Mobility Motor Show',
+    shortName: 'Auto & Mobility',
+    tagline: 'Test drive bookings, concept car debuts & EV charging tech.',
+    highlights: ['Test Drive Track', 'Concept Unveils', 'EV Tech'],
+    icon: Car,
+    color: '#dc2626', // Red
+    bgGradient: 'from-red-500/10 via-red-500/5 to-transparent',
+    borderColor: '#f87171',
+  },
+  {
+    id: 'ENERGY_INFRASTRUCTURE',
+    name: 'Energy, Mining & Green Infrastructure',
+    shortName: 'Energy & Mining',
+    tagline: 'Renewable grids, mining extraction & maritime concessions.',
+    highlights: ['Concession Maps', 'Green Grids', 'Mining Heavy Machinery'],
+    icon: Zap,
+    color: '#ca8a04', // Yellow/Gold
+    bgGradient: 'from-yellow-500/10 via-yellow-500/5 to-transparent',
+    borderColor: '#facc15',
+  },
+  {
+    id: 'AGRITECH_FOOD',
+    name: 'Agriculture, Agritech & Food Expo',
+    shortName: 'Agritech & Food',
+    tagline: 'Smart farming tech, cold-chain logistics & culinary trade.',
+    highlights: ['Smart Farming Demos', 'Cold-Chain Logistics', 'Culinary Stages'],
+    icon: Sprout,
+    color: '#15803d', // Green
+    bgGradient: 'from-green-500/10 via-green-500/5 to-transparent',
+    borderColor: '#4ade80',
+  },
+  {
+    id: 'HOSPITALITY_TOURISM',
+    name: 'Hospitality, Tourism & Travel Mart',
+    shortName: 'Travel & Tourism',
+    tagline: 'Destination showcases, hotelier procurement & travel buyers.',
+    highlights: ['Buyer Appointments', 'Hotel Procurement', 'Airline Networks'],
+    icon: Plane,
+    color: '#0891b2', // Cyan
+    bgGradient: 'from-cyan-500/10 via-cyan-500/5 to-transparent',
+    borderColor: '#22d3ee',
+  },
+  {
+    id: 'EDUCATION_EDTECH',
+    name: 'Education, EdTech & Academic Summit',
+    shortName: 'Education & EdTech',
+    tagline: 'Global university fairs, scholarship grants & STEM research.',
+    highlights: ['University Stalls', 'Scholarship Grants', 'STEM Labs'],
+    icon: GraduationCap,
+    color: '#7c3aed', // Violet
+    bgGradient: 'from-violet-500/10 via-violet-500/5 to-transparent',
+    borderColor: '#a78bfa',
+  },
+  {
+    id: 'FASHION_RETAIL',
+    name: 'Fashion, Beauty & Luxury Retail Expo',
+    shortName: 'Fashion & Beauty',
+    tagline: 'Runway premieres, cosmetic OEM labs & retail buyer pavilions.',
+    highlights: ['Runway Schedules', 'Cosmetic OEM', 'Wholesale Orders'],
+    icon: Sparkles,
+    color: '#c026d3', // Fuchsia
+    bgGradient: 'from-fuchsia-500/10 via-fuchsia-500/5 to-transparent',
+    borderColor: '#e879f9',
   },
   {
     id: 'GOVERNMENT_DIPLOMATIC',
@@ -123,7 +195,7 @@ export const EVENT_CATEGORIES: CategoryItem[] = [
   },
   {
     id: 'INCENTIVE_RETREAT',
-    name: 'Incentives & Luxury Retreats',
+    name: 'Incentives & Luxury Corporate Retreats',
     shortName: 'Executive Retreats',
     tagline: 'Curated excursion itineraries & gala table seating.',
     highlights: ['Daily Itineraries', 'Gala Seating', 'Wellness Schedulers'],
@@ -184,7 +256,7 @@ export function EventCategoryPills({
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-primary uppercase tracking-wider mb-0.5">
             <Layers className="h-4 w-4" />
-            <span>9 Specialized MICE Verticals</span>
+            <span>15 Specialized MICE Verticals</span>
           </div>
           <h2 className="text-lg sm:text-2xl font-extrabold tracking-tight text-foreground">
             Explore by Event Category

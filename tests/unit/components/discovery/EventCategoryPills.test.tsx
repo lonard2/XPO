@@ -4,7 +4,7 @@ import React from 'react';
 import { EventCategoryPills } from '@/components/discovery/EventCategoryPills';
 
 describe('EventCategoryPills', () => {
-  it('renders all 9 MICE domain category options', () => {
+  it('renders all 15 MICE domain category options', () => {
     render(<EventCategoryPills locale="en" />);
 
     expect(screen.getByText('Explore by Event Category')).toBeDefined();
@@ -15,6 +15,12 @@ describe('EventCategoryPills', () => {
     expect(screen.getByText(/Pop Culture, Gaming/i)).toBeDefined();
     expect(screen.getByText(/Music Festivals/i)).toBeDefined();
     expect(screen.getByText(/Mega Expos & Multi-Pavilion/i)).toBeDefined();
+    expect(screen.getByText(/Automotive, EV & Mobility/i)).toBeDefined();
+    expect(screen.getByText(/Energy, Mining & Green/i)).toBeDefined();
+    expect(screen.getByText(/Agriculture, Agritech & Food/i)).toBeDefined();
+    expect(screen.getByText(/Hospitality, Tourism & Travel/i)).toBeDefined();
+    expect(screen.getByText(/Education, EdTech & Academic/i)).toBeDefined();
+    expect(screen.getByText(/Fashion, Beauty & Luxury/i)).toBeDefined();
     expect(screen.getByText(/Government & Diplomatic/i)).toBeDefined();
     expect(screen.getByText(/Incentives & Luxury/i)).toBeDefined();
   });

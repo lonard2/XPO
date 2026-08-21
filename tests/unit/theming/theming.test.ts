@@ -11,25 +11,15 @@ import {
   type BrandingConfig,
 } from "@/lib/theming";
 
-describe("Phase 5 Unit: 9-Archetype Dynamic MICE Category Theming Engine", () => {
-  const allArchetypes: MiceArchetype[] = [
-    "INDUSTRIAL_B2B",
-    "TECH_DEV_SUMMIT",
-    "MEDICAL_SYMPOSIUM",
-    "FINANCE_INVESTOR",
-    "POP_CULTURE_GAMING",
-    "MUSIC_FESTIVAL",
-    "MEGA_EXPO_PAVILION",
-    "GOVERNMENT_DIPLOMATIC",
-    "INCENTIVE_RETREAT",
-  ];
+describe("Phase 5 Unit: Dynamic MICE Category Theming Engine", () => {
+  const allArchetypes: MiceArchetype[] = ARCHETYPE_LIST;
 
   // ==========================================================================
   // TIER 1: FEATURE COVERAGE (Core Token & CSS Var Resolution)
   // ==========================================================================
 
-  it("T1.1: resolves distinct default theme tokens for all 9 MICE archetypes", () => {
-    expect(ARCHETYPE_LIST).toHaveLength(9);
+  it("T1.1: resolves distinct default theme tokens for all 15 MICE archetypes", () => {
+    expect(ARCHETYPE_LIST).toHaveLength(15);
     for (const archetype of allArchetypes) {
       const tokens = getArchetypeTokens(archetype);
       expect(tokens.primary).toMatch(/^#[0-9a-fA-F]{6}$/);
@@ -158,6 +148,12 @@ describe("Phase 5 Unit: 9-Archetype Dynamic MICE Category Theming Engine", () =>
     expect(isValidArchetype("MEGA_EXPO_PAVILION")).toBe(true);
     expect(isValidArchetype("GOVERNMENT_DIPLOMATIC")).toBe(true);
     expect(isValidArchetype("INCENTIVE_RETREAT")).toBe(true);
+    expect(isValidArchetype("AUTOMOTIVE_MOBILITY")).toBe(true);
+    expect(isValidArchetype("ENERGY_INFRASTRUCTURE")).toBe(true);
+    expect(isValidArchetype("AGRITECH_FOOD")).toBe(true);
+    expect(isValidArchetype("HOSPITALITY_TOURISM")).toBe(true);
+    expect(isValidArchetype("EDUCATION_EDTECH")).toBe(true);
+    expect(isValidArchetype("FASHION_RETAIL")).toBe(true);
 
     expect(isValidArchetype("RANDOM_STRING")).toBe(false);
     expect(isValidArchetype("")).toBe(false);

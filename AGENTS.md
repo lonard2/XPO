@@ -63,7 +63,7 @@ Directly below the top banner carousel on each country edition, a dedicated **"H
 
 ## 5. Event Categories & Calendar Features
 
-### A. 9 Specialized Event Categories:
+### A. 15 Specialized MICE Event Categories:
 Each category features custom visual styling, distinct icon pairings, and specialized layout components:
 1. **Industrial & Manufacturing B2B Expo** (Steel blue, machinery specs, RFQ quote drawer, exhibitor roster)
 2. **Tech, AI & Developer Summit** (Indigo, multi-track keynotes, GitHub tags, livestream embeds)
@@ -71,9 +71,15 @@ Each category features custom visual styling, distinct icon pairings, and specia
 4. **Financial, FinTech & Investor Forum** (Emerald/Gold, deal-room booking, pitch decks, VIP tiers)
 5. **Pop Culture, Comic Con & Gaming Expo** (Rose/Magenta, cosplay guidelines, creator alley, merch list)
 6. **Music Festival & Arena Concert** (Purple, real-time stage timeline, crowd meter, wristbands)
-7. **Mega Exposition & Multi-Pavilion Fair** (Crimson, pavilion directory, fireworks schedule, promo radar)
-8. **Government, Policy & Diplomatic Summit** (Navy/Bronze, protocol briefings, bilateral schedules)
-9. **Incentive & Luxury Corporate Retreat** (Warm stone, itinerary planner, gala seating, wellness tracks)
+7. **Mega Exposition & Multi-Pavilion Fair** (Crimson/Orange, pavilion directory, fireworks schedule, promo radar)
+8. **Automotive, EV & Mobility Motor Show** (Red, test drive booking, concept debuts, EV tech)
+9. **Energy, Mining & Green Infrastructure** (Gold/Yellow, concession maps, green grids, heavy equipment)
+10. **Agriculture, Agritech & Food Expo** (Green, precision farming demos, cold-chain logistics, culinary stages)
+11. **Hospitality, Tourism & Travel Mart** (Cyan, buyer appointments, hotelier procurement, airline networks)
+12. **Education, EdTech & Academic Summit** (Violet, university stalls, scholarship grants, STEM labs)
+13. **Fashion, Beauty & Luxury Retail Expo** (Fuchsia, runway schedules, cosmetics OEM, wholesale orders)
+14. **Government, Policy & Diplomatic Summit** (Navy/Bronze, protocol briefings, bilateral schedules)
+15. **Incentive & Luxury Corporate Retreat** (Warm stone, itinerary planner, gala seating, wellness tracks)
 
 ### B. Interactive Event Calendar:
 * **Homepage Quick-Calendar**: Interactive month/week selector filtering events occurring on specific days.

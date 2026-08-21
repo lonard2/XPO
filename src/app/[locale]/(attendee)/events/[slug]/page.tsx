@@ -33,6 +33,12 @@ const ARCHETYPE_VIEW_MAP: Record<MiceArchetype, React.ComponentType<any>> = {
   MEGA_EXPO_PAVILION: MegaExpoPavilionView,
   GOVERNMENT_DIPLOMATIC: GovernmentDiplomaticView,
   INCENTIVE_RETREAT: IncentiveRetreatView,
+  AUTOMOTIVE_MOBILITY: IndustrialB2BView,
+  ENERGY_INFRASTRUCTURE: IndustrialB2BView,
+  AGRITECH_FOOD: IndustrialB2BView,
+  HOSPITALITY_TOURISM: IncentiveRetreatView,
+  EDUCATION_EDTECH: TechDevSummitView,
+  FASHION_RETAIL: PopCultureGamingView,
 };
 
 export async function generateMetadata({ params }: EventPageProps) {
