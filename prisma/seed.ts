@@ -328,9 +328,9 @@ async function main() {
       },
       perks: {
         create: [
-          { title: "VIP Buyer Lounge & Free Barista Coffee", description: "Complimentary single-origin espresso and quiet conference tables in Hall A2 Mezzanine.", tierRequired: "VIP", iconName: "Coffee" },
-          { title: "Fast-Track Gate 2 Security Clearance", description: "Skip the main queue with digital biometric NFC badge entry.", tierRequired: "VIP", iconName: "Zap" },
-          { title: "Offline Interactive Machinery Guidebook", description: "Download full machine technical datasheets directly to your phone pass.", iconName: "FileText" },
+          { title: "VIP Buyer Lounge & Artisan Barista Coffee Voucher", description: "Complimentary single-origin espresso and quiet conference tables in Hall A2 Mezzanine.", tierRequired: "VIP", iconName: "Coffee" },
+          { title: "Priority Express Security Lane & Direct Badge Pick-up", description: "Skip general admission queues with dedicated VIP fast-track door clearance.", tierRequired: "VIP", iconName: "ShieldCheck" },
+          { title: "Executive B2B Networking Dinner & Deal-Room Pass", description: "Exclusive evening dinner invitation at the Grand Ballroom with key manufacturing suppliers.", tierRequired: "VIP", iconName: "Award" },
         ],
       },
     },
