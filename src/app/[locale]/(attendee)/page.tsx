@@ -224,9 +224,13 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         </div>
       </section>
 
-      {/* 5. Convention Venue Spotlights */}
+      {/* 5. Convention Venue Spotlights (Adjusted by Active Region) */}
       <section className="container">
-        <VenueSpotlightSection venues={spotlightVenues} locale={locale} />
+        <VenueSpotlightSection
+          venues={spotlightVenues}
+          locale={locale}
+          activeRegionCode={activeRegionCode}
+        />
       </section>
 
       {/* 6. Multi-Sided Platform Portals (Humanized Copywriting) */}

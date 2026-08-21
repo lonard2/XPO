@@ -54,18 +54,20 @@ describe('Discovery Component: VenueSpotlight', () => {
     expect(links[0]).toHaveAttribute('href', '/en/venues/jiexpo-kemayoran');
   });
 
-  it('T1.3: VenueSpotlightSection renders section heading and all venues by default', () => {
-    render(<VenueSpotlightSection venues={mockVenues} locale="en" />);
+  it('T1.3: VenueSpotlightSection renders section heading and respects active region filter', () => {
+    render(<VenueSpotlightSection venues={mockVenues} locale="en" activeRegionCode="all" />);
 
-    expect(screen.getByText('World-Class MICE Venues & Mega Halls')).toBeInTheDocument();
+    expect(screen.getByText('Major Exhibition Venues & Halls')).toBeInTheDocument();
     expect(screen.getByText('JIExpo Kemayoran')).toBeInTheDocument();
     expect(screen.getByText('Tokyo Big Sight')).toBeInTheDocument();
   });
 
   it('T1.4: filters venues when clicking regional hub filter tabs', () => {
-    render(<VenueSpotlightSection venues={mockVenues} locale="en" />);
+    render(<VenueSpotlightSection venues={mockVenues} locale="en" activeRegionCode="id" />);
 
-    const japanTab = screen.getByRole('tab', { name: /japan hub/i });
+    expect(screen.getByText('JIExpo Kemayoran')).toBeInTheDocument();
+
+    const japanTab = screen.getByRole('tab', { name: /japan/i });
     fireEvent.click(japanTab);
 
     expect(screen.getByText('Tokyo Big Sight')).toBeInTheDocument();
@@ -73,11 +75,11 @@ describe('Discovery Component: VenueSpotlight', () => {
   });
 
   it('T2.1 (Boundary): displays empty message when no venues match the selected filter', () => {
-    render(<VenueSpotlightSection venues={mockVenues} locale="en" />);
+    render(<VenueSpotlightSection venues={mockVenues} locale="en" activeRegionCode="id" />);
 
-    const globalTab = screen.getByRole('tab', { name: /global gateways/i });
+    const globalTab = screen.getByRole('tab', { name: /global hubs/i });
     fireEvent.click(globalTab);
 
-    expect(screen.getByText('No venues found in this region')).toBeInTheDocument();
+    expect(screen.getByText('No venues listed for this region yet')).toBeInTheDocument();
   });
 });
