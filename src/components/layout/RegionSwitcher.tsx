@@ -89,7 +89,11 @@ export function RegionSwitcher({
 
   const handleRegionChange = (regionCode: "id" | "jp" | "global") => {
     setIsOpen(false);
+    if (typeof document !== "undefined") {
+      document.cookie = `xpo_region=${regionCode}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
+    }
     router.push(`/${currentLocale}?region=${regionCode}`);
+    router.refresh?.();
   };
 
   // Close dropdown on outside click or Escape key

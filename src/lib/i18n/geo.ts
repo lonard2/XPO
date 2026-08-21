@@ -5,10 +5,11 @@ export type RegionCode = 'id' | 'jp' | 'global';
 export const SUPPORTED_REGIONS: readonly RegionCode[] = ['id', 'jp', 'global'] as const;
 
 /**
- * Resolves the user's regional destination based on GeoIP headers, accept-language, or fallback.
+ * Resolves the user's regional destination based on GeoIP headers, accept-language, cookies, or default.
  * Indonesia (ID) -> 'id'
  * Japan (JP) -> 'jp'
  * Rest of World -> 'global'
+ * Local/Default -> 'id'
  */
 export function resolveRegionFromRequest(req: NextRequest): RegionCode {
   // 1. Explicit user cookie preference
@@ -17,7 +18,14 @@ export function resolveRegionFromRequest(req: NextRequest): RegionCode {
     return cookieRegion as RegionCode;
   }
 
-  // 2. GeoIP headers (Vercel, Cloudflare, AWS CloudFront, standard headers)
+  // 2. Query param ?region=...
+  const url = req.nextUrl;
+  const queryRegion = url.searchParams.get('region')?.toLowerCase();
+  if (queryRegion && (queryRegion === 'id' || queryRegion === 'jp' || queryRegion === 'global')) {
+    return queryRegion as RegionCode;
+  }
+
+  // 3. GeoIP headers (Vercel, Cloudflare, AWS CloudFront, standard headers)
   const countryHeader =
     req.headers.get('x-vercel-ip-country') ||
     req.headers.get('cf-ipcountry') ||
@@ -25,13 +33,13 @@ export function resolveRegionFromRequest(req: NextRequest): RegionCode {
     req.headers.get('cloudfront-viewer-country');
 
   if (countryHeader) {
-    const country = countryHeader.toUpperCase();
+    const country = countryHeader.toUpperCase().trim();
     if (country === 'ID') return 'id';
     if (country === 'JP') return 'jp';
     return 'global';
   }
 
-  // 3. Fallback to Accept-Language parsing
+  // 4. Accept-Language parsing
   const acceptLanguage = req.headers.get('accept-language')?.toLowerCase() || '';
   if (acceptLanguage.includes('id') || acceptLanguage.includes('id-id') || acceptLanguage.includes('indonesia')) {
     return 'id';
@@ -40,6 +48,6 @@ export function resolveRegionFromRequest(req: NextRequest): RegionCode {
     return 'jp';
   }
 
-  // 4. Default for all other international visitors is global
-  return 'global';
+  // 5. Default is 'id' (Indonesia) for localized Indonesian focus and local dev
+  return 'id';
 }

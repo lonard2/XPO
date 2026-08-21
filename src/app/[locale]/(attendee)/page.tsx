@@ -53,14 +53,61 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
 
   setRequestLocale(locale);
 
-  // Fetch live data from Prisma with graceful fallback
-  let bannerSlides: BannerSlide[] = FALLBACK_BANNER_SLIDES;
-  let spotlightVenues: VenueSummary[] = FALLBACK_VENUES;
-  let featuredEvents: DiscoveryEvent[] = FALLBACK_EVENTS;
-  let majorVenuesWithEvents: VenueWithEvents[] = [];
+  // Filter fallback data specifically for the active region
+  const regionFallbackVenues = FALLBACK_VENUES.filter((v) => {
+    const code = (v.region?.code || v.regionId || '').toLowerCase();
+    if (activeRegionCode === 'id') return code === 'id';
+    if (activeRegionCode === 'jp') return code === 'jp';
+    if (activeRegionCode === 'global') return code === 'global' || code === 'gl';
+    return true;
+  });
+
+  const regionFallbackEvents = FALLBACK_EVENTS.filter((e) => {
+    const code = (e.region?.code || e.regionId || '').toLowerCase();
+    if (activeRegionCode === 'id') return code === 'id';
+    if (activeRegionCode === 'jp') return code === 'jp';
+    if (activeRegionCode === 'global') return code === 'global' || code === 'gl';
+    return true;
+  });
+
+  const regionFallbackSlides = FALLBACK_BANNER_SLIDES.filter((s) => {
+    const code = (s.regionCode || '').toLowerCase();
+    if (activeRegionCode === 'id') return code === 'id';
+    if (activeRegionCode === 'jp') return code === 'jp';
+    if (activeRegionCode === 'global') return code === 'global' || code === 'gl';
+    return true;
+  });
+
+  let bannerSlides: BannerSlide[] = regionFallbackSlides.length > 0 ? regionFallbackSlides : FALLBACK_BANNER_SLIDES;
+  let spotlightVenues: VenueSummary[] = regionFallbackVenues.length > 0 ? regionFallbackVenues : FALLBACK_VENUES;
+  let featuredEvents: DiscoveryEvent[] = regionFallbackEvents.length > 0 ? regionFallbackEvents : FALLBACK_EVENTS;
+  let majorVenuesWithEvents: VenueWithEvents[] = regionFallbackVenues.map((v) => ({
+    id: v.id,
+    name: v.name,
+    slug: v.slug,
+    city: v.city,
+    address: v.address,
+    transitInfo: v.transitInfo,
+    imageUrl: v.imageUrl,
+    regionCode: activeRegionCode,
+    halls: v.halls || [],
+    events: regionFallbackEvents
+      .filter((e) => e.venueId === v.id || e.venue?.id === v.id || e.venue?.slug === v.slug)
+      .map((e) => ({
+        id: e.id,
+        title: e.title,
+        slug: e.slug,
+        archetype: e.archetype,
+        startDate: e.startDate,
+        endDate: e.endDate,
+        venueHallName: e.venueHall?.name || null,
+        minPrice: e.ticketTiers?.[0]?.price ?? 0,
+      })),
+  }));
 
   try {
     const dbEvents = await db.event.findMany({
+      where: activeRegionCode !== 'global' ? { regionId: activeRegionCode } : { regionId: 'global' },
       include: {
         venue: {
           include: {
@@ -105,7 +152,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
     }
 
     const dbVenues = await db.venue.findMany({
-      where: activeRegionCode !== 'global' ? { regionId: activeRegionCode } : undefined,
+      where: activeRegionCode !== 'global' ? { regionId: activeRegionCode } : { regionId: 'global' },
       include: {
         halls: true,
         region: true,
@@ -146,13 +193,13 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
       })) as VenueWithEvents[];
     }
   } catch {
-    // Fallback datasets populated
+    // Graceful fallback populated above
   }
 
   const regionNames: Record<string, string> = {
     id: 'Indonesia',
     jp: 'Japan',
-    global: 'Global',
+    global: 'Global Hubs',
   };
 
   const currentRegionName = regionNames[activeRegionCode] || 'Indonesia';
@@ -169,7 +216,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         />
       </section>
 
-      {/* 2. Event Category Quick Pills with Distinct Sector Identities */}
+      {/* 2. Horizontally Scrollable 15 MICE Event Category Cards */}
       <section className="container">
         <EventCategoryPills locale={locale} />
       </section>
@@ -259,7 +306,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
             <CardContent className="space-y-2 text-xs text-muted-foreground pt-0">
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-                <span>9 Domain Event Category Layouts</span>
+                <span>15 Domain Event Category Layouts</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />

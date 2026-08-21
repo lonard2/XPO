@@ -40,9 +40,32 @@ export function Navbar({ locale = "en" }: NavbarProps) {
 
   const [localDarkMode, setLocalDarkMode] = React.useState(false);
 
-  // Extract region if on a regional page
+  // Extract active region from path, searchParams, or cookie (default 'id')
   const regionMatch = pathname?.match(/\/region\/(id|jp|global)/i);
-  const activeRegion = regionMatch ? regionMatch[1].toLowerCase() : undefined;
+  const [activeRegion, setActiveRegion] = React.useState<string>(
+    regionMatch ? regionMatch[1].toLowerCase() : 'id'
+  );
+
+  React.useEffect(() => {
+    if (regionMatch) {
+      setActiveRegion(regionMatch[1].toLowerCase());
+      return;
+    }
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const paramRegion = urlParams.get('region');
+      if (paramRegion && ['id', 'jp', 'global'].includes(paramRegion.toLowerCase())) {
+        setActiveRegion(paramRegion.toLowerCase());
+        return;
+      }
+      const match = document.cookie.match(/xpo_region=([^;]+)/);
+      if (match && ['id', 'jp', 'global'].includes(match[1].toLowerCase())) {
+        setActiveRegion(match[1].toLowerCase());
+        return;
+      }
+      setActiveRegion('id');
+    }
+  }, [pathname]);
 
   React.useEffect(() => {
     const isDark = document.documentElement.classList.contains("dark");
