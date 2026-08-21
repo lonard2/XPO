@@ -14,26 +14,26 @@ describe("Component: RegionSwitcher", () => {
   it("renders the active region name and opens dropdown listbox", () => {
     render(<RegionSwitcher currentLocale="en" activeRegionCode="id" />);
 
-    const button = screen.getByRole("button", { name: /Select regional hub/i });
+    const button = screen.getByRole("button", { name: /Select Country Edition/i });
     expect(button).toBeDefined();
-    expect(screen.getByText("Indonesia")).toBeDefined();
+    expect(screen.getByText("Indonesia Edition")).toBeDefined();
 
     fireEvent.click(button);
 
-    expect(screen.getByText("Japan")).toBeDefined();
-    expect(screen.getByText("Global Hubs")).toBeDefined();
+    expect(screen.getByText("Japan Edition")).toBeDefined();
+    expect(screen.getByText("Global Edition")).toBeDefined();
   });
 
-  it("navigates to the selected regional portal route", () => {
+  it("navigates to the selected country edition route", () => {
     render(<RegionSwitcher currentLocale="en" activeRegionCode="id" />);
 
-    const button = screen.getByRole("button", { name: /Select regional hub/i });
+    const button = screen.getByRole("button", { name: /Select Country Edition/i });
     fireEvent.click(button);
 
-    const jpOption = screen.getByText("Japan");
+    const jpOption = screen.getByText("Japan Edition");
     fireEvent.click(jpOption);
 
-    expect(mockPush).toHaveBeenCalledWith("/en/region/jp");
+    expect(mockPush).toHaveBeenCalledWith("/en?region=jp");
   });
 
   it("renders cards variant with venue highlights and currencies", () => {
@@ -48,7 +48,7 @@ describe("Component: RegionSwitcher", () => {
   it("renders pills variant with proper role attributes", () => {
     render(<RegionSwitcher currentLocale="en" activeRegionCode="jp" variant="pills" />);
 
-    const radiogroup = screen.getByRole("radiogroup", { name: /Regional hub selection/i });
+    const radiogroup = screen.getByRole("radiogroup", { name: /Country Edition selection/i });
     expect(radiogroup).toBeDefined();
 
     const radios = screen.getAllByRole("radio");

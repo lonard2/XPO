@@ -96,6 +96,44 @@ export interface BannerSlide {
   isFeatured?: boolean;
 }
 
+export interface EventSummary {
+  id: string;
+  title: string;
+  slug: string;
+  archetype: MiceArchetype | string;
+  startDate: Date | string;
+  endDate: Date | string;
+  venueName?: string;
+  venueHallName?: string | null;
+  cityName?: string;
+  regionCode?: string;
+  lowestPrice?: number;
+  currency?: string;
+  isFeatured?: boolean;
+}
+
+export interface VenueWithEvents {
+  id: string;
+  name: string;
+  slug: string;
+  city: string;
+  address: string;
+  transitInfo: string;
+  imageUrl?: string | null;
+  regionCode: string;
+  halls?: VenueHallSummary[];
+  events: Array<{
+    id: string;
+    title: string;
+    slug: string;
+    archetype: MiceArchetype | string;
+    startDate: Date | string;
+    endDate: Date | string;
+    venueHallName?: string | null;
+    minPrice?: number;
+  }>;
+}
+
 export interface FilterState {
   keyword: string;
   region: string; // 'all' | 'id' | 'jp' | 'global'
@@ -105,3 +143,4 @@ export interface FilterState {
   scale: string; // 'all' | 'GLOBAL_MEGA' | 'LARGE' | 'MEDIUM' | 'EXECUTIVE'
   dateRange: string; // 'all' | 'upcoming' | 'this_month' | 'next_month'
 }
+

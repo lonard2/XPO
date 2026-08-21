@@ -7,15 +7,17 @@
 
 ## Key Features
 
-* **Attendee Discovery & Regional Hubs**: Localized portals for **Indonesia** (`/id`), **Japan** (`/jp`), and **Global** (`/global`) with exact venue and hall mapping (e.g., JIExpo, ICE BSD, Tokyo Big Sight).
-* **9 Specialized Category Archetypes**: Tailored layouts and components for Industrial B2B, Tech Summits, Medical Symposiums, FinTech Forums, Pop Culture Expos, Music Festivals, Mega Expositions (Jakarta Fair, World Expo), Diplomatic Summits, and Incentive Retreats.
-* **Interactive Event-Day Perks**: SVG QR digital passes with verification hashes, interactive live guidebooks, and venue hall navigators.
+* **Dedicated Country Editions**: Tailored country editions for **Indonesia** (`/id`), **Japan** (`/jp`), and **Global** (`/global`), each featuring localized venues with exact hall mapping (e.g., JIExpo, ICE BSD, Tokyo Big Sight, Marina Bay Sands), local currency, and regional event schedules.
+* **Happening at Major Venues (Near-Upcoming Glance)**: Dedicated section directly beneath the top banner showcasing key venues in the active country edition, highlighting up to 3 current and near-upcoming events with exact hall locations.
+* **9 Specialized Event Categories**: Tailored visual experiences and components for Industrial & B2B, Tech & Developers, Medical & Healthcare, Finance & FinTech, Pop Culture & Gaming, Concerts & Festivals, Mega Expos (Jakarta Fair, World Expo), Diplomatic Summits, and Luxury Retreats.
+* **Interactive Event Calendar**: Integrated homepage day selector and a dedicated full Calendar page (`/[locale]/calendar`) with multi-track timelines and calendar export.
+* **Attendee Perks & Digital Passes**: Tamper-proof SVG QR digital passes with cryptographic verification hashes, interactive day-of guidebooks, and venue hall floor navigators.
 * **Opt-In Attendee AI Concierge**: Floating AI assistant powered by OpenRouter for instant schedule, hall transit, and perk queries.
 * **UI/UX & Account Settings Suite**: Selectable typography engines (Modern Sans, Editorial Serif, Technical Mono, Atkinson Hyperlegible), font scaling (90%–125%), and motion modes (Off, Subtle, Expressive 3D).
-* **Organizer Command Center**: Multi-step event creation, live side-by-side branding customizer, booth/tenant manager, and QR check-in scanner.
-* **Multi-Model AI Intelligence Suite**: Executive digests and sentiment reports powered by OpenRouter (`google/gemini-3.5-flash-lite`, `google/gemini-3.7-flash`, `deepseek/deepseek-v4-pro-0813`, `qwen/qwen3.7-plus`, `openai/gpt-5.6-luna`, `google/gemma-4-26b-a4b-it`).
+* **Organizer Portal**: Event creation wizard, live side-by-side branding customizer, booth/tenant manager, and QR check-in scanner.
+* **Multi-Model Analytics & Reporting**: Executive digests and sentiment reports powered by OpenRouter (`google/gemini-3.5-flash-lite`, `google/gemini-3.7-flash`, `deepseek/deepseek-v4-pro-0813`, `qwen/qwen3.7-plus`, `openai/gpt-5.6-luna`, `google/gemma-4-26b-a4b-it`).
 * **Admin Governance & Scraper Pipeline**: Global venue directory and automated venue event calendar ingestion pipeline.
-* **Zero-Emoji Craft & Full Responsiveness**: Institutional aesthetic with Lucide SVG vector icons, optimized across mobile, tablet, and desktop viewports.
+* **Zero-Emoji Craft & Full-Width Responsiveness**: Institutional aesthetic with Lucide SVG vector icons, optimized across mobile, tablet, and wide-screen desktop displays.
 
 ---
 
@@ -24,7 +26,7 @@
 * **Framework**: [Next.js 15+ (App Router)](https://nextjs.org/) + [React 19](https://react.dev/)
 * **Language**: [TypeScript (Strict Mode)](https://www.typescriptlang.org/)
 * **Styling**: [Tailwind CSS](https://tailwindcss.com/) + CSS Variables
-* **Database & ORM**: PostgreSQL + [Prisma ORM](https://www.prisma.io/)
+* **Database & ORM**: PostgreSQL / SQLite + [Prisma ORM](https://www.prisma.io/)
 * **Internationalization**: [next-intl](https://next-intl-docs.vercel.app/) (`en`, `ja`, `zh-CN`, `id`, `de`, `es`)
 * **AI Provider**: [OpenRouter API](https://openrouter.ai/)
 * **Icons**: [Lucide React](https://lucide.dev/) (Strict zero raw emojis)
@@ -60,7 +62,7 @@ XPO/
 ### 2. Environment Setup
 Create a `.env` file in the root directory:
 ```env
-DATABASE_URL="postgresql://user:password@localhost:5432/xpo_db?schema=public"
+DATABASE_URL="file:./dev.db"
 OPENROUTER_API_KEY="your-openrouter-api-key"
 NEXTAUTH_SECRET="your-secret-key"
 ```
@@ -88,4 +90,9 @@ npm test
 Comprehensive technical guides explaining design patterns and algorithms for each phase can be found in [`docs/guides/`](./docs/guides/):
 * [`Phase 1: Architecture & Design System`](./docs/guides/phase-01-architecture-and-design-system.md)
 * [`Phase 2: Prisma Modeling & MICE Seeding`](./docs/guides/phase-02-prisma-modeling-and-mice-seeding.md)
-* ...*(Phases 1 through 12)*
+* [`Phase 3: Multilingual i18n & Regional Routing`](./docs/guides/phase-03-multilingual-and-regional-routing.md)
+* [`Phase 4: Discovery Engine & Faceted Search`](./docs/guides/phase-04-discovery-engine-and-faceted-search.md)
+* [`Phase 5: 9-Archetype Category Theming Engine`](./docs/guides/phase-05-category-archetypes-and-theming.md)
+* [`Phase 6: Ticket Reservation & Event Day Treats`](./docs/guides/phase-06-ticket-checkout-and-event-treats.md)
+* [`Phase 7: Settings Suite & AI Concierge`](./docs/guides/phase-07-settings-suite-and-ai-concierge.md)
+* ...*(Phases 8 through 12)*

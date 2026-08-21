@@ -7,7 +7,6 @@ import {
   ChevronRight,
   Calendar,
   Building2,
-  MapPin,
   Ticket,
   Clock,
   Sparkles,
@@ -18,7 +17,7 @@ import {
 } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
-import { formatCurrency, formatDateRange, getTimeZoneForRegion, type SupportedCurrency } from '@/lib/i18n/formatters';
+import { formatDateRange, getTimeZoneForRegion } from '@/lib/i18n/formatters';
 import { getArchetypeTokens } from '@/lib/theming';
 import { type BannerSlide } from '@/types/discovery';
 import { cn } from '@/lib/utils';
@@ -148,7 +147,7 @@ export function BannerCarousel({
   return (
     <div
       className={cn(
-        'relative w-full overflow-hidden rounded-3xl border border-border/80 bg-card shadow-lg select-none',
+        'relative w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-border/80 bg-slate-950 shadow-xl select-none',
         className
       )}
       onMouseEnter={() => setIsPaused(true)}
@@ -158,76 +157,77 @@ export function BannerCarousel({
       onTouchEnd={handleTouchEnd}
       role="region"
       aria-roledescription="carousel"
-      aria-label="Featured Exhibitions Banner"
+      aria-label="Featured Events Banner"
     >
-      {/* Background Graphic & Backdrop */}
-      <div className="relative min-h-[380px] sm:min-h-[460px] lg:min-h-[500px] flex flex-col justify-end p-6 sm:p-10 lg:p-14 overflow-hidden">
+      {/* Slide Container */}
+      <div className="relative min-h-[420px] sm:min-h-[480px] lg:min-h-[520px] flex flex-col justify-end p-5 sm:p-8 lg:p-12 overflow-hidden">
         {/* Slide Image Layer */}
         {currentSlide.heroImageUrl ? (
           <img
             key={currentSlide.id}
             src={currentSlide.heroImageUrl}
             alt={currentSlide.title}
-            className="absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-700 animate-fade-in"
+            className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-1000 scale-[1.02]"
           />
         ) : (
           <div
-            className="absolute inset-0 h-full w-full transition-opacity duration-700"
+            className="absolute inset-0 h-full w-full"
             style={{
-              background: `radial-gradient(circle at 70% 30%, ${archetypeTokens.primary}44 0%, ${archetypeTokens.background} 80%)`,
+              background: `radial-gradient(circle at 70% 30%, ${archetypeTokens.primary}55 0%, #030712 85%)`,
             }}
           />
         )}
 
-        {/* Gradient Overlay Mask */}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent lg:bg-gradient-to-r lg:from-background lg:via-background/70 lg:to-transparent" />
+        {/* High-Contrast Multi-Layer Scrim Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/80 via-55% to-black/35 lg:bg-gradient-to-r lg:from-black/95 lg:via-black/80 lg:via-50% lg:to-black/25" />
 
-        {/* Foreground Content */}
-        <div className="relative z-10 max-w-2xl space-y-4">
-          {/* Top Badges */}
+        {/* Foreground Content Card */}
+        <div className="relative z-10 max-w-2xl space-y-3.5 sm:space-y-4">
+          {/* Top Category & Region Badges */}
           <div className="flex flex-wrap items-center gap-2">
             <Badge
               variant="default"
-              className="text-xs font-bold tracking-wider uppercase shadow-md"
+              className="text-[11px] sm:text-xs font-bold tracking-wider uppercase shadow-md border-0"
               style={{ backgroundColor: archetypeTokens.primary, color: '#ffffff' }}
             >
               {archetypeTokens.displayName}
             </Badge>
 
-            <Badge variant="outline" className="bg-background/90 text-xs font-semibold gap-1 backdrop-blur-xs">
+            <Badge variant="outline" className="bg-black/60 text-white text-[11px] sm:text-xs font-medium gap-1 border-white/20 backdrop-blur-sm">
               <Globe className="h-3 w-3 text-primary" />
-              <span>{regionCode} Hub</span>
+              <span>{regionCode} Edition</span>
             </Badge>
 
             {currentSlide.isFeatured && (
-              <Badge variant="warning" className="text-xs font-semibold gap-1 shadow-sm">
+              <Badge variant="warning" className="text-[11px] sm:text-xs font-semibold gap-1 shadow-sm">
                 <Sparkles className="h-3 w-3" />
-                <span>Featured Exhibition</span>
+                <span>Featured Spotlight</span>
               </Badge>
             )}
           </div>
 
-          {/* Title & Tagline */}
-          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground leading-[1.15]">
+          {/* Event Title */}
+          <h2 className="text-xl sm:text-3xl lg:text-5xl font-extrabold tracking-tight text-white leading-[1.18] drop-shadow-md">
             {currentSlide.title}
           </h2>
 
+          {/* Event Tagline */}
           {currentSlide.tagline && (
-            <p className="text-xs sm:text-sm lg:text-base text-muted-foreground line-clamp-2 max-w-xl">
+            <p className="text-xs sm:text-sm lg:text-base text-slate-200 line-clamp-2 max-w-xl leading-relaxed drop-shadow-sm">
               {currentSlide.tagline}
             </p>
           )}
 
-          {/* Event Specs Meta Bar */}
-          <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-muted-foreground pt-1">
-            <div className="flex items-center gap-1.5 text-foreground font-medium">
+          {/* Event Date & Venue Metadata */}
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs sm:text-sm text-slate-300 pt-0.5">
+            <div className="flex items-center gap-1.5 text-white font-medium">
               <Calendar className="h-4 w-4 text-primary shrink-0" />
               <span>{dateRangeDisplay}</span>
             </div>
 
             {currentSlide.venueName && (
-              <div className="flex items-center gap-1.5">
-                <Building2 className="h-4 w-4 text-primary/80 shrink-0" />
+              <div className="flex items-center gap-1.5 text-slate-200">
+                <Building2 className="h-4 w-4 text-primary/90 shrink-0" />
                 <span className="line-clamp-1">
                   {currentSlide.venueName}
                   {currentSlide.cityName && ` (${currentSlide.cityName})`}
@@ -236,24 +236,24 @@ export function BannerCarousel({
             )}
           </div>
 
-          {/* Real-time Countdown Timer Widget */}
-          <div className="pt-2">
+          {/* Countdown Widget */}
+          <div className="pt-1">
             <CountdownTimer targetDate={currentSlide.startDate} />
           </div>
 
           {/* Action CTAs */}
           <div className="flex flex-wrap items-center gap-3 pt-2">
             <Link href={`/${locale}/events/${currentSlide.slug}`}>
-              <Button size="lg" className="gap-2 font-semibold shadow-md">
+              <Button size="lg" className="gap-2 font-semibold shadow-lg bg-primary hover:bg-primary/90 text-white border-0">
                 <Ticket className="h-4 w-4" />
-                <span>Book Pass</span>
+                <span>Get Event Pass</span>
                 <ArrowRight className="h-4 w-4 ml-0.5" />
               </Button>
             </Link>
 
             <Link href={`/${locale}/events`}>
-              <Button size="lg" variant="outline" className="bg-background/80 backdrop-blur-xs">
-                <span>View All Events</span>
+              <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/30 backdrop-blur-md">
+                <span>View Full Schedule</span>
               </Button>
             </Link>
           </div>
@@ -264,7 +264,7 @@ export function BannerCarousel({
           <Button
             size="icon"
             variant="outline"
-            className="h-8 w-8 rounded-full bg-background/80 backdrop-blur-xs border-border/80 text-foreground hover:bg-accent"
+            className="h-8 w-8 rounded-full bg-black/50 hover:bg-black/80 text-white border-white/20 backdrop-blur-sm"
             onClick={prevSlide}
             aria-label="Previous slide"
           >
@@ -274,7 +274,7 @@ export function BannerCarousel({
           <Button
             size="icon"
             variant="outline"
-            className="h-8 w-8 rounded-full bg-background/80 backdrop-blur-xs border-border/80 text-foreground hover:bg-accent"
+            className="h-8 w-8 rounded-full bg-black/50 hover:bg-black/80 text-white border-white/20 backdrop-blur-sm"
             onClick={nextSlide}
             aria-label="Next slide"
           >
@@ -284,7 +284,7 @@ export function BannerCarousel({
           <Button
             size="icon"
             variant="ghost"
-            className="h-8 w-8 rounded-full text-muted-foreground hover:text-foreground hidden sm:flex"
+            className="h-8 w-8 rounded-full text-slate-300 hover:text-white hover:bg-white/10 hidden sm:flex"
             onClick={() => setIsPaused(!isPaused)}
             aria-label={isPaused ? 'Resume autoplay' : 'Pause autoplay'}
           >
@@ -301,8 +301,8 @@ export function BannerCarousel({
               className={cn(
                 'h-2 rounded-full transition-all duration-300',
                 idx === currentIndex
-                  ? 'w-6 bg-primary shadow-sm'
-                  : 'w-2 bg-muted-foreground/40 hover:bg-muted-foreground/70'
+                  ? 'w-6 bg-primary shadow-md'
+                  : 'w-2 bg-white/40 hover:bg-white/70'
               )}
               aria-label={`Go to slide ${idx + 1}`}
               aria-current={idx === currentIndex ? 'true' : 'false'}
@@ -327,39 +327,39 @@ function CountdownTimer({ targetDate }: { targetDate: Date | string }) {
 
   if (time.isPast) {
     return (
-      <div className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-background/80 px-3 py-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400 backdrop-blur-xs">
+      <div className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/40 bg-emerald-950/60 px-3 py-1 text-xs font-semibold text-emerald-300 backdrop-blur-sm">
         <Sparkles className="h-3.5 w-3.5" />
-        <span>Event is Now Live</span>
+        <span>Event is Happening Now</span>
       </div>
     );
   }
 
   return (
-    <div className="inline-flex items-center gap-2 rounded-xl border border-border/70 bg-background/85 p-2 backdrop-blur-xs shadow-xs">
-      <div className="flex items-center gap-1 text-[11px] font-semibold text-primary px-1">
+    <div className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-black/60 px-3 py-1.5 backdrop-blur-md shadow-sm">
+      <div className="flex items-center gap-1 text-[11px] font-semibold text-primary">
         <Clock className="h-3.5 w-3.5 animate-pulse" />
         <span className="uppercase tracking-wider">Starts in:</span>
       </div>
 
-      <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-foreground">
-        <div className="flex flex-col items-center rounded-md bg-muted/60 px-2 py-0.5 min-w-[32px]">
+      <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-white">
+        <div className="flex flex-col items-center rounded-md bg-white/10 px-2 py-0.5 min-w-[28px]">
           <span>{time.days}</span>
-          <span className="text-[9px] font-sans font-normal text-muted-foreground uppercase">d</span>
+          <span className="text-[8px] font-sans font-normal text-slate-300 uppercase">d</span>
         </div>
         <span>:</span>
-        <div className="flex flex-col items-center rounded-md bg-muted/60 px-2 py-0.5 min-w-[32px]">
+        <div className="flex flex-col items-center rounded-md bg-white/10 px-2 py-0.5 min-w-[28px]">
           <span>{String(time.hours).padStart(2, '0')}</span>
-          <span className="text-[9px] font-sans font-normal text-muted-foreground uppercase">h</span>
+          <span className="text-[8px] font-sans font-normal text-slate-300 uppercase">h</span>
         </div>
         <span>:</span>
-        <div className="flex flex-col items-center rounded-md bg-muted/60 px-2 py-0.5 min-w-[32px]">
+        <div className="flex flex-col items-center rounded-md bg-white/10 px-2 py-0.5 min-w-[28px]">
           <span>{String(time.minutes).padStart(2, '0')}</span>
-          <span className="text-[9px] font-sans font-normal text-muted-foreground uppercase">m</span>
+          <span className="text-[8px] font-sans font-normal text-slate-300 uppercase">m</span>
         </div>
         <span>:</span>
-        <div className="flex flex-col items-center rounded-md bg-muted/60 px-2 py-0.5 min-w-[32px]">
+        <div className="flex flex-col items-center rounded-md bg-white/10 px-2 py-0.5 min-w-[28px]">
           <span>{String(time.seconds).padStart(2, '0')}</span>
-          <span className="text-[9px] font-sans font-normal text-muted-foreground uppercase">s</span>
+          <span className="text-[8px] font-sans font-normal text-slate-300 uppercase">s</span>
         </div>
       </div>
     </div>

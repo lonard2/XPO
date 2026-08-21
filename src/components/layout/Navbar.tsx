@@ -14,6 +14,7 @@ import {
   Menu,
   X,
   Sparkles,
+  Calendar,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
@@ -71,6 +72,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
   const navLinks = [
     { href: `/${locale}`, label: "Explore", icon: Compass },
     { href: `/${locale}/events`, label: "Events", icon: Sparkles },
+    { href: `/${locale}/calendar`, label: "Calendar", icon: Calendar },
     { href: `/${locale}/venues`, label: "Venues", icon: Building2 },
     { href: `/${locale}/my-tickets`, label: "My Passes", icon: Ticket },
     { href: `/${locale}/dashboard`, label: "Organizer", icon: LayoutDashboard },

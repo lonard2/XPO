@@ -1,6 +1,6 @@
 # XPO MICE Ecosystem: Comprehensive Development Checklist
 
-This master checklist tracks the development, testing, and educational documentation across all 12 phases of the **XPO** MICE application.
+This master checklist tracks the development, testing, UX refinements, and educational documentation across all 12 phases of the **XPO** MICE application.
 
 ---
 
@@ -11,6 +11,34 @@ This master checklist tracks the development, testing, and educational documenta
 - [ ] **Multi-Language Support**: All strings externalized to `src/messages/` (`en`, `ja`, `zh-CN`, `id`, `de`, `es`).
 - [ ] **OpenRouter AI Gateway**: Support for all 6 models with fallback handling and structured output.
 - [ ] **Accessibility (a11y)**: WCAG AA color contrast, ARIA labels on modals/drawers, keyboard navigability.
+- [ ] **Humanized Copywriting**: Natural, institutional industry copy (no robotic AI-clichés).
+
+---
+
+## User Feedback Refinements & Enhancements Tracker
+
+- [ ] **1. Full-Display Desktop & Wide-Screen Optimization**:
+  - [ ] Expand maximum container boundaries to `max-w-[1600px] 2xl:max-w-[1800px]` with fluid responsive padding.
+  - [ ] Multi-column grid expansion (`xl:grid-cols-4`, `2xl:grid-cols-5`) eliminating empty horizontal margins on large monitors.
+- [ ] **2. Mobile Homepage Top Banner Ergonomics**:
+  - [ ] Streamline mobile hero card layout with clean visual hierarchy, avoiding information overload and text crowding.
+- [ ] **3. Universal Banner Contrast & Readability**:
+  - [ ] Implement multi-stop dark gradient overlays (`bg-gradient-to-t from-black/95 via-black/70 to-black/30`) and text drop shadows.
+  - [ ] Solid high-contrast CTA action buttons ensuring clear legibility over light and dynamic background images.
+- [ ] **4. Dedicated Country Editions (Indonesia, Japan, Global)**:
+  - [ ] Transform regional hubs into distinct **Country Editions** of the website (`/id` Indonesia Edition, `/jp` Japan Edition, `/global` Global Edition).
+  - [ ] Prominent Topbar **Edition Switcher** allowing users to switch between Country Editions seamlessly.
+  - [ ] Default venues, events, currency, and language tailored to the active Country Edition.
+- [ ] **5. Humanized, Institutional Copywriting**:
+  - [ ] Clean up AI-cliché terms ("Command & Intelligence" -> "Organizer Tools & Analytics", "Command Center" -> "Organizer Portal", "Archetype" -> "Event Category", "Treat at event" -> "Attendee Perks & Guidebook").
+- [ ] **6. Distinct Event Category Quick Buttons**:
+  - [ ] Visual identity for all 9 MICE categories with specialized iconography, custom color accents, and tactile hover states.
+- [ ] **7. Major Venues Current & Near-Upcoming Quick Glance**:
+  - [ ] Dedicated section directly below the top banner displaying major venues in the selected Country Edition (e.g. JIExpo, ICE BSD, JICC, NICE, GBK, JIS for Indonesia).
+  - [ ] Up to 3 current and near-upcoming events per venue with exact hall names (`Hall A1`, `Nusantara Hall 2`), dates, and direct pass booking.
+- [ ] **8. Interactive Event Calendar Engine**:
+  - [ ] Homepage interactive mini-calendar widget filtering events by selected day.
+  - [ ] Dedicated full Calendar page (`/[locale]/calendar`) with month/week views, category/hall filters, and iCal export.
 
 ---
 
@@ -57,12 +85,12 @@ This master checklist tracks the development, testing, and educational documenta
 
 ### Phase 3: Multilingual i18n (`next-intl`) & Regional Localization
 *Focus: Locale negotiation, regional hubs, currency/timezone formatters, and Phase 3 Guide.*
-- [x] Setup `next-intl` routing middleware (`src/middleware.ts`, `src/i18n/request.ts`, `src/i18n/routing.ts`).
+- [x] Setup `next-intl` routing middleware (`src/middleware.ts`, `src/i18n/routing.ts`).
 - [x] Create translation dictionaries in `src/messages/` (`en.json`, `ja.json`, `zh-CN.json`, `id.json`, `de.json`, `es.json`).
-- [x] Build Language Switcher & Region Switcher components in `src/components/layout/`.
-- [x] Build currency conversion and localized date/time formatting utilities in `src/lib/i18n/formatters.ts`.
+- [x] Build Language Switcher & Edition Switcher components in `src/components/layout/`.
+- [x] Build currency conversion and localized date/time formatting utilities in `src/lib/i18n/`.
 - [x] Author educational guide: `docs/guides/phase-03-multilingual-and-regional-routing.md`.
-- [x] **Verification**: `npm run type-check` (0 errors), `npm test` (17 test files, 90 tests passing), `npm run build` (28/28 static localized routes generated).
+- [x] **Verification**: Locale switching changes UI text without hydration mismatch; regional URLs resolve correctly.
 
 ---
 
@@ -76,11 +104,10 @@ This master checklist tracks the development, testing, and educational documenta
   - [x] Real-time debounced keyword search.
   - [x] Faceted filters (Region/City, Date Range, Category Archetype, Format [In-person/Hybrid/Virtual], Scale).
   - [x] Active filter chips & clear all functionality.
-- [x] Build venue directory and hub detail pages:
-  - [x] `app/[locale]/(attendee)/venues/page.tsx`: Global & regional venue directory with hall counts and transit badges.
-  - [x] `app/[locale]/(attendee)/venues/[slug]/page.tsx`: Venue overview, hall directory, transit guide, interactive map pin, upcoming venue calendar.
+- [x] Build venue hub detail page (`app/[locale]/(attendee)/venues/[slug]/page.tsx`):
+  - [x] Venue overview, hall directory, transit guide, interactive map pin, upcoming venue calendar.
 - [x] Author educational guide: `docs/guides/phase-04-discovery-engine-and-faceted-search.md`.
-- [x] **Verification**: `npm run type-check` (0 errors), `npm test` (26 test files, 159 tests passing with 100% rate), `npm run build` (94/94 static pages generated with 0 errors).
+- [x] **Verification**: Search query param synchronization, responsive layout on mobile/tablet/desktop.
 
 ---
 
@@ -99,21 +126,21 @@ This master checklist tracks the development, testing, and educational documenta
   - [x] `IncentiveRetreatView.tsx`: Daily excursion itinerary, gala seating charts, wellness scheduler.
 - [x] Build organizer brand override layer (custom accent color, hero banner, logo badge).
 - [x] Author educational guide: `docs/guides/phase-05-category-archetypes-and-theming.md`.
-- [x] **Verification**: `npm run type-check` (0 errors), `npm test` (26 test files, 159 tests passing with 100% rate), `npm run build` (94/94 static pages generated with 0 errors).
+- [x] **Verification**: Component snapshot tests for each archetype; verified dynamic styling application.
 
 ---
 
 ### Phase 6: Ticket Reservation Flow & Interactive Event-Day Treats
 *Focus: Checkout drawer, QR pass generator, digital guidebook, hall floor plan, and Phase 6 Guide.*
-- [x] Build multi-tier ticket selector and checkout drawer (`TicketCheckoutDrawer.tsx`, `TierSelector.tsx`).
+- [x] Build multi-tier ticket selector and checkout drawer (`TicketCheckoutDrawer.tsx`).
 - [x] Implement secure ticket pass generator (`src/lib/tickets/qrPass.ts`) with tamper-proof signature hash.
-- [x] Build attendee ticket & perks portal (`app/[locale]/(attendee)/my-tickets/[bookingId]/page.tsx` and `my-tickets/page.tsx`):
+- [x] Build attendee ticket & perks portal (`app/[locale]/(attendee)/my-tickets/[bookingId]/page.tsx`):
   - [x] `DigitalPassQR.tsx`: SVG QR pass with animated security watermark.
   - [x] `InteractiveGuidebook.tsx`: Live schedule tracker with "Add to My Agenda" & session alerts.
   - [x] `HallFloorMap.tsx`: Interactive SVG floor plan with booth & hall navigation.
-  - [x] Tier-gated perks unlock (VIP lounge, barista voucher, slide downloads in `TierPerksGating.tsx`).
+  - [x] Tier-gated perks unlock (VIP lounge, barista voucher, slide downloads).
 - [x] Author educational guide: `docs/guides/phase-06-ticket-checkout-and-event-treats.md`.
-- [x] **Verification**: `npm run type-check` (0 errors), `npm test` (35 test files, 240 tests passing with 100% rate), `npm run build` (115/115 static localized pages generated).
+- [x] **Verification**: Ticket checkout state flow tests, QR hash verification tests, perk gating unit tests.
 
 ---
 
@@ -129,7 +156,7 @@ This master checklist tracks the development, testing, and educational documenta
 - [x] Build Attendee AI Concierge floating action button and chat modal (`src/components/ai/AttendeeAIConcierge.tsx`).
 - [x] Implement AI Concierge API route (`app/api/ai/concierge/route.ts`) connected to OpenRouter (Gemini 3.5 Flash Lite / Gemini 3.7 Flash).
 - [x] Author educational guide: `docs/guides/phase-07-settings-suite-and-ai-concierge.md`.
-- [x] **Verification**: `npm run type-check` (0 errors), `npm test` (35 test files, 240 tests passing with 100% rate), `npm run build` (115/115 static pages generated with 0 errors).
+- [x] **Verification**: Preferences persistence in localStorage/state; AI concierge streaming response tests.
 
 ---
 
@@ -144,7 +171,7 @@ This master checklist tracks the development, testing, and educational documenta
 
 ---
 
-### Phase 9: Organizer Command Center (CRUD, Live Customizer & Booth Manager)
+### Phase 9: Organizer Portal (CRUD, Live Customizer & Booth Manager)
 *Focus: Event creation wizard, live visual customizer, booth roster, QR check-in, and Phase 9 Guide.*
 - [ ] Build organizer dashboard (`app/[locale]/(organizer)/dashboard/page.tsx`).
 - [ ] Build multi-step event creation wizard (`app/[locale]/(organizer)/events/new/page.tsx`).

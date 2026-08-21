@@ -40,7 +40,7 @@ describe('Discovery Component: BannerCarousel', () => {
     expect(screen.getByText('Manufacturing Indonesia Expo 2026')).toBeInTheDocument();
     expect(screen.getByText('Leading automation and heavy machinery trade show')).toBeInTheDocument();
     expect(screen.getByText(/Starts in:/i)).toBeInTheDocument();
-    expect(screen.getByText('ID Hub')).toBeInTheDocument();
+    expect(screen.getByText(/ID.*Edition/i)).toBeInTheDocument();
   });
 
   it('T1.2: navigates to next slide on clicking next button', () => {

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { MapPin, Check, ChevronDown, Building2, Globe, Compass, Coins, Clock } from "lucide-react";
+import { MapPin, Check, ChevronDown, Building2, Globe, Coins, Clock } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
@@ -13,6 +13,7 @@ export interface RegionOption {
   code: "id" | "jp" | "global";
   label: string;
   nativeName: string;
+  editionTitle: string;
   currency: SupportedCurrency;
   timezone: string;
   timezoneName: string;
@@ -27,18 +28,20 @@ export const REGION_OPTIONS: readonly RegionOption[] = [
     code: "id",
     label: "Indonesia",
     nativeName: "Indonesia",
+    editionTitle: "Indonesia Edition",
     currency: "IDR",
     timezone: "Asia/Jakarta",
     timezoneName: "WIB (UTC+7)",
     flagCode: "ID",
     venueCount: 6,
     highlightVenues: "JIExpo, ICE BSD, JICC, NICE PIK 2, GBK, JIS",
-    description: "Southeast Asia's industrial manufacturing & mega expo gateway.",
+    description: "Southeast Asia's industrial manufacturing & mega fair gateway.",
   },
   {
     code: "jp",
     label: "Japan",
-    nativeName: "日本 (Japan)",
+    nativeName: "日本",
+    editionTitle: "Japan Edition",
     currency: "JPY",
     timezone: "Asia/Tokyo",
     timezoneName: "JST (UTC+9)",
@@ -50,14 +53,15 @@ export const REGION_OPTIONS: readonly RegionOption[] = [
   {
     code: "global",
     label: "Global Hubs",
-    nativeName: "Global Hubs",
+    nativeName: "Global",
+    editionTitle: "Global Edition",
     currency: "USD",
     timezone: "UTC",
     timezoneName: "UTC",
     flagCode: "GL",
     venueCount: 4,
     highlightVenues: "Marina Bay Sands, Messe Frankfurt, ExCeL London",
-    description: "World-class convention complexes across key financial capitals.",
+    description: "World-class convention complexes across international financial capitals.",
   },
 ] as const;
 
@@ -85,7 +89,7 @@ export function RegionSwitcher({
 
   const handleRegionChange = (regionCode: "id" | "jp" | "global") => {
     setIsOpen(false);
-    router.push(`/${currentLocale}/region/${regionCode}`);
+    router.push(`/${currentLocale}?region=${regionCode}`);
   };
 
   // Close dropdown on outside click or Escape key
@@ -131,20 +135,20 @@ export function RegionSwitcher({
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                      <MapPin className="h-4 w-4" />
+                      <Globe className="h-4 w-4" />
                     </div>
                     <div>
                       <CardTitle className="text-base font-bold text-foreground">
-                        {region.label}
+                        {region.editionTitle}
                       </CardTitle>
                       <span className="text-[11px] text-muted-foreground font-mono">
-                        {region.flagCode}
+                        {region.flagCode} • {region.nativeName}
                       </span>
                     </div>
                   </div>
                   {isSelected && (
                     <Badge variant="archetype" className="text-[10px] uppercase">
-                      Active Hub
+                      Active Edition
                     </Badge>
                   )}
                 </div>
@@ -178,7 +182,7 @@ export function RegionSwitcher({
       <div
         className={cn("flex flex-wrap items-center gap-2", className)}
         role="radiogroup"
-        aria-label="Regional hub selection"
+        aria-label="Country Edition selection"
       >
         {REGION_OPTIONS.map((region) => {
           const isSelected = region.code === activeRegionCode?.toLowerCase();
@@ -196,8 +200,8 @@ export function RegionSwitcher({
                   : "bg-muted/70 text-muted-foreground hover:text-foreground hover:bg-muted"
               )}
             >
-              <MapPin className="h-3 w-3" />
-              <span>{region.label}</span>
+              <Globe className="h-3 w-3" />
+              <span>{region.editionTitle}</span>
               <span className="text-[10px] opacity-75 uppercase">({region.currency})</span>
             </button>
           );
@@ -215,11 +219,11 @@ export function RegionSwitcher({
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
-        aria-label={`Select regional hub, current: ${selectedRegion.label}`}
+        aria-label={`Select Country Edition, active: ${selectedRegion.editionTitle}`}
         className="h-9 px-2.5 gap-1.5 text-xs font-medium border border-border/60 hover:bg-accent hover:text-accent-foreground"
       >
-        <MapPin className="h-3.5 w-3.5 text-primary" />
-        <span className="font-semibold">{selectedRegion.label}</span>
+        <Globe className="h-3.5 w-3.5 text-primary" />
+        <span className="font-semibold">{selectedRegion.editionTitle}</span>
         <ChevronDown
           className={cn("h-3 w-3 text-muted-foreground transition-transform duration-200", {
             "rotate-180": isOpen,
@@ -230,12 +234,12 @@ export function RegionSwitcher({
       {isOpen && (
         <div
           role="listbox"
-          aria-label="Supported regional hubs"
+          aria-label="Supported Country Editions"
           className="absolute right-0 mt-1.5 w-64 origin-top-right rounded-xl border border-border bg-card p-1.5 shadow-xl z-50 animate-in fade-in-0 zoom-in-95 duration-100"
         >
           <div className="px-2.5 py-1.5 border-b border-border/50 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
             <Globe className="h-3 w-3 text-primary" />
-            <span>Select Regional Hub</span>
+            <span>Select Country Edition</span>
           </div>
 
           <div className="py-1 space-y-1 max-h-72 overflow-y-auto">
@@ -257,7 +261,7 @@ export function RegionSwitcher({
                 >
                   <div className="flex flex-col space-y-0.5">
                     <div className="flex items-center gap-1.5">
-                      <span className="font-semibold text-foreground">{region.label}</span>
+                      <span className="font-semibold text-foreground">{region.editionTitle}</span>
                       <span className="text-[10px] font-mono text-muted-foreground">
                         ({region.currency})
                       </span>
