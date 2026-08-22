@@ -257,7 +257,7 @@ export function EventCategoryPills({
 
   const scroll = (direction: 'left' | 'right') => {
     if (!scrollContainerRef.current) return;
-    const scrollAmount = direction === 'left' ? -320 : 320;
+    const scrollAmount = direction === 'left' ? -360 : 360;
     scrollContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
   };
 
@@ -268,10 +268,10 @@ export function EventCategoryPills({
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-primary uppercase tracking-wider mb-0.5">
             <Layers className="h-4 w-4" />
-            <span>15 Specialized MICE Verticals</span>
+            <span>{tDisc('verticalsBadge') || '15 Specialized MICE Verticals'}</span>
           </div>
           <h2 className="text-lg sm:text-2xl font-extrabold tracking-tight text-foreground">
-            Explore by Event Category
+            {tDisc('verticalsTitle') || 'Explore by Event Category'}
           </h2>
         </div>
 
@@ -335,7 +335,7 @@ export function EventCategoryPills({
           const cardContent = (
             <div
               className={cn(
-                'group relative flex flex-col justify-between w-[270px] sm:w-[310px] rounded-2xl border p-4 sm:p-5 transition-all duration-300 overflow-hidden text-left h-full snap-start shrink-0',
+                'group relative flex flex-col justify-between w-[290px] sm:w-[340px] lg:w-[360px] rounded-2xl border p-4 sm:p-5 transition-all duration-300 overflow-hidden text-left h-full snap-start shrink-0',
                 isActive
                   ? 'ring-2 ring-primary border-primary shadow-md bg-card'
                   : 'border-border/80 bg-card hover:border-primary/50 hover:shadow-sm hover:-translate-y-0.5'
@@ -362,7 +362,7 @@ export function EventCategoryPills({
                   </div>
 
                   <span
-                    className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
+                    className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full whitespace-nowrap"
                     style={{
                       backgroundColor: `${category.color}15`,
                       color: category.color,
@@ -374,20 +374,20 @@ export function EventCategoryPills({
 
                 {/* Title & Tagline */}
                 <div className="space-y-1">
-                  <h3 className="text-sm sm:text-base font-bold text-foreground group-hover:text-primary transition-colors leading-snug line-clamp-1">
+                  <h3 className="text-sm sm:text-base font-bold text-foreground group-hover:text-primary transition-colors leading-snug line-clamp-2 min-h-[2.5rem] sm:min-h-[2.75rem]">
                     {translatedTitle}
                   </h3>
-                  <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                  <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed min-h-[2.25rem]">
                     {translatedDesc}
                   </p>
                 </div>
 
                 {/* Highlight Tags */}
-                <div className="flex flex-wrap gap-1 pt-0.5">
+                <div className="flex flex-wrap gap-1.5 pt-0.5">
                   {category.highlights.slice(0, 2).map((highlight, idx) => (
                     <span
                       key={idx}
-                      className="text-[9px] font-medium text-foreground/80 bg-muted px-1.5 py-0.5 rounded"
+                      className="text-[9px] font-medium text-foreground/80 bg-muted px-2 py-0.5 rounded whitespace-nowrap"
                     >
                       {highlight}
                     </span>

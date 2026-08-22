@@ -34,11 +34,14 @@ export function HeroVenueQuickGlanceRail({
 }: HeroVenueQuickGlanceRailProps) {
   let tReg: any = (k: string) => k;
   let tTick: any = (k: string) => k;
+  let tArch: any = (k: string) => k;
   try {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     tReg = useTranslations('regions');
     // eslint-disable-next-line react-hooks/rules-of-hooks
     tTick = useTranslations('tickets');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tArch = useTranslations('archetypes');
   } catch {
     // Fallback if rendered outside provider in tests
   }
@@ -144,7 +147,7 @@ export function HeroVenueQuickGlanceRail({
           return (
             <div
               key={venue.id}
-              className="flex flex-col justify-between min-w-[280px] sm:min-w-[340px] max-w-[360px] rounded-xl border border-border/80 bg-background/80 hover:bg-background hover:border-primary/50 transition-all p-3 shadow-2xs snap-start shrink-0 space-y-2.5"
+              className="flex flex-col justify-between min-w-[300px] sm:min-w-[360px] max-w-[400px] rounded-xl border border-border/80 bg-background/80 hover:bg-background hover:border-primary/50 transition-all p-3 shadow-2xs snap-start shrink-0 space-y-2.5"
             >
               {/* Venue Title & Tag */}
               <div className="flex items-start justify-between gap-2">
@@ -163,7 +166,7 @@ export function HeroVenueQuickGlanceRail({
                 </div>
 
                 {hallCount > 0 && (
-                  <span className="text-[10px] font-semibold text-muted-foreground bg-muted/80 px-1.5 py-0.5 rounded shrink-0">
+                  <span className="text-[10px] font-semibold text-muted-foreground bg-muted/80 px-1.5 py-0.5 rounded shrink-0 whitespace-nowrap">
                     {hallCount} Halls
                   </span>
                 )}
@@ -176,6 +179,16 @@ export function HeroVenueQuickGlanceRail({
                     const tokens = getArchetypeTokens(evt.archetype);
                     const dates = formatDateRange(evt.startDate, evt.endDate, locale, timezone);
 
+                    let archTitle = tokens.displayName;
+                    try {
+                      if (tArch && typeof tArch.raw === 'function') {
+                        const raw = tArch.raw(evt.archetype);
+                        if (raw?.title) archTitle = raw.title;
+                      }
+                    } catch {
+                      // fallback
+                    }
+
                     return (
                       <Link
                         key={evt.id}
@@ -185,16 +198,16 @@ export function HeroVenueQuickGlanceRail({
                         <div className="min-w-0 space-y-0.5">
                           <div className="flex items-center gap-1 flex-wrap">
                             <span
-                              className="text-[9px] font-bold uppercase px-1 py-0.2 rounded"
+                              className="text-[9px] font-bold uppercase px-1 py-0.2 rounded whitespace-nowrap"
                               style={{
                                 backgroundColor: `${tokens.primary}18`,
                                 color: tokens.primary,
                               }}
                             >
-                              {tokens.displayName}
+                              {archTitle.split('&')[0].trim()}
                             </span>
                             {evt.venueHallName && (
-                              <span className="text-[9px] font-medium text-foreground bg-muted px-1 py-0.2 rounded">
+                              <span className="text-[9px] font-medium text-foreground bg-muted px-1 py-0.2 rounded whitespace-nowrap">
                                 {evt.venueHallName}
                               </span>
                             )}

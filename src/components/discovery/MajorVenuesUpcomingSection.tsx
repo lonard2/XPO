@@ -15,6 +15,7 @@ import {
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
+import { useTranslations } from 'next-intl';
 import { formatDateRange, formatCurrency, getTimeZoneForRegion } from '@/lib/i18n/formatters';
 import { getArchetypeTokens } from '@/lib/theming';
 import { type VenueWithEvents } from '@/types/discovery';
@@ -33,6 +34,17 @@ export function MajorVenuesUpcomingSection({
   regionCode,
   className,
 }: MajorVenuesUpcomingProps) {
+  let tVen: any = (k: string) => k;
+  let tArch: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tVen = useTranslations('venues');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tArch = useTranslations('archetypes');
+  } catch {
+    // Fallback if rendered outside provider in tests
+  }
+
   if (!venues || venues.length === 0) {
     return null;
   }
@@ -57,16 +69,16 @@ export function MajorVenuesUpcomingSection({
             <span>{currentRegionName} Edition Spotlight</span>
           </div>
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight text-foreground">
-            Happening at Major Venues
+            {tVen('happeningAtVenue')?.split(' ')?.[0] === 'Happening' ? 'Happening at Major Venues' : (tVen('happeningAtVenue') || 'Happening at Major Venues')}
           </h2>
           <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-            Quick glance at active exhibitions and upcoming highlights across top convention centers.
+            {tVen('subtitle') || 'Quick glance at active exhibitions and upcoming highlights across top convention centers.'}
           </p>
         </div>
 
         <Link href={`/${locale}/venues`}>
-          <Button variant="outline" size="sm" className="gap-1.5 text-xs self-start sm:self-auto">
-            <span>View All {currentRegionName} Venues</span>
+          <Button variant="outline" size="sm" className="gap-1.5 text-xs self-start sm:self-auto whitespace-nowrap">
+            <span>{tVen('title')?.split('&')?.[0]?.trim() || `View All ${currentRegionName} Venues`}</span>
             <ChevronRight className="h-3.5 w-3.5" />
           </Button>
         </Link>
