@@ -61,11 +61,14 @@ export default function NewEventWizardPage() {
 
   let tOrg: any = (k: string) => k;
   let tCom: any = (k: string) => k;
+  let tArch: any = (k: string) => k;
   try {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     tOrg = useTranslations("organizer");
     // eslint-disable-next-line react-hooks/rules-of-hooks
     tCom = useTranslations("common");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tArch = useTranslations("archetypes");
   } catch {
     // Fallback
   }
@@ -368,25 +371,25 @@ export default function NewEventWizardPage() {
       <div>
         <div className="flex items-center gap-2">
           <span className="text-[11px] font-bold uppercase tracking-wider text-primary">
-            Event Launch Wizard
+            {tOrg("wizardHeader") || "Event Launch Wizard"}
           </span>
-          <Badge variant="outline" size="sm">Step {currentStep} of 4</Badge>
+          <Badge variant="outline" size="sm">{tOrg("wizardStepOf", { current: currentStep, total: 4 }) || `Step ${currentStep} of 4`}</Badge>
         </div>
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mt-1">
-          Create & Launch MICE Exhibition
+          {tOrg("wizardTitle") || "Create & Launch MICE Exhibition"}
         </h1>
         <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-          Follow the 4-step pipeline to configure event category archetypes, hall allocations, ticket passes, and visual branding.
+          {tOrg("wizardSubtitle") || "Follow the 4-step pipeline to configure event category archetypes, hall allocations, ticket passes, and visual branding."}
         </p>
       </div>
 
       {/* STEP PROGRESS TRACKER BAR */}
       <div className="grid grid-cols-4 gap-2 border-b border-border/80 pb-4">
         {[
-          { step: 1, label: "General & Archetype", icon: Info },
-          { step: 2, label: "Venue & Halls", icon: Building2 },
-          { step: 3, label: "Ticket Passes", icon: Ticket },
-          { step: 4, label: "Branding & Review", icon: Palette },
+          { step: 1, label: tOrg("wizardStep1") || "General & Archetype", icon: Info },
+          { step: 2, label: tOrg("wizardStep2") || "Venue & Halls", icon: Building2 },
+          { step: 3, label: tOrg("wizardStep3") || "Ticket Passes", icon: Ticket },
+          { step: 4, label: tOrg("wizardStep4") || "Branding & Review", icon: Palette },
         ].map((s) => {
           const Icon = s.icon;
           const isCompleted = currentStep > s.step;
@@ -867,17 +870,17 @@ export default function NewEventWizardPage() {
       {/* WIZARD NAVIGATION CONTROLS */}
       <div className="flex items-center justify-between pt-4 border-t border-border">
         {currentStep > 1 ? (
-          <Button variant="outline" size="sm" onClick={prevStep} className="gap-1.5">
+          <Button variant="outline" size="sm" onClick={prevStep} className="gap-1.5 cursor-pointer">
             <ArrowLeft className="h-4 w-4" />
-            <span>Previous Step</span>
+            <span>{tOrg("wizardBack") || "Previous Step"}</span>
           </Button>
         ) : (
           <div />
         )}
 
         {currentStep < 4 ? (
-          <Button variant="primary" size="sm" onClick={nextStep} className="gap-1.5">
-            <span>Continue</span>
+          <Button variant="primary" size="sm" onClick={nextStep} className="gap-1.5 cursor-pointer">
+            <span>{tOrg("wizardNext") || "Continue"}</span>
             <ArrowRight className="h-4 w-4" />
           </Button>
         ) : (
@@ -886,10 +889,10 @@ export default function NewEventWizardPage() {
             size="sm"
             onClick={handleSubmitEvent}
             disabled={isSubmitting}
-            className="gap-2 bg-emerald-600 hover:bg-emerald-700 text-white"
+            className="gap-2 bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer"
           >
             <Sparkles className="h-4 w-4" />
-            <span>{isSubmitting ? "Launching Event..." : "Publish & Open Customizer"}</span>
+            <span>{isSubmitting ? (tOrg("wizardCreating") || "Launching Event...") : (tOrg("wizardPublishButton") || "Publish & Open Customizer")}</span>
           </Button>
         )}
       </div>

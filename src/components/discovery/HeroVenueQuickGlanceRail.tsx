@@ -98,8 +98,16 @@ export function HeroVenueQuickGlanceRail({
       major = 'Major Venues in';
     }
 
-    let regionTxt = tReg(regionCode.toLowerCase());
-    if (!regionTxt || typeof regionTxt !== 'string' || regionTxt === regionCode.toLowerCase() || regionTxt.includes('.')) {
+    let regionTxt = regionLabel;
+    try {
+      const code = regionCode.toLowerCase();
+      if (code === 'id' || code === 'jp' || code === 'global') {
+        const localized = tReg(`${code}.name`);
+        if (localized && typeof localized === 'string' && !localized.includes('.')) {
+          regionTxt = localized;
+        }
+      }
+    } catch {
       regionTxt = regionLabel;
     }
 

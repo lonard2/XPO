@@ -23,6 +23,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Input } from "@/components/ui/Input";
 import { Card } from "@/components/ui/Card";
 import { LivePreviewFrame } from "@/components/organizer/LivePreviewFrame";
+import { useTranslations } from "next-intl";
 import {
   ARCHETYPE_DEFAULTS,
   MiceArchetype,
@@ -82,6 +83,20 @@ export default function EventCustomizerPage() {
   const params = useParams();
   const locale = (params?.locale as string) || "en";
   const eventId = (params?.slug || params?.id || "") as string;
+
+  let tOrg: any = (k: string) => k;
+  let tCom: any = (k: string) => k;
+  let tArch: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tOrg = useTranslations("organizer");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tCom = useTranslations("common");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tArch = useTranslations("archetypes");
+  } catch {
+    // Fallback
+  }
 
   const [eventData, setEventData] = React.useState<any>(null);
   const [isLoading, setIsLoading] = React.useState(true);
@@ -254,10 +269,10 @@ export default function EventCustomizerPage() {
             variant="outline"
             size="sm"
             onClick={handleResetDefaults}
-            className="text-xs gap-1.5 h-9"
+            className="text-xs gap-1.5 h-9 cursor-pointer"
           >
             <RotateCcw className="h-3.5 w-3.5" />
-            <span>Reset Defaults</span>
+            <span>{tOrg("resetDefaults") || "Reset Defaults"}</span>
           </Button>
 
           <Button
@@ -265,17 +280,17 @@ export default function EventCustomizerPage() {
             size="sm"
             onClick={handleSaveBranding}
             disabled={isSaving}
-            className="text-xs gap-1.5 h-9 bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs"
+            className="text-xs gap-1.5 h-9 bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs cursor-pointer"
           >
             <Save className="h-3.5 w-3.5" />
-            <span>{isSaving ? "Saving..." : "Save Branding"}</span>
+            <span>{isSaving ? (tOrg("saving") || "Saving...") : (tOrg("saveBranding") || "Save Branding")}</span>
           </Button>
 
           {eventData?.slug && (
             <Link href={`/${locale}/events/${eventData.slug}`} target="_blank">
-              <Button variant="secondary" size="sm" className="text-xs gap-1.5 h-9">
+              <Button variant="secondary" size="sm" className="text-xs gap-1.5 h-9 cursor-pointer">
                 <ExternalLink className="h-3.5 w-3.5" />
-                <span className="hidden md:inline">View Public</span>
+                <span className="hidden md:inline">{tOrg("viewPublic") || "View Public"}</span>
               </Button>
             </Link>
           )}
@@ -286,7 +301,7 @@ export default function EventCustomizerPage() {
       {saveSuccess && (
         <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-lg flex items-center gap-2.5 text-xs text-emerald-600 dark:text-emerald-400 animate-fade-in">
           <CheckCircle2 className="h-4 w-4 shrink-0" />
-          <span>Visual branding configuration persisted successfully to event database!</span>
+          <span>{tOrg("saveSuccess") || "Visual branding configuration persisted successfully to event database!"}</span>
         </div>
       )}
 

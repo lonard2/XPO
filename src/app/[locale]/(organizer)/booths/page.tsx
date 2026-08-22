@@ -382,25 +382,25 @@ export default function BoothManagerPage() {
       {/* KPI METRIC CARDS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="p-4 border-border bg-card">
-          <div className="text-xs text-muted-foreground font-medium">Total Booths Indexed</div>
+          <div className="text-xs text-muted-foreground font-medium">{tOrg("boothsIndexed") || "Total Booths Indexed"}</div>
           <div className="text-2xl font-bold text-foreground mt-1">{totalCount}</div>
-          <div className="text-[11px] text-muted-foreground mt-0.5">Across {hallsList.length} exhibition halls</div>
+          <div className="text-[11px] text-muted-foreground mt-0.5">{tOrg("acrossExhibitions", { count: hallsList.length }) || `Across ${hallsList.length} exhibition halls`}</div>
         </Card>
 
         <Card className="p-4 border-border bg-card">
-          <div className="text-xs text-muted-foreground font-medium">Occupied Lots</div>
+          <div className="text-xs text-muted-foreground font-medium">{tOrg("occupiedLots") || "Occupied Lots"}</div>
           <div className="text-2xl font-bold text-primary mt-1">{occupiedCount}</div>
-          <div className="text-[11px] text-emerald-600 dark:text-emerald-400 mt-0.5">Active commercial tenants</div>
+          <div className="text-[11px] text-emerald-600 dark:text-emerald-400 mt-0.5">{tOrg("occupiedOnly") || "Active commercial tenants"}</div>
         </Card>
 
         <Card className="p-4 border-border bg-card">
-          <div className="text-xs text-muted-foreground font-medium">Available Units</div>
+          <div className="text-xs text-muted-foreground font-medium">{tOrg("availableUnits") || "Available Units"}</div>
           <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">{availableCount}</div>
-          <div className="text-[11px] text-muted-foreground mt-0.5">Ready for immediate allocation</div>
+          <div className="text-[11px] text-muted-foreground mt-0.5">{tOrg("availableOnly") || "Ready for immediate allocation"}</div>
         </Card>
 
         <Card className="p-4 border-border bg-card">
-          <div className="text-xs text-muted-foreground font-medium">Floor Occupancy Rate</div>
+          <div className="text-xs text-muted-foreground font-medium">{tOrg("occupancyRate") || "Floor Occupancy Rate"}</div>
           <div className="text-2xl font-bold text-foreground mt-1">{occupancyPct}%</div>
           <div className="w-full bg-muted rounded-full h-1.5 mt-2 overflow-hidden">
             <div
@@ -419,7 +419,7 @@ export default function BoothManagerPage() {
             <Search className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
             <input
               type="text"
-              placeholder="Search exhibitor or booth #..."
+              placeholder={tOrg("searchBooths") || "Search exhibitor or booth #..."}
               className="w-full pl-9 pr-3 py-1.5 bg-background border border-input rounded-md text-xs focus:outline-none focus:ring-2 focus:ring-ring"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -433,7 +433,7 @@ export default function BoothManagerPage() {
               value={selectedHall}
               onChange={(e) => setSelectedHall(e.target.value)}
             >
-              <option value="ALL">All Exhibition Halls</option>
+              <option value="ALL">{tOrg("allHalls") || "All Exhibition Halls"}</option>
               {hallsList.map((h) => (
                 <option key={h} value={h}>
                   {h}
@@ -449,9 +449,9 @@ export default function BoothManagerPage() {
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
             >
-              <option value="ALL">All Statuses (Available & Occupied)</option>
-              <option value="OCCUPIED">Occupied / Assigned Only</option>
-              <option value="AVAILABLE">Available / Unassigned Only</option>
+              <option value="ALL">{tOrg("allStatuses") || "All Statuses (Available & Occupied)"}</option>
+              <option value="OCCUPIED">{tOrg("occupiedOnly") || "Occupied / Assigned Only"}</option>
+              <option value="AVAILABLE">{tOrg("availableOnly") || "Available / Unassigned Only"}</option>
             </select>
           </div>
 
@@ -462,7 +462,7 @@ export default function BoothManagerPage() {
               value={selectedEventId}
               onChange={(e) => setSelectedEventId(e.target.value)}
             >
-              <option value="ALL">All Registered Events</option>
+              <option value="ALL">{tOrg("allEvents") || "All Registered Events"}</option>
               {events.map((ev) => (
                 <option key={ev.id} value={ev.id}>
                   {ev.title}
