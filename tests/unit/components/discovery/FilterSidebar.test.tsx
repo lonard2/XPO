@@ -24,7 +24,7 @@ describe('Discovery Component: FilterSidebar', () => {
       />
     );
 
-    expect(screen.getByText(/regional/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/regional/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/category|domain|vertical/i)).toBeInTheDocument();
     expect(screen.getAllByText(/format/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/scale/i).length).toBeGreaterThan(0);

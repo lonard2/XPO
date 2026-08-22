@@ -44,6 +44,7 @@ export function FacetedFilterBar({
   let tReg: any = (k: string) => k;
   let tArch: any = (k: string) => k;
   let tCom: any = (k: string) => k;
+  let tEvents: any = (k: string) => k;
   try {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     tDisc = useTranslations('discovery');
@@ -53,9 +54,19 @@ export function FacetedFilterBar({
     tArch = useTranslations('archetypes');
     // eslint-disable-next-line react-hooks/rules-of-hooks
     tCom = useTranslations('common');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tEvents = useTranslations('events');
   } catch {
     // Fallback if rendered outside provider in tests
   }
+
+  const getRegionAllLabel = () => {
+    const val = tReg('all');
+    if (!val || val === 'regions.all' || val === 'all') {
+      return 'All Regional Hubs';
+    }
+    return val;
+  };
 
   const [searchTerm, setSearchTerm] = React.useState(filters.keyword);
 
@@ -140,10 +151,10 @@ export function FacetedFilterBar({
             className="h-10 rounded-xl border border-border bg-card px-3 text-xs font-medium text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-xs cursor-pointer"
             aria-label="Select Region Hub"
           >
-            <option value="all">All Regional Hubs</option>
-            <option value="id">Indonesia Hub (ID)</option>
-            <option value="jp">Japan Hub (JP)</option>
-            <option value="global">Global Gateways (GL)</option>
+            <option value="all">{getRegionAllLabel()}</option>
+            <option value="id">{tReg('id.name') ? `${tReg('id.name')} (ID)` : 'Indonesia Hub (ID)'}</option>
+            <option value="jp">{tReg('jp.name') ? `${tReg('jp.name')} (JP)` : 'Japan Hub (JP)'}</option>
+            <option value="global">{tReg('global.name') ? `${tReg('global.name')} (GL)` : 'Global Gateways (GL)'}</option>
           </select>
 
           <select
@@ -152,10 +163,12 @@ export function FacetedFilterBar({
             className="h-10 rounded-xl border border-border bg-card px-3 text-xs font-medium text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-xs cursor-pointer max-w-[180px]"
             aria-label="Select MICE Category"
           >
-            <option value="all">All Categories</option>
+            <option value="all">{tEvents('allCategories') || 'All Categories'}</option>
             {ALL_MICE_ARCHETYPES.map((arch) => (
               <option key={arch} value={arch}>
-                {ARCHETYPE_DEFAULTS[arch].displayName}
+                {tArch(`${arch}.title`) && tArch(`${arch}.title`) !== `${arch}.title`
+                  ? tArch(`${arch}.title`)
+                  : ARCHETYPE_DEFAULTS[arch].displayName}
               </option>
             ))}
           </select>
@@ -170,10 +183,10 @@ export function FacetedFilterBar({
               className="h-10 w-full sm:w-auto rounded-xl border border-border bg-card pl-3 pr-8 text-xs font-medium text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-xs cursor-pointer"
               aria-label="Sort events"
             >
-              <option value="date_asc">Date: Upcoming First</option>
-              <option value="date_desc">Date: Latest First</option>
-              <option value="featured">Featured Priority</option>
-              <option value="title_asc">Name: A to Z</option>
+              <option value="date_asc">{tEvents('sortUpcoming') || 'Date: Upcoming First'}</option>
+              <option value="date_desc">{tEvents('sortLatest') || 'Date: Latest First'}</option>
+              <option value="featured">{tEvents('sortFeatured') || 'Featured Priority'}</option>
+              <option value="title_asc">{tEvents('sortTitleAsc') || 'Name: A to Z'}</option>
             </select>
             <ArrowUpDown className="absolute right-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground pointer-events-none" />
           </div>
@@ -186,7 +199,7 @@ export function FacetedFilterBar({
             aria-label="Open filter sidebar drawer"
           >
             <SlidersHorizontal className="h-4 w-4 text-primary" />
-            <span>Filters</span>
+            <span>{tCom('filters') || 'Filters'}</span>
             {activeFilterCount > 0 && (
               <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground font-bold">
                 {activeFilterCount}
@@ -205,7 +218,7 @@ export function FacetedFilterBar({
         />
 
         <span className="text-xs text-muted-foreground sm:ml-auto whitespace-nowrap">
-          Showing <strong className="text-foreground font-semibold">{totalResults}</strong> {totalResults === 1 ? 'exhibition' : 'exhibitions'}
+          {tEvents('showingResults') || 'Showing'} <strong className="text-foreground font-semibold">{totalResults}</strong> {totalResults === 1 ? (tEvents('unitSingular') || 'exhibition') : (tEvents('unitPlural') || 'exhibitions')}
         </span>
       </div>
     </div>

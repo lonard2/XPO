@@ -60,16 +60,24 @@ export function VenueSpotlightSection({
     });
   }, [venues, activeRegionFilter]);
 
+  const getRegionAllLabel = () => {
+    const val = tReg('all');
+    if (!val || val === 'regions.all' || val === 'all') {
+      return 'All Regions';
+    }
+    return val;
+  };
+
   const currentRegionLabel =
     activeRegionFilter === 'all'
-      ? (tReg('all') || 'All Regions')
+      ? getRegionAllLabel()
       : (tReg(`${activeRegionFilter}.name`) || activeRegionFilter.toUpperCase());
 
   const regionTabs: Array<{ id: string; label: string; count: number }> = [
     { id: 'id', label: tReg('id.name') || 'Indonesia', count: venues.filter((v) => (v.region?.code || v.regionId || '').toLowerCase() === 'id').length },
     { id: 'jp', label: tReg('jp.name') || 'Japan', count: venues.filter((v) => (v.region?.code || v.regionId || '').toLowerCase() === 'jp').length },
     { id: 'global', label: tReg('global.name') || 'Global Hubs', count: venues.filter((v) => ['gl', 'global'].includes((v.region?.code || v.regionId || '').toLowerCase())).length },
-    { id: 'all', label: tReg('all') || 'All Regions', count: venues.length },
+    { id: 'all', label: getRegionAllLabel(), count: venues.length },
   ];
 
   return (

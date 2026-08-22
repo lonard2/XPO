@@ -20,6 +20,7 @@ import {
   BarChart3,
   AlertCircle,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useAuth } from "@/lib/auth/session";
 import { getRoleLabel, getRoleBadgeVariant } from "@/lib/auth/rbac";
 import { Badge } from "@/components/ui/Badge";
@@ -37,50 +38,60 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
   const { user, role, switchRole } = useAuth();
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = React.useState(false);
 
+  let tOrg: any = (k: string) => k;
+  let tCom: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tOrg = useTranslations("organizer");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tCom = useTranslations("common");
+  } catch {
+    // Fallback if rendered outside provider
+  }
+
   const navItems = [
     {
       href: `/${locale}/dashboard`,
-      label: "Dashboard & Metrics",
+      label: tOrg("dashboardNav") || "Dashboard & Metrics",
       icon: LayoutDashboard,
-      description: "Overview, revenue & check-in velocity",
+      description: tOrg("dashboardNavDesc") || "Overview, revenue & check-in velocity",
     },
     {
       href: `/${locale}/events/new`,
-      label: "Create Event Wizard",
+      label: tOrg("createEventNav") || "Create Event Wizard",
       icon: PlusCircle,
-      description: "4-step MICE event launch pipeline",
+      description: tOrg("createEventNavDesc") || "4-step MICE event launch pipeline",
     },
     {
       href: `/${locale}/booths`,
-      label: "Booth & Tenant Manager",
+      label: tOrg("boothManagerNav") || "Booth & Tenant Manager",
       icon: Store,
-      description: "Floor allocations & exhibitor roster",
+      description: tOrg("boothManagerNavDesc") || "Floor allocations & exhibitor roster",
     },
     {
       href: `/${locale}/scanner`,
-      label: "Door Staff QR Scanner",
+      label: tOrg("qrScannerNav") || "Door Staff QR Scanner",
       icon: QrCode,
-      description: "Cryptographic HMAC pass verification",
+      description: tOrg("qrScannerNavDesc") || "Cryptographic HMAC pass verification",
     },
   ];
 
   // Breadcrumbs derivation
   const getBreadcrumbs = () => {
-    const segments = pathname.split("/").filter(Boolean);
-    const crumbs = [{ label: "Organizer Hub", href: `/${locale}/dashboard` }];
+    const crumbs = [{ label: tOrg("crumbOrganizerHub") || "Organizer Hub", href: `/${locale}/dashboard` }];
 
     if (pathname.includes("/dashboard")) {
-      crumbs.push({ label: "Dashboard", href: `/${locale}/dashboard` });
+      crumbs.push({ label: tOrg("dashboardNav") || "Dashboard", href: `/${locale}/dashboard` });
     } else if (pathname.includes("/events/new")) {
-      crumbs.push({ label: "New Event Wizard", href: `/${locale}/events/new` });
+      crumbs.push({ label: tOrg("crumbNewEvent") || "New Event Wizard", href: `/${locale}/events/new` });
     } else if (pathname.includes("/customizer")) {
-      crumbs.push({ label: "Live Visual Customizer", href: pathname });
+      crumbs.push({ label: tOrg("crumbCustomizer") || "Live Visual Customizer", href: pathname });
     } else if (pathname.includes("/ai-reports")) {
-      crumbs.push({ label: "AI Multi-Model Reports", href: pathname });
+      crumbs.push({ label: tOrg("crumbAiReports") || "AI Multi-Model Reports", href: pathname });
     } else if (pathname.includes("/booths")) {
-      crumbs.push({ label: "Booth Roster", href: `/${locale}/booths` });
+      crumbs.push({ label: tOrg("crumbBooths") || "Booth Roster", href: `/${locale}/booths` });
     } else if (pathname.includes("/scanner")) {
-      crumbs.push({ label: "QR Check-In Scanner", href: `/${locale}/scanner` });
+      crumbs.push({ label: tOrg("crumbScanner") || "QR Check-In Scanner", href: `/${locale}/scanner` });
     }
 
     return crumbs;
@@ -96,7 +107,7 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
           <div className="flex items-center gap-2">
             <AlertCircle className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
             <span>
-              You are currently viewing in <strong>Attendee</strong> mode. Organizer creation and customizer mutations require <strong>Organizer</strong> or <strong>Admin</strong> privileges.
+              {tOrg("attendeeModeNotice") || "You are currently viewing in Attendee mode. Organizer creation and customizer mutations require Organizer or Admin privileges."}
             </span>
           </div>
           <Button
@@ -105,7 +116,7 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
             className="h-7 text-xs border-amber-500/40 text-amber-900 dark:text-amber-200 hover:bg-amber-500/20"
             onClick={() => switchRole("ORGANIZER")}
           >
-            Switch to Organizer Persona
+            {tOrg("switchToOrganizer") || "Switch to Organizer Persona"}
           </Button>
         </div>
       )}
@@ -117,7 +128,7 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
           <div className="p-3.5 rounded-xl border border-border bg-background/70 space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                Management Portal
+                {tOrg("portalBadge") || "Management Portal"}
               </span>
               <Badge variant={getRoleBadgeVariant(role)} size="sm">
                 {role}
@@ -129,10 +140,10 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
               </div>
               <div className="min-w-0 flex-1">
                 <h4 className="text-xs font-bold text-foreground truncate">
-                  {user ? user.name : "Organizer Hub"}
+                  {user ? user.name : (tOrg("managementHub") || "Organizer Hub")}
                 </h4>
                 <p className="text-[10px] text-muted-foreground truncate">
-                  {user?.organization || "Nusantara Event Group"}
+                  {user?.organization || "XPO Ecosystem"}
                 </p>
               </div>
             </div>
@@ -141,7 +152,7 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
           {/* Navigation Links */}
           <div className="space-y-1">
             <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground px-2 mb-2">
-              Organizer Suite
+              {tOrg("suiteTitle") || "Organizer Suite"}
             </div>
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -171,15 +182,12 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
 
           {/* Quick Switch to Attendee Explorer */}
           <div className="pt-4 border-t border-border/70 space-y-2 mt-auto">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground px-2">
-              Public Portal
-            </div>
             <Link
               href={`/${locale}`}
               className="flex items-center gap-2.5 p-2 rounded-lg text-xs text-muted-foreground hover:text-foreground hover:bg-accent/50 transition-colors"
             >
               <Compass className="h-4 w-4 text-emerald-500" />
-              <span>Attendee Event Discovery</span>
+              <span>{tOrg("switchToAttendee") || "Attendee Event Discovery"}</span>
             </Link>
           </div>
         </aside>
@@ -195,7 +203,9 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
             >
               {isMobileSidebarOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
             </Button>
-            <span className="text-xs font-bold text-foreground">Organizer Portal</span>
+            <span className="text-xs font-bold text-foreground">
+              {tOrg("portalBadge") || "Organizer Portal"}
+            </span>
           </div>
           <Badge variant={getRoleBadgeVariant(role)} size="sm">
             {role}
@@ -232,7 +242,7 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
                 className="flex items-center gap-3 p-2.5 rounded-lg text-xs font-medium text-muted-foreground hover:text-foreground pt-2 border-t border-border"
               >
                 <Compass className="h-4 w-4 text-emerald-500" />
-                <span>Return to Attendee Portal</span>
+                <span>{tOrg("switchToAttendee") || "Return to Attendee Portal"}</span>
               </Link>
             </div>
           </div>
@@ -257,7 +267,7 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
               <Link href={`/${locale}/events/new`}>
                 <Button size="sm" variant="primary" className="h-8 gap-1.5 text-xs">
                   <PlusCircle className="h-3.5 w-3.5" />
-                  <span className="hidden sm:inline">Launch Event</span>
+                  <span className="hidden sm:inline">{tOrg("launchNewEvent") || "Launch Event"}</span>
                 </Button>
               </Link>
             </div>

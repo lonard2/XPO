@@ -42,6 +42,8 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
   const explicitRegion = typeof rawSearchParams.region === 'string' ? rawSearchParams.region : undefined;
   const activeRegion = explicitRegion || defaultRegion;
 
+  const tEvents = await getTranslations({ locale, namespace: 'events' });
+
   // Fetch events from database
   let eventsList: DiscoveryEvent[] = FALLBACK_EVENTS;
 
@@ -85,10 +87,12 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
         <div className="container flex items-center gap-2 text-xs text-muted-foreground px-4">
           <Link href={`/${locale}`} className="hover:text-foreground flex items-center gap-1">
             <ArrowLeft className="h-3.5 w-3.5" />
-            <span>Home</span>
+            <span>{tEvents('breadcrumbsHome') || 'Home'}</span>
           </Link>
           <span>/</span>
-          <span className="font-semibold text-foreground">Events & Exhibitions</span>
+          <span className="font-semibold text-foreground">
+            {tEvents('breadcrumbsTitle') || 'Events & Exhibitions'}
+          </span>
         </div>
       </div>
 
@@ -98,13 +102,13 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
           <div className="max-w-3xl space-y-3">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-semibold">
               <Compass className="h-3.5 w-3.5" />
-              <span>Attendee Discovery Engine</span>
+              <span>{tEvents('discoveryEngineBadge') || 'Attendee Discovery Engine'}</span>
             </div>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground">
-              MICE Events & International Expos
+              {tEvents('eventsTitle') || 'MICE Events & International Expos'}
             </h1>
             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-              Explore scheduled trade exhibitions, technical developer summits, medical congresses, and mega consumer pavilions with real-time multi-dimensional faceted search.
+              {tEvents('eventsSubtitle') || 'Explore scheduled trade exhibitions, technical developer summits, medical congresses, and mega consumer pavilions with real-time multi-dimensional faceted search.'}
             </p>
           </div>
         </div>
@@ -113,7 +117,7 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
       {/* Interactive Client Explorer with SearchParams Suspense */}
       <Suspense fallback={
         <div className="container px-4 py-12 text-center text-xs text-muted-foreground">
-          Loading discovery engine...
+          {tEvents('loading') || 'Loading discovery engine...'}
         </div>
       }>
         <EventsExplorer

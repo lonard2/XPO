@@ -64,8 +64,16 @@ export function FilterSidebar({
     });
   };
 
+  const getRegionAllLabel = () => {
+    const val = tReg('all');
+    if (!val || val === 'regions.all' || val === 'all') {
+      return 'All Regional Hubs';
+    }
+    return val;
+  };
+
   const regionalHubs = [
-    { id: 'all', label: tReg('all') || 'All Regional Hubs', code: 'ALL' },
+    { id: 'all', label: getRegionAllLabel(), code: 'ALL' },
     { id: 'id', label: tReg('id.name') ? `${tReg('id.name')} (JIExpo, ICE)` : 'Indonesia Hub (JIExpo, ICE BSD)', code: 'ID' },
     { id: 'jp', label: tReg('jp.name') ? `${tReg('jp.name')} (Tokyo Big Sight)` : 'Japan Hub (Tokyo Big Sight)', code: 'JP' },
     { id: 'global', label: tReg('global.name') ? `${tReg('global.name')} (MBS, Frankfurt)` : 'Global Hubs (MBS, Frankfurt)', code: 'GL' },
@@ -218,7 +226,11 @@ export function FilterSidebar({
                     className="h-2 w-2 rounded-full shrink-0"
                     style={{ backgroundColor: item.primary }}
                   />
-                  <span className="truncate">{item.displayName}</span>
+                  <span className="truncate">
+                    {tArch(`${archKey}.title`) && tArch(`${archKey}.title`) !== `${archKey}.title`
+                      ? tArch(`${archKey}.title`)
+                      : item.displayName}
+                  </span>
                 </div>
                 {count !== undefined && (
                   <span className="text-[10px] text-muted-foreground font-mono ml-1">({count})</span>

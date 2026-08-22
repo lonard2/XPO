@@ -137,14 +137,18 @@ export function EventCalendarWidget({
             <CalendarIcon className="h-4 w-4" />
           </div>
           <div>
-            <h3 className="text-base sm:text-lg font-bold tracking-tight">Event Calendar Guide</h3>
-            <p className="text-xs text-muted-foreground">Select a date to preview active exhibitions and keynotes.</p>
+            <h3 className="text-base sm:text-lg font-bold tracking-tight">
+              {tCal('guideTitle') || 'Event Calendar Guide'}
+            </h3>
+            <p className="text-xs text-muted-foreground">
+              {tCal('guideSubtitle') || 'Select a date to preview active exhibitions and keynotes.'}
+            </p>
           </div>
         </div>
 
         <Link href={`/${locale}/calendar`}>
           <Button variant="outline" size="sm" className="gap-1.5 text-xs">
-            <span>Full Multi-Track Timetable</span>
+            <span>{tCal('fullTimetable') || 'Full Multi-Track Timetable'}</span>
             <ArrowRight className="h-3.5 w-3.5" />
           </Button>
         </Link>

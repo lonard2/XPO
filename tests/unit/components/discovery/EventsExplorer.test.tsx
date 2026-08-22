@@ -46,7 +46,7 @@ describe('Discovery Component: EventsExplorer Integration', () => {
   it('T1.3: filters events by MICE archetype', () => {
     render(<EventsExplorer initialEvents={FALLBACK_EVENTS} locale="en" />);
 
-    const techSummitBtn = screen.getByRole('button', { name: /tech & developer summit/i });
+    const techSummitBtn = screen.getByRole('button', { name: /tech.*developer/i });
     fireEvent.click(techSummitBtn);
 
     expect(screen.getByText('Asia AI & Cloud Developer Summit 2026')).toBeInTheDocument();
