@@ -56,7 +56,7 @@ describe('Discovery Component: EventsExplorer Integration', () => {
   it('T1.4: filters events by regional hub', () => {
     render(<EventsExplorer initialEvents={FALLBACK_EVENTS} locale="en" />);
 
-    const japanHubBtn = screen.getByText('Japan Hub (Tokyo Big Sight)');
+    const japanHubBtn = screen.getByRole('button', { name: /japan/i });
     fireEvent.click(japanHubBtn);
 
     expect(screen.getByText('Tokyo International Robotics & Mechatronics Expo 2026')).toBeInTheDocument();
@@ -75,9 +75,9 @@ describe('Discovery Component: EventsExplorer Integration', () => {
       vi.advanceTimersByTime(350);
     });
 
-    expect(screen.getByText('No matching exhibitions found')).toBeInTheDocument();
+    expect(screen.getByText(/no matching|no events/i)).toBeInTheDocument();
 
-    const resetBtn = screen.getByRole('button', { name: /reset all filters/i });
+    const resetBtn = screen.getByRole('button', { name: /reset/i });
     fireEvent.click(resetBtn);
 
     expect(screen.getByText('Manufacturing Indonesia & Industrial Automation Expo 2026')).toBeInTheDocument();

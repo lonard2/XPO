@@ -25,6 +25,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Input } from "@/components/ui/Input";
+import { useTranslations } from "next-intl";
 import { generateTicketHash } from "@/lib/tickets/qrPass";
 import { cn } from "@/lib/utils";
 
@@ -62,6 +63,17 @@ interface CheckInScannerProps {
 }
 
 export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
+  let tOrg: any = (k: string) => k;
+  let tTickets: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tOrg = useTranslations("organizer");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tTickets = useTranslations("tickets");
+  } catch {
+    // Fallback
+  }
+
   const [inputMode, setInputMode] = React.useState<"camera" | "manual">("camera");
   const [manualHash, setManualHash] = React.useState("");
   const [isVerifying, setIsVerifying] = React.useState(false);
@@ -325,7 +337,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   )}
                 >
                   <Camera className="h-3.5 w-3.5" />
-                  <span>Camera Stream</span>
+                  <span>{tOrg("cameraMode") || "Camera Stream"}</span>
                 </button>
 
                 <button
@@ -339,7 +351,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   )}
                 >
                   <Search className="h-3.5 w-3.5" />
-                  <span>Manual Hash Input</span>
+                  <span>{tOrg("manualMode") || "Manual Hash Input"}</span>
                 </button>
               </div>
 

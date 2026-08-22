@@ -15,6 +15,7 @@ import { Drawer } from '@/components/ui/Drawer';
 import { EventCard } from '@/components/discovery/EventCard';
 import { FacetedFilterBar } from '@/components/discovery/FacetedFilterBar';
 import { FilterSidebar } from '@/components/discovery/FilterSidebar';
+import { useTranslations } from 'next-intl';
 import { type DiscoveryEvent, type FilterState } from '@/types/discovery';
 
 export interface EventsExplorerProps {
@@ -28,6 +29,17 @@ export function EventsExplorer({
   locale,
   initialFilters,
 }: EventsExplorerProps) {
+  let tDisc: any = (k: string) => k;
+  let tCom: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tDisc = useTranslations('discovery');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tCom = useTranslations('common');
+  } catch {
+    // Fallback
+  }
+
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -243,19 +255,19 @@ export function EventsExplorer({
                 </div>
                 <div className="space-y-1 max-w-md mx-auto">
                   <h3 className="text-base sm:text-lg font-bold text-foreground">
-                    No matching exhibitions found
+                    {tDisc('noMatchingTitle') || tDisc('noEventsFound') || 'No matching exhibitions found'}
                   </h3>
                   <p className="text-xs sm:text-sm text-muted-foreground">
-                    We could not find any events matching your selected criteria. Try adjusting keywords or clearing active filters.
+                    {tDisc('noMatchingDesc') || 'We could not find any events matching your selected criteria. Try adjusting keywords or clearing active filters.'}
                   </p>
                 </div>
                 <Button
                   variant="outline"
                   onClick={handleResetFilters}
-                  className="gap-2 text-xs font-semibold"
+                  className="gap-2 text-xs font-semibold cursor-pointer"
                 >
                   <RotateCcw className="h-3.5 w-3.5" />
-                  <span>Reset All Filters</span>
+                  <span>{tDisc('resetFilters') || tDisc('clearFilters') || 'Reset All Filters'}</span>
                 </Button>
               </div>
             ) : (
@@ -273,8 +285,8 @@ export function EventsExplorer({
       <Drawer
         isOpen={isMobileDrawerOpen}
         onClose={() => setIsMobileDrawerOpen(false)}
-        title="Filter & Refine Events"
-        description="Filter exhibitions by region, archetype category, format, and scale."
+        title={tDisc('filterEvents') || 'Filter & Refine Events'}
+        description={tDisc('filterByRegion') || 'Filter exhibitions by region, archetype category, format, and scale.'}
         side="bottom"
       >
         <div className="pb-6">
@@ -291,10 +303,10 @@ export function EventsExplorer({
           />
           <div className="pt-6 border-t border-border mt-6">
             <Button
-              className="w-full font-semibold"
+              className="w-full font-semibold cursor-pointer"
               onClick={() => setIsMobileDrawerOpen(false)}
             >
-              Apply Filters ({filteredAndSortedEvents.length} Results)
+              {tDisc('applyFilters') || 'Apply Filters'} ({filteredAndSortedEvents.length} {tDisc('exhibitionsCount') || 'Results'})
             </Button>
           </div>
         </div>

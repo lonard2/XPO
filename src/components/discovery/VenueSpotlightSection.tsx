@@ -12,6 +12,7 @@ import {
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { VenueSpotlightCard } from '@/components/discovery/VenueSpotlightCard';
+import { useTranslations } from 'next-intl';
 import { type VenueSummary } from '@/types/discovery';
 import { cn } from '@/lib/utils';
 
@@ -28,6 +29,20 @@ export function VenueSpotlightSection({
   activeRegionCode = 'id',
   className,
 }: VenueSpotlightSectionProps) {
+  let tVen: any = (k: string) => k;
+  let tReg: any = (k: string) => k;
+  let tCom: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tVen = useTranslations('venues');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tReg = useTranslations('regions');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tCom = useTranslations('common');
+  } catch {
+    // Fallback
+  }
+
   const [activeRegionFilter, setActiveRegionFilter] = React.useState<string>(activeRegionCode.toLowerCase());
 
   React.useEffect(() => {
@@ -45,20 +60,16 @@ export function VenueSpotlightSection({
     });
   }, [venues, activeRegionFilter]);
 
-  const regionNames: Record<string, string> = {
-    all: 'All International',
-    id: 'Indonesia',
-    jp: 'Japan',
-    global: 'Global Hubs',
-  };
-
-  const currentRegionLabel = regionNames[activeRegionFilter] || 'Indonesia';
+  const currentRegionLabel =
+    activeRegionFilter === 'all'
+      ? (tReg('all') || 'All Regions')
+      : (tReg(`${activeRegionFilter}.name`) || activeRegionFilter.toUpperCase());
 
   const regionTabs: Array<{ id: string; label: string; count: number }> = [
-    { id: 'id', label: 'Indonesia', count: venues.filter((v) => (v.region?.code || v.regionId || '').toLowerCase() === 'id').length },
-    { id: 'jp', label: 'Japan', count: venues.filter((v) => (v.region?.code || v.regionId || '').toLowerCase() === 'jp').length },
-    { id: 'global', label: 'Global Hubs', count: venues.filter((v) => ['gl', 'global'].includes((v.region?.code || v.regionId || '').toLowerCase())).length },
-    { id: 'all', label: 'All Regions', count: venues.length },
+    { id: 'id', label: tReg('id.name') || 'Indonesia', count: venues.filter((v) => (v.region?.code || v.regionId || '').toLowerCase() === 'id').length },
+    { id: 'jp', label: tReg('jp.name') || 'Japan', count: venues.filter((v) => (v.region?.code || v.regionId || '').toLowerCase() === 'jp').length },
+    { id: 'global', label: tReg('global.name') || 'Global Hubs', count: venues.filter((v) => ['gl', 'global'].includes((v.region?.code || v.regionId || '').toLowerCase())).length },
+    { id: 'all', label: tReg('all') || 'All Regions', count: venues.length },
   ];
 
   return (
@@ -68,19 +79,19 @@ export function VenueSpotlightSection({
         <div>
           <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider mb-1">
             <Building2 className="h-4 w-4" />
-            <span>{currentRegionLabel} Convention Centers</span>
+            <span>{currentRegionLabel} {tVen('title')?.split('&')?.[0]?.trim() || 'Convention Centers'}</span>
           </div>
           <h2 id="venue-spotlight-heading" className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-            Major Exhibition Venues & Halls
+            {tVen('title') || 'Major Exhibition Venues & Halls'}
           </h2>
           <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-            Exact hall capacities, floor area specs, transit links, and upcoming venue schedules.
+            {tVen('subtitle') || 'Exact hall capacities, floor area specs, transit links, and upcoming venue schedules.'}
           </p>
         </div>
 
         <Link href={`/${locale}/venues`}>
-          <Button variant="outline" size="sm" className="gap-1.5 text-xs font-semibold">
-            <span>Explore All Venues</span>
+          <Button variant="outline" size="sm" className="gap-1.5 text-xs font-semibold cursor-pointer">
+            <span>{tCom('viewAll') || 'Explore All Venues'}</span>
             <ArrowRight className="h-3.5 w-3.5" />
           </Button>
         </Link>

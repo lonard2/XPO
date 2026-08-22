@@ -25,6 +25,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
+import { useTranslations } from "next-intl";
 
 export interface VenueHallItem {
   id?: string;
@@ -63,6 +64,20 @@ export function VenueDirectoryManagerClient({
   initialVenues,
   locale,
 }: VenueDirectoryManagerClientProps) {
+  let tAdmin: any = (k: string) => k;
+  let tVen: any = (k: string) => k;
+  let tCom: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tAdmin = useTranslations("admin");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tVen = useTranslations("venues");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tCom = useTranslations("common");
+  } catch {
+    // Fallback
+  }
+
   const [venues, setVenues] = React.useState<VenueItem[]>(initialVenues);
   const [regionFilter, setRegionFilter] = React.useState<string>("all");
   const [searchQuery, setSearchQuery] = React.useState<string>("");

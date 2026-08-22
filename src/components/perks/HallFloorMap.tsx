@@ -19,6 +19,7 @@ import {
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 
 export interface BoothItem {
@@ -45,6 +46,20 @@ export function HallFloorMap({
   hallName,
   locale = "en",
 }: HallFloorMapProps) {
+  let tPerks: any = (k: string) => k;
+  let tVen: any = (k: string) => k;
+  let tCom: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tPerks = useTranslations("perks");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tVen = useTranslations("venues");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tCom = useTranslations("common");
+  } catch {
+    // Fallback
+  }
+
   const [zoomLevel, setZoomLevel] = React.useState<number>(1);
   const [selectedHall, setSelectedHall] = React.useState<string>("ALL");
   const [selectedBooth, setSelectedBooth] = React.useState<BoothItem | null>(null);
@@ -82,10 +97,10 @@ export function HallFloorMap({
         <div>
           <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
             <MapIcon className="h-5 w-5 text-primary" />
-            Interactive SVG Hall Floor Plan
+            {tPerks("interactiveFloorPlan") || "Interactive SVG Hall Floor Plan"}
           </h3>
           <p className="text-xs sm:text-sm text-muted-foreground">
-            {venueName} {hallName ? `• ${hallName}` : ""} — Navigate exhibitor booths, VIP lounges, and amenities.
+            {venueName} {hallName ? `• ${hallName}` : ""} — {tPerks("navigateFloorPlan") || "Navigate exhibitor booths, VIP lounges, and amenities."}
           </p>
         </div>
 
@@ -95,7 +110,7 @@ export function HallFloorMap({
             variant="ghost"
             size="sm"
             onClick={handleZoomIn}
-            className="h-7 w-7 p-0"
+            className="h-7 w-7 p-0 cursor-pointer"
             title="Zoom In"
             aria-label="Zoom In"
           >
@@ -105,7 +120,7 @@ export function HallFloorMap({
             variant="ghost"
             size="sm"
             onClick={handleZoomOut}
-            className="h-7 w-7 p-0"
+            className="h-7 w-7 p-0 cursor-pointer"
             title="Zoom Out"
             aria-label="Zoom Out"
           >
@@ -115,7 +130,7 @@ export function HallFloorMap({
             variant="ghost"
             size="sm"
             onClick={handleResetZoom}
-            className="h-7 w-7 p-0"
+            className="h-7 w-7 p-0 cursor-pointer"
             title="Reset Zoom"
             aria-label="Reset Zoom"
           >
@@ -136,26 +151,26 @@ export function HallFloorMap({
                 setSelectedBooth(null);
               }}
               className={cn(
-                "px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors border",
+                "px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors border cursor-pointer",
                 selectedHall === h
                   ? "bg-primary text-primary-foreground border-primary"
-                  : "bg-card text-muted-foreground border-border hover:bg-muted"
+                  : "bg-muted/40 text-muted-foreground border-border hover:bg-muted"
               )}
             >
-              {h === "ALL" ? "All Exhibition Halls" : h}
+              {h === "ALL" ? (tPerks("allHalls") || "All Halls") : h}
             </button>
           ))}
         </div>
 
-        {/* Search */}
+        {/* Search Booths */}
         <div className="relative w-full md:w-64">
           <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search booth or exhibitor..."
-            className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg bg-background border border-border focus:outline-none focus:ring-1 focus:ring-primary"
+            placeholder={tCom("search") ? `${tCom("search")}...` : "Search booth # or company..."}
+            className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg bg-background border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
           />
         </div>
       </div>

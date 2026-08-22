@@ -15,6 +15,7 @@ import {
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
+import { useTranslations } from 'next-intl';
 import { formatDateRange, getTimeZoneForRegion } from '@/lib/i18n/formatters';
 import { getArchetypeTokens } from '@/lib/theming';
 import { type EventSummary } from '@/types/discovery';
@@ -33,6 +34,20 @@ export function EventCalendarWidget({
   regionCode = 'id',
   className,
 }: EventCalendarWidgetProps) {
+  let tCal: any = (k: string) => k;
+  let tEvents: any = (k: string) => k;
+  let tTickets: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tCal = useTranslations('calendar');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tEvents = useTranslations('events');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tTickets = useTranslations('tickets');
+  } catch {
+    // Fallback
+  }
+
   const [selectedDate, setSelectedDate] = React.useState<Date>(() => new Date());
   const [viewMonth, setViewMonth] = React.useState<Date>(() => new Date());
 
@@ -210,10 +225,10 @@ export function EventCalendarWidget({
         <div className="lg:col-span-7 flex flex-col justify-between space-y-3">
           <div className="flex items-center justify-between border-b border-border/60 pb-2">
             <span className="text-xs font-bold text-foreground">
-              Schedule for {selectedDateFormatted}
+              {tCal('eventsOnDate') || 'Schedule for'} {selectedDateFormatted}
             </span>
             <Badge variant="outline" className="text-[10px] font-medium">
-              {eventsOnSelectedDate.length} Event{eventsOnSelectedDate.length === 1 ? '' : 's'}
+              {eventsOnSelectedDate.length} {tEvents('title')?.split('&')?.[0]?.trim() || 'Events'}
             </Badge>
           </div>
 
@@ -261,9 +276,9 @@ export function EventCalendarWidget({
                     </div>
 
                     <Link href={`/${locale}/events/${evt.slug}`} className="shrink-0 self-start sm:self-auto">
-                      <Button size="sm" className="gap-1 text-xs">
+                      <Button size="sm" className="gap-1 text-xs cursor-pointer">
                         <Ticket className="h-3.5 w-3.5" />
-                        <span>Pass</span>
+                        <span>{tTickets('viewPass') || tTickets('bookPass') || 'Pass'}</span>
                       </Button>
                     </Link>
                   </div>
@@ -271,8 +286,8 @@ export function EventCalendarWidget({
               })
             ) : (
               <div className="rounded-xl border border-dashed border-border/80 p-6 text-center text-xs text-muted-foreground space-y-1">
-                <p className="font-semibold text-foreground">No events scheduled on this day.</p>
-                <p>Click on highlighted calendar dots or browse upcoming dates.</p>
+                <p className="font-semibold text-foreground">{tCal('noEventsOnDate') || 'No events scheduled on this day.'}</p>
+                <p>{tCal('monthView') || 'Click on highlighted calendar dots or browse upcoming dates.'}</p>
               </div>
             )}
           </div>
@@ -282,7 +297,7 @@ export function EventCalendarWidget({
               href={`/${locale}/events`}
               className="text-xs font-medium text-primary hover:underline inline-flex items-center gap-1"
             >
-              <span>Explore all upcoming events by category</span>
+              <span>{tCal('monthView') || 'Explore all upcoming events by category'}</span>
               <ArrowRight className="h-3 w-3" />
             </Link>
           </div>

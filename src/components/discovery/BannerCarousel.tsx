@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
+import { useTranslations } from 'next-intl';
 import { formatDateRange, getTimeZoneForRegion, getEventTemporalStatus, type EventTemporalDetails } from '@/lib/i18n/formatters';
 import { getArchetypeTokens } from '@/lib/theming';
 import { type BannerSlide } from '@/types/discovery';
@@ -38,6 +39,20 @@ export function BannerCarousel({
   autoPlayInterval = 7000,
   className,
 }: BannerCarouselProps) {
+  let tHero: any = (k: string) => k;
+  let tEvents: any = (k: string) => k;
+  let tHome: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tHero = useTranslations('hero');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tEvents = useTranslations('events');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tHome = useTranslations('home');
+  } catch {
+    // Fallback if rendered outside provider
+  }
+
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [isPaused, setIsPaused] = React.useState(false);
   const [touchStartX, setTouchStartX] = React.useState<number | null>(null);
@@ -202,7 +217,7 @@ export function BannerCarousel({
             {temporalStatus.isUpcoming && currentSlide.isFeatured && (
               <Badge variant="warning" className="text-[11px] sm:text-xs font-semibold gap-1 shadow-sm">
                 <Sparkles className="h-3 w-3" />
-                <span>Featured Spotlight</span>
+                <span>{tHero('featuredSpotlight') || 'Featured Spotlight'}</span>
               </Badge>
             )}
           </div>
@@ -252,14 +267,14 @@ export function BannerCarousel({
                 <Link href={`/${locale}/events/${currentSlide.slug}`}>
                   <Button size="lg" variant="outline" className="gap-2 font-semibold bg-white/10 hover:bg-white/20 text-white border-white/30 backdrop-blur-md">
                     <History className="h-4 w-4" />
-                    <span>View Event Recap</span>
+                    <span>{tHero('viewRecap') || 'View Event Recap'}</span>
                     <ArrowRight className="h-4 w-4 ml-0.5" />
                   </Button>
                 </Link>
                 <Link href={`/${locale}/events`}>
                   <Button size="lg" className="gap-2 font-semibold shadow-lg bg-primary hover:bg-primary/90 text-white border-0">
                     <Calendar className="h-4 w-4" />
-                    <span>Explore Upcoming Events</span>
+                    <span>{tHero('exploreEventsCta') || 'Explore Upcoming Events'}</span>
                   </Button>
                 </Link>
               </>
@@ -268,14 +283,14 @@ export function BannerCarousel({
                 <Link href={`/${locale}/events/${currentSlide.slug}`}>
                   <Button size="lg" className="gap-2 font-semibold shadow-lg bg-emerald-600 hover:bg-emerald-700 text-white border-0 animate-pulse">
                     <Ticket className="h-4 w-4" />
-                    <span>Get Pass & Enter Doors</span>
+                    <span>{tHero('getPassDoors') || 'Get Pass & Enter Doors'}</span>
                     <ArrowRight className="h-4 w-4 ml-0.5" />
                   </Button>
                 </Link>
                 <Link href={`/${locale}/events/${currentSlide.slug}#agenda`}>
                   <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/30 backdrop-blur-md">
                     <Radio className="h-4 w-4 text-emerald-400 mr-1" />
-                    <span>Live Timetable</span>
+                    <span>{tHero('liveTimetable') || 'Live Timetable'}</span>
                   </Button>
                 </Link>
               </>
@@ -284,13 +299,13 @@ export function BannerCarousel({
                 <Link href={`/${locale}/events/${currentSlide.slug}`}>
                   <Button size="lg" className="gap-2 font-semibold shadow-lg bg-primary hover:bg-primary/90 text-white border-0">
                     <Ticket className="h-4 w-4" />
-                    <span>Get Event Pass</span>
+                    <span>{tHero('getPass') || 'Get Event Pass'}</span>
                     <ArrowRight className="h-4 w-4 ml-0.5" />
                   </Button>
                 </Link>
                 <Link href={`/${locale}/events`}>
                   <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/30 backdrop-blur-md">
-                    <span>View Full Schedule</span>
+                    <span>{tHome('viewFullSchedule') || 'View Full Schedule'}</span>
                   </Button>
                 </Link>
               </>

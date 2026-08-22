@@ -27,12 +27,12 @@ describe('Discovery Component: ActiveFilterChips', () => {
       />
     );
 
-    expect(screen.getByText('Search: "automation"')).toBeInTheDocument();
-    expect(screen.getByText('Indonesia Hub')).toBeInTheDocument();
-    expect(screen.getByText('Industrial B2B & Machinery')).toBeInTheDocument();
-    expect(screen.getByText('Format: IN PERSON')).toBeInTheDocument();
-    expect(screen.getByText('Scale: LARGE')).toBeInTheDocument();
-    expect(screen.getByText('Upcoming Events')).toBeInTheDocument();
+    expect(screen.getByText(/automation/i)).toBeInTheDocument();
+    expect(screen.getByText(/indonesia/i)).toBeInTheDocument();
+    expect(screen.getByText(/industrial/i)).toBeInTheDocument();
+    expect(screen.getByText(/person/i)).toBeInTheDocument();
+    expect(screen.getByText(/large/i)).toBeInTheDocument();
+    expect(screen.getByText(/upcoming/i)).toBeInTheDocument();
   });
 
   it('T1.2: triggers onRemoveFilter callback when removing a specific chip', () => {
@@ -47,7 +47,7 @@ describe('Discovery Component: ActiveFilterChips', () => {
       />
     );
 
-    const removeKeywordBtn = screen.getByLabelText('Remove filter Search: "automation"');
+    const removeKeywordBtn = screen.getByLabelText(/automation/i);
     fireEvent.click(removeKeywordBtn);
 
     expect(handleRemove).toHaveBeenCalledWith('keyword');

@@ -23,6 +23,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Input } from "@/components/ui/Input";
+import { useTranslations } from "next-intl";
 import { ARCHETYPE_DEFAULTS, ARCHETYPE_METADATA, MiceArchetype, getArchetypeTokens } from "@/lib/theming";
 import { cn } from "@/lib/utils";
 
@@ -57,6 +58,17 @@ export default function NewEventWizardPage() {
   const router = useRouter();
   const params = useParams();
   const locale = (params?.locale as string) || "en";
+
+  let tOrg: any = (k: string) => k;
+  let tCom: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tOrg = useTranslations("organizer");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tCom = useTranslations("common");
+  } catch {
+    // Fallback
+  }
 
   const [currentStep, setCurrentStep] = React.useState<number>(1);
   const [isSubmitting, setIsSubmitting] = React.useState(false);

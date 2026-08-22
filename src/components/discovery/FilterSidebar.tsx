@@ -65,32 +65,32 @@ export function FilterSidebar({
   };
 
   const regionalHubs = [
-    { id: 'all', label: 'All Regional Hubs', code: 'ALL' },
-    { id: 'id', label: 'Indonesia Hub (JIExpo, ICE BSD)', code: 'ID' },
-    { id: 'jp', label: 'Japan Hub (Tokyo Big Sight)', code: 'JP' },
-    { id: 'global', label: 'Global Hubs (MBS, Frankfurt)', code: 'GL' },
+    { id: 'all', label: tReg('all') || 'All Regional Hubs', code: 'ALL' },
+    { id: 'id', label: tReg('id.name') ? `${tReg('id.name')} (JIExpo, ICE)` : 'Indonesia Hub (JIExpo, ICE BSD)', code: 'ID' },
+    { id: 'jp', label: tReg('jp.name') ? `${tReg('jp.name')} (Tokyo Big Sight)` : 'Japan Hub (Tokyo Big Sight)', code: 'JP' },
+    { id: 'global', label: tReg('global.name') ? `${tReg('global.name')} (MBS, Frankfurt)` : 'Global Hubs (MBS, Frankfurt)', code: 'GL' },
   ];
 
   const formatOptions: Array<{ id: string; label: string }> = [
-    { id: 'all', label: 'All Formats' },
-    { id: 'IN_PERSON', label: 'In-Person' },
-    { id: 'HYBRID', label: 'Hybrid' },
-    { id: 'VIRTUAL', label: 'Virtual' },
+    { id: 'all', label: tDisc('allFormats') || 'All Formats' },
+    { id: 'IN_PERSON', label: tDisc('inPerson') || 'In-Person' },
+    { id: 'HYBRID', label: tDisc('hybrid') || 'Hybrid' },
+    { id: 'VIRTUAL', label: tDisc('virtual') || 'Virtual' },
   ];
 
   const scaleOptions: Array<{ id: string; label: string }> = [
-    { id: 'all', label: 'All Event Scales' },
-    { id: 'GLOBAL_MEGA', label: 'Global Mega (>25k Pax)' },
+    { id: 'all', label: tDisc('allScales') || 'All Event Scales' },
+    { id: 'GLOBAL_MEGA', label: 'Global Mega (>25k)' },
     { id: 'LARGE', label: 'Large Convention (5k-25k)' },
     { id: 'MEDIUM', label: 'Medium Expo (1k-5k)' },
     { id: 'EXECUTIVE', label: 'Executive Summit (<1k)' },
   ];
 
   const dateOptions = [
-    { id: 'all', label: 'All Dates' },
-    { id: 'upcoming', label: 'Upcoming Exhibitions' },
-    { id: 'this_month', label: 'This Month' },
-    { id: 'next_month', label: 'Next Month' },
+    { id: 'all', label: tDisc('allDates') || 'All Dates' },
+    { id: 'upcoming', label: tDisc('upcomingExhibitions') || 'Upcoming Exhibitions' },
+    { id: 'this_month', label: tDisc('thisMonth') || 'This Month' },
+    { id: 'next_month', label: tDisc('nextMonth') || 'Next Month' },
   ];
 
   const hasActiveFilters =
@@ -108,7 +108,7 @@ export function FilterSidebar({
       <div className="flex items-center justify-between border-b border-border/80 pb-3">
         <div className="flex items-center gap-2 text-foreground font-bold text-sm">
           <SlidersHorizontal className="h-4 w-4 text-primary" />
-          <span>Filter Events</span>
+          <span>{tDisc('filterEvents') || 'Filter Events'}</span>
         </div>
 
         {hasActiveFilters && (
@@ -116,10 +116,10 @@ export function FilterSidebar({
             variant="ghost"
             size="sm"
             onClick={onReset}
-            className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground gap-1"
+            className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground gap-1 cursor-pointer"
           >
             <RotateCcw className="h-3 w-3" />
-            <span>Reset</span>
+            <span>{tCom('clear') || 'Reset'}</span>
           </Button>
         )}
       </div>
@@ -128,7 +128,7 @@ export function FilterSidebar({
       <div className="space-y-2.5">
         <label className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
           <Globe className="h-3.5 w-3.5 text-primary" />
-          <span>Regional Hub</span>
+          <span>{tDisc('regionalHub') || tDisc('filterByRegion') || 'Regional Hub'}</span>
         </label>
         <div className="space-y-1">
           {regionalHubs.map((hub) => {
@@ -140,7 +140,7 @@ export function FilterSidebar({
                 type="button"
                 onClick={() => handleFilterChange('region', hub.id)}
                 className={cn(
-                  'w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left',
+                  'w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left cursor-pointer',
                   isSelected
                     ? 'bg-primary/10 text-primary font-semibold'
                     : 'text-muted-foreground hover:bg-muted hover:text-foreground'
@@ -170,14 +170,14 @@ export function FilterSidebar({
       <div className="space-y-2.5">
         <label className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
           <Sparkles className="h-3.5 w-3.5 text-primary" />
-          <span>MICE Archetype (9 Domains)</span>
+          <span>{tDisc('verticalsTitle') || tDisc('filterByArchetype') || 'Explore by Event Category'}</span>
         </label>
         <div className="space-y-1 max-h-60 overflow-y-auto pr-1">
           <button
             type="button"
             onClick={() => handleFilterChange('archetype', 'all')}
             className={cn(
-              'w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left',
+              'w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left cursor-pointer',
               filters.archetype === 'all'
                 ? 'bg-primary/10 text-primary font-semibold'
                 : 'text-muted-foreground hover:bg-muted hover:text-foreground'
@@ -192,7 +192,7 @@ export function FilterSidebar({
               >
                 {filters.archetype === 'all' && <Check className="h-2.5 w-2.5 stroke-[3]" />}
               </div>
-              <span>All MICE Categories</span>
+              <span>{tDisc('allArchetypes') || 'All MICE Categories'}</span>
             </div>
           </button>
 
@@ -233,7 +233,7 @@ export function FilterSidebar({
       <div className="space-y-2.5">
         <label className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
           <Layers className="h-3.5 w-3.5 text-primary" />
-          <span>Format</span>
+          <span>{tDisc('format') || tDisc('filterByFormat') || 'Format'}</span>
         </label>
         <div className="grid grid-cols-2 gap-1.5">
           {formatOptions.map((fmt) => {
@@ -244,7 +244,7 @@ export function FilterSidebar({
                 type="button"
                 onClick={() => handleFilterChange('format', fmt.id)}
                 className={cn(
-                  'px-2.5 py-1.5 rounded-lg text-xs font-medium border text-center transition-colors',
+                  'px-2.5 py-1.5 rounded-lg text-xs font-medium border text-center transition-colors cursor-pointer',
                   isSelected
                     ? 'border-primary bg-primary/10 text-primary font-semibold'
                     : 'border-border/60 bg-card text-muted-foreground hover:bg-muted hover:text-foreground'
@@ -261,7 +261,7 @@ export function FilterSidebar({
       <div className="space-y-2.5">
         <label className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
           <Layers className="h-3.5 w-3.5 text-primary" />
-          <span>Exhibition Scale</span>
+          <span>{tDisc('scale') || tDisc('filterByScale') || 'Exhibition Scale'}</span>
         </label>
         <div className="space-y-1">
           {scaleOptions.map((sc) => {
@@ -272,7 +272,7 @@ export function FilterSidebar({
                 type="button"
                 onClick={() => handleFilterChange('scale', sc.id)}
                 className={cn(
-                  'w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left',
+                  'w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left cursor-pointer',
                   isSelected
                     ? 'bg-primary/10 text-primary font-semibold'
                     : 'text-muted-foreground hover:bg-muted hover:text-foreground'
@@ -290,7 +290,7 @@ export function FilterSidebar({
       <div className="space-y-2.5">
         <label className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
           <Calendar className="h-3.5 w-3.5 text-primary" />
-          <span>Timeline</span>
+          <span>{tDisc('timeline') || tDisc('dateRange') || 'Timeline'}</span>
         </label>
         <div className="space-y-1">
           {dateOptions.map((dt) => {
@@ -301,7 +301,7 @@ export function FilterSidebar({
                 type="button"
                 onClick={() => handleFilterChange('dateRange', dt.id)}
                 className={cn(
-                  'w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left',
+                  'w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left cursor-pointer',
                   isSelected
                     ? 'bg-primary/10 text-primary font-semibold'
                     : 'text-muted-foreground hover:bg-muted hover:text-foreground'

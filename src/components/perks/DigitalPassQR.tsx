@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { useTranslations } from "next-intl";
 import { generateSvgQrCode } from "@/lib/tickets/qrPass";
 import { formatDateRange, formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
 import { cn } from "@/lib/utils";
@@ -60,6 +61,17 @@ export interface DigitalPassQRProps {
 }
 
 export function DigitalPassQR({ booking, locale = "en" }: DigitalPassQRProps) {
+  let tTickets: any = (k: string) => k;
+  let tCommon: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tTickets = useTranslations("tickets");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tCommon = useTranslations("common");
+  } catch {
+    // Fallback
+  }
+
   const [copiedHash, setCopiedHash] = React.useState(false);
   const [showSecurityModal, setShowSecurityModal] = React.useState(false);
 
@@ -120,7 +132,7 @@ export function DigitalPassQR({ booking, locale = "en" }: DigitalPassQRProps) {
             <div className="min-w-0">
               <span className="text-xs font-mono uppercase tracking-wider text-emerald-400 font-semibold flex items-center gap-1.5">
                 <span className="inline-block h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-                Anti-Tamper Cryptographic Pass
+                {tTickets("antiTamperPass") || "Anti-Tamper Cryptographic Pass"}
               </span>
               <p className="text-[11px] text-slate-400 font-mono truncate">{booking.qrCodeHash}</p>
             </div>
@@ -130,16 +142,16 @@ export function DigitalPassQR({ booking, locale = "en" }: DigitalPassQRProps) {
             {isCheckedIn ? (
               <Badge variant="success" size="sm" className="gap-1 font-semibold">
                 <CheckCircle2 className="h-3 w-3" />
-                CHECKED IN
+                {tTickets("checkedInStatus") || "CHECKED IN"}
               </Badge>
             ) : isCancelled ? (
               <Badge variant="outline" size="sm" className="border-red-500/50 text-red-400">
-                CANCELLED
+                {tTickets("cancelledStatus") || "CANCELLED"}
               </Badge>
             ) : (
               <Badge variant="archetype" size="sm" className="gap-1 font-semibold">
                 <Sparkles className="h-3 w-3" />
-                CONFIRMED
+                {tTickets("confirmedStatus") || "CONFIRMED"}
               </Badge>
             )}
           </div>
@@ -164,7 +176,7 @@ export function DigitalPassQR({ booking, locale = "en" }: DigitalPassQRProps) {
             </div>
 
             <div className="sm:text-right shrink-0">
-              <span className="text-xs uppercase text-muted-foreground font-medium">Issued Value</span>
+              <span className="text-xs uppercase text-muted-foreground font-medium">{tTickets("issuedValue") || "Issued Value"}</span>
               <p className="text-lg font-bold text-foreground">
                 {booking.ticketTier.price > 0
                   ? formatCurrency(
@@ -172,7 +184,7 @@ export function DigitalPassQR({ booking, locale = "en" }: DigitalPassQRProps) {
                       (booking.ticketTier.currency as SupportedCurrency) || "IDR",
                       locale
                     )
-                  : "Complimentary"}
+                  : (tTickets("complimentary") || "Complimentary")}
               </p>
             </div>
           </div>
@@ -191,7 +203,7 @@ export function DigitalPassQR({ booking, locale = "en" }: DigitalPassQRProps) {
                 <div className="absolute inset-0 flex items-center justify-center bg-emerald-950/20 backdrop-blur-2xs rounded-lg animate-fade-in pointer-events-none">
                   <div className="px-4 py-2 rounded-lg bg-emerald-600/90 text-white text-xs font-bold uppercase tracking-wider shadow-lg flex items-center gap-1.5">
                     <CheckCircle2 className="h-4 w-4" />
-                    Admitted at Gate
+                    {tTickets("admittedAtGate") || "Admitted at Gate"}
                   </div>
                 </div>
               )}
@@ -199,7 +211,7 @@ export function DigitalPassQR({ booking, locale = "en" }: DigitalPassQRProps) {
 
             <div className="mt-4 text-center space-y-1">
               <p className="text-xs font-semibold text-slate-800">
-                Scan at Door / Turnstile Reader
+                {tTickets("scanTurnstile") || tTickets("scanPass") || "Scan at Door / Turnstile Reader"}
               </p>
               <p className="text-[11px] text-slate-500 font-mono truncate max-w-[260px]">
                 {booking.qrCodeHash}
@@ -212,7 +224,7 @@ export function DigitalPassQR({ booking, locale = "en" }: DigitalPassQRProps) {
             <div className="p-3.5 rounded-xl bg-muted/40 border border-border/50 space-y-1">
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground font-medium">
                 <User className="h-3.5 w-3.5 text-primary" />
-                <span>Attendee Name</span>
+                <span>{tTickets("attendeeName") || tTickets("fullName") || "Attendee Name"}</span>
               </div>
               <p className="font-semibold text-foreground text-sm">{booking.attendeeName}</p>
               <p className="text-xs text-muted-foreground truncate">{booking.attendeeEmail}</p>
@@ -221,7 +233,7 @@ export function DigitalPassQR({ booking, locale = "en" }: DigitalPassQRProps) {
             <div className="p-3.5 rounded-xl bg-muted/40 border border-border/50 space-y-1">
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground font-medium">
                 <Calendar className="h-3.5 w-3.5 text-primary" />
-                <span>Event Dates</span>
+                <span>{tTickets("eventDates") || tCommon("date") || "Event Dates"}</span>
               </div>
               <p className="font-semibold text-foreground text-sm">{formattedDate}</p>
               <p className="text-xs text-muted-foreground">Standard Exhibition Hours</p>
@@ -230,7 +242,7 @@ export function DigitalPassQR({ booking, locale = "en" }: DigitalPassQRProps) {
             <div className="p-3.5 rounded-xl bg-muted/40 border border-border/50 space-y-1 sm:col-span-2 lg:col-span-1">
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground font-medium">
                 <MapPin className="h-3.5 w-3.5 text-primary" />
-                <span>Venue & Hall</span>
+                <span>{tTickets("venueAndHall") || tCommon("venue") || "Venue & Hall"}</span>
               </div>
               <p className="font-semibold text-foreground text-sm">{booking.event.venue.name}</p>
               <p className="text-xs text-muted-foreground">
@@ -244,7 +256,7 @@ export function DigitalPassQR({ booking, locale = "en" }: DigitalPassQRProps) {
             <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-xs text-emerald-400 flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4 shrink-0" />
               <span>
-                Verified & Admitted on{" "}
+                {tTickets("verifiedAdmittedOn") || "Verified & Admitted on"}{" "}
                 <span className="font-semibold">
                   {new Date(booking.checkedInAt).toLocaleString()}
                 </span>

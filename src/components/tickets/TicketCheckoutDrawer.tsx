@@ -21,6 +21,7 @@ import {
 import { Drawer } from "@/components/ui/Drawer";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
+import { useTranslations } from "next-intl";
 import { TierSelector, type TicketTierItem } from "@/components/tickets/TierSelector";
 import { formatCurrency, formatDateRange, type SupportedCurrency } from "@/lib/i18n/formatters";
 
@@ -53,6 +54,17 @@ export function TicketCheckoutDrawer({
   locale = "en",
   onSuccess,
 }: TicketCheckoutDrawerProps) {
+  let tTickets: any = (k: string) => k;
+  let tCommon: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tTickets = useTranslations("tickets");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tCommon = useTranslations("common");
+  } catch {
+    // Fallback
+  }
+
   const [selectedTierId, setSelectedTierId] = React.useState<string | null>(
     initialTierId || event.ticketTiers[0]?.id || null
   );

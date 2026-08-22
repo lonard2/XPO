@@ -20,6 +20,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/com
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { useTranslations } from "next-intl";
 
 export interface AuditLogDetailed {
   id: string;
@@ -42,6 +43,17 @@ export function AuditLogsViewerClient({
   initialLogs,
   locale,
 }: AuditLogsViewerClientProps) {
+  let tAdmin: any = (k: string) => k;
+  let tCom: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tAdmin = useTranslations("admin");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tCom = useTranslations("common");
+  } catch {
+    // Fallback
+  }
+
   const [logs, setLogs] = React.useState<AuditLogDetailed[]>(initialLogs);
   const [categoryFilter, setCategoryFilter] = React.useState<string>("ALL");
   const [severityFilter, setSeverityFilter] = React.useState<string>("ALL");

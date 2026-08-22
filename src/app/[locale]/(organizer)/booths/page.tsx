@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 
 interface BoothItem {
@@ -46,6 +47,17 @@ interface BoothItem {
 export default function BoothManagerPage() {
   const params = useParams();
   const locale = (params?.locale as string) || "en";
+
+  let tOrg: any = (k: string) => k;
+  let tCom: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tOrg = useTranslations("organizer");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tCom = useTranslations("common");
+  } catch {
+    // Fallback
+  }
 
   const [booths, setBooths] = React.useState<BoothItem[]>([]);
   const [events, setEvents] = React.useState<any[]>([]);
@@ -334,15 +346,15 @@ export default function BoothManagerPage() {
         <div>
           <div className="flex items-center gap-2">
             <span className="text-[11px] font-bold uppercase tracking-wider text-primary">
-              Exhibitor Operations
+              {tOrg("managementHub") || "Exhibitor Operations"}
             </span>
             <Badge variant="archetype" size="sm">Hall Floor Roster</Badge>
           </div>
           <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground mt-1">
-            Booth & Tenant Management Roster
+            {tOrg("boothsTitle") || "Booth & Tenant Management Roster"}
           </h1>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Assign exhibitors to specific hall grids, track booth occupancy, and manage floor contracts.
+            {tOrg("boothsSubtitle") || "Assign exhibitors to specific hall grids, track booth occupancy, and manage floor contracts."}
           </p>
         </div>
 
@@ -351,10 +363,10 @@ export default function BoothManagerPage() {
             variant="primary"
             size="sm"
             onClick={handleOpenCreateModal}
-            className="text-xs gap-1.5 h-9"
+            className="text-xs gap-1.5 h-9 cursor-pointer"
           >
             <Plus className="h-4 w-4" />
-            <span>Add Booth Lot</span>
+            <span>{tOrg("addBooth") || "Add Booth Lot"}</span>
           </Button>
         </div>
       </div>

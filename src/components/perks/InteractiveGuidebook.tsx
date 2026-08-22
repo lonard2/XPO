@@ -20,6 +20,7 @@ import {
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 
 export interface AgendaSessionItem {
@@ -44,6 +45,20 @@ export function InteractiveGuidebook({
   eventTitle,
   locale = "en",
 }: InteractiveGuidebookProps) {
+  let tPerks: any = (k: string) => k;
+  let tEvents: any = (k: string) => k;
+  let tCommon: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tPerks = useTranslations("perks");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tEvents = useTranslations("events");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tCommon = useTranslations("common");
+  } catch {
+    // Fallback
+  }
+
   const [bookmarkedIds, setBookmarkedIds] = React.useState<Set<string>>(new Set());
   const [selectedTrack, setSelectedTrack] = React.useState<string>("ALL");
   const [searchQuery, setSearchQuery] = React.useState<string>("");
@@ -109,8 +124,8 @@ export function InteractiveGuidebook({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
-            <Calendar className="h-5 w-5 text-primary" />
-            Interactive Event Day Guidebook
+            <Clock className="h-5 w-5 text-primary" />
+            {tPerks("liveAgendaAlert") || "Live Schedule & Stage Timetable"}
           </h3>
           <p className="text-xs sm:text-sm text-muted-foreground">
             Personalize your session itinerary, track keynote speakers, and receive real-time hall updates.
@@ -123,12 +138,12 @@ export function InteractiveGuidebook({
             variant={filterBookmarkedOnly ? "primary" : "outline"}
             size="sm"
             onClick={() => setFilterBookmarkedOnly(!filterBookmarkedOnly)}
-            className="text-xs gap-1.5 h-9"
+            className="text-xs gap-1.5 h-9 cursor-pointer"
           >
             <Star
               className={cn("h-3.5 w-3.5", filterBookmarkedOnly ? "fill-current" : "")}
             />
-            My Agenda ({bookmarkedIds.size})
+            {tPerks("bookmarkedSessions") || "My Agenda"} ({bookmarkedIds.size})
           </Button>
         </div>
       </div>
@@ -147,9 +162,9 @@ export function InteractiveGuidebook({
           </div>
           <button
             onClick={() => setShowAlertBanner(false)}
-            className="text-amber-400/80 hover:text-amber-300 text-xs shrink-0"
+            className="text-amber-400/80 hover:text-amber-300 text-xs shrink-0 cursor-pointer"
           >
-            Dismiss
+            {tCommon("cancel") || "Dismiss"}
           </button>
         </div>
       )}
@@ -162,7 +177,7 @@ export function InteractiveGuidebook({
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search sessions, speakers, or topics..."
+            placeholder={tPerks("searchAgenda") || "Search sessions, speakers, or topics..."}
             className="w-full pl-9 pr-3 py-2 text-xs sm:text-sm rounded-lg bg-background border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
           />
         </div>
@@ -174,13 +189,13 @@ export function InteractiveGuidebook({
               key={track}
               onClick={() => setSelectedTrack(track)}
               className={cn(
-                "px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors border",
+                "px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors border cursor-pointer",
                 selectedTrack === track
                   ? "bg-primary text-primary-foreground border-primary"
                   : "bg-muted/40 text-muted-foreground border-border hover:bg-muted"
               )}
             >
-              {track === "ALL" ? "All Tracks" : track}
+              {track === "ALL" ? (tPerks("allTracks") || "All Tracks") : track}
             </button>
           ))}
         </div>
@@ -197,7 +212,7 @@ export function InteractiveGuidebook({
                 variant="ghost"
                 size="sm"
                 onClick={() => setFilterBookmarkedOnly(false)}
-                className="text-xs text-primary"
+                className="text-xs text-primary cursor-pointer"
               >
                 View all scheduled sessions
               </Button>

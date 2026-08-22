@@ -6,6 +6,7 @@ import { MapPin, Check, ChevronDown, Building2, Globe, Coins, Clock } from "luci
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { SupportedCurrency } from "@/lib/i18n/formatters";
 
@@ -78,6 +79,14 @@ export function RegionSwitcher({
   variant = "dropdown",
   className,
 }: RegionSwitcherProps) {
+  let tReg: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tReg = useTranslations("regions");
+  } catch {
+    // Fallback
+  }
+
   const router = useRouter();
   const pathname = usePathname();
   const [isOpen, setIsOpen] = React.useState(false);

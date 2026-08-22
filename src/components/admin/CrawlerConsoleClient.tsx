@@ -22,6 +22,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter }
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { useTranslations } from "next-intl";
 import { type CrawlRunRecord, type ScrapedEventRaw } from "@/lib/crawler/venueScraper";
 
 interface RegisteredVenue {
@@ -43,6 +44,17 @@ export function CrawlerConsoleClient({
   initialHistory,
   locale,
 }: CrawlerConsoleClientProps) {
+  let tAdmin: any = (k: string) => k;
+  let tCom: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tAdmin = useTranslations("admin");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tCom = useTranslations("common");
+  } catch {
+    // Fallback
+  }
+
   const [selectedVenues, setSelectedVenues] = React.useState<string[]>(
     registeredVenues.map((v) => v.slug)
   );

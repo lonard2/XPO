@@ -23,6 +23,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/com
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { useTranslations } from "next-intl";
 
 export interface VerificationRequest {
   id: string;
@@ -58,6 +59,17 @@ export function AdminDashboardClient({
   initialLogs,
   locale,
 }: AdminDashboardClientProps) {
+  let tAdmin: any = (k: string) => k;
+  let tCom: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tAdmin = useTranslations("admin");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tCom = useTranslations("common");
+  } catch {
+    // Fallback
+  }
+
   const [queue, setQueue] = React.useState<VerificationRequest[]>(initialQueue);
   const [logs, setLogs] = React.useState<AuditLogItem[]>(initialLogs);
   const [statusFilter, setStatusFilter] = React.useState<string>("ALL");
