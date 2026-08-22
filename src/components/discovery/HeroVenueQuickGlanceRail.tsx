@@ -35,6 +35,7 @@ export function HeroVenueQuickGlanceRail({
   let tReg: any = (k: string) => k;
   let tTick: any = (k: string) => k;
   let tArch: any = (k: string) => k;
+  let tVen: any = (k: string) => k;
   try {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     tReg = useTranslations('regions');
@@ -42,6 +43,8 @@ export function HeroVenueQuickGlanceRail({
     tTick = useTranslations('tickets');
     // eslint-disable-next-line react-hooks/rules-of-hooks
     tArch = useTranslations('archetypes');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tVen = useTranslations('venues');
   } catch {
     // Fallback if rendered outside provider in tests
   }
@@ -89,6 +92,43 @@ export function HeroVenueQuickGlanceRail({
   };
   const regionLabel = regionNames[regionCode.toLowerCase()] || regionCode.toUpperCase();
 
+  const getHeaderTitle = () => {
+    let major = tVen('majorVenuesIn');
+    if (!major || typeof major !== 'string' || major === 'majorVenuesIn' || major.includes('.')) {
+      major = 'Major Venues in';
+    }
+
+    let regionTxt = tReg(regionCode.toLowerCase());
+    if (!regionTxt || typeof regionTxt !== 'string' || regionTxt === regionCode.toLowerCase() || regionTxt.includes('.')) {
+      regionTxt = regionLabel;
+    }
+
+    let schedule = tVen('nearUpcomingSchedule');
+    if (!schedule || typeof schedule !== 'string' || schedule === 'nearUpcomingSchedule' || schedule.includes('.')) {
+      schedule = 'Near-Upcoming Schedule';
+    }
+
+    return `${major} ${regionTxt} — ${schedule}`;
+  };
+
+  const getQuickGlanceLabel = () => {
+    const val = tVen('quickGlance');
+    if (!val || typeof val !== 'string' || val === 'quickGlance' || val.includes('.')) return '(Quick Glance)';
+    return val;
+  };
+
+  const getNoEventsLabel = () => {
+    const val = tVen('noEventsScheduled');
+    if (!val || typeof val !== 'string' || val === 'noEventsScheduled' || val.includes('.')) return 'No public events scheduled this week';
+    return val;
+  };
+
+  const getViewVenueDetailLabel = () => {
+    const val = tVen('viewVenueDetail');
+    if (!val || typeof val !== 'string' || val === 'viewVenueDetail' || val.includes('.')) return 'View venue details & map';
+    return val;
+  };
+
   return (
     <div
       className={cn(
@@ -103,10 +143,10 @@ export function HeroVenueQuickGlanceRail({
             <Building2 className="h-3 w-3" />
           </div>
           <span className="text-xs font-bold text-foreground tracking-tight">
-            Major Venues in {regionLabel} — Near-Upcoming Schedule
+            {getHeaderTitle()}
           </span>
           <span className="text-[11px] text-muted-foreground hidden sm:inline">
-            (Quick Glance)
+            {getQuickGlanceLabel()}
           </span>
         </div>
 
@@ -229,7 +269,7 @@ export function HeroVenueQuickGlanceRail({
                   })
                 ) : (
                   <div className="p-2 text-center text-[11px] text-muted-foreground rounded-lg border border-dashed border-border/60">
-                    <span>No public events scheduled this week</span>
+                    <span>{getNoEventsLabel()}</span>
                   </div>
                 )}
               </div>
@@ -240,7 +280,7 @@ export function HeroVenueQuickGlanceRail({
                   href={`/${locale}/venues/${venue.slug}`}
                   className="text-primary hover:underline font-medium flex items-center justify-between"
                 >
-                  <span>View venue details & map</span>
+                  <span>{getViewVenueDetailLabel()}</span>
                   <ChevronRight className="h-3 w-3" />
                 </Link>
               </div>

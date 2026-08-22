@@ -226,11 +226,14 @@ export function EventCategoryPills({
 
   let tArch: any = (k: string) => k;
   let tDisc: any = (k: string) => k;
+  let tCom: any = (k: string) => k;
   try {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     tArch = useTranslations('archetypes');
     // eslint-disable-next-line react-hooks/rules-of-hooks
     tDisc = useTranslations('discovery');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tCom = useTranslations('common');
   } catch {
     // Fallback if rendered outside provider in tests
   }
@@ -397,7 +400,7 @@ export function EventCategoryPills({
 
               {/* Bottom CTA Arrow */}
               <div className="relative z-10 pt-3 mt-2 border-t border-border/50 flex items-center justify-between text-xs font-semibold text-primary">
-                <span>View {category.shortName}</span>
+                <span>{tCom('viewCategory') || `View ${category.shortName}`}</span>
                 <div className="flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 group-hover:bg-primary group-hover:text-white transition-colors">
                   <ArrowRight className="h-3 w-3" />
                 </div>

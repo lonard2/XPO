@@ -31,7 +31,10 @@
     "free": "Kostenlos",
     "contact": "Kontakt",
     "notFound": "Seite nicht gefunden",
-    "retry": "Erneut versuchen"
+    "retry": "Erneut versuchen",
+    "view": "Ansehen",
+    "viewCategory": "Kategorie erkunden",
+    "viewDetailsAndMap": "Zentrum-Details & Karte anzeigen"
   },
   "nav": {
     "brand": "XPO",
@@ -297,7 +300,11 @@
     "specifications": "Technische Hallenspezifikationen",
     "floorPlanAvailable": "Interaktiver Hallenplan verfügbar",
     "backToVenues": "Zurück zum Verzeichnis",
-    "transitLogistics": "Anreise & Logistik"
+    "transitLogistics": "Anreise & Logistik",
+    "majorVenuesIn": "Wichtige Messezentren in",
+    "nearUpcomingSchedule": "Bevorstehende Termine",
+    "quickGlance": "(Kurzübersicht)",
+    "noEventsScheduled": "Diese Woche keine öffentlichen Veranstaltungen geplant"
   },
   "calendar": {
     "title": "Interaktiver Eventkalender",
@@ -310,7 +317,7 @@
     "exportGoogle": "Zu Google Kalender hinzufügen",
     "today": "Heute",
     "noEventsOnDate": "Keine Veranstaltungen an diesem Datum.",
-    "eventsOnDate": "Events an diesem Datum"
+    "eventsOnDate": "Tagesprogramm • "
   },
   "tickets": {
     "bookPass": "Einlasspass buchen",
@@ -519,6 +526,15 @@
     "kpiTickets": "Ausgestellte Pässe",
     "kpiCheckIn": "Eingecheckte Besucher",
     "kpiOccupancy": "Standauslastungsquote",
+    "vsLastCycle": "+18,4% ggü. Vorperiode",
+    "acrossExhibitions": "Über {count} aktive Messen",
+    "checkedInCount": "({count} eingecheckt)",
+    "boothsUnitsCount": "({occupied}/{total} Einheiten)",
+    "capabilitiesPipelines": "Veranstalter-Werkzeuge & Workflows",
+    "fastAccessSubtitle": "Schnellzugriff auf zentrale Veranstalter-Workflows für MICE-Messen:",
+    "liveCustomizerDesc": "Echtzeit-Vorschau mit CSS-Variablen-Tokens und Ansichtstest für Desktop, Tablet und Mobilgeräte.",
+    "qrScannerDesc": "HMAC-SHA256-Signaturprüfung, Erkennung von Doppeleinlässen und Echtzeit-Signalton.",
+    "boothManagerDesc": "Aussteller Hallenrastern zuweisen, reservierte Flächen verfolgen und Verzeichnisse exportieren.",
     "portalBadge": "Veranstalter-Portal",
     "managementHub": "Veranstalter-Management-Hub",
     "dashboardSubtitle": "Überwachen Sie Registrierungen, Ticketing, Einlassgeschwindigkeit und Messestände in Echtzeit.",

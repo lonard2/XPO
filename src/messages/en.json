@@ -31,7 +31,10 @@
     "free": "Free",
     "contact": "Contact",
     "notFound": "Page or resource not found",
-    "retry": "Try Again"
+    "retry": "Try Again",
+    "view": "View",
+    "viewCategory": "Explore Category",
+    "viewDetailsAndMap": "View venue details & map"
   },
   "nav": {
     "brand": "XPO",
@@ -297,7 +300,11 @@
     "specifications": "Hall Technical Specifications",
     "floorPlanAvailable": "Interactive Floor Map Available",
     "backToVenues": "Back to Venue Directory",
-    "transitLogistics": "Transit & Logistics Guide"
+    "transitLogistics": "Transit & Logistics Guide",
+    "majorVenuesIn": "Major Venues in",
+    "nearUpcomingSchedule": "Near-Upcoming Schedule",
+    "quickGlance": "(Quick Glance)",
+    "noEventsScheduled": "No public events scheduled this week"
   },
   "calendar": {
     "title": "Interactive Event Calendar",
@@ -310,7 +317,7 @@
     "exportGoogle": "Add to Google Calendar",
     "today": "Today",
     "noEventsOnDate": "No scheduled events on this date.",
-    "eventsOnDate": "Events on this date"
+    "eventsOnDate": "Event Schedule • "
   },
   "tickets": {
     "bookPass": "Book Ticket Pass",
@@ -519,6 +526,15 @@
     "kpiTickets": "Passes Issued",
     "kpiCheckIn": "Attendees Checked In",
     "kpiOccupancy": "Booth Occupancy Rate",
+    "vsLastCycle": "+18.4% vs last cycle",
+    "acrossExhibitions": "Across {count} active exhibitions",
+    "checkedInCount": "({count} checked-in)",
+    "boothsUnitsCount": "({occupied}/{total} units)",
+    "capabilitiesPipelines": "Organizer Capabilities & Pipelines",
+    "fastAccessSubtitle": "Fast access to high-impact organizer workflows engineered for MICE operations:",
+    "liveCustomizerDesc": "Side-by-side preview with CSS variable tokens and desktop/tablet/mobile viewport testing.",
+    "qrScannerDesc": "HMAC-SHA256 signature verification, double-scan detection, and real-time audio/visual chimes.",
+    "boothManagerDesc": "Assign exhibitors to specific hall grids, track reserved lots, and export directories.",
     "portalBadge": "Organizer Portal",
     "managementHub": "Organizer Management Hub",
     "dashboardSubtitle": "Monitor real-time attendee registrations, gross ticket volume, gate check-in velocity, and exhibitor booths.",

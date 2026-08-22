@@ -144,7 +144,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
             </div>
             <div className="flex items-center gap-1 mt-1 text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
               <TrendingUp className="h-3 w-3" />
-              <span>+18.4% vs last cycle</span>
+              <span>{tOrg("vsLastCycle") || "+18.4% vs last cycle"}</span>
             </div>
           </div>
         </Card>
@@ -162,7 +162,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
               {formatCurrency(grossRevenue, "IDR", locale)}
             </div>
             <div className="flex items-center gap-1 mt-1 text-[11px] text-muted-foreground">
-              <span>Across {events.length} active exhibitions</span>
+              <span>{tOrg("acrossExhibitions", { count: events.length }) || `Across ${events.length} active exhibitions`}</span>
             </div>
           </div>
         </Card>
@@ -177,7 +177,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
           </div>
           <div className="mt-3">
             <div className="text-2xl font-bold text-foreground">
-              {checkInRate}% <span className="text-xs font-normal text-muted-foreground">({totalCheckedIn} checked-in)</span>
+              {checkInRate}% <span className="text-xs font-normal text-muted-foreground">{tOrg("checkedInCount", { count: totalCheckedIn }) || `(${totalCheckedIn} checked-in)`}</span>
             </div>
             <div className="w-full bg-muted rounded-full h-1.5 mt-2 overflow-hidden">
               <div
@@ -198,7 +198,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
           </div>
           <div className="mt-3">
             <div className="text-2xl font-bold text-foreground">
-              {boothOccupancy}% <span className="text-xs font-normal text-muted-foreground">({occupiedBooths}/{totalBooths} units)</span>
+              {boothOccupancy}% <span className="text-xs font-normal text-muted-foreground">{tOrg("boothsUnitsCount", { occupied: occupiedBooths, total: totalBooths }) || `(${occupiedBooths}/${totalBooths} units)`}</span>
             </div>
             <div className="w-full bg-muted rounded-full h-1.5 mt-2 overflow-hidden">
               <div
@@ -360,10 +360,10 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
           <div className="space-y-3">
             <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-amber-500" />
-              <span>{tOrg("quickTools") || "Organizer Capabilities & Pipelines"}</span>
+              <span>{tOrg("capabilitiesPipelines") || "Organizer Capabilities & Pipelines"}</span>
             </h3>
             <p className="text-xs text-muted-foreground">
-              {tOrg("dashboardSubtitle") || "Fast access to high-impact organizer workflows engineered for MICE operations:"}
+              {tOrg("fastAccessSubtitle") || "Fast access to high-impact organizer workflows engineered for MICE operations:"}
             </p>
 
             <div className="space-y-2.5 pt-2">
@@ -372,7 +372,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
                 <div className="text-xs">
                   <div className="font-semibold text-foreground">{tOrg("liveCustomizer") || "Real-Time Visual Customizer"}</div>
                   <div className="text-muted-foreground text-[11px]">
-                    Side-by-side preview with CSS variable tokens and desktop/tablet/mobile viewport testing.
+                    {tOrg("liveCustomizerDesc") || "Side-by-side preview with CSS variable tokens and desktop/tablet/mobile viewport testing."}
                   </div>
                 </div>
               </div>
@@ -382,7 +382,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
                 <div className="text-xs">
                   <div className="font-semibold text-foreground">{tOrg("qrScanner") || "Cryptographic Door QR Scanner"}</div>
                   <div className="text-muted-foreground text-[11px]">
-                    HMAC-SHA256 signature verification, double-scan detection, and real-time audio/visual chimes.
+                    {tOrg("qrScannerDesc") || "HMAC-SHA256 signature verification, double-scan detection, and real-time audio/visual chimes."}
                   </div>
                 </div>
               </div>
@@ -392,7 +392,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
                 <div className="text-xs">
                   <div className="font-semibold text-foreground">{tOrg("boothManager") || "Hall & Booth Tenant Manager"}</div>
                   <div className="text-muted-foreground text-[11px]">
-                    Assign exhibitors to specific hall grids, track reserved lots, and export directories.
+                    {tOrg("boothManagerDesc") || "Assign exhibitors to specific hall grids, track reserved lots, and export directories."}
                   </div>
                 </div>
               </div>

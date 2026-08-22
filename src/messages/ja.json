@@ -31,7 +31,10 @@
     "free": "無料",
     "contact": "お問い合わせ",
     "notFound": "ページまたはリソースが見つかりません",
-    "retry": "再試行"
+    "retry": "再試行",
+    "view": "表示",
+    "viewCategory": "カテゴリーを見る",
+    "viewDetailsAndMap": "会場詳細とマップを見る"
   },
   "nav": {
     "brand": "XPO",
@@ -297,7 +300,11 @@
     "specifications": "ホール技術仕様",
     "floorPlanAvailable": "フロアマップ表示対応",
     "backToVenues": "会場一覧に戻る",
-    "transitLogistics": "交通アクセス・移動ガイド"
+    "transitLogistics": "交通アクセス・移動ガイド",
+    "majorVenuesIn": "主要展示会場：",
+    "nearUpcomingSchedule": "直近の開催予定",
+    "quickGlance": "(クイック一覧)",
+    "noEventsScheduled": "今週予定されている公開イベントはありません"
   },
   "calendar": {
     "title": "イベントカレンダー",
@@ -310,7 +317,7 @@
     "exportGoogle": "Googleカレンダーに追加",
     "today": "今日",
     "noEventsOnDate": "この日に開催されるイベントはありません。",
-    "eventsOnDate": "この日のイベント"
+    "eventsOnDate": "開催スケジュール："
   },
   "tickets": {
     "bookPass": "入場パスを予約",
@@ -519,6 +526,15 @@
     "kpiTickets": "発行済みパス数",
     "kpiCheckIn": "入場済み来場者数",
     "kpiOccupancy": "ブース成約率",
+    "vsLastCycle": "前回比 +18.4%",
+    "acrossExhibitions": "開催中の展示会 {count} 件",
+    "checkedInCount": "（{count}名 入場済み）",
+    "boothsUnitsCount": "（{occupied}/{total} 小間）",
+    "capabilitiesPipelines": "主催者機能＆パイプライン",
+    "fastAccessSubtitle": "MICE運営のために設計された主要ワークフローへ素早くアクセス：",
+    "liveCustomizerDesc": "CSS変数を反映したプレビューとPC・タブレット・スマホの画面サイズ切替テスト。",
+    "qrScannerDesc": "HMAC-SHA256電子署名検証、重複スキャン検知、およびリアルタイムの音声・画面通知。",
+    "boothManagerDesc": "ホール内の小間グリッドに出展社を配置し、予約済み区画を管理・書き出し。",
     "portalBadge": "主催者ポータル",
     "managementHub": "主催者管理ハブ",
     "dashboardSubtitle": "リアルタイムの来場登録、チケット売上、入場ゲート通過状況、ブース出展状況を管理。",

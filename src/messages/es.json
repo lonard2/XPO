@@ -31,7 +31,10 @@
     "free": "Gratis",
     "contact": "Contacto",
     "notFound": "Página no encontrada",
-    "retry": "Reintentar"
+    "retry": "Reintentar",
+    "view": "Ver",
+    "viewCategory": "Explorar Categoría",
+    "viewDetailsAndMap": "Ver detalles y mapa del recinto"
   },
   "nav": {
     "brand": "XPO",
@@ -297,7 +300,11 @@
     "specifications": "Especificaciones Técnicas",
     "floorPlanAvailable": "Plano interactivo disponible",
     "backToVenues": "Volver al Directorio",
-    "transitLogistics": "Guía de Transporte y Logística"
+    "transitLogistics": "Guía de Transporte y Logística",
+    "majorVenuesIn": "Principales Recintos en",
+    "nearUpcomingSchedule": "Próximos Eventos",
+    "quickGlance": "(Vista Rápida)",
+    "noEventsScheduled": "No hay eventos públicos programados esta semana"
   },
   "calendar": {
     "title": "Calendario Interactivo de Eventos",
@@ -310,7 +317,7 @@
     "exportGoogle": "Añadir a Google Calendar",
     "today": "Hoy",
     "noEventsOnDate": "No hay eventos programados para esta fecha.",
-    "eventsOnDate": "Eventos en esta fecha"
+    "eventsOnDate": "Programa del Día • "
   },
   "tickets": {
     "bookPass": "Reservar Pase de Entrada",
@@ -519,6 +526,15 @@
     "kpiTickets": "Pases Emitidos",
     "kpiCheckIn": "Asistentes Registrados",
     "kpiOccupancy": "Ocupación de Stands",
+    "vsLastCycle": "+18,4% vs período anterior",
+    "acrossExhibitions": "En {count} exposiciones activas",
+    "checkedInCount": "({count} registrados)",
+    "boothsUnitsCount": "({occupied}/{total} unidades)",
+    "capabilitiesPipelines": "Herramientas y Capacidades de Organizador",
+    "fastAccessSubtitle": "Acceso rápido a flujos de trabajo clave diseñados para operaciones MICE:",
+    "liveCustomizerDesc": "Vista previa en paralelo con variables CSS y prueba en dispositivos de escritorio, tableta y móvil.",
+    "qrScannerDesc": "Verificación de firma digital HMAC-SHA256, detección de escaneo duplicado y alertas auditivas/visuales.",
+    "boothManagerDesc": "Asigne expositores a la cuadrícula de pabellones, supervise lotes reservados y exporte directorios.",
     "portalBadge": "Portal de Organizadores",
     "managementHub": "Centro de Gestión de Organizadores",
     "dashboardSubtitle": "Supervise registros de asistentes, venta de entradas, velocidad de acceso y estands de exposición.",

@@ -31,7 +31,10 @@
     "free": "Gratis",
     "contact": "Kontak",
     "notFound": "Halaman tidak ditemukan",
-    "retry": "Coba Lagi"
+    "retry": "Coba Lagi",
+    "view": "Lihat",
+    "viewCategory": "Jelajahi Kategori",
+    "viewDetailsAndMap": "Lihat denah & detail venue"
   },
   "nav": {
     "brand": "XPO",
@@ -297,7 +300,11 @@
     "specifications": "Spesifikasi Teknis Hall",
     "floorPlanAvailable": "Denah Lantai Interaktif Tersedia",
     "backToVenues": "Kembali ke Direktori Venue",
-    "transitLogistics": "Panduan Transportasi & Logistik"
+    "transitLogistics": "Panduan Transportasi & Logistik",
+    "majorVenuesIn": "Pusat Konvensi Utama di",
+    "nearUpcomingSchedule": "Jadwal Pameran Terdekat",
+    "quickGlance": "(Sekilas Info)",
+    "noEventsScheduled": "Tidak ada acara publik yang dijadwalkan minggu ini"
   },
   "calendar": {
     "title": "Kalender Acara Interaktif",
@@ -310,7 +317,7 @@
     "exportGoogle": "Tambahkan ke Google Calendar",
     "today": "Hari Ini",
     "noEventsOnDate": "Tidak ada acara terjadwal pada tanggal ini.",
-    "eventsOnDate": "Acara pada tanggal ini"
+    "eventsOnDate": "Jadwal Pameran • "
   },
   "tickets": {
     "bookPass": "Pesan Pas Masuk",
@@ -519,6 +526,15 @@
     "kpiTickets": "Pas Masuk Diterbitkan",
     "kpiCheckIn": "Peserta Masuk",
     "kpiOccupancy": "Tingkat Okupansi Booth",
+    "vsLastCycle": "+18,4% dibanding periode lalu",
+    "acrossExhibitions": "Dari {count} pameran aktif",
+    "checkedInCount": "({count} sudah masuk)",
+    "boothsUnitsCount": "({occupied}/{total} unit)",
+    "capabilitiesPipelines": "Kapabilitas & Alat Kerja Penyelenggara",
+    "fastAccessSubtitle": "Akses cepat ke alur kerja operasional MICE berdampak tinggi:",
+    "liveCustomizerDesc": "Pratinjau berdampingan dengan token variabel CSS dan uji tampilan desktop/tablet/ponsel.",
+    "qrScannerDesc": "Verifikasi tanda tangan HMAC-SHA256, deteksi pemindaian ganda, dan sinyal audio visual langsung.",
+    "boothManagerDesc": "Alokasikan stan aula kepada eksibitor, pantau ketersediaan slot, dan ekspor direktori.",
     "portalBadge": "Portal Penyelenggara",
     "managementHub": "Pusat Manajemen Penyelenggara",
     "dashboardSubtitle": "Pantau pendaftaran pengunjung langsung, omzet penjualan tiket, verifikasi gerbang masuk, dan alokasi stan pameran.",

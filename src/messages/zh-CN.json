@@ -31,7 +31,10 @@
     "free": "免费",
     "contact": "联系",
     "notFound": "页面未找到",
-    "retry": "重试"
+    "retry": "重试",
+    "view": "查看",
+    "viewCategory": "探索分类",
+    "viewDetailsAndMap": "查看场馆详情与地图"
   },
   "nav": {
     "brand": "XPO",
@@ -297,7 +300,11 @@
     "specifications": "展厅技术参数",
     "floorPlanAvailable": "支持交互式展厅地图",
     "backToVenues": "返回场馆名录",
-    "transitLogistics": "交通与物流指南"
+    "transitLogistics": "交通与物流指南",
+    "majorVenuesIn": "主要会展中心：",
+    "nearUpcomingSchedule": "近期展会日程",
+    "quickGlance": "(概览)",
+    "noEventsScheduled": "本周暂无公开日程"
   },
   "calendar": {
     "title": "会展交互日历",
@@ -310,7 +317,7 @@
     "exportGoogle": "添加到谷歌日历",
     "today": "今天",
     "noEventsOnDate": "该日期暂无安排展会。",
-    "eventsOnDate": "该日期的展会"
+    "eventsOnDate": "展会日程 · "
   },
   "tickets": {
     "bookPass": "预订入场通行证",
@@ -519,6 +526,15 @@
     "kpiTickets": "已发放通行证",
     "kpiCheckIn": "实到参会代表",
     "kpiOccupancy": "展位出租率",
+    "vsLastCycle": "环比上期 +18.4%",
+    "acrossExhibitions": "涵盖 {count} 场正在进行的展会",
+    "checkedInCount": "（已核销 {count} 人）",
+    "boothsUnitsCount": "（{occupied}/{total} 个展位）",
+    "capabilitiesPipelines": "主办方核心能力与工作流",
+    "fastAccessSubtitle": "专为MICE展会运营设计的核心工作流快捷入口：",
+    "liveCustomizerDesc": "支持CSS变量实时渲染，提供桌面/平板/手机多端响应式预览测试。",
+    "qrScannerDesc": "HMAC-SHA256防伪验签，支持重复扫码拦截与音画提示。",
+    "boothManagerDesc": "为展商分配展厅展位，追踪预留展位并导出展商名录。",
     "portalBadge": "主办方工作台",
     "managementHub": "主办方管理中心",
     "dashboardSubtitle": "实时监控参会报名、票务总额、闸机检票速度及展位入驻情况。",
