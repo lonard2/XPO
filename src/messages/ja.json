@@ -402,7 +402,7 @@
     "lockedBadge": "ロック中 (アップグレードが必要)"
   },
   "auth": {
-    "modalTitle": "Authentication & Role Governance",
+    "modalTitle": "認証・権限ロール管理",
     "modalSubtitle": "アクティブセッションの切り替え、権限シミュレーション、ログイン。",
     "roleSwitcherTab": "ロール切替",
     "loginTab": "ログイン",
