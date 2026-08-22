@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { setRequestLocale } from 'next-intl/server';
+import { setRequestLocale, getTranslations } from 'next-intl/server';
 import {
   Building2,
   MapPin,
@@ -52,6 +52,11 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
   const { locale, slug } = await params;
   setRequestLocale(locale);
 
+  const tVen = await getTranslations({ locale, namespace: 'venues' });
+  const tCom = await getTranslations({ locale, namespace: 'common' });
+  const tReg = await getTranslations({ locale, namespace: 'regions' });
+  const tFoot = await getTranslations({ locale, namespace: 'footer' });
+
   let venue: VenueSummary | null = null;
   let upcomingEvents: DiscoveryEvent[] = [];
 
@@ -102,11 +107,11 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
         <div className="container flex items-center gap-2 text-xs text-muted-foreground px-4">
           <Link href={`/${locale}`} className="hover:text-foreground flex items-center gap-1">
             <ArrowLeft className="h-3.5 w-3.5" />
-            <span>Home</span>
+            <span>{tCom('explore') || 'Home'}</span>
           </Link>
           <span>/</span>
           <Link href={`/${locale}/venues`} className="hover:text-foreground">
-            Venues
+            {tVen('title')?.split('&')?.[0]?.trim() || 'Venues'}
           </Link>
           <span>/</span>
           <span className="font-semibold text-foreground">{venue.name}</span>
@@ -144,7 +149,7 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
                 </Badge>
                 <Badge variant="success" className="text-xs font-semibold gap-1">
                   <CheckCircle2 className="h-3 w-3" />
-                  <span>Verified MICE Complex</span>
+                  <span>{tFoot('infrastructureBadge') || 'Verified MICE Complex'}</span>
                 </Badge>
               </div>
 
@@ -160,21 +165,27 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
               {/* Metric Badges */}
               <div className="grid grid-cols-3 gap-3 pt-2">
                 <div className="rounded-xl border border-border/80 bg-muted/30 p-3 text-center">
-                  <span className="text-[10px] uppercase font-semibold text-muted-foreground block">Halls</span>
+                  <span className="text-[10px] uppercase font-semibold text-muted-foreground block">
+                    {tVen('totalHalls')?.split(' ')?.[1] || 'Halls'}
+                  </span>
                   <span className="text-base sm:text-lg font-bold text-foreground mt-0.5 block">
                     {venue.halls?.length || 4}
                   </span>
                 </div>
 
                 <div className="rounded-xl border border-border/80 bg-muted/30 p-3 text-center">
-                  <span className="text-[10px] uppercase font-semibold text-muted-foreground block">Max Capacity</span>
+                  <span className="text-[10px] uppercase font-semibold text-muted-foreground block">
+                    {tReg('capacity') || 'Max Capacity'}
+                  </span>
                   <span className="text-base sm:text-lg font-bold text-foreground mt-0.5 block">
                     {totalCapacity.toLocaleString()}
                   </span>
                 </div>
 
                 <div className="rounded-xl border border-border/80 bg-muted/30 p-3 text-center">
-                  <span className="text-[10px] uppercase font-semibold text-muted-foreground block">Total Area</span>
+                  <span className="text-[10px] uppercase font-semibold text-muted-foreground block">
+                    {tVen('grossSpace') || 'Total Area'}
+                  </span>
                   <span className="text-base sm:text-lg font-bold text-foreground mt-0.5 block">
                     {totalFloorArea.toLocaleString()} m²
                   </span>
@@ -190,10 +201,10 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
         <div className="border-b border-border pb-4">
           <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider mb-1">
             <Layers className="h-4 w-4" />
-            <span>Floor Specifications</span>
+            <span>{tVen('specifications') || 'Floor Specifications'}</span>
           </div>
           <h2 className="text-2xl font-bold tracking-tight text-foreground">
-            Hall & Pavilion Directory ({venue.halls?.length || 0})
+            {tReg('hallDirectory') || 'Hall & Pavilion Directory'} ({venue.halls?.length || 0})
           </h2>
         </div>
 
@@ -217,7 +228,7 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
                   {hall.floorAreaSqm && (
                     <div className="flex items-center gap-1 text-[11px] font-medium text-foreground">
                       <Layers className="h-3 w-3 text-primary" />
-                      <span>{hall.floorAreaSqm.toLocaleString()} sqm floor area</span>
+                      <span>{hall.floorAreaSqm.toLocaleString()} sqm {tVen('grossSpace')?.toLowerCase() || 'floor area'}</span>
                     </div>
                   )}
                   {hall.description && (
@@ -230,7 +241,7 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
             ))}
           </div>
         ) : (
-          <p className="text-xs text-muted-foreground">No individual hall specs indexed for this venue.</p>
+          <p className="text-xs text-muted-foreground">{tCom('notFound') || 'No individual hall specs indexed for this venue.'}</p>
         )}
       </section>
 
@@ -239,11 +250,11 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
         <div className="rounded-3xl border border-border bg-card p-6 sm:p-8 space-y-4 shadow-xs">
           <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider">
             <Train className="h-4 w-4" />
-            <span>Transit & Access Logistics</span>
+            <span>{tVen('transitLogistics') || 'Transit & Access Logistics'}</span>
           </div>
 
           <h2 className="text-xl sm:text-2xl font-bold text-foreground">
-            Getting to {venue.name}
+            {tReg('transitGuide') || 'Getting to Venue'}: {venue.name}
           </h2>
 
           <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-3xl">
@@ -257,9 +268,9 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Button size="sm" variant="outline" className="gap-1.5 text-xs font-semibold">
+              <Button size="sm" variant="outline" className="gap-1.5 text-xs font-semibold cursor-pointer">
                 <Navigation className="h-3.5 w-3.5 text-primary" />
-                <span>Open in Google Maps</span>
+                <span>{tCom('directions') || 'Open in Google Maps'}</span>
                 <ExternalLink className="h-3 w-3 ml-1 text-muted-foreground" />
               </Button>
             </a>
@@ -273,15 +284,15 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
           <div>
             <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider mb-1">
               <Sparkles className="h-4 w-4" />
-              <span>Upcoming Schedule</span>
+              <span>{tReg('upcomingEvents') || 'Upcoming Schedule'}</span>
             </div>
             <h2 className="text-2xl font-bold tracking-tight text-foreground">
-              Scheduled Exhibitions at this Venue
+              {tVen('happeningAtVenue') || 'Scheduled Exhibitions at this Venue'}
             </h2>
           </div>
           <Link href={`/${locale}/events`}>
-            <Button variant="outline" size="sm" className="gap-1.5 text-xs">
-              <span>All Exhibitions</span>
+            <Button variant="outline" size="sm" className="gap-1.5 text-xs cursor-pointer">
+              <span>{tCom('viewAll') || 'All Exhibitions'}</span>
             </Button>
           </Link>
         </div>
@@ -289,8 +300,8 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
         {upcomingEvents.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border p-8 text-center space-y-2">
             <Calendar className="h-8 w-8 text-muted-foreground mx-auto" />
-            <h3 className="text-sm font-bold text-foreground">No upcoming exhibitions currently scheduled</h3>
-            <p className="text-xs text-muted-foreground">Check back soon for new trade fair announcements at this venue.</p>
+            <h3 className="text-sm font-bold text-foreground">{tCom('notFound') || 'No upcoming exhibitions currently scheduled'}</h3>
+            <p className="text-xs text-muted-foreground">{tReg('subtitle') || 'Check back soon for new trade fair announcements at this venue.'}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

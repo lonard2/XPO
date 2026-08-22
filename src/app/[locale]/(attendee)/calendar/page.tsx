@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { cookies, headers } from 'next/headers';
 import { notFound } from 'next/navigation';
+import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { db } from '@/lib/db';
 import { FALLBACK_EVENTS } from '@/lib/discovery/fallbackData';
 import { EventCalendarWidget } from '@/components/discovery/EventCalendarWidget';
@@ -28,6 +29,14 @@ export async function generateMetadata({ params }: CalendarPageProps) {
 
 export default async function CalendarPage({ params, searchParams }: CalendarPageProps) {
   const { locale } = await params;
+  setRequestLocale(locale);
+
+  const tCal = await getTranslations({ locale, namespace: 'calendar' });
+  const tCom = await getTranslations({ locale, namespace: 'common' });
+  const tTix = await getTranslations({ locale, namespace: 'tickets' });
+  const tReg = await getTranslations({ locale, namespace: 'regions' });
+  const tArch = await getTranslations({ locale, namespace: 'archetypes' });
+
   const headerList = await headers();
   const cookieStore = await cookies();
   const geoHeaderRegion = headerList.get('x-xpo-region');
@@ -105,22 +114,22 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
-            <span>Back to Discovery</span>
+            <span>{tCom('back') || 'Back'}</span>
           </Link>
 
           <Badge variant="outline" className="text-xs font-semibold gap-1 uppercase">
             <CalendarIcon className="h-3.5 w-3.5 text-primary" />
-            <span>{region.toUpperCase()} Edition Master Timetable</span>
+            <span>{region.toUpperCase()} {tCal('title') || 'Master Timetable'}</span>
           </Badge>
         </div>
 
         {/* Hero Section */}
         <div className="space-y-2 border-b border-border/80 pb-6">
           <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-foreground">
-            MICE Master Event Calendar
+            {tCal('title') || 'MICE Master Event Calendar'}
           </h1>
           <p className="text-sm sm:text-base text-muted-foreground max-w-2xl">
-            Interactive multi-track timetable across all major convention centers, exhibition halls, and conference stages.
+            {tCal('subtitle') || 'Interactive multi-track timetable across all major convention centers, exhibition halls, and conference stages.'}
           </p>
         </div>
 
@@ -139,15 +148,15 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <h2 className="text-lg sm:text-xl font-bold tracking-tight text-foreground">
-                Chronological Schedule Overview
+                {tCal('monthView') || 'Chronological Schedule Overview'}
               </h2>
-              <p className="text-xs text-muted-foreground">All confirmed events ordered by start date.</p>
+              <p className="text-xs text-muted-foreground">{tReg('upcomingEvents') || 'All confirmed events ordered by start date.'}</p>
             </div>
 
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" className="gap-1.5 text-xs">
+              <Button variant="outline" size="sm" className="gap-1.5 text-xs cursor-pointer">
                 <Download className="h-3.5 w-3.5" />
-                <span>Export iCal (.ics)</span>
+                <span>{tCal('exportICal') || 'Export iCal (.ics)'}</span>
               </Button>
             </div>
           </div>
@@ -156,6 +165,16 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
             {mappedEvents.map((evt: EventSummary) => {
               const tokens = getArchetypeTokens(evt.archetype);
               const dateRange = formatDateRange(evt.startDate, evt.endDate, locale, timezone);
+
+              let archetypeTitle = tokens.displayName;
+              try {
+                if (tArch && typeof (tArch as any).raw === 'function') {
+                  const raw = (tArch as any).raw(evt.archetype);
+                  if (raw?.title) archetypeTitle = raw.title;
+                }
+              } catch {
+                // fallback
+              }
 
               return (
                 <div
@@ -169,7 +188,7 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
                         className="text-[10px] font-bold uppercase border-0"
                         style={{ backgroundColor: tokens.primary, color: '#ffffff' }}
                       >
-                        {tokens.displayName}
+                        {archetypeTitle}
                       </Badge>
                       {evt.venueHallName && (
                         <span className="text-[10px] font-semibold text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
@@ -198,9 +217,9 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
 
                   <div className="pt-2 border-t border-border/60 flex items-center justify-between">
                     <Link href={`/${locale}/events/${evt.slug}`} className="w-full">
-                      <Button size="sm" className="w-full gap-1.5 text-xs font-semibold">
+                      <Button size="sm" className="w-full gap-1.5 text-xs font-semibold cursor-pointer">
                         <Ticket className="h-3.5 w-3.5" />
-                        <span>View Event & Tickets</span>
+                        <span>{tTix('viewPass') || 'View Event & Tickets'}</span>
                       </Button>
                     </Link>
                   </div>

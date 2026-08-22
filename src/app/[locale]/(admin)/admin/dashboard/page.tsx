@@ -1,5 +1,6 @@
 import * as React from "react";
 import Link from "next/link";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import {
   ShieldCheck,
@@ -34,6 +35,10 @@ interface AdminDashboardPageProps {
 
 export default async function AdminDashboardPage({ params }: AdminDashboardPageProps) {
   const { locale } = await params;
+  setRequestLocale(locale);
+
+  const tAdm = await getTranslations({ locale, namespace: "admin" });
+  const tCom = await getTranslations({ locale, namespace: "common" });
 
   let totalEvents = 0;
   let totalVenues = 0;
@@ -189,29 +194,29 @@ export default async function AdminDashboardPage({ params }: AdminDashboardPageP
           <div className="flex items-center gap-2 mb-1.5">
             <Badge variant="destructive" size="sm" className="gap-1">
               <ShieldCheck className="h-3 w-3" />
-              Platform Governance Hub
+              {tAdm("portalBadge") || "Platform Governance Hub"}
             </Badge>
-            <span className="text-xs text-muted-foreground">Multi-Sided MICE Ecosystem Administration</span>
+            <span className="text-xs text-muted-foreground">{tAdm("dashboardTitle") || "Multi-Sided MICE Ecosystem Administration"}</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-            System Governance & Operations Overview
+            {tAdm("dashboardTitle") || "System Governance & Operations Overview"}
           </h1>
           <p className="text-sm text-muted-foreground mt-1 max-w-3xl">
-            Real-time platform metrics, organizer verification governance, global venue aggregate management, and automated schedule ingestion crawler.
+            {tAdm("dashboardSubtitle") || "Real-time platform metrics, organizer verification governance, global venue aggregate management, and automated schedule ingestion crawler."}
           </p>
         </div>
 
         <div className="flex items-center gap-2.5 shrink-0">
           <Link href={`/${locale}/admin/crawler`}>
-            <Button variant="outline" size="sm" className="gap-1.5 text-xs">
+            <Button variant="outline" size="sm" className="gap-1.5 text-xs cursor-pointer">
               <RefreshCw className="h-3.5 w-3.5 text-primary" />
-              Trigger Ingestion Run
+              <span>{tAdm("syncCrawler") || "Trigger Ingestion Run"}</span>
             </Button>
           </Link>
           <Link href={`/${locale}/admin/venues`}>
-            <Button variant="primary" size="sm" className="gap-1.5 text-xs">
+            <Button variant="primary" size="sm" className="gap-1.5 text-xs cursor-pointer">
               <Building2 className="h-3.5 w-3.5" />
-              Manage Venues & Halls
+              <span>{tAdm("venueManager") || "Manage Venues & Halls"}</span>
             </Button>
           </Link>
         </div>
@@ -223,7 +228,7 @@ export default async function AdminDashboardPage({ params }: AdminDashboardPageP
         <Card className="p-4 bg-card/70 backdrop-blur-sm border-border/80 hover:border-primary/40 transition-all">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Total Live Events
+              {tAdm("totalEventsCrawled") || "Total Live Events"}
             </span>
             <div className="h-8 w-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
               <Calendar className="h-4 w-4" />
@@ -244,7 +249,7 @@ export default async function AdminDashboardPage({ params }: AdminDashboardPageP
         <Card className="p-4 bg-card/70 backdrop-blur-sm border-border/80 hover:border-primary/40 transition-all">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Registered Delegates
+              {tCom("attendees") || "Registered Delegates"}
             </span>
             <div className="h-8 w-8 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
               <Users className="h-4 w-4" />
@@ -265,7 +270,7 @@ export default async function AdminDashboardPage({ params }: AdminDashboardPageP
         <Card className="p-4 bg-card/70 backdrop-blur-sm border-border/80 hover:border-primary/40 transition-all">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Verified Organizers
+              {tCom("organizer") || "Verified Organizers"}
             </span>
             <div className="h-8 w-8 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
               <Award className="h-4 w-4" />
@@ -286,7 +291,7 @@ export default async function AdminDashboardPage({ params }: AdminDashboardPageP
         <Card className="p-4 bg-card/70 backdrop-blur-sm border-border/80 hover:border-primary/40 transition-all">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Venues & Halls
+              {tAdm("totalVenuesIndexed") || "Venues & Halls"}
             </span>
             <div className="h-8 w-8 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
               <Building2 className="h-4 w-4" />

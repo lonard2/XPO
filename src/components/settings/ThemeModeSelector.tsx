@@ -2,51 +2,53 @@
 
 import * as React from "react";
 import { Sun, Moon, Laptop, Eye, Check } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useSettings, type ThemeMode } from "./SettingsProvider";
 import { cn } from "@/lib/utils";
 
-interface ThemeOption {
-  id: ThemeMode;
-  label: string;
-  description: string;
-  icon: React.ElementType;
-}
-
-const THEME_OPTIONS: ThemeOption[] = [
-  {
-    id: "light",
-    label: "Light Mode",
-    description: "Crisp daylight palette optimized for clear indoor reading.",
-    icon: Sun,
-  },
-  {
-    id: "dark",
-    label: "Dark Mode",
-    description: "Deep midnight palette engineered to reduce visual fatigue.",
-    icon: Moon,
-  },
-  {
-    id: "system",
-    label: "System Default",
-    description: "Automatically synchronizes with your device operating system theme.",
-    icon: Laptop,
-  },
-  {
-    id: "high-contrast",
-    label: "High Contrast",
-    description: "Maximized contrast boundaries for superior visual accessibility.",
-    icon: Eye,
-  },
-];
-
 export function ThemeModeSelector({ className }: { className?: string }) {
   const { theme, setTheme, isMounted } = useSettings();
+
+  let tSet: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tSet = useTranslations("settings");
+  } catch {
+    // Fallback
+  }
+
+  const THEME_OPTIONS = [
+    {
+      id: "light" as ThemeMode,
+      label: tSet("light") || "Light Mode",
+      description: tSet("lightDesc") || "Crisp daylight palette optimized for clear indoor reading.",
+      icon: Sun,
+    },
+    {
+      id: "dark" as ThemeMode,
+      label: tSet("dark") || "Dark Mode",
+      description: tSet("darkDesc") || "Deep midnight palette engineered to reduce visual fatigue.",
+      icon: Moon,
+    },
+    {
+      id: "system" as ThemeMode,
+      label: tSet("system") || "System Default",
+      description: tSet("systemDesc") || "Automatically synchronizes with your device operating system theme.",
+      icon: Laptop,
+    },
+    {
+      id: "high-contrast" as ThemeMode,
+      label: tSet("highContrast") || "High Contrast",
+      description: tSet("highContrastDesc") || "Maximized contrast boundaries for superior visual accessibility.",
+      icon: Eye,
+    },
+  ];
 
   return (
     <div className={cn("space-y-3", className)}>
       <div className="flex items-center justify-between">
         <label className="text-sm font-semibold text-foreground">
-          Theme Mode
+          {tSet("themeMode") || "Theme Mode"}
         </label>
         <span className="text-xs text-muted-foreground">
           {isMounted ? `Active: ${theme.toUpperCase()}` : "Loading..."}
@@ -70,7 +72,7 @@ export function ThemeModeSelector({ className }: { className?: string }) {
               aria-checked={isSelected}
               onClick={() => setTheme(opt.id)}
               className={cn(
-                "flex items-start gap-3.5 p-4 rounded-xl border text-left transition-all relative group",
+                "flex items-start gap-3.5 p-4 rounded-xl border text-left transition-all relative group cursor-pointer",
                 isSelected
                   ? "border-primary bg-primary/5 ring-2 ring-primary/20 shadow-sm"
                   : "border-border bg-card hover:border-border/80 hover:bg-accent/40"

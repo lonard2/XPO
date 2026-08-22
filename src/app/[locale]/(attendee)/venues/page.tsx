@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { cookies, headers } from 'next/headers';
-import { setRequestLocale } from 'next-intl/server';
+import { setRequestLocale, getTranslations } from 'next-intl/server';
 import {
   Building2,
   ArrowLeft,
@@ -39,6 +39,10 @@ export default async function VenuesPage({ params, searchParams }: VenuesPagePro
   const rawSearchParams = searchParams ? await searchParams : undefined;
   setRequestLocale(locale);
 
+  const tVen = await getTranslations({ locale, namespace: 'venues' });
+  const tCom = await getTranslations({ locale, namespace: 'common' });
+  const tFoot = await getTranslations({ locale, namespace: 'footer' });
+
   const headerList = await headers();
   const cookieStore = await cookies();
   const geoHeaderRegion = headerList.get('x-xpo-region');
@@ -66,10 +70,6 @@ export default async function VenuesPage({ params, searchParams }: VenuesPagePro
     // Graceful fallback to pre-seeded venues
   }
 
-  const indonesianVenues = venuesList.filter((v) => (v.region?.code || v.regionId || '').toLowerCase() === 'id');
-  const japanVenues = venuesList.filter((v) => (v.region?.code || v.regionId || '').toLowerCase() === 'jp');
-  const globalVenues = venuesList.filter((v) => ['gl', 'global'].includes((v.region?.code || v.regionId || '').toLowerCase()));
-
   return (
     <div className="flex flex-col gap-10 pb-16">
       {/* Breadcrumb Navigation */}
@@ -77,10 +77,10 @@ export default async function VenuesPage({ params, searchParams }: VenuesPagePro
         <div className="container flex items-center gap-2 text-xs text-muted-foreground px-4">
           <Link href={`/${locale}`} className="hover:text-foreground flex items-center gap-1">
             <ArrowLeft className="h-3.5 w-3.5" />
-            <span>Home</span>
+            <span>{tCom('explore') || 'Home'}</span>
           </Link>
           <span>/</span>
-          <span className="font-semibold text-foreground">Venue Directory</span>
+          <span className="font-semibold text-foreground">{tVen('title')?.split('&')?.[0]?.trim() || 'Venue Directory'}</span>
         </div>
       </div>
 
@@ -90,13 +90,13 @@ export default async function VenuesPage({ params, searchParams }: VenuesPagePro
           <div className="max-w-3xl space-y-3">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-semibold">
               <Building2 className="h-3.5 w-3.5" />
-              <span>Verified MICE Infrastructure</span>
+              <span>{tFoot('infrastructureBadge') || 'Verified MICE Infrastructure'}</span>
             </div>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground">
-              Convention Centers & Exhibition Halls
+              {tVen('title') || 'Convention Centers & Exhibition Halls'}
             </h1>
             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-              Explore verified floor capacities, column-free mega halls, VIP delegation suites, and transit access guides for world-class venues in Southeast Asia, Japan, and international trade gateways.
+              {tVen('subtitle') || 'Explore verified floor capacities, column-free mega halls, VIP delegation suites, and transit access guides for world-class venues in Southeast Asia, Japan, and international trade gateways.'}
             </p>
           </div>
         </div>

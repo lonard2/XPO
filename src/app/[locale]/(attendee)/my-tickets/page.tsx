@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import {
   Ticket,
@@ -35,6 +35,10 @@ export async function generateMetadata() {
 export default async function MyTicketsPage({ params }: MyTicketsPageProps) {
   const { locale } = await params;
   setRequestLocale(locale);
+
+  const tMy = await getTranslations({ locale, namespace: "myTickets" });
+  const tTix = await getTranslations({ locale, namespace: "tickets" });
+  const tCom = await getTranslations({ locale, namespace: "common" });
 
   let bookings: any[] = [];
   try {
@@ -94,24 +98,24 @@ export default async function MyTicketsPage({ params }: MyTicketsPageProps) {
             <div className="flex items-center gap-2">
               <Badge variant="archetype" size="sm" className="gap-1.5 font-semibold">
                 <ShieldCheck className="h-3 w-3" />
-                Attendee Credential Wallet
+                {tMy("title") || "Attendee Credential Wallet"}
               </Badge>
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-              My Passes & Event Treat Vouchers
+              {tMy("title") || "My Passes & Event Treat Vouchers"}
             </h1>
             <p className="text-xs sm:text-sm text-muted-foreground">
-              Present your vector QR passes for fast-track venue admission and redeem on-site perks.
+              {tMy("subtitle") || "Present your vector QR passes for fast-track venue admission and redeem on-site perks."}
             </p>
           </div>
 
           <div className="flex items-center gap-2">
             <Link
               href={`/${locale}/events`}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-sm"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-sm cursor-pointer"
             >
               <Ticket className="h-4 w-4" />
-              Explore More Events
+              {tMy("browseEvents") || "Explore More Events"}
             </Link>
           </div>
         </div>
@@ -124,18 +128,18 @@ export default async function MyTicketsPage({ params }: MyTicketsPageProps) {
             </div>
             <div className="space-y-1.5">
               <h3 className="text-base sm:text-lg font-bold text-foreground">
-                No Active Passes Found
+                {tMy("noPassesTitle") || "No Active Passes Found"}
               </h3>
               <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                You haven't reserved any convention passes yet. Browse upcoming industrial expos, developer summits, and medical symposiums.
+                {tMy("noPassesDesc") || "You haven't reserved any convention passes yet. Browse upcoming industrial expos, developer summits, and medical symposiums."}
               </p>
             </div>
             <div className="pt-2">
               <Link
                 href={`/${locale}/events`}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-colors cursor-pointer"
               >
-                Discover Upcoming Events
+                {tMy("browseEvents") || "Discover Upcoming Events"}
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
@@ -172,15 +176,15 @@ export default async function MyTicketsPage({ params }: MyTicketsPageProps) {
                       {isCheckedIn ? (
                         <Badge variant="success" size="sm" className="gap-1 font-semibold">
                           <CheckCircle2 className="h-3 w-3" />
-                          Checked In
+                          {tTix("verifiedStatus") || "Checked In"}
                         </Badge>
                       ) : isCancelled ? (
                         <Badge variant="outline" size="sm" className="border-red-500 text-red-500">
-                          Cancelled
+                          {tCom("cancel") || "Cancelled"}
                         </Badge>
                       ) : (
                         <Badge variant="secondary" size="sm" className="font-semibold">
-                          Confirmed Pass
+                          {tTix("reservationConfirmed") || "Confirmed Pass"}
                         </Badge>
                       )}
                     </div>
@@ -221,10 +225,10 @@ export default async function MyTicketsPage({ params }: MyTicketsPageProps) {
                   <div className="p-4 bg-muted/30 border-t border-border mt-auto">
                     <Link
                       href={`/${locale}/my-tickets/${booking.id}`}
-                      className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-xs"
+                      className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-xs cursor-pointer"
                     >
                       <QrCode className="h-3.5 w-3.5" />
-                      Open Digital Pass & Treats
+                      {tMy("showPass") || "Open Digital Pass & Treats"}
                       <ArrowRight className="h-3.5 w-3.5" />
                     </Link>
                   </div>

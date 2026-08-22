@@ -2,19 +2,31 @@
 
 import * as React from "react";
 import { ZoomIn, RotateCcw } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useSettings } from "./SettingsProvider";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
-const PRESETS = [
-  { label: "Compact (90%)", value: 0.9 },
-  { label: "Default (100%)", value: 1.0 },
-  { label: "Enlarged (110%)", value: 1.1 },
-  { label: "Accessible (125%)", value: 1.25 },
-];
-
 export function FontScaleSlider({ className }: { className?: string }) {
   const { fontScale, setFontScale, isMounted } = useSettings();
+
+  let tSet: any = (k: string) => k;
+  let tCom: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tSet = useTranslations("settings");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tCom = useTranslations("common");
+  } catch {
+    // Fallback
+  }
+
+  const PRESETS = [
+    { label: `${tSet("compact")?.split("(")?.[0]?.trim() || "Compact"} (90%)`, value: 0.9 },
+    { label: `${tCom("all") === "Semua" ? "Standar" : "Default"} (100%)`, value: 1.0 },
+    { label: `${tSet("comfortable")?.split("(")?.[0]?.trim() || "Enlarged"} (110%)`, value: 1.1 },
+    { label: `${tSet("atkinsonHyperlegible")?.split("(")?.[0]?.trim() || "Accessible"} (125%)`, value: 1.25 },
+  ];
 
   const currentPercent = Math.round((fontScale || 1.0) * 100);
 
@@ -26,9 +38,9 @@ export function FontScaleSlider({ className }: { className?: string }) {
             <ZoomIn className="h-4 w-4" />
           </div>
           <div>
-            <h4 className="text-sm font-semibold text-foreground">Font Scaling</h4>
+            <h4 className="text-sm font-semibold text-foreground">{tSet("fontScaling") || "Font Scaling"}</h4>
             <p className="text-xs text-muted-foreground">
-              Adjust global typography scale across all MICE pages and timetables
+              {tSet("subtitle") || "Adjust global typography scale across all MICE pages and timetables"}
             </p>
           </div>
         </div>
@@ -46,7 +58,7 @@ export function FontScaleSlider({ className }: { className?: string }) {
             title="Reset font scale to 100%"
           >
             <RotateCcw className="h-3.5 w-3.5" />
-            <span className="hidden xs:inline">Reset</span>
+            <span className="hidden xs:inline">{tSet("resetDefaults")?.split(" ")?.[0] || "Reset"}</span>
           </Button>
         </div>
       </div>

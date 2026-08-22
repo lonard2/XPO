@@ -32,11 +32,17 @@ export function VenueSpotlightCard({
 }: VenueSpotlightCardProps) {
   let tReg: any = (k: string) => k;
   let tCom: any = (k: string) => k;
+  let tVen: any = (k: string) => k;
+  let tFoot: any = (k: string) => k;
   try {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     tReg = useTranslations('regions');
     // eslint-disable-next-line react-hooks/rules-of-hooks
     tCom = useTranslations('common');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tVen = useTranslations('venues');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tFoot = useTranslations('footer');
   } catch {
     // Fallback if rendered outside provider in tests
   }
@@ -84,7 +90,7 @@ export function VenueSpotlightCard({
         <div className="absolute bottom-2.5 right-2.5 z-10">
           <Badge variant="outline" className="text-[10px] font-semibold bg-background/90 backdrop-blur-xs">
             <Layers className="h-3 w-3 mr-1 inline text-primary" />
-            {hallCount} Halls
+            {hallCount} {tVen('totalHalls')?.split(' ')?.[1] || 'Halls'}
           </Badge>
         </div>
       </div>
@@ -116,7 +122,7 @@ export function VenueSpotlightCard({
             </div>
 
             <div className="flex flex-col">
-              <span className="text-muted-foreground text-[10px] uppercase font-medium">Floor Area</span>
+              <span className="text-muted-foreground text-[10px] uppercase font-medium">{tVen('grossSpace') || 'Floor Area'}</span>
               <span className="font-bold text-foreground flex items-center gap-1 mt-0.5">
                 <Layers className="h-3 w-3 text-primary" />
                 {totalFloorArea.toLocaleString()} sqm
@@ -140,11 +146,11 @@ export function VenueSpotlightCard({
 
         <CardFooter className="p-0 pt-3 border-t border-border/60 flex items-center justify-between">
           <span className="text-[11px] font-medium text-muted-foreground">
-            Verified Infrastructure
+            {tFoot('infrastructureBadge') || 'Verified Infrastructure'}
           </span>
 
           <Link href={`/${locale}/venues/${venue.slug}`}>
-            <Button size="sm" variant="ghost" className="gap-1 text-xs font-semibold text-primary hover:bg-primary/10">
+            <Button size="sm" variant="ghost" className="gap-1 text-xs font-semibold text-primary hover:bg-primary/10 cursor-pointer">
               <span>{tReg('viewVenue') || 'View Venue'}</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </Button>

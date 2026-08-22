@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import {
   QrCode,
@@ -57,6 +57,10 @@ export default async function DigitalPassDetailPage({ params }: DigitalPassPageP
   const { locale, bookingId } = await params;
   setRequestLocale(locale);
 
+  const tMy = await getTranslations({ locale, namespace: "myTickets" });
+  const tTix = await getTranslations({ locale, namespace: "tickets" });
+  const tCom = await getTranslations({ locale, namespace: "common" });
+
   let booking: any = null;
   try {
     booking = await db.booking.findUnique({
@@ -105,21 +109,12 @@ export default async function DigitalPassDetailPage({ params }: DigitalPassPageP
       fallbackEvent = null;
     }
 
-    if (fallbackEvent) {
-      const tier = fallbackEvent.ticketTiers[0] || {
-        id: "tier-sample",
-        name: "VIP Delegate Pass",
-        price: 750000,
-        currency: "IDR",
-        capacity: 500,
-        soldCount: 120,
-        benefitsJson: JSON.stringify(["VIP Buyer Lounge Access", "Fast-Track Entry"]),
-      };
-
+    if (fallbackEvent && fallbackEvent.ticketTiers.length > 0) {
+      const tier = fallbackEvent.ticketTiers[0];
       booking = {
-        id: bookingId,
+        id: bookingId || "bk-demo-001",
         status: "CONFIRMED",
-        qrCodeHash: `XPO-PASS-${bookingId.toUpperCase()}-7F8E9D0A1B2C3D4E`,
+        qrCodeHash: `XPO-PASS-${bookingId || "DEMO"}-A1B2C3D4E5F67890`,
         attendeeName: "Alex Pratama",
         attendeeEmail: "alex@xpo.com",
         checkedInAt: null,
@@ -139,10 +134,10 @@ export default async function DigitalPassDetailPage({ params }: DigitalPassPageP
         <div className="flex items-center justify-between border-b border-border/60 pb-4">
           <Link
             href={`/${locale}/my-tickets`}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
           >
             <ChevronLeft className="h-4 w-4" />
-            Back to My Pass Wallet
+            <span>{tMy("title") || "Back to My Pass Wallet"}</span>
           </Link>
 
           <div className="flex items-center gap-2">

@@ -60,7 +60,7 @@ export default function SettingsPage({ params }: SettingsPageProps) {
       {/* Breadcrumb Navigation */}
       <nav aria-label="Breadcrumbs" className="flex items-center gap-1.5 text-xs text-muted-foreground">
         <Link href={`/${locale}`} className="hover:text-foreground transition-colors">
-          Home
+          {tCom("explore") || "Home"}
         </Link>
         <ChevronRight className="h-3.5 w-3.5" />
         <span className="text-foreground font-medium">{tSet("title") || "Settings"}</span>
@@ -71,7 +71,7 @@ export default function SettingsPage({ params }: SettingsPageProps) {
         <div>
           <div className="flex items-center gap-2 mb-1.5">
             <span className="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold uppercase tracking-wider bg-primary/10 text-primary border border-primary/20">
-              System Preferences
+              {tSet("systemPreferences") || "System Preferences"}
             </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
@@ -86,14 +86,16 @@ export default function SettingsPage({ params }: SettingsPageProps) {
         <div className="relative self-start md:self-auto">
           {showResetConfirm ? (
             <div className="flex items-center gap-2 p-1.5 rounded-lg border border-destructive/40 bg-destructive/5 animate-fade-in">
-              <span className="text-xs text-destructive font-medium px-2">Reset all?</span>
+              <span className="text-xs text-destructive font-medium px-2">
+                {tSet("resetConfirm") || "Reset all?"}
+              </span>
               <Button
                 variant="destructive"
                 size="sm"
                 onClick={handleReset}
                 className="h-7 px-2.5 text-xs"
               >
-                Confirm
+                {tSet("confirm") || "Confirm"}
               </Button>
               <Button
                 variant="ghost"
@@ -101,7 +103,7 @@ export default function SettingsPage({ params }: SettingsPageProps) {
                 onClick={() => setShowResetConfirm(false)}
                 className="h-7 px-2 text-xs"
               >
-                Cancel
+                {tCom("cancel") || "Cancel"}
               </Button>
             </div>
           ) : (
@@ -112,7 +114,7 @@ export default function SettingsPage({ params }: SettingsPageProps) {
               className="gap-2 text-xs text-muted-foreground hover:text-foreground"
             >
               <RotateCcw className="h-3.5 w-3.5" />
-              <span>Reset to Defaults</span>
+              <span>{tSet("resetDefaults") || "Reset to Defaults"}</span>
             </Button>
           )}
         </div>
@@ -123,19 +125,19 @@ export default function SettingsPage({ params }: SettingsPageProps) {
         <TabsList className="w-full sm:w-auto grid grid-cols-2 sm:grid-cols-4 p-1 gap-1">
           <TabsTrigger value="appearance" className="gap-2">
             <Palette className="h-4 w-4" />
-            <span>Appearance</span>
+            <span>{tSet("appearanceTab") || "Appearance"}</span>
           </TabsTrigger>
           <TabsTrigger value="ai" className="gap-2">
             <Bot className="h-4 w-4" />
-            <span>AI Concierge</span>
+            <span>{tSet("aiTab") || "AI Concierge"}</span>
           </TabsTrigger>
           <TabsTrigger value="profile" className="gap-2">
             <User className="h-4 w-4" />
-            <span>Profile & MICE</span>
+            <span>{tSet("profileTab") || "Profile & MICE"}</span>
           </TabsTrigger>
           <TabsTrigger value="localization" className="gap-2">
             <Globe2 className="h-4 w-4" />
-            <span>Localization</span>
+            <span>{tSet("localizationTab") || "Localization"}</span>
           </TabsTrigger>
         </TabsList>
 
@@ -179,10 +181,10 @@ export default function SettingsPage({ params }: SettingsPageProps) {
               </div>
               <div>
                 <h4 className="text-sm font-semibold text-foreground">
-                  AI Architecture & Model Routing
+                  {tSet("aiArchitecture") || "AI Architecture & Model Routing"}
                 </h4>
                 <p className="text-xs text-muted-foreground">
-                  OpenRouter high-throughput inference engine with offline fallback
+                  {tSet("openRouterEngine") || "OpenRouter high-throughput inference engine with offline fallback"}
                 </p>
               </div>
             </div>
@@ -231,32 +233,32 @@ export default function SettingsPage({ params }: SettingsPageProps) {
               <div className="flex items-center gap-2">
                 <Globe2 className="h-5 w-5 text-primary" />
                 <h4 className="text-base font-semibold text-foreground">
-                  Language & Regional Localization
+                  {tSet("localizationTab") || "Language & Regional Localization"}
                 </h4>
               </div>
               <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
-                Choose your display language and primary MICE region for localized venue schedules and currency.
+                {tSet("subtitle") || "Choose your display language and primary MICE region for localized venue schedules and currency."}
               </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2 border-t border-border/60">
               <div className="space-y-2.5">
                 <label className="text-xs font-semibold text-foreground uppercase tracking-wider font-mono block">
-                  Interface Language
+                  {tSet("interfaceLanguage") || "Interface Language"}
                 </label>
                 <LanguageSwitcher currentLocale={locale} />
                 <p className="text-[11px] text-muted-foreground leading-normal">
-                  Supported in English, Japanese, Chinese, Indonesian, German, and Spanish.
+                  {tSet("interfaceLanguageDesc") || "Supported in English, Japanese, Chinese, Indonesian, German, and Spanish."}
                 </p>
               </div>
 
               <div className="space-y-2.5">
                 <label className="text-xs font-semibold text-foreground uppercase tracking-wider font-mono block">
-                  Regional MICE Hub
+                  {tSet("regionalHub") || "Regional MICE Hub"}
                 </label>
                 <RegionSwitcher currentLocale={locale} />
                 <p className="text-[11px] text-muted-foreground leading-normal">
-                  Toggle between Indonesia (JIExpo, ICE BSD), Japan (Big Sight, Makuhari), and Global Hubs.
+                  {tSet("regionalHubDesc") || "Toggle between Indonesia (JIExpo, ICE BSD), Japan (Big Sight, Makuhari), and Global Hubs."}
                 </p>
               </div>
             </div>

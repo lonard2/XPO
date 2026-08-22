@@ -2,45 +2,45 @@
 
 import * as React from "react";
 import { LayoutGrid, Rows3, Check } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useSettings, type UIDensity } from "./SettingsProvider";
 import { cn } from "@/lib/utils";
 
-interface DensityOption {
-  id: UIDensity;
-  label: string;
-  description: string;
-  icon: React.ElementType;
-  previewRows: number;
-  rowPaddingClass: string;
-}
-
-const DENSITY_OPTIONS: DensityOption[] = [
-  {
-    id: "comfortable",
-    label: "Comfortable",
-    description: "Generous whitespace and touch-friendly padding for relaxed reading.",
-    icon: LayoutGrid,
-    previewRows: 2,
-    rowPaddingClass: "py-2.5 px-3",
-  },
-  {
-    id: "compact",
-    label: "Compact",
-    description: "High-density data presentation designed for fast agenda scanning.",
-    icon: Rows3,
-    previewRows: 3,
-    rowPaddingClass: "py-1.5 px-2.5",
-  },
-];
-
 export function UIDensitySelector({ className }: { className?: string }) {
   const { density, setDensity, isMounted } = useSettings();
+
+  let tSet: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tSet = useTranslations("settings");
+  } catch {
+    // Fallback
+  }
+
+  const DENSITY_OPTIONS = [
+    {
+      id: "comfortable" as UIDensity,
+      label: tSet("comfortable")?.split("(")?.[0]?.trim() || "Comfortable",
+      description: tSet("comfortableDesc") || "Generous whitespace and touch-friendly padding for relaxed reading.",
+      icon: LayoutGrid,
+      previewRows: 2,
+      rowPaddingClass: "py-2.5 px-3",
+    },
+    {
+      id: "compact" as UIDensity,
+      label: tSet("compact")?.split("(")?.[0]?.trim() || "Compact",
+      description: tSet("compactDesc") || "High-density data presentation designed for fast agenda scanning.",
+      icon: Rows3,
+      previewRows: 3,
+      rowPaddingClass: "py-1.5 px-2.5",
+    },
+  ];
 
   return (
     <div className={cn("space-y-3", className)}>
       <div className="flex items-center justify-between">
         <label className="text-sm font-semibold text-foreground">
-          UI Density
+          {tSet("density") || "UI Density"}
         </label>
         <span className="text-xs text-muted-foreground capitalize">
           {isMounted ? `Active: ${density}` : "Loading..."}
@@ -64,7 +64,7 @@ export function UIDensitySelector({ className }: { className?: string }) {
               aria-checked={isSelected}
               onClick={() => setDensity(opt.id)}
               className={cn(
-                "flex flex-col p-4 rounded-xl border text-left transition-all relative group",
+                "flex flex-col p-4 rounded-xl border text-left transition-all relative group cursor-pointer",
                 isSelected
                   ? "border-primary bg-primary/5 ring-2 ring-primary/20 shadow-sm"
                   : "border-border bg-card hover:border-border/80 hover:bg-accent/40"
@@ -87,7 +87,7 @@ export function UIDensitySelector({ className }: { className?: string }) {
                       {opt.label}
                     </span>
                     <span className="text-xs text-muted-foreground block">
-                      {opt.id === "comfortable" ? "Default spacing" : "High data density"}
+                      {opt.id === "comfortable" ? (tSet("comfortable") || "Default spacing") : (tSet("compact") || "High data density")}
                     </span>
                   </div>
                 </div>
@@ -99,37 +99,26 @@ export function UIDensitySelector({ className }: { className?: string }) {
                 )}
               </div>
 
-              <p className="text-xs text-muted-foreground leading-relaxed mb-3">
+              <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
                 {opt.description}
               </p>
 
-              {/* Visual preview box */}
-              <div className="w-full rounded-lg bg-muted/60 border border-border/50 p-2 space-y-1.5 mt-auto pointer-events-none">
-                <div className="flex items-center justify-between text-[10px] text-muted-foreground font-mono">
-                  <span>MICE Agenda Preview</span>
-                  <span>Hall B3</span>
-                </div>
-                <div className="space-y-1">
-                  {Array.from({ length: opt.previewRows }).map((_, idx) => (
-                    <div
-                      key={idx}
-                      className={cn(
-                        "rounded bg-card border border-border/60 flex items-center justify-between text-xs transition-all",
-                        opt.rowPaddingClass
-                      )}
-                    >
-                      <div className="flex items-center gap-2">
-                        <div className="h-2 w-2 rounded-full bg-primary/70" />
-                        <span className="text-[11px] font-medium text-foreground">
-                          {idx === 0 ? "Keynote Plenary" : idx === 1 ? "Technical Panel" : "Exhibitor Pitch"}
-                        </span>
-                      </div>
-                      <span className="text-[10px] text-muted-foreground font-mono">
-                        {idx === 0 ? "09:00" : idx === 1 ? "10:30" : "13:00"}
-                      </span>
+              {/* Visual preview representation */}
+              <div className="w-full bg-muted/40 rounded-lg p-2 space-y-1.5 border border-border/40 mt-auto">
+                {Array.from({ length: opt.previewRows }).map((_, idx) => (
+                  <div
+                    key={idx}
+                    className={cn(
+                      "flex items-center justify-between rounded bg-background border border-border/50 text-[10px] text-muted-foreground",
+                      opt.rowPaddingClass
+                    )}
+                  >
+                    <div className="flex items-center gap-1.5">
+                      <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+                      <span>{opt.id === "comfortable" ? "10:00 AM • Main Keynote" : "10:00 • Tech Track"}</span>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
             </button>
           );

@@ -2,12 +2,24 @@
 
 import * as React from "react";
 import { Bot, Sparkles, Navigation, Clock, ShieldCheck, CheckCircle2, XCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useSettings } from "./SettingsProvider";
 import { Badge } from "@/components/ui/Badge";
 import { cn } from "@/lib/utils";
 
 export function AIConciergeToggle({ className }: { className?: string }) {
   const { aiConciergeEnabled, setAiConciergeEnabled, isMounted } = useSettings();
+
+  let tSet: any = (k: string) => k;
+  let tAi: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tSet = useTranslations("settings");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tAi = useTranslations("ai");
+  } catch {
+    // Fallback
+  }
 
   return (
     <div className={cn("rounded-xl border border-border bg-card p-4 sm:p-6 space-y-5", className)}>
@@ -19,7 +31,7 @@ export function AIConciergeToggle({ className }: { className?: string }) {
           <div>
             <div className="flex items-center gap-2">
               <h4 className="text-base font-semibold text-foreground">
-                Attendee AI Concierge
+                {tSet("aiConciergeToggle") || tAi("conciergeTitle") || "Attendee AI Concierge"}
               </h4>
               {isMounted && (
                 <Badge
@@ -31,8 +43,7 @@ export function AIConciergeToggle({ className }: { className?: string }) {
               )}
             </div>
             <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed max-w-xl">
-              Enable the floating AI copilot to provide instant schedule lookups, hall wayfinding,
-              and public transit instructions grounded in real MICE database records.
+              {tSet("aiConciergeDescription") || "Enable the floating AI copilot to provide instant schedule lookups, hall wayfinding, and public transit instructions grounded in real MICE database records."}
             </p>
           </div>
         </div>

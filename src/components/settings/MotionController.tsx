@@ -2,53 +2,54 @@
 
 import * as React from "react";
 import { Sparkles, Layers, EyeOff, Check, Activity } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useSettings, type MotionMode } from "./SettingsProvider";
 import { cn } from "@/lib/utils";
 
-interface MotionOption {
-  id: MotionMode;
-  label: string;
-  subtitle: string;
-  description: string;
-  icon: React.ElementType;
-}
-
-const MOTION_OPTIONS: MotionOption[] = [
-  {
-    id: "off",
-    label: "Reduced Motion",
-    subtitle: "Zero Animation",
-    description: "Eliminates all CSS transitions, transforms, and card tilts for vestibular safety.",
-    icon: EyeOff,
-  },
-  {
-    id: "subtle",
-    label: "Subtle Dynamics",
-    subtitle: "Standard Smooth UI",
-    description: "Balanced, lightweight fade transitions and subtle hover elevations.",
-    icon: Layers,
-  },
-  {
-    id: "expressive",
-    label: "Expressive / Cinematic",
-    subtitle: "3D Tilt & Ambient Glows",
-    description: "Multi-axis perspective card tilts, ambient lighting halos, and staggered reveals.",
-    icon: Sparkles,
-  },
-];
-
 export function MotionController({ className }: { className?: string }) {
   const { motionMode, setMotionMode, isMounted } = useSettings();
+
+  let tSet: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tSet = useTranslations("settings");
+  } catch {
+    // Fallback
+  }
+
+  const MOTION_OPTIONS = [
+    {
+      id: "off" as MotionMode,
+      label: tSet("motionOff") || "Reduced Motion",
+      subtitle: "Zero Animation",
+      description: tSet("motionOffDesc") || "Eliminates all CSS transitions, transforms, and card tilts for vestibular safety.",
+      icon: EyeOff,
+    },
+    {
+      id: "subtle" as MotionMode,
+      label: tSet("motionSubtle") || "Subtle Dynamics",
+      subtitle: "Standard Smooth UI",
+      description: tSet("motionSubtleDesc") || "Balanced, lightweight fade transitions and subtle hover elevations.",
+      icon: Layers,
+    },
+    {
+      id: "expressive" as MotionMode,
+      label: tSet("motionExpressive") || "Expressive / Cinematic",
+      subtitle: "3D Tilt & Ambient Glows",
+      description: tSet("motionExpressiveDesc") || "Multi-axis perspective card tilts, ambient lighting halos, and staggered reveals.",
+      icon: Sparkles,
+    },
+  ];
 
   return (
     <div className={cn("space-y-4", className)}>
       <div className="flex items-center justify-between">
         <div>
           <h4 className="text-sm font-semibold text-foreground">
-            Motion & Animation Dynamics
+            {tSet("motionMode") || "Motion & Animation Dynamics"}
           </h4>
           <p className="text-xs text-muted-foreground">
-            Control spatial depth, transitions, and micro-interactions
+            {tSet("subtitle") || "Control spatial depth, transitions, and micro-interactions"}
           </p>
         </div>
         <span className="text-xs font-mono font-medium text-muted-foreground capitalize">
