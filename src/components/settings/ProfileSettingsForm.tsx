@@ -9,15 +9,21 @@ import { Badge } from "@/components/ui/Badge";
 import { cn } from "@/lib/utils";
 
 const MICE_INTEREST_ARCHETYPES = [
-  { id: "INDUSTRIAL_B2B", label: "Industrial & Machinery" },
+  { id: "INDUSTRIAL_B2B", label: "Industrial & Manufacturing B2B" },
   { id: "TECH_DEV_SUMMIT", label: "Tech & Developer Summit" },
-  { id: "MEDICAL_SYMPOSIUM", label: "Medical & Clinical Congress" },
-  { id: "FINANCE_INVESTOR", label: "Finance & Investor Forum" },
-  { id: "POP_CULTURE_GAMING", label: "Pop Culture & Gaming" },
+  { id: "MEDICAL_SYMPOSIUM", label: "Medical & Healthcare Congress" },
+  { id: "FINANCE_INVESTOR", label: "Finance, FinTech & VC Forum" },
+  { id: "POP_CULTURE_GAMING", label: "Pop Culture, Gaming & Comic Con" },
   { id: "MUSIC_FESTIVAL", label: "Music Festival & Live Arena" },
   { id: "MEGA_EXPO_PAVILION", label: "Mega Fair & Consumer Pavilion" },
-  { id: "GOVERNMENT_DIPLOMATIC", label: "Diplomatic & Government" },
-  { id: "INCENTIVE_RETREAT", label: "Corporate Incentive & Retreat" },
+  { id: "AUTOMOTIVE_MOBILITY", label: "Automotive, EV & Mobility Expo" },
+  { id: "ENERGY_INFRASTRUCTURE", label: "Energy, Mining & Infrastructure" },
+  { id: "AGRITECH_FOOD", label: "Agriculture, Agritech & Food Expo" },
+  { id: "HOSPITALITY_TOURISM", label: "Hospitality, Tourism & Travel Mart" },
+  { id: "EDUCATION_EDTECH", label: "Education, EdTech & Academic Summit" },
+  { id: "FASHION_RETAIL", label: "Fashion, Beauty & Luxury Retail" },
+  { id: "GOVERNMENT_DIPLOMATIC", label: "Government & Diplomatic Summit" },
+  { id: "INCENTIVE_RETREAT", label: "Incentive & Corporate Retreat" },
 ];
 
 export function ProfileSettingsForm({ className }: { className?: string }) {

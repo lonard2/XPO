@@ -60,6 +60,24 @@ const HERO_IMAGE_PRESETS = [
   },
 ];
 
+const ALL_ARCHETYPE_OPTIONS: Array<{ id: MiceArchetype; name: string; tag: string }> = [
+  { id: "INDUSTRIAL_B2B", name: "Industrial & Manufacturing B2B", tag: "Heavy Machinery & Sourcing" },
+  { id: "TECH_DEV_SUMMIT", name: "Tech, AI & Developer Summit", tag: "AI & Cloud Architecture" },
+  { id: "MEDICAL_SYMPOSIUM", name: "Medical & Healthcare Congress", tag: "CME & Clinical Trials" },
+  { id: "FINANCE_INVESTOR", name: "Finance, FinTech & VC Forum", tag: "Venture & Institutional Capital" },
+  { id: "POP_CULTURE_GAMING", name: "Pop Culture, Gaming & Comic Con", tag: "Esports & Creator Alley" },
+  { id: "MUSIC_FESTIVAL", name: "Music Festival & Live Arena", tag: "Multi-Stage Live Concerts" },
+  { id: "MEGA_EXPO_PAVILION", name: "Mega Fair & Consumer Pavilion", tag: "Consumer & Fireworks Expo" },
+  { id: "AUTOMOTIVE_MOBILITY", name: "Automotive, EV & Mobility Expo", tag: "Concept Cars & Test Drives" },
+  { id: "ENERGY_INFRASTRUCTURE", name: "Energy, Mining & Infrastructure", tag: "Clean Grids & Mining" },
+  { id: "AGRITECH_FOOD", name: "Agriculture, Agritech & Food Expo", tag: "Smart Farming & Logistics" },
+  { id: "HOSPITALITY_TOURISM", name: "Hospitality, Tourism & Travel Mart", tag: "Hoteliers & Airline Buyers" },
+  { id: "EDUCATION_EDTECH", name: "Education, EdTech & Academic Summit", tag: "University Fairs & STEM" },
+  { id: "FASHION_RETAIL", name: "Fashion, Beauty & Luxury Retail", tag: "Runways & Cosmetic OEM" },
+  { id: "GOVERNMENT_DIPLOMATIC", name: "Government & Diplomatic Summit", tag: "Protocols & Bilateral Rooms" },
+  { id: "INCENTIVE_RETREAT", name: "Incentive & Corporate Retreat", tag: "Excursions & Executive Galas" },
+];
+
 export default function EventCustomizerPage() {
   const params = useParams();
   const locale = (params?.locale as string) || "en";
@@ -72,6 +90,7 @@ export default function EventCustomizerPage() {
   const [errorMessage, setErrorMessage] = React.useState("");
 
   // Customizer State
+  const [archetype, setArchetype] = React.useState<MiceArchetype>("INDUSTRIAL_B2B");
   const [primaryColor, setPrimaryColor] = React.useState("#1e3a8a");
   const [accentColor, setAccentColor] = React.useState("#d97706");
   const [fontFamily, setFontFamily] = React.useState("font-sans");
@@ -98,6 +117,9 @@ export default function EventCustomizerPage() {
           const data = await res.json();
           if (data.event) {
             setEventData(data.event);
+            if (data.event.archetype) {
+              setArchetype(data.event.archetype as MiceArchetype);
+            }
             const branding = parseBrandingConfig(data.event.brandingConfigJson);
             const defaults = getArchetypeTokens(data.event.archetype, branding);
             setPrimaryColor(defaults.primary);
@@ -119,7 +141,7 @@ export default function EventCustomizerPage() {
         title: "Indonesia Green Energy & Battery Expo 2027",
         slug: "indonesia-green-energy-battery-expo-2027",
         tagline: "The Premier EV Ecosystem, Battery Logistics & Clean Grid Assembly",
-        archetype: "ENERGY_INFRASTRUCTURE",
+        archetype: "ENERGY_INFRASTRUCTURE" as MiceArchetype,
         startDate: "2027-04-14",
         endDate: "2027-04-17",
         venue: { name: "JIExpo Kemayoran" },
@@ -132,6 +154,7 @@ export default function EventCustomizerPage() {
       };
 
       setEventData(fallbackEvent);
+      setArchetype(fallbackEvent.archetype);
       const defaults = getArchetypeTokens(fallbackEvent.archetype);
       setPrimaryColor(defaults.primary);
       setAccentColor(defaults.accent);
@@ -142,6 +165,15 @@ export default function EventCustomizerPage() {
     loadEvent();
   }, [eventId]);
 
+  const handleSelectArchetype = (newArch: MiceArchetype) => {
+    setArchetype(newArch);
+    const defaults = ARCHETYPE_DEFAULTS[newArch] || ARCHETYPE_DEFAULTS.INDUSTRIAL_B2B;
+    setPrimaryColor(defaults.primary);
+    setAccentColor(defaults.accent);
+    setFontFamily(defaults.fontFamily);
+    setHeroBadge(defaults.displayName);
+  };
+
   const handleApplyPreset = (preset: typeof COLOR_PRESETS[0]) => {
     setPrimaryColor(preset.primary);
     setAccentColor(preset.accent);
@@ -149,7 +181,7 @@ export default function EventCustomizerPage() {
 
   const handleResetDefaults = () => {
     if (!eventData) return;
-    const defaults = ARCHETYPE_DEFAULTS[eventData.archetype as MiceArchetype] || ARCHETYPE_DEFAULTS.INDUSTRIAL_B2B;
+    const defaults = ARCHETYPE_DEFAULTS[archetype] || ARCHETYPE_DEFAULTS.INDUSTRIAL_B2B;
     setPrimaryColor(defaults.primary);
     setAccentColor(defaults.accent);
     setFontFamily(defaults.fontFamily);
@@ -269,6 +301,35 @@ export default function EventCustomizerPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* LEFT COLUMN: CUSTOMIZER CONTROLS (5 cols on lg) */}
         <div className="lg:col-span-5 space-y-5">
+          {/* Card 0: Event Category Archetype */}
+          <Card className="p-5 border-border bg-card space-y-3">
+            <div className="flex items-center justify-between">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
+                <Layers className="h-4 w-4 text-primary" />
+                <span>MICE Event Category</span>
+              </h3>
+              <Badge variant="neutral" size="sm">15 Types</Badge>
+            </div>
+
+            <p className="text-[11px] text-muted-foreground">
+              Select an event category to switch layout behavior, default color tokens, and domain features.
+            </p>
+
+            <div className="space-y-2">
+              <select
+                value={archetype}
+                onChange={(e) => handleSelectArchetype(e.target.value as MiceArchetype)}
+                className="w-full h-9 rounded-lg border border-border bg-background px-3 text-xs font-medium text-foreground cursor-pointer"
+              >
+                {ALL_ARCHETYPE_OPTIONS.map((opt) => (
+                  <option key={opt.id} value={opt.id}>
+                    {opt.name} ({opt.tag})
+                  </option>
+                ))}
+              </select>
+            </div>
+          </Card>
+
           {/* Card 1: Theme Color Tokens */}
           <Card className="p-5 border-border bg-card space-y-4">
             <div className="flex items-center justify-between">
@@ -470,7 +531,7 @@ export default function EventCustomizerPage() {
           <LivePreviewFrame
             eventTitle={eventData?.title || "Event Title Preview"}
             tagline={eventData?.tagline}
-            archetype={eventData?.archetype || "INDUSTRIAL_B2B"}
+            archetype={archetype}
             venueName={eventData?.venue?.name}
             hallName={eventData?.venueHall?.name}
             datesText="Apr 14 - Apr 17, 2027"

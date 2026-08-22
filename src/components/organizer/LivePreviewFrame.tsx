@@ -52,6 +52,102 @@ interface LivePreviewFrameProps {
   }>;
 }
 
+function getCategoryFeatureSnippet(arch: string) {
+  switch (arch) {
+    case "TECH_DEV_SUMMIT":
+      return {
+        title: "Developer Sandbox & Livestream Tracks",
+        desc: "Live code walkthroughs, API sandboxes, GitHub speaker badges, and multi-track streaming keynotes.",
+        tags: ["GitHub CI/CD", "Rust/Wasm", "LLM Fine-Tuning", "Cloud Native"],
+      };
+    case "MEDICAL_SYMPOSIUM":
+      return {
+        title: "Peer-Reviewed Clinical Abstracts & CME Credits",
+        desc: "18.5 Accredited CME credit points, blinded peer-review abstract portal, and scientific breakout rooms.",
+        tags: ["18.5 CME Credits", "Abstract Reader", "Double-Blind Review", "Clinical Trials"],
+      };
+    case "FINANCE_INVESTOR":
+      return {
+        title: "Private Deal-Rooms & Institutional Pitch Decks",
+        desc: "High-security deal-rooms with NDA clearance, startup pitch stage, and encrypted buyer VIP passes.",
+        tags: ["Private Deal-Room", "Pitch Decks", "Accredited Investor Pass", "Seed to Series B"],
+      };
+    case "POP_CULTURE_GAMING":
+      return {
+        title: "Creator Alley, Cosplay Rules & Esports Arena",
+        desc: "Cosplay catwalk guidelines, creator alley table reservation, and 120Hz esports tournament spectator zones.",
+        tags: ["Cosplay Catwalk", "Artist Alley", "Esports Mainstage", "Merch Wishlist"],
+      };
+    case "MUSIC_FESTIVAL":
+      return {
+        title: "Real-Time Multi-Stage Timeline & Crowd Density",
+        desc: "Live set times across 4 acoustic stages, real-time gate crowd meter, and RFID pass credentials.",
+        tags: ["Live Stage Times", "Crowd Density Meter", "Acoustic Arena", "Wristband Access"],
+      };
+    case "MEGA_EXPO_PAVILION":
+      return {
+        title: "Multi-Pavilion Fair Map & Midnight Fireworks",
+        desc: "Over 500+ commercial tenant booths, nightly fireworks schedules, and digital food-court promo vouchers.",
+        tags: ["Pavilion Map", "Fireworks Schedule", "500+ Tenants", "Tenant Promos"],
+      };
+    case "AUTOMOTIVE_MOBILITY":
+      return {
+        title: "Test Drive Booking & EV Concept Reveals",
+        desc: "Dedicated circuit slot booking, high-voltage battery charging specs, and concept vehicle debuts.",
+        tags: ["Track Test Drives", "Concept Debuts", "EV Superchargers", "OEM Supply"],
+      };
+    case "ENERGY_INFRASTRUCTURE":
+      return {
+        title: "Clean Grid Concession Maps & Mining Heavy Machinery",
+        desc: "Renewable energy concession mapping, smart solar/wind grids, and heavy mining machinery demonstrations.",
+        tags: ["Concession Maps", "Green Grids", "Hydrogen Fuel", "Heavy Machinery"],
+      };
+    case "AGRITECH_FOOD":
+      return {
+        title: "Smart Precision Farming & Cold-Chain Logistics",
+        desc: "Drone precision spray demos, IoT soil telemetry, cold-chain transport networks, and tasting pavilions.",
+        tags: ["Smart Agriculture", "Cold-Chain Logistics", "Drone Demos", "Culinary Pavilion"],
+      };
+    case "HOSPITALITY_TOURISM":
+      return {
+        title: "B2B Buyer Appointments & Hotelier Procurement",
+        desc: "Curated 1-on-1 buyer matching, global airline route displays, and luxury hospitality amenities procurement.",
+        tags: ["Buyer Matchmaking", "Hotel Procurement", "Airline Routes", "Destination Pavilions"],
+      };
+    case "EDUCATION_EDTECH":
+      return {
+        title: "Global University Directory & STEM Labs",
+        desc: "International university admissions booths, scholarship grant counseling, and interactive STEM labs.",
+        tags: ["University Stalls", "Scholarship Grants", "STEM Research", "EdTech Sandboxes"],
+      };
+    case "FASHION_RETAIL":
+      return {
+        title: "Runway Premieres & Cosmetic OEM Pavilions",
+        desc: "Haute couture runway scheduling, cosmetic formulation labs, and bulk wholesale buyer pre-orders.",
+        tags: ["Runway Shows", "Cosmetic OEM", "Wholesale Pre-Orders", "Luxury Pavilion"],
+      };
+    case "GOVERNMENT_DIPLOMATIC":
+      return {
+        title: "Diplomatic Protocol & Bilateral Delegation Lounges",
+        desc: "High-security ministerial briefing rooms, protocol scheduling, and bilateral delegation access control.",
+        tags: ["Protocol Briefings", "Bilateral Lounges", "Ministerial Access", "Diplomatic Passes"],
+      };
+    case "INCENTIVE_RETREAT":
+      return {
+        title: "Curated Excursions & Gala Seating Charts",
+        desc: "Executive wellness itinerary planners, seaside excursion routes, and waterfront gala seating maps.",
+        tags: ["Daily Itineraries", "Gala Seating Chart", "Wellness Tracks", "VIP Excursions"],
+      };
+    case "INDUSTRIAL_B2B":
+    default:
+      return {
+        title: "Heavy Machinery Specs & RFQ Quote Drawer",
+        desc: "Live CNC machine tooling demonstrations, robotic automation specs, and instant supplier RFQ submissions.",
+        tags: ["Machinery Specs", "RFQ Quotes", "Exhibitor Booths", "B2B Procurement"],
+      };
+  }
+}
+
 export function LivePreviewFrame({
   eventTitle,
   tagline,
@@ -282,6 +378,35 @@ export function LivePreviewFrame({
                 <span>3,900+ registered delegates</span>
               </div>
             </div>
+
+            {/* CATEGORY-SPECIFIC DOMAIN FEATURE HIGHLIGHT */}
+            {(() => {
+              const feat = getCategoryFeatureSnippet(archetype as string);
+              return (
+                <div className="mx-5 sm:mx-8 p-4 rounded-xl border border-primary/20 bg-primary/5 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="h-4 w-4" style={{ color: primaryColor }} />
+                      <span className="text-xs font-bold text-foreground">{feat.title}</span>
+                    </div>
+                    <Badge variant="archetype" size="sm">{tokens.displayName}</Badge>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground leading-relaxed">
+                    {feat.desc}
+                  </p>
+                  <div className="flex flex-wrap gap-1.5 pt-1">
+                    {feat.tags.map((t) => (
+                      <span
+                        key={t}
+                        className="text-[10px] font-medium px-2 py-0.5 rounded-md border border-border/80 bg-background/80 text-foreground"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* SECTION 1: TICKET TIERS */}
             {sectionsVisibility.tickets && (

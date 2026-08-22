@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
 import { VenueSpotlightCard } from '@/components/discovery/VenueSpotlightCard';
+import { VenueDirectoryExplorer } from '@/components/discovery/VenueDirectoryExplorer';
 import { FALLBACK_VENUES } from '@/lib/discovery/fallbackData';
 import { type VenueSummary } from '@/types/discovery';
 
@@ -89,90 +90,10 @@ export default async function VenuesPage({ params }: VenuesPageProps) {
         </div>
       </section>
 
-      {/* 1. Indonesia Hub Venues */}
-      <section className="container px-4 space-y-6">
-        <div className="flex items-center justify-between border-b border-border pb-4">
-          <div>
-            <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider mb-1">
-              <Globe className="h-4 w-4" />
-              <span>Indonesia Regional Hub (ID)</span>
-            </div>
-            <h2 className="text-2xl font-bold tracking-tight text-foreground">
-              Jakarta & Tangerang Convention Complexes
-            </h2>
-          </div>
-          <Link href={`/${locale}/region/id`}>
-            <Button variant="outline" size="sm" className="gap-1.5 text-xs">
-              <span>View ID Hub</span>
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Button>
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {indonesianVenues.map((venue) => (
-            <VenueSpotlightCard key={venue.id} venue={venue} locale={locale} />
-          ))}
-        </div>
+      {/* Interactive Venue Directory Explorer with Region Filters & Live Search */}
+      <section className="container px-4">
+        <VenueDirectoryExplorer venues={venuesList} locale={locale} />
       </section>
-
-      {/* 2. Japan Hub Venues */}
-      {japanVenues.length > 0 && (
-        <section className="container px-4 space-y-6">
-          <div className="flex items-center justify-between border-b border-border pb-4">
-            <div>
-              <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider mb-1">
-                <Globe className="h-4 w-4" />
-                <span>Japan Regional Hub (JP)</span>
-              </div>
-              <h2 className="text-2xl font-bold tracking-tight text-foreground">
-                Tokyo & Kanto Trade Exhibition Centers
-              </h2>
-            </div>
-            <Link href={`/${locale}/region/jp`}>
-              <Button variant="outline" size="sm" className="gap-1.5 text-xs">
-                <span>View JP Hub</span>
-                <ArrowRight className="h-3.5 w-3.5" />
-              </Button>
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {japanVenues.map((venue) => (
-              <VenueSpotlightCard key={venue.id} venue={venue} locale={locale} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* 3. Global Gateways */}
-      {globalVenues.length > 0 && (
-        <section className="container px-4 space-y-6">
-          <div className="flex items-center justify-between border-b border-border pb-4">
-            <div>
-              <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider mb-1">
-                <Globe className="h-4 w-4" />
-                <span>Global Hubs (GL)</span>
-              </div>
-              <h2 className="text-2xl font-bold tracking-tight text-foreground">
-                International Flagship Convention Centers
-              </h2>
-            </div>
-            <Link href={`/${locale}/region/global`}>
-              <Button variant="outline" size="sm" className="gap-1.5 text-xs">
-                <span>View Global Hub</span>
-                <ArrowRight className="h-3.5 w-3.5" />
-              </Button>
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {globalVenues.map((venue) => (
-              <VenueSpotlightCard key={venue.id} venue={venue} locale={locale} />
-            ))}
-          </div>
-        </section>
-      )}
     </div>
   );
 }

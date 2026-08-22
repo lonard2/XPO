@@ -22,10 +22,10 @@ export function Footer({ locale = "en" }: { locale?: string }) {
           </div>
         </div>
 
-        {/* Col 2: Regional Portals */}
+        {/* Col 2: Country Editions */}
         <div className="space-y-3">
           <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Regional Hubs
+            Country Editions
           </h4>
           <ul className="space-y-2 text-xs">
             <li>
@@ -49,40 +49,40 @@ export function Footer({ locale = "en" }: { locale?: string }) {
           </ul>
         </div>
 
-        {/* Col 3: Archetype Directory */}
+        {/* Col 3: Event Categories */}
         <div className="space-y-3">
           <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            MICE Archetypes
+            Event Categories
           </h4>
           <ul className="space-y-2 text-xs text-muted-foreground">
             <li>Industrial & Manufacturing B2B</li>
-            <li>Tech & Developer Summits</li>
-            <li>Medical & Healthcare Symposia</li>
-            <li>Mega Expositions & World Fairs</li>
+            <li>Tech, AI & Developer Summits</li>
+            <li>Medical & Healthcare Congress</li>
+            <li>Automotive & Clean Energy Expos</li>
             <li>Pop Culture & Music Festivals</li>
           </ul>
         </div>
 
-        {/* Col 4: Intelligence & Operations */}
+        {/* Col 4: Organizer & Tools */}
         <div className="space-y-3">
           <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Command & Intelligence
+            Organizer Portal & Tools
           </h4>
           <ul className="space-y-2 text-xs">
             <li>
               <Link href={`/${locale}/dashboard`} className="text-muted-foreground hover:text-foreground transition-colors">
-                Organizer Command Center
+                Organizer Event Management Hub
+              </Link>
+            </li>
+            <li>
+              <Link href={`/${locale}/events/new`} className="text-muted-foreground hover:text-foreground transition-colors">
+                Create & Publish Exhibition
               </Link>
             </li>
             <li>
               <Link href={`/${locale}/settings`} className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5">
                 <Cpu className="h-3.5 w-3.5 text-primary" />
-                <span>Multi-Model AI Intelligence</span>
-              </Link>
-            </li>
-            <li>
-              <Link href={`/${locale}/settings`} className="text-muted-foreground hover:text-foreground transition-colors">
-                UI/UX & Font Preferences
+                <span>System & AI Concierge Preferences</span>
               </Link>
             </li>
           </ul>

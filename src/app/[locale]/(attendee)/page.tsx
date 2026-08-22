@@ -20,7 +20,6 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { HeroSection } from '@/components/discovery/HeroSection';
 import { EventCategoryPills } from '@/components/discovery/EventCategoryPills';
 import { EventCalendarWidget } from '@/components/discovery/EventCalendarWidget';
-import { VenueSpotlightSection } from '@/components/discovery/VenueSpotlightSection';
 import { EventCard } from '@/components/discovery/EventCard';
 import {
   FALLBACK_BANNER_SLIDES,
@@ -271,16 +270,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         </div>
       </section>
 
-      {/* 5. Convention Venue Spotlights (Adjusted by Active Region) */}
-      <section className="container">
-        <VenueSpotlightSection
-          venues={spotlightVenues}
-          locale={locale}
-          activeRegionCode={activeRegionCode}
-        />
-      </section>
-
-      {/* 6. Multi-Sided Platform Portals (Humanized Copywriting) */}
+      {/* 5. Multi-Sided Platform Portals (Humanized Copywriting) */}
       <section className="container space-y-8">
         <div className="text-center space-y-2 max-w-xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">

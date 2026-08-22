@@ -42,7 +42,7 @@
     "myTickets": "My Passes",
     "dashboard": "Organizer",
     "settings": "Settings",
-    "organizer": "Organizer Command",
+    "organizer": "Organizer Portal",
     "admin": "Governance",
     "switchLanguage": "Switch Language",
     "switchRegion": "Switch Region",
@@ -235,12 +235,12 @@
     "preferencesSaved": "Settings successfully saved to local profile."
   },
   "organizer": {
-    "dashboardTitle": "Organizer Command Center",
+    "dashboardTitle": "Organizer Portal",
     "createEvent": "Create New Event",
     "liveCustomizer": "Live Branding Customizer",
     "boothManager": "Booth & Tenant Manager",
     "qrScanner": "QR Check-in Scanner",
-    "aiReports": "AI Intelligence Reports",
+    "aiReports": "Event Analytics & Reports",
     "kpiRevenue": "Gross Ticket Revenue",
     "kpiTickets": "Passes Issued",
     "kpiCheckIn": "Checked-in Attendees",
