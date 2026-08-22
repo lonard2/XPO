@@ -144,79 +144,79 @@
   },
   "archetypes": {
     "INDUSTRIAL_B2B": {
-      "title": "B2B Industrial y Maquinaria",
-      "tag": "Maquinaria Pesada y Compras",
-      "description": "Demostraciones de fresado CNC, robótica inteligente, metalurgia y salas de negociación B2B."
+      "title": "Feria Industrial y de Maquinaria B2B",
+      "tag": "Maquinaria Pesada y Compras B2B",
+      "description": "Demostraciones de fresado CNC, robótica industrial, metalurgia de precisión y salas de negociación B2B."
     },
     "TECH_DEV_SUMMIT": {
-      "title": "Cumbre de Tecnología e IA",
-      "tag": "IA y Desarrollo Cloud",
-      "description": "Conferencias multitrack, análisis de código en vivo, entornos API y hackatones."
+      "title": "Conferencia de Tecnología e IA",
+      "tag": "Desarrolladores y Cloud",
+      "description": "Sesiones técnicas multitrack, arquitectura de código en vivo, entornos API y hackatones de ingeniería."
     },
     "MEDICAL_SYMPOSIUM": {
-      "title": "Congreso Médico y Sanitario",
-      "tag": "Ensayos Clínicos y Créditos CME",
-      "description": "Publicaciones médicas revisadas por pares, créditos de formación continua y salas clínicas."
+      "title": "Simposio Médico y Sanitario",
+      "tag": "Investigación Clínica y Créditos CME",
+      "description": "Publicaciones médicas revisadas por pares, créditos de formación continua CME y sesiones de especialidad."
     },
     "FINANCE_INVESTOR": {
-      "title": "Foro FinTech e Inversores",
-      "tag": "Capital Riesgo e Inversión",
-      "description": "Escenarios de pitches, salas de acuerdos bilaterales confidenciales y foros de inversión."
+      "title": "Foro FinTech e Inversión",
+      "tag": "Capital Riesgo y Rondas",
+      "description": "Escenarios de presentación de startups, salas confidenciales de acuerdos bilaterales y foros de capital."
     },
     "POP_CULTURE_GAMING": {
-      "title": "Expo de Pop Culture y Gaming",
-      "tag": "Esports y Callejón de Artistas",
-      "description": "Pasarelas de cosplay, stands de creadores de cómic, torneos de esports y firmas."
+      "title": "Feria de Pop Culture y Gaming",
+      "tag": "Torneos Esports y Creadores",
+      "description": "Pasarelas de cosplay, callejón de ilustradores y creadores de cómic, torneos de esports y zona de firmas."
     },
     "MUSIC_FESTIVAL": {
       "title": "Festival de Música y Conciertos",
-      "tag": "Conciertos Multiescenario",
-      "description": "Horarios de escenarios en vivo, mapa acústico del recinto y acceso con pulsera RFID."
+      "tag": "Escenarios en Vivo y Pulseras RFID",
+      "description": "Horarios de escenarios en tiempo real, mapas acústicos del recinto y acceso rápido mediante pulseras RFID."
     },
     "MEGA_EXPO_PAVILION": {
-      "title": "Gran Feria y Pabellones",
-      "tag": "Feria Comercial y Fuegos",
-      "description": "Compras en múltiples pabellones, espectáculos pirotécnicos nocturnos y muestras gastronómicas."
+      "title": "Gran Feria y Pabellones Comerciales",
+      "tag": "Pabellones de Comercio y Ocio",
+      "description": "Compras en múltiples pabellones temáticos, espectáculos pirotécnicos nocturnos y grandes muestras gastronómicas."
     },
     "AUTOMOTIVE_MOBILITY": {
-      "title": "Salón del Motor y Movilidad EV",
-      "tag": "Coches Concepto y Pruebas",
-      "description": "Reserva de pistas de prueba, presentación de prototipos y tecnología de recarga rápida."
+      "title": "Salón del Automóvil y Movilidad EV",
+      "tag": "Vehículos Concepto y Pistas de Prueba",
+      "description": "Reserva de pistas de prueba, estreno mundial de prototipos y tecnología para el ecosistema de recarga EV."
     },
     "ENERGY_INFRASTRUCTURE": {
-      "title": "Feria de Energía y Minería",
-      "tag": "Redes Verdes y Maquinaria",
-      "description": "Redes eléctricas renovables, maquinaria pesada para minería y concesiones energéticas."
+      "title": "Feria de Energía, Minería e Infraestructura",
+      "tag": "Redes Renovables y Minería Pesada",
+      "description": "Redes de energía renovable, maquinaria pesada para extracción minera y proyectos de infraestructura marítima."
     },
     "AGRITECH_FOOD": {
-      "title": "Expo Agritech y Alimentación",
-      "tag": "Agricultura Inteligente y Frío",
-      "description": "Demostraciones de agricultura de precisión, logística de cadena de frío y pabellones culinarios."
+      "title": "Feria Agritech y Alimentación",
+      "tag": "Agricultura de Precisión y Frío",
+      "description": "Tecnología de agricultura de precisión, redes de logística de cadena de frío y comercio internacional agroalimentario."
     },
     "HOSPITALITY_TOURISM": {
       "title": "Bolsa de Turismo y Hostelería",
-      "tag": "Hotelería y Líneas Aéreas",
-      "description": "Promoción de destinos, compras para el sector hotelero y red de compradores aéreos."
+      "tag": "Promoción de Destinos y Hotelería",
+      "description": "Rondas de compradores de viajes internacionales, cadenas de compras para hostelería y promoción de destinos."
     },
     "EDUCATION_EDTECH": {
-      "title": "Cumbre de Educación y EdTech",
-      "tag": "Ferias Universitarias y STEM",
-      "description": "Stands de universidades internacionales, becas de estudio y laboratorios de investigación STEM."
+      "title": "Feria de Educación y EdTech",
+      "tag": "Universidades y Becas de Estudio",
+      "description": "Pabellones de universidades internacionales, orientación para becas y plataformas de aprendizaje digital."
     },
     "FASHION_RETAIL": {
-      "title": "Expo de Moda, Belleza y Retail",
-      "tag": "Pasarelas y Fabricación OEM",
-      "description": "Desfiles de moda, formulación cosmética OEM y pedidos mayoristas a gran escala."
+      "title": "Feria de Moda, Belleza y Retail",
+      "tag": "Desfiles de Pasarela y Fabricación OEM",
+      "description": "Desfiles de pasarela de diseñadores, laboratorios de cosmética por contrato (OEM) y pedidos comerciales mayoristas."
     },
     "GOVERNMENT_DIPLOMATIC": {
-      "title": "Cumbre de Gobierno y Diplomacia",
-      "tag": "Protocolo y Salas Bilaterales",
-      "description": "Salas de conferencias de alta seguridad, protocolo diplomático y atención a delegaciones."
+      "title": "Cumbre Gubernamental y Diplomática",
+      "tag": "Protocolo Diplomático y Salas Bilaterales",
+      "description": "Salas de reuniones bilaterales de alta seguridad, sesiones de protocolo diplomático y foros de delegaciones de estado."
     },
     "INCENTIVE_RETREAT": {
-      "title": "Retiro Corporativo e Incentivos",
-      "tag": "Excursiones y Galas",
-      "description": "Itinerarios de bienestar personalizados, retiros ejecutivos y cenas de gala frente al mar."
+      "title": "Programa de Incentivos y Retiros Corporativos",
+      "tag": "Itinerarios de Incentivo y Cenas de Gala",
+      "description": "Itinerarios corporativos de bienestar, retiros de liderazgo para directivos y cenas de gala frente al mar."
     }
   },
   "discovery": {

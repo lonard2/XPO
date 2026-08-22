@@ -144,79 +144,79 @@
   },
   "archetypes": {
     "INDUSTRIAL_B2B": {
-      "title": "B2B Industrie & Maschinenbau",
-      "tag": "Schwermaschinen & Einkauf",
-      "description": "Live CNC-Werkzeugmaschinen, Smart Robotics, Metallurgie und B2B-Verhandlungsräume."
+      "title": "Industrie- & Maschinenbau-Fachmesse",
+      "tag": "Schwermaschinen & B2B-Einkauf",
+      "description": "Live CNC-Werkzeugmaschinen, Industrie-Robotik, Präzisions-Metallurgie und B2B-Verhandlungsräume."
     },
     "TECH_DEV_SUMMIT": {
-      "title": "Tech- & Entwickler-Gipfel",
-      "tag": "KI & Cloud-Architektur",
-      "description": "Multi-Track Keynotes, Live-Code-Demos, API-Sandboxen und Innovations-Hackathons."
+      "title": "Technologie- & Entwickler-Konferenz",
+      "tag": "Entwickler & Cloud-Architektur",
+      "description": "Multi-Track Fachvorträge, Live-Code-Architektur, API-Sandboxen und Entwickler-Hackathons."
     },
     "MEDICAL_SYMPOSIUM": {
-      "title": "Medizin- & Gesundheitskongress",
-      "tag": "Klinische Studien & CME",
-      "description": "Peer-Reviewed Studien, Fortbildungspunkte-Tracking und klinische Symposien."
+      "title": "Medizin- & Klinisches Symposium",
+      "tag": "Klinische Studien & CME-Punkte",
+      "description": "Peer-Reviewed Fachpublikationen, ärztliche CME-Fortbildungspunkte und klinische Fachsymposien."
     },
     "FINANCE_INVESTOR": {
       "title": "FinTech- & Investorenforum",
-      "tag": "Venture Capital & Fonds",
-      "description": "Pitch-Bühnen, vertrauliche Verhandlungsräume und institutionelle Investorengipfel."
+      "tag": "Venture Capital & Deal-Rooms",
+      "description": "Startup-Pitch-Bühnen, vertrauliche bilaterale Verhandlungsräume und institutionelle Kapitalforen."
     },
     "POP_CULTURE_GAMING": {
-      "title": "Popkultur- & Gaming-Expo",
-      "tag": "Esports & Creator Alley",
-      "description": "Cosplay-Bühnen, Artist Alleys, Esports-Turnierarenen und Autogrammzonen."
+      "title": "Popkultur- & Gaming-Messe",
+      "tag": "Esports-Turniere & Creator Alley",
+      "description": "Cosplay-Bühnen, Comic- und Illustrator-Alleys, Esports-Turnierarenen und Community-Treffpunkte."
     },
     "MUSIC_FESTIVAL": {
       "title": "Musikfestival & Arena-Konzert",
-      "tag": "Multi-Stage Live-Konzerte",
-      "description": "Echtzeit-Bühnenzeiten, akustische Arenakarten und RFID-Armband-Zutritt."
+      "tag": "Live-Bühnen & RFID-Zutritt",
+      "description": "Echtzeit-Bühnenzeitpläne, akustische Arenakarten und schneller RFID-Armband-Einlass."
     },
     "MEGA_EXPO_PAVILION": {
-      "title": "Großausstellung & Pavillons",
-      "tag": "Verbrauchermesse & Feuerwerk",
-      "description": "Multi-Pavillon-Messehallen, abendliche Feuerwerksshows und Gourmet-Märkte."
+      "title": "Großmesse & Multi-Pavillon-Schau",
+      "tag": "Messepavillons & Volksfest",
+      "description": "Umfassendes Multi-Pavillon-Shopping, abendliche Feuerwerksshows und große kulinarische Erlebnismärkte."
     },
     "AUTOMOTIVE_MOBILITY": {
       "title": "Automobil- & E-Mobilitätsmesse",
-      "tag": "Konzeptfahrzeuge & Testfahrten",
-      "description": "Teststrecken-Buchung, Konzeptfahrzeug-Premieren und Schnelllade-Infrastruktur."
+      "tag": "Konzeptfahrzeuge & Teststrecke",
+      "description": "Teststrecken-Buchungen, Weltpremieren von Konzeptfahrzeugen und Ladeinfrastruktur-Technologien."
     },
     "ENERGY_INFRASTRUCTURE": {
-      "title": "Energie- & Infrastrukturmesse",
-      "tag": "Grüne Netze & Bergbau",
-      "description": "Erneuerbare Energienetze, schwere Bergbaumaschinen und maritime Energiekonzessionen."
+      "title": "Energie-, Bergbau- & Infrastrukturmesse",
+      "tag": "Erneuerbare Netze & Schwermaschinen",
+      "description": "Erneuerbare Energienetze, schwere Bergbaufördertechnik und strategische maritime Infrastrukturprojekte."
     },
     "AGRITECH_FOOD": {
-      "title": "Agrartechnik- & Food-Expo",
-      "tag": "Smart Farming & Logistik",
-      "description": "Präzisionslandwirtschaft, Kühlketten-Logistik und internationale Kulinarik-Pavillons."
+      "title": "Agrartechnologie- & Lebensmittelmesse",
+      "tag": "Smart Farming & Kühlketten",
+      "description": "Smarte Präzisionslandwirtschaft, temperaturgeführte Kühlkettenlogistik und internationaler Agrarhandel."
     },
     "HOSPITALITY_TOURISM": {
       "title": "Tourismus- & Hospitality-Börse",
-      "tag": "Hotellerie & Airlines",
-      "description": "Reisedestinationen, Hotelbeschaffung und internationale Einkäufernetzwerke."
+      "tag": "Destinationsmarketing & Hotellerie",
+      "description": "Internationale Facheinkäufer-Termine, Hotelbeschaffungsketten und Tourismus-Destinationsmarketing."
     },
     "EDUCATION_EDTECH": {
-      "title": "Bildungs- & EdTech-Gipfel",
-      "tag": "Universitätsmessen & MINT",
-      "description": "Internationale Hochschulstände, Stipendienberatung und MINT-Forschungslabore."
+      "title": "Bildungs- & EdTech-Messe",
+      "tag": "Hochschulmessen & Stipendien",
+      "description": "Internationale Universitätsstände, Studien- und Stipendienberatung sowie digitale Lernplattformen."
     },
     "FASHION_RETAIL": {
-      "title": "Mode-, Beauty- & Luxusmesse",
-      "tag": "Laufsteg & Kosmetik-OEM",
-      "description": "Laufsteg-Premieren, Kosmetik-Auftragsfertigung und Großhandelsaufträge."
+      "title": "Mode-, Beauty- & Lifestyle-Messe",
+      "tag": "Laufsteg-Shows & Kosmetik-OEM",
+      "description": "Designer-Laufstegschauen, Kosmetik-Auftragsfertigung (OEM) und Facheinkaufs-Großhandelsordern."
     },
     "GOVERNMENT_DIPLOMATIC": {
       "title": "Regierungs- & Diplomatiegipfel",
-      "tag": "Protokoll & Bilaterale Räume",
-      "description": "Hochsicherheits-Konferenzräume, diplomatische Protokolle und Delegationszugänge."
+      "tag": "Diplomatisches Protokoll & Bilaterale",
+      "description": "Hochsicherheits-Konferenzsuiten, diplomatische Protokollbriefings und Regierungsdelegationsforen."
     },
     "INCENTIVE_RETREAT": {
-      "title": "Incentive- & Firmenretreat",
-      "tag": "Exkursionen & Galas",
-      "description": "Wellness-Reiserouten, Führungskräfterückzüge und festliche Galadinner."
+      "title": "Incentive-Reisen & Firmenretreat",
+      "tag": "Reiserouten & Galadinner",
+      "description": "Maßgeschneiderte Incentive-Programme, Führungskräfte-Workshops und exklusive Galadinner am Wasser."
     }
   },
   "discovery": {
