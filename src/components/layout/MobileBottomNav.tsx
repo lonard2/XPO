@@ -3,18 +3,27 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Compass, Sparkles, Building2, Ticket, Settings as SettingsIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function MobileBottomNav({ locale = "en" }: { locale?: string }) {
   const pathname = usePathname();
 
+  let tNav: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tNav = useTranslations("nav");
+  } catch {
+    // Fallback if rendered outside provider in tests
+  }
+
   const items = [
-    { href: `/${locale}`, label: "Explore", icon: Compass },
-    { href: `/${locale}/events`, label: "Events", icon: Sparkles },
-    { href: `/${locale}/venues`, label: "Venues", icon: Building2 },
-    { href: `/${locale}/my-tickets`, label: "Passes", icon: Ticket },
-    { href: `/${locale}/settings`, label: "Settings", icon: SettingsIcon },
+    { href: `/${locale}`, label: tNav("explore") || "Explore", icon: Compass },
+    { href: `/${locale}/events`, label: tNav("events") || "Events", icon: Sparkles },
+    { href: `/${locale}/venues`, label: tNav("venues") || "Venues", icon: Building2 },
+    { href: `/${locale}/my-tickets`, label: tNav("myTickets") || "Passes", icon: Ticket },
+    { href: `/${locale}/settings`, label: tNav("settings") || "Settings", icon: SettingsIcon },
   ];
 
   return (

@@ -15,6 +15,7 @@ import {
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/Card';
+import { useTranslations } from 'next-intl';
 import { formatCurrency, formatDateRange, getTimeZoneForRegion, getEventTemporalStatus, type SupportedCurrency } from '@/lib/i18n/formatters';
 import { getArchetypeTokens } from '@/lib/theming';
 import { type DiscoveryEvent } from '@/types/discovery';
@@ -33,6 +34,23 @@ export function EventCard({
   className,
   variant = 'grid',
 }: EventCardProps) {
+  let tArch: any = (k: string) => k;
+  let tCom: any = (k: string) => k;
+  let tTick: any = (k: string) => k;
+  let tDisc: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tArch = useTranslations('archetypes');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tCom = useTranslations('common');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tTick = useTranslations('tickets');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tDisc = useTranslations('discovery');
+  } catch {
+    // Fallback if rendered outside provider in tests
+  }
+
   const archetypeTokens = getArchetypeTokens(event.archetype);
   const regionCode = (event.region?.code || event.regionId || 'id').toLowerCase();
   const timezone = getTimeZoneForRegion(regionCode);
@@ -48,7 +66,7 @@ export function EventCard({
 
   const priceDisplay = lowestPrice > 0
     ? formatCurrency(lowestPrice, currency, locale)
-    : 'Free';
+    : (tCom('free') || 'Free');
 
   const dateRangeDisplay = formatDateRange(
     event.startDate,
@@ -56,6 +74,16 @@ export function EventCard({
     locale,
     timezone
   );
+
+  let archetypeDisplayName = archetypeTokens.displayName;
+  try {
+    if (tArch && typeof tArch.raw === 'function') {
+      const raw = tArch.raw(event.archetype);
+      if (raw?.title) archetypeDisplayName = raw.title;
+    }
+  } catch {
+    // fallback
+  }
 
   const formatLabel = event.format ? event.format.replace(/_/g, ' ') : 'IN PERSON';
   const scaleLabel = event.scale ? event.scale.replace(/_/g, ' ') : 'LARGE';
@@ -108,7 +136,7 @@ export function EventCard({
           {temporal.isLive && (
             <Badge className="bg-emerald-600 text-white text-[10px] font-bold gap-1 shadow-sm">
               <span className="h-1.5 w-1.5 rounded-full bg-white inline-block animate-ping" />
-              <span>Live Now</span>
+              <span>Live</span>
             </Badge>
           )}
 
@@ -173,7 +201,7 @@ export function EventCard({
         <CardFooter className="p-0 pt-3 border-t border-border/60 flex items-center justify-between">
           <div className="flex flex-col">
             <span className="text-[10px] uppercase font-semibold text-muted-foreground tracking-wider">
-              {temporal.isPast ? 'Status' : lowestPrice > 0 ? 'Starting From' : 'Admission'}
+              {temporal.isPast ? (tCom('date') || 'Status') : (tTick('price') || 'Price')}
             </span>
             <span className="text-sm font-extrabold text-foreground">
               {temporal.isPast ? 'Concluded' : priceDisplay}
@@ -183,7 +211,7 @@ export function EventCard({
           <Link href={`/${locale}/events/${event.slug}`}>
             <Button size="sm" variant={temporal.isPast ? 'outline' : 'default'} className="gap-1 text-xs font-semibold shadow-sm">
               <Ticket className="h-3.5 w-3.5" />
-              <span>{temporal.isPast ? 'View Recap' : temporal.isLive ? 'Enter Pass' : 'View Pass'}</span>
+              <span>{temporal.isPast ? (tCom('viewDetails') || 'View Details') : (tTick('viewPass') || 'View Pass')}</span>
               <ArrowRight className="h-3 w-3 ml-0.5 transition-transform group-hover:translate-x-0.5" />
             </Button>
           </Link>

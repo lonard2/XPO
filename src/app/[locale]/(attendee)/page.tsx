@@ -365,21 +365,21 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         </div>
       </section>
 
-      {/* 7. Event AI Assistant Banner */}
+      {/* 7. Event Concierge & System Preferences Banner */}
       <section className="container">
         <div className="rounded-2xl border border-primary/20 bg-primary/5 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="space-y-2 text-center sm:text-left">
             <div className="flex items-center justify-center sm:justify-start gap-2 text-primary font-bold text-sm">
               <Cpu className="h-5 w-5" />
-              <span>Intelligent Event Assistant & Analytics</span>
+              <span>Attendee Event Concierge & Reporting Hub</span>
             </div>
             <p className="text-xs text-muted-foreground max-w-xl">
-              Equipped with state-of-the-art AI for real-time attendee concierge transit advice, timetable navigation, and executive organizer digests.
+              Access real-time hall navigation, transit logistics, timetable schedules, and comprehensive organizer analytics reports.
             </p>
           </div>
           <Link href={`/${locale}/settings`}>
             <Button variant="outline" className="whitespace-nowrap gap-2 text-xs">
-              <span>Preferences & AI Settings</span>
+              <span>Preferences & Concierge Settings</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </Button>
           </Link>

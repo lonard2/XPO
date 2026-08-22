@@ -26,7 +26,7 @@
     "timezone": "Zona Waktu",
     "currency": "Mata Uang",
     "language": "Bahasa",
-    "region": "Hub Regional",
+    "region": "Edisi Negara",
     "price": "Harga",
     "free": "Gratis",
     "contact": "Kontak",
@@ -38,15 +38,16 @@
     "subtitle": "Ekosistem Digital MICE",
     "explore": "Jelajah",
     "events": "Pameran & Acara",
+    "calendar": "Kalender Acara",
     "venues": "Direktori Venue",
     "myTickets": "Pas Masuk Saya",
     "dashboard": "Penyelenggara",
     "settings": "Pengaturan",
-    "organizer": "Konsol Penyelenggara",
+    "organizer": "Portal Penyelenggara",
     "admin": "Tata Kelola",
     "switchLanguage": "Ganti Bahasa",
     "switchRegion": "Ganti Wilayah",
-    "toggleDarkMode": "Ganti Mode Gelap",
+    "toggleDarkMode": "Mode Gelap",
     "toggleMenu": "Buka Menu"
   },
   "hero": {
@@ -56,10 +57,10 @@
     "subtitle": "Platform multi-sisi yang menghubungkan pengunjung, penyelenggara acara, dan pusat konvensi berstandar internasional di Indonesia, Jepang, dan seluruh dunia.",
     "exploreEvents": "Jelajahi Pameran",
     "venueDirectory": "Direktori Venue",
-    "spotlightHubs": "Hub Unggulan"
+    "spotlightHubs": "Edisi Negara"
   },
   "regions": {
-    "title": "Hub Lokalisasi Regional",
+    "title": "Edisi Negara",
     "subtitle": "Temukan venue bersertifikat, panduan transportasi, dan jadwal pameran yang disesuaikan untuk pasar lokal.",
     "id": {
       "name": "Indonesia",
@@ -80,7 +81,7 @@
       "transitSummary": "Akses jaringan kereta modern melalui Yurikamome Line, Rinkai Line, JR Keiyo Line, dan kapal air Teluk Tokyo."
     },
     "global": {
-      "name": "Hub Global",
+      "name": "Gerbang Global",
       "code": "GL",
       "description": "Pusat konvensi internasional terkemuka yang menjadi tuan rumah kongres global, forum finansial, dan majelis perdagangan dunia.",
       "currency": "USD ($) / EUR (€) / SGD (S$)",
@@ -100,166 +101,196 @@
   },
   "archetypes": {
     "INDUSTRIAL_B2B": {
-      "title": "Industri B2B & Permesinan",
+      "title": "B2B Industri & Manufaktur",
       "tag": "Permesinan Berat & Pengadaan",
-      "description": "Peragaan langsung mesin CNC, robotika pintar, metalurgi, dan ruang negosiasi B2B."
+      "description": "Demonstrasi mesin CNC, robotika cerdas, metalurgi, dan ruang negosiasi pengadaan B2B."
     },
     "TECH_DEV_SUMMIT": {
       "title": "KTT Teknologi & Pengembang",
       "tag": "AI & Arsitektur Cloud",
-      "description": "Keynote multi-track developer, bedah kode langsung, sandbox model AI, dan hackathon."
+      "description": "Keynote multi-jalur, bedah kode langsung, sandbox API, dan hackathon inovasi."
     },
     "MEDICAL_SYMPOSIUM": {
-      "title": "Kongres Medis & Klinis",
-      "tag": "SKP & Uji Klinis",
-      "description": "Presentasi riset medis peer-reviewed, pelacakan kredit SKP, dan ruang sidang ilmiah."
+      "title": "Kongres Medis & Layanan Kesehatan",
+      "tag": "Kredit SKP & Uji Klinis",
+      "description": "Publikasi riset medis mitra bestari, pelacakan kredit SKP/CME, dan ruang simposium klinis."
     },
     "FINANCE_INVESTOR": {
       "title": "Forum FinTech & Investor",
       "tag": "Modal Ventura & Institusional",
-      "description": "Panggung pitching startup, ruang kesepakatan tertutup VIP, dan pertemuan investor institusi."
+      "description": "Panggung presentasi startup, ruang kesepakatan bilateral tertutup, dan pertemuan investor institusi."
     },
     "POP_CULTURE_GAMING": {
       "title": "Ekspo Pop Culture & Gaming",
-      "tag": "Esports & Lorong Kreator",
-      "description": "Panggung cosplay, lorong kreator komik, arena turnamen esports, dan temu tanda tangan."
+      "tag": "Esports & Artist Alley",
+      "description": "Panggung cosplay, lorong kreator komik, arena turnamen esports, dan zona temu sapa."
     },
     "MUSIC_FESTIVAL": {
-      "title": "Festival Musik & Arena Konser",
-      "tag": "Konser Multi-Panggung",
-      "description": "Jadwal panggung langsung, denah arena akustik, dan akses gelang elektronik."
+      "title": "Festival Musik & Konser Arena",
+      "tag": "Konser Musik Multi-Panggung",
+      "description": "Jadwal panggung langsung, peta akustik arena, dan akses gelang tiket RFID."
     },
     "MEGA_EXPO_PAVILION": {
-      "title": "Pesta Rakyat & Paviliun Mega",
-      "tag": "Bazar Konsumen & Kembang Api",
-      "description": "Pameran belanja multi-paviliun, pertunjukan kembang api tiap malam, dan festival kuliner."
+      "title": "Pekan Raya & Paviliun Konsumen",
+      "tag": "Pameran Konsumen & Kembang Api",
+      "description": "Belanja multi-paviliun, pertunjukan kembang api malam, dan bazar kuliner rakyat."
+    },
+    "AUTOMOTIVE_MOBILITY": {
+      "title": "Pameran Otomotif & Mobilitas EV",
+      "tag": "Mobil Konsep & Uji Kendara",
+      "description": "Pemesanan trek uji kendara, debut kendaraan konsep, dan teknologi pengisian daya EV."
+    },
+    "ENERGY_INFRASTRUCTURE": {
+      "title": "Energi, Tambang & Infrastruktur",
+      "tag": "Jaringan Hijau & Alat Berat",
+      "description": "Jaringan energi terbarukan, permesinan tambang berat, dan konsesi energi maritim."
+    },
+    "AGRITECH_FOOD": {
+      "title": "Ekspo Pertanian, Agritech & Pangan",
+      "tag": "Pertanian Cerdas & Logistik",
+      "description": "Teknologi pertanian presisi, rantai pasok pendingin, dan paviliun kuliner internasional."
+    },
+    "HOSPITALITY_TOURISM": {
+      "title": "Bursa Pariwisata & Perhotelan",
+      "tag": "Perhotelan & Maskapai",
+      "description": "Promosi destinasi unggulan, pengadaan industri perhotelan, dan jaringan pembeli maskapai."
+    },
+    "EDUCATION_EDTECH": {
+      "title": "KTT Pendidikan & EdTech",
+      "tag": "Pameran Universitas & STEM",
+      "description": "Stan universitas dunia, konsultasi beasiswa studi, dan laboratorium riset STEM."
+    },
+    "FASHION_RETAIL": {
+      "title": "Ekspo Fesyen, Kecantikan & Ritel",
+      "tag": "Pentas Peraga & OEM Kosmetik",
+      "description": "Pentas peraga busana, pabrik maklon kosmetik OEM, dan pesanan grosir skala besar."
     },
     "GOVERNMENT_DIPLOMATIC": {
-      "title": "KTT Diplomatik & Pemerintahan",
-      "tag": "Protokoler & Sidang Bilateral",
-      "description": "Ruang sidang bilateral aman, standar protokoler diplomatik, dan aula paripurna."
+      "title": "KTT Pemerintahan & Diplomatik",
+      "tag": "Protokol & Ruang Bilateral",
+      "description": "Ruang konferensi bilateral berpengamanan tinggi, briefing protokol, dan delegasi kenegaraan."
     },
     "INCENTIVE_RETREAT": {
-      "title": "Retret & Insentif Perusahaan",
-      "tag": "Ekskursi & Jamuan Gala",
-      "description": "Jadwal kebugaran terkurasi, retret tim eksekutif, dan perayaan gala makan malam tepi air."
+      "title": "Retret Korporat & Insentif",
+      "tag": "Ekskursi & Gala Eksekutif",
+      "description": "Rencana perjalanan kesehatan, retret tim kepemimpinan, dan perjamuan gala tepi pantai."
     }
   },
   "discovery": {
-    "searchPlaceholder": "Cari acara berdasarkan judul, kata kunci, atau venue...",
+    "searchPlaceholder": "Cari pameran berdasarkan judul, kata kunci, atau venue...",
     "filterByKeyword": "Pencarian Kata Kunci",
-    "filterByRegion": "Wilayah",
+    "filterByRegion": "Edisi Negara",
     "filterByScale": "Skala Acara",
     "filterByFormat": "Format Acara",
-    "filterByArchetype": "Kategori MICE",
+    "filterByArchetype": "Kategori Acara",
     "allRegions": "Semua Wilayah",
     "allScales": "Semua Skala",
     "allFormats": "Semua Format",
-    "allArchetypes": "Semua Kategori MICE",
+    "allArchetypes": "Semua Kategori",
     "inPerson": "Tatap Muka Langsung",
     "hybrid": "Hibrida",
-    "virtual": "Virtual / Daring",
+    "virtual": "Daring",
     "dateRange": "Rentang Tanggal",
-    "clearFilters": "Bersihkan Semua Filter",
+    "clearFilters": "Hapus Semua Filter",
     "activeFilters": "Filter Aktif",
-    "noEventsFound": "Tidak ada acara yang cocok dengan kriteria filter Anda.",
-    "resetFilters": "Reset Filter Pencarian"
+    "noEventsFound": "Tidak ada acara yang cocok dengan kriteria filter saat ini.",
+    "resetFilters": "Atur Ulang Pencarian"
   },
   "tickets": {
     "bookPass": "Pesan Pas Masuk",
     "viewPass": "Lihat Pas Digital",
     "ticketTiers": "Kategori Pas Masuk",
-    "standardPass": "Pas Pengunjung Standar",
+    "standardPass": "Pas Masuk Standar",
     "vipPass": "Pas Delegasi VIP",
-    "exhibitorPass": "Pas Peserta Pameran",
+    "exhibitorPass": "Pas Eksibitor / Tenant",
     "price": "Harga",
     "capacity": "Kapasitas Total",
-    "remaining": "Sisa Kuota",
-    "benefits": "Manfaat Tiket",
-    "checkout": "Lanjut ke Pembayaran",
-    "checkoutTitle": "Reservasi Pas Masuk Anda",
+    "remaining": "Tersedia",
+    "benefits": "Fasilitas Termasuk",
+    "checkout": "Lanjut ke Pemesanan",
+    "checkoutTitle": "Pesan Pas Masuk Anda",
     "attendeeDetails": "Data Diri Pengunjung",
     "fullName": "Nama Lengkap",
     "emailAddress": "Alamat Email",
     "completeReservation": "Konfirmasi & Terbitkan Pas",
-    "reservationConfirmed": "Pemesanan Pas Berhasil",
+    "reservationConfirmed": "Pas Masuk Berhasil Dikonfirmasi",
     "qrPass": "Pas QR Kriptografis",
-    "digitalPassSubtitle": "Tunjukkan lencana QR vektor ini di gerbang masuk venue untuk validasi instan.",
-    "scanPass": "Pindai untuk Masuk Cepat",
-    "verifiedStatus": "Terverifikasi Secara Kriptografis",
-    "tamperProofNotice": "Dilengkapi tanda tangan digital anti-manipulasi HMAC SHA-256.",
+    "digitalPassSubtitle": "Tunjukkan lencana QR vektor ini di pintu masuk venue untuk verifikasi instan.",
+    "scanPass": "Pindai untuk Jalur Cepat",
+    "verifiedStatus": "Terverifikasi Aman Kriptografis",
+    "tamperProofNotice": "Dilengkapi tanda tangan digital HMAC SHA-256 anti-manipulasi.",
     "downloadPass": "Unduh Pas"
   },
   "perks": {
-    "treatsTitle": "Fasilitas Interaktif & Buku Panduan",
-    "treatsSubtitle": "Jadwal real-time, peta lantai interaktif, dan voucer digital berbasis tingkatan pas.",
+    "treatsTitle": "Fasilitas & Buku Panduan Interaktif",
+    "treatsSubtitle": "Jadwal waktu nyata, denah hall interaktif, dan voucer digital khusus pemegang pas.",
     "guidebookTitle": "Buku Panduan Acara Digital",
     "hallMapTitle": "Denah Lantai Hall Interaktif",
     "vipLounge": "Akses Lounge VIP & Kopi Barista",
-    "freeWifi": "WiFi Fiber Optik Berkecepatan Tinggi",
-    "swagKit": "Paket Merchandise & Lencana Resmi",
-    "baristaCoffee": "Kopi Spesialti Gratis",
-    "sessionAlerts": "Pemberitahuan Sesi Langsung",
-    "interactiveFloorMap": "Peta Lantai & Pencari Stan",
-    "addToMyAgenda": "Tambah ke Agenda Saya",
+    "freeWifi": "WiFi Internet Serat Optik Kecepatan Tinggi",
+    "swagKit": "Paket Suvenir Resmi & Lencana",
+    "baristaCoffee": "Kopi Spesialisasi Gratis",
+    "sessionAlerts": "Notifikasi Langsung Ruang & Sesi",
+    "interactiveFloorMap": "Peta Hall & Lokasi Stan",
+    "addToMyAgenda": "Simpan ke Agenda Saya",
     "unlockedPerk": "Fasilitas Terbuka",
-    "tierRequired": "Khusus Kategori"
+    "tierRequired": "Butuh Kategori Tertentu"
   },
   "settings": {
-    "title": "Pengaturan UI/UX & Akun",
-    "subtitle": "Kustomisasi tipografi, dinamika animasi, bahasa tampilan, hub wilayah, dan asisten AI.",
+    "title": "Pengaturan Akun & Tampilan UI/UX",
+    "subtitle": "Sesuaikan pilihan tipografi, efek animasi, bahasa, edisi negara, dan asisten panduan acara.",
     "appearance": "Preferensi Tampilan Visual",
     "themeMode": "Mode Tema",
     "light": "Terang",
     "dark": "Gelap",
-    "system": "Ikuti Sistem",
+    "system": "Ikuti Pengaturan Sistem",
     "highContrast": "Kontras Tinggi",
     "density": "Kerapatan Tampilan",
-    "comfortable": "Nyaman",
-    "compact": "Kompak",
+    "comfortable": "Nyaman (Standar)",
+    "compact": "Kompak (Padat)",
     "typography": "Mesin Tipografi",
     "modernSans": "Modern Sans (Inter)",
     "editorialSerif": "Editorial Serif (Newsreader)",
     "technicalMono": "Technical Mono (JetBrains)",
-    "atkinsonHyperlegible": "Aksesibel (Atkinson Hyperlegible)",
+    "atkinsonHyperlegible": "Aksesibilitas (Atkinson Hyperlegible)",
     "fontScaling": "Skala Ukuran Huruf",
     "motionMode": "Dinamika Gerak & Animasi",
-    "motionOff": "Nonaktif (Tanpa Animasi)",
+    "motionOff": "Minimal (Tanpa Animasi)",
     "motionSubtle": "Halus (Transisi Ringan)",
-    "motionExpressive": "Ekspresif / Sinematik (Kemiringan 3D & Pendaran Cahaya)",
-    "aiConciergeToggle": "Asisten AI Mengambang",
-    "aiConciergeDescription": "Aktifkan asisten AI pintar untuk ringkasan jadwal acara dan panduan navigasi venue.",
-    "languageTitle": "Pilihan Bahasa",
-    "regionTitle": "Hub Wilayah Utama",
+    "motionExpressive": "Ekspresif / Sinematik (Kemiringan 3D & Kilau)",
+    "aiConciergeToggle": "Asisten Panduan Acara Mengambang",
+    "aiConciergeDescription": "Aktifkan asisten untuk ringkasan jadwal instan dan petunjuk lokasi venue.",
+    "languageTitle": "Bahasa & Lokalisasi",
+    "regionTitle": "Pilihan Edisi Negara Default",
     "savePreferences": "Simpan Pengaturan",
     "preferencesSaved": "Pengaturan berhasil disimpan ke profil lokal."
   },
   "organizer": {
-    "dashboardTitle": "Pusat Kendali Penyelenggara",
+    "dashboardTitle": "Portal Penyelenggara",
     "createEvent": "Buat Acara Baru",
-    "liveCustomizer": "Kustomisasi Branding Langsung",
+    "liveCustomizer": "Kustomisasi Tampilan Langsung",
     "boothManager": "Manajemen Stan & Tenant",
-    "qrScanner": "Pemindai Masuk QR",
-    "aiReports": "Laporan Intelijen AI",
+    "qrScanner": "Pemindai QR Tiket Pengunjung",
+    "aiReports": "Laporan Analisis & Statistik Acara",
     "kpiRevenue": "Pendapatan Kotor Tiket",
-    "kpiTickets": "Pas Terbit",
-    "kpiCheckIn": "Peserta Sudah Masuk",
-    "kpiOccupancy": "Okupansi Stan"
+    "kpiTickets": "Pas Masuk Diterbitkan",
+    "kpiCheckIn": "Pengunjung Hadir",
+    "kpiOccupancy": "Tingkat Keterisian Stan"
   },
   "admin": {
-    "dashboardTitle": "Pusat Tata Kelola & Venue",
+    "dashboardTitle": "Tata Kelola & Agregator Admin",
     "venueDirectory": "Direktori Venue Global",
-    "crawlerPipeline": "Pipeline Crawler Acara",
+    "crawlerPipeline": "Pipeline Agregator & Sinkronisasi",
     "auditLogs": "Log Audit Platform",
-    "syncCrawler": "Jalankan Crawler",
+    "syncCrawler": "Jalankan Sinkronisasi",
     "addVenue": "Tambah Venue Baru"
   },
   "ai": {
-    "conciergeTitle": "AI Concierge Pengunjung",
-    "conciergeSubtitle": "Tanyakan jadwal, rute transportasi, letak stan, atau sorotan acara.",
-    "askPlaceholder": "Tanyakan apa saja seputar acara atau venue ini...",
-    "send": "Kirim Pesan",
-    "suggestedQuestions": "Pertanyaan yang Disarankan",
-    "clearHistory": "Hapus Riwayat Percakapan"
+    "conciergeTitle": "Panduan Informasi Acara",
+    "conciergeSubtitle": "Tanyakan mengenai jadwal acara, transportasi venue, denah stan, atau sorotan kegiatan.",
+    "askPlaceholder": "Tanyakan jadwal, denah hall, atau transportasi umum...",
+    "send": "Kirim Pertanyaan",
+    "suggestedQuestions": "Contoh Pertanyaan",
+    "clearHistory": "Hapus Obrolan"
   }
 }

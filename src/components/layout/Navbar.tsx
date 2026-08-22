@@ -20,6 +20,7 @@ import {
   Briefcase,
   LogIn,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { cn } from "@/lib/utils";
@@ -41,6 +42,14 @@ export function Navbar({ locale = "en" }: NavbarProps) {
 
   const { user, role, isAuthenticated } = useAuth();
   
+  let tNav: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tNav = useTranslations("nav");
+  } catch {
+    // Fallback if rendered outside provider in tests
+  }
+
   let settings: ReturnType<typeof useSettings> | null = null;
   try {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -118,12 +127,12 @@ export function Navbar({ locale = "en" }: NavbarProps) {
   const RoleIcon = getRoleIcon();
 
   const navLinks = [
-    { href: `/${locale}`, label: "Explore", icon: Compass },
-    { href: `/${locale}/events`, label: "Events", icon: Sparkles },
-    { href: `/${locale}/calendar`, label: "Calendar", icon: Calendar },
-    { href: `/${locale}/venues`, label: "Venues", icon: Building2 },
-    { href: `/${locale}/my-tickets`, label: "My Passes", icon: Ticket },
-    { href: `/${locale}/dashboard`, label: "Organizer", icon: LayoutDashboard },
+    { href: `/${locale}`, label: tNav("explore") || "Explore", icon: Compass },
+    { href: `/${locale}/events`, label: tNav("events") || "Events", icon: Sparkles },
+    { href: `/${locale}/calendar`, label: tNav("calendar") || "Calendar", icon: Calendar },
+    { href: `/${locale}/venues`, label: tNav("venues") || "Venues", icon: Building2 },
+    { href: `/${locale}/my-tickets`, label: tNav("myTickets") || "My Passes", icon: Ticket },
+    { href: `/${locale}/dashboard`, label: tNav("dashboard") || "Organizer", icon: LayoutDashboard },
   ];
 
   return (

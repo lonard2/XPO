@@ -15,6 +15,7 @@ import {
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/Card';
+import { useTranslations } from 'next-intl';
 import { type VenueSummary } from '@/types/discovery';
 import { cn } from '@/lib/utils';
 
@@ -29,6 +30,17 @@ export function VenueSpotlightCard({
   locale,
   className,
 }: VenueSpotlightCardProps) {
+  let tReg: any = (k: string) => k;
+  let tCom: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tReg = useTranslations('regions');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tCom = useTranslations('common');
+  } catch {
+    // Fallback if rendered outside provider in tests
+  }
+
   const hallCount = venue.halls?.length ?? venue._count?.halls ?? 4;
   const totalCapacity = venue.halls?.reduce((sum, h) => sum + (h.capacity || 0), 0) || 25000;
   const totalFloorArea = venue.halls?.reduce((sum, h) => sum + (h.floorAreaSqm || 0), 0) || 30000;
@@ -96,7 +108,7 @@ export function VenueSpotlightCard({
           {/* Capacity and Specs Grid */}
           <div className="grid grid-cols-2 gap-2 rounded-xl bg-muted/40 p-2.5 text-[11px]">
             <div className="flex flex-col">
-              <span className="text-muted-foreground text-[10px] uppercase font-medium">Capacity</span>
+              <span className="text-muted-foreground text-[10px] uppercase font-medium">{tReg('capacity') || 'Capacity'}</span>
               <span className="font-bold text-foreground flex items-center gap-1 mt-0.5">
                 <Users className="h-3 w-3 text-primary" />
                 {totalCapacity.toLocaleString()} Pax
@@ -117,7 +129,7 @@ export function VenueSpotlightCard({
             <div className="space-y-1">
               <div className="flex items-center gap-1 text-[11px] font-semibold text-foreground">
                 <Train className="h-3.5 w-3.5 text-primary" />
-                <span>Transit & Access</span>
+                <span>{tCom('transit') || 'Transit & Access'}</span>
               </div>
               <p className="text-[11px] text-muted-foreground line-clamp-2 leading-relaxed">
                 {venue.transitInfo}
@@ -133,7 +145,7 @@ export function VenueSpotlightCard({
 
           <Link href={`/${locale}/venues/${venue.slug}`}>
             <Button size="sm" variant="ghost" className="gap-1 text-xs font-semibold text-primary hover:bg-primary/10">
-              <span>View Venue</span>
+              <span>{tReg('viewVenue') || 'View Venue'}</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </Button>
           </Link>

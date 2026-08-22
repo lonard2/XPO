@@ -23,6 +23,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 
@@ -223,6 +224,17 @@ export function EventCategoryPills({
   const [canScrollLeft, setCanScrollLeft] = React.useState(false);
   const [canScrollRight, setCanScrollRight] = React.useState(true);
 
+  let tArch: any = (k: string) => k;
+  let tDisc: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tArch = useTranslations('archetypes');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tDisc = useTranslations('discovery');
+  } catch {
+    // Fallback if rendered outside provider in tests
+  }
+
   const checkScroll = () => {
     if (!scrollContainerRef.current) return;
     const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
@@ -269,7 +281,7 @@ export function EventCategoryPills({
             href={`/${locale}/events`}
             className="text-xs font-semibold text-primary hover:underline hidden sm:inline-flex items-center gap-1 mr-2"
           >
-            <span>All Categories</span>
+            <span>{tDisc('allArchetypes') || 'All Categories'}</span>
             <ArrowRight className="h-3 w-3" />
           </Link>
 
@@ -305,6 +317,20 @@ export function EventCategoryPills({
         {EVENT_CATEGORIES.map((category) => {
           const Icon = category.icon;
           const isActive = activeCategoryId === category.id;
+          
+          let translatedTitle = category.name;
+          let translatedDesc = category.tagline;
+          let translatedTag = category.shortName;
+          try {
+            if (tArch && typeof tArch.raw === 'function') {
+              const obj = tArch.raw(category.id);
+              if (obj?.title) translatedTitle = obj.title;
+              if (obj?.description) translatedDesc = obj.description;
+              if (obj?.tag) translatedTag = obj.tag;
+            }
+          } catch {
+            // fallback
+          }
 
           const cardContent = (
             <div
@@ -342,17 +368,17 @@ export function EventCategoryPills({
                       color: category.color,
                     }}
                   >
-                    {category.shortName}
+                    {translatedTag}
                   </span>
                 </div>
 
                 {/* Title & Tagline */}
                 <div className="space-y-1">
                   <h3 className="text-sm sm:text-base font-bold text-foreground group-hover:text-primary transition-colors leading-snug line-clamp-1">
-                    {category.name}
+                    {translatedTitle}
                   </h3>
                   <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
-                    {category.tagline}
+                    {translatedDesc}
                   </p>
                 </div>
 

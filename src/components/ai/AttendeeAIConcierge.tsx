@@ -18,6 +18,7 @@ import {
 import { useSettings } from "@/components/settings/SettingsProvider";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 
 interface ChatMessage {
@@ -47,6 +48,14 @@ const SUGGESTED_QUESTIONS = [
 ];
 
 export function AttendeeAIConcierge({ locale = "en", eventContext }: AttendeeAIConciergeProps) {
+  let tAi: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tAi = useTranslations("ai");
+  } catch {
+    // Fallback if rendered outside provider in tests
+  }
+
   const { aiConciergeEnabled, isMounted } = useSettings();
   const [isOpen, setIsOpen] = React.useState(false);
   const [isExpanded, setIsExpanded] = React.useState(false);

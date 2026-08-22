@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
+import { useTranslations } from 'next-intl';
 import { formatDateRange, getTimeZoneForRegion } from '@/lib/i18n/formatters';
 import { getArchetypeTokens } from '@/lib/theming';
 import { type VenueWithEvents } from '@/types/discovery';
@@ -31,6 +32,17 @@ export function HeroVenueQuickGlanceRail({
   regionCode,
   className,
 }: HeroVenueQuickGlanceRailProps) {
+  let tReg: any = (k: string) => k;
+  let tTick: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tReg = useTranslations('regions');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tTick = useTranslations('tickets');
+  } catch {
+    // Fallback if rendered outside provider in tests
+  }
+
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = React.useState(false);
   const [canScrollRight, setCanScrollRight] = React.useState(true);

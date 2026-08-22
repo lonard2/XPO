@@ -18,6 +18,7 @@ import { VenueSpotlightCard } from '@/components/discovery/VenueSpotlightCard';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
+import { useTranslations } from 'next-intl';
 import { type VenueSummary } from '@/types/discovery';
 import { cn } from '@/lib/utils';
 
@@ -35,6 +36,17 @@ export function VenueDirectoryExplorer({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  let tReg: any = (k: string) => k;
+  let tCom: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tReg = useTranslations('regions');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tCom = useTranslations('common');
+  } catch {
+    // Fallback if rendered outside provider in tests
+  }
 
   const [selectedRegion, setSelectedRegion] = React.useState<string>(() => {
     return searchParams.get('region') || initialRegion || 'id';
@@ -115,7 +127,7 @@ export function VenueDirectoryExplorer({
             )}
           >
             <Globe2 className="h-3.5 w-3.5" />
-            <span>All Regions</span>
+            <span>{tReg('global.name') ? `${tCom('all') || 'All'} ${tReg('title') || 'Regions'}` : 'All Regions'}</span>
             <span className="text-[10px] font-mono opacity-80 px-1.5 py-0.2 rounded bg-muted">
               {venues.length}
             </span>
@@ -131,7 +143,7 @@ export function VenueDirectoryExplorer({
                 : 'text-muted-foreground hover:text-foreground'
             )}
           >
-            <span>Indonesia (ID)</span>
+            <span>{tReg('id.name') || 'Indonesia'} (ID)</span>
             <span className="text-[10px] font-mono opacity-80 px-1.5 py-0.2 rounded bg-muted">
               {indonesianCount}
             </span>
@@ -147,7 +159,7 @@ export function VenueDirectoryExplorer({
                 : 'text-muted-foreground hover:text-foreground'
             )}
           >
-            <span>Japan (JP)</span>
+            <span>{tReg('jp.name') || 'Japan'} (JP)</span>
             <span className="text-[10px] font-mono opacity-80 px-1.5 py-0.2 rounded bg-muted">
               {japanCount}
             </span>
@@ -163,7 +175,7 @@ export function VenueDirectoryExplorer({
                 : 'text-muted-foreground hover:text-foreground'
             )}
           >
-            <span>Global Gateways</span>
+            <span>{tReg('global.name') || 'Global Gateways'}</span>
             <span className="text-[10px] font-mono opacity-80 px-1.5 py-0.2 rounded bg-muted">
               {globalCount}
             </span>
@@ -205,7 +217,7 @@ export function VenueDirectoryExplorer({
             }}
             className="text-xs"
           >
-            Reset Filters
+            {tCom('clear') || 'Reset Filters'}
           </Button>
         </div>
       )}

@@ -10,7 +10,7 @@
     "search": "Suchen",
     "viewAll": "Alle anzeigen",
     "viewDetails": "Details anzeigen",
-    "explore": "Entdecken",
+    "explore": "Erkunden",
     "learnMore": "Mehr erfahren",
     "date": "Datum",
     "time": "Uhrzeit",
@@ -19,14 +19,14 @@
     "organizer": "Veranstalter",
     "attendees": "Teilnehmer",
     "share": "Teilen",
-    "clear": "Löschen",
+    "clear": "Zurücksetzen",
     "all": "Alle",
-    "directions": "Anfahrtsbeschreibung",
-    "transit": "Anreise & Nahverkehr",
+    "directions": "Anfahrt",
+    "transit": "Anreise & ÖPNV",
     "timezone": "Zeitzone",
     "currency": "Währung",
     "language": "Sprache",
-    "region": "Regionaler Hub",
+    "region": "Länderausgabe",
     "price": "Preis",
     "free": "Kostenlos",
     "contact": "Kontakt",
@@ -36,13 +36,14 @@
   "nav": {
     "brand": "XPO",
     "subtitle": "MICE Digitales Ökosystem",
-    "explore": "Entdecken",
+    "explore": "Erkunden",
     "events": "Messen & Events",
-    "venues": "Veranstaltungsorte",
+    "calendar": "Eventkalender",
+    "venues": "Messezentren",
     "myTickets": "Meine Pässe",
     "dashboard": "Veranstalter",
     "settings": "Einstellungen",
-    "organizer": "Veranstalter-Konsole",
+    "organizer": "Veranstalter-Portal",
     "admin": "Plattform-Governance",
     "switchLanguage": "Sprache wechseln",
     "switchRegion": "Region wechseln",
@@ -51,215 +52,245 @@
   },
   "hero": {
     "badge": "XPO Digitales MICE-Ökosystem",
-    "title": "Globale Messen, Kongresse & Konferenzen,",
+    "title": "Globale Messen, Kongresse & Events,",
     "titleHighlight": "Neu Definiert",
-    "subtitle": "Das vielseitige digitale Ökosystem für Fachbesucher, Veranstalter und erstklassige Messezentren in Indonesien, Japan und weltweit.",
-    "exploreEvents": "Messen entdecken",
-    "venueDirectory": "Messezentrum-Verzeichnis",
-    "spotlightHubs": "Fokus-Regionen"
+    "subtitle": "Die digitale Plattform für Fachbesucher, Messeveranstalter und erstklassige Kongresszentren in Indonesien, Japan und weltweit.",
+    "exploreEvents": "Events Entdecken",
+    "venueDirectory": "Messezentren",
+    "spotlightHubs": "Länderausgaben"
   },
   "regions": {
-    "title": "Regionale Lokalisierungs-Hubs",
-    "subtitle": "Entdecken Sie verifizierte Messezentren, Anreiserouten und Messekalender abgestimmt auf lokale Märkte.",
+    "title": "Länderausgaben",
+    "subtitle": "Verifizierte Messezentren, Anfahrtsrouten und Fachmessen abgestimmt auf lokale Märkte.",
     "id": {
       "name": "Indonesien",
       "code": "ID",
-      "description": "Südostasiens Zentrum für Industriemessen, B2B-Beschaffungsgipfel, Verbrauchermessen und Großkonferenzzentren.",
+      "description": "Südostasiens führender Standort für Industriemessen, B2B-Beschaffungsgipfel und Großausstellungen.",
       "currency": "IDR (Rp)",
       "timezone": "WIB (Asien/Jakarta, UTC+7)",
       "keyVenues": "JIExpo Kemayoran, ICE BSD City, JICC Senayan, NICE PIK 2, GBK Complex, JIS",
-      "transitSummary": "Direkte Anbindung über MRT Jakarta, KRL-Vorortbahn, TransJakarta-Buslinien und Messe-Express-Shuttles."
+      "transitSummary": "Direkte Anbindung über MRT Jakarta, KRL S-Bahn, TransJakarta-Schnellbusse und Messe-Shuttles."
     },
     "jp": {
       "name": "Japan",
       "code": "JP",
-      "description": "Globales Technologie- und Robotikzentrum für Entwicklergipfel, Anime- und Gaming-Messen sowie Cleantech-Kongresse.",
+      "description": "Globales Zentrum für Robotik, Entwicklergipfel, Anime-Messen und Cleantech-Kongresse.",
       "currency": "JPY (¥)",
       "timezone": "JST (Asien/Tokio, UTC+9)",
       "keyVenues": "Tokyo Big Sight, Makuhari Messe, Pacifico Yokohama",
-      "transitSummary": "Hervorragendes Schienennetz über Yurikamome Line, Rinkai Line, JR Keiyo Line und Wasserbusse der Bucht von Tokio."
+      "transitSummary": "Exzellente Bahnanbindung über Yurikamome Line, Rinkai Line, JR Keiyo Line und Tokyo Bay Fähren."
     },
     "global": {
-      "name": "Globale Hubs",
+      "name": "Globale Zentren",
       "code": "GL",
-      "description": "Führende internationale Kongresszentren in Singapur, Frankfurt, London und Chicago für globale Wirtschaftsgipfel.",
+      "description": "Internationale Flaggschiff-Kongresszentren für globale Weltkongresse, Finanzgipfel und Fachmessen.",
       "currency": "USD ($) / EUR (€) / SGD (S$)",
       "timezone": "UTC (Koordinierte Weltzeit)",
       "keyVenues": "Marina Bay Sands Expo Singapur, Messe Frankfurt, ExCeL London, McCormick Place Chicago",
-      "transitSummary": "Flughafen-Expressverbindungen, Metronetze und Hochgeschwindigkeitsbahn-Terminals."
+      "transitSummary": "Direkte Anbindung an internationale Flughafen-Expresszüge, U-Bahn-Netze und Hochgeschwindigkeitszüge."
     },
     "venueSpotlights": "Regionale Messezentren",
     "upcomingEvents": "Kommende Veranstaltungen",
-    "transitGuide": "Anreise & Logistik-Leitfaden",
+    "transitGuide": "Anreise- und Logistikleitfaden",
     "venueCount": "Verifizierte Zentren",
-    "eventCount": "Aktive Ausstellungen",
+    "eventCount": "Aktive Fachmessen",
     "capacity": "Kapazität",
-    "hallDirectory": "Hallenverzeichnis",
-    "bookNow": "Pass buchen",
-    "viewVenue": "Zentrum ansehen"
+    "hallDirectory": "Hallenübersicht",
+    "bookNow": "Pass Buchen",
+    "viewVenue": "Zentrum Anzeigen"
   },
   "archetypes": {
     "INDUSTRIAL_B2B": {
-      "title": "Industrie B2B & Maschinenbau",
+      "title": "Industrie & B2B-Fertigung",
       "tag": "Schwermaschinen & Beschaffung",
-      "description": "Live CNC-Vorführungen, Robotik, Metallurgie und B2B-Verhandlungsräume."
+      "description": "CNC-Werkzeugmaschinen, Industrie-Robotik, Metallurgie und B2B-Verhandlungsräume."
     },
     "TECH_DEV_SUMMIT": {
-      "title": "Technologie & Entwicklergipfel",
+      "title": "Technologie-, KI- & Entwicklergipfel",
       "tag": "KI & Cloud-Architektur",
-      "description": "Entwickler-Keynotes, Live-Code-Analysen, LLM-Sandboxes und Hackathons."
+      "description": "Multi-Track-Keynotes, Live-Code-Demos, API-Testumgebungen und Innovations-Hackathons."
     },
     "MEDICAL_SYMPOSIUM": {
-      "title": "Medizin- & Fachkongress",
-      "tag": "CME & Klinische Studien",
-      "description": "Peer-Review-Forschungsergebnisse, CME-Punkte-Erfassung und wissenschaftliche Foren."
+      "title": "Medizin- & Gesundheitskongress",
+      "tag": "CME-Fortbildung & Studien",
+      "description": "Begutachtete klinische Studien, CME-Fortbildungspunkte und Fachsymposien."
     },
     "FINANCE_INVESTOR": {
       "title": "FinTech- & Investorenforum",
-      "tag": "Venture Capital & Institutionelle Anlagen",
-      "description": "Startup-Pitch-Bühnen, exklusive VIP-Deal-Rooms und Investorengipfel."
+      "tag": "Venture Capital & Institutionelle",
+      "description": "Pitch-Bühnen, vertrauliche Verhandlungsräume und Treffen institutioneller Investoren."
     },
     "POP_CULTURE_GAMING": {
-      "title": "Popkultur- & Gaming-Messe",
-      "tag": "Esports & Creator Alley",
-      "description": "Cosplay-Bühnen, Zeichneralleen, Esports-Turnierarenen und Autogrammzonen."
+      "title": "Popkultur, Gaming & Comic Con",
+      "tag": "E-Sport & Artist Alley",
+      "description": "Cosplay-Bühnen, Zeichnerallee, E-Sport-Turniere und Autogrammzonen."
     },
     "MUSIC_FESTIVAL": {
-      "title": "Musikfestival & Live-Arena",
-      "tag": "Mehrbühnen-Konzerte",
-      "description": "Echtzeit-Bühnenpläne, akustische Arenakarten und RFID-Armbandeinlass."
+      "title": "Musikfestival & Arena-Konzerte",
+      "tag": "Multi-Stage-Livekonzerte",
+      "description": "Echtzeit-Bühnenzeitpläne, Akustik-Hallenpläne und RFID-Armband-Einlass."
     },
     "MEGA_EXPO_PAVILION": {
-      "title": "Verbrauchermesse & Pavillons",
-      "tag": "Großausstellung & Feuerwerk",
-      "description": "Mehrere Einkaufspavillons, allabendliches Großfeuerwerk und Gastronomiefestivals."
+      "title": "Großmesse & Publikumsausstellung",
+      "tag": "Verbrauchermesse & Feuerwerk",
+      "description": "Multi-Pavillon-Shopping, allabendliche Feuerwerke und Food-Festival-Meilen."
+    },
+    "AUTOMOTIVE_MOBILITY": {
+      "title": "Automobil-, EV- & Mobilitätsmesse",
+      "tag": "Konzeptfahrzeuge & Probefahrten",
+      "description": "Teststreckenbuchung, Konzeptauto-Premieren und Ladeinfrastruktur-Technologie."
+    },
+    "ENERGY_INFRASTRUCTURE": {
+      "title": "Energie, Bergbau & Infrastruktur",
+      "tag": "Grüne Netze & Schwermaschinen",
+      "description": "Erneuerbare Stromnetze, schwere Bergbaumaschinen und maritime Energiekonzessionen."
+    },
+    "AGRITECH_FOOD": {
+      "title": "Agrarwirtschaft, Agritech & Food",
+      "tag": "Smart Farming & Kühlketten",
+      "description": "Präzisionslandwirtschaft, Kühlkettenlogistik und internationale Gourmet-Pavillons."
+    },
+    "HOSPITALITY_TOURISM": {
+      "title": "Tourismus- & Hotelbeschaffungsmesse",
+      "tag": "Hotellerie & Fluggesellschaften",
+      "description": "Reisedestinationen, Hotelbeschaffung und Airline-Einkäufernetzwerke."
+    },
+    "EDUCATION_EDTECH": {
+      "title": "Bildungs- & Akademikergipfel",
+      "tag": "Universitätsmessen & STEM",
+      "description": "Internationale Hochschulberatung, Stipendienprogramme und STEM-Forschungslabore."
+    },
+    "FASHION_RETAIL": {
+      "title": "Mode, Kosmetik & Luxuseinzelhandel",
+      "tag": "Laufsteg & Kosmetik-OEM",
+      "description": "Modenschauen, Kosmetikformulierungs-Labore und Großhandelsaufträge."
     },
     "GOVERNMENT_DIPLOMATIC": {
-      "title": "Diplomatie- & Regierungsgipfel",
-      "tag": "Protokoll & Bilaterale Treffen",
-      "description": "Hochsicherheits-Tagungsräume, diplomatisches Protokoll und Plenarsäle."
+      "title": "Regierungs- & Diplomatiegipfel",
+      "tag": "Protokoll & Bilaterale Räume",
+      "description": "Hochsicherheits-Konferenzräume, diplomatisches Protokoll und Delegationslounges."
     },
     "INCENTIVE_RETREAT": {
-      "title": "Unternehmens-Incentive & Retreat",
+      "title": "Corporate Incentive & Führungskräfteretreat",
       "tag": "Exkursionen & Galadinner",
-      "description": "Kuratierte Wellnessprogramme, Teambuilding-Retreats und Galaveranstaltungen am Wasser."
+      "description": "Wellness-Reiserouten, Führungskräftetagungen und feierliche Galadinner am Wasser."
     }
   },
   "discovery": {
-    "searchPlaceholder": "Veranstaltungen nach Titel, Stichwort oder Ort suchen...",
+    "searchPlaceholder": "Events nach Titel, Stichwort oder Ort suchen...",
     "filterByKeyword": "Stichwortsuche",
-    "filterByRegion": "Region",
+    "filterByRegion": "Länderausgabe",
     "filterByScale": "Größe",
     "filterByFormat": "Format",
-    "filterByArchetype": "MICE-Kategorie",
+    "filterByArchetype": "Eventkategorie",
     "allRegions": "Alle Regionen",
     "allScales": "Alle Größen",
     "allFormats": "Alle Formate",
     "allArchetypes": "Alle Kategorien",
     "inPerson": "Präsenzveranstaltung",
     "hybrid": "Hybrid",
-    "virtual": "Virtuell",
+    "virtual": "Online",
     "dateRange": "Datumsbereich",
     "clearFilters": "Alle Filter zurücksetzen",
     "activeFilters": "Aktive Filter",
-    "noEventsFound": "Keine Veranstaltungen entsprechen Ihren Filterkriterien.",
-    "resetFilters": "Suchfilter zurücksetzen"
+    "noEventsFound": "Keine Veranstaltungen entsprechen Ihren Suchkriterien.",
+    "resetFilters": "Filter zurücksetzen"
   },
   "tickets": {
-    "bookPass": "Ticket-Pass buchen",
-    "viewPass": "Digitalen Pass anzeigen",
+    "bookPass": "Ticketpass Buchen",
+    "viewPass": "Digitalen Pass Anzeigen",
     "ticketTiers": "Ticket-Kategorien",
-    "standardPass": "Standard-Besucherpass",
+    "standardPass": "Standardpass",
     "vipPass": "VIP-Delegiertenpass",
     "exhibitorPass": "Ausstellerpass",
     "price": "Preis",
     "capacity": "Gesamtkapazität",
-    "remaining": "Verbleibend",
+    "remaining": "Verfügbar",
     "benefits": "Enthaltene Leistungen",
-    "checkout": "Zur Kasse gehen",
-    "checkoutTitle": "Ticket-Pass reservieren",
+    "checkout": "Zur Kasse",
+    "checkoutTitle": "Ihren Messepass Buchen",
     "attendeeDetails": "Teilnehmerdaten",
     "fullName": "Vollständiger Name",
     "emailAddress": "E-Mail-Adresse",
-    "completeReservation": "Bestätigen & Pass generieren",
-    "reservationConfirmed": "Ticket-Pass bestätigt",
+    "completeReservation": "Bestätigen & Pass Erstellen",
+    "reservationConfirmed": "Ticketpass Erfolgreich Bestätigt",
     "qrPass": "Kryptografischer QR-Pass",
-    "digitalPassSubtitle": "Zeigen Sie diesen Vektor-QR-Pass an den Einlassschleusen für sofortigen Zugang vor.",
-    "scanPass": "Für Schnelleinlass scannen",
-    "verifiedStatus": "Kryptografisch verifiziert",
-    "tamperProofNotice": "Manipulationssichere digitale HMAC SHA-256 Signatur integriert.",
-    "downloadPass": "Pass speichern"
+    "digitalPassSubtitle": "Zeigen Sie diesen QR-Code am Einlass zur sofortigen Validierung vor.",
+    "scanPass": "Für Schnelleinlass Scannen",
+    "verifiedStatus": "Kryptografisch Verifiziert",
+    "tamperProofNotice": "Manipulationssichere HMAC SHA-256 Digitalsignatur integriert.",
+    "downloadPass": "Pass Speichern"
   },
   "perks": {
-    "treatsTitle": "Interaktive Vorteile & Event-Guide",
-    "treatsSubtitle": "Echtzeit-Terminpläne, interaktive Hallenpläne und digitale Voucher je Pass-Kategorie.",
-    "guidebookTitle": "Digitaler Veranstaltungsleitfaden",
+    "treatsTitle": "Interaktive Eventvorteile & Leitfaden",
+    "treatsSubtitle": "Echtzeit-Zeitpläne, interaktive Hallenpläne und digitale Gutscheine.",
+    "guidebookTitle": "Digitaler Event-Guide",
     "hallMapTitle": "Interaktiver Hallenplan",
     "vipLounge": "VIP-Lounge & Barista-Zugang",
     "freeWifi": "Highspeed-Glasfaser-WLAN",
-    "swagKit": "Offizielles Merchandising- & Ausweis-Set",
-    "baristaCoffee": "Kostenloser Kaffeespezialitäten-Service",
-    "sessionAlerts": "Live-Benachrichtigungen zu Vorträgen",
+    "swagKit": "Offizielles Willkommenspaket",
+    "baristaCoffee": "Kostenloser Kaffeeservice",
+    "sessionAlerts": "Live-Benachrichtigungen",
     "interactiveFloorMap": "Hallenplan & Standfinder",
-    "addToMyAgenda": "Zu meiner Agenda hinzufügen",
-    "unlockedPerk": "Vorteil freigeschaltet",
-    "tierRequired": "Erfordert Pass-Kategorie"
+    "addToMyAgenda": "Zu Meinem Kalender Hinzufügen",
+    "unlockedPerk": "Freigeschaltet",
+    "tierRequired": "Erfordert Spezifischen Pass"
   },
   "settings": {
     "title": "UI/UX- & Kontoeinstellungen",
-    "subtitle": "Passen Sie Typografie, Animationen, Sprache, Standardregion und KI-Assistenten an.",
-    "appearance": "Erscheinungsbild & Anzeige",
-    "themeMode": "Design-Modus",
+    "subtitle": "Passen Sie Typografie, Animationen, Sprache, Region und Ihren Messe-Assistenten an.",
+    "appearance": "Erscheinungsbild",
+    "themeMode": "Farbmodus",
     "light": "Hell",
     "dark": "Dunkel",
     "system": "Systemstandard",
     "highContrast": "Hoher Kontrast",
-    "density": "Informationsdichte",
+    "density": "Layoutdichte",
     "comfortable": "Komfortabel",
     "compact": "Kompakt",
-    "typography": "Schrift-Engine",
+    "typography": "Typografie-Engine",
     "modernSans": "Modern Sans (Inter)",
     "editorialSerif": "Editorial Serif (Newsreader)",
     "technicalMono": "Technical Mono (JetBrains)",
     "atkinsonHyperlegible": "Barrierefrei (Atkinson Hyperlegible)",
-    "fontScaling": "Schriftgrößen-Skalierung",
-    "motionMode": "Bewegungs- & Animationsdynamik",
-    "motionOff": "Reduziert (Keine Animationen)",
-    "motionSubtle": "Dezent (Fließende Übergänge)",
-    "motionExpressive": "Ausdrucksstark (3D-Neigung & Leuchteffekte)",
-    "aiConciergeToggle": "Schwebender KI-Concierge",
-    "aiConciergeDescription": "Aktivieren Sie den KI-Assistenten für schnelle Zeitplan-Zusammenfassungen und Navigation.",
-    "languageTitle": "Sprachauswahl",
-    "regionTitle": "Standard-Region",
-    "savePreferences": "Einstellungen speichern",
-    "preferencesSaved": "Einstellungen erfolgreich im lokalen Profil gespeichert."
+    "fontScaling": "Schriftgröße",
+    "motionMode": "Animationen & Bewegung",
+    "motionOff": "Reduziert (Keine Animation)",
+    "motionSubtle": "Dezent (Sanfte Übergänge)",
+    "motionExpressive": "Ausdrucksstark (3D-Effekte)",
+    "aiConciergeToggle": "Messe-Concierge Einblenden",
+    "aiConciergeDescription": "Aktiviert den schwebenden Assistenten für schnelle Zeitplan- und Anreiseauskünfte.",
+    "languageTitle": "Sprache & Lokalisierung",
+    "regionTitle": "Standard-Länderausgabe",
+    "savePreferences": "Einstellungen Speichern",
+    "preferencesSaved": "Einstellungen wurden erfolgreich im lokalen Profil gespeichert."
   },
   "organizer": {
-    "dashboardTitle": "Veranstalter-Leitstand",
-    "createEvent": "Neues Event erstellen",
+    "dashboardTitle": "Veranstalter-Portal",
+    "createEvent": "Neues Event Erstellen",
     "liveCustomizer": "Live-Branding-Customizer",
-    "boothManager": "Stand- & Ausstellerverwaltung",
-    "qrScanner": "QR-Einlass-Scanner",
-    "aiReports": "KI-Analyseberichte",
+    "boothManager": "Stand- & Ausstellermanager",
+    "qrScanner": "QR-Check-In-Scanner",
+    "aiReports": "Eventanalysen & Berichte",
     "kpiRevenue": "Brutto-Ticketumsatz",
-    "kpiTickets": "Ausgestellte Pässe",
+    "kpiTickets": "Ausgegebene Pässe",
     "kpiCheckIn": "Eingecheckte Besucher",
-    "kpiOccupancy": "Standauslastung"
+    "kpiOccupancy": "Standbelegungsrate"
   },
   "admin": {
-    "dashboardTitle": "Administration & Messezentren",
-    "venueDirectory": "Globales Messezentrum-Verzeichnis",
-    "crawlerPipeline": "Event-Erfassungs-Crawler",
+    "dashboardTitle": "Admin-Governance & Aggregator",
+    "venueDirectory": "Globales Messezentren-Verzeichnis",
+    "crawlerPipeline": "Daten-Pipeline-Crawler",
     "auditLogs": "Plattform-Audit-Protokolle",
-    "syncCrawler": "Crawler ausführen",
-    "addVenue": "Neues Zentrum hinzufügen"
+    "syncCrawler": "Crawler-Sync Ausführen",
+    "addVenue": "Neues Messezentrum Hinzufügen"
   },
   "ai": {
-    "conciergeTitle": "Besucher-KI-Concierge",
-    "conciergeSubtitle": "Fragen Sie nach Zeitplänen, Anreiserouten, Standnummern oder Messe-Highlights.",
-    "askPlaceholder": "Stellen Sie eine Frage zu diesem Event oder Messezentrum...",
-    "send": "Nachricht senden",
-    "suggestedQuestions": "Vorgeschlagene Fragen",
-    "clearHistory": "Verlauf löschen"
+    "conciergeTitle": "Event-Concierge",
+    "conciergeSubtitle": "Fragen Sie nach Zeitplänen, Anreise, Standorten oder Event-Highlights.",
+    "askPlaceholder": "Fragen zu Programm, Hallenplan oder Anreise stellen...",
+    "send": "Senden",
+    "suggestedQuestions": "Vorschläge",
+    "clearHistory": "Verlauf Löschen"
   }
 }

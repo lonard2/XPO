@@ -13,6 +13,7 @@ import {
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
+import { useTranslations } from 'next-intl';
 import { ActiveFilterChips } from '@/components/discovery/ActiveFilterChips';
 import { ALL_MICE_ARCHETYPES, ARCHETYPE_DEFAULTS } from '@/lib/theming';
 import { type FilterState } from '@/types/discovery';
@@ -39,6 +40,23 @@ export function FacetedFilterBar({
   onOpenMobileFilters,
   className,
 }: FacetedFilterBarProps) {
+  let tDisc: any = (k: string) => k;
+  let tReg: any = (k: string) => k;
+  let tArch: any = (k: string) => k;
+  let tCom: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tDisc = useTranslations('discovery');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tReg = useTranslations('regions');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tArch = useTranslations('archetypes');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tCom = useTranslations('common');
+  } catch {
+    // Fallback if rendered outside provider in tests
+  }
+
   const [searchTerm, setSearchTerm] = React.useState(filters.keyword);
 
   // Synchronize local search term if filters are cleared from outside
@@ -98,7 +116,7 @@ export function FacetedFilterBar({
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search exhibitions by title, keyword, city, or venue..."
+            placeholder={tDisc('searchPlaceholder') || 'Search events by title, keyword, city, or venue...'}
             className="h-10 w-full rounded-xl border border-border bg-card pl-10 pr-9 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-xs"
             aria-label="Search events"
           />

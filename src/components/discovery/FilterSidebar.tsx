@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
+import { useTranslations } from 'next-intl';
 import { ALL_MICE_ARCHETYPES, ARCHETYPE_DEFAULTS } from '@/lib/theming';
 import { type FilterState, type EventFormat, type EventScale } from '@/types/discovery';
 import { cn } from '@/lib/utils';
@@ -39,6 +40,23 @@ export function FilterSidebar({
   counts,
   className,
 }: FilterSidebarProps) {
+  let tDisc: any = (k: string) => k;
+  let tReg: any = (k: string) => k;
+  let tArch: any = (k: string) => k;
+  let tCom: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tDisc = useTranslations('discovery');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tReg = useTranslations('regions');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tArch = useTranslations('archetypes');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tCom = useTranslations('common');
+  } catch {
+    // Fallback if rendered outside provider in tests
+  }
+
   const handleFilterChange = <K extends keyof FilterState>(key: K, value: FilterState[K]) => {
     onChange({
       ...filters,
@@ -98,7 +116,7 @@ export function FilterSidebar({
             variant="ghost"
             size="sm"
             onClick={onReset}
-            className="h-7 gap-1 px-2 text-xs text-muted-foreground hover:text-destructive transition-colors"
+            className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground gap-1"
           >
             <RotateCcw className="h-3 w-3" />
             <span>Reset</span>
@@ -106,7 +124,7 @@ export function FilterSidebar({
         )}
       </div>
 
-      {/* 1. Regional Hub Filter */}
+      {/* 1. Regional Localization Hub Filter */}
       <div className="space-y-2.5">
         <label className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
           <Globe className="h-3.5 w-3.5 text-primary" />
@@ -246,13 +264,13 @@ export function FilterSidebar({
           <span>Exhibition Scale</span>
         </label>
         <div className="space-y-1">
-          {scaleOptions.map((scl) => {
-            const isSelected = filters.scale === scl.id;
+          {scaleOptions.map((sc) => {
+            const isSelected = filters.scale === sc.id;
             return (
               <button
-                key={scl.id}
+                key={sc.id}
                 type="button"
-                onClick={() => handleFilterChange('scale', scl.id)}
+                onClick={() => handleFilterChange('scale', sc.id)}
                 className={cn(
                   'w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left',
                   isSelected
@@ -260,7 +278,7 @@ export function FilterSidebar({
                     : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                 )}
               >
-                <span>{scl.label}</span>
+                <span>{sc.label}</span>
                 {isSelected && <Check className="h-3 w-3 text-primary" />}
               </button>
             );
@@ -268,20 +286,20 @@ export function FilterSidebar({
         </div>
       </div>
 
-      {/* 5. Date Range Filter */}
+      {/* 5. Timeline Date Range Filter */}
       <div className="space-y-2.5">
         <label className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
           <Calendar className="h-3.5 w-3.5 text-primary" />
           <span>Timeline</span>
         </label>
         <div className="space-y-1">
-          {dateOptions.map((dateOpt) => {
-            const isSelected = filters.dateRange === dateOpt.id;
+          {dateOptions.map((dt) => {
+            const isSelected = filters.dateRange === dt.id;
             return (
               <button
-                key={dateOpt.id}
+                key={dt.id}
                 type="button"
-                onClick={() => handleFilterChange('dateRange', dateOpt.id)}
+                onClick={() => handleFilterChange('dateRange', dt.id)}
                 className={cn(
                   'w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left',
                   isSelected
@@ -289,7 +307,7 @@ export function FilterSidebar({
                     : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                 )}
               >
-                <span>{dateOpt.label}</span>
+                <span>{dt.label}</span>
                 {isSelected && <Check className="h-3 w-3 text-primary" />}
               </button>
             );

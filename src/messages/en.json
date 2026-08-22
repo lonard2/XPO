@@ -26,7 +26,7 @@
     "timezone": "Timezone",
     "currency": "Currency",
     "language": "Language",
-    "region": "Regional Hub",
+    "region": "Country Edition",
     "price": "Price",
     "free": "Free",
     "contact": "Contact",
@@ -38,6 +38,7 @@
     "subtitle": "MICE Digital Ecosystem",
     "explore": "Explore",
     "events": "Events",
+    "calendar": "Calendar",
     "venues": "Venues",
     "myTickets": "My Passes",
     "dashboard": "Organizer",
@@ -53,18 +54,18 @@
     "badge": "XPO Digital MICE Ecosystem",
     "title": "Global Events, Conventions & Expos,",
     "titleHighlight": "Reimagined",
-    "subtitle": "The multi-sided digital ecosystem connecting attendees, organizers, and world-class convention venues across Indonesia, Japan, and the globe.",
+    "subtitle": "The multi-sided digital ecosystem connecting attendees, organizers, and world-class convention venues across Indonesia, Japan, and international gateways.",
     "exploreEvents": "Explore Events",
     "venueDirectory": "Venue Directory",
-    "spotlightHubs": "Spotlight Hubs"
+    "spotlightHubs": "Country Editions"
   },
   "regions": {
-    "title": "Regional Localization Hubs",
+    "title": "Country Editions",
     "subtitle": "Explore verified world-class venues, transit routes, and scheduled exhibitions customized for local markets.",
     "id": {
       "name": "Indonesia",
       "code": "ID",
-      "description": "Southeast Asia's powerhouse for industrial expos, B2B procurement summits, mega consumer fairs, and premier convention complexes.",
+      "description": "Southeast Asia's powerhouse for industrial manufacturing expos, B2B procurement summits, mega consumer fairs, and premier convention complexes.",
       "currency": "IDR (Rp)",
       "timezone": "WIB (Asia/Jakarta, UTC+7)",
       "keyVenues": "JIExpo Kemayoran, ICE BSD City, JICC Senayan, NICE PIK 2, GBK Complex, JIS",
@@ -80,7 +81,7 @@
       "transitSummary": "World-class rail access via Yurikamome Line, Rinkai Line, JR Keiyo Line, and Tokyo Bay water bus terminals."
     },
     "global": {
-      "name": "Global Hubs",
+      "name": "Global Gateways",
       "code": "GL",
       "description": "Flagship international convention centers hosting premier global congresses, financial summits, and trade assemblies across key gateways.",
       "currency": "USD ($) / EUR (€) / SGD (S$)",
@@ -88,7 +89,7 @@
       "keyVenues": "Marina Bay Sands Expo Singapore, Messe Frankfurt, ExCeL London, McCormick Place Chicago",
       "transitSummary": "International airport express networks, metro linkages, and high-speed rail direct terminals."
     },
-    "venueSpotlights": "Regional Venue Spotlights",
+    "venueSpotlights": "Country Venue Spotlights",
     "upcomingEvents": "Upcoming Regional Events",
     "transitGuide": "Transit & Transportation Logistics Guide",
     "venueCount": "Verified Venues",
@@ -100,62 +101,92 @@
   },
   "archetypes": {
     "INDUSTRIAL_B2B": {
-      "title": "Industrial B2B & Machinery",
+      "title": "Industrial & Manufacturing B2B",
       "tag": "Heavy Machinery & Sourcing",
       "description": "Live CNC machine tooling, smart robotics, metallurgy, and procurement deal-rooms."
     },
     "TECH_DEV_SUMMIT": {
-      "title": "Tech & Developer Summit",
+      "title": "Tech, AI & Developer Summits",
       "tag": "AI & Cloud Architecture",
-      "description": "Multi-track developer keynotes, live code teardowns, LLM sandboxes, and hackathons."
+      "description": "Multi-track developer keynotes, code teardowns, API sandboxes, and hackathons."
     },
     "MEDICAL_SYMPOSIUM": {
-      "title": "Medical & Clinical Congress",
+      "title": "Medical & Healthcare Congress",
       "tag": "CME & Clinical Trials",
       "description": "Peer-reviewed medical research, CME credit tracking, and clinical breakout halls."
     },
     "FINANCE_INVESTOR": {
-      "title": "FinTech & Investor Forum",
+      "title": "Finance, FinTech & VC Forums",
       "tag": "Venture & Institutional Capital",
       "description": "Pitch stages, private bilateral deal-rooms, and institutional investor summits."
     },
     "POP_CULTURE_GAMING": {
-      "title": "Pop Culture & Gaming Expo",
+      "title": "Pop Culture, Gaming & Comic Con",
       "tag": "Esports & Creator Alley",
       "description": "Cosplay stages, artist alleys, esports tournament arenas, and autograph zones."
     },
     "MUSIC_FESTIVAL": {
-      "title": "Music Festival & Live Arena",
+      "title": "Music Festivals & Arena Concerts",
       "tag": "Multi-Stage Live Concerts",
       "description": "Real-time stage schedules, acoustic arena maps, and crowd wristband entry."
     },
     "MEGA_EXPO_PAVILION": {
-      "title": "Mega Fair & Consumer Pavilion",
+      "title": "Mega Expos & Multi-Pavilion Fairs",
       "tag": "Consumer & Fireworks Expo",
       "description": "Multi-pavilion consumer shopping, nightly fireworks displays, and food carnivals."
     },
+    "AUTOMOTIVE_MOBILITY": {
+      "title": "Automotive, EV & Mobility Motor Show",
+      "tag": "Concept Cars & Test Drives",
+      "description": "Test drive track reservations, concept vehicle debuts, and EV charging infrastructure."
+    },
+    "ENERGY_INFRASTRUCTURE": {
+      "title": "Energy, Mining & Green Infrastructure",
+      "tag": "Clean Grids & Mining",
+      "description": "Renewable grids, mining extraction equipment, and maritime energy concessions."
+    },
+    "AGRITECH_FOOD": {
+      "title": "Agriculture, Agritech & Food Expo",
+      "tag": "Smart Farming & Logistics",
+      "description": "Smart precision farming, cold-chain logistics, and international culinary pavilions."
+    },
+    "HOSPITALITY_TOURISM": {
+      "title": "Hospitality, Tourism & Travel Mart",
+      "tag": "Hoteliers & Airline Buyers",
+      "description": "Destination showcases, hotelier procurement, and airline buyer networks."
+    },
+    "EDUCATION_EDTECH": {
+      "title": "Education, EdTech & Academic Summit",
+      "tag": "University Fairs & STEM",
+      "description": "International university stalls, scholarship counseling, and STEM research labs."
+    },
+    "FASHION_RETAIL": {
+      "title": "Fashion, Beauty & Luxury Retail Expo",
+      "tag": "Runways & Cosmetic OEM",
+      "description": "Runway premieres, cosmetic formulation labs, and wholesale buyer orders."
+    },
     "GOVERNMENT_DIPLOMATIC": {
-      "title": "Diplomatic & Government Summit",
-      "tag": "Protocol & Bilateral Assemblies",
-      "description": "Secured bilateral conference rooms, high-level diplomatic protocols, and plenary halls."
+      "title": "Government & Diplomatic Summits",
+      "tag": "Protocols & Bilateral Rooms",
+      "description": "Secured bilateral conference rooms, diplomatic protocols, and delegation access."
     },
     "INCENTIVE_RETREAT": {
-      "title": "Corporate Incentive & Retreat",
+      "title": "Incentives & Luxury Corporate Retreats",
       "tag": "Excursions & Executive Galas",
       "description": "Curated wellness itineraries, team retreats, and waterfront gala celebrations."
     }
   },
   "discovery": {
-    "searchPlaceholder": "Search events by title, keyword, or venue...",
+    "searchPlaceholder": "Search exhibitions by title, keyword, or venue...",
     "filterByKeyword": "Keyword Search",
-    "filterByRegion": "Region",
+    "filterByRegion": "Country Edition",
     "filterByScale": "Scale",
     "filterByFormat": "Event Format",
-    "filterByArchetype": "MICE Category",
-    "allRegions": "All Regional Hubs",
+    "filterByArchetype": "Event Category",
+    "allRegions": "All Regions",
     "allScales": "All Event Scales",
     "allFormats": "All Formats",
-    "allArchetypes": "All MICE Categories",
+    "allArchetypes": "All Categories",
     "inPerson": "In-Person",
     "hybrid": "Hybrid",
     "virtual": "Virtual",
@@ -167,7 +198,7 @@
   },
   "tickets": {
     "bookPass": "Book Ticket Pass",
-    "viewPass": "View Digital Pass",
+    "viewPass": "View Pass",
     "ticketTiers": "Ticket Pass Tiers",
     "standardPass": "Standard Pass",
     "vipPass": "VIP Delegate Pass",
@@ -207,7 +238,7 @@
   },
   "settings": {
     "title": "UI/UX & Account Settings",
-    "subtitle": "Customize your typography, animation dynamics, language, regional hub, and AI assistant preferences.",
+    "subtitle": "Customize your typography, animation dynamics, language, country edition, and event concierge preferences.",
     "appearance": "Visual & Display Preferences",
     "themeMode": "Theme Mode",
     "light": "Light",
@@ -227,10 +258,10 @@
     "motionOff": "Reduced (Zero Animation)",
     "motionSubtle": "Subtle (Smooth Transitions)",
     "motionExpressive": "Expressive / Cinematic (3D Tilt & Glows)",
-    "aiConciergeToggle": "Opt-in Floating AI Concierge",
-    "aiConciergeDescription": "Enable floating AI assistance for instant schedule summaries and navigation support.",
+    "aiConciergeToggle": "Floating Event Concierge",
+    "aiConciergeDescription": "Enable floating assistant for instant schedule summaries and navigation support.",
     "languageTitle": "Language & Localization",
-    "regionTitle": "Default Regional Hub",
+    "regionTitle": "Default Country Edition",
     "savePreferences": "Save Preferences",
     "preferencesSaved": "Settings successfully saved to local profile."
   },
@@ -249,15 +280,15 @@
   "admin": {
     "dashboardTitle": "Admin Governance & Aggregator",
     "venueDirectory": "Global Venue Directory",
-    "crawlerPipeline": "Simulated Ingestion Crawler",
+    "crawlerPipeline": "Ingestion Pipeline Crawler",
     "auditLogs": "Platform Audit Logs",
-    "syncCrawler": "Run Crawler Ingestion",
+    "syncCrawler": "Run Pipeline Ingestion",
     "addVenue": "Add New Venue"
   },
   "ai": {
-    "conciergeTitle": "Attendee AI Concierge",
+    "conciergeTitle": "Attendee Event Concierge",
     "conciergeSubtitle": "Ask about schedules, venue transit, booth locations, or event highlights.",
-    "askPlaceholder": "Ask me anything about this event or venue...",
+    "askPlaceholder": "Ask anything about this event, halls, or public transit...",
     "send": "Send Message",
     "suggestedQuestions": "Suggested Questions",
     "clearHistory": "Clear Chat"

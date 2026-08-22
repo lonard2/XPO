@@ -14,6 +14,7 @@ import {
   ShieldCheck,
   Building,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useSettings } from "@/components/settings/SettingsProvider";
 import { ThemeModeSelector } from "@/components/settings/ThemeModeSelector";
 import { UIDensitySelector } from "@/components/settings/UIDensitySelector";
@@ -38,6 +39,17 @@ export default function SettingsPage({ params }: SettingsPageProps) {
   const [activeTab, setActiveTab] = React.useState("appearance");
   const [showResetConfirm, setShowResetConfirm] = React.useState(false);
 
+  let tSet: any = (k: string) => k;
+  let tCom: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tSet = useTranslations("settings");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tCom = useTranslations("common");
+  } catch {
+    // Fallback if rendered outside provider in tests
+  }
+
   const handleReset = () => {
     resetToDefaults();
     setShowResetConfirm(false);
@@ -51,7 +63,7 @@ export default function SettingsPage({ params }: SettingsPageProps) {
           Home
         </Link>
         <ChevronRight className="h-3.5 w-3.5" />
-        <span className="text-foreground font-medium">Settings</span>
+        <span className="text-foreground font-medium">{tSet("title") || "Settings"}</span>
       </nav>
 
       {/* Page Header */}
@@ -63,11 +75,10 @@ export default function SettingsPage({ params }: SettingsPageProps) {
             </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-            UI/UX & Account Settings
+            {tSet("title") || "UI/UX & Account Settings"}
           </h1>
           <p className="text-sm text-muted-foreground mt-1 max-w-2xl leading-relaxed">
-            Configure your typography engine, responsive display density, spatial motion mode,
-            attendee profile, and floating AI concierge preferences.
+            {tSet("subtitle") || "Customize your typography engine, responsive display density, spatial motion mode, attendee profile, and event concierge preferences."}
           </p>
         </div>
 

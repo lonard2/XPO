@@ -1,7 +1,22 @@
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { Compass, ShieldCheck, Cpu, Globe2 } from "lucide-react";
 
 export function Footer({ locale = "en" }: { locale?: string }) {
+  let tNav: any = (k: string) => k;
+  let tReg: any = (k: string) => k;
+  let tArch: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tNav = useTranslations("nav");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tReg = useTranslations("regions");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tArch = useTranslations("archetypes");
+  } catch {
+    // Fallback if rendered outside provider in tests
+  }
+
   return (
     <footer className="border-t border-border bg-card/50 text-foreground transition-colors pb-20 md:pb-8 pt-12">
       <div className="container grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
@@ -25,25 +40,25 @@ export function Footer({ locale = "en" }: { locale?: string }) {
         {/* Col 2: Country Editions */}
         <div className="space-y-3">
           <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Country Editions
+            {tReg("title") || "Country Editions"}
           </h4>
           <ul className="space-y-2 text-xs">
             <li>
               <Link href={`/${locale}/region/id`} className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5">
                 <Globe2 className="h-3.5 w-3.5 text-primary" />
-                <span>Indonesia (JIExpo, ICE, JICC)</span>
+                <span>{tReg("id.name") || "Indonesia"} (JIExpo, ICE, JICC)</span>
               </Link>
             </li>
             <li>
               <Link href={`/${locale}/region/jp`} className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5">
                 <Globe2 className="h-3.5 w-3.5 text-primary" />
-                <span>Japan (Tokyo Big Sight, Makuhari)</span>
+                <span>{tReg("jp.name") || "Japan"} (Tokyo Big Sight, Makuhari)</span>
               </Link>
             </li>
             <li>
               <Link href={`/${locale}/region/global`} className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5">
                 <Globe2 className="h-3.5 w-3.5 text-primary" />
-                <span>Global Conventions (MBS, Messe Frankfurt)</span>
+                <span>{tReg("global.name") || "Global Gateways"} (MBS, Messe Frankfurt)</span>
               </Link>
             </li>
           </ul>
@@ -52,7 +67,7 @@ export function Footer({ locale = "en" }: { locale?: string }) {
         {/* Col 3: Event Categories */}
         <div className="space-y-3">
           <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Event Categories
+            {tNav("events") || "Event Categories"}
           </h4>
           <ul className="space-y-2 text-xs text-muted-foreground">
             <li>Industrial & Manufacturing B2B</li>

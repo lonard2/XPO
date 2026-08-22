@@ -26,7 +26,7 @@
     "timezone": "タイムゾーン",
     "currency": "通貨",
     "language": "言語",
-    "region": "地域ハブ",
+    "region": "国・地域版",
     "price": "価格",
     "free": "無料",
     "contact": "お問い合わせ",
@@ -37,12 +37,13 @@
     "brand": "XPO",
     "subtitle": "MICEデジタルエコシステム",
     "explore": "探索",
-    "events": "イベント",
+    "events": "展示会・イベント",
+    "calendar": "イベントカレンダー",
     "venues": "会場一覧",
     "myTickets": "マイパス",
     "dashboard": "主催者",
     "settings": "設定",
-    "organizer": "主催者コンソール",
+    "organizer": "主催者ポータル",
     "admin": "管理統括",
     "switchLanguage": "言語を切り替え",
     "switchRegion": "地域を切り替え",
@@ -56,10 +57,10 @@
     "subtitle": "インドネシア、日本、そして世界各国の主要コンベンションセンターを繋ぐ、次世代MICEエコシステム。",
     "exploreEvents": "イベントを探す",
     "venueDirectory": "会場ディレクトリ",
-    "spotlightHubs": "注目地域ハブ"
+    "spotlightHubs": "国・地域版"
   },
   "regions": {
-    "title": "地域ローカリゼーションハブ",
+    "title": "国・地域版エディション",
     "subtitle": "各地域市場に最適化された認定会場、交通ルート、および開催予定の展示会をご案内します。",
     "id": {
       "name": "インドネシア",
@@ -80,7 +81,7 @@
       "transitSummary": "ゆりかもめ、りんかい線、JR京葉線、東京湾水上バス等による優れた鉄道アクセス網。"
     },
     "global": {
-      "name": "グローバルハブ",
+      "name": "グローバルゲートウェイ",
       "code": "GL",
       "description": "シンガポール、フランクフルト、ロンドン、シカゴなど世界の主要都市で開催される国際会議・金融サミット。",
       "currency": "USD ($) / EUR (€) / SGD (S$)",
@@ -105,9 +106,9 @@
       "description": "CNC工作機械実演、産業ロボット、冶金技術、B2B個別商談ルーム。"
     },
     "TECH_DEV_SUMMIT": {
-      "title": "技術・開発者サミット",
+      "title": "技術・AI・開発者サミット",
       "tag": "AI・クラウド基盤",
-      "description": "マルチトラック基調講演、コードライブ解説、LLM実験環境、24時間ハッカソン。"
+      "description": "マルチトラック基調講演、コードライブ解説、API検証環境、ハッカソン。"
     },
     "MEDICAL_SYMPOSIUM": {
       "title": "医学・臨床学術総会",
@@ -122,41 +123,71 @@
     "POP_CULTURE_GAMING": {
       "title": "ポップカルチャー・ゲーム博覧会",
       "tag": "eスポーツ・クリエイター",
-      "description": "コスプレステージ、同人クリエイター通り、eスポーツ大会アリーナ、サイン会ゾーン。"
+      "description": "コスプレ特設ステージ、同人・イラスト展示、eスポーツ公式大会ゾーン。"
     },
     "MUSIC_FESTIVAL": {
-      "title": "音楽フェスティバル・ライブアリーナ",
-      "tag": "マルチステージ公演",
-      "description": "リアルタイムタイムテーブル、音響アリーナマップ、リストバンド入場管理。"
+      "title": "音楽フェス・アリーナコンサート",
+      "tag": "マルチステージライブ",
+      "description": "リアルタイムタイムテーブル、音響アリーナマップ、RFIDリストバンド入場。"
     },
     "MEGA_EXPO_PAVILION": {
-      "title": "メガフェア・市民パビリオン",
-      "tag": "総合博・花火大会",
-      "description": "複合パビリオンショッピング、毎夜の花火ショー、屋台グルメフェス。"
+      "title": "メガフェア・消費財パビリオン",
+      "tag": "大規模展示・花火大会",
+      "description": "複数パビリオンでのショッピング、夜間花火ショー、物産グルメエリア。"
+    },
+    "AUTOMOTIVE_MOBILITY": {
+      "title": "自動車・EV・モビリティショー",
+      "tag": "コンセプトカー・試乗会",
+      "description": "特設サーキット試乗予約、次世代EVコンセプト披露、超急速充電技術。"
+    },
+    "ENERGY_INFRASTRUCTURE": {
+      "title": "エネルギー・鉱業・インフラ展",
+      "tag": "クリーン電力・重機",
+      "description": "再生可能エネルギー送電網、鉱山開発大型重機、海洋資源コンセッション。"
+    },
+    "AGRITECH_FOOD": {
+      "title": "農業・アグリテック・食品博",
+      "tag": "スマート農業・物流",
+      "description": "精密ドローン農法実演、コールドチェーン保冷物流、世界グルメパビリオン。"
+    },
+    "HOSPITALITY_TOURISM": {
+      "title": "観光・ホテル・旅行マート",
+      "tag": "ホテル調達・航空路線",
+      "description": "観光デスティネーション商談、高級ホテル備品調達、国際線航路ネットワーク。"
+    },
+    "EDUCATION_EDTECH": {
+      "title": "教育・エドテック・学術サミット",
+      "tag": "大学フェア・STEM",
+      "description": "海外大学進学ブース、留学奨学金カウンセリング、STEM研究ラボ。"
+    },
+    "FASHION_RETAIL": {
+      "title": "ファッション・美容・ラグジュアリー展",
+      "tag": "ランウェイ・化粧品OEM",
+      "description": "新作ランウェイショー、化粧品OEM開発ラボ、国内外バイヤー卸売予約。"
     },
     "GOVERNMENT_DIPLOMATIC": {
-      "title": "外交・政府ハイレベル首脳会議",
-      "tag": "議定書・二国間会談",
-      "description": "高度セキュリティ二国間会談室、外交プロトコル、全体会議場。"
+      "title": "政府・外交政策サミット",
+      "tag": "公式儀典・二国間協議",
+      "description": "高セキュリティ二国間会談室、外交プロトコル、各国代表団専用ラウンジ。"
     },
     "INCENTIVE_RETREAT": {
-      "title": "インセンティブ・企業リトリート",
-      "tag": "体験ツアー・特別ガラ",
-      "description": "ウェルネスプログラム、チームビルディング、水上ガラディナー。"
+      "title": "法人インセンティブ・リトリート",
+      "tag": "エクスカーション・ガラ",
+      "description": "エグゼクティブ向けウェルネス日程、シーサイド晩餐会、貸切ツアー。"
     }
   },
   "discovery": {
-    "searchPlaceholder": "タイトル、キーワード、会場名で検索...",
+    "searchPlaceholder": "イベント名、キーワード、会場で検索...",
     "filterByKeyword": "キーワード検索",
-    "filterByRegion": "地域",
+    "filterByRegion": "国・地域版",
     "filterByScale": "規模",
     "filterByFormat": "開催形式",
-    "filterByArchetype": "MICE分類",
+    "filterByArchetype": "イベントカテゴリー",
     "allRegions": "すべての地域",
     "allScales": "すべての規模",
     "allFormats": "すべての形式",
-    "allArchetypes": "すべての分類",
-    "inPerson": "対面開催",
+    "allArchetypes": "すべてのカテゴリー",
+    "inPerson": "対面・現地開催",
     "hybrid": "ハイブリッド",
     "virtual": "オンライン",
     "dateRange": "開催期間",
@@ -168,98 +199,98 @@
   "tickets": {
     "bookPass": "入場パスを予約",
     "viewPass": "デジタルパスを表示",
-    "ticketTiers": "チケットパス区分",
-    "standardPass": "一般来場者パス",
-    "vipPass": "VIP代表者パス",
-    "exhibitorPass": "出展社パス",
+    "ticketTiers": "チケットパス種別",
+    "standardPass": "一般入場パス",
+    "vipPass": "VIPデリゲートパス",
+    "exhibitorPass": "出展者・テナントパス",
     "price": "価格",
     "capacity": "定員",
-    "remaining": "残り枠",
-    "benefits": "付帯特典",
-    "checkout": "予約手続きへ進む",
+    "remaining": "残席",
+    "benefits": "パスに含まれる特典",
+    "checkout": "予約へ進む",
     "checkoutTitle": "入場パスの予約",
     "attendeeDetails": "参加者情報",
     "fullName": "氏名",
     "emailAddress": "メールアドレス",
     "completeReservation": "確定してパスを発行",
-    "reservationConfirmed": "予約が完了しました",
-    "qrPass": "暗号化QRパス",
-    "digitalPassSubtitle": "会場入口の認証ゲートでこのベクターQRバッジをご提示ください。",
-    "scanPass": "入場スキャン",
+    "reservationConfirmed": "入場パスの発行が完了しました",
+    "qrPass": "暗号化QR入場パス",
+    "digitalPassSubtitle": "会場入口のゲートにてこちらのQRバッジをご提示ください。",
+    "scanPass": "優先レーンでスキャン",
     "verifiedStatus": "暗号署名検証済み",
-    "tamperProofNotice": "HMAC SHA-256 改ざん防止電子署名が埋め込まれています。",
+    "tamperProofNotice": "HMAC SHA-256改ざん防止デジタル署名付き。",
     "downloadPass": "パスを保存"
   },
   "perks": {
-    "treatsTitle": "インタラクティブ特典＆ガイドブック",
-    "treatsSubtitle": "リアルタイムスケジュール、インタラクティブ会場マップ、ランク別デジタル特典。",
+    "treatsTitle": "参加者特典＆公式ガイドブック",
+    "treatsSubtitle": "リアルタイム進行表、インタラクティブ会場マップ、デジタル優待券。",
     "guidebookTitle": "デジタル公式ガイドブック",
-    "hallMapTitle": "インタラクティブホール配置図",
-    "vipLounge": "VIPラウンジ＆バリスタサービス",
-    "freeWifi": "高速光ファイバーWiFi",
-    "swagKit": "公式記念品＆バッジセット",
-    "baristaCoffee": "特製淹れたてコーヒー",
-    "sessionAlerts": "セッション進行アラート",
-    "interactiveFloorMap": "フロアマップ＆ブース検索",
-    "addToMyAgenda": "マイアジェンダに追加",
-    "unlockedPerk": "特典利用可能",
-    "tierRequired": "対象パス"
+    "hallMapTitle": "インタラクティブフロアマップ",
+    "vipLounge": "VIPラウンジ＆バリスタカフェ",
+    "freeWifi": "高速光ファイバーWi-Fi",
+    "swagKit": "公式グッズ＆特製バッジ",
+    "baristaCoffee": "ウェルカムドリンクサービス",
+    "sessionAlerts": "セッション開始通知",
+    "interactiveFloorMap": "ブース検索・会場マップ",
+    "addToMyAgenda": "マイスケジュールに追加",
+    "unlockedPerk": "利用可能",
+    "tierRequired": "特定パス限定"
   },
   "settings": {
     "title": "UI/UX・アカウント設定",
-    "subtitle": "フォント書体、アニメーション表現、言語、地域ハブ、AIアシスタントを設定できます。",
+    "subtitle": "フォント設定、アニメーション速度、言語、国・地域版、案内アシスタントの設定を変更できます。",
     "appearance": "表示・外観設定",
-    "themeMode": "テーマモード",
+    "themeMode": "テーマ設定",
     "light": "ライト",
     "dark": "ダーク",
     "system": "システム連動",
     "highContrast": "ハイコントラスト",
-    "density": "表示密度",
-    "comfortable": "ゆったり",
-    "compact": "コンパクト",
-    "typography": "タイポグラフィエンジン",
-    "modernSans": "モダン・サンセリフ (Inter)",
-    "editorialSerif": "エディトリアル・セリフ (Newsreader)",
-    "technicalMono": "テクニカル・モノ (JetBrains)",
-    "atkinsonHyperlegible": "アクセシブル (Atkinson Hyperlegible)",
-    "fontScaling": "文字サイズ倍率",
-    "motionMode": "モーション＆アニメーション表現",
-    "motionOff": "抑制（アニメーションなし）",
-    "motionSubtle": "控えめ（スムーズな遷移）",
-    "motionExpressive": "表現豊か／シネマティック（3D傾斜・光彩効果）",
-    "aiConciergeToggle": "AIコンシェルジュ常駐ボタン",
-    "aiConciergeDescription": "スケジュール要約や会場案内をリアルタイムに行うAIアシスタントを有効化します。",
+    "density": "画面の表示密度",
+    "comfortable": "標準（ゆったり）",
+    "compact": "コンパクト（高密度）",
+    "typography": "フォント設定",
+    "modernSans": "モダンサンセリフ (Inter)",
+    "editorialSerif": "エディトリアルセリフ (Newsreader)",
+    "technicalMono": "等幅フォント (JetBrains)",
+    "atkinsonHyperlegible": "ユニバーサルデザイン (Atkinson Hyperlegible)",
+    "fontScaling": "文字サイズ調整",
+    "motionMode": "アニメーション動作",
+    "motionOff": "オフ（静止表示）",
+    "motionSubtle": "スムーズ（控えめ）",
+    "motionExpressive": "リッチ / 3D演出",
+    "aiConciergeToggle": "フローティングイベントコンシェルジュ",
+    "aiConciergeDescription": "スケジュール要約や会場案内をリアルタイムでサポートするアシスタントを表示します。",
     "languageTitle": "表示言語設定",
-    "regionTitle": "デフォルト地域ハブ",
+    "regionTitle": "デフォルト国・地域版",
     "savePreferences": "設定を保存",
-    "preferencesSaved": "設定がローカルプロファイルに保存されました。"
+    "preferencesSaved": "設定をローカルプロファイルに保存しました。"
   },
   "organizer": {
-    "dashboardTitle": "主催者管理コンソール",
-    "createEvent": "新規イベント作成",
-    "liveCustomizer": "ライブブランディング調整",
-    "boothManager": "出展ブース管理",
-    "qrScanner": "QR入場スキャナー",
-    "aiReports": "AIインテリジェンス分析",
-    "kpiRevenue": "総チケット売上",
+    "dashboardTitle": "主催者ポータル",
+    "createEvent": "新規イベントを作成",
+    "liveCustomizer": "ブランド外観カスタマイザー",
+    "boothManager": "出展ブース・テナント管理",
+    "qrScanner": "QRチェックインスキャナー",
+    "aiReports": "イベント分析・レポート",
+    "kpiRevenue": "チケット総売上",
     "kpiTickets": "発行済みパス数",
-    "kpiCheckIn": "入場済み参加者数",
-    "kpiOccupancy": "ブース充填率"
+    "kpiCheckIn": "チェックイン済み来場者",
+    "kpiOccupancy": "ブース出展率"
   },
   "admin": {
-    "dashboardTitle": "管理者統括・会場管理",
-    "venueDirectory": "世界会場ディレクトリ",
-    "crawlerPipeline": "イベント収集クローラー",
-    "auditLogs": "監査ログ",
-    "syncCrawler": "クローラーを実行",
-    "addVenue": "新規会場登録"
+    "dashboardTitle": "管理統括・アグリゲーター",
+    "venueDirectory": "会場ディレクトリ管理",
+    "crawlerPipeline": "データ収集クローラー",
+    "auditLogs": "システム監査ログ",
+    "syncCrawler": "クローラー実行",
+    "addVenue": "新規会場を追加"
   },
   "ai": {
-    "conciergeTitle": "参加者向けAIコンシェルジュ",
-    "conciergeSubtitle": "タイムテーブル、交通機関、出展ブース位置など何でもご質問ください。",
-    "askPlaceholder": "イベントや会場について質問を入力...",
+    "conciergeTitle": "イベントコンシェルジュ",
+    "conciergeSubtitle": "タイムテーブル、交通アクセス、ブース位置、注目セッションについてご案内します。",
+    "askPlaceholder": "日程、会場アクセス、ブース位置について質問する...",
     "send": "送信",
-    "suggestedQuestions": "おすすめの質問",
+    "suggestedQuestions": "よくある質問",
     "clearHistory": "会話履歴を消去"
   }
 }
