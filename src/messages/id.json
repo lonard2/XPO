@@ -144,79 +144,79 @@
   },
   "archetypes": {
     "INDUSTRIAL_B2B": {
-      "title": "B2B Manufaktur",
-      "tag": "Permesinan & Pengadaan",
-      "description": "Demonstrasi mesin CNC, robotika cerdas, metalurgi, dan ruang negosiasi pengadaan B2B."
+      "title": "Pameran Industri & Manufaktur",
+      "tag": "Permesinan & Pengadaan B2B",
+      "description": "Pameran mesin perkakas CNC, robotika pabrik, metalurgi presisi, dan negosiasi tender pengadaan B2B."
     },
     "TECH_DEV_SUMMIT": {
-      "title": "KTT Teknologi & AI",
-      "tag": "AI & Arsitektur Cloud",
-      "description": "Keynote multi-jalur, bedah kode langsung, sandbox API, dan hackathon inovasi."
+      "title": "Konferensi Teknologi & AI",
+      "tag": "Pengembang & Rekayasa Cloud",
+      "description": "Sesi teknologi multi-jalur, bedah arsitektur kode, integrasi API, dan hackathon inovasi rekayasa."
     },
     "MEDICAL_SYMPOSIUM": {
-      "title": "Simposium Medis",
-      "tag": "Kredit SKP & Uji Klinis",
-      "description": "Publikasi riset medis mitra bestari, pelacakan kredit SKP/CME, dan ruang simposium klinis."
+      "title": "Simposium Medis & Klinis",
+      "tag": "Riset Klinis & Kredit SKP",
+      "description": "Publikasi jurnal medis mitra bestari, sertifikasi kredit profesi SKP/CME, dan simposium spesialis."
     },
     "FINANCE_INVESTOR": {
-      "title": "FinTech & Investor",
-      "tag": "Modal Ventura & Investasi",
-      "description": "Panggung presentasi startup, ruang kesepakatan bilateral tertutup, dan pertemuan investor institusi."
+      "title": "Forum FinTech & Investasi",
+      "tag": "Modal Ventura & Pendanaan",
+      "description": "Panggung presentasi startup, ruang temu bilateral tertutup, dan forum alokasi modal institusional."
     },
     "POP_CULTURE_GAMING": {
-      "title": "Pop Culture & Gaming",
-      "tag": "Esports & Artist Alley",
-      "description": "Panggung cosplay, lorong kreator komik, arena turnamen esports, dan zona temu sapa."
+      "title": "Pameran Pop Culture & Gaming",
+      "tag": "Turnamen Esports & Kreator",
+      "description": "Panggung cosplay, lorong karya komik dan ilustrator, arena turnamen esports, dan temu sapa kreator."
     },
     "MUSIC_FESTIVAL": {
-      "title": "Festival Musik",
+      "title": "Festival Musik & Konser",
       "tag": "Konser Multi-Panggung",
-      "description": "Jadwal panggung langsung, peta akustik arena, dan akses gelang tiket RFID."
+      "description": "Jadwal panggung langsung, denah akustik arena, dan akses gerbang tiket gelang RFID."
     },
     "MEGA_EXPO_PAVILION": {
-      "title": "Pekan Raya & Ekspo",
-      "tag": "Pameran & Kembang Api",
-      "description": "Belanja multi-paviliun, pertunjukan kembang api malam, dan bazar kuliner rakyat."
+      "title": "Pekan Raya & Pameran Terpadu",
+      "tag": "Paviliun Dagang & Hiburan Rakyat",
+      "description": "Belanja terpadu multi-paviliun, pesta kembang api malam, dan bazar kuliner rakyat berskala besar."
     },
     "AUTOMOTIVE_MOBILITY": {
-      "title": "Otomotif & EV",
+      "title": "Pameran Otomotif & EV",
       "tag": "Mobil Konsep & Uji Kendara",
-      "description": "Pemesanan trek uji kendara, debut kendaraan konsep, dan teknologi pengisian daya EV."
+      "description": "Pemesanan jadwal uji kendara, debut kendaraan konsep masa depan, dan teknologi ekosistem kendaraan listrik."
     },
     "ENERGY_INFRASTRUCTURE": {
-      "title": "Energi & Tambang",
-      "tag": "Jaringan Hijau & Alat Berat",
-      "description": "Jaringan energi terbarukan, permesinan tambang berat, dan konsesi energi maritim."
+      "title": "Pameran Energi & Tambang",
+      "tag": "Transisi Energi & Alat Berat",
+      "description": "Jaringan energi terbarukan, permesinan tambang berat, dan proyek infrastruktur maritim strategis."
     },
     "AGRITECH_FOOD": {
-      "title": "Agritech & Pangan",
-      "tag": "Pertanian Cerdas & Logistik",
-      "description": "Teknologi pertanian presisi, rantai pasok pendingin, dan paviliun kuliner internasional."
+      "title": "Pameran Pertanian & Pangan",
+      "tag": "Pertanian Presisi & Rantai Pasok",
+      "description": "Teknologi pertanian presisi pintar, logistik rantai pendingin, dan bursa komoditas pangan internasional."
     },
     "HOSPITALITY_TOURISM": {
-      "title": "Pariwisata & Hotel",
-      "tag": "Perhotelan & Maskapai",
-      "description": "Promosi destinasi unggulan, pengadaan industri perhotelan, dan jaringan pembeli maskapai."
+      "title": "Bursa Pariwisata & Perhotelan",
+      "tag": "Promosi Destinasi & Maskapai",
+      "description": "Bursa pertemuan pembeli wisata internasional, jaringan pengadaan perhotelan, dan promosi destinasi unggulan."
     },
     "EDUCATION_EDTECH": {
-      "title": "Pendidikan & EdTech",
-      "tag": "Pameran Kampus & STEM",
-      "description": "Stan universitas dunia, konsultasi beasiswa studi, dan laboratorium riset STEM."
+      "title": "Pameran Pendidikan & EdTech",
+      "tag": "Pameran Kampus & Beasiswa",
+      "description": "Paviliun universitas dunia, konsultasi beasiswa studi lanjut, dan inovasi platform pembelajaran digital."
     },
     "FASHION_RETAIL": {
-      "title": "Fesyen & Kecantikan",
-      "tag": "Pentas Busana & Maklon",
-      "description": "Pentas peraga busana, pabrik maklon kosmetik OEM, dan pesanan grosir skala besar."
+      "title": "Pameran Fesyen & Kecantikan",
+      "tag": "Peragaan Busana & Maklon",
+      "description": "Peragaan busana desainer, industri maklon kosmetik OEM, dan bursa pesanan grosir busana ritel."
     },
     "GOVERNMENT_DIPLOMATIC": {
-      "title": "KTT Pemerintahan",
-      "tag": "Protokol & Ruang Bilateral",
-      "description": "Ruang konferensi bilateral berpengamanan tinggi, briefing protokol, dan delegasi kenegaraan."
+      "title": "KTT Pemerintahan & Diplomasi",
+      "tag": "Protokol Kenegaraan & Bilateral",
+      "description": "Pertemuan bilateral tingkat tinggi, pengamanan protokol kenegaraan, dan forum delegasi diplomatik."
     },
     "INCENTIVE_RETREAT": {
-      "title": "Retret Korporat",
-      "tag": "Ekskursi & Gala Eksekutif",
-      "description": "Rencana perjalanan kesehatan, retret tim kepemimpinan, dan perjamuan gala tepi pantai."
+      "title": "Program Insentif & Retret Korporat",
+      "tag": "Rencana Perjalanan & Jamuan Gala",
+      "description": "Rencana perjalanan penghargaan korporat, agenda kebersamaan tim eksekutif, dan jamuan gala eksklusif."
     }
   },
   "discovery": {

@@ -8,13 +8,13 @@ describe('EventCategoryPills', () => {
     render(<EventCategoryPills locale="en" />);
 
     expect(screen.getByText('Explore by Event Category')).toBeDefined();
-    expect(screen.getByText(/Industrial & Manufacturing B2B/i)).toBeDefined();
+    expect(screen.getByText(/Industrial & Manufacturing/i)).toBeDefined();
     expect(screen.getByText(/Tech, AI & Developer/i)).toBeDefined();
     expect(screen.getByText(/Medical & Healthcare/i)).toBeDefined();
-    expect(screen.getByText(/Finance, FinTech & VC/i)).toBeDefined();
-    expect(screen.getByText(/Pop Culture, Gaming/i)).toBeDefined();
-    expect(screen.getByText(/Music Festivals/i)).toBeDefined();
-    expect(screen.getByText(/Mega Expos & Multi-Pavilion/i)).toBeDefined();
+    expect(screen.getByText(/Finance, FinTech & Investor/i)).toBeDefined();
+    expect(screen.getByText(/Pop Culture & Gaming/i)).toBeDefined();
+    expect(screen.getByText(/Music Festival/i)).toBeDefined();
+    expect(screen.getByText(/Mega Expo & Multi-Pavilion/i)).toBeDefined();
     expect(screen.getByText(/Automotive, EV & Mobility/i)).toBeDefined();
     expect(screen.getByText(/Energy, Mining & Green/i)).toBeDefined();
     expect(screen.getByText(/Agriculture, Agritech & Food/i)).toBeDefined();
@@ -22,7 +22,7 @@ describe('EventCategoryPills', () => {
     expect(screen.getByText(/Education, EdTech & Academic/i)).toBeDefined();
     expect(screen.getByText(/Fashion, Beauty & Luxury/i)).toBeDefined();
     expect(screen.getByText(/Government & Diplomatic/i)).toBeDefined();
-    expect(screen.getByText(/Incentives & Luxury/i)).toBeDefined();
+    expect(screen.getByText(/Corporate Incentive/i)).toBeDefined();
   });
 
   it('triggers onSelectCategory callback when category card is clicked', () => {

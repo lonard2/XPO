@@ -99,27 +99,45 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
 
   const breadcrumbs = getBreadcrumbs();
 
+  // Enforce RBAC Access Barrier for Attendee role across Organizer Portal
+  if (role === "ATTENDEE") {
+    return (
+      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-6 bg-muted/20 animate-fade-in">
+        <div className="max-w-md w-full p-8 bg-card border border-border rounded-2xl shadow-sm space-y-5 text-center">
+          <div className="h-16 w-16 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 mx-auto flex items-center justify-center">
+            <ShieldCheck className="h-8 w-8" />
+          </div>
+          <div className="space-y-2">
+            <Badge variant="warning" size="sm">{tOrg("rbacRequiredTitle") || "Organizer Access Restricted"}</Badge>
+            <h2 className="text-xl font-bold text-foreground">
+              {tOrg("managementHub") || "Organizer Management Portal"}
+            </h2>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              {tOrg("attendeeModeNotice") || "Confidential event operations, door staff QR validation, booth assignments, and analytics are restricted to verified event organizers and staff accounts."}
+            </p>
+          </div>
+          <div className="flex flex-col gap-2.5 pt-4 border-t border-border">
+            <Button
+              variant="primary"
+              onClick={() => switchRole("ORGANIZER")}
+              className="w-full gap-2 bg-amber-600 hover:bg-amber-700 text-white cursor-pointer"
+            >
+              <UserCheck className="h-4 w-4" />
+              <span>{tOrg("switchToOrganizer") || "Switch to Organizer Persona"}</span>
+            </Button>
+            <Link href={`/${locale}`}>
+              <Button variant="outline" className="w-full cursor-pointer">
+                {tCom("backToHome") || "Return to Event Discovery"}
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-[calc(100vh-4rem)] flex flex-col bg-muted/20">
-      {/* Role Permission Warning Gate Banner (if Attendee) */}
-      {role === "ATTENDEE" && (
-        <div className="bg-amber-500/15 border-b border-amber-500/30 px-4 py-2.5 flex items-center justify-between text-xs text-amber-800 dark:text-amber-300">
-          <div className="flex items-center gap-2">
-            <AlertCircle className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
-            <span>
-              {tOrg("attendeeModeNotice") || "You are currently viewing in Attendee mode. Organizer creation and customizer mutations require Organizer or Admin privileges."}
-            </span>
-          </div>
-          <Button
-            size="sm"
-            variant="outline"
-            className="h-7 text-xs border-amber-500/40 text-amber-900 dark:text-amber-200 hover:bg-amber-500/20"
-            onClick={() => switchRole("ORGANIZER")}
-          >
-            {tOrg("switchToOrganizer") || "Switch to Organizer Persona"}
-          </Button>
-        </div>
-      )}
 
       <div className="flex-1 flex flex-col lg:flex-row">
         {/* DESKTOP SIDEBAR */}

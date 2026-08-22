@@ -146,77 +146,77 @@
     "INDUSTRIAL_B2B": {
       "title": "Industrial & Manufacturing B2B",
       "tag": "Heavy Machinery & Sourcing",
-      "description": "Live CNC machine tooling, smart robotics, metallurgy, and procurement deal-rooms."
+      "description": "Live CNC machine tooling, industrial robotics, precision metallurgy, and B2B procurement tenders."
     },
     "TECH_DEV_SUMMIT": {
-      "title": "Tech, AI & Developer Summits",
+      "title": "Tech, AI & Developer Summit",
       "tag": "AI & Cloud Architecture",
-      "description": "Multi-track developer keynotes, code teardowns, API sandboxes, and hackathons."
+      "description": "Multi-track developer sessions, live code architectures, API sandboxes, and engineering hackathons."
     },
     "MEDICAL_SYMPOSIUM": {
-      "title": "Medical & Healthcare Congress",
-      "tag": "CME & Clinical Trials",
-      "description": "Peer-reviewed medical research, CME credit tracking, and clinical breakout halls."
+      "title": "Medical & Healthcare Symposium",
+      "tag": "CME & Clinical Research",
+      "description": "Peer-reviewed medical publications, CME professional accreditation, and specialist breakout sessions."
     },
     "FINANCE_INVESTOR": {
-      "title": "Finance, FinTech & VC Forums",
+      "title": "Finance, FinTech & Investor Forum",
       "tag": "Venture & Institutional Capital",
-      "description": "Pitch stages, private bilateral deal-rooms, and institutional investor summits."
+      "description": "Startup demo stages, private bilateral deal-rooms, and institutional capital allocation forums."
     },
     "POP_CULTURE_GAMING": {
-      "title": "Pop Culture, Gaming & Comic Con",
+      "title": "Pop Culture & Gaming Expo",
       "tag": "Esports & Creator Alley",
-      "description": "Cosplay stages, artist alleys, esports tournament arenas, and autograph zones."
+      "description": "Cosplay stages, comic illustrator alleys, esports tournament arenas, and community meetups."
     },
     "MUSIC_FESTIVAL": {
-      "title": "Music Festivals & Arena Concerts",
-      "tag": "Multi-Stage Live Concerts",
-      "description": "Real-time stage schedules, acoustic arena maps, and crowd wristband entry."
+      "title": "Music Festival & Arena Concert",
+      "tag": "Multi-Stage Live Sets",
+      "description": "Real-time stage schedules, acoustic arena maps, and RFID wristband gate access."
     },
     "MEGA_EXPO_PAVILION": {
-      "title": "Mega Expos & Multi-Pavilion Fairs",
-      "tag": "Consumer & Fireworks Expo",
-      "description": "Multi-pavilion consumer shopping, nightly fireworks displays, and food carnivals."
+      "title": "Mega Expo & Multi-Pavilion Fair",
+      "tag": "Consumer Pavilions & Fairs",
+      "description": "Multi-pavilion consumer shopping, nightly fireworks displays, and large-scale public culinary bazaars."
     },
     "AUTOMOTIVE_MOBILITY": {
-      "title": "Automotive, EV & Mobility Motor Show",
+      "title": "Automotive, EV & Mobility Expo",
       "tag": "Concept Cars & Test Drives",
-      "description": "Test drive track reservations, concept vehicle debuts, and EV charging infrastructure."
+      "description": "Test drive track reservations, concept vehicle debuts, and electric mobility ecosystem technologies."
     },
     "ENERGY_INFRASTRUCTURE": {
       "title": "Energy, Mining & Green Infrastructure",
-      "tag": "Clean Grids & Mining",
-      "description": "Renewable grids, mining extraction equipment, and maritime energy concessions."
+      "tag": "Clean Grids & Heavy Mining",
+      "description": "Renewable power grids, heavy extraction machinery, and strategic maritime energy projects."
     },
     "AGRITECH_FOOD": {
       "title": "Agriculture, Agritech & Food Expo",
       "tag": "Smart Farming & Logistics",
-      "description": "Smart precision farming, cold-chain logistics, and international culinary pavilions."
+      "description": "Smart precision farming, cold-chain logistics networks, and international food commodity trade."
     },
     "HOSPITALITY_TOURISM": {
       "title": "Hospitality, Tourism & Travel Mart",
-      "tag": "Hoteliers & Airline Buyers",
-      "description": "Destination showcases, hotelier procurement, and airline buyer networks."
+      "tag": "Destination Showcases & Hoteliers",
+      "description": "International travel buyer appointments, hospitality supply chains, and destination marketing."
     },
     "EDUCATION_EDTECH": {
-      "title": "Education, EdTech & Academic Summit",
-      "tag": "University Fairs & STEM",
-      "description": "International university stalls, scholarship counseling, and STEM research labs."
+      "title": "Education, EdTech & Academic Expo",
+      "tag": "University Fairs & Scholarships",
+      "description": "Global university stalls, higher education scholarship counseling, and digital learning innovations."
     },
     "FASHION_RETAIL": {
       "title": "Fashion, Beauty & Luxury Retail Expo",
-      "tag": "Runways & Cosmetic OEM",
-      "description": "Runway premieres, cosmetic formulation labs, and wholesale buyer orders."
+      "tag": "Runway Shows & Cosmetic OEM",
+      "description": "Designer runway showcases, cosmetic contract manufacturing (OEM), and wholesale retail trade."
     },
     "GOVERNMENT_DIPLOMATIC": {
-      "title": "Government & Diplomatic Summits",
-      "tag": "Protocols & Bilateral Rooms",
-      "description": "Secured bilateral conference rooms, diplomatic protocols, and delegation access."
+      "title": "Government & Diplomatic Summit",
+      "tag": "Diplomatic Protocol & Bilateral",
+      "description": "High-security bilateral conference suites, diplomatic briefings, and state delegation forums."
     },
     "INCENTIVE_RETREAT": {
-      "title": "Incentives & Luxury Corporate Retreats",
-      "tag": "Excursions & Executive Galas",
-      "description": "Curated wellness itineraries, team retreats, and waterfront gala celebrations."
+      "title": "Corporate Incentive & Luxury Retreat",
+      "tag": "Curated Itineraries & Galas",
+      "description": "Curated corporate reward itineraries, executive leadership gatherings, and exclusive waterfront galas."
     }
   },
   "discovery": {
