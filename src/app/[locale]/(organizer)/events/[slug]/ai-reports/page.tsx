@@ -5,18 +5,19 @@ import { AIReportsHub } from "@/components/ai/AIReportsHub";
 import { EventMetricsContext, SavedAIReportItem } from "@/lib/ai/types";
 
 interface AIReportsPageProps {
-  params: Promise<{ locale: string; id: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }
 
 export default async function EventAIReportsPage({ params }: AIReportsPageProps) {
-  const { locale, id } = await params;
+  const { locale, slug } = await params;
+  const eventIdOrSlug = slug;
 
   let event = null;
   let savedReports: SavedAIReportItem[] = [];
 
   try {
     event = await db.event.findUnique({
-      where: { id },
+      where: { id: eventIdOrSlug },
       include: {
         venue: {
           include: {
@@ -46,7 +47,7 @@ export default async function EventAIReportsPage({ params }: AIReportsPageProps)
 
     if (!event) {
       event = await db.event.findUnique({
-        where: { slug: id },
+        where: { slug: eventIdOrSlug },
         include: {
           venue: {
             include: {
@@ -162,7 +163,7 @@ export default async function EventAIReportsPage({ params }: AIReportsPageProps)
         })),
       }
     : {
-        id,
+        id: eventIdOrSlug,
         title: "Manufacturing Indonesia 2026",
         slug: "manufacturing-indonesia-2026",
         tagline: "International Manufacturing, Machinery, Equipment, Materials and Services Exhibition",

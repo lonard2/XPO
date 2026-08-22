@@ -63,7 +63,7 @@ const HERO_IMAGE_PRESETS = [
 export default function EventCustomizerPage() {
   const params = useParams();
   const locale = (params?.locale as string) || "en";
-  const eventId = params?.id as string;
+  const eventId = (params?.slug || params?.id || "") as string;
 
   const [eventData, setEventData] = React.useState<any>(null);
   const [isLoading, setIsLoading] = React.useState(true);
