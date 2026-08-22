@@ -165,13 +165,13 @@ export function Navbar({ locale = "en" }: NavbarProps) {
                     key={link.href}
                     href={link.href}
                     className={cn(
-                      "flex items-center gap-2 px-3 py-2 rounded-md text-xs lg:text-sm font-medium transition-colors",
+                      "flex items-center gap-1.5 lg:gap-2 px-2.5 lg:px-3 py-2 rounded-md text-xs lg:text-sm font-medium whitespace-nowrap transition-colors",
                       isActive
                         ? "bg-accent text-accent-foreground font-semibold"
                         : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
                     )}
                   >
-                    <Icon className="h-4 w-4" />
+                    <Icon className="h-4 w-4 shrink-0" />
                     <span>{link.label}</span>
                   </Link>
                 );
@@ -180,7 +180,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
           </div>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             {/* Regional Hub Switcher */}
             <div className="hidden xl:block">
               <RegionSwitcher currentLocale={locale} activeRegionCode={activeRegion} />
@@ -193,7 +193,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
             <button
               type="button"
               onClick={() => setIsAuthModalOpen(true)}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-border/80 hover:border-primary/40 bg-card hover:bg-accent/50 transition-all text-xs text-left cursor-pointer"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-border/80 hover:border-primary/40 bg-card hover:bg-accent/50 transition-all text-xs text-left cursor-pointer whitespace-nowrap"
               aria-label="Manage user authentication and role persona"
             >
               <div className="h-6 w-6 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
@@ -202,7 +202,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
               <div className="hidden sm:flex flex-col">
                 <div className="flex items-center gap-1">
                   <span className="font-semibold text-foreground max-w-[90px] truncate text-[11px]">
-                    {user ? user.name.split(" ")[0] : "Sign In"}
+                    {user ? user.name.split(" ")[0] : (tNav("signIn") || "Sign In")}
                   </span>
                   <Badge variant={getRoleBadgeVariant(role)} size="sm" className="text-[9px] py-0 px-1">
                     {role}
@@ -224,9 +224,9 @@ export function Navbar({ locale = "en" }: NavbarProps) {
 
             {/* Settings Link */}
             <Link href={`/${locale}/settings`}>
-              <Button variant="outline" size="sm" className="hidden lg:inline-flex gap-2 text-xs">
+              <Button variant="outline" size="sm" className="hidden lg:inline-flex gap-2 text-xs whitespace-nowrap">
                 <SettingsIcon className="h-3.5 w-3.5" />
-                <span>Settings</span>
+                <span>{tNav("settings") || "Settings"}</span>
               </Button>
             </Link>
 

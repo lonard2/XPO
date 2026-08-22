@@ -14,41 +14,43 @@
     "learnMore": "了解更多",
     "date": "日期",
     "time": "时间",
-    "venue": "举办场馆",
-    "location": "城市 / 地点",
+    "venue": "场馆",
+    "location": "城市",
     "organizer": "主办方",
-    "attendees": "参会代表",
+    "attendees": "参会者",
     "share": "分享",
     "clear": "清除",
     "all": "全部",
-    "directions": "交通指引",
-    "transit": "公共交通与路线",
+    "directions": "交通路线",
+    "transit": "交通与访问",
     "timezone": "时区",
     "currency": "货币",
     "language": "语言",
-    "region": "国家/地区版本",
+    "region": "国家版本",
     "price": "价格",
     "free": "免费",
-    "contact": "联系我们",
-    "notFound": "未找到页面或资源",
+    "contact": "联系",
+    "notFound": "页面未找到",
     "retry": "重试"
   },
   "nav": {
     "brand": "XPO",
-    "subtitle": "会展数字生态系统",
+    "subtitle": "数字会展",
     "explore": "探索",
-    "events": "展会与会议",
-    "calendar": "日程日历",
-    "venues": "场馆名录",
+    "events": "展会",
+    "calendar": "日历",
+    "venues": "场馆",
     "myTickets": "我的通行证",
     "dashboard": "主办方",
-    "settings": "系统设置",
+    "settings": "设置",
     "organizer": "主办方门户",
     "admin": "管理治理",
     "switchLanguage": "切换语言",
     "switchRegion": "切换地区",
-    "toggleDarkMode": "切换暗色模式",
-    "toggleMenu": "切换菜单"
+    "toggleDarkMode": "暗色模式",
+    "toggleMenu": "打开菜单",
+    "signIn": "登录",
+    "signOut": "登出"
   },
   "hero": {
     "badge": "XPO 会展数字生态平台",
@@ -58,6 +60,31 @@
     "exploreEvents": "浏览展会",
     "venueDirectory": "场馆名录",
     "spotlightHubs": "国家/地区版本"
+  },
+  "home": {
+    "featuredTradeShows": "精选展会与峰会",
+    "featuredInRegion": "精选展会 -",
+    "viewFullSchedule": "查看完整日程",
+    "completeSolutionsTitle": "为所有参会各方提供一站式方案",
+    "completeSolutionsSubtitle": "专为参会观众、展会主办方及场馆管理者打造的专属门户。",
+    "attendeeTitle": "参会者体验",
+    "attendeeDesc": "发现行业展会，预订入场通行证，浏览展厅平面图，咨询智能问答导览。",
+    "attendeePill1": "15大专业会展垂直分类布局",
+    "attendeePill2": "即时加密数字QR码通行证",
+    "attendeePill3": "交互式展厅地图与参会权益",
+    "organizerTitle": "主办方门户",
+    "organizerDesc": "展会发布向导、实时双屏视觉定制、展位租户管理及入场核销扫描器。",
+    "organizerPill1": "实时分屏品牌定制器",
+    "organizerPill2": "高管分析与统计报告",
+    "organizerPill3": "现场QR码快速核销系统",
+    "adminTitle": "场馆与平台治理",
+    "adminDesc": "精准展厅索引名录、自动化展会日程采集管道与合规审计日志。",
+    "adminPill1": "精准场馆与展厅信息映射",
+    "adminPill2": "展会数据同步管道",
+    "adminPill3": "基于角色的访问控制（RBAC）",
+    "conciergeBannerTitle": "参会者智能导览与分析报告中心",
+    "conciergeBannerDesc": "实时获取展厅路线导航、公共交通接驳、会议日程安排及主办方综合分析报告。",
+    "conciergeBannerBtn": "偏好设置与导览配置"
   },
   "regions": {
     "title": "国家/地区版本",
@@ -101,111 +128,161 @@
   },
   "archetypes": {
     "INDUSTRIAL_B2B": {
-      "title": "工业制造与B2B展",
-      "tag": "重型机械与采购",
-      "description": "数控机床实操演示、智能工业机器人、冶金技术及B2B采购洽谈室。"
+      "title": "B2B工业制造与重型装备",
+      "tag": "机械与采购商谈",
+      "description": "CNC机床现场切削演示、智能机器人、冶金铸造与B2B采购洽谈室。"
     },
     "TECH_DEV_SUMMIT": {
       "title": "科技、AI与开发者峰会",
-      "tag": "人工智能与云架构",
-      "description": "多轨主旨演讲、代码实战演示、API测试沙箱及创新黑客马拉松。"
+      "tag": "AI与云端开发",
+      "description": "多轨主旨演讲、代码实战拆解、API沙箱实验与创新黑客松大赛。"
     },
     "MEDICAL_SYMPOSIUM": {
-      "title": "医疗与临床医学学术大会",
-      "tag": "继续教育与临床试验",
-      "description": "同行评审学术论文发布、继续医学教育学分认证及临床分论坛。"
+      "title": "医疗与临床学术年会",
+      "tag": "临床研究与CME学分",
+      "description": "同行评议医学论文宣读、继续医学教育CME学分记录与临床分会场。"
     },
     "FINANCE_INVESTOR": {
-      "title": "金融科技与投资人论坛",
+      "title": "金融科技与投资峰会",
       "tag": "风险投资与机构资本",
-      "description": "创业路演大厅、闭门双边洽谈室及机构投资者专属峰会。"
+      "description": "路演舞台、闭门双边洽谈室与机构投资者高端研讨会。"
     },
     "POP_CULTURE_GAMING": {
-      "title": "流行文化、游戏与动漫展",
-      "tag": "电子竞技与同人创作者",
-      "description": "Cosplay舞台、创作者走廊、电竞赛事主舞台及见面签名区。"
+      "title": "流行文化与游戏博览会",
+      "tag": "电竞与创作者街区",
+      "description": "Cosplay主舞台、同人创作者走廊、电竞锦标赛竞技场与签名见面会。"
     },
     "MUSIC_FESTIVAL": {
-      "title": "音乐节与体育馆演唱会",
-      "tag": "多舞台现场演出",
-      "description": "实时多舞台时间表、场馆声学地图及RFID智能手环入场。"
+      "title": "音乐节与大型演唱会",
+      "tag": "多舞台现场音乐",
+      "description": "实时舞台时间表、场馆声学地图与RFID手环快速入场系统。"
     },
     "MEGA_EXPO_PAVILION": {
-      "title": "大型博览会与消费品展",
-      "tag": "综合展销与夜间烟火",
-      "description": "多展馆综合采购、夜间烟火秀表演及地方特色美食广场。"
+      "title": "大型综合消费博览会",
+      "tag": "消费展销与烟花节",
+      "description": "多展馆消费购物节、夜间烟花盛典与特色美食狂欢嘉年华。"
     },
     "AUTOMOTIVE_MOBILITY": {
-      "title": "汽车、电动车与出行博览会",
-      "tag": "概念车与试驾体验",
-      "description": "专属试驾赛道预约、概念车全球首发及超充技术展示。"
+      "title": "汽车、电动车与出行车展",
+      "tag": "概念车与试驾预约",
+      "description": "专业赛道试驾预约、概念车全球首发与新能源快充网络技术展。"
     },
     "ENERGY_INFRASTRUCTURE": {
-      "title": "能源、矿业与基础设施展",
-      "tag": "绿色电网与重型装备",
-      "description": "可再生能源输电网络、矿业重型开采装备及海洋能源特许展示。"
+      "title": "能源、矿业与绿色基建",
+      "tag": "清洁电网与重型采矿",
+      "description": "可再生能源电网、大型采矿机械设备与近海能源特许权转让。"
     },
     "AGRITECH_FOOD": {
-      "title": "现代农业、农技与食品博览会",
-      "tag": "智慧农业与冷链物流",
-      "description": "精准农业无人机演示、冷链冷藏运输及国际美食品鉴馆。"
+      "title": "智慧农业与食品科技展",
+      "tag": "精准农业与冷链物流",
+      "description": "精准无人农机演示、冷链保鲜运输与国际美食品鉴展馆。"
     },
     "HOSPITALITY_TOURISM": {
-      "title": "文旅、酒店与旅行交易会",
-      "tag": "酒店采购与航线网络",
-      "description": "旅游目的地推介、高端酒店用品采购及航空公司航线洽谈。"
+      "title": "文旅酒店与商旅交易会",
+      "tag": "酒店采购与航线买家",
+      "description": "目的地推广推介、高端酒店用品采购洽谈与航空公司买家网络。"
     },
     "EDUCATION_EDTECH": {
       "title": "教育科技与学术峰会",
-      "tag": "名校展会与STEM实验室",
-      "description": "全球高校招生咨询、留学奖学金申请及STEM互动实验室。"
+      "tag": "名校招生与STEM实验",
+      "description": "国际大学招生展位、留学奖学金咨询与STEM科学实验室演示。"
     },
     "FASHION_RETAIL": {
-      "title": "时尚、美妆与奢侈品零售展",
-      "tag": "时装周走秀与美妆代工",
-      "description": "高级时装走秀发布、化妆品OEM配方研发及大宗批发订单。"
+      "title": "时尚、美妆与轻奢零售展",
+      "tag": "T台走秀与美妆OEM",
+      "description": "品牌新品T台首秀、化妆品配方代工研发与大宗批发采购订货。"
     },
     "GOVERNMENT_DIPLOMATIC": {
-      "title": "政府政策与外交峰会",
-      "tag": "外交礼宾与双边会谈",
-      "description": "高规格双边会谈室、国事礼宾安排及高级别代表团专属通道。"
+      "title": "政府政策与外交高级峰会",
+      "tag": "国宾礼仪与双边会谈",
+      "description": "高安全级别双边会谈室、外事礼仪简报与各国政府代表团接待。"
     },
     "INCENTIVE_RETREAT": {
-      "title": "企业奖励旅游与高管研讨会",
-      "tag": "专属行程与晚宴席位",
-      "description": "高管健康研讨日程、团队建设行程及海滨高端晚宴。"
+      "title": "高端奖励旅游与企业年会",
+      "tag": "康养考察与晚宴盛典",
+      "description": "定制康养行程、高管领导力研讨与海滨专属庆祝晚宴。"
     }
   },
   "discovery": {
-    "searchPlaceholder": "按展会名称、关键字或场馆搜索...",
-    "filterByKeyword": "关键字搜索",
+    "searchPlaceholder": "按展会名称、关键词或场馆搜索...",
+    "filterByKeyword": "关键词搜索",
     "filterByRegion": "国家/地区版本",
     "filterByScale": "展会规模",
-    "filterByFormat": "举办形式",
+    "filterByFormat": "活动形式",
     "filterByArchetype": "展会类别",
-    "allRegions": "全部地区",
-    "allScales": "全部规模",
-    "allFormats": "全部形式",
-    "allArchetypes": "全部类别",
-    "inPerson": "线下实地举办",
+    "allRegions": "所有地区",
+    "allScales": "所有规模",
+    "allFormats": "所有形式",
+    "allArchetypes": "所有类别",
+    "inPerson": "线下举办",
     "hybrid": "线上线下混合",
-    "virtual": "纯线上举办",
-    "dateRange": "举办日期",
-    "clearFilters": "清除全部筛选",
+    "virtual": "线上举办",
+    "dateRange": "举办时间",
+    "clearFilters": "清除所有筛选",
     "activeFilters": "当前筛选条件",
-    "noEventsFound": "未找到符合当前筛选条件的展会。",
-    "resetFilters": "重置搜索条件"
+    "noEventsFound": "暂无符合条件的展会。",
+    "resetFilters": "重置筛选条件",
+    "verticalsBadge": "15大专业会展垂直分类",
+    "verticalsTitle": "按展会类别探索",
+    "showingResults": "正在显示",
+    "exhibitionsCount": "场展会"
+  },
+  "events": {
+    "title": "展会名录与日程",
+    "subtitle": "探索认证国际经贸博览会、B2B峰会与大型节庆活动。",
+    "featured": "精选展会",
+    "priceFrom": "起步票价",
+    "freeAdmission": "免费入场",
+    "reservePasses": "预订通行证与门票",
+    "shareEvent": "分享展会",
+    "linkCopied": "链接已复制！",
+    "bookPass": "预订通行证",
+    "overview": "概览",
+    "agenda": "日程安排",
+    "floorMap": "展厅平面图",
+    "tickets": "通行证门票",
+    "guidebook": "参会指南与礼遇",
+    "faqs": "参会须知",
+    "submitRfq": "提交采购询价（RFQ）",
+    "browseBooths": "查看展商展位",
+    "dealRoomTitle": "B2B商谈室对接",
+    "dealRoomDesc": "认证买家与采购高管可享专属商务贵宾室服务。"
+  },
+  "venues": {
+    "title": "会展中心与展厅名录",
+    "subtitle": "查询印尼、日本及全球主要展馆、交通路线与展厅承重面积。",
+    "searchVenuesPlaceholder": "按场馆名、城市或展厅搜索...",
+    "grossSpace": "总展览面积",
+    "totalHalls": "展厅总数",
+    "transitAccess": "交通接驳",
+    "hallsIndexed": "已录入展厅",
+    "happeningAtVenue": "该场馆举办的展会",
+    "viewVenueDetail": "查看场馆与展厅详情",
+    "specifications": "展厅技术参数",
+    "floorPlanAvailable": "支持交互式展厅地图",
+    "backToVenues": "返回场馆名录",
+    "transitLogistics": "交通与物流指南"
+  },
+  "calendar": {
+    "title": "会展交互日历",
+    "subtitle": "多月度展会日程概览与跨场馆日期导航。",
+    "monthView": "月度日程",
+    "exportICal": "导出为 iCal",
+    "exportGoogle": "添加到谷歌日历",
+    "today": "今天",
+    "noEventsOnDate": "该日期暂无安排展会。",
+    "eventsOnDate": "该日期的展会"
   },
   "tickets": {
     "bookPass": "预订入场通行证",
-    "viewPass": "查看数字通行证",
-    "ticketTiers": "通行证等级",
-    "standardPass": "标准通行证",
-    "vipPass": "VIP贵宾通行证",
+    "viewPass": "查看通行证",
+    "ticketTiers": "通行证票种分类",
+    "standardPass": "标准观众通行证",
+    "vipPass": "贵宾代表通行证",
     "exhibitorPass": "参展商通行证",
     "price": "价格",
-    "capacity": "总名额",
-    "remaining": "余票",
+    "capacity": "总席位",
+    "remaining": "剩余名额",
     "benefits": "包含权益",
     "checkout": "前往结算",
     "checkoutTitle": "预订您的展会通行证",
@@ -221,6 +298,19 @@
     "tamperProofNotice": "内置HMAC SHA-256防篡改数字签名。",
     "downloadPass": "保存通行证"
   },
+  "myTickets": {
+    "title": "我的通行证与订单",
+    "subtitle": "查看您的加密QR码入场证、展厅位置及参会专属特权。",
+    "activePasses": "当前有效与即将举办",
+    "pastPasses": "往期参会记录",
+    "noPassesTitle": "暂无通行证",
+    "noPassesDesc": "您尚未预订任何展会通行证。欢迎探索即将举办的行业展会进行注册。",
+    "browseEvents": "发现近期精彩展会",
+    "passHolder": "持证人",
+    "tier": "票种类型",
+    "venue": "场馆与展厅",
+    "showPass": "查看电子通行证"
+  },
   "perks": {
     "treatsTitle": "参会专属权益与数字指南",
     "treatsSubtitle": "实时日程安排、交互式展馆地图及专属数字礼券。",
@@ -235,6 +325,43 @@
     "addToMyAgenda": "加入我的日程",
     "unlockedPerk": "已解锁",
     "tierRequired": "特定门票专属"
+  },
+  "auth": {
+    "modalTitle": "身份认证与角色管理",
+    "modalSubtitle": "管理当前会话、模拟多角色权限或使用凭据登录系统。",
+    "roleSwitcherTab": "切换角色",
+    "loginTab": "凭据登录",
+    "matrixTab": "权限矩阵",
+    "switcherDescription": "选择下方预置角色即可即时模拟其安全权限、访问级别与专属视图。",
+    "activeLabel": "当前激活",
+    "switchLabel": "切换",
+    "emailLabel": "电子邮箱",
+    "passwordLabel": "密码",
+    "quickAutofill": "快速自动填充：",
+    "signInBtn": "登录 XPO 平台",
+    "authenticating": "正在验证...",
+    "signOutBtn": "退出登录",
+    "doneBtn": "完成",
+    "permissionsMatrixTitle": "基于角色的访问控制（RBAC）矩阵",
+    "capabilityCol": "功能权限",
+    "guestUser": "访客用户",
+    "notSignedIn": "未登录",
+    "attendee": "参会观众",
+    "organizer": "展会主办方",
+    "admin": "超级管理员"
+  },
+  "footer": {
+    "brandDescription": "面向全球会议、奖励旅游、大型大会与展览（MICE）的下一代数字生态平台。",
+    "verifiedEcosystem": "认证数字会展生态",
+    "countryEditions": "国家/地区版本",
+    "eventCategories": "展会分类",
+    "organizerTools": "主办方门户与工具",
+    "organizerHub": "主办方会展管理中枢",
+    "createExhibition": "创建并发布展会",
+    "settingsLink": "系统与智能导览偏好",
+    "allRightsReserved": "保留所有权利。",
+    "infrastructureBadge": "企业级会展基础设施",
+    "accessibleBadge": "多端自适应无障碍架构"
   },
   "settings": {
     "title": "界面偏好与账户设置",

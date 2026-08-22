@@ -1,23 +1,15 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import {
   ShieldCheck,
   UserCheck,
   Briefcase,
-  KeyRound,
   LogIn,
   LogOut,
   CheckCircle2,
   XCircle,
-  Lock,
-  Sparkles,
-  Layers,
-  ArrowRight,
-  HelpCircle,
-  Building2,
-  Mail,
-  User as UserIcon,
 } from "lucide-react";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
@@ -29,7 +21,6 @@ import {
   getRoleLabel,
   getRoleBadgeVariant,
   getRolePermissionsMatrix,
-  ROLE_PERMISSIONS,
 } from "@/lib/auth/rbac";
 import { cn } from "@/lib/utils";
 
@@ -42,6 +33,17 @@ interface AuthModalProps {
 export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModalProps) {
   const { user, role, switchRole, login, logout, isAuthenticated } = useAuth();
   const [activeTab, setActiveTab] = React.useState<"switcher" | "login" | "matrix">(defaultTab);
+
+  let tAuth: any = (k: string) => k;
+  let tCom: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tAuth = useTranslations("auth");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tCom = useTranslations("common");
+  } catch {
+    // Fallback in case rendered outside provider
+  }
 
   // Login form state
   const [loginEmail, setLoginEmail] = React.useState("");
@@ -95,8 +97,8 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Authentication & Role Governance"
-      description="Manage your active persona, simulate multi-role permissions, or authenticate with credentials."
+      title={tAuth("modalTitle") || "Authentication & Role Governance"}
+      description={tAuth("modalSubtitle") || "Manage your active persona, simulate multi-role permissions, or authenticate with credentials."}
       size="lg"
     >
       <div className="space-y-6 pt-2">
@@ -113,7 +115,7 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
             )}
           >
             <UserCheck className="h-4 w-4" />
-            <span>Role Switcher</span>
+            <span>{tAuth("roleSwitcherTab") || "Role Switcher"}</span>
           </button>
 
           <button
@@ -127,7 +129,7 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
             )}
           >
             <LogIn className="h-4 w-4" />
-            <span>Credentials Sign-In</span>
+            <span>{tAuth("loginTab") || "Credentials Sign-In"}</span>
           </button>
 
           <button
@@ -141,7 +143,7 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
             )}
           >
             <ShieldCheck className="h-4 w-4" />
-            <span>Permissions Matrix</span>
+            <span>{tAuth("matrixTab") || "Permissions Matrix"}</span>
           </button>
         </div>
 
@@ -164,7 +166,7 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
         {activeTab === "switcher" && (
           <div className="space-y-4">
             <div className="text-xs text-muted-foreground">
-              Select a persona below to instantaneously simulate its security permissions, access tier, and portal views.
+              {tAuth("switcherDescription") || "Select a persona below to instantaneously simulate its security permissions, access tier, and portal views."}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -184,9 +186,9 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
                       <UserCheck className="h-4 w-4" />
                     </div>
                     {role === "ATTENDEE" ? (
-                      <Badge variant="success" size="sm">Active</Badge>
+                      <Badge variant="success" size="sm">{tAuth("activeLabel") || "Active"}</Badge>
                     ) : (
-                      <span className="text-[11px] font-medium text-muted-foreground group-hover:text-foreground">Switch</span>
+                      <span className="text-[11px] font-medium text-muted-foreground group-hover:text-foreground">{tAuth("switchLabel") || "Switch"}</span>
                     )}
                   </div>
                   <div>
@@ -233,9 +235,9 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
                       <Briefcase className="h-4 w-4" />
                     </div>
                     {role === "ORGANIZER" ? (
-                      <Badge variant="archetype" size="sm">Active</Badge>
+                      <Badge variant="archetype" size="sm">{tAuth("activeLabel") || "Active"}</Badge>
                     ) : (
-                      <span className="text-[11px] font-medium text-muted-foreground group-hover:text-foreground">Switch</span>
+                      <span className="text-[11px] font-medium text-muted-foreground group-hover:text-foreground">{tAuth("switchLabel") || "Switch"}</span>
                     )}
                   </div>
                   <div>
@@ -285,9 +287,9 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
                       <ShieldCheck className="h-4 w-4" />
                     </div>
                     {role === "ADMIN" ? (
-                      <Badge variant="destructive" size="sm">Active</Badge>
+                      <Badge variant="destructive" size="sm">{tAuth("activeLabel") || "Active"}</Badge>
                     ) : (
-                      <span className="text-[11px] font-medium text-muted-foreground group-hover:text-foreground">Switch</span>
+                      <span className="text-[11px] font-medium text-muted-foreground group-hover:text-foreground">{tAuth("switchLabel") || "Switch"}</span>
                     )}
                   </div>
                   <div>
@@ -330,7 +332,7 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
             <form onSubmit={handleCredentialsSubmit} className="space-y-4">
               <div className="space-y-3">
                 <Input
-                  label="Email Address"
+                  label={tAuth("emailLabel") || "Email Address"}
                   type="email"
                   placeholder="name@organization.com"
                   value={loginEmail}
@@ -338,18 +340,17 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
                   required
                 />
                 <Input
-                  label="Password"
+                  label={tAuth("passwordLabel") || "Password"}
                   type="password"
                   placeholder="••••••••••••"
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
-                  helperText="For testing, password check is simulated."
                 />
               </div>
 
               <div className="flex items-center justify-between pt-2">
                 <div className="text-xs text-muted-foreground">
-                  Quick auto-fill:
+                  {tAuth("quickAutofill") || "Quick auto-fill:"}
                 </div>
                 <div className="flex gap-1.5">
                   <Button
@@ -359,7 +360,7 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
                     className="text-[11px] h-7 px-2"
                     onClick={() => autofillDemoAccount(DEMO_ACCOUNTS.ATTENDEE)}
                   >
-                    Attendee
+                    {tAuth("attendee") || "Attendee"}
                   </Button>
                   <Button
                     type="button"
@@ -368,7 +369,7 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
                     className="text-[11px] h-7 px-2"
                     onClick={() => autofillDemoAccount(DEMO_ACCOUNTS.ORGANIZER)}
                   >
-                    Organizer
+                    {tAuth("organizer") || "Organizer"}
                   </Button>
                   <Button
                     type="button"
@@ -377,7 +378,7 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
                     className="text-[11px] h-7 px-2"
                     onClick={() => autofillDemoAccount(DEMO_ACCOUNTS.ADMIN)}
                   >
-                    Admin
+                    {tAuth("admin") || "Admin"}
                   </Button>
                 </div>
               </div>
@@ -389,7 +390,7 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
                 disabled={isSubmitting}
               >
                 <LogIn className="h-4 w-4" />
-                <span>{isSubmitting ? "Authenticating..." : "Sign In to XPO"}</span>
+                <span>{isSubmitting ? (tAuth("authenticating") || "Authenticating...") : (tAuth("signInBtn") || "Sign In to XPO")}</span>
               </Button>
             </form>
           </div>
@@ -399,17 +400,17 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
         {activeTab === "matrix" && (
           <div className="space-y-3 max-h-[380px] overflow-y-auto pr-1">
             <div className="text-xs text-muted-foreground">
-              Granular Role-Based Access Control (RBAC) permission map enforcing least-privilege security boundaries.
+              {tAuth("permissionsMatrixTitle") || "Granular Role-Based Access Control (RBAC) permission map enforcing least-privilege security boundaries."}
             </div>
 
             <div className="border border-border rounded-lg overflow-hidden">
               <table className="w-full text-left text-xs border-collapse">
                 <thead>
                   <tr className="bg-muted/60 border-b border-border">
-                    <th className="py-2 px-3 font-semibold text-foreground">Permission Capability</th>
-                    <th className="py-2 px-2 text-center font-semibold text-emerald-600 dark:text-emerald-400">Attendee</th>
-                    <th className="py-2 px-2 text-center font-semibold text-primary">Organizer</th>
-                    <th className="py-2 px-2 text-center font-semibold text-rose-600 dark:text-rose-400">Admin</th>
+                    <th className="py-2 px-3 font-semibold text-foreground">{tAuth("capabilityCol") || "Permission Capability"}</th>
+                    <th className="py-2 px-2 text-center font-semibold text-emerald-600 dark:text-emerald-400">{tAuth("attendee") || "Attendee"}</th>
+                    <th className="py-2 px-2 text-center font-semibold text-primary">{tAuth("organizer") || "Organizer"}</th>
+                    <th className="py-2 px-2 text-center font-semibold text-rose-600 dark:text-rose-400">{tAuth("admin") || "Admin"}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
@@ -457,14 +458,14 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
                 <span className="text-xs font-semibold text-foreground truncate">
-                  {user ? user.name : "Guest User"}
+                  {user ? user.name : (tAuth("guestUser") || "Guest User")}
                 </span>
                 <Badge variant={getRoleBadgeVariant(role)} size="sm">
                   {getRoleLabel(role)}
                 </Badge>
               </div>
               <p className="text-[11px] text-muted-foreground truncate">
-                {user ? user.email : "Not signed in"}
+                {user ? user.email : (tAuth("notSignedIn") || "Not signed in")}
               </p>
             </div>
           </div>
@@ -482,7 +483,7 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
                 }}
               >
                 <LogOut className="h-3.5 w-3.5" />
-                <span>Sign Out</span>
+                <span>{tAuth("signOutBtn") || "Sign Out"}</span>
               </Button>
             ) : null}
             <Button
@@ -491,7 +492,7 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
               className="text-xs h-8"
               onClick={onClose}
             >
-              Done
+              {tAuth("doneBtn") || "Done"}
             </Button>
           </div>
         </div>

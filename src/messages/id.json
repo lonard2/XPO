@@ -10,12 +10,12 @@
     "search": "Cari",
     "viewAll": "Lihat Semua",
     "viewDetails": "Lihat Detail",
-    "explore": "Jelajahi",
+    "explore": "Jelajah",
     "learnMore": "Pelajari Lebih Lanjut",
     "date": "Tanggal",
     "time": "Waktu",
-    "venue": "Lokasi Acara",
-    "location": "Kota / Wilayah",
+    "venue": "Venue",
+    "location": "Lokasi",
     "organizer": "Penyelenggara",
     "attendees": "Peserta",
     "share": "Bagikan",
@@ -30,17 +30,17 @@
     "price": "Harga",
     "free": "Gratis",
     "contact": "Kontak",
-    "notFound": "Halaman atau data tidak ditemukan",
+    "notFound": "Halaman tidak ditemukan",
     "retry": "Coba Lagi"
   },
   "nav": {
     "brand": "XPO",
-    "subtitle": "Ekosistem Digital MICE",
+    "subtitle": "MICE Digital",
     "explore": "Jelajah",
-    "events": "Pameran & Acara",
-    "calendar": "Kalender Acara",
-    "venues": "Direktori Venue",
-    "myTickets": "Pas Masuk Saya",
+    "events": "Acara",
+    "calendar": "Kalender",
+    "venues": "Venue",
+    "myTickets": "Pas Saya",
     "dashboard": "Penyelenggara",
     "settings": "Pengaturan",
     "organizer": "Portal Penyelenggara",
@@ -48,7 +48,9 @@
     "switchLanguage": "Ganti Bahasa",
     "switchRegion": "Ganti Wilayah",
     "toggleDarkMode": "Mode Gelap",
-    "toggleMenu": "Buka Menu"
+    "toggleMenu": "Buka Menu",
+    "signIn": "Masuk",
+    "signOut": "Keluar"
   },
   "hero": {
     "badge": "Ekosistem Digital MICE XPO",
@@ -58,6 +60,31 @@
     "exploreEvents": "Jelajahi Pameran",
     "venueDirectory": "Direktori Venue",
     "spotlightHubs": "Edisi Negara"
+  },
+  "home": {
+    "featuredTradeShows": "Pameran & Konvensi Mendatang",
+    "featuredInRegion": "Pameran Unggulan di",
+    "viewFullSchedule": "Lihat Jadwal Lengkap",
+    "completeSolutionsTitle": "Solusi Acara Lengkap untuk Semua Peserta",
+    "completeSolutionsSubtitle": "Portal khusus yang dirancang untuk pengunjung, penyelenggara acara, dan pengelola venue.",
+    "attendeeTitle": "Pengalaman Pengunjung",
+    "attendeeDesc": "Jelajahi pameran dagang, pesan pas masuk, lihat denah hall interaktif, dan gunakan asisten informasi.",
+    "attendeePill1": "15 Tata Letak Kategori Acara MICE",
+    "attendeePill2": "Pas Masuk Digital Instan & QR Kriptografis",
+    "attendeePill3": "Denah Hall Interaktif & Fasilitas Eksklusif",
+    "organizerTitle": "Portal Penyelenggara",
+    "organizerDesc": "Panduan penerbitan acara, kustomisasi visual tampilan langsung, manajemen stan/tenant, dan pemindai tiket QR.",
+    "organizerPill1": "Kustomisasi Visual Dua Layar",
+    "organizerPill2": "Laporan & Analisis Statistik",
+    "organizerPill3": "Sistem Check-in QR di Lokasi",
+    "adminTitle": "Tata Kelola Venue & Platform",
+    "adminDesc": "Direktori pusat konvensi dengan indeks hall presisi, agregator jadwal acara otomatis, dan log audit kepatuhan.",
+    "adminPill1": "Pemetaan Presisi Venue & Hall",
+    "adminPill2": "Pipeline Agregator & Sinkronisasi",
+    "adminPill3": "Kontrol Akses Berbasis Peran (RBAC)",
+    "conciergeBannerTitle": "Pusat Panduan & Laporan Analisis Acara",
+    "conciergeBannerDesc": "Akses panduan transportasi umum, navigasi denah hall, jadwal acara, dan laporan analitik penyelenggara secara real-time.",
+    "conciergeBannerBtn": "Pengaturan Asisten & Preferensi"
   },
   "regions": {
     "title": "Edisi Negara",
@@ -101,77 +128,77 @@
   },
   "archetypes": {
     "INDUSTRIAL_B2B": {
-      "title": "B2B Industri & Manufaktur",
-      "tag": "Permesinan Berat & Pengadaan",
+      "title": "B2B Manufaktur",
+      "tag": "Permesinan & Pengadaan",
       "description": "Demonstrasi mesin CNC, robotika cerdas, metalurgi, dan ruang negosiasi pengadaan B2B."
     },
     "TECH_DEV_SUMMIT": {
-      "title": "KTT Teknologi & Pengembang",
+      "title": "KTT Teknologi & AI",
       "tag": "AI & Arsitektur Cloud",
       "description": "Keynote multi-jalur, bedah kode langsung, sandbox API, dan hackathon inovasi."
     },
     "MEDICAL_SYMPOSIUM": {
-      "title": "Kongres Medis & Layanan Kesehatan",
+      "title": "Simposium Medis",
       "tag": "Kredit SKP & Uji Klinis",
       "description": "Publikasi riset medis mitra bestari, pelacakan kredit SKP/CME, dan ruang simposium klinis."
     },
     "FINANCE_INVESTOR": {
-      "title": "Forum FinTech & Investor",
-      "tag": "Modal Ventura & Institusional",
+      "title": "FinTech & Investor",
+      "tag": "Modal Ventura & Investasi",
       "description": "Panggung presentasi startup, ruang kesepakatan bilateral tertutup, dan pertemuan investor institusi."
     },
     "POP_CULTURE_GAMING": {
-      "title": "Ekspo Pop Culture & Gaming",
+      "title": "Pop Culture & Gaming",
       "tag": "Esports & Artist Alley",
       "description": "Panggung cosplay, lorong kreator komik, arena turnamen esports, dan zona temu sapa."
     },
     "MUSIC_FESTIVAL": {
-      "title": "Festival Musik & Konser Arena",
-      "tag": "Konser Musik Multi-Panggung",
+      "title": "Festival Musik",
+      "tag": "Konser Multi-Panggung",
       "description": "Jadwal panggung langsung, peta akustik arena, dan akses gelang tiket RFID."
     },
     "MEGA_EXPO_PAVILION": {
-      "title": "Pekan Raya & Paviliun Konsumen",
-      "tag": "Pameran Konsumen & Kembang Api",
+      "title": "Pekan Raya & Ekspo",
+      "tag": "Pameran & Kembang Api",
       "description": "Belanja multi-paviliun, pertunjukan kembang api malam, dan bazar kuliner rakyat."
     },
     "AUTOMOTIVE_MOBILITY": {
-      "title": "Pameran Otomotif & Mobilitas EV",
+      "title": "Otomotif & EV",
       "tag": "Mobil Konsep & Uji Kendara",
       "description": "Pemesanan trek uji kendara, debut kendaraan konsep, dan teknologi pengisian daya EV."
     },
     "ENERGY_INFRASTRUCTURE": {
-      "title": "Energi, Tambang & Infrastruktur",
+      "title": "Energi & Tambang",
       "tag": "Jaringan Hijau & Alat Berat",
       "description": "Jaringan energi terbarukan, permesinan tambang berat, dan konsesi energi maritim."
     },
     "AGRITECH_FOOD": {
-      "title": "Ekspo Pertanian, Agritech & Pangan",
+      "title": "Agritech & Pangan",
       "tag": "Pertanian Cerdas & Logistik",
       "description": "Teknologi pertanian presisi, rantai pasok pendingin, dan paviliun kuliner internasional."
     },
     "HOSPITALITY_TOURISM": {
-      "title": "Bursa Pariwisata & Perhotelan",
+      "title": "Pariwisata & Hotel",
       "tag": "Perhotelan & Maskapai",
       "description": "Promosi destinasi unggulan, pengadaan industri perhotelan, dan jaringan pembeli maskapai."
     },
     "EDUCATION_EDTECH": {
-      "title": "KTT Pendidikan & EdTech",
-      "tag": "Pameran Universitas & STEM",
+      "title": "Pendidikan & EdTech",
+      "tag": "Pameran Kampus & STEM",
       "description": "Stan universitas dunia, konsultasi beasiswa studi, dan laboratorium riset STEM."
     },
     "FASHION_RETAIL": {
-      "title": "Ekspo Fesyen, Kecantikan & Ritel",
-      "tag": "Pentas Peraga & OEM Kosmetik",
+      "title": "Fesyen & Kecantikan",
+      "tag": "Pentas Busana & Maklon",
       "description": "Pentas peraga busana, pabrik maklon kosmetik OEM, dan pesanan grosir skala besar."
     },
     "GOVERNMENT_DIPLOMATIC": {
-      "title": "KTT Pemerintahan & Diplomatik",
+      "title": "KTT Pemerintahan",
       "tag": "Protokol & Ruang Bilateral",
       "description": "Ruang konferensi bilateral berpengamanan tinggi, briefing protokol, dan delegasi kenegaraan."
     },
     "INCENTIVE_RETREAT": {
-      "title": "Retret Korporat & Insentif",
+      "title": "Retret Korporat",
       "tag": "Ekskursi & Gala Eksekutif",
       "description": "Rencana perjalanan kesehatan, retret tim kepemimpinan, dan perjamuan gala tepi pantai."
     }
@@ -187,18 +214,68 @@
     "allScales": "Semua Skala",
     "allFormats": "Semua Format",
     "allArchetypes": "Semua Kategori",
-    "inPerson": "Tatap Muka Langsung",
+    "inPerson": "Tatap Muka",
     "hybrid": "Hibrida",
     "virtual": "Daring",
     "dateRange": "Rentang Tanggal",
     "clearFilters": "Hapus Semua Filter",
     "activeFilters": "Filter Aktif",
     "noEventsFound": "Tidak ada acara yang cocok dengan kriteria filter saat ini.",
-    "resetFilters": "Atur Ulang Pencarian"
+    "resetFilters": "Atur Ulang Pencarian",
+    "verticalsBadge": "15 Kategori Vertikal MICE",
+    "verticalsTitle": "Jelajahi Berdasarkan Kategori Acara",
+    "showingResults": "Menampilkan",
+    "exhibitionsCount": "pameran"
+  },
+  "events": {
+    "title": "Direktori Acara & Jadwal",
+    "subtitle": "Temukan pameran dagang, KTT bisnis B2B, dan festival arena terverifikasi.",
+    "featured": "Acara Unggulan",
+    "priceFrom": "Mulai dari",
+    "freeAdmission": "Tiket Masuk Gratis",
+    "reservePasses": "Pesan Pas & Tiket",
+    "shareEvent": "Bagikan Acara",
+    "linkCopied": "Tautan Disalin!",
+    "bookPass": "Pesan Pas",
+    "overview": "Ringkasan",
+    "agenda": "Jadwal & Agenda",
+    "floorMap": "Denah Lantai & Hall",
+    "tickets": "Kategori Tiket",
+    "guidebook": "Panduan & Fasilitas",
+    "faqs": "Panduan Pengunjung",
+    "submitRfq": "Kirim Permintaan Tender (RFQ)",
+    "browseBooths": "Lihat Stan Eksibitor",
+    "dealRoomTitle": "Fasilitasi Ruang Kesepakatan B2B",
+    "dealRoomDesc": "Pembeli terverifikasi dan eksekutif pengadaan mendapatkan akses lounge bisnis eksklusif."
+  },
+  "venues": {
+    "title": "Pusat Konvensi & Direktori Hall",
+    "subtitle": "Cari hall pameran unggulan, akses transportasi, dan kapasitas ruangan di Indonesia, Jepang, dan Gerbang Global.",
+    "searchVenuesPlaceholder": "Cari venue berdasarkan nama, kota, atau hall...",
+    "grossSpace": "Total Luas Area Pameran",
+    "totalHalls": "Jumlah Hall",
+    "transitAccess": "Akses Transportasi",
+    "hallsIndexed": "Hall Terindeks",
+    "happeningAtVenue": "Sedang Berlangsung di Venue Ini",
+    "viewVenueDetail": "Jelajahi Direktori Venue & Hall",
+    "specifications": "Spesifikasi Teknis Hall",
+    "floorPlanAvailable": "Denah Lantai Interaktif Tersedia",
+    "backToVenues": "Kembali ke Direktori Venue",
+    "transitLogistics": "Panduan Transportasi & Logistik"
+  },
+  "calendar": {
+    "title": "Kalender Acara Interaktif",
+    "subtitle": "Jadwal pameran multi-bulan dan navigasi tanggal lintas venue.",
+    "monthView": "Jadwal Bulanan",
+    "exportICal": "Ekspor ke iCal",
+    "exportGoogle": "Tambahkan ke Google Calendar",
+    "today": "Hari Ini",
+    "noEventsOnDate": "Tidak ada acara terjadwal pada tanggal ini.",
+    "eventsOnDate": "Acara pada tanggal ini"
   },
   "tickets": {
     "bookPass": "Pesan Pas Masuk",
-    "viewPass": "Lihat Pas Digital",
+    "viewPass": "Lihat Pas",
     "ticketTiers": "Kategori Pas Masuk",
     "standardPass": "Pas Masuk Standar",
     "vipPass": "Pas Delegasi VIP",
@@ -221,6 +298,19 @@
     "tamperProofNotice": "Dilengkapi tanda tangan digital HMAC SHA-256 anti-manipulasi.",
     "downloadPass": "Unduh Pas"
   },
+  "myTickets": {
+    "title": "Pas Masuk & Pesanan Saya",
+    "subtitle": "Akses pas masuk QR kriptografis, lokasi hall, dan hak istimewa pengunjung Anda.",
+    "activePasses": "Pas Aktif & Mendatang",
+    "pastPasses": "Riwayat Pameran",
+    "noPassesTitle": "Belum Ada Pas Masuk",
+    "noPassesDesc": "Anda belum memesan pas masuk pameran. Jelajahi pameran mendatang untuk mendaftar.",
+    "browseEvents": "Jelajahi Pameran Mendatang",
+    "passHolder": "Pemegang Pas",
+    "tier": "Kategori Pas",
+    "venue": "Venue & Hall",
+    "showPass": "Lihat Pas Digital"
+  },
   "perks": {
     "treatsTitle": "Fasilitas & Buku Panduan Interaktif",
     "treatsSubtitle": "Jadwal waktu nyata, denah hall interaktif, dan voucer digital khusus pemegang pas.",
@@ -235,6 +325,43 @@
     "addToMyAgenda": "Simpan ke Agenda Saya",
     "unlockedPerk": "Fasilitas Terbuka",
     "tierRequired": "Butuh Kategori Tertentu"
+  },
+  "auth": {
+    "modalTitle": "Autentikasi & Tata Kelola Peran",
+    "modalSubtitle": "Kelola sesi aktif Anda, simulasikan izin multi-peran, atau masuk dengan kredensial.",
+    "roleSwitcherTab": "Ganti Peran",
+    "loginTab": "Masuk Kredensial",
+    "matrixTab": "Matriks Izin",
+    "switcherDescription": "Pilih persona di bawah ini untuk mensimulasikan izin keamanan dan hak aksesnya secara instan.",
+    "activeLabel": "Aktif",
+    "switchLabel": "Ganti",
+    "emailLabel": "Alamat Email",
+    "passwordLabel": "Kata Sandi",
+    "quickAutofill": "Isi otomatis cepat:",
+    "signInBtn": "Masuk ke XPO",
+    "authenticating": "Memverifikasi...",
+    "signOutBtn": "Keluar",
+    "doneBtn": "Selesai",
+    "permissionsMatrixTitle": "Matriks Kontrol Akses Berbasis Peran (RBAC)",
+    "capabilityCol": "Kemampuan Izin",
+    "guestUser": "Pengguna Tamu",
+    "notSignedIn": "Belum masuk",
+    "attendee": "Pengunjung",
+    "organizer": "Penyelenggara",
+    "admin": "SuperAdmin"
+  },
+  "footer": {
+    "brandDescription": "Ekosistem digital terdepan untuk Pertemuan, Insentif, Konferensi, dan Pameran (MICE) di seluruh dunia.",
+    "verifiedEcosystem": "Ekosistem MICE Terverifikasi",
+    "countryEditions": "Edisi Negara",
+    "eventCategories": "Kategori Acara",
+    "organizerTools": "Portal & Alat Penyelenggara",
+    "organizerHub": "Pusat Manajemen Acara Penyelenggara",
+    "createExhibition": "Buat & Terbitkan Pameran",
+    "settingsLink": "Preferensi Sistem & Asisten",
+    "allRightsReserved": "Hak cipta dilindungi undang-undang.",
+    "infrastructureBadge": "Infrastruktur MICE Terpercaya",
+    "accessibleBadge": "Arsitektur Aksesibel Lintas Perangkat"
   },
   "settings": {
     "title": "Pengaturan Akun & Tampilan UI/UX",

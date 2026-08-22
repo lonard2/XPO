@@ -6,6 +6,8 @@ export function Footer({ locale = "en" }: { locale?: string }) {
   let tNav: any = (k: string) => k;
   let tReg: any = (k: string) => k;
   let tArch: any = (k: string) => k;
+  let tFoot: any = (k: string) => k;
+
   try {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     tNav = useTranslations("nav");
@@ -13,6 +15,8 @@ export function Footer({ locale = "en" }: { locale?: string }) {
     tReg = useTranslations("regions");
     // eslint-disable-next-line react-hooks/rules-of-hooks
     tArch = useTranslations("archetypes");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tFoot = useTranslations("footer");
   } catch {
     // Fallback if rendered outside provider in tests
   }
@@ -29,18 +33,18 @@ export function Footer({ locale = "en" }: { locale?: string }) {
             <span className="text-base font-bold tracking-tight">XPO Digital MICE</span>
           </div>
           <p className="text-xs text-muted-foreground leading-relaxed">
-            The next-generation digital ecosystem for Meetings, Incentives, Conferences, and Exhibitions worldwide.
+            {tFoot("brandDescription") || "The next-generation digital ecosystem for Meetings, Incentives, Conferences, and Exhibitions worldwide."}
           </p>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <ShieldCheck className="h-4 w-4 text-emerald-500" />
-            <span>Verified MICE Ecosystem</span>
+            <span>{tFoot("verifiedEcosystem") || "Verified MICE Ecosystem"}</span>
           </div>
         </div>
 
         {/* Col 2: Country Editions */}
         <div className="space-y-3">
           <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            {tReg("title") || "Country Editions"}
+            {tFoot("countryEditions") || tReg("title") || "Country Editions"}
           </h4>
           <ul className="space-y-2 text-xs">
             <li>
@@ -67,37 +71,37 @@ export function Footer({ locale = "en" }: { locale?: string }) {
         {/* Col 3: Event Categories */}
         <div className="space-y-3">
           <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            {tNav("events") || "Event Categories"}
+            {tFoot("eventCategories") || tNav("events") || "Event Categories"}
           </h4>
           <ul className="space-y-2 text-xs text-muted-foreground">
-            <li>Industrial & Manufacturing B2B</li>
-            <li>Tech, AI & Developer Summits</li>
-            <li>Medical & Healthcare Congress</li>
-            <li>Automotive & Clean Energy Expos</li>
-            <li>Pop Culture & Music Festivals</li>
+            <li>{tArch("INDUSTRIAL_B2B.title") || "Industrial & Manufacturing B2B"}</li>
+            <li>{tArch("TECH_DEV_SUMMIT.title") || "Tech, AI & Developer Summits"}</li>
+            <li>{tArch("MEDICAL_SYMPOSIUM.title") || "Medical & Healthcare Congress"}</li>
+            <li>{tArch("AUTOMOTIVE_MOBILITY.title") || "Automotive & Clean Energy Expos"}</li>
+            <li>{tArch("POP_CULTURE_GAMING.title") || "Pop Culture & Music Festivals"}</li>
           </ul>
         </div>
 
         {/* Col 4: Organizer & Tools */}
         <div className="space-y-3">
           <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Organizer Portal & Tools
+            {tFoot("organizerTools") || "Organizer Portal & Tools"}
           </h4>
           <ul className="space-y-2 text-xs">
             <li>
               <Link href={`/${locale}/dashboard`} className="text-muted-foreground hover:text-foreground transition-colors">
-                Organizer Event Management Hub
+                {tFoot("organizerHub") || "Organizer Event Management Hub"}
               </Link>
             </li>
             <li>
               <Link href={`/${locale}/events/new`} className="text-muted-foreground hover:text-foreground transition-colors">
-                Create & Publish Exhibition
+                {tFoot("createExhibition") || "Create & Publish Exhibition"}
               </Link>
             </li>
             <li>
               <Link href={`/${locale}/settings`} className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5">
                 <Cpu className="h-3.5 w-3.5 text-primary" />
-                <span>System & AI Concierge Preferences</span>
+                <span>{tFoot("settingsLink") || "System & AI Concierge Preferences"}</span>
               </Link>
             </li>
           </ul>
@@ -105,11 +109,11 @@ export function Footer({ locale = "en" }: { locale?: string }) {
       </div>
 
       <div className="container border-t border-border/60 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-muted-foreground gap-4">
-        <p>© 2026 XPO MICE Digital Ecosystem. All rights reserved.</p>
+        <p>© 2026 XPO MICE Digital Ecosystem. {tFoot("allRightsReserved") || "All rights reserved."}</p>
         <p className="flex items-center gap-2">
-          <span>Enterprise MICE Infrastructure</span>
+          <span>{tFoot("infrastructureBadge") || "Enterprise MICE Infrastructure"}</span>
           <span>•</span>
-          <span>Accessible Multi-Device Architecture</span>
+          <span>{tFoot("accessibleBadge") || "Accessible Multi-Device Architecture"}</span>
         </p>
       </div>
     </footer>

@@ -1,21 +1,17 @@
 import Link from 'next/link';
-import { setRequestLocale } from 'next-intl/server';
+import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { headers, cookies } from 'next/headers';
 import {
   Compass,
-  Building2,
-  Ticket,
-  Sparkles,
   Layers,
   Cpu,
   ArrowRight,
   ShieldCheck,
-  Globe,
   CheckCircle2,
+  Sparkles,
 } from 'lucide-react';
 import { db } from '@/lib/db';
 import { Button } from '@/components/ui/Button';
-import { Badge } from '@/components/ui/Badge';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
 import { HeroSection } from '@/components/discovery/HeroSection';
 import { EventCategoryPills } from '@/components/discovery/EventCategoryPills';
@@ -51,6 +47,9 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
   ).toLowerCase();
 
   setRequestLocale(locale);
+
+  const tHome = await getTranslations({ locale, namespace: 'home' });
+  const tReg = await getTranslations({ locale, namespace: 'regions' });
 
   // Filter fallback data specifically for the active region
   const regionFallbackVenues = FALLBACK_VENUES.filter((v) => {
@@ -195,13 +194,12 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
     // Graceful fallback populated above
   }
 
-  const regionNames: Record<string, string> = {
-    id: 'Indonesia',
-    jp: 'Japan',
-    global: 'Global Hubs',
-  };
-
-  const currentRegionName = regionNames[activeRegionCode] || 'Indonesia';
+  const regionLocalizedName =
+    activeRegionCode === 'id'
+      ? tReg('id.name') || 'Indonesia'
+      : activeRegionCode === 'jp'
+      ? tReg('jp.name') || 'Japan'
+      : tReg('global.name') || 'Global Gateways';
 
   return (
     <div className="flex flex-col gap-10 sm:gap-14 pb-16">
@@ -248,16 +246,16 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
           <div>
             <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider mb-1">
               <Sparkles className="h-4 w-4" />
-              <span>Upcoming Trade Shows & Conventions</span>
+              <span>{tHome('featuredTradeShows') || 'Upcoming Trade Shows & Conventions'}</span>
             </div>
             <h2 className="text-xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-              Featured Exhibitions in {currentRegionName}
+              {tHome('featuredInRegion') || 'Featured Exhibitions in'} {regionLocalizedName}
             </h2>
           </div>
 
           <Link href={`/${locale}/events`}>
             <Button variant="outline" size="sm" className="gap-1.5 text-xs font-semibold">
-              <span>View Full Schedule</span>
+              <span>{tHome('viewFullSchedule') || 'View Full Schedule'}</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </Button>
           </Link>
@@ -274,10 +272,10 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
       <section className="container space-y-8">
         <div className="text-center space-y-2 max-w-xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-            Complete Event Solutions for All Participants
+            {tHome('completeSolutionsTitle') || 'Complete Event Solutions for All Participants'}
           </h2>
           <p className="text-xs sm:text-sm text-muted-foreground">
-            Dedicated portals crafted for attendees, event organizers, and venue directors.
+            {tHome('completeSolutionsSubtitle') || 'Dedicated portals crafted for attendees, event organizers, and venue directors.'}
           </p>
         </div>
 
@@ -288,23 +286,23 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
               <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 mb-2">
                 <Compass className="h-6 w-6" />
               </div>
-              <CardTitle>Attendee Experience</CardTitle>
+              <CardTitle>{tHome('attendeeTitle') || 'Attendee Experience'}</CardTitle>
               <CardDescription>
-                Discover trade shows, reserve passes, explore interactive hall floor plans, and consult the AI concierge.
+                {tHome('attendeeDesc') || 'Discover trade shows, reserve passes, explore interactive hall floor plans, and consult the AI concierge.'}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2 text-xs text-muted-foreground pt-0">
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-                <span>15 Domain Event Category Layouts</span>
+                <span>{tHome('attendeePill1') || '15 Domain Event Category Layouts'}</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-                <span>Instant Digital Passes & QR Verification</span>
+                <span>{tHome('attendeePill2') || 'Instant Digital Passes & QR Verification'}</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-                <span>Hall Floor Maps & Day-of Perks</span>
+                <span>{tHome('attendeePill3') || 'Hall Floor Maps & Day-of Perks'}</span>
               </div>
             </CardContent>
           </Card>
@@ -315,23 +313,23 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
               <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 mb-2">
                 <Layers className="h-6 w-6" />
               </div>
-              <CardTitle>Organizer Portal</CardTitle>
+              <CardTitle>{tHome('organizerTitle') || 'Organizer Portal'}</CardTitle>
               <CardDescription>
-                Event publishing wizard, real-time live visual customizer, booth/tenant manager, and QR badge scanner.
+                {tHome('organizerDesc') || 'Event publishing wizard, real-time live visual customizer, booth/tenant manager, and QR badge scanner.'}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2 text-xs text-muted-foreground pt-0">
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-                <span>Live Split-Screen Customizer</span>
+                <span>{tHome('organizerPill1') || 'Live Split-Screen Customizer'}</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-                <span>Executive Analytics & Reports</span>
+                <span>{tHome('organizerPill2') || 'Executive Analytics & Reports'}</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-                <span>Onsite QR Check-in System</span>
+                <span>{tHome('organizerPill3') || 'Onsite QR Check-in System'}</span>
               </div>
             </CardContent>
           </Card>
@@ -342,23 +340,23 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
               <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 mb-2">
                 <ShieldCheck className="h-6 w-6" />
               </div>
-              <CardTitle>Venue & Platform Governance</CardTitle>
+              <CardTitle>{tHome('adminTitle') || 'Venue & Platform Governance'}</CardTitle>
               <CardDescription>
-                Convention center directory with exact hall indexing, automated event calendar scrapers, and audit logging.
+                {tHome('adminDesc') || 'Convention center directory with exact hall indexing, automated event calendar scrapers, and audit logging.'}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2 text-xs text-muted-foreground pt-0">
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-                <span>Exact Venue & Hall Mapping</span>
+                <span>{tHome('adminPill1') || 'Exact Venue & Hall Mapping'}</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-                <span>Event Ingestion Pipeline</span>
+                <span>{tHome('adminPill2') || 'Event Ingestion Pipeline'}</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-                <span>Role-Based Access Control (RBAC)</span>
+                <span>{tHome('adminPill3') || 'Role-Based Access Control (RBAC)'}</span>
               </div>
             </CardContent>
           </Card>
@@ -371,15 +369,15 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
           <div className="space-y-2 text-center sm:text-left">
             <div className="flex items-center justify-center sm:justify-start gap-2 text-primary font-bold text-sm">
               <Cpu className="h-5 w-5" />
-              <span>Attendee Event Concierge & Reporting Hub</span>
+              <span>{tHome('conciergeBannerTitle') || 'Attendee Event Concierge & Reporting Hub'}</span>
             </div>
             <p className="text-xs text-muted-foreground max-w-xl">
-              Access real-time hall navigation, transit logistics, timetable schedules, and comprehensive organizer analytics reports.
+              {tHome('conciergeBannerDesc') || 'Access real-time hall navigation, transit logistics, timetable schedules, and comprehensive organizer analytics reports.'}
             </p>
           </div>
           <Link href={`/${locale}/settings`}>
             <Button variant="outline" className="whitespace-nowrap gap-2 text-xs">
-              <span>Preferences & Concierge Settings</span>
+              <span>{tHome('conciergeBannerBtn') || 'Preferences & Concierge Settings'}</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </Button>
           </Link>

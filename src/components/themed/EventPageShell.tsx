@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import {
   Calendar,
   MapPin,
@@ -12,9 +13,7 @@ import {
   ChevronRight,
   Globe,
   Layers,
-  Clock,
   Building2,
-  Shield,
 } from "lucide-react";
 import {
   type MiceArchetype,
@@ -91,6 +90,20 @@ export function EventPageShell({
   const [scrolledPastHero, setScrolledPastHero] = React.useState(false);
   const [checkoutDrawerOpen, setCheckoutDrawerOpen] = React.useState(false);
 
+  let tEvents: any = (k: string) => k;
+  let tCommon: any = (k: string) => k;
+  let tArch: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tEvents = useTranslations("events");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tCommon = useTranslations("common");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tArch = useTranslations("archetypes");
+  } catch {
+    // Fallback if rendered outside provider
+  }
+
   // Parse branding override if provided as JSON string
   const resolvedBranding: BrandingConfig = React.useMemo(() => {
     if (brandingConfig) return brandingConfig;
@@ -158,7 +171,9 @@ export function EventPageShell({
   const formattedPrice =
     minTicketPrice > 0
       ? formatCurrency(minTicketPrice, (currency as SupportedCurrency) || "IDR", locale)
-      : "Free Admission";
+      : tEvents("freeAdmission") || "Free Admission";
+
+  const archetypeDisplayTitle = tArch(`${safeArchetype}.title`) || tokens.name || archetypeMeta.label;
 
   return (
     <div
@@ -171,11 +186,11 @@ export function EventPageShell({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
           <nav className="flex items-center space-x-2 text-xs text-muted-foreground" aria-label="Breadcrumb">
             <Link href={`/${locale}`} className="hover:text-foreground transition-colors">
-              Home
+              {tCommon("explore") || "Home"}
             </Link>
             <ChevronRight className="h-3 w-3 text-muted-foreground/60" aria-hidden="true" />
             <Link href={`/${locale}/events`} className="hover:text-foreground transition-colors">
-              Events
+              {tEvents("title")?.split("&")?.[0]?.trim() || "Events"}
             </Link>
             <ChevronRight className="h-3 w-3 text-muted-foreground/60" aria-hidden="true" />
             <span className="text-foreground font-medium truncate max-w-[200px] sm:max-w-md" aria-current="page">
@@ -222,12 +237,12 @@ export function EventPageShell({
               }}
             >
               <Sparkles className="h-3.5 w-3.5 text-[var(--archetype-accent)]" aria-hidden="true" />
-              {tokens.name || archetypeMeta.label}
+              {archetypeDisplayTitle}
             </span>
 
             {isFeatured && (
               <Badge variant="warning" size="sm" className="font-semibold shadow-xs">
-                Featured Event
+                {tEvents("featured") || "Featured Event"}
               </Badge>
             )}
 
@@ -265,7 +280,7 @@ export function EventPageShell({
             <div className="flex items-center gap-3 bg-white/5 rounded-lg p-3 border border-white/10">
               <Calendar className="h-5 w-5 text-[var(--archetype-accent)] shrink-0" aria-hidden="true" />
               <div>
-                <p className="text-[11px] uppercase tracking-wider text-slate-400 font-medium">Dates</p>
+                <p className="text-[11px] uppercase tracking-wider text-slate-400 font-medium">{tCommon("date") || "Dates"}</p>
                 <p className="font-semibold text-white">{formattedDate}</p>
               </div>
             </div>
@@ -273,7 +288,7 @@ export function EventPageShell({
             <div className="flex items-center gap-3 bg-white/5 rounded-lg p-3 border border-white/10">
               <MapPin className="h-5 w-5 text-[var(--archetype-accent)] shrink-0" aria-hidden="true" />
               <div>
-                <p className="text-[11px] uppercase tracking-wider text-slate-400 font-medium">Venue & Location</p>
+                <p className="text-[11px] uppercase tracking-wider text-slate-400 font-medium">{tCommon("venue") || "Venue & Location"}</p>
                 <p className="font-semibold text-white truncate max-w-[180px]">
                   {venue.name}, {venue.city}
                 </p>
@@ -293,7 +308,7 @@ export function EventPageShell({
             <div className="flex items-center gap-3 bg-white/5 rounded-lg p-3 border border-white/10">
               <Ticket className="h-5 w-5 text-[var(--archetype-accent)] shrink-0" aria-hidden="true" />
               <div>
-                <p className="text-[11px] uppercase tracking-wider text-slate-400 font-medium">Pass Starting From</p>
+                <p className="text-[11px] uppercase tracking-wider text-slate-400 font-medium">{tEvents("priceFrom") || "Pass Starting From"}</p>
                 <p className="font-bold text-white">{formattedPrice}</p>
               </div>
             </div>
@@ -308,7 +323,7 @@ export function EventPageShell({
               className="gap-2 font-semibold shadow-lg text-white"
             >
               <Ticket className="h-4 w-4" aria-hidden="true" />
-              Reserve Passes & Tickets
+              {tEvents("reservePasses") || "Reserve Passes & Tickets"}
             </Button>
 
             <Button
@@ -320,12 +335,12 @@ export function EventPageShell({
               {isCopied ? (
                 <>
                   <Check className="h-4 w-4 text-emerald-400" aria-hidden="true" />
-                  Link Copied!
+                  {tEvents("linkCopied") || "Link Copied!"}
                 </>
               ) : (
                 <>
                   <Share2 className="h-4 w-4" aria-hidden="true" />
-                  Share Event
+                  {tEvents("shareEvent") || "Share Event"}
                 </>
               )}
             </Button>
@@ -357,7 +372,7 @@ export function EventPageShell({
             className="shrink-0 font-semibold gap-1.5 shadow-md"
           >
             <Ticket className="h-4 w-4" />
-            Book Pass
+            {tEvents("bookPass") || "Book Pass"}
           </Button>
         </div>
       </div>
