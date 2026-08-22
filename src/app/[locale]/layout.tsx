@@ -8,6 +8,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 import { SettingsProvider } from "@/components/settings/SettingsProvider";
+import { AuthProvider } from "@/lib/auth/session";
 import { AttendeeAIConcierge } from "@/components/ai/AttendeeAIConcierge";
 
 export const metadata: Metadata = {
@@ -39,13 +40,15 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
     <html lang={locale} dir={dir} className="scroll-smooth">
       <body className="min-h-screen flex flex-col bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary">
         <NextIntlClientProvider messages={messages} locale={locale}>
-          <SettingsProvider>
-            <Navbar locale={locale} />
-            <main className="flex-1">{children}</main>
-            <Footer locale={locale} />
-            <MobileBottomNav locale={locale} />
-            <AttendeeAIConcierge locale={locale} />
-          </SettingsProvider>
+          <AuthProvider>
+            <SettingsProvider>
+              <Navbar locale={locale} />
+              <main className="flex-1">{children}</main>
+              <Footer locale={locale} />
+              <MobileBottomNav locale={locale} />
+              <AttendeeAIConcierge locale={locale} />
+            </SettingsProvider>
+          </AuthProvider>
         </NextIntlClientProvider>
       </body>
     </html>

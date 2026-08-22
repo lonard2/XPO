@@ -395,6 +395,8 @@ export const ARCHETYPE_METAS: Record<MiceArchetype, ArchetypeMeta> = {
   },
 };
 
+export const ARCHETYPE_METADATA = ARCHETYPE_METAS;
+
 /**
  * Validates whether a string is a recognized MiceArchetype.
  */

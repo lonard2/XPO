@@ -4,12 +4,13 @@ import { cn } from "@/lib/utils";
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
+  helperText?: string;
   iconPrefix?: React.ReactNode;
   iconSuffix?: React.ReactNode;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, label, error, iconPrefix, iconSuffix, id, ...props }, ref) => {
+  ({ className, type, label, error, helperText, iconPrefix, iconSuffix, id, ...props }, ref) => {
     const inputId = id || React.useId();
     return (
       <div className="w-full space-y-1.5">
@@ -44,6 +45,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           )}
         </div>
         {error && <p className="text-xs text-destructive mt-1">{error}</p>}
+        {helperText && !error && <p className="text-[11px] text-muted-foreground mt-1">{helperText}</p>}
       </div>
     );
   }

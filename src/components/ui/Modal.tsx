@@ -12,6 +12,7 @@ interface ModalProps {
   children: React.ReactNode;
   className?: string;
   maxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" | "full";
+  size?: "sm" | "md" | "lg" | "xl" | "2xl" | "full";
 }
 
 const maxWidthMap = {
@@ -30,8 +31,11 @@ export function Modal({
   description,
   children,
   className,
-  maxWidth = "lg",
+  maxWidth,
+  size = "lg",
 }: ModalProps) {
+  const effectiveSize = maxWidth || size;
+
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {
@@ -67,7 +71,7 @@ export function Modal({
       <div
         className={cn(
           "relative z-50 w-full rounded-xl border border-border bg-card p-6 shadow-2xl transition-all duration-200 animate-fade-in",
-          maxWidthMap[maxWidth],
+          maxWidthMap[effectiveSize],
           className
         )}
       >

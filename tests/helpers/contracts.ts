@@ -579,11 +579,33 @@ export function hasPermission(role: UserRole, permission: Permission): boolean {
   return permissions.includes(permission);
 }
 
-export function canAccessRoute(role: UserRole, pathname: string): boolean {
-  if (pathname.startsWith("/admin") || pathname.includes("/(admin)/")) {
+export function canAccessRoute(role: UserRole | string, pathname: string): boolean {
+  if (!pathname || typeof pathname !== "string") return false;
+  const cleanPath = pathname.split("?")[0].split("#")[0].trim();
+
+  if (
+    cleanPath === "/admin" ||
+    cleanPath.startsWith("/admin/") ||
+    cleanPath.endsWith("/admin") ||
+    cleanPath.includes("/(admin)") ||
+    cleanPath.includes("/admin/") ||
+    /\/(admin)($|\/)/.test(cleanPath)
+  ) {
     return role === "ADMIN";
   }
-  if (pathname.startsWith("/organizer") || pathname.includes("/(organizer)/")) {
+  if (
+    cleanPath === "/organizer" ||
+    cleanPath.startsWith("/organizer/") ||
+    cleanPath.endsWith("/organizer") ||
+    cleanPath.includes("/(organizer)") ||
+    cleanPath.includes("/organizer/") ||
+    /\/(organizer)($|\/)/.test(cleanPath) ||
+    cleanPath.includes("/dashboard") ||
+    cleanPath.includes("/events/new") ||
+    cleanPath.includes("/customizer") ||
+    cleanPath.includes("/booths") ||
+    cleanPath.includes("/scanner")
+  ) {
     return role === "ORGANIZER" || role === "ADMIN";
   }
   return true; // Public attendee routes & settings accessible by all

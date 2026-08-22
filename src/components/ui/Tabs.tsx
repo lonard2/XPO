@@ -59,10 +59,12 @@ export function TabsTrigger({
   value,
   children,
   className,
+  disabled,
 }: {
   value: string;
   children: React.ReactNode;
   className?: string;
+  disabled?: boolean;
 }) {
   const ctx = React.useContext(TabsContext);
   if (!ctx) throw new Error("TabsTrigger must be inside Tabs");
@@ -72,6 +74,7 @@ export function TabsTrigger({
     <button
       role="tab"
       type="button"
+      disabled={disabled}
       aria-selected={isSelected}
       onClick={() => ctx.onSelectTab(value)}
       className={cn(

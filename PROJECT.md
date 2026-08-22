@@ -68,12 +68,15 @@ Every feature identified during the codebase survey and user requirements is cat
 | M1 | Multilingual i18n & Regional Localization Hubs | Phase 3: next-intl, 6 message files, middleware, formatters, switchers, regional routes | Base (P1, P2) | DONE |
 | M2 | Attendee Discovery Engine & Faceted Search | Phase 4: Carousel, spotlight cards, faceted search filters, event & venue hub routes | M1 | DONE |
 | M3 | 9-Archetype Dynamic MICE Category Theming | Phase 5: Theming token engine, EventPageShell, 9 archetype views, event detail route | M1 | DONE |
-| M4 | Ticket Checkout & Event-Day Treats Portal | Phase 6: HMAC-SHA256 QR passes, checkout drawer, digital guidebook, SVG floor map, APIs | M2, M3 | PLANNED |
-| M5 | UI/UX Settings Suite & Attendee AI Concierge | Phase 7: Typography selector, font scaling, motion controller, AI Concierge FAB & API | M1 | PLANNED |
-| M6 | Multi-Role RBAC & Organizer Command Center | Phases 8 & 9: RBAC guards, dashboard, event wizard, live customizer, booth manager, scanner | M3, M4 | PLANNED |
-| M7 | OpenRouter Multi-Model AI Reporting Suite | Phase 10: Unified 6-model OpenRouter gateway, Zod schemas, organizer AI reports UI & API | M6 | PLANNED |
-| M8 | Admin Governance, Crawler, PWA, SEO & Guides | Phases 11 & 12: Venue manager, scraper pipeline, audit logs, PWA, SEO JSON-LD, all phase guides | M7 | PLANNED |
-| M9 | E2E Testing Track & Adversarial Coverage Hardening | Test infra, Tier 1-4 test suite (`TEST_READY.md`), Tier 5 adversarial stress testing | M1-M8 | PLANNED |
+| M4 | Ticket Checkout & Event-Day Treats Portal | Phase 6: HMAC-SHA256 QR passes, checkout drawer, digital guidebook, SVG floor map, APIs | M2, M3 | DONE |
+| M5 | UI/UX Settings Suite & Attendee AI Concierge | Phase 7: Typography selector, font scaling, motion controller, AI Concierge FAB & API | M1 | DONE |
+
+| M6 | Multi-Role RBAC & Organizer Command Center | Phases 8 & 9: RBAC guards, dashboard, event wizard, live customizer, booth manager, scanner | M3, M4 | DONE |
+| M7 | OpenRouter Multi-Model AI Reporting Suite | Phase 10: Unified 6-model OpenRouter gateway, Zod schemas, organizer AI reports UI & API | M6 | DONE |
+| M8 | Admin Governance, Crawler, PWA, SEO & Guides | Phases 11 & 12: Venue manager, scraper pipeline, audit logs, PWA, SEO JSON-LD, all phase guides | M7 | DONE |
+
+| M9 | E2E Testing Track & Adversarial Coverage Hardening | Test infra, Tier 1-4 test suite (`TEST_READY.md`), Tier 5 adversarial stress testing | M1-M8 | DONE |
+
 
 ---
 

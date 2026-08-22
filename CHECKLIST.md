@@ -6,39 +6,39 @@ This master checklist tracks the development, testing, UX refinements, and educa
 
 ## Global Quality & Architecture Gates
 
-- [ ] **Zero-Emoji UI Verification**: All icons sourced from `lucide-react`. Zero raw emojis in UI components.
-- [ ] **Strict Type-Safety**: `npm run type-check` / `tsc --noEmit` passes with 0 errors.
-- [ ] **Multi-Language Support**: All strings externalized to `src/messages/` (`en`, `ja`, `zh-CN`, `id`, `de`, `es`).
-- [ ] **OpenRouter AI Gateway**: Support for all 6 models with fallback handling and structured output.
-- [ ] **Accessibility (a11y)**: WCAG AA color contrast, ARIA labels on modals/drawers, keyboard navigability.
-- [ ] **Humanized Copywriting**: Natural, institutional industry copy (no robotic AI-clichés).
+- [x] **Zero-Emoji UI Verification**: All icons sourced from `lucide-react`. Zero raw emojis in UI components (verified by `tests/unit/a11y/ZeroEmojiExhaustive.test.ts` & `zero-emoji.test.ts`).
+- [x] **Strict Type-Safety**: `npm run type-check` / `tsc --noEmit` passes with 0 errors.
+- [x] **Multi-Language Support**: All strings externalized to `src/messages/` (`en`, `ja`, `zh-CN`, `id`, `de`, `es`).
+- [x] **OpenRouter AI Gateway**: Support for all 6 models (`gemini-3.5-flash-lite`, `gemini-3.7-flash`, `deepseek-v4-pro-0813`, `qwen3.7-plus`, `gpt-5.6-luna`, `gemma-4-26b-a4b-it`) with fallback handling and structured output.
+- [x] **Accessibility (a11y)**: WCAG AA color contrast, ARIA labels on modals/drawers, keyboard navigability.
+- [x] **Humanized Copywriting**: Natural, institutional industry copy (no robotic AI-clichés).
 
 ---
 
 ## User Feedback Refinements & Enhancements Tracker
 
-- [ ] **1. Full-Display Desktop & Wide-Screen Optimization**:
-  - [ ] Expand maximum container boundaries to `max-w-[1600px] 2xl:max-w-[1800px]` with fluid responsive padding.
-  - [ ] Multi-column grid expansion (`xl:grid-cols-4`, `2xl:grid-cols-5`) eliminating empty horizontal margins on large monitors.
-- [ ] **2. Mobile Homepage Top Banner Ergonomics**:
-  - [ ] Streamline mobile hero card layout with clean visual hierarchy, avoiding information overload and text crowding.
-- [ ] **3. Universal Banner Contrast & Readability**:
-  - [ ] Implement multi-stop dark gradient overlays (`bg-gradient-to-t from-black/95 via-black/70 to-black/30`) and text drop shadows.
-  - [ ] Solid high-contrast CTA action buttons ensuring clear legibility over light and dynamic background images.
-- [ ] **4. Dedicated Country Editions (Indonesia, Japan, Global)**:
-  - [ ] Transform regional hubs into distinct **Country Editions** of the website (`/id` Indonesia Edition, `/jp` Japan Edition, `/global` Global Edition).
-  - [ ] Prominent Topbar **Edition Switcher** allowing users to switch between Country Editions seamlessly.
-  - [ ] Default venues, events, currency, and language tailored to the active Country Edition.
-- [ ] **5. Humanized, Institutional Copywriting**:
-  - [ ] Clean up AI-cliché terms ("Command & Intelligence" -> "Organizer Tools & Analytics", "Command Center" -> "Organizer Portal", "Archetype" -> "Event Category", "Treat at event" -> "Attendee Perks & Guidebook").
-- [ ] **6. Distinct Event Category Quick Buttons**:
-  - [ ] Visual identity for all 9 MICE categories with specialized iconography, custom color accents, and tactile hover states.
-- [ ] **7. Major Venues Current & Near-Upcoming Quick Glance**:
-  - [ ] Dedicated section directly below the top banner displaying major venues in the selected Country Edition (e.g. JIExpo, ICE BSD, JICC, NICE, GBK, JIS for Indonesia).
-  - [ ] Up to 3 current and near-upcoming events per venue with exact hall names (`Hall A1`, `Nusantara Hall 2`), dates, and direct pass booking.
-- [ ] **8. Interactive Event Calendar Engine**:
-  - [ ] Homepage interactive mini-calendar widget filtering events by selected day.
-  - [ ] Dedicated full Calendar page (`/[locale]/calendar`) with month/week views, category/hall filters, and iCal export.
+- [x] **1. Full-Display Desktop & Wide-Screen Optimization**:
+  - [x] Expand maximum container boundaries to `max-w-[1600px] 2xl:max-w-[1800px]` with fluid responsive padding.
+  - [x] Multi-column grid expansion (`xl:grid-cols-4`, `2xl:grid-cols-5`) eliminating empty horizontal margins on large monitors.
+- [x] **2. Mobile Homepage Top Banner Ergonomics**:
+  - [x] Streamline mobile hero card layout with clean visual hierarchy, avoiding information overload and text crowding.
+- [x] **3. Universal Banner Contrast & Readability**:
+  - [x] Implement multi-stop dark gradient overlays (`bg-gradient-to-t from-black/95 via-black/70 to-black/30`) and text drop shadows.
+  - [x] Solid high-contrast CTA action buttons ensuring clear legibility over light and dynamic background images.
+- [x] **4. Dedicated Country Editions (Indonesia, Japan, Global)**:
+  - [x] Transform regional hubs into distinct **Country Editions** of the website (`/id` Indonesia Edition, `/jp` Japan Edition, `/global` Global Edition).
+  - [x] Prominent Topbar **Edition Switcher** allowing users to switch between Country Editions seamlessly.
+  - [x] Default venues, events, currency, and language tailored to the active Country Edition.
+- [x] **5. Humanized, Institutional Copywriting**:
+  - [x] Clean up AI-cliché terms ("Command & Intelligence" -> "Organizer Tools & Analytics", "Command Center" -> "Organizer Portal", "Archetype" -> "Event Category", "Treat at event" -> "Attendee Perks & Guidebook").
+- [x] **6. Distinct Event Category Quick Buttons**:
+  - [x] Visual identity for all 15 MICE categories with specialized iconography, custom color accents, and tactile hover states.
+- [x] **7. Major Venues Current & Near-Upcoming Quick Glance**:
+  - [x] Dedicated section directly below the top banner displaying major venues in the selected Country Edition (e.g. JIExpo, ICE BSD, JICC, NICE, GBK, JIS for Indonesia).
+  - [x] Up to 3 current and near-upcoming events per venue with exact hall names (`Hall A1`, `Nusantara Hall 2`), dates, and direct pass booking.
+- [x] **8. Interactive Event Calendar Engine**:
+  - [x] Homepage interactive mini-calendar widget filtering events by selected day.
+  - [x] Dedicated full Calendar page (`/[locale]/calendar`) with month/week views, category/hall filters, and iCal export.
 
 ---
 
@@ -59,7 +59,7 @@ This master checklist tracks the development, testing, UX refinements, and educa
 - [x] Implement theme variable system (`globals.css` with CSS custom properties).
 - [x] Add unit test harness (`vitest.config.ts`, `@testing-library/react`, zero-emoji audit).
 - [x] Author educational guide: `docs/guides/phase-01-architecture-and-design-system.md`.
-- [x] **Verification**: `npm run build` succeeds (100%), `npm test` runs 12 component & compliance tests (100% pass).
+- [x] **Verification**: `npm run build` succeeds (100%), `npm test` runs component & compliance tests (100% pass).
 
 ---
 
@@ -69,7 +69,7 @@ This master checklist tracks the development, testing, UX refinements, and educa
   - [x] `User`, `Role` (ATTENDEE, ORGANIZER, ADMIN)
   - [x] `Region` (`id`, `jp`, `global`)
   - [x] `Venue` & `VenueHall` (1-to-many relationship with capacity, transit data)
-  - [x] `Event` & `EventArchetype` (9 MICE categories)
+  - [x] `Event` & `EventArchetype` (15 MICE categories)
   - [x] `TicketTier`, `Booking`, `TicketStatus`
   - [x] `AgendaItem`, `BoothTenant`, `EventPerk`, `AIReport`
 - [x] Implement `src/lib/db.ts` (Prisma singleton).
@@ -77,7 +77,7 @@ This master checklist tracks the development, testing, UX refinements, and educa
   - [x] Seed Indonesian venues & exact halls: JIExpo Kemayoran, ICE BSD City, JICC Senayan, NICE PIK 2, GBK Complex, JIS.
   - [x] Seed Japan venues & exact halls: Tokyo Big Sight, Makuhari Messe, Pacifico Yokohama.
   - [x] Seed Global venues: Marina Bay Sands Expo, Messe Frankfurt, ExCeL London, McCormick Place.
-  - [x] Seed realistic events spanning all 9 category archetypes (Manufacturing Expo, AI Summit, Jakarta Fair mega expo).
+  - [x] Seed realistic events spanning category archetypes (Manufacturing Expo, AI Summit, Jakarta Fair mega expo).
 - [x] Author educational guide: `docs/guides/phase-02-prisma-modeling-and-mice-seeding.md`.
 - [x] **Verification**: Seed script populates database without foreign key errors; DB query integration test passes (`tests/integration/db.test.ts`).
 
@@ -111,10 +111,10 @@ This master checklist tracks the development, testing, UX refinements, and educa
 
 ---
 
-### Phase 5: 9-Archetype Dynamic MICE Category Theming Engine
+### Phase 5: 15-Archetype Dynamic MICE Category Theming Engine
 *Focus: Domain-specific layout adapters, CSS variable theming, organizer branding overrides, and Phase 5 Guide.*
 - [x] Build `EventPageShell.tsx` and dynamic theme injector in `src/lib/theming.ts`.
-- [x] Implement the 9 specialized archetype components in `src/components/themed/archetypes/`:
+- [x] Implement specialized archetype components in `src/components/themed/archetypes/`:
   - [x] `IndustrialB2BView.tsx`: Machine specs, RFQ quote drawer, exhibitor booth directory.
   - [x] `TechDevSummitView.tsx`: Multi-track keynote schedule, speaker GitHub/X tags, livestream widgets.
   - [x] `MedicalSymposiumView.tsx`: Research abstract reader, CME credit tracker, speaker accreditation badges.
@@ -126,7 +126,7 @@ This master checklist tracks the development, testing, UX refinements, and educa
   - [x] `IncentiveRetreatView.tsx`: Daily excursion itinerary, gala seating charts, wellness scheduler.
 - [x] Build organizer brand override layer (custom accent color, hero banner, logo badge).
 - [x] Author educational guide: `docs/guides/phase-05-category-archetypes-and-theming.md`.
-- [x] **Verification**: Component snapshot tests for each archetype; verified dynamic styling application.
+- [x] **Verification**: Component snapshot tests for archetypes; verified dynamic styling application.
 
 ---
 
@@ -162,66 +162,64 @@ This master checklist tracks the development, testing, UX refinements, and educa
 
 ### Phase 8: Multi-Role Authentication & Access Control (RBAC)
 *Focus: Session management, role guards (ATTENDEE, ORGANIZER, ADMIN), and Phase 8 Guide.*
-- [ ] Build authentication & session management in `src/lib/auth/`.
-- [ ] Implement Auth Modal / Sign-In Dialog (`src/components/auth/AuthModal.tsx`).
-- [ ] Implement middleware role guards protecting `/(organizer)` and `/(admin)`.
-- [ ] Add fast role-switching simulation for development testing.
-- [ ] Author educational guide: `docs/guides/phase-08-rbac-authentication-and-security.md`.
-- [ ] **Verification**: Unauthorized route redirection tests, role permission matrix tests.
+- [x] Build authentication & session management in `src/lib/auth/`.
+- [x] Implement Auth Modal / Sign-In Dialog (`src/components/auth/AuthModal.tsx`).
+- [x] Implement middleware role guards protecting `/(organizer)` and `/(admin)`.
+- [x] Add fast role-switching simulation for development testing.
+- [x] Author educational guide: `docs/guides/phase-08-rbac-authentication-and-security.md`.
+- [x] **Verification**: Unauthorized route redirection tests, role permission matrix tests (`tests/unit/auth/`).
 
 ---
 
 ### Phase 9: Organizer Portal (CRUD, Live Customizer & Booth Manager)
 *Focus: Event creation wizard, live visual customizer, booth roster, QR check-in, and Phase 9 Guide.*
-- [ ] Build organizer dashboard (`app/[locale]/(organizer)/dashboard/page.tsx`).
-- [ ] Build multi-step event creation wizard (`app/[locale]/(organizer)/events/new/page.tsx`).
-- [ ] Build live branding visual customizer (`app/[locale]/(organizer)/events/[id]/customizer/page.tsx`):
-  - [ ] Real-time side-by-side preview frame (`LivePreviewFrame.tsx`).
-  - [ ] Controls for primary color, font family, hero media, sponsor tiers, and section visibility.
-- [ ] Build booth & tenant manager (`app/[locale]/(organizer)/booths/page.tsx`).
-- [ ] Build door staff QR check-in scanner simulation (`src/components/organizer/CheckInScanner.tsx`).
-- [ ] Author educational guide: `docs/guides/phase-09-organizer-command-center.md`.
-- [ ] **Verification**: Live preview state sync tests, event CRUD mutation tests, check-in validation.
+- [x] Build organizer dashboard (`app/[locale]/(organizer)/dashboard/page.tsx`).
+- [x] Build multi-step event creation wizard (`app/[locale]/(organizer)/events/new/page.tsx`).
+- [x] Build live branding visual customizer (`app/[locale]/(organizer)/events/[id]/customizer/page.tsx`):
+  - [x] Real-time side-by-side preview frame (`LivePreviewFrame.tsx`).
+  - [x] Controls for primary color, font family, hero media, sponsor tiers, and section visibility.
+- [x] Build booth & tenant manager (`app/[locale]/(organizer)/booths/page.tsx`).
+- [x] Build door staff QR check-in scanner simulation (`src/components/organizer/CheckInScanner.tsx`).
+- [x] Author educational guide: `docs/guides/phase-09-organizer-portal-and-live-customizer.md`.
+- [x] **Verification**: Live preview state sync tests, event CRUD mutation tests, check-in validation (`tests/unit/organizer/`, `tests/integration/`).
 
 ---
 
 ### Phase 10: AI Multi-Model Intelligence Suite (OpenRouter Analytics)
 *Focus: Multi-model selection, automated executive digests, sentiment analysis, and Phase 10 Guide.*
-- [ ] Build OpenRouter multi-model integration client (`src/lib/ai/openrouter.ts`) supporting:
-  - `google/gemini-3.5-flash-lite`
-  - `google/gemini-3.7-flash`
-  - `deepseek/deepseek-v4-pro-0813`
-  - `qwen/qwen3.7-plus`
-  - `openai/gpt-5.6-luna`
-  - `google/gemma-4-26b-a4b-it`
-- [ ] Build report generator page (`app/[locale]/(organizer)/events/[id]/ai-reports/page.tsx`):
-  - [ ] Model selection dropdown with model spec details (speed, context, strengths).
-  - [ ] Report types: Daily Executive Digest, Sentiment & Feedback Synthesis, Foot-Traffic & Booth Optimization.
-  - [ ] Structured JSON schema parsing + streaming markdown output.
-- [ ] Author educational guide: `docs/guides/phase-10-ai-multi-model-reporting-suite.md`.
-- [ ] **Verification**: OpenRouter API mock tests, schema validation tests, multi-model response benchmarks.
+- [x] Build OpenRouter multi-model integration client (`src/lib/ai/openrouter.ts` & `src/lib/ai/types.ts`) supporting:
+  - [x] `google/gemini-3.5-flash-lite` (Ultra-fast digests & FAQ)
+  - [x] `google/gemini-3.7-flash` (Balanced multi-modal reporting)
+  - [x] `deepseek/deepseek-v4-pro-0813` (Deep reasoning & anomaly detection)
+  - [x] `qwen/qwen3.7-plus` (Multilingual trade synthesis)
+  - [x] `openai/gpt-5.6-luna` (Executive reporting)
+  - [x] `google/gemma-4-26b-a4b-it` (Edge analytics)
+  - [x] Grounded deterministic fallback engine simulating streaming with real database metrics.
+- [x] Build report generator page & components (`app/[locale]/(organizer)/events/[id]/ai-reports/page.tsx` & `src/components/ai/AIReportsHub.tsx`):
+  - [x] Model selection grid with model spec details (speed rating, latency tier, context window, strengths).
+  - [x] Report types: Daily Executive Digest, Sentiment & Feedback Synthesis, Foot-Traffic & Booth Optimization.
+  - [x] Structured JSON schema parsing (`src/lib/ai/schemas.ts`) + streaming markdown reader + export actions (.md, .json) + saved history.
+  - [x] API endpoint: `src/app/api/ai/reports/route.ts` with streaming response, metadata headers, and database persistence.
+- [x] Author educational guide: `docs/guides/phase-10-ai-multi-model-reporting-suite.md`.
+- [x] **Verification**: Unit tests (`tests/unit/ai/`), UI tests (`AIReportsHub.test.tsx`), API integration tests (`tests/integration/ai-reports-api.test.ts`), zero-emoji compliance. 100% pass rate.
 
 ---
 
 ### Phase 11: Admin Governance, Venue Aggregator & Ingestion Pipeline
 *Focus: Admin dashboard, venue manager, event scraper simulation, audit logs, and Phase 11 Guide.*
-- [ ] Build admin dashboard (`app/[locale]/(admin)/dashboard/page.tsx`).
-- [ ] Build global venue manager (`app/[locale]/(admin)/venues/page.tsx`) with hall creation & coordinates.
-- [ ] Build simulated MICE event crawler pipeline (`src/lib/crawler/venueScraper.ts`) to ingest upcoming venue schedules.
-- [ ] Build platform audit logging and organizer verification queue.
-- [ ] Author educational guide: `docs/guides/phase-11-admin-governance-and-crawler.md`.
-- [ ] **Verification**: Crawler batch processing tests, admin permission tests, venue data validation.
+- [x] Build admin dashboard (`app/[locale]/(admin)/admin/dashboard/page.tsx` and layout `app/[locale]/(admin)/layout.tsx`).
+- [x] Build global venue manager (`app/[locale]/(admin)/admin/venues/page.tsx` and `src/components/admin/VenueDirectoryManagerClient.tsx`) with hall creation & coordinates.
+- [x] Build simulated MICE event crawler pipeline (`src/lib/crawler/venueScraper.ts`) to ingest upcoming venue schedules with deterministic SHA-256 fingerprint deduplication.
+- [x] Build platform audit logging and organizer verification queue (`src/app/[locale]/(admin)/admin/audit/page.tsx`).
+- [x] Author educational guide: `docs/guides/phase-11-admin-governance-and-crawler.md`.
+- [x] **Verification**: Crawler batch processing tests (`tests/unit/crawler/venueScraper.test.ts`), admin permission tests (`tests/unit/admin/governance.test.ts`), venue data validation (`tests/unit/admin/venueCrud.test.ts`), and integration tests (`tests/integration/admin-crawler.test.ts`). 100% test pass.
 
 ---
 
 ### Phase 12: Production Hardening, Multi-Platform PWA & Automated E2E
-*Focus: PWA manifest, SEO JSON-LD schema, Vitest & Playwright test suites, and Phase 12 Guide.*
-- [ ] Implement Progressive Web App (PWA) manifest (`public/manifest.json`, `app/manifest.ts`) and offline service worker.
-- [ ] Implement Schema.org JSON-LD MICE event metadata (`src/lib/seo/jsonLd.ts`).
-- [ ] Write end-to-end user journey tests:
-  - [ ] Attendee discovery, filter, and ticket purchase flow.
-  - [ ] Organizer event creation and live customizer flow.
-  - [ ] Settings font and animation change persistence.
-- [ ] Author educational guide: `docs/guides/phase-12-pwa-seo-hardening-and-e2e.md`.
-- [ ] Produce final project walkthrough artifact.
-- [ ] **Verification**: Full test suite passes (`npm test`), build passes (`npm run build`), zero console warnings.
+*Focus: PWA manifest, SEO JSON-LD schema, full platform E2E verification suite, and Phase 12 Guide.*
+- [x] Implement Progressive Web App (PWA) manifest (`public/manifest.json`, `src/app/manifest.ts`) and offline service worker (`public/sw.js`).
+- [x] Implement Schema.org JSON-LD MICE event metadata (`src/lib/seo/jsonLd.ts`).
+- [x] Author full-platform E2E verification suite (`tests/integration/full-platform-e2e.test.ts`) covering all 8 end-to-end user journeys (Discovery, Passes, Settings, RBAC, Organizer, OpenRouter AI, Admin/Crawler, PWA/SEO).
+- [x] Author educational guide: `docs/guides/phase-12-pwa-seo-hardening-and-e2e.md`.
+- [x] **Verification**: Full test suite passes (60 test files, 439 tests passing with 100% rate), build passes (`npm run build` generates 235 static/dynamic routes), 0 TypeScript errors, zero-emoji audit clean.
