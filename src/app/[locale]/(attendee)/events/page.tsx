@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 import Link from 'next/link';
+import { cookies, headers } from 'next/headers';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import {
   Sparkles,
@@ -32,6 +33,15 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
   const rawSearchParams = await searchParams;
   setRequestLocale(locale);
 
+  const headerList = await headers();
+  const cookieStore = await cookies();
+  const geoHeaderRegion = headerList.get('x-xpo-region');
+  const cookieRegion = cookieStore.get('xpo_region')?.value;
+
+  const defaultRegion = (cookieRegion || geoHeaderRegion || 'id').toLowerCase();
+  const explicitRegion = typeof rawSearchParams.region === 'string' ? rawSearchParams.region : undefined;
+  const activeRegion = explicitRegion || defaultRegion;
+
   // Fetch events from database
   let eventsList: DiscoveryEvent[] = FALLBACK_EVENTS;
 
@@ -60,7 +70,7 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
 
   const initialFilters = {
     keyword: typeof rawSearchParams.q === 'string' ? rawSearchParams.q : '',
-    region: typeof rawSearchParams.region === 'string' ? rawSearchParams.region : 'all',
+    region: activeRegion,
     city: typeof rawSearchParams.city === 'string' ? rawSearchParams.city : 'all',
     archetype: typeof rawSearchParams.archetype === 'string' ? rawSearchParams.archetype : 'all',
     format: typeof rawSearchParams.format === 'string' ? rawSearchParams.format : 'all',

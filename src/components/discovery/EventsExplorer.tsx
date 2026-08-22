@@ -49,6 +49,14 @@ export function EventsExplorer({
   const [sortBy, setSortBy] = React.useState<string>(() => searchParams.get('sortBy') || 'date_asc');
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = React.useState(false);
 
+  // Synchronize region filter if URL searchParams change externally (e.g. via RegionSwitcher)
+  React.useEffect(() => {
+    const regionParam = searchParams.get('region');
+    if (regionParam && regionParam !== filters.region) {
+      setFilters((prev) => ({ ...prev, region: regionParam }));
+    }
+  }, [searchParams, filters.region]);
+
   // Sync state to URL without reloading the page
   const updateUrlQuery = React.useCallback(
     (newFilters: FilterState, newSort: string) => {
@@ -72,6 +80,9 @@ export function EventsExplorer({
 
   const handleFilterChange = (newFilters: FilterState) => {
     setFilters(newFilters);
+    if (newFilters.region !== 'all' && typeof document !== 'undefined') {
+      document.cookie = `xpo_region=${newFilters.region}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
+    }
     updateUrlQuery(newFilters, sortBy);
   };
 

@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import Link from 'next/link';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import {
   Building2,
   MapPin,
@@ -29,10 +30,39 @@ export interface VenueDirectoryExplorerProps {
 export function VenueDirectoryExplorer({
   venues,
   locale,
-  initialRegion = 'all',
+  initialRegion = 'id',
 }: VenueDirectoryExplorerProps) {
-  const [selectedRegion, setSelectedRegion] = React.useState<string>(initialRegion);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const [selectedRegion, setSelectedRegion] = React.useState<string>(() => {
+    return searchParams.get('region') || initialRegion || 'id';
+  });
   const [searchQuery, setSearchQuery] = React.useState<string>('');
+
+  // Synchronize when URL searchParams change externally (e.g. via RegionSwitcher)
+  React.useEffect(() => {
+    const reg = searchParams.get('region');
+    if (reg && reg !== selectedRegion) {
+      setSelectedRegion(reg);
+    }
+  }, [searchParams, selectedRegion]);
+
+  const handleSelectRegion = (region: string) => {
+    setSelectedRegion(region);
+    if (region !== 'all' && typeof document !== 'undefined') {
+      document.cookie = `xpo_region=${region}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
+    }
+    const params = new URLSearchParams(searchParams.toString());
+    if (region !== 'all') {
+      params.set('region', region);
+    } else {
+      params.delete('region');
+    }
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+  };
 
   const indonesianCount = venues.filter(
     (v) => (v.region?.code || v.regionId || '').toLowerCase() === 'id'
@@ -76,7 +106,7 @@ export function VenueDirectoryExplorer({
         <div className="flex flex-wrap items-center gap-1.5 bg-muted/50 p-1 rounded-xl border border-border/60">
           <button
             type="button"
-            onClick={() => setSelectedRegion('all')}
+            onClick={() => handleSelectRegion('all')}
             className={cn(
               'px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5',
               selectedRegion === 'all'
@@ -93,7 +123,7 @@ export function VenueDirectoryExplorer({
 
           <button
             type="button"
-            onClick={() => setSelectedRegion('id')}
+            onClick={() => handleSelectRegion('id')}
             className={cn(
               'px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5',
               selectedRegion === 'id'
@@ -109,7 +139,7 @@ export function VenueDirectoryExplorer({
 
           <button
             type="button"
-            onClick={() => setSelectedRegion('jp')}
+            onClick={() => handleSelectRegion('jp')}
             className={cn(
               'px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5',
               selectedRegion === 'jp'
@@ -125,7 +155,7 @@ export function VenueDirectoryExplorer({
 
           <button
             type="button"
-            onClick={() => setSelectedRegion('global')}
+            onClick={() => handleSelectRegion('global')}
             className={cn(
               'px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5',
               selectedRegion === 'global'
@@ -170,7 +200,7 @@ export function VenueDirectoryExplorer({
             variant="outline"
             size="sm"
             onClick={() => {
-              setSelectedRegion('all');
+              handleSelectRegion('all');
               setSearchQuery('');
             }}
             className="text-xs"

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { cookies, headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { db } from '@/lib/db';
 import { FALLBACK_EVENTS } from '@/lib/discovery/fallbackData';
@@ -27,7 +28,19 @@ export async function generateMetadata({ params }: CalendarPageProps) {
 
 export default async function CalendarPage({ params, searchParams }: CalendarPageProps) {
   const { locale } = await params;
-  const { region = 'id', archetype } = await searchParams;
+  const headerList = await headers();
+  const cookieStore = await cookies();
+  const geoHeaderRegion = headerList.get('x-xpo-region');
+  const cookieRegion = cookieStore.get('xpo_region')?.value;
+  const rawSearchParams = await searchParams;
+
+  const region = (
+    rawSearchParams.region ||
+    cookieRegion ||
+    geoHeaderRegion ||
+    'id'
+  ).toLowerCase();
+  const archetype = rawSearchParams.archetype;
 
   let events: any[] = [];
   try {
@@ -48,7 +61,20 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
       orderBy: { startDate: 'asc' },
     });
   } catch {
-    events = FALLBACK_EVENTS;
+    events = [];
+  }
+
+  if (!events || events.length === 0) {
+    events = FALLBACK_EVENTS.filter((e) => {
+      const code = (e.region?.code || e.regionId || '').toLowerCase();
+      if (region === 'id') return code === 'id';
+      if (region === 'jp') return code === 'jp';
+      if (region === 'global') return code === 'global' || code === 'gl';
+      return true;
+    });
+    if (archetype) {
+      events = events.filter((e) => e.archetype === archetype);
+    }
   }
 
   const mappedEvents: EventSummary[] = events.map((e: any) => ({

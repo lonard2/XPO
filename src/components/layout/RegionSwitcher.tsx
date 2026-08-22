@@ -129,7 +129,17 @@ export function RegionSwitcher({
     if (typeof document !== "undefined") {
       document.cookie = `xpo_region=${regionCode}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
     }
-    router.push(`/${currentLocale}?region=${regionCode}`);
+    
+    // Preserve current route path (e.g. /events, /venues, /calendar) while updating ?region=
+    let targetPath = pathname || `/${currentLocale}`;
+    if (targetPath.includes('/region/')) {
+      targetPath = `/${currentLocale}/region/${regionCode}`;
+      router.push(targetPath);
+    } else {
+      const currentParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams();
+      currentParams.set('region', regionCode);
+      router.push(`${targetPath}?${currentParams.toString()}`);
+    }
     router.refresh?.();
   };
 

@@ -92,9 +92,9 @@ export function Footer({ locale = "en" }: { locale?: string }) {
       <div className="container border-t border-border/60 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-muted-foreground gap-4">
         <p>© 2026 XPO MICE Digital Ecosystem. All rights reserved.</p>
         <p className="flex items-center gap-2">
-          <span>Clean Vector Craft (No Emojis)</span>
+          <span>Enterprise MICE Infrastructure</span>
           <span>•</span>
-          <span>Adaptive Multi-Device UX</span>
+          <span>Accessible Multi-Device Architecture</span>
         </p>
       </div>
     </footer>

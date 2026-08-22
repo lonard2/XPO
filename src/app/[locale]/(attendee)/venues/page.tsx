@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { cookies, headers } from 'next/headers';
 import { setRequestLocale } from 'next-intl/server';
 import {
   Building2,
@@ -22,6 +23,7 @@ import { type VenueSummary } from '@/types/discovery';
 
 export interface VenuesPageProps {
   params: Promise<{ locale: string }>;
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 export async function generateMetadata({ params }: VenuesPageProps) {
@@ -32,9 +34,19 @@ export async function generateMetadata({ params }: VenuesPageProps) {
   };
 }
 
-export default async function VenuesPage({ params }: VenuesPageProps) {
+export default async function VenuesPage({ params, searchParams }: VenuesPageProps) {
   const { locale } = await params;
+  const rawSearchParams = searchParams ? await searchParams : undefined;
   setRequestLocale(locale);
+
+  const headerList = await headers();
+  const cookieStore = await cookies();
+  const geoHeaderRegion = headerList.get('x-xpo-region');
+  const cookieRegion = cookieStore.get('xpo_region')?.value;
+
+  const defaultRegion = (cookieRegion || geoHeaderRegion || 'id').toLowerCase();
+  const explicitRegion = typeof rawSearchParams?.region === 'string' ? rawSearchParams.region : undefined;
+  const activeRegion = explicitRegion || defaultRegion;
 
   let venuesList: VenueSummary[] = FALLBACK_VENUES;
 
@@ -92,7 +104,7 @@ export default async function VenuesPage({ params }: VenuesPageProps) {
 
       {/* Interactive Venue Directory Explorer with Region Filters & Live Search */}
       <section className="container px-4">
-        <VenueDirectoryExplorer venues={venuesList} locale={locale} />
+        <VenueDirectoryExplorer venues={venuesList} locale={locale} initialRegion={activeRegion} />
       </section>
     </div>
   );
