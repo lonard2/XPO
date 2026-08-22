@@ -35,6 +35,17 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
+    const cookieHeader = request.headers.get("cookie") || "";
+    const roleMatch = cookieHeader.match(/xpo_role=([^;]+)/);
+    const userRole = roleMatch ? decodeURIComponent(roleMatch[1]) : request.headers.get("x-xpo-user-role");
+
+    if (userRole === "ATTENDEE") {
+      return NextResponse.json(
+        { success: false, error: "Forbidden: Attendee role is not authorized to manage booths. Switch to Organizer or Admin persona." },
+        { status: 403 }
+      );
+    }
+
     const body = await request.json();
     const {
       eventId,
@@ -78,6 +89,17 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
+    const cookieHeader = request.headers.get("cookie") || "";
+    const roleMatch = cookieHeader.match(/xpo_role=([^;]+)/);
+    const userRole = roleMatch ? decodeURIComponent(roleMatch[1]) : request.headers.get("x-xpo-user-role");
+
+    if (userRole === "ATTENDEE") {
+      return NextResponse.json(
+        { success: false, error: "Forbidden: Attendee role is not authorized to update booths. Switch to Organizer or Admin persona." },
+        { status: 403 }
+      );
+    }
+
     const body = await request.json();
     const { id, companyName, boothNumber, hallName, industry, websiteUrl, description } = body;
 

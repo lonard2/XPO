@@ -302,19 +302,19 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
       {/* SCANNER STATS BAR */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <Card className="p-3 border-border bg-card text-center">
-          <div className="text-[10px] uppercase font-semibold text-muted-foreground">Scans Processed</div>
+          <div className="text-[10px] uppercase font-semibold text-muted-foreground">{tOrg("scannerScansProcessed") || "Scans Processed"}</div>
           <div className="text-xl font-bold text-foreground mt-0.5">{scanHistory.length}</div>
         </Card>
         <Card className="p-3 border-border bg-card text-center">
-          <div className="text-[10px] uppercase font-semibold text-muted-foreground">Entries Granted</div>
+          <div className="text-[10px] uppercase font-semibold text-muted-foreground">{tOrg("scannerEntriesGranted") || "Entries Granted"}</div>
           <div className="text-xl font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">{validScansCount}</div>
         </Card>
         <Card className="p-3 border-border bg-card text-center">
-          <div className="text-[10px] uppercase font-semibold text-muted-foreground">Double Scans Blocked</div>
+          <div className="text-[10px] uppercase font-semibold text-muted-foreground">{tOrg("scannerDoubleBlocked") || "Double Scans Blocked"}</div>
           <div className="text-xl font-bold text-amber-500 mt-0.5">{doubleScansCount}</div>
         </Card>
         <Card className="p-3 border-border bg-card text-center">
-          <div className="text-[10px] uppercase font-semibold text-muted-foreground">Invalid / Fraud Blocked</div>
+          <div className="text-[10px] uppercase font-semibold text-muted-foreground">{tOrg("scannerFraudBlocked") || "Invalid / Fraud Blocked"}</div>
           <div className="text-xl font-bold text-rose-500 mt-0.5">{invalidScansCount}</div>
         </Card>
       </div>
@@ -358,19 +358,19 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-8 px-2 text-xs gap-1.5"
+                className="h-8 px-2 text-xs gap-1.5 cursor-pointer"
                 onClick={() => setSoundEnabled(!soundEnabled)}
                 aria-label="Toggle audio feedback"
               >
                 {soundEnabled ? (
                   <>
                     <Volume2 className="h-4 w-4 text-emerald-500" />
-                    <span className="hidden sm:inline">Audio On</span>
+                    <span className="hidden sm:inline">{tOrg("scannerAudioOn") || "Audio On"}</span>
                   </>
                 ) : (
                   <>
                     <VolumeX className="h-4 w-4 text-muted-foreground" />
-                    <span className="hidden sm:inline">Audio Off</span>
+                    <span className="hidden sm:inline">{tOrg("scannerAudioOff") || "Audio Off"}</span>
                   </>
                 )}
               </Button>
@@ -395,7 +395,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
 
                   <QrCode className="h-16 w-16 text-primary/80 animate-pulse" />
                   <span className="text-[11px] font-mono text-slate-300 mt-2 text-center">
-                    Align Delegate QR Pass in Target
+                    {tOrg("scannerAlignTarget") || "Align Delegate QR Pass in Target"}
                   </span>
                 </div>
 
@@ -403,9 +403,9 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                 <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-[10px] font-mono text-slate-400">
                   <div className="flex items-center gap-1.5">
                     <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
-                    <span>Optical Engine Active • 60 FPS</span>
+                    <span>{tOrg("scannerOpticalActive") || "Optical Engine Active • 60 FPS"}</span>
                   </div>
-                  <span>HMAC-SHA256 Guard</span>
+                  <span>{tOrg("scannerHmacGuard") || "HMAC-SHA256 Guard"}</span>
                 </div>
               </div>
             )}
@@ -414,20 +414,20 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
             {inputMode === "manual" && (
               <form onSubmit={handleManualSubmit} className="space-y-3 pt-2">
                 <Input
-                  label="Pass Hash or Booking Code"
-                  placeholder="e.g. XPO-PASS-BK1234-A8F4E290..."
+                  label={tOrg("scannerManualLabel") || "Pass Hash or Booking Code"}
+                  placeholder={tOrg("scannerManualPlaceholder") || "e.g. XPO-PASS-BK1234-A8F4E290..."}
                   value={manualHash}
                   onChange={(e) => setManualHash(e.target.value)}
-                  helperText="Paste canonical QR code hash or signed payload string."
+                  helperText={tOrg("scannerManualHelper") || "Paste canonical QR code hash or signed payload string."}
                 />
                 <Button
                   type="submit"
                   variant="primary"
-                  className="w-full gap-2 text-xs"
+                  className="w-full gap-2 text-xs cursor-pointer"
                   disabled={isVerifying || !manualHash.trim()}
                 >
                   <Search className="h-4 w-4" />
-                  <span>{isVerifying ? "Verifying..." : "Validate & Check-In Pass"}</span>
+                  <span>{isVerifying ? (tOrg("scannerVerifyingBtn") || "Verifying...") : (tOrg("scannerValidateBtn") || "Validate & Check-In Pass")}</span>
                 </Button>
               </form>
             )}
@@ -435,7 +435,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
             {/* QUICK TEST SIMULATOR BUTTONS */}
             <div className="pt-3 border-t border-border space-y-2">
               <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground block">
-                Quick Test Scenarios (Instant Simulation):
+                {tOrg("scannerQuickTest") || "Quick Test Scenarios (Instant Simulation):"}
               </span>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 <Button
@@ -444,9 +444,9 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   size="sm"
                   onClick={simulateValidStandardPass}
                   disabled={isVerifying}
-                  className="text-[11px] h-8 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10"
+                  className="text-[11px] h-8 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10 cursor-pointer"
                 >
-                  Valid Pass
+                  {tOrg("scannerValidPass") || "Valid Pass"}
                 </Button>
 
                 <Button
@@ -455,9 +455,9 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   size="sm"
                   onClick={simulateValidVipPass}
                   disabled={isVerifying}
-                  className="text-[11px] h-8 border-primary/30 text-primary hover:bg-primary/10"
+                  className="text-[11px] h-8 border-primary/30 text-primary hover:bg-primary/10 cursor-pointer"
                 >
-                  VIP Delegate
+                  {tOrg("scannerVipPass") || "VIP Delegate"}
                 </Button>
 
                 <Button
@@ -466,9 +466,9 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   size="sm"
                   onClick={simulateDoubleScan}
                   disabled={isVerifying}
-                  className="text-[11px] h-8 border-amber-500/30 text-amber-600 dark:text-amber-400 hover:bg-amber-500/10"
+                  className="text-[11px] h-8 border-amber-500/30 text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 cursor-pointer"
                 >
-                  Double Scan
+                  {tOrg("scannerDoubleScan") || "Double Scan"}
                 </Button>
 
                 <Button
@@ -477,9 +477,9 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   size="sm"
                   onClick={simulateTamperedSignature}
                   disabled={isVerifying}
-                  className="text-[11px] h-8 border-rose-500/30 text-rose-600 dark:text-rose-400 hover:bg-rose-500/10"
+                  className="text-[11px] h-8 border-rose-500/30 text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 cursor-pointer"
                 >
-                  Fraud / Tamper
+                  {tOrg("scannerFraudTamper") || "Fraud / Tamper"}
                 </Button>
               </div>
             </div>
@@ -521,10 +521,10 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   <div>
                     <h3 className="text-base font-bold text-foreground">
                       {lastResult.status === "CHECKED_IN"
-                        ? "Gate Entry Granted"
+                        ? (tOrg("scannerEntryGranted") || "Gate Entry Granted")
                         : lastResult.status === "DOUBLE_SCAN"
-                        ? "Double Scan Warning"
-                        : "Pass Rejected / Invalid"}
+                        ? (tOrg("scannerDoubleWarning") || "Double Scan Warning")
+                        : (tOrg("scannerPassRejected") || "Pass Rejected / Invalid")}
                     </h3>
                     <p className="text-xs text-muted-foreground">{lastResult.message}</p>
                   </div>
@@ -548,20 +548,20 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
               {lastResult.attendee && (
                 <div className="p-3 bg-card rounded-xl border border-border/80 space-y-2 text-xs">
                   <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Attendee:</span>
+                    <span className="text-muted-foreground">{tOrg("scannerAttendee") || "Attendee:"}</span>
                     <span className="font-bold text-foreground">{lastResult.attendee.name}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Email:</span>
+                    <span className="text-muted-foreground">{tOrg("scannerEmail") || "Email:"}</span>
                     <span className="font-mono text-foreground">{lastResult.attendee.email}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Ticket Tier:</span>
+                    <span className="text-muted-foreground">{tOrg("scannerTicketTier") || "Ticket Tier:"}</span>
                     <span className="font-semibold text-primary">{lastResult.ticketTier?.name}</span>
                   </div>
                   {lastResult.checkedInAt && (
                     <div className="flex items-center justify-between pt-1 border-t border-border/60 text-[11px]">
-                      <span className="text-muted-foreground">Check-in Timestamp:</span>
+                      <span className="text-muted-foreground">{tOrg("scannerCheckInTime") || "Check-in Timestamp:"}</span>
                       <span className="font-mono text-foreground">
                         {new Date(lastResult.checkedInAt).toLocaleTimeString()}
                       </span>
@@ -574,7 +574,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
               {lastResult.perks && lastResult.perks.length > 0 && (
                 <div className="space-y-1.5">
                   <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider block">
-                    Perks & Treats Unlocked:
+                    {tOrg("scannerPerksUnlocked") || "Perks & Treats Unlocked:"}
                   </span>
                   <div className="space-y-1">
                     {lastResult.perks.map((p) => (
@@ -593,9 +593,9 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
           ) : (
             <Card className="p-8 border-border bg-card text-center space-y-3">
               <QrCode className="h-10 w-10 text-muted-foreground mx-auto animate-pulse" />
-              <h3 className="text-sm font-bold text-foreground">Ready to Scan Passes</h3>
+              <h3 className="text-sm font-bold text-foreground">{tOrg("scannerReadyTitle") || "Ready to Scan Passes"}</h3>
               <p className="text-xs text-muted-foreground max-w-xs mx-auto">
-                Scan attendee tickets using the camera stream simulator or click quick test scenarios.
+                {tOrg("scannerReadyDesc") || "Scan attendee tickets using the camera stream simulator or click quick test scenarios."}
               </p>
             </Card>
           )}
@@ -605,7 +605,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
             <div className="flex items-center justify-between">
               <h4 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
                 <Clock className="h-3.5 w-3.5 text-primary" />
-                <span>Recent Scan Audit Stream</span>
+                <span>{tOrg("scannerRecentLogs") || "Recent Scan Audit Stream"}</span>
               </h4>
               <span className="text-[10px] text-muted-foreground font-mono">
                 {scanHistory.length} logs
@@ -644,7 +644,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
 
               {scanHistory.length === 0 && (
                 <div className="text-center py-4 text-xs text-muted-foreground">
-                  No scan events recorded in this session.
+                  {tOrg("scannerNoLogs") || "No scan events recorded in this session."}
                 </div>
               )}
             </div>

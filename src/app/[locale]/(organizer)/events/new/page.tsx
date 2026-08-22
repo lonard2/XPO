@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useRouter, useParams } from "next/navigation";
+import Link from "next/link";
 import {
   PlusCircle,
   ArrowRight,
@@ -18,12 +19,15 @@ import {
   Plus,
   Compass,
   AlertCircle,
+  ShieldCheck,
+  UserCheck,
 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Input } from "@/components/ui/Input";
 import { useTranslations } from "next-intl";
+import { useAuth } from "@/lib/auth/session";
 import { ARCHETYPE_DEFAULTS, ARCHETYPE_METADATA, MiceArchetype, getArchetypeTokens } from "@/lib/theming";
 import { cn } from "@/lib/utils";
 
@@ -58,6 +62,7 @@ export default function NewEventWizardPage() {
   const router = useRouter();
   const params = useParams();
   const locale = (params?.locale as string) || "en";
+  const { role, switchRole } = useAuth();
 
   let tOrg: any = (k: string) => k;
   let tCom: any = (k: string) => k;
@@ -317,6 +322,11 @@ export default function NewEventWizardPage() {
 
   // Submit and launch event
   const handleSubmitEvent = async () => {
+    if (role === "ATTENDEE") {
+      setErrorMessage(tOrg("wizardRbacBlocked") || "Attendee accounts are restricted from launching events. Please switch to an Organizer or Admin role to proceed.");
+      return;
+    }
+
     setIsSubmitting(true);
     setErrorMessage("");
 
@@ -364,6 +374,43 @@ export default function NewEventWizardPage() {
       setIsSubmitting(false);
     }
   };
+
+  // RBAC Access Barrier for Attendee
+  if (role === "ATTENDEE") {
+    return (
+      <div className="space-y-6 max-w-2xl mx-auto py-12 text-center animate-fade-in">
+        <div className="p-8 bg-card border border-border rounded-2xl shadow-sm space-y-5">
+          <div className="h-16 w-16 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 mx-auto flex items-center justify-center">
+            <ShieldCheck className="h-8 w-8" />
+          </div>
+          <div className="space-y-2">
+            <Badge variant="warning" size="sm">{tOrg("rbacRequiredTitle") || "Organizer Access Required"}</Badge>
+            <h2 className="text-xl font-bold text-foreground">
+              {tOrg("wizardTitle") || "Create & Launch MICE Exhibition"}
+            </h2>
+            <p className="text-xs text-muted-foreground max-w-md mx-auto">
+              {tOrg("wizardRbacBlocked") || "Attendee accounts are restricted from launching events. Please switch to an Organizer or Admin role to proceed."}
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-4 border-t border-border">
+            <Button
+              variant="primary"
+              onClick={() => switchRole("ORGANIZER")}
+              className="w-full sm:w-auto gap-2 bg-amber-600 hover:bg-amber-700 text-white cursor-pointer"
+            >
+              <UserCheck className="h-4 w-4" />
+              <span>{tOrg("switchToOrganizer") || "Switch to Organizer Persona"}</span>
+            </Button>
+            <Link href={`/${locale}`}>
+              <Button variant="outline" className="w-full sm:w-auto cursor-pointer">
+                {tCom("backToHome") || "Back to Discovery"}
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8 max-w-5xl mx-auto animate-fade-in">
@@ -438,12 +485,12 @@ export default function NewEventWizardPage() {
           <Card className="p-6 border-border bg-card space-y-4">
             <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
               <Info className="h-4 w-4 text-primary" />
-              <span>Event Details & Scale</span>
+              <span>{tOrg("wizardDetailsTitle") || "Event Details & Scale"}</span>
             </h3>
 
             <div className="space-y-4">
               <Input
-                label="Event Title"
+                label={tOrg("wizardEventTitle") || "Event Title"}
                 placeholder="e.g. Indonesia Green Energy & Battery Expo"
                 value={title}
                 onChange={(e) => handleTitleChange(e.target.value)}
@@ -452,16 +499,16 @@ export default function NewEventWizardPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Input
-                  label="URL Slug"
+                  label={tOrg("wizardSlug") || "URL Slug"}
                   placeholder="event-slug-identifier"
                   value={slug}
                   onChange={(e) => setSlug(e.target.value)}
-                  helperText="Unique public URL path for attendee exploration."
+                  helperText={tOrg("wizardSlugHelper") || "Unique public URL path for attendee exploration."}
                   required
                 />
                 <Input
-                  label="Tagline / Hero Subtitle"
-                  placeholder="Short tagline summary"
+                  label={tOrg("wizardTagline") || "Tagline / Hero Subtitle"}
+                  placeholder={tOrg("wizardTaglinePlaceholder") || "Short tagline summary"}
                   value={tagline}
                   onChange={(e) => setTagline(e.target.value)}
                 />
@@ -469,46 +516,46 @@ export default function NewEventWizardPage() {
 
               <div>
                 <label className="block text-xs font-semibold text-foreground mb-1.5">
-                  Executive Description
+                  {tOrg("wizardDescription") || "Executive Description"}
                 </label>
                 <textarea
                   rows={3}
                   className="w-full rounded-md border border-input bg-background px-3 py-2 text-xs ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Provide comprehensive details about the scheduled convention..."
+                  placeholder={tOrg("wizardDescPlaceholder") || "Provide comprehensive details about the scheduled convention..."}
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                 <div>
                   <label className="block text-xs font-semibold text-foreground mb-1.5">
-                    Event Format
+                    {tOrg("wizardFormat") || "Event Format"}
                   </label>
                   <select
                     className="w-full rounded-md border border-input bg-background px-3 py-2 text-xs"
                     value={format}
                     onChange={(e) => setFormat(e.target.value)}
                   >
-                    <option value="IN_PERSON">In-Person Only</option>
-                    <option value="HYBRID">Hybrid (In-Person + Live Stream)</option>
-                    <option value="VIRTUAL">Virtual Convention</option>
+                    <option value="IN_PERSON">{tOrg("wizardFormatInPerson") || "In-Person Only"}</option>
+                    <option value="HYBRID">{tOrg("wizardFormatHybrid") || "Hybrid (In-Person + Live Stream)"}</option>
+                    <option value="VIRTUAL">{tOrg("wizardFormatVirtual") || "Virtual Convention"}</option>
                   </select>
                 </div>
 
                 <div>
                   <label className="block text-xs font-semibold text-foreground mb-1.5">
-                    Event Scale
+                    {tOrg("wizardScale") || "Event Scale"}
                   </label>
                   <select
                     className="w-full rounded-md border border-input bg-background px-3 py-2 text-xs"
                     value={scale}
                     onChange={(e) => setScale(e.target.value)}
                   >
-                    <option value="GLOBAL_MEGA">Global Mega Exposition (20,000+)</option>
-                    <option value="LARGE">Large Convention (5,000 - 20,000)</option>
-                    <option value="MEDIUM">Medium Industry Summit (1,000 - 5,000)</option>
-                    <option value="EXECUTIVE">Executive / VIP Symposium (&lt; 1,000)</option>
+                    <option value="GLOBAL_MEGA">{tOrg("wizardScaleGlobalMega") || "Global Mega Exposition (20,000+)"}</option>
+                    <option value="LARGE">{tOrg("wizardScaleLarge") || "Large Convention (5,000 - 20,000)"}</option>
+                    <option value="MEDIUM">{tOrg("wizardScaleMedium") || "Medium Industry Summit (1,000 - 5,000)"}</option>
+                    <option value="EXECUTIVE">{tOrg("wizardScaleExecutive") || "Executive / VIP Symposium (< 1,000)"}</option>
                   </select>
                 </div>
               </div>
@@ -519,10 +566,10 @@ export default function NewEventWizardPage() {
           <div className="space-y-3">
             <div>
               <h3 className="text-sm font-bold text-foreground">
-                Select MICE Category Archetype
+                {tOrg("wizardArchetypeSelect") || "Select MICE Category Archetype"}
               </h3>
               <p className="text-xs text-muted-foreground">
-                Each archetype automatically tailors UI tokens, custom badges, and specialized domain layouts.
+                {tOrg("wizardArchetypeSubtitle") || "Each archetype automatically tailors UI tokens, custom badges, and specialized domain layouts."}
               </p>
             </div>
 
@@ -531,6 +578,9 @@ export default function NewEventWizardPage() {
                 const meta = ARCHETYPE_METADATA[arch];
                 const tokens = ARCHETYPE_DEFAULTS[arch];
                 const isSelected = archetype === arch;
+
+                const displayName = tArch(`${arch}.title`) || tokens.displayName;
+                const desc = tArch(`${arch}.description`) || meta?.description || tokens.tagline;
 
                 return (
                   <div
@@ -546,10 +596,10 @@ export default function NewEventWizardPage() {
                     <div className="space-y-1.5">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-bold text-foreground">
-                          {tokens.displayName}
+                          {displayName}
                         </span>
                         {isSelected ? (
-                          <Badge variant="archetype" size="sm">Selected</Badge>
+                          <Badge variant="archetype" size="sm">{tCom("selected") || "Selected"}</Badge>
                         ) : (
                           <div
                             className="h-3.5 w-3.5 rounded-full border border-border"
@@ -558,7 +608,7 @@ export default function NewEventWizardPage() {
                         )}
                       </div>
                       <p className="text-[11px] text-muted-foreground line-clamp-2">
-                        {meta?.description || tokens.tagline}
+                        {desc}
                       </p>
                     </div>
 
@@ -567,7 +617,7 @@ export default function NewEventWizardPage() {
                         className="h-2 w-2 rounded-full"
                         style={{ backgroundColor: tokens.accent }}
                       />
-                      <span>Industry: {meta?.industry?.split(",")[0] || "MICE"}</span>
+                      <span>{tCom("category") || "Category"}: {displayName}</span>
                     </div>
                   </div>
                 );
@@ -583,7 +633,7 @@ export default function NewEventWizardPage() {
           <Card className="p-6 border-border bg-card space-y-4">
             <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
               <Building2 className="h-4 w-4 text-primary" />
-              <span>Location, Regional Hub & Halls</span>
+              <span>{tOrg("wizardVenueHalls") || "Hosting Venue & Hall Allocation"}</span>
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -611,7 +661,7 @@ export default function NewEventWizardPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
               <div>
                 <label className="block text-xs font-semibold text-foreground mb-1.5">
-                  Select Exhibition Venue
+                  {tOrg("wizardSelectVenue") || "Select Exhibition Venue"}
                 </label>
                 <select
                   className="w-full rounded-md border border-input bg-background px-3 py-2 text-xs"
@@ -634,7 +684,7 @@ export default function NewEventWizardPage() {
 
               <div>
                 <label className="block text-xs font-semibold text-foreground mb-1.5">
-                  Select Primary Exhibition Hall
+                  {tOrg("wizardSelectHall") || "Select Primary Exhibition Hall"}
                 </label>
                 <select
                   className="w-full rounded-md border border-input bg-background px-3 py-2 text-xs"
@@ -652,14 +702,14 @@ export default function NewEventWizardPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-border/60">
               <Input
-                label="Start Date"
+                label={tOrg("wizardStartDate") || "Opening Date"}
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
                 required
               />
               <Input
-                label="End Date"
+                label={tOrg("wizardEndDate") || "Closing Date"}
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
@@ -675,14 +725,14 @@ export default function NewEventWizardPage() {
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-bold text-foreground">Configure Ticket Pass Tiers</h3>
+              <h3 className="text-sm font-bold text-foreground">{tOrg("wizardTiersTitle") || "Ticket Pass Tiers & Capacities"}</h3>
               <p className="text-xs text-muted-foreground">
-                Define pass pricing, capacities, and perks unlocked upon QR validation.
+                {tOrg("wizardTiersSubtitle") || "Define pass pricing, capacities, and perks unlocked upon QR validation."}
               </p>
             </div>
-            <Button size="sm" variant="outline" onClick={handleAddTier} className="text-xs gap-1.5">
+            <Button size="sm" variant="outline" onClick={handleAddTier} className="text-xs gap-1.5 cursor-pointer">
               <Plus className="h-3.5 w-3.5" />
-              <span>Add Pass Tier</span>
+              <span>{tOrg("wizardAddTier") || "Add Ticket Pass Tier"}</span>
             </Button>
           </div>
 
@@ -690,7 +740,7 @@ export default function NewEventWizardPage() {
             {ticketTiers.map((tier, idx) => (
               <Card key={tier.id} className="p-5 border-border bg-card space-y-3">
                 <div className="flex items-center justify-between">
-                  <Badge variant="outline" size="sm">Tier #{idx + 1}</Badge>
+                  <Badge variant="outline" size="sm">{tOrg("wizardTierBadge", { num: idx + 1 }) || `Tier #${idx + 1}`}</Badge>
                   {ticketTiers.length > 1 && (
                     <button
                       type="button"
@@ -698,7 +748,7 @@ export default function NewEventWizardPage() {
                       className="text-xs text-destructive hover:text-destructive/80 flex items-center gap-1 cursor-pointer"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
-                      <span>Remove</span>
+                      <span>{tCom("delete") || "Remove"}</span>
                     </button>
                   )}
                 </div>
@@ -706,7 +756,7 @@ export default function NewEventWizardPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div className="sm:col-span-2">
                     <Input
-                      label="Tier Name"
+                      label={tOrg("wizardTierName") || "Pass Tier Name"}
                       placeholder="e.g. Standard Delegate Pass"
                       value={tier.name}
                       onChange={(e) => handleUpdateTier(tier.id, "name", e.target.value)}
@@ -715,7 +765,7 @@ export default function NewEventWizardPage() {
                   </div>
                   <div>
                     <Input
-                      label="Capacity"
+                      label={tOrg("wizardTierCapacity") || "Capacity (Slots)"}
                       type="number"
                       placeholder="500"
                       value={tier.capacity}
@@ -728,7 +778,7 @@ export default function NewEventWizardPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div>
                     <Input
-                      label="Price"
+                      label={tOrg("wizardTierPrice") || "Price"}
                       type="number"
                       placeholder="0"
                       value={tier.price}
@@ -737,7 +787,7 @@ export default function NewEventWizardPage() {
                   </div>
                   <div>
                     <label className="block text-xs font-semibold text-foreground mb-1.5">
-                      Currency
+                      {tOrg("wizardTierCurrency") || "Currency"}
                     </label>
                     <select
                       className="w-full rounded-md border border-input bg-background px-3 py-2 text-xs"
@@ -751,7 +801,7 @@ export default function NewEventWizardPage() {
                   </div>
                   <div className="sm:col-span-1">
                     <Input
-                      label="Perks / Benefits (comma-separated)"
+                      label={tOrg("wizardTierBenefits") || "Included Benefits (comma separated)"}
                       placeholder="Floor Access, VIP Lounge"
                       value={tier.benefits}
                       onChange={(e) => handleUpdateTier(tier.id, "benefits", e.target.value)}
@@ -770,13 +820,13 @@ export default function NewEventWizardPage() {
           <Card className="p-6 border-border bg-card space-y-4">
             <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
               <Palette className="h-4 w-4 text-primary" />
-              <span>Visual Theme & Hero Media</span>
+              <span>{tOrg("wizardBrandingTitle") || "Visual Branding & Review"}</span>
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-semibold text-foreground mb-1.5">
-                  Primary Theme Color
+                  {tOrg("wizardPrimaryColor") || "Primary Accent Color"}
                 </label>
                 <div className="flex items-center gap-2">
                   <input
@@ -795,7 +845,7 @@ export default function NewEventWizardPage() {
 
               <div>
                 <label className="block text-xs font-semibold text-foreground mb-1.5">
-                  Accent Color
+                  {tOrg("wizardAccentColor") || "Secondary Accent Color"}
                 </label>
                 <div className="flex items-center gap-2">
                   <input
@@ -814,7 +864,7 @@ export default function NewEventWizardPage() {
             </div>
 
             <Input
-              label="Hero Banner Image URL"
+              label={tOrg("wizardHeroImage") || "Hero Banner Image URL"}
               value={heroImageUrl}
               onChange={(e) => setHeroImageUrl(e.target.value)}
             />
@@ -824,21 +874,21 @@ export default function NewEventWizardPage() {
           <Card className="p-6 border-border bg-card space-y-4">
             <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-              <span>Event Specification Summary</span>
+              <span>{tOrg("wizardSummaryTitle") || "Event Specification Summary"}</span>
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
               <div className="space-y-1.5">
-                <div className="text-muted-foreground">Title & Category:</div>
+                <div className="text-muted-foreground">{tOrg("wizardSummaryTitleCat") || "Title & Category:"}</div>
                 <div className="font-bold text-foreground text-sm">{title}</div>
                 <div className="flex items-center gap-2 mt-1">
-                  <Badge variant="archetype" size="sm">{ARCHETYPE_DEFAULTS[archetype].displayName}</Badge>
+                  <Badge variant="archetype" size="sm">{tArch(`${archetype}.title`) || ARCHETYPE_DEFAULTS[archetype].displayName}</Badge>
                   <span className="text-muted-foreground uppercase">{format} • {scale}</span>
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <div className="text-muted-foreground">Hosting Venue & Dates:</div>
+                <div className="text-muted-foreground">{tOrg("wizardSummaryVenueDates") || "Hosting Venue & Dates:"}</div>
                 <div className="font-semibold text-foreground">
                   {selectedVenue?.name || "Selected Venue"}
                 </div>
@@ -850,7 +900,7 @@ export default function NewEventWizardPage() {
 
             <div className="pt-3 border-t border-border/60">
               <div className="text-xs font-semibold text-foreground mb-2">
-                Configured Pass Tiers ({ticketTiers.length})
+                {tOrg("wizardSummaryTiers", { count: ticketTiers.length }) || `Configured Pass Tiers (${ticketTiers.length})`}
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {ticketTiers.map((t) => (

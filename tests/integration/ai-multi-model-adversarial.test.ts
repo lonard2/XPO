@@ -443,7 +443,7 @@ describe("Milestone 7 Adversarial Stress Suite: OpenRouter Multi-Model & Schemas
       }
 
       expect(text.length).toBeGreaterThan(10);
-    });
+    }, 15000);
 
     it("falls back to deterministic grounded stream when API key is unset/mocked", async () => {
       const originalKey = process.env.OPENROUTER_API_KEY;

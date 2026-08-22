@@ -24,6 +24,18 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    // RBAC Authorization Check
+    const cookieHeader = request.headers.get("cookie") || "";
+    const roleMatch = cookieHeader.match(/xpo_role=([^;]+)/);
+    const userRole = roleMatch ? decodeURIComponent(roleMatch[1]) : request.headers.get("x-xpo-user-role");
+
+    if (userRole === "ATTENDEE") {
+      return NextResponse.json(
+        { success: false, error: "Forbidden: Attendee role is not authorized to create exhibitions. Switch to Organizer or Admin persona." },
+        { status: 403 }
+      );
+    }
+
     const body = await request.json();
     const {
       title,
