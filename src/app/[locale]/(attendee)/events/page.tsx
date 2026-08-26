@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { cookies, headers } from 'next/headers';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import {
-  Sparkles,
   Compass,
   ArrowLeft,
   Calendar,

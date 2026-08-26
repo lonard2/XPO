@@ -275,8 +275,13 @@ export function EventsExplorer({
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                {filteredAndSortedEvents.map((event) => (
-                  <EventCard key={event.id} event={event} locale={locale} />
+                {filteredAndSortedEvents.map((event, idx) => (
+                  <EventCard
+                    key={event.id}
+                    event={event}
+                    locale={locale}
+                    priority={idx < 3}
+                  />
                 ))}
               </div>
             )}
