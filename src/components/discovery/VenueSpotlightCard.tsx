@@ -9,11 +9,10 @@ import {
   Layers,
   Users,
   ArrowRight,
-  Sparkles,
   Globe,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
-import { Button } from '@/components/ui/Button';
+import { buttonVariants } from '@/components/ui/Button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/Card';
 import { useTranslations } from 'next-intl';
 import { type VenueSummary } from '@/types/discovery';
@@ -30,32 +29,20 @@ export function VenueSpotlightCard({
   locale,
   className,
 }: VenueSpotlightCardProps) {
-  let tReg: any = (k: string) => k;
-  let tCom: any = (k: string) => k;
-  let tVen: any = (k: string) => k;
-  let tFoot: any = (k: string) => k;
-  try {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tReg = useTranslations('regions');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tCom = useTranslations('common');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tVen = useTranslations('venues');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tFoot = useTranslations('footer');
-  } catch {
-    // Fallback if rendered outside provider in tests
-  }
+  const tReg = useTranslations('regions');
+  const tCom = useTranslations('common');
+  const tVen = useTranslations('venues');
+  const tFoot = useTranslations('footer');
 
-  const hallCount = venue.halls?.length ?? venue._count?.halls ?? 4;
-  const totalCapacity = venue.halls?.reduce((sum, h) => sum + (h.capacity || 0), 0) || 25000;
-  const totalFloorArea = venue.halls?.reduce((sum, h) => sum + (h.floorAreaSqm || 0), 0) || 30000;
+  const hallCount = venue.halls?.length ?? venue._count?.halls ?? (venue as any).hallCount ?? 0;
+  const calculatedCapacity = venue.halls?.reduce((sum, h) => sum + (h.capacity || 0), 0) || (venue as any).capacity || 0;
+  const calculatedFloorArea = venue.halls?.reduce((sum, h) => sum + (h.floorAreaSqm || 0), 0) || (venue as any).floorAreaSqm || 0;
 
   const regionCode = (venue.region?.code || venue.regionId || 'ID').toUpperCase();
+  const venueUrl = `/${locale}/venues/${venue.slug}`;
 
   return (
     <Card
-      interactive
       className={cn(
         'group relative flex flex-col justify-between overflow-hidden border-border/80 bg-card transition-all duration-300 hover:border-primary/50 hover:shadow-xl hover:-translate-y-1',
         className
@@ -78,19 +65,19 @@ export function VenueSpotlightCard({
 
         {/* Badges Over Image */}
         <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 z-10">
-          <Badge variant="default" className="text-[10px] uppercase font-bold tracking-wider shadow-sm">
-            <Globe className="h-2.5 w-2.5 mr-1 inline" />
+          <Badge variant="default" className="text-xs uppercase font-bold tracking-wider shadow-sm">
+            <Globe className="h-3 w-3 mr-1 inline" />
             {regionCode} Hub
           </Badge>
-          <Badge variant="outline" className="text-[10px] font-mono bg-background/90 backdrop-blur-xs">
+          <Badge variant="outline" className="text-xs font-mono bg-background/90 backdrop-blur-xs">
             {venue.city}
           </Badge>
         </div>
 
         <div className="absolute bottom-2.5 right-2.5 z-10">
-          <Badge variant="outline" className="text-[10px] font-semibold bg-background/90 backdrop-blur-xs">
-            <Layers className="h-3 w-3 mr-1 inline text-primary" />
-            {hallCount} {tVen('totalHalls')?.split(' ')?.[1] || 'Halls'}
+          <Badge variant="outline" className="text-xs font-semibold bg-background/90 backdrop-blur-xs">
+            <Layers className="h-3.5 w-3.5 mr-1 inline text-primary" />
+            {hallCount > 0 ? `${hallCount} Halls` : 'Multi-Hall Complex'}
           </Badge>
         </div>
       </div>
@@ -99,7 +86,10 @@ export function VenueSpotlightCard({
       <div className="flex flex-1 flex-col justify-between p-5 space-y-3">
         <CardHeader className="p-0 space-y-1">
           <h3 className="text-base font-bold text-foreground leading-snug group-hover:text-primary transition-colors line-clamp-1">
-            <Link href={`/${locale}/venues/${venue.slug}`} className="hover:underline">
+            <Link
+              href={venueUrl}
+              className="after:absolute after:inset-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+            >
               {venue.name}
             </Link>
           </h3>
@@ -112,20 +102,24 @@ export function VenueSpotlightCard({
 
         <CardContent className="p-0 space-y-3 text-xs text-muted-foreground">
           {/* Capacity and Specs Grid */}
-          <div className="grid grid-cols-2 gap-2 rounded-xl bg-muted/40 p-2.5 text-[11px]">
+          <div className="grid grid-cols-2 gap-2 rounded-xl bg-muted/40 p-2.5 text-xs">
             <div className="flex flex-col">
-              <span className="text-muted-foreground text-[10px] uppercase font-medium">{tReg('capacity') || 'Capacity'}</span>
+              <span className="text-muted-foreground text-[11px] uppercase font-medium">
+                {tReg('capacity') || 'Capacity'}
+              </span>
               <span className="font-bold text-foreground flex items-center gap-1 mt-0.5">
-                <Users className="h-3 w-3 text-primary" />
-                {totalCapacity.toLocaleString()} Pax
+                <Users className="h-3.5 w-3.5 text-primary" />
+                {calculatedCapacity > 0 ? `${calculatedCapacity.toLocaleString()} Pax` : 'Campus Scale'}
               </span>
             </div>
 
             <div className="flex flex-col">
-              <span className="text-muted-foreground text-[10px] uppercase font-medium">{tVen('grossSpace') || 'Floor Area'}</span>
+              <span className="text-muted-foreground text-[11px] uppercase font-medium">
+                {tVen('grossSpace') || 'Floor Area'}
+              </span>
               <span className="font-bold text-foreground flex items-center gap-1 mt-0.5">
-                <Layers className="h-3 w-3 text-primary" />
-                {totalFloorArea.toLocaleString()} sqm
+                <Layers className="h-3.5 w-3.5 text-primary" />
+                {calculatedFloorArea > 0 ? `${calculatedFloorArea.toLocaleString()} sqm` : 'Multi-Hall Layout'}
               </span>
             </div>
           </div>
@@ -133,27 +127,32 @@ export function VenueSpotlightCard({
           {/* Transit Info */}
           {venue.transitInfo && (
             <div className="space-y-1">
-              <div className="flex items-center gap-1 text-[11px] font-semibold text-foreground">
+              <div className="flex items-center gap-1 text-xs font-semibold text-foreground">
                 <Train className="h-3.5 w-3.5 text-primary" />
                 <span>{tCom('transit') || 'Transit & Access'}</span>
               </div>
-              <p className="text-[11px] text-muted-foreground line-clamp-2 leading-relaxed">
+              <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
                 {venue.transitInfo}
               </p>
             </div>
           )}
         </CardContent>
 
-        <CardFooter className="p-0 pt-3 border-t border-border/60 flex items-center justify-between">
-          <span className="text-[11px] font-medium text-muted-foreground">
+        <CardFooter className="p-0 pt-3 border-t border-border/60 flex items-center justify-between z-10 relative">
+          <span className="text-xs font-medium text-muted-foreground">
             {tFoot('infrastructureBadge') || 'Verified Infrastructure'}
           </span>
 
-          <Link href={`/${locale}/venues/${venue.slug}`}>
-            <Button size="sm" variant="ghost" className="gap-1 text-xs font-semibold text-primary hover:bg-primary/10 cursor-pointer">
-              <span>{tReg('viewVenue') || 'View Venue'}</span>
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Button>
+          <Link
+            href={venueUrl}
+            className={buttonVariants({
+              variant: 'ghost',
+              size: 'sm',
+              className: 'gap-1 text-xs font-semibold text-primary hover:bg-primary/10 cursor-pointer',
+            })}
+          >
+            <span>{tReg('viewVenue') || 'View Venue'}</span>
+            <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </CardFooter>
       </div>

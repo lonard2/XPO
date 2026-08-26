@@ -4,19 +4,9 @@ import { setRequestLocale, getTranslations } from 'next-intl/server';
 import {
   Building2,
   ArrowLeft,
-  MapPin,
-  Train,
-  Layers,
-  Users,
-  ArrowRight,
-  Globe,
-  Sparkles,
+  ShieldCheck,
 } from 'lucide-react';
 import { db } from '@/lib/db';
-import { Button } from '@/components/ui/Button';
-import { Badge } from '@/components/ui/Badge';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
-import { VenueSpotlightCard } from '@/components/discovery/VenueSpotlightCard';
 import { VenueDirectoryExplorer } from '@/components/discovery/VenueDirectoryExplorer';
 import { FALLBACK_VENUES } from '@/lib/discovery/fallbackData';
 import { type VenueSummary } from '@/types/discovery';
@@ -71,25 +61,29 @@ export default async function VenuesPage({ params, searchParams }: VenuesPagePro
   }
 
   return (
-    <div className="flex flex-col gap-10 pb-16">
-      {/* Breadcrumb Navigation */}
-      <div className="border-b border-border bg-muted/30 py-3">
-        <div className="container flex items-center gap-2 text-xs text-muted-foreground px-4">
-          <Link href={`/${locale}`} className="hover:text-foreground flex items-center gap-1">
-            <ArrowLeft className="h-3.5 w-3.5" />
-            <span>{tCom('explore') || 'Home'}</span>
-          </Link>
-          <span>/</span>
-          <span className="font-semibold text-foreground">{tVen('title')?.split('&')?.[0]?.trim() || 'Venue Directory'}</span>
-        </div>
-      </div>
+    <div className="flex flex-col gap-8 pb-16">
+      {/* Semantic Breadcrumb Navigation */}
+      <nav aria-label="Breadcrumb" className="border-b border-border bg-muted/30 py-3">
+        <ol className="container flex items-center gap-2 text-xs text-muted-foreground px-4">
+          <li>
+            <Link href={`/${locale}`} className="hover:text-foreground flex items-center gap-1">
+              <ArrowLeft className="h-3.5 w-3.5" />
+              <span>{tCom('explore') || 'Home'}</span>
+            </Link>
+          </li>
+          <li aria-hidden="true">/</li>
+          <li aria-current="page" className="font-semibold text-foreground">
+            {tVen('title')?.split('&')?.[0]?.trim() || 'Venue Directory'}
+          </li>
+        </ol>
+      </nav>
 
       {/* Hero Header Section */}
       <section className="container px-4">
-        <div className="rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/10 via-background to-background p-6 sm:p-10 shadow-xs">
+        <div className="rounded-3xl border border-border/80 bg-gradient-to-br from-primary/10 via-background to-background p-6 sm:p-10 shadow-xs">
           <div className="max-w-3xl space-y-3">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-semibold">
-              <Building2 className="h-3.5 w-3.5" />
+              <ShieldCheck className="h-3.5 w-3.5" />
               <span>{tFoot('infrastructureBadge') || 'Verified MICE Infrastructure'}</span>
             </div>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground">
