@@ -38,16 +38,8 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
   const { user, role, switchRole } = useAuth();
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = React.useState(false);
 
-  let tOrg: any = (k: string) => k;
-  let tCom: any = (k: string) => k;
-  try {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tOrg = useTranslations("organizer");
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tCom = useTranslations("common");
-  } catch {
-    // Fallback if rendered outside provider
-  }
+  const tOrg = useTranslations("organizer");
+  const tCom = useTranslations("common");
 
   const navItems = [
     {
@@ -138,14 +130,13 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
 
   return (
     <div className="min-h-[calc(100vh-4rem)] flex flex-col bg-muted/20">
-
       <div className="flex-1 flex flex-col lg:flex-row">
         {/* DESKTOP SIDEBAR */}
         <aside className="hidden lg:flex w-72 flex-col border-r border-border/80 bg-card/60 backdrop-blur-sm shrink-0 p-5 space-y-6">
           {/* Active Organizer Persona Card */}
-          <div className="p-3.5 rounded-xl border border-border bg-background/70 space-y-2">
+          <div className="p-3.5 rounded-xl border border-border bg-background/70 space-y-2 shadow-xs">
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 {tOrg("portalBadge") || "Management Portal"}
               </span>
               <Badge variant={getRoleBadgeVariant(role)} size="sm">
@@ -160,7 +151,7 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
                 <h4 className="text-xs font-bold text-foreground truncate">
                   {user ? user.name : (tOrg("managementHub") || "Organizer Hub")}
                 </h4>
-                <p className="text-[10px] text-muted-foreground truncate">
+                <p className="text-xs text-muted-foreground truncate">
                   {user?.organization || "XPO Ecosystem"}
                 </p>
               </div>
@@ -169,7 +160,7 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
 
           {/* Navigation Links */}
           <div className="space-y-1">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground px-2 mb-2">
+            <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground px-2 mb-2">
               {tOrg("suiteTitle") || "Organizer Suite"}
             </div>
             {navItems.map((item) => {
@@ -182,14 +173,14 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
                   className={cn(
                     "flex items-start gap-3 p-2.5 rounded-lg text-xs font-medium transition-all group",
                     isActive
-                      ? "bg-primary text-primary-foreground font-semibold shadow-sm"
+                      ? "bg-primary text-primary-foreground font-semibold shadow-xs"
                       : "text-muted-foreground hover:text-foreground hover:bg-accent/60"
                   )}
                 >
                   <Icon className={cn("h-4 w-4 mt-0.5 shrink-0", isActive ? "text-primary-foreground" : "text-primary")} />
                   <div>
                     <div className="leading-tight">{item.label}</div>
-                    <div className={cn("text-[10px] font-normal leading-tight mt-0.5", isActive ? "text-primary-foreground/80" : "text-muted-foreground")}>
+                    <div className={cn("text-xs font-normal leading-tight mt-0.5", isActive ? "text-primary-foreground/90" : "text-muted-foreground")}>
                       {item.description}
                     </div>
                   </div>
@@ -216,7 +207,8 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8"
+              className="h-8 w-8 cursor-pointer"
+              aria-label="Toggle navigation menu"
               onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
             >
               {isMobileSidebarOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
@@ -232,7 +224,7 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
 
         {/* MOBILE SIDEBAR DRAWER */}
         {isMobileSidebarOpen && (
-          <div className="lg:hidden border-b border-border bg-card p-4 space-y-3 animate-fade-in">
+          <div className="lg:hidden border-b border-border bg-card p-4 space-y-3 animate-fade-in shadow-md">
             <div className="space-y-1">
               {navItems.map((item) => {
                 const Icon = item.icon;
@@ -270,20 +262,29 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
         <div className="flex-1 flex flex-col min-w-0">
           {/* Breadcrumb Header Bar */}
           <div className="border-b border-border/70 bg-card/40 px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4">
-            <nav className="flex items-center gap-1.5 text-xs text-muted-foreground">
-              {breadcrumbs.map((crumb, idx) => (
-                <React.Fragment key={crumb.label}>
-                  {idx > 0 && <ChevronRight className="h-3 w-3 text-muted-foreground/60" />}
-                  <span className={cn(idx === breadcrumbs.length - 1 ? "font-semibold text-foreground" : "hover:text-foreground")}>
-                    {crumb.label}
-                  </span>
-                </React.Fragment>
-              ))}
+            <nav aria-label="Breadcrumbs" className="flex items-center gap-1.5 text-xs text-muted-foreground">
+              {breadcrumbs.map((crumb, idx) => {
+                const isLast = idx === breadcrumbs.length - 1;
+                return (
+                  <React.Fragment key={crumb.label}>
+                    {idx > 0 && <ChevronRight className="h-3 w-3 text-muted-foreground/60" />}
+                    {isLast ? (
+                      <span className="font-semibold text-foreground" aria-current="page">
+                        {crumb.label}
+                      </span>
+                    ) : (
+                      <Link href={crumb.href} className="hover:text-foreground transition-colors">
+                        {crumb.label}
+                      </Link>
+                    )}
+                  </React.Fragment>
+                );
+              })}
             </nav>
 
             <div className="flex items-center gap-2">
               <Link href={`/${locale}/events/new`}>
-                <Button size="sm" variant="primary" className="h-8 gap-1.5 text-xs">
+                <Button size="sm" variant="primary" className="h-8 gap-1.5 text-xs shadow-xs cursor-pointer">
                   <PlusCircle className="h-3.5 w-3.5" />
                   <span className="hidden sm:inline">{tOrg("launchNewEvent") || "Launch Event"}</span>
                 </Button>

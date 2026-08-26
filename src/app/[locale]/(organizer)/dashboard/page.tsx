@@ -18,6 +18,8 @@ import {
   ArrowUpRight,
   Clock,
   Layers,
+  Activity,
+  Zap,
 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
@@ -89,9 +91,14 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
     return acc + eventRev;
   }, 0);
 
+  // Region-aware currency mapping
+  const regionCurrency = locale === "jp" ? "JPY" : locale === "en" ? "USD" : "IDR";
+
   const totalBooths = allBooths.length;
   const occupiedBooths = allBooths.filter((b: any) => b.companyName && b.companyName.trim() !== "").length;
-  const boothOccupancy = totalBooths > 0 ? Math.round((occupiedBooths / totalBooths) * 100) : 85;
+  const boothOccupancy = totalBooths > 0 ? Math.round((occupiedBooths / totalBooths) * 100) : 0;
+
+  const currentFreshnessTime = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
   return (
     <div className="space-y-8 animate-fade-in">
@@ -99,15 +106,18 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-primary">
+            <span className="text-xs font-bold uppercase tracking-wider text-primary">
               {tOrg("portalBadge") || "Organizer Portal"}
             </span>
-            <Badge variant="archetype" size="sm">{tOrg("dashboardTitle") || "Live Operations"}</Badge>
+            <Badge variant="archetype" size="sm">
+              <Activity className="h-3 w-3 mr-1 text-emerald-500 animate-pulse" />
+              {tOrg("dashboardTitle") || "Live Operations"}
+            </Badge>
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mt-1">
             {tOrg("dashboardTitle") || "Organizer Operations Dashboard"}
           </h1>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="text-xs sm:text-sm text-muted-foreground mt-1">
             {tOrg("dashboardSubtitle") || "Monitor real-time attendee registrations, gross ticket volume, gate check-in velocity, and exhibitor booths."}
           </p>
         </div>
@@ -115,7 +125,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
         <div className="flex items-center gap-2.5 shrink-0">
           <Link href={`/${locale}/scanner`}>
             <Button variant="outline" size="sm" className="gap-1.5 h-9 text-xs cursor-pointer">
-              <QrCode className="h-4 w-4" />
+              <QrCode className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
               <span>{tOrg("doorScanner") || "Door Scanner"}</span>
             </Button>
           </Link>
@@ -129,85 +139,96 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
       </div>
 
       {/* METRIC KPI STAT CARDS */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Card 1: Total Registrations */}
-        <Card className="p-5 border-border/80 bg-card hover:border-primary/40 transition-all shadow-xs">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-muted-foreground">{tOrg("kpiTickets") || "Total Registrations"}</span>
-            <div className="h-8 w-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
-              <Users className="h-4 w-4" />
-            </div>
-          </div>
-          <div className="mt-3">
-            <div className="text-2xl font-bold text-foreground">
-              {totalRegistrations.toLocaleString()} <span className="text-xs font-normal text-muted-foreground">{tCom("attendees") || "delegates"}</span>
-            </div>
-            <div className="flex items-center gap-1 mt-1 text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
-              <TrendingUp className="h-3 w-3" />
-              <span>{tOrg("vsLastCycle") || "+18.4% vs last cycle"}</span>
-            </div>
-          </div>
-        </Card>
+      <div className="space-y-2">
+        <div className="flex items-center justify-between px-1">
+          <span className="text-xs font-medium text-muted-foreground">
+            Live Metrics • Data as of {currentFreshnessTime}
+          </span>
+          <span className="text-xs text-muted-foreground font-mono">
+            {events.length} active {events.length === 1 ? "exhibition" : "exhibitions"}
+          </span>
+        </div>
 
-        {/* Card 2: Gross Ticket Revenue */}
-        <Card className="p-5 border-border/80 bg-card hover:border-primary/40 transition-all shadow-xs">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-muted-foreground">{tOrg("kpiRevenue") || "Gross Ticket Revenue"}</span>
-            <div className="h-8 w-8 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-              <CreditCard className="h-4 w-4" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Card 1: Total Registrations */}
+          <Card className="p-5 border-border/80 bg-card hover:border-primary/40 transition-all shadow-xs">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium text-muted-foreground">{tOrg("kpiTickets") || "Total Registrations"}</span>
+              <div className="h-8 w-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+                <Users className="h-4 w-4" />
+              </div>
             </div>
-          </div>
-          <div className="mt-3">
-            <div className="text-2xl font-bold text-foreground truncate">
-              {formatCurrency(grossRevenue, "IDR", locale)}
+            <div className="mt-3">
+              <div className="text-2xl font-bold text-foreground">
+                {totalRegistrations.toLocaleString()} <span className="text-xs font-normal text-muted-foreground">{tCom("attendees") || "delegates"}</span>
+              </div>
+              <div className="flex items-center gap-1 mt-1 text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+                <TrendingUp className="h-3 w-3" />
+                <span>{totalRegistrations > 0 ? "Active ticket sales" : "Ready for registration"}</span>
+              </div>
             </div>
-            <div className="flex items-center gap-1 mt-1 text-[11px] text-muted-foreground">
-              <span>{tOrg("acrossExhibitions", { count: events.length }) || `Across ${events.length} active exhibitions`}</span>
-            </div>
-          </div>
-        </Card>
+          </Card>
 
-        {/* Card 3: Gate Check-in Velocity */}
-        <Card className="p-5 border-border/80 bg-card hover:border-primary/40 transition-all shadow-xs">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-muted-foreground">{tOrg("kpiCheckIn") || "Check-In Velocity"}</span>
-            <div className="h-8 w-8 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
-              <CheckCircle2 className="h-4 w-4" />
+          {/* Card 2: Gross Ticket Revenue */}
+          <Card className="p-5 border-border/80 bg-card hover:border-primary/40 transition-all shadow-xs">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium text-muted-foreground">{tOrg("kpiRevenue") || "Gross Ticket Revenue"}</span>
+              <div className="h-8 w-8 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                <CreditCard className="h-4 w-4" />
+              </div>
             </div>
-          </div>
-          <div className="mt-3">
-            <div className="text-2xl font-bold text-foreground">
-              {checkInRate}% <span className="text-xs font-normal text-muted-foreground">{tOrg("checkedInCount", { count: totalCheckedIn }) || `(${totalCheckedIn} checked-in)`}</span>
+            <div className="mt-3">
+              <div className="text-2xl font-bold text-foreground truncate">
+                {formatCurrency(grossRevenue, regionCurrency, locale)}
+              </div>
+              <div className="flex items-center gap-1 mt-1 text-xs text-muted-foreground">
+                <span>{tOrg("acrossExhibitions", { count: events.length }) || `Across ${events.length} active exhibitions`}</span>
+              </div>
             </div>
-            <div className="w-full bg-muted rounded-full h-1.5 mt-2 overflow-hidden">
-              <div
-                className="bg-amber-500 h-full rounded-full transition-all"
-                style={{ width: `${Math.max(checkInRate, 8)}%` }}
-              />
-            </div>
-          </div>
-        </Card>
+          </Card>
 
-        {/* Card 4: Booth Occupancy */}
-        <Card className="p-5 border-border/80 bg-card hover:border-primary/40 transition-all shadow-xs">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-muted-foreground">{tOrg("kpiOccupancy") || "Booth Occupancy Rate"}</span>
-            <div className="h-8 w-8 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center">
-              <Store className="h-4 w-4" />
+          {/* Card 3: Gate Check-in Velocity */}
+          <Card className="p-5 border-border/80 bg-card hover:border-primary/40 transition-all shadow-xs">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium text-muted-foreground">{tOrg("kpiCheckIn") || "Check-In Velocity"}</span>
+              <div className="h-8 w-8 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+                <CheckCircle2 className="h-4 w-4" />
+              </div>
             </div>
-          </div>
-          <div className="mt-3">
-            <div className="text-2xl font-bold text-foreground">
-              {boothOccupancy}% <span className="text-xs font-normal text-muted-foreground">{tOrg("boothsUnitsCount", { occupied: occupiedBooths, total: totalBooths }) || `(${occupiedBooths}/${totalBooths} units)`}</span>
+            <div className="mt-3">
+              <div className="text-2xl font-bold text-foreground">
+                {checkInRate}% <span className="text-xs font-normal text-muted-foreground">{tOrg("checkedInCount", { count: totalCheckedIn }) || `(${totalCheckedIn} checked-in)`}</span>
+              </div>
+              <div className="w-full bg-muted rounded-full h-1.5 mt-2 overflow-hidden">
+                <div
+                  className="bg-amber-500 h-full rounded-full transition-all"
+                  style={{ width: `${Math.max(checkInRate, totalRegistrations > 0 ? 4 : 0)}%` }}
+                />
+              </div>
             </div>
-            <div className="w-full bg-muted rounded-full h-1.5 mt-2 overflow-hidden">
-              <div
-                className="bg-purple-500 h-full rounded-full transition-all"
-                style={{ width: `${boothOccupancy}%` }}
-              />
+          </Card>
+
+          {/* Card 4: Booth Occupancy */}
+          <Card className="p-5 border-border/80 bg-card hover:border-primary/40 transition-all shadow-xs">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium text-muted-foreground">{tOrg("kpiOccupancy") || "Booth Occupancy Rate"}</span>
+              <div className="h-8 w-8 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center">
+                <Store className="h-4 w-4" />
+              </div>
             </div>
-          </div>
-        </Card>
+            <div className="mt-3">
+              <div className="text-2xl font-bold text-foreground">
+                {totalBooths > 0 ? `${boothOccupancy}%` : "0%"} <span className="text-xs font-normal text-muted-foreground">{tOrg("boothsUnitsCount", { occupied: occupiedBooths, total: totalBooths }) || `(${occupiedBooths}/${totalBooths} units)`}</span>
+              </div>
+              <div className="w-full bg-muted rounded-full h-1.5 mt-2 overflow-hidden">
+                <div
+                  className="bg-purple-500 h-full rounded-full transition-all"
+                  style={{ width: `${boothOccupancy}%` }}
+                />
+              </div>
+            </div>
+          </Card>
+        </div>
       </div>
 
       {/* ACTIVE EVENTS MANAGEMENT ROSTER */}
@@ -240,7 +261,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
                     <Badge variant="archetype" size="sm">
                       {tokens.displayName}
                     </Badge>
-                    <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
+                    <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                       {event.format}
                     </span>
                   </div>
@@ -270,11 +291,11 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
                   {/* Quick Stat Badges */}
                   <div className="grid grid-cols-2 gap-2 bg-muted/40 p-2.5 rounded-lg text-center text-xs">
                     <div>
-                      <div className="text-[10px] uppercase font-semibold text-muted-foreground">{tOrg("bookingsCount") || "Bookings"}</div>
+                      <div className="text-xs uppercase font-semibold text-muted-foreground">{tOrg("bookingsCount") || "Bookings"}</div>
                       <div className="text-sm font-bold text-foreground">{registrationsCount}</div>
                     </div>
                     <div>
-                      <div className="text-[10px] uppercase font-semibold text-muted-foreground">{tOrg("boothsCount") || "Floor Booths"}</div>
+                      <div className="text-xs uppercase font-semibold text-muted-foreground">{tOrg("boothsCount") || "Floor Booths"}</div>
                       <div className="text-sm font-bold text-foreground">{boothsCount}</div>
                     </div>
                   </div>
@@ -319,91 +340,98 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
       {/* RECENT CHECK-INS & BOOKINGS AUDIT FEED */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left: Recent Activity Feed */}
-        <Card className="p-5 border-border/80 bg-card space-y-4">
+        <Card className="p-5 border-border/80 bg-card space-y-4 shadow-xs">
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
               <Clock className="h-4 w-4 text-primary" />
-              <span>{tOrg("recentBookings") || "Recent Ticket Reservations & Check-Ins"}</span>
+              <span>{tOrg("recentBookings") || "Recent Delegate Check-Ins & Bookings"}</span>
             </h3>
-            <span className="text-[11px] text-muted-foreground">{tOrg("recentBookingsDesc")?.split(" ")?.[0] || "Live"}</span>
+            <span className="text-xs text-muted-foreground font-mono">{allBookings.length} entries</span>
           </div>
 
           <div className="divide-y divide-border/60">
-            {allBookings.slice(0, 6).map((booking: any) => (
-              <div key={booking.id} className="py-3 flex items-center justify-between gap-3 text-xs">
-                <div className="min-w-0">
-                  <div className="font-semibold text-foreground truncate">
-                    {booking.attendeeName}
+            {allBookings.slice(0, 6).map((booking: any) => {
+              const isAdmitted = booking.status === "CHECKED_IN";
+              return (
+                <div key={booking.id} className="py-3 flex items-center justify-between gap-3 text-xs">
+                  <div className="min-w-0">
+                    <div className="font-semibold text-foreground truncate">
+                      {booking.attendeeName}
+                    </div>
+                    <div className="text-xs text-muted-foreground truncate">
+                      {booking.event?.title} • {booking.ticketTier?.name}
+                    </div>
                   </div>
-                  <div className="text-[11px] text-muted-foreground truncate">
-                    {booking.event?.title} • {booking.ticketTier?.name}
+                  <div className="text-right shrink-0">
+                    <Badge
+                      variant={isAdmitted ? "success" : "outline"}
+                      size="sm"
+                      className="font-semibold"
+                    >
+                      {isAdmitted ? "Admitted" : "Confirmed"}
+                    </Badge>
+                    <div className="text-xs text-muted-foreground mt-0.5 font-mono">
+                      {booking.qrCodeHash?.slice(0, 16) || "PASS-REF"}...
+                    </div>
                   </div>
                 </div>
-                <div className="text-right shrink-0">
-                  <Badge
-                    variant={booking.status === "CHECKED_IN" ? "success" : "outline"}
-                    size="sm"
-                  >
-                    {booking.status}
-                  </Badge>
-                  <div className="text-[10px] text-muted-foreground mt-0.5 font-mono">
-                    {booking.qrCodeHash.slice(0, 16)}...
-                  </div>
-                </div>
+              );
+            })}
+
+            {allBookings.length === 0 && (
+              <div className="py-8 text-center text-xs text-muted-foreground">
+                No delegate check-ins recorded yet today.
               </div>
-            ))}
+            )}
           </div>
         </Card>
 
-        {/* Right: Quick Launch & Tools Overview */}
-        <Card className="p-5 border-border/80 bg-card space-y-4 flex flex-col justify-between">
+        {/* Right: Operational Status Deck */}
+        <Card className="p-5 border-border/80 bg-card space-y-4 flex flex-col justify-between shadow-xs">
           <div className="space-y-3">
             <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-amber-500" />
-              <span>{tOrg("capabilitiesPipelines") || "Organizer Capabilities & Pipelines"}</span>
+              <Zap className="h-4 w-4 text-amber-500" />
+              <span>Live Operations Shortcuts</span>
             </h3>
             <p className="text-xs text-muted-foreground">
-              {tOrg("fastAccessSubtitle") || "Fast access to high-impact organizer workflows engineered for MICE operations:"}
+              Direct access to essential on-site MICE operational workflows:
             </p>
 
             <div className="space-y-2.5 pt-2">
-              <div className="p-3 bg-muted/30 rounded-lg border border-border flex items-start gap-3">
-                <Palette className="h-4 w-4 text-primary mt-0.5 shrink-0" />
-                <div className="text-xs">
-                  <div className="font-semibold text-foreground">{tOrg("liveCustomizer") || "Real-Time Visual Customizer"}</div>
-                  <div className="text-muted-foreground text-[11px]">
-                    {tOrg("liveCustomizerDesc") || "Side-by-side preview with CSS variable tokens and desktop/tablet/mobile viewport testing."}
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-3 bg-muted/30 rounded-lg border border-border flex items-start gap-3">
+              <Link
+                href={`/${locale}/scanner`}
+                className="p-3 bg-muted/40 hover:bg-muted/80 rounded-xl border border-border/70 flex items-start gap-3 transition-colors block"
+              >
                 <QrCode className="h-4 w-4 text-emerald-500 mt-0.5 shrink-0" />
                 <div className="text-xs">
-                  <div className="font-semibold text-foreground">{tOrg("qrScanner") || "Cryptographic Door QR Scanner"}</div>
-                  <div className="text-muted-foreground text-[11px]">
-                    {tOrg("qrScannerDesc") || "HMAC-SHA256 signature verification, double-scan detection, and real-time audio/visual chimes."}
+                  <div className="font-semibold text-foreground">Door QR Check-In Scanner</div>
+                  <div className="text-muted-foreground text-xs mt-0.5">
+                    Launch optical pass camera scanner with cryptographic validation.
                   </div>
                 </div>
-              </div>
+              </Link>
 
-              <div className="p-3 bg-muted/30 rounded-lg border border-border flex items-start gap-3">
+              <Link
+                href={`/${locale}/booths`}
+                className="p-3 bg-muted/40 hover:bg-muted/80 rounded-xl border border-border/70 flex items-start gap-3 transition-colors block"
+              >
                 <Store className="h-4 w-4 text-purple-500 mt-0.5 shrink-0" />
                 <div className="text-xs">
-                  <div className="font-semibold text-foreground">{tOrg("boothManager") || "Hall & Booth Tenant Manager"}</div>
-                  <div className="text-muted-foreground text-[11px]">
-                    {tOrg("boothManagerDesc") || "Assign exhibitors to specific hall grids, track reserved lots, and export directories."}
+                  <div className="font-semibold text-foreground">Exhibitor Booth & Floor Manager</div>
+                  <div className="text-muted-foreground text-xs mt-0.5">
+                    Allocate lots, manage tenants, and import CSV booth rosters.
                   </div>
                 </div>
-              </div>
+              </Link>
             </div>
           </div>
 
-          <div className="pt-3 border-t border-border flex justify-end">
+          <div className="pt-3 border-t border-border flex items-center justify-between">
+            <span className="text-xs text-muted-foreground">Ready to launch a new exhibition?</span>
             <Link href={`/${locale}/events/new`}>
               <Button size="sm" variant="primary" className="text-xs gap-1.5 cursor-pointer">
                 <PlusCircle className="h-3.5 w-3.5" />
-                <span>{tOrg("launchNewEvent") || "Launch New Exhibition"}</span>
+                <span>{tOrg("launchNewEvent") || "Create Event"}</span>
               </Button>
             </Link>
           </div>

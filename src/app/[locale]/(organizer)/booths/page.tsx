@@ -19,6 +19,10 @@ import {
   Globe,
   Tag,
   BarChart2,
+  Upload,
+  FileSpreadsheet,
+  Trash2,
+  Check,
 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -44,20 +48,23 @@ interface BoothItem {
   };
 }
 
+interface CsvParsedRow {
+  boothNumber: string;
+  hallName: string;
+  companyName: string;
+  industry: string;
+  websiteUrl: string;
+  description: string;
+  valid: boolean;
+  error?: string;
+}
+
 export default function BoothManagerPage() {
   const params = useParams();
   const locale = (params?.locale as string) || "en";
 
-  let tOrg: any = (k: string) => k;
-  let tCom: any = (k: string) => k;
-  try {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tOrg = useTranslations("organizer");
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tCom = useTranslations("common");
-  } catch {
-    // Fallback
-  }
+  const tOrg = useTranslations("organizer");
+  const tCom = useTranslations("common");
 
   const [booths, setBooths] = React.useState<BoothItem[]>([]);
   const [events, setEvents] = React.useState<any[]>([]);
@@ -67,7 +74,7 @@ export default function BoothManagerPage() {
   const [searchQuery, setSearchQuery] = React.useState<string>("");
   const [isLoading, setIsLoading] = React.useState(true);
 
-  // Modal State
+  // Single Booth Modal State
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [editingBooth, setEditingBooth] = React.useState<BoothItem | null>(null);
   const [formEventId, setFormEventId] = React.useState("");
@@ -80,6 +87,12 @@ export default function BoothManagerPage() {
   const [formError, setFormError] = React.useState("");
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [toastMessage, setToastMessage] = React.useState("");
+
+  // CSV Bulk Import Modal State
+  const [isCsvModalOpen, setIsCsvModalOpen] = React.useState(false);
+  const [csvRawText, setCsvRawText] = React.useState("");
+  const [parsedCsvRows, setParsedCsvRows] = React.useState<CsvParsedRow[]>([]);
+  const [isImporting, setIsImporting] = React.useState(false);
 
   const fetchBoothsAndEvents = React.useCallback(async () => {
     setIsLoading(true);
@@ -329,14 +342,81 @@ export default function BoothManagerPage() {
         }
       }
 
-      setToastMessage("Booth allocation updated successfully!");
+      setToastMessage("Booth lot assignment saved successfully.");
       setIsModalOpen(false);
-      setTimeout(() => setToastMessage(""), 3000);
+      setTimeout(() => setToastMessage(""), 3500);
     } catch (err) {
       setFormError((err as Error).message);
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  // Parse CSV text into preview rows
+  const handleParseCsv = (text: string) => {
+    setCsvRawText(text);
+    if (!text.trim()) {
+      setParsedCsvRows([]);
+      return;
+    }
+
+    const lines = text.split(/\r?\n/).filter((l) => l.trim() !== "");
+    const results: CsvParsedRow[] = [];
+
+    // Check if first row is header
+    const startIndex = lines[0]?.toLowerCase().includes("booth") ? 1 : 0;
+
+    for (let i = startIndex; i < lines.length; i++) {
+      const parts = lines[i].split(",").map((p) => p.trim().replace(/^["']|["']$/g, ""));
+      const boothNumber = parts[0] || "";
+      const hallName = parts[1] || "";
+      const companyName = parts[2] || "";
+      const industry = parts[3] || "";
+      const websiteUrl = parts[4] || "";
+      const description = parts[5] || "";
+
+      const isValid = Boolean(boothNumber && hallName);
+      results.push({
+        boothNumber,
+        hallName,
+        companyName,
+        industry,
+        websiteUrl,
+        description,
+        valid: isValid,
+        error: !isValid ? "Missing booth # or hall name" : undefined,
+      });
+    }
+
+    setParsedCsvRows(results);
+  };
+
+  // Commit CSV batch
+  const handleCommitCsvImport = async () => {
+    const validRows = parsedCsvRows.filter((r) => r.valid);
+    if (validRows.length === 0) return;
+
+    setIsImporting(true);
+    const targetEventId = formEventId || (events[0]?.id || "ev-1");
+
+    const newItems: BoothItem[] = validRows.map((r, idx) => ({
+      id: `b-csv-${Date.now()}-${idx}`,
+      eventId: targetEventId,
+      boothNumber: r.boothNumber,
+      hallName: r.hallName,
+      companyName: r.companyName,
+      industry: r.industry || "General Industry",
+      websiteUrl: r.websiteUrl,
+      description: r.description,
+    }));
+
+    setBooths((prev) => [...prev, ...newItems]);
+    setIsImporting(false);
+    setIsCsvModalOpen(false);
+    setCsvRawText("");
+    setParsedCsvRows([]);
+    setToastMessage(`Successfully imported ${validRows.length} booth lots from CSV.`);
+    setTimeout(() => setToastMessage(""), 3500);
   };
 
   return (
@@ -345,7 +425,7 @@ export default function BoothManagerPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/80 pb-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-primary">
+            <span className="text-xs font-bold uppercase tracking-wider text-primary">
               {tOrg("managementHub") || "Exhibitor Operations"}
             </span>
             <Badge variant="archetype" size="sm">Hall Floor Roster</Badge>
@@ -358,12 +438,22 @@ export default function BoothManagerPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-2.5 shrink-0">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setIsCsvModalOpen(true)}
+            className="text-xs gap-1.5 h-9 cursor-pointer"
+          >
+            <Upload className="h-4 w-4 text-primary" />
+            <span>Import CSV Roster</span>
+          </Button>
+
           <Button
             variant="primary"
             size="sm"
             onClick={handleOpenCreateModal}
-            className="text-xs gap-1.5 h-9 cursor-pointer"
+            className="text-xs gap-1.5 h-9 cursor-pointer shadow-xs"
           >
             <Plus className="h-4 w-4" />
             <span>{tOrg("addBooth") || "Add Booth Lot"}</span>
@@ -373,33 +463,33 @@ export default function BoothManagerPage() {
 
       {/* TOAST MESSAGE */}
       {toastMessage && (
-        <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-lg flex items-center gap-2.5 text-xs text-emerald-600 dark:text-emerald-400 animate-fade-in">
+        <div className="p-3.5 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center gap-2.5 text-xs text-emerald-600 dark:text-emerald-400 animate-fade-in shadow-xs">
           <CheckCircle2 className="h-4 w-4 shrink-0" />
-          <span>{toastMessage}</span>
+          <span className="font-medium">{toastMessage}</span>
         </div>
       )}
 
       {/* KPI METRIC CARDS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="p-4 border-border bg-card">
+        <Card className="p-4 border-border bg-card shadow-xs">
           <div className="text-xs text-muted-foreground font-medium">{tOrg("boothsIndexed") || "Total Booths Indexed"}</div>
           <div className="text-2xl font-bold text-foreground mt-1">{totalCount}</div>
-          <div className="text-[11px] text-muted-foreground mt-0.5">{tOrg("acrossExhibitions", { count: hallsList.length }) || `Across ${hallsList.length} exhibition halls`}</div>
+          <div className="text-xs text-muted-foreground mt-0.5">{tOrg("acrossExhibitions", { count: hallsList.length }) || `Across ${hallsList.length} exhibition halls`}</div>
         </Card>
 
-        <Card className="p-4 border-border bg-card">
+        <Card className="p-4 border-border bg-card shadow-xs">
           <div className="text-xs text-muted-foreground font-medium">{tOrg("occupiedLots") || "Occupied Lots"}</div>
           <div className="text-2xl font-bold text-primary mt-1">{occupiedCount}</div>
-          <div className="text-[11px] text-emerald-600 dark:text-emerald-400 mt-0.5">{tOrg("occupiedOnly") || "Active commercial tenants"}</div>
+          <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5 font-medium">{tOrg("occupiedOnly") || "Active commercial tenants"}</div>
         </Card>
 
-        <Card className="p-4 border-border bg-card">
+        <Card className="p-4 border-border bg-card shadow-xs">
           <div className="text-xs text-muted-foreground font-medium">{tOrg("availableUnits") || "Available Units"}</div>
           <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">{availableCount}</div>
-          <div className="text-[11px] text-muted-foreground mt-0.5">{tOrg("availableOnly") || "Ready for immediate allocation"}</div>
+          <div className="text-xs text-muted-foreground mt-0.5">{tOrg("availableOnly") || "Ready for immediate allocation"}</div>
         </Card>
 
-        <Card className="p-4 border-border bg-card">
+        <Card className="p-4 border-border bg-card shadow-xs">
           <div className="text-xs text-muted-foreground font-medium">{tOrg("occupancyRate") || "Floor Occupancy Rate"}</div>
           <div className="text-2xl font-bold text-foreground mt-1">{occupancyPct}%</div>
           <div className="w-full bg-muted rounded-full h-1.5 mt-2 overflow-hidden">
@@ -412,12 +502,14 @@ export default function BoothManagerPage() {
       </div>
 
       {/* FILTER & SEARCH BAR */}
-      <div className="bg-card p-4 rounded-xl border border-border space-y-3">
+      <div className="bg-card p-4 rounded-xl border border-border shadow-xs space-y-3">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {/* Search Input */}
           <div className="relative">
             <Search className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
             <input
+              id="booth-search-input"
+              aria-label={tOrg("searchBooths") || "Search exhibitor or booth #"}
               type="text"
               placeholder={tOrg("searchBooths") || "Search exhibitor or booth #..."}
               className="w-full pl-9 pr-3 py-1.5 bg-background border border-input rounded-md text-xs focus:outline-none focus:ring-2 focus:ring-ring"
@@ -429,6 +521,8 @@ export default function BoothManagerPage() {
           {/* Hall Filter */}
           <div>
             <select
+              id="booth-hall-filter"
+              aria-label={tOrg("allHalls") || "Filter by Exhibition Hall"}
               className="w-full py-1.5 px-3 bg-background border border-input rounded-md text-xs"
               value={selectedHall}
               onChange={(e) => setSelectedHall(e.target.value)}
@@ -445,6 +539,8 @@ export default function BoothManagerPage() {
           {/* Status Filter */}
           <div>
             <select
+              id="booth-status-filter"
+              aria-label={tOrg("allStatuses") || "Filter by Occupancy Status"}
               className="w-full py-1.5 px-3 bg-background border border-input rounded-md text-xs"
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
@@ -458,6 +554,8 @@ export default function BoothManagerPage() {
           {/* Event Filter */}
           <div>
             <select
+              id="booth-event-filter"
+              aria-label={tOrg("allEvents") || "Filter by Registered Event"}
               className="w-full py-1.5 px-3 bg-background border border-input rounded-md text-xs"
               value={selectedEventId}
               onChange={(e) => setSelectedEventId(e.target.value)}
@@ -515,7 +613,7 @@ export default function BoothManagerPage() {
                   )}
 
                   {booth.description && (
-                    <p className="text-[11px] text-muted-foreground line-clamp-2 mt-1">
+                    <p className="text-xs text-muted-foreground line-clamp-2 mt-1">
                       {booth.description}
                     </p>
                   )}
@@ -534,7 +632,7 @@ export default function BoothManagerPage() {
                     <span className="truncate">{booth.websiteUrl.replace(/^https?:\/\//, "")}</span>
                   </a>
                 ) : (
-                  <span className="text-[11px] text-muted-foreground">Unassigned tenant</span>
+                  <span className="text-xs text-muted-foreground">Unassigned tenant</span>
                 )}
 
                 <Button
@@ -580,6 +678,7 @@ export default function BoothManagerPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Input
+              id="modal-booth-number"
               label="Booth Number / ID"
               placeholder="e.g. Hall A1 - B04"
               value={formBoothNumber}
@@ -587,6 +686,7 @@ export default function BoothManagerPage() {
               required
             />
             <Input
+              id="modal-hall-name"
               label="Hall Name"
               placeholder="e.g. Hall A1"
               value={formHallName}
@@ -596,6 +696,7 @@ export default function BoothManagerPage() {
           </div>
 
           <Input
+            id="modal-company-name"
             label="Exhibitor Company Name"
             placeholder="e.g. PT Nusantara Robotics (Leave blank if unassigned)"
             value={formCompanyName}
@@ -604,12 +705,14 @@ export default function BoothManagerPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Input
+              id="modal-industry"
               label="Industry Classification"
               placeholder="e.g. Industrial Automation"
               value={formIndustry}
               onChange={(e) => setFormIndustry(e.target.value)}
             />
             <Input
+              id="modal-website-url"
               label="Website URL"
               placeholder="https://company.com"
               value={formWebsiteUrl}
@@ -618,12 +721,13 @@ export default function BoothManagerPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-foreground mb-1.5">
+            <label htmlFor="modal-description" className="block text-xs font-semibold text-foreground mb-1.5">
               Booth & Product Description
             </label>
             <textarea
+              id="modal-description"
               rows={3}
-              className="w-full rounded-md border border-input bg-background px-3 py-2 text-xs"
+              className="w-full rounded-md border border-input bg-background px-3 py-2 text-xs ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               placeholder="Exhibitor product lineup, live demos, or booth location notes..."
               value={formDescription}
               onChange={(e) => setFormDescription(e.target.value)}
@@ -649,6 +753,105 @@ export default function BoothManagerPage() {
             </Button>
           </div>
         </form>
+      </Modal>
+
+      {/* CSV BATCH IMPORT MODAL */}
+      <Modal
+        isOpen={isCsvModalOpen}
+        onClose={() => setIsCsvModalOpen(false)}
+        title="Batch Import Exhibitor Booths (CSV)"
+        description="Upload or paste comma-separated booth allocations to bulk populate your exhibition hall roster."
+        size="lg"
+      >
+        <div className="space-y-4 pt-2">
+          <div>
+            <div className="flex items-center justify-between mb-1.5">
+              <label htmlFor="csv-input-textarea" className="text-xs font-semibold text-foreground">
+                Paste CSV Data (Columns: BoothNumber, HallName, CompanyName, Industry, Website, Description)
+              </label>
+              <button
+                type="button"
+                className="text-xs text-primary hover:underline"
+                onClick={() =>
+                  handleParseCsv(
+                    "BoothNumber, HallName, CompanyName, Industry, Website, Description\nHall A1 - B12, Hall A1, Apex Robotics, Automation, https://apex.io, Industrial vision systems\nHall A1 - B14, Hall A1, Synapse AI Labs, Software, https://synapse.ai, Machine learning pipelines\nHall A2 - C01, Hall A2, EcoBattery Grid, Clean Energy, https://ecobattery.org, Commercial ESS solutions"
+                  )
+                }
+              >
+                Insert Sample Data
+              </button>
+            </div>
+            <textarea
+              id="csv-input-textarea"
+              rows={4}
+              value={csvRawText}
+              onChange={(e) => handleParseCsv(e.target.value)}
+              placeholder="Hall A1 - B01, Hall A1, PT Nusantara Robotics, Industrial Automation, https://nusantara.com, Heavy arms..."
+              className="w-full font-mono rounded-md border border-input bg-background px-3 py-2 text-xs ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            />
+          </div>
+
+          {/* Validation Table */}
+          {parsedCsvRows.length > 0 && (
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-xs font-semibold text-foreground">
+                <span>Validation Preview ({parsedCsvRows.filter((r) => r.valid).length} valid of {parsedCsvRows.length} rows)</span>
+              </div>
+              <div className="max-h-48 overflow-y-auto border border-border rounded-lg text-xs">
+                <table className="w-full text-left">
+                  <thead className="bg-muted/60 text-muted-foreground font-semibold border-b border-border">
+                    <tr>
+                      <th className="p-2">Status</th>
+                      <th className="p-2">Booth #</th>
+                      <th className="p-2">Hall</th>
+                      <th className="p-2">Company</th>
+                      <th className="p-2">Industry</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border">
+                    {parsedCsvRows.map((row, idx) => (
+                      <tr key={idx} className={row.valid ? "hover:bg-muted/30" : "bg-destructive/5 text-destructive"}>
+                        <td className="p-2">
+                          {row.valid ? (
+                            <Badge variant="success" size="sm">Valid</Badge>
+                          ) : (
+                            <Badge variant="destructive" size="sm">Invalid</Badge>
+                          )}
+                        </td>
+                        <td className="p-2 font-mono">{row.boothNumber}</td>
+                        <td className="p-2">{row.hallName}</td>
+                        <td className="p-2 font-medium">{row.companyName || "—"}</td>
+                        <td className="p-2">{row.industry || "—"}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          <div className="pt-4 border-t border-border flex items-center justify-end gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setIsCsvModalOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              variant="primary"
+              size="sm"
+              disabled={isImporting || parsedCsvRows.filter((r) => r.valid).length === 0}
+              onClick={handleCommitCsvImport}
+              className="gap-1.5"
+            >
+              <Check className="h-4 w-4" />
+              <span>Import {parsedCsvRows.filter((r) => r.valid).length} Lots</span>
+            </Button>
+          </div>
+        </div>
       </Modal>
     </div>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import {
   QrCode,
   Building2,
@@ -22,13 +22,7 @@ function DoorScannerContent() {
 }
 
 export default function DoorScannerPage() {
-  let tOrg: any = (k: string) => k;
-  try {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tOrg = useTranslations("organizer");
-  } catch {
-    // Fallback
-  }
+  const tOrg = useTranslations("organizer");
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto animate-fade-in">
@@ -36,7 +30,7 @@ export default function DoorScannerPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/80 pb-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-primary">
+            <span className="text-xs font-bold uppercase tracking-wider text-primary">
               {tOrg("scannerDoorOps") || "Door Entry & Gate Operations"}
             </span>
             <Badge variant="success" size="sm">{tOrg("scannerReadyBadge") || "Gate Scanner Ready"}</Badge>
@@ -49,7 +43,7 @@ export default function DoorScannerPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2 text-xs text-muted-foreground bg-card p-2 px-3 rounded-lg border border-border">
+        <div className="flex items-center gap-2 text-xs text-muted-foreground bg-card p-2 px-3 rounded-lg border border-border shadow-xs">
           <ShieldCheck className="h-4 w-4 text-emerald-500 shrink-0" />
           <span>{tOrg("scannerTamperGuard") || "Cryptographic Pass Tamper Protection Active"}</span>
         </div>

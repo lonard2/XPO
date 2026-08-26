@@ -11,7 +11,6 @@ import {
   Sparkles,
   Volume2,
   VolumeX,
-  RotateCcw,
   ShieldCheck,
   Building2,
   Ticket,
@@ -20,6 +19,8 @@ import {
   Download,
   Clock,
   Zap,
+  RefreshCw,
+  VideoOff,
 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -62,17 +63,44 @@ interface CheckInScannerProps {
   defaultEventId?: string;
 }
 
-export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
-  let tOrg: any = (k: string) => k;
-  let tTickets: any = (k: string) => k;
-  try {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tOrg = useTranslations("organizer");
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tTickets = useTranslations("tickets");
-  } catch {
-    // Fallback
+const SCAN_STATUS_MAP: Record<
+  ScanResult["status"],
+  {
+    label: string;
+    variant: "success" | "warning" | "destructive";
+    badgeText: string;
+    icon: React.ComponentType<{ className?: string }>;
   }
+> = {
+  CHECKED_IN: {
+    label: "Gate Entry Granted",
+    variant: "success",
+    badgeText: "Admitted",
+    icon: CheckCircle2,
+  },
+  DOUBLE_SCAN: {
+    label: "Double Scan Warning",
+    variant: "warning",
+    badgeText: "Already Scanned",
+    icon: AlertTriangle,
+  },
+  INVALID: {
+    label: "Pass Rejected / Invalid",
+    variant: "destructive",
+    badgeText: "Invalid Pass",
+    icon: XCircle,
+  },
+  CANCELLED: {
+    label: "Ticket Cancelled / Void",
+    variant: "destructive",
+    badgeText: "Cancelled",
+    icon: XCircle,
+  },
+};
+
+export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
+  const tOrg = useTranslations("organizer");
+  const tTickets = useTranslations("tickets");
 
   const [inputMode, setInputMode] = React.useState<"camera" | "manual">("camera");
   const [manualHash, setManualHash] = React.useState("");
@@ -81,8 +109,70 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
   const [lastResult, setLastResult] = React.useState<ScanResult | null>(null);
   const [scanHistory, setScanHistory] = React.useState<ScanResult[]>([]);
 
-  // Simulated Camera Stream State
-  const [isCameraActive, setIsCameraActive] = React.useState(true);
+  // Camera Hardware State & Stream Ref
+  const videoRef = React.useRef<HTMLVideoElement | null>(null);
+  const [cameraActive, setCameraActive] = React.useState(false);
+  const [cameraError, setCameraError] = React.useState<string | null>(null);
+  const streamRef = React.useRef<MediaStream | null>(null);
+
+  // In-flight verification mutex
+  const isVerifyingRef = React.useRef(false);
+
+  // Start Camera Stream
+  const startCamera = React.useCallback(async () => {
+    setCameraError(null);
+    if (typeof navigator === "undefined" || !navigator.mediaDevices?.getUserMedia) {
+      setCameraError("Camera capture API is not supported on this device.");
+      return;
+    }
+
+    try {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((t) => t.stop());
+      }
+
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "environment" },
+        audio: false,
+      });
+
+      streamRef.current = stream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        await videoRef.current.play().catch(() => {});
+      }
+      setCameraActive(true);
+    } catch (err: any) {
+      setCameraActive(false);
+      if (err.name === "NotAllowedError" || err.name === "PermissionDeniedError") {
+        setCameraError("Camera access denied. Please grant camera permission or use manual code entry.");
+      } else {
+        setCameraError("Unable to initialize optical sensor on this device.");
+      }
+    }
+  }, []);
+
+  const stopCamera = React.useCallback(() => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((t) => t.stop());
+      streamRef.current = null;
+    }
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+    setCameraActive(false);
+  }, []);
+
+  React.useEffect(() => {
+    if (inputMode === "camera") {
+      startCamera();
+    } else {
+      stopCamera();
+    }
+    return () => {
+      stopCamera();
+    };
+  }, [inputMode, startCamera, stopCamera]);
 
   // Audio chime synthesis using Web Audio API
   const playSound = React.useCallback(
@@ -101,16 +191,14 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
         const now = ctx.currentTime;
 
         if (type === "success") {
-          // Pleasant high chord chime
           osc.type = "sine";
-          osc.frequency.setValueAtTime(587.33, now); // D5
-          osc.frequency.exponentialRampToValueAtTime(880, now + 0.15); // A5
+          osc.frequency.setValueAtTime(587.33, now);
+          osc.frequency.exponentialRampToValueAtTime(880, now + 0.15);
           gain.gain.setValueAtTime(0.15, now);
           gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
           osc.start(now);
           osc.stop(now + 0.35);
         } else if (type === "warning") {
-          // Double buzz
           osc.type = "triangle";
           osc.frequency.setValueAtTime(440, now);
           osc.frequency.setValueAtTime(330, now + 0.12);
@@ -119,7 +207,6 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
           osc.start(now);
           osc.stop(now + 0.3);
         } else {
-          // Low error buzz
           osc.type = "sawtooth";
           osc.frequency.setValueAtTime(180, now);
           gain.gain.setValueAtTime(0.2, now);
@@ -128,19 +215,21 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
           osc.stop(now + 0.4);
         }
       } catch {
-        // Ignore audio playback errors on restricted autoplay
+        // Ignore audio playback errors
       }
     },
     [soundEnabled]
   );
 
-  // Core verification call to /api/tickets/verify
   const verifyPassData = async (payload: {
     qrCodeHash?: string;
     payloadString?: string;
     signature?: string;
   }) => {
+    if (isVerifyingRef.current) return;
+    isVerifyingRef.current = true;
     setIsVerifying(true);
+
     try {
       const res = await fetch("/api/tickets/verify", {
         method: "POST",
@@ -152,16 +241,15 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
       });
 
       const data = await res.json();
-      const nowIso = new Date().toLocaleTimeString();
+      const nowIso = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
 
       if (res.ok && data.valid) {
         if (data.alreadyCheckedIn) {
-          // Double scan
           const result: ScanResult = {
             valid: true,
             alreadyCheckedIn: true,
             status: "DOUBLE_SCAN",
-            message: data.message || "DOUBLE_SCAN: Ticket has already been validated.",
+            message: data.message || "Pass has already been validated and admitted previously.",
             checkedInAt: data.checkedInAt,
             attendee: data.attendee,
             ticketTier: data.ticketTier,
@@ -174,12 +262,11 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
           setScanHistory((prev) => [result, ...prev.slice(0, 19)]);
           playSound("warning");
         } else {
-          // First time entry success
           const result: ScanResult = {
             valid: true,
             alreadyCheckedIn: false,
             status: "CHECKED_IN",
-            message: data.message || "DOOR_ENTRY_GRANTED: Pass validated successfully.",
+            message: data.message || "Pass verified successfully. Delegate admission granted.",
             checkedInAt: data.checkedInAt || new Date().toISOString(),
             attendee: data.attendee,
             ticketTier: data.ticketTier,
@@ -193,11 +280,10 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
           playSound("success");
         }
       } else {
-        // Invalid or fraud
         const result: ScanResult = {
           valid: false,
           status: "INVALID",
-          message: data.error || "INVALID_PASS: Signature verification failed.",
+          message: data.error || "Cryptographic HMAC signature mismatch. Pass is invalid or forged.",
           rawHash: payload.qrCodeHash || "INVALID-HASH",
           timestamp: nowIso,
         };
@@ -206,11 +292,11 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
         playSound("error");
       }
     } catch (err) {
-      const nowIso = new Date().toLocaleTimeString();
+      const nowIso = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
       const result: ScanResult = {
         valid: false,
         status: "INVALID",
-        message: (err as Error).message || "NETWORK_ERROR: Verification failed.",
+        message: (err as Error).message || "Verification network request timed out or failed.",
         rawHash: payload.qrCodeHash || "ERROR",
         timestamp: nowIso,
       };
@@ -218,6 +304,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
       setScanHistory((prev) => [result, ...prev.slice(0, 19)]);
       playSound("error");
     } finally {
+      isVerifyingRef.current = false;
       setIsVerifying(false);
     }
   };
@@ -229,7 +316,6 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
     setManualHash("");
   };
 
-  // Pre-configured Test Simulation Injectors
   const simulateValidStandardPass = () => {
     const payload = {
       bookingId: `BK-TEST-${Date.now().toString().slice(-4)}`,
@@ -287,12 +373,11 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
     const signed = generateTicketHash(payload);
     verifyPassData({
       payloadString: signed.payloadString,
-      signature: "0000000000000000000000000000000000000000000000000000000000000000", // invalid signature
+      signature: "0000000000000000000000000000000000000000000000000000000000000000",
       qrCodeHash: signed.qrCodeHash,
     });
   };
 
-  // Aggregated Scan Stats
   const validScansCount = scanHistory.filter((s) => s.valid && !s.alreadyCheckedIn).length;
   const doubleScansCount = scanHistory.filter((s) => s.alreadyCheckedIn).length;
   const invalidScansCount = scanHistory.filter((s) => !s.valid).length;
@@ -301,20 +386,20 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
     <div className="space-y-6 w-full animate-fade-in">
       {/* SCANNER STATS BAR */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <Card className="p-3 border-border bg-card text-center">
-          <div className="text-[10px] uppercase font-semibold text-muted-foreground">{tOrg("scannerScansProcessed") || "Scans Processed"}</div>
+        <Card className="p-3.5 border-border bg-card text-center shadow-xs">
+          <div className="text-xs uppercase font-semibold text-muted-foreground">{tOrg("scannerScansProcessed") || "Scans Processed"}</div>
           <div className="text-xl font-bold text-foreground mt-0.5">{scanHistory.length}</div>
         </Card>
-        <Card className="p-3 border-border bg-card text-center">
-          <div className="text-[10px] uppercase font-semibold text-muted-foreground">{tOrg("scannerEntriesGranted") || "Entries Granted"}</div>
+        <Card className="p-3.5 border-border bg-card text-center shadow-xs">
+          <div className="text-xs uppercase font-semibold text-muted-foreground">{tOrg("scannerEntriesGranted") || "Entries Granted"}</div>
           <div className="text-xl font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">{validScansCount}</div>
         </Card>
-        <Card className="p-3 border-border bg-card text-center">
-          <div className="text-[10px] uppercase font-semibold text-muted-foreground">{tOrg("scannerDoubleBlocked") || "Double Scans Blocked"}</div>
+        <Card className="p-3.5 border-border bg-card text-center shadow-xs">
+          <div className="text-xs uppercase font-semibold text-muted-foreground">{tOrg("scannerDoubleBlocked") || "Double Scans Blocked"}</div>
           <div className="text-xl font-bold text-amber-500 mt-0.5">{doubleScansCount}</div>
         </Card>
-        <Card className="p-3 border-border bg-card text-center">
-          <div className="text-[10px] uppercase font-semibold text-muted-foreground">{tOrg("scannerFraudBlocked") || "Invalid / Fraud Blocked"}</div>
+        <Card className="p-3.5 border-border bg-card text-center shadow-xs">
+          <div className="text-xs uppercase font-semibold text-muted-foreground">{tOrg("scannerFraudBlocked") || "Invalid / Fraud Blocked"}</div>
           <div className="text-xl font-bold text-rose-500 mt-0.5">{invalidScansCount}</div>
         </Card>
       </div>
@@ -322,15 +407,16 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* LEFT COLUMN: SCANNER VIEWER & CONTROLS (7 cols) */}
         <div className="lg:col-span-7 space-y-4">
-          <Card className="p-5 border-border bg-card space-y-4">
+          <Card className="p-5 border-border bg-card space-y-4 shadow-sm">
             {/* Mode Switcher & Audio Toggle */}
             <div className="flex items-center justify-between">
               <div className="flex items-center bg-muted/60 p-1 rounded-lg border border-border/60 gap-1">
                 <button
                   type="button"
+                  aria-pressed={inputMode === "camera"}
                   onClick={() => setInputMode("camera")}
                   className={cn(
-                    "px-3 py-1 rounded text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer",
+                    "px-3 py-1.5 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
                     inputMode === "camera"
                       ? "bg-card text-foreground shadow-xs"
                       : "text-muted-foreground hover:text-foreground"
@@ -342,9 +428,10 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
 
                 <button
                   type="button"
+                  aria-pressed={inputMode === "manual"}
                   onClick={() => setInputMode("manual")}
                   className={cn(
-                    "px-3 py-1 rounded text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer",
+                    "px-3 py-1.5 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
                     inputMode === "manual"
                       ? "bg-card text-foreground shadow-xs"
                       : "text-muted-foreground hover:text-foreground"
@@ -358,54 +445,104 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-8 px-2 text-xs gap-1.5 cursor-pointer"
+                className="h-8 px-2.5 text-xs gap-1.5 cursor-pointer"
                 onClick={() => setSoundEnabled(!soundEnabled)}
                 aria-label="Toggle audio feedback"
               >
                 {soundEnabled ? (
                   <>
                     <Volume2 className="h-4 w-4 text-emerald-500" />
-                    <span className="hidden sm:inline">{tOrg("scannerAudioOn") || "Audio On"}</span>
+                    <span className="hidden sm:inline">Audio On</span>
                   </>
                 ) : (
                   <>
                     <VolumeX className="h-4 w-4 text-muted-foreground" />
-                    <span className="hidden sm:inline">{tOrg("scannerAudioOff") || "Audio Off"}</span>
+                    <span className="hidden sm:inline">Audio Off</span>
                   </>
                 )}
               </Button>
             </div>
 
-            {/* CAMERA STREAM SIMULATOR HUD */}
+            {/* CAMERA STREAM VIEWER & RETICLE HUD */}
             {inputMode === "camera" && (
-              <div className="relative aspect-video sm:aspect-[16/10] bg-slate-950 rounded-xl border-2 border-slate-800 overflow-hidden flex flex-col items-center justify-center p-6 text-white shadow-inner">
-                {/* Background Grid & Matrix Simulation */}
-                <div className="absolute inset-0 bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:16px_16px] opacity-40" />
+              <div className="space-y-3">
+                <div className="relative aspect-video sm:aspect-[16/10] bg-slate-950 rounded-xl border-2 border-slate-800 overflow-hidden flex flex-col items-center justify-center p-6 text-white shadow-inner">
+                  <video
+                    ref={videoRef}
+                    playsInline
+                    muted
+                    className={cn(
+                      "absolute inset-0 w-full h-full object-cover",
+                      !cameraActive && "hidden"
+                    )}
+                  />
 
-                {/* Animated Laser Scanning Line */}
-                <div className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-[0_0_12px_#10b981] animate-[pulse_2s_infinite]" />
+                  {cameraError && (
+                    <div className="relative z-20 max-w-sm text-center p-4 bg-slate-900/90 backdrop-blur-md rounded-xl border border-rose-500/40 space-y-2.5">
+                      <VideoOff className="h-8 w-8 text-rose-400 mx-auto" />
+                      <p className="text-xs text-rose-200 leading-relaxed font-medium">
+                        {cameraError}
+                      </p>
+                      <div className="flex items-center justify-center gap-2 pt-1">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={startCamera}
+                          className="h-8 text-xs border-white/20 text-white hover:bg-white/10 gap-1.5"
+                        >
+                          <RefreshCw className="h-3 w-3" />
+                          <span>Retry Sensor</span>
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="primary"
+                          size="sm"
+                          onClick={() => setInputMode("manual")}
+                          className="h-8 text-xs"
+                        >
+                          Type Code by Keyboard
+                        </Button>
+                      </div>
+                    </div>
+                  )}
 
-                {/* Reticle Target Frame */}
-                <div className="relative z-10 w-56 h-56 sm:w-64 sm:h-64 border-2 border-dashed border-primary/60 rounded-2xl flex flex-col items-center justify-center p-4 bg-slate-900/40 backdrop-blur-[1px]">
-                  {/* Corner Reticle Markers */}
-                  <div className="absolute -top-1 -left-1 w-4 h-4 border-t-2 border-l-2 border-primary" />
-                  <div className="absolute -top-1 -right-1 w-4 h-4 border-t-2 border-r-2 border-primary" />
-                  <div className="absolute -bottom-1 -left-1 w-4 h-4 border-b-2 border-l-2 border-primary" />
-                  <div className="absolute -bottom-1 -right-1 w-4 h-4 border-b-2 border-r-2 border-primary" />
+                  {!cameraError && (
+                    <>
+                      <div
+                        aria-hidden="true"
+                        className="absolute inset-0 bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:16px_16px] opacity-40 pointer-events-none"
+                      />
 
-                  <QrCode className="h-16 w-16 text-primary/80 animate-pulse" />
-                  <span className="text-[11px] font-mono text-slate-300 mt-2 text-center">
-                    {tOrg("scannerAlignTarget") || "Align Delegate QR Pass in Target"}
-                  </span>
-                </div>
+                      <div
+                        aria-hidden="true"
+                        className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-[0_0_12px_#10b981] animate-[pulse_2s_infinite] pointer-events-none"
+                      />
 
-                {/* Live Scanner Telemetry Overlay */}
-                <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-[10px] font-mono text-slate-400">
-                  <div className="flex items-center gap-1.5">
-                    <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
-                    <span>{tOrg("scannerOpticalActive") || "Optical Engine Active • 60 FPS"}</span>
-                  </div>
-                  <span>{tOrg("scannerHmacGuard") || "HMAC-SHA256 Guard"}</span>
+                      <div
+                        aria-hidden="true"
+                        className="relative z-10 w-56 h-56 sm:w-64 sm:h-64 border-2 border-dashed border-primary/60 rounded-2xl flex flex-col items-center justify-center p-4 bg-slate-900/30 backdrop-blur-[1px] pointer-events-none"
+                      >
+                        <div className="absolute -top-1 -left-1 w-4 h-4 border-t-2 border-l-2 border-primary" />
+                        <div className="absolute -top-1 -right-1 w-4 h-4 border-t-2 border-r-2 border-primary" />
+                        <div className="absolute -bottom-1 -left-1 w-4 h-4 border-b-2 border-l-2 border-primary" />
+                        <div className="absolute -bottom-1 -right-1 w-4 h-4 border-b-2 border-r-2 border-primary" />
+
+                        <QrCode className="h-16 w-16 text-primary/80 animate-pulse" />
+                        <span className="text-xs font-mono text-slate-300 mt-2 text-center">
+                          {tOrg("scannerAlignTarget") || "Align Delegate QR Pass in Target"}
+                        </span>
+                      </div>
+
+                      <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs font-mono text-slate-400">
+                        <div className="flex items-center gap-1.5">
+                          <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
+                          <span>{cameraActive ? "Optical Feed Active" : "Optical Sensor Ready"}</span>
+                        </div>
+                        <span>{tOrg("scannerHmacGuard") || "HMAC-SHA256 Guard"}</span>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             )}
@@ -414,6 +551,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
             {inputMode === "manual" && (
               <form onSubmit={handleManualSubmit} className="space-y-3 pt-2">
                 <Input
+                  id="scanner-manual-input"
                   label={tOrg("scannerManualLabel") || "Pass Hash or Booking Code"}
                   placeholder={tOrg("scannerManualPlaceholder") || "e.g. XPO-PASS-BK1234-A8F4E290..."}
                   value={manualHash}
@@ -432,10 +570,10 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
               </form>
             )}
 
-            {/* QUICK TEST SIMULATOR BUTTONS */}
+            {/* QUICK TEST SIMULATOR SANDBOX */}
             <div className="pt-3 border-t border-border space-y-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground block">
-                {tOrg("scannerQuickTest") || "Quick Test Scenarios (Instant Simulation):"}
+              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">
+                {tOrg("scannerQuickTest") || "Quick Test Scenarios (Staff Sandbox):"}
               </span>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 <Button
@@ -444,7 +582,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   size="sm"
                   onClick={simulateValidStandardPass}
                   disabled={isVerifying}
-                  className="text-[11px] h-8 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10 cursor-pointer"
+                  className="text-xs h-8 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10 cursor-pointer"
                 >
                   {tOrg("scannerValidPass") || "Valid Pass"}
                 </Button>
@@ -455,7 +593,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   size="sm"
                   onClick={simulateValidVipPass}
                   disabled={isVerifying}
-                  className="text-[11px] h-8 border-primary/30 text-primary hover:bg-primary/10 cursor-pointer"
+                  className="text-xs h-8 border-primary/30 text-primary hover:bg-primary/10 cursor-pointer"
                 >
                   {tOrg("scannerVipPass") || "VIP Delegate"}
                 </Button>
@@ -466,7 +604,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   size="sm"
                   onClick={simulateDoubleScan}
                   disabled={isVerifying}
-                  className="text-[11px] h-8 border-amber-500/30 text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 cursor-pointer"
+                  className="text-xs h-8 border-amber-500/30 text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 cursor-pointer"
                 >
                   {tOrg("scannerDoubleScan") || "Double Scan"}
                 </Button>
@@ -477,7 +615,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   size="sm"
                   onClick={simulateTamperedSignature}
                   disabled={isVerifying}
-                  className="text-[11px] h-8 border-rose-500/30 text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 cursor-pointer"
+                  className="text-xs h-8 border-rose-500/30 text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 cursor-pointer"
                 >
                   {tOrg("scannerFraudTamper") || "Fraud / Tamper"}
                 </Button>
@@ -513,34 +651,25 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                       <AlertTriangle className="h-6 w-6" />
                     </div>
                   )}
-                  {lastResult.status === "INVALID" && (
+                  {(lastResult.status === "INVALID" || lastResult.status === "CANCELLED") && (
                     <div className="h-10 w-10 rounded-full bg-rose-500 text-white flex items-center justify-center shadow-sm">
                       <XCircle className="h-6 w-6" />
                     </div>
                   )}
                   <div>
                     <h3 className="text-base font-bold text-foreground">
-                      {lastResult.status === "CHECKED_IN"
-                        ? (tOrg("scannerEntryGranted") || "Gate Entry Granted")
-                        : lastResult.status === "DOUBLE_SCAN"
-                        ? (tOrg("scannerDoubleWarning") || "Double Scan Warning")
-                        : (tOrg("scannerPassRejected") || "Pass Rejected / Invalid")}
+                      {SCAN_STATUS_MAP[lastResult.status]?.label || lastResult.status}
                     </h3>
                     <p className="text-xs text-muted-foreground">{lastResult.message}</p>
                   </div>
                 </div>
 
                 <Badge
-                  variant={
-                    lastResult.status === "CHECKED_IN"
-                      ? "success"
-                      : lastResult.status === "DOUBLE_SCAN"
-                      ? "warning"
-                      : "destructive"
-                  }
+                  variant={SCAN_STATUS_MAP[lastResult.status]?.variant || "outline"}
                   size="sm"
+                  className="font-semibold text-xs px-2.5 py-0.5"
                 >
-                  {lastResult.status}
+                  {SCAN_STATUS_MAP[lastResult.status]?.badgeText || lastResult.status}
                 </Badge>
               </div>
 
@@ -560,7 +689,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                     <span className="font-semibold text-primary">{lastResult.ticketTier?.name}</span>
                   </div>
                   {lastResult.checkedInAt && (
-                    <div className="flex items-center justify-between pt-1 border-t border-border/60 text-[11px]">
+                    <div className="flex items-center justify-between pt-1 border-t border-border/60 text-xs">
                       <span className="text-muted-foreground">{tOrg("scannerCheckInTime") || "Check-in Timestamp:"}</span>
                       <span className="font-mono text-foreground">
                         {new Date(lastResult.checkedInAt).toLocaleTimeString()}
@@ -573,7 +702,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
               {/* Eligible Unlocked Perks */}
               {lastResult.perks && lastResult.perks.length > 0 && (
                 <div className="space-y-1.5">
-                  <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider block">
+                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
                     {tOrg("scannerPerksUnlocked") || "Perks & Treats Unlocked:"}
                   </span>
                   <div className="space-y-1">
@@ -591,23 +720,23 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
               )}
             </Card>
           ) : (
-            <Card className="p-8 border-border bg-card text-center space-y-3">
+            <Card className="p-8 border-border bg-card text-center space-y-3 shadow-xs">
               <QrCode className="h-10 w-10 text-muted-foreground mx-auto animate-pulse" />
               <h3 className="text-sm font-bold text-foreground">{tOrg("scannerReadyTitle") || "Ready to Scan Passes"}</h3>
               <p className="text-xs text-muted-foreground max-w-xs mx-auto">
-                {tOrg("scannerReadyDesc") || "Scan attendee tickets using the camera stream simulator or click quick test scenarios."}
+                {tOrg("scannerReadyDesc") || "Align attendee ticket QR codes within the camera target or type codes in manual mode."}
               </p>
             </Card>
           )}
 
           {/* RECENT SCAN LOG STREAM */}
-          <Card className="p-4 border-border bg-card space-y-3">
+          <Card className="p-4 border-border bg-card space-y-3 shadow-xs">
             <div className="flex items-center justify-between">
               <h4 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
                 <Clock className="h-3.5 w-3.5 text-primary" />
                 <span>{tOrg("scannerRecentLogs") || "Recent Scan Audit Stream"}</span>
               </h4>
-              <span className="text-[10px] text-muted-foreground font-mono">
+              <span className="text-xs text-muted-foreground font-mono">
                 {scanHistory.length} logs
               </span>
             </div>
@@ -615,29 +744,23 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
             <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
               {scanHistory.map((scan, idx) => (
                 <div
-                  key={`${scan.timestamp}-${idx}`}
+                  key={`${scan.timestamp}-${scan.rawHash || idx}-${idx}`}
                   className="p-2.5 bg-muted/40 rounded-lg border border-border/60 text-xs flex items-center justify-between gap-2"
                 >
                   <div className="min-w-0">
                     <div className="font-semibold text-foreground truncate">
                       {scan.attendee?.name || scan.rawHash?.slice(0, 16) || "Scan Record"}
                     </div>
-                    <div className="text-[10px] text-muted-foreground">
+                    <div className="text-xs text-muted-foreground">
                       {scan.timestamp} • {scan.ticketTier?.name || "General Pass"}
                     </div>
                   </div>
                   <Badge
-                    variant={
-                      scan.status === "CHECKED_IN"
-                        ? "success"
-                        : scan.status === "DOUBLE_SCAN"
-                        ? "warning"
-                        : "destructive"
-                    }
+                    variant={SCAN_STATUS_MAP[scan.status]?.variant || "outline"}
                     size="sm"
-                    className="text-[9px] px-1.5"
+                    className="text-xs font-semibold px-2 py-0.5 shrink-0"
                   >
-                    {scan.status}
+                    {SCAN_STATUS_MAP[scan.status]?.badgeText || scan.status}
                   </Badge>
                 </div>
               ))}

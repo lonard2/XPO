@@ -21,6 +21,8 @@ import {
   AlertCircle,
   ShieldCheck,
   UserCheck,
+  RotateCcw,
+  Save,
 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -30,6 +32,8 @@ import { useTranslations } from "next-intl";
 import { useAuth } from "@/lib/auth/session";
 import { ARCHETYPE_DEFAULTS, ARCHETYPE_METADATA, MiceArchetype, getArchetypeTokens } from "@/lib/theming";
 import { cn } from "@/lib/utils";
+
+const DRAFT_STORAGE_KEY = "xpo_wizard_draft_v1";
 
 const ALL_ARCHETYPES: MiceArchetype[] = [
   "INDUSTRIAL_B2B",
@@ -64,23 +68,14 @@ export default function NewEventWizardPage() {
   const locale = (params?.locale as string) || "en";
   const { role, switchRole } = useAuth();
 
-  let tOrg: any = (k: string) => k;
-  let tCom: any = (k: string) => k;
-  let tArch: any = (k: string) => k;
-  try {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tOrg = useTranslations("organizer");
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tCom = useTranslations("common");
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tArch = useTranslations("archetypes");
-  } catch {
-    // Fallback
-  }
+  const tOrg = useTranslations("organizer");
+  const tCom = useTranslations("common");
+  const tArch = useTranslations("archetypes");
 
   const [currentStep, setCurrentStep] = React.useState<number>(1);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
+  const [hasDraftAvailable, setHasDraftAvailable] = React.useState(false);
 
   // Step 1: General Info & Archetype
   const [title, setTitle] = React.useState("Indonesia Green Energy & Battery Expo 2027");
@@ -128,7 +123,7 @@ export default function NewEventWizardPage() {
     "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1600&q=80"
   );
 
-  // Fetch Venues on Mount
+  // Fetch Venues on Mount & Check Draft
   React.useEffect(() => {
     async function loadVenues() {
       try {
@@ -148,7 +143,7 @@ export default function NewEventWizardPage() {
         // Fallback below
       }
 
-      // Fallback Seeded Venues if API not initialized yet
+      // Fallback Seeded Venues
       const defaultVenues = [
         {
           id: "v-jiexpo",
@@ -198,7 +193,102 @@ export default function NewEventWizardPage() {
     }
 
     loadVenues();
+
+    // Check LocalStorage Draft
+    try {
+      const saved = localStorage.getItem(DRAFT_STORAGE_KEY);
+      if (saved) {
+        setHasDraftAvailable(true);
+      }
+    } catch {
+      // Ignore storage errors
+    }
   }, []);
+
+  // Save Draft to LocalStorage whenever critical fields change
+  React.useEffect(() => {
+    try {
+      const draftData = {
+        title,
+        slug,
+        tagline,
+        description,
+        archetype,
+        format,
+        scale,
+        regionId,
+        venueId,
+        venueHallId,
+        startDate,
+        endDate,
+        ticketTiers,
+        primaryColor,
+        accentColor,
+        heroImageUrl,
+        currentStep,
+        savedAt: new Date().toISOString(),
+      };
+      localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draftData));
+    } catch {
+      // Storage full or disabled
+    }
+  }, [
+    title,
+    slug,
+    tagline,
+    description,
+    archetype,
+    format,
+    scale,
+    regionId,
+    venueId,
+    venueHallId,
+    startDate,
+    endDate,
+    ticketTiers,
+    primaryColor,
+    accentColor,
+    heroImageUrl,
+    currentStep,
+  ]);
+
+  // Restore Draft
+  const handleRestoreDraft = () => {
+    try {
+      const saved = localStorage.getItem(DRAFT_STORAGE_KEY);
+      if (!saved) return;
+      const d = JSON.parse(saved);
+      if (d.title) setTitle(d.title);
+      if (d.slug) setSlug(d.slug);
+      if (d.tagline) setTagline(d.tagline);
+      if (d.description) setDescription(d.description);
+      if (d.archetype) setArchetype(d.archetype);
+      if (d.format) setFormat(d.format);
+      if (d.scale) setScale(d.scale);
+      if (d.regionId) setRegionId(d.regionId);
+      if (d.venueId) setVenueId(d.venueId);
+      if (d.venueHallId) setVenueHallId(d.venueHallId);
+      if (d.startDate) setStartDate(d.startDate);
+      if (d.endDate) setEndDate(d.endDate);
+      if (d.ticketTiers && Array.isArray(d.ticketTiers)) setTicketTiers(d.ticketTiers);
+      if (d.primaryColor) setPrimaryColor(d.primaryColor);
+      if (d.accentColor) setAccentColor(d.accentColor);
+      if (d.heroImageUrl) setHeroImageUrl(d.heroImageUrl);
+      if (d.currentStep) setCurrentStep(d.currentStep);
+      setHasDraftAvailable(false);
+    } catch {
+      // Error restoring
+    }
+  };
+
+  const handleDiscardDraft = () => {
+    try {
+      localStorage.removeItem(DRAFT_STORAGE_KEY);
+      setHasDraftAvailable(false);
+    } catch {
+      // Ignore
+    }
+  };
 
   // Update Archetype default colors when archetype changes
   const handleArchetypeSelect = (arch: MiceArchetype) => {
@@ -367,6 +457,13 @@ export default function NewEventWizardPage() {
         throw new Error(data.error || "Failed to create event");
       }
 
+      // Clear LocalStorage Draft upon successful creation
+      try {
+        localStorage.removeItem(DRAFT_STORAGE_KEY);
+      } catch {
+        // Ignore
+      }
+
       // Redirect to live visual customizer for the created event
       router.push(`/${locale}/events/${data.event.id}/customizer`);
     } catch (err) {
@@ -417,7 +514,7 @@ export default function NewEventWizardPage() {
       {/* Wizard Header */}
       <div>
         <div className="flex items-center gap-2">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-primary">
+          <span className="text-xs font-bold uppercase tracking-wider text-primary">
             {tOrg("wizardHeader") || "Event Launch Wizard"}
           </span>
           <Badge variant="outline" size="sm">{tOrg("wizardStepOf", { current: currentStep, total: 4 }) || `Step ${currentStep} of 4`}</Badge>
@@ -430,8 +527,39 @@ export default function NewEventWizardPage() {
         </p>
       </div>
 
+      {/* DRAFT RESTORATION ALERT */}
+      {hasDraftAvailable && (
+        <div className="p-4 bg-primary/10 border border-primary/30 rounded-xl flex items-center justify-between gap-3 text-xs animate-fade-in shadow-xs">
+          <div className="flex items-center gap-2.5">
+            <Save className="h-4 w-4 text-primary shrink-0" />
+            <span>
+              <strong>Unsaved Event Draft Detected.</strong> Would you like to resume your previous event configuration?
+            </span>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <Button
+              size="sm"
+              variant="primary"
+              onClick={handleRestoreDraft}
+              className="h-8 text-xs gap-1.5 cursor-pointer"
+            >
+              <RotateCcw className="h-3 w-3" />
+              <span>Resume Draft</span>
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={handleDiscardDraft}
+              className="h-8 text-xs text-muted-foreground hover:text-foreground cursor-pointer"
+            >
+              Discard
+            </Button>
+          </div>
+        </div>
+      )}
+
       {/* STEP PROGRESS TRACKER BAR */}
-      <div className="grid grid-cols-4 gap-2 border-b border-border/80 pb-4">
+      <nav aria-label="Wizard Steps" className="grid grid-cols-4 gap-2 border-b border-border/80 pb-4">
         {[
           { step: 1, label: tOrg("wizardStep1") || "General & Archetype", icon: Info },
           { step: 2, label: tOrg("wizardStep2") || "Venue & Halls", icon: Building2 },
@@ -441,11 +569,23 @@ export default function NewEventWizardPage() {
           const Icon = s.icon;
           const isCompleted = currentStep > s.step;
           const isCurrent = currentStep === s.step;
+          const canClick = s.step < currentStep;
+
           return (
-            <div
+            <button
               key={s.step}
+              type="button"
+              disabled={!canClick && !isCurrent}
+              onClick={() => {
+                if (canClick) {
+                  setErrorMessage("");
+                  setCurrentStep(s.step);
+                }
+              }}
+              aria-current={isCurrent ? "step" : undefined}
               className={cn(
-                "flex items-center gap-2 p-2 rounded-lg text-xs transition-colors",
+                "flex items-center gap-2 p-2 rounded-lg text-xs transition-colors text-left focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
+                canClick ? "cursor-pointer hover:bg-muted/60" : "cursor-default",
                 isCurrent
                   ? "bg-primary/10 text-primary font-semibold border border-primary/30"
                   : isCompleted
@@ -466,10 +606,10 @@ export default function NewEventWizardPage() {
                 {isCompleted ? <CheckCircle2 className="h-4 w-4" /> : s.step}
               </div>
               <span className="hidden sm:inline truncate">{s.label}</span>
-            </div>
+            </button>
           );
         })}
-      </div>
+      </nav>
 
       {/* ERROR ALERT */}
       {errorMessage && (
@@ -482,7 +622,7 @@ export default function NewEventWizardPage() {
       {/* STEP 1: General Info & Category Archetype */}
       {currentStep === 1 && (
         <div className="space-y-6">
-          <Card className="p-6 border-border bg-card space-y-4">
+          <Card className="p-6 border-border bg-card space-y-4 shadow-sm">
             <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
               <Info className="h-4 w-4 text-primary" />
               <span>{tOrg("wizardDetailsTitle") || "Event Details & Scale"}</span>
@@ -490,6 +630,7 @@ export default function NewEventWizardPage() {
 
             <div className="space-y-4">
               <Input
+                id="wizard-event-title"
                 label={tOrg("wizardEventTitle") || "Event Title"}
                 placeholder="e.g. Indonesia Green Energy & Battery Expo"
                 value={title}
@@ -498,15 +639,22 @@ export default function NewEventWizardPage() {
               />
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <Input
+                    id="wizard-slug"
+                    label={tOrg("wizardSlug") || "URL Slug"}
+                    placeholder="event-slug-identifier"
+                    value={slug}
+                    onChange={(e) => setSlug(e.target.value)}
+                    helperText={tOrg("wizardSlugHelper") || "Unique public URL path for attendee exploration."}
+                    required
+                  />
+                  <span className="text-xs text-muted-foreground block font-mono pl-1">
+                    Slug generated from title
+                  </span>
+                </div>
                 <Input
-                  label={tOrg("wizardSlug") || "URL Slug"}
-                  placeholder="event-slug-identifier"
-                  value={slug}
-                  onChange={(e) => setSlug(e.target.value)}
-                  helperText={tOrg("wizardSlugHelper") || "Unique public URL path for attendee exploration."}
-                  required
-                />
-                <Input
+                  id="wizard-tagline"
                   label={tOrg("wizardTagline") || "Tagline / Hero Subtitle"}
                   placeholder={tOrg("wizardTaglinePlaceholder") || "Short tagline summary"}
                   value={tagline}
@@ -515,10 +663,11 @@ export default function NewEventWizardPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-foreground mb-1.5">
+                <label htmlFor="wizard-description" className="block text-xs font-semibold text-foreground mb-1.5">
                   {tOrg("wizardDescription") || "Executive Description"}
                 </label>
                 <textarea
+                  id="wizard-description"
                   rows={3}
                   className="w-full rounded-md border border-input bg-background px-3 py-2 text-xs ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   value={description}
@@ -529,10 +678,11 @@ export default function NewEventWizardPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                 <div>
-                  <label className="block text-xs font-semibold text-foreground mb-1.5">
+                  <label htmlFor="wizard-format-select" className="block text-xs font-semibold text-foreground mb-1.5">
                     {tOrg("wizardFormat") || "Event Format"}
                   </label>
                   <select
+                    id="wizard-format-select"
                     className="w-full rounded-md border border-input bg-background px-3 py-2 text-xs"
                     value={format}
                     onChange={(e) => setFormat(e.target.value)}
@@ -544,10 +694,11 @@ export default function NewEventWizardPage() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-foreground mb-1.5">
+                  <label htmlFor="wizard-scale-select" className="block text-xs font-semibold text-foreground mb-1.5">
                     {tOrg("wizardScale") || "Event Scale"}
                   </label>
                   <select
+                    id="wizard-scale-select"
                     className="w-full rounded-md border border-input bg-background px-3 py-2 text-xs"
                     value={scale}
                     onChange={(e) => setScale(e.target.value)}
@@ -573,7 +724,11 @@ export default function NewEventWizardPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            <div
+              role="radiogroup"
+              aria-label="Select MICE Category Archetype"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"
+            >
               {ALL_ARCHETYPES.map((arch) => {
                 const meta = ARCHETYPE_METADATA[arch];
                 const tokens = ARCHETYPE_DEFAULTS[arch];
@@ -583,11 +738,20 @@ export default function NewEventWizardPage() {
                 const desc = tArch(`${arch}.description`) || meta?.description || tokens.tagline;
 
                 return (
-                  <div
+                  <button
                     key={arch}
+                    type="button"
+                    role="radio"
+                    aria-checked={isSelected}
                     onClick={() => handleArchetypeSelect(arch)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        handleArchetypeSelect(arch);
+                      }
+                    }}
                     className={cn(
-                      "p-4 rounded-xl border text-left cursor-pointer transition-all flex flex-col justify-between gap-3 hover:shadow-sm",
+                      "p-4 rounded-xl border text-left cursor-pointer transition-all flex flex-col justify-between gap-3 hover:shadow-sm focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
                       isSelected
                         ? "border-primary bg-primary/5 ring-1 ring-primary/40 shadow-xs"
                         : "border-border bg-card hover:border-primary/40"
@@ -607,19 +771,19 @@ export default function NewEventWizardPage() {
                           />
                         )}
                       </div>
-                      <p className="text-[11px] text-muted-foreground line-clamp-2">
+                      <p className="text-xs text-muted-foreground line-clamp-2">
                         {desc}
                       </p>
                     </div>
 
-                    <div className="flex items-center gap-1.5 pt-2 border-t border-border/50 text-[10px] text-muted-foreground">
+                    <div className="flex items-center gap-1.5 pt-2 border-t border-border/50 text-xs text-muted-foreground">
                       <span
-                        className="h-2 w-2 rounded-full"
+                        className="h-2 w-2 rounded-full shrink-0"
                         style={{ backgroundColor: tokens.accent }}
                       />
-                      <span>{tCom("category") || "Category"}: {displayName}</span>
+                      <span className="truncate">{tCom("category") || "Category"}: {displayName}</span>
                     </div>
-                  </div>
+                  </button>
                 );
               })}
             </div>
@@ -630,40 +794,54 @@ export default function NewEventWizardPage() {
       {/* STEP 2: Venue & Hall Selection */}
       {currentStep === 2 && (
         <div className="space-y-6">
-          <Card className="p-6 border-border bg-card space-y-4">
+          <Card className="p-6 border-border bg-card space-y-4 shadow-sm">
             <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
               <Building2 className="h-4 w-4 text-primary" />
               <span>{tOrg("wizardVenueHalls") || "Hosting Venue & Hall Allocation"}</span>
             </h3>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div
+              role="radiogroup"
+              aria-label="Select Target Country Region Hub"
+              className="grid grid-cols-1 sm:grid-cols-3 gap-3"
+            >
               {[
                 { id: "id", name: "Indonesia Hub", desc: "JIExpo, ICE BSD, JICC, GBK" },
                 { id: "jp", name: "Japan Hub", desc: "Tokyo Big Sight, Makuhari Messe" },
                 { id: "global", name: "Global Hub", desc: "Marina Bay Sands, Messe Frankfurt" },
               ].map((r) => (
-                <div
+                <button
                   key={r.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={regionId === r.id}
                   onClick={() => handleRegionChange(r.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      handleRegionChange(r.id);
+                    }
+                  }}
                   className={cn(
-                    "p-3 rounded-lg border text-left cursor-pointer transition-all",
+                    "p-3.5 rounded-xl border text-left cursor-pointer transition-all focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
                     regionId === r.id
-                      ? "border-primary bg-primary/5 ring-1 ring-primary/30"
+                      ? "border-primary bg-primary/5 ring-1 ring-primary/30 shadow-xs"
                       : "border-border hover:border-primary/40 bg-card"
                   )}
                 >
                   <div className="text-xs font-bold text-foreground">{r.name}</div>
-                  <div className="text-[11px] text-muted-foreground mt-0.5">{r.desc}</div>
-                </div>
+                  <div className="text-xs text-muted-foreground mt-0.5">{r.desc}</div>
+                </button>
               ))}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
               <div>
-                <label className="block text-xs font-semibold text-foreground mb-1.5">
+                <label htmlFor="wizard-venue-select" className="block text-xs font-semibold text-foreground mb-1.5">
                   {tOrg("wizardSelectVenue") || "Select Exhibition Venue"}
                 </label>
                 <select
+                  id="wizard-venue-select"
                   className="w-full rounded-md border border-input bg-background px-3 py-2 text-xs"
                   value={venueId}
                   onChange={(e) => {
@@ -683,10 +861,11 @@ export default function NewEventWizardPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-foreground mb-1.5">
+                <label htmlFor="wizard-hall-select" className="block text-xs font-semibold text-foreground mb-1.5">
                   {tOrg("wizardSelectHall") || "Select Primary Exhibition Hall"}
                 </label>
                 <select
+                  id="wizard-hall-select"
                   className="w-full rounded-md border border-input bg-background px-3 py-2 text-xs"
                   value={venueHallId}
                   onChange={(e) => setVenueHallId(e.target.value)}
@@ -702,6 +881,7 @@ export default function NewEventWizardPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-border/60">
               <Input
+                id="wizard-start-date"
                 label={tOrg("wizardStartDate") || "Opening Date"}
                 type="date"
                 value={startDate}
@@ -709,6 +889,7 @@ export default function NewEventWizardPage() {
                 required
               />
               <Input
+                id="wizard-end-date"
                 label={tOrg("wizardEndDate") || "Closing Date"}
                 type="date"
                 value={endDate}
@@ -738,7 +919,7 @@ export default function NewEventWizardPage() {
 
           <div className="space-y-4">
             {ticketTiers.map((tier, idx) => (
-              <Card key={tier.id} className="p-5 border-border bg-card space-y-3">
+              <Card key={tier.id} className="p-5 border-border bg-card space-y-3 shadow-xs">
                 <div className="flex items-center justify-between">
                   <Badge variant="outline" size="sm">{tOrg("wizardTierBadge", { num: idx + 1 }) || `Tier #${idx + 1}`}</Badge>
                   {ticketTiers.length > 1 && (
@@ -756,6 +937,7 @@ export default function NewEventWizardPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div className="sm:col-span-2">
                     <Input
+                      id={`wizard-tier-name-${idx}`}
                       label={tOrg("wizardTierName") || "Pass Tier Name"}
                       placeholder="e.g. Standard Delegate Pass"
                       value={tier.name}
@@ -765,6 +947,7 @@ export default function NewEventWizardPage() {
                   </div>
                   <div>
                     <Input
+                      id={`wizard-tier-capacity-${idx}`}
                       label={tOrg("wizardTierCapacity") || "Capacity (Slots)"}
                       type="number"
                       placeholder="500"
@@ -778,6 +961,7 @@ export default function NewEventWizardPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div>
                     <Input
+                      id={`wizard-tier-price-${idx}`}
                       label={tOrg("wizardTierPrice") || "Price"}
                       type="number"
                       placeholder="0"
@@ -786,10 +970,11 @@ export default function NewEventWizardPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-foreground mb-1.5">
+                    <label htmlFor={`wizard-tier-currency-${idx}`} className="block text-xs font-semibold text-foreground mb-1.5">
                       {tOrg("wizardTierCurrency") || "Currency"}
                     </label>
                     <select
+                      id={`wizard-tier-currency-${idx}`}
                       className="w-full rounded-md border border-input bg-background px-3 py-2 text-xs"
                       value={tier.currency}
                       onChange={(e) => handleUpdateTier(tier.id, "currency", e.target.value)}
@@ -801,6 +986,7 @@ export default function NewEventWizardPage() {
                   </div>
                   <div className="sm:col-span-1">
                     <Input
+                      id={`wizard-tier-benefits-${idx}`}
                       label={tOrg("wizardTierBenefits") || "Included Benefits (comma separated)"}
                       placeholder="Floor Access, VIP Lounge"
                       value={tier.benefits}
@@ -817,7 +1003,7 @@ export default function NewEventWizardPage() {
       {/* STEP 4: Branding & Confirmation Review */}
       {currentStep === 4 && (
         <div className="space-y-6">
-          <Card className="p-6 border-border bg-card space-y-4">
+          <Card className="p-6 border-border bg-card space-y-4 shadow-sm">
             <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
               <Palette className="h-4 w-4 text-primary" />
               <span>{tOrg("wizardBrandingTitle") || "Visual Branding & Review"}</span>
@@ -825,17 +1011,19 @@ export default function NewEventWizardPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-foreground mb-1.5">
+                <label htmlFor="wizard-primary-color" className="block text-xs font-semibold text-foreground mb-1.5">
                   {tOrg("wizardPrimaryColor") || "Primary Accent Color"}
                 </label>
                 <div className="flex items-center gap-2">
                   <input
+                    id="wizard-primary-color"
                     type="color"
                     className="h-9 w-12 rounded cursor-pointer border border-border"
                     value={primaryColor}
                     onChange={(e) => setPrimaryColor(e.target.value)}
                   />
                   <Input
+                    id="wizard-primary-color-text"
                     value={primaryColor}
                     onChange={(e) => setPrimaryColor(e.target.value)}
                     className="font-mono"
@@ -844,17 +1032,19 @@ export default function NewEventWizardPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-foreground mb-1.5">
+                <label htmlFor="wizard-accent-color" className="block text-xs font-semibold text-foreground mb-1.5">
                   {tOrg("wizardAccentColor") || "Secondary Accent Color"}
                 </label>
                 <div className="flex items-center gap-2">
                   <input
+                    id="wizard-accent-color"
                     type="color"
                     className="h-9 w-12 rounded cursor-pointer border border-border"
                     value={accentColor}
                     onChange={(e) => setAccentColor(e.target.value)}
                   />
                   <Input
+                    id="wizard-accent-color-text"
                     value={accentColor}
                     onChange={(e) => setAccentColor(e.target.value)}
                     className="font-mono"
@@ -864,6 +1054,7 @@ export default function NewEventWizardPage() {
             </div>
 
             <Input
+              id="wizard-hero-image"
               label={tOrg("wizardHeroImage") || "Hero Banner Image URL"}
               value={heroImageUrl}
               onChange={(e) => setHeroImageUrl(e.target.value)}
@@ -871,7 +1062,7 @@ export default function NewEventWizardPage() {
           </Card>
 
           {/* Review Summary Card */}
-          <Card className="p-6 border-border bg-card space-y-4">
+          <Card className="p-6 border-border bg-card space-y-4 shadow-sm">
             <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4 text-emerald-500" />
               <span>{tOrg("wizardSummaryTitle") || "Event Specification Summary"}</span>
@@ -906,7 +1097,7 @@ export default function NewEventWizardPage() {
                 {ticketTiers.map((t) => (
                   <div key={t.id} className="p-2.5 bg-muted/40 rounded-lg text-xs">
                     <div className="font-semibold text-foreground">{t.name}</div>
-                    <div className="text-muted-foreground text-[11px]">
+                    <div className="text-muted-foreground text-xs">
                       {t.price === 0 ? "Free" : `${t.currency} ${t.price.toLocaleString()}`} • Cap: {t.capacity}
                     </div>
                   </div>

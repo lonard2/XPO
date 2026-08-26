@@ -158,9 +158,9 @@ export function LivePreviewFrame({
   heroImageUrl = "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1600&q=80",
   primaryColor,
   accentColor,
-  fontFamily = "font-sans",
+  fontFamily,
   heroBadge,
-  bannerOverlayOpacity = 0.75,
+  bannerOverlayOpacity = 0.8,
   sectionsVisibility = {
     agenda: true,
     booths: true,
@@ -168,64 +168,57 @@ export function LivePreviewFrame({
     perks: true,
   },
   ticketTiers = [
-    { name: "Standard Trade Visitor", price: 0, currency: "IDR", capacity: 3500 },
-    { name: "VIP Buyer Delegate", price: 750000, currency: "IDR", capacity: 400 },
+    { name: "Standard Visitor Pass", price: 0, currency: "IDR", capacity: 3500 },
+    { name: "VIP Delegate Pass", price: 750000, currency: "IDR", capacity: 400 },
   ],
 }: LivePreviewFrameProps) {
   const [viewport, setViewport] = React.useState<ViewportMode>("desktop");
-
-  const tokens = getArchetypeTokens(archetype, {
-    primaryColor,
-    accentColor,
-    fontFamilyOverride: fontFamily,
-  });
+  const tokens = getArchetypeTokens(archetype as MiceArchetype);
 
   const getViewportWidthClass = () => {
     switch (viewport) {
       case "mobile":
-        return "max-w-[380px]";
+        return "w-[375px] max-w-[375px]";
       case "tablet":
-        return "max-w-[768px]";
+        return "w-[768px] max-w-[768px]";
       case "desktop":
       default:
-        return "w-full max-w-full";
+        return "w-full max-w-[1024px]";
     }
   };
 
   const getFontFamilyClass = () => {
     switch (fontFamily) {
-      case "font-serif":
+      case "serif":
         return "font-serif";
-      case "font-mono":
+      case "mono":
         return "font-mono";
-      case "font-legible":
-        return "font-sans tracking-wide";
-      case "font-sans":
+      case "sans":
       default:
         return "font-sans";
     }
   };
 
   return (
-    <div className="space-y-3 w-full">
-      {/* Viewport Switcher Toolbar */}
-      <div className="flex items-center justify-between bg-card p-2 px-3 rounded-xl border border-border">
+    <div className="space-y-4 w-full flex flex-col items-center">
+      {/* Top Device Switcher Controls */}
+      <div className="w-full flex items-center justify-between px-2">
         <div className="flex items-center gap-2">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-            Live Preview
+          <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+            Responsive Live Canvas
           </span>
-          <span className="text-[10px] bg-muted px-2 py-0.5 rounded text-foreground font-mono">
-            {viewport === "desktop" ? "Desktop (100%)" : viewport === "tablet" ? "Tablet (768px)" : "Mobile (375px)"}
-          </span>
+          <Badge variant="outline" size="sm" className="hidden sm:inline-flex text-xs">
+            WYSIWYG 1:1 Rendering
+          </Badge>
         </div>
 
-        {/* Viewport Mode Buttons */}
+        {/* Viewport Toggles */}
         <div className="flex items-center bg-muted/60 p-1 rounded-lg border border-border/60 gap-1">
           <button
             type="button"
             onClick={() => setViewport("desktop")}
             className={cn(
-              "p-1.5 rounded text-xs transition-colors flex items-center gap-1 cursor-pointer",
+              "p-1.5 rounded text-xs transition-colors flex items-center gap-1 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
               viewport === "desktop"
                 ? "bg-card text-foreground font-semibold shadow-xs"
                 : "text-muted-foreground hover:text-foreground"
@@ -233,14 +226,14 @@ export function LivePreviewFrame({
             aria-label="Desktop viewport"
           >
             <Monitor className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline text-[11px]">Desktop</span>
+            <span className="hidden sm:inline text-xs">Desktop (100%)</span>
           </button>
 
           <button
             type="button"
             onClick={() => setViewport("tablet")}
             className={cn(
-              "p-1.5 rounded text-xs transition-colors flex items-center gap-1 cursor-pointer",
+              "p-1.5 rounded text-xs transition-colors flex items-center gap-1 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
               viewport === "tablet"
                 ? "bg-card text-foreground font-semibold shadow-xs"
                 : "text-muted-foreground hover:text-foreground"
@@ -248,14 +241,14 @@ export function LivePreviewFrame({
             aria-label="Tablet viewport"
           >
             <Tablet className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline text-[11px]">Tablet</span>
+            <span className="hidden sm:inline text-xs">Tablet (768px)</span>
           </button>
 
           <button
             type="button"
             onClick={() => setViewport("mobile")}
             className={cn(
-              "p-1.5 rounded text-xs transition-colors flex items-center gap-1 cursor-pointer",
+              "p-1.5 rounded text-xs transition-colors flex items-center gap-1 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
               viewport === "mobile"
                 ? "bg-card text-foreground font-semibold shadow-xs"
                 : "text-muted-foreground hover:text-foreground"
@@ -263,7 +256,7 @@ export function LivePreviewFrame({
             aria-label="Mobile viewport"
           >
             <Smartphone className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline text-[11px]">Mobile</span>
+            <span className="hidden sm:inline text-xs">Mobile (375px)</span>
           </button>
         </div>
       </div>
@@ -276,20 +269,24 @@ export function LivePreviewFrame({
             getViewportWidthClass(),
             getFontFamilyClass()
           )}
-          style={{
-            // @ts-ignore
-            "--archetype-primary": primaryColor,
-            "--archetype-accent": accentColor,
-          }}
+          style={
+            {
+              "--archetype-primary": primaryColor,
+              "--archetype-accent": accentColor,
+            } as React.CSSProperties
+          }
         >
           {/* Simulated Browser Address Bar */}
-          <div className="bg-muted/80 border-b border-border px-3 py-1.5 flex items-center gap-2 text-[10px] text-muted-foreground">
+          <div
+            aria-hidden="true"
+            className="bg-muted/80 border-b border-border px-3 py-1.5 flex items-center gap-2 text-xs text-muted-foreground select-none"
+          >
             <div className="flex gap-1">
               <div className="h-2 w-2 rounded-full bg-red-400/80" />
               <div className="h-2 w-2 rounded-full bg-amber-400/80" />
               <div className="h-2 w-2 rounded-full bg-emerald-400/80" />
             </div>
-            <div className="flex-1 bg-background/80 px-2.5 py-0.5 rounded text-foreground font-mono text-center truncate border border-border/50">
+            <div className="flex-1 bg-background/80 px-2.5 py-0.5 rounded text-foreground font-mono text-center truncate border border-border/50 text-xs">
               https://xpo.io/events/preview-live
             </div>
           </div>
@@ -316,13 +313,13 @@ export function LivePreviewFrame({
               <div className="relative z-10 space-y-3 max-w-2xl text-white">
                 <div className="flex flex-wrap items-center gap-2">
                   <span
-                    className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full text-white shadow-xs"
+                    className="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full text-white shadow-xs"
                     style={{ backgroundColor: primaryColor }}
                   >
                     {heroBadge || tokens.displayName}
                   </span>
                   <span
-                    className="text-[11px] font-semibold px-2 py-0.5 rounded-full border border-white/30 text-white/90"
+                    className="text-xs font-semibold px-2 py-0.5 rounded-full border border-white/30 text-white/90"
                   >
                     Verified MICE Exhibition
                   </span>
@@ -357,7 +354,7 @@ export function LivePreviewFrame({
               <div className="flex items-center gap-2">
                 <button
                   type="button"
-                  className="px-4 py-2 rounded-lg text-xs font-semibold text-white shadow-sm flex items-center gap-1.5 transition-transform hover:scale-102"
+                  className="px-4 py-2 rounded-lg text-xs font-semibold text-white shadow-sm flex items-center gap-1.5 transition-transform hover:scale-105"
                   style={{ backgroundColor: primaryColor }}
                 >
                   <Ticket className="h-3.5 w-3.5" />
@@ -391,14 +388,14 @@ export function LivePreviewFrame({
                     </div>
                     <Badge variant="archetype" size="sm">{tokens.displayName}</Badge>
                   </div>
-                  <p className="text-[11px] text-muted-foreground leading-relaxed">
+                  <p className="text-xs text-muted-foreground leading-relaxed">
                     {feat.desc}
                   </p>
                   <div className="flex flex-wrap gap-1.5 pt-1">
                     {feat.tags.map((t) => (
                       <span
                         key={t}
-                        className="text-[10px] font-medium px-2 py-0.5 rounded-md border border-border/80 bg-background/80 text-foreground"
+                        className="text-xs font-medium px-2 py-0.5 rounded-md border border-border/80 bg-background/80 text-foreground"
                       >
                         {t}
                       </span>
@@ -434,11 +431,11 @@ export function LivePreviewFrame({
                             {tier.price === 0 ? "Complimentary" : `${tier.currency} ${tier.price.toLocaleString()}`}
                           </div>
                         </div>
-                        <span className="text-[10px] font-mono text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
+                        <span className="text-xs font-mono text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
                           Cap: {tier.capacity}
                         </span>
                       </div>
-                      <div className="pt-2 border-t border-border/60 text-[11px] text-muted-foreground">
+                      <div className="pt-2 border-t border-border/60 text-xs text-muted-foreground">
                         Instant HMAC QR Pass & Guidebook Access
                       </div>
                     </div>
@@ -460,23 +457,23 @@ export function LivePreviewFrame({
                     {
                       time: "09:30 - 10:45",
                       title: "Opening Plenary: Global Battery Tech & Green Grid Standards",
-                      speaker: "Dr. Kenji Takahashi (Renewable Energy Institute)",
+                      speaker: "Plenary Stage Keynote Track",
                       stage: "Plenary Stage - Hall A1",
                     },
                     {
                       time: "11:15 - 12:30",
                       title: "Cross-Border Procurement & Industrial Machinery Logistics",
-                      speaker: "Sarah Jenkins (Global Supply Chain Council)",
+                      speaker: "B2B Procurement Session",
                       stage: "Procurement Theatre 2",
                     },
                   ].map((session) => (
                     <div key={session.title} className="p-3 bg-muted/40 rounded-lg border border-border/80 text-xs space-y-1">
-                      <div className="flex items-center justify-between text-[11px]">
+                      <div className="flex items-center justify-between text-xs">
                         <span className="font-semibold text-primary">{session.time}</span>
                         <span className="text-muted-foreground">{session.stage}</span>
                       </div>
                       <div className="font-bold text-foreground">{session.title}</div>
-                      <div className="text-[11px] text-muted-foreground">{session.speaker}</div>
+                      <div className="text-xs text-muted-foreground">{session.speaker}</div>
                     </div>
                   ))}
                 </div>
@@ -493,13 +490,13 @@ export function LivePreviewFrame({
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {[
-                    { name: "Pacific Lithium Corp", booth: "Hall A1 - B04" },
-                    { name: "Nusantara Grid Robotics", booth: "Hall A1 - B08" },
-                    { name: "Tokyo Automation Labs", booth: "Hall A2 - C12" },
+                    { name: "Exhibition Floor Lot B01", booth: "Hall A1 - B01" },
+                    { name: "Robotics Pavilion Lot B04", booth: "Hall A1 - B04" },
+                    { name: "Clean Energy Grid Lot C12", booth: "Hall A2 - C12" },
                   ].map((ex) => (
                     <div key={ex.name} className="p-2.5 bg-card border border-border rounded-lg text-xs">
                       <div className="font-semibold text-foreground truncate">{ex.name}</div>
-                      <div className="text-[10px] text-muted-foreground font-mono mt-0.5">{ex.booth}</div>
+                      <div className="text-xs text-muted-foreground font-mono mt-0.5">{ex.booth}</div>
                     </div>
                   ))}
                 </div>
@@ -519,14 +516,14 @@ export function LivePreviewFrame({
                     <Coffee className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                     <div>
                       <div className="font-semibold text-foreground">VIP Lounge & Artisan Barista</div>
-                      <div className="text-[10px] text-muted-foreground">Unlocked with VIP Buyer pass</div>
+                      <div className="text-xs text-muted-foreground">Unlocked with VIP Buyer pass</div>
                     </div>
                   </div>
                   <div className="p-2.5 bg-primary/5 border border-primary/20 rounded-lg text-xs flex items-center gap-2">
                     <Download className="h-4 w-4 text-primary shrink-0" />
                     <div>
                       <div className="font-semibold text-foreground">Speaker Slide Decks & Whitepapers</div>
-                      <div className="text-[10px] text-muted-foreground">Digital pass cloud unlock</div>
+                      <div className="text-xs text-muted-foreground">Digital pass cloud unlock</div>
                     </div>
                   </div>
                 </div>
