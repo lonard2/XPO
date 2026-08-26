@@ -6,7 +6,6 @@ import {
   X,
   SlidersHorizontal,
   ArrowUpDown,
-  Layers,
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useTranslations } from 'next-intl';
@@ -35,19 +34,9 @@ export function FacetedFilterBar({
   onOpenMobileFilters,
   className,
 }: FacetedFilterBarProps) {
-  let tDisc: any = (k: string) => k;
-  let tCom: any = (k: string) => k;
-  let tEvents: any = (k: string) => k;
-  try {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tDisc = useTranslations('discovery');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tCom = useTranslations('common');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tEvents = useTranslations('events');
-  } catch {
-    // Fallback if rendered outside provider in tests
-  }
+  const tDisc = useTranslations('discovery');
+  const tCom = useTranslations('common');
+  const tEvents = useTranslations('events');
 
   const [searchTerm, setSearchTerm] = React.useState(filters.keyword);
   const searchInputRef = React.useRef<HTMLInputElement>(null);
@@ -161,7 +150,7 @@ export function FacetedFilterBar({
             </button>
           ) : (
             <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none hidden sm:flex items-center">
-              <kbd className="rounded border border-border bg-muted/70 px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground">
+              <kbd className="rounded border border-border bg-muted/70 px-1.5 py-0.5 text-xs font-mono font-semibold text-muted-foreground">
                 /
               </kbd>
             </div>
@@ -189,13 +178,13 @@ export function FacetedFilterBar({
           <Button
             variant="outline"
             onClick={onOpenMobileFilters}
-            className="lg:hidden h-10 gap-2 px-3 text-xs font-semibold shrink-0"
+            className="lg:hidden h-10 min-h-[44px] gap-2 px-3 text-xs font-semibold shrink-0"
             aria-label="Open filter sidebar drawer"
           >
             <SlidersHorizontal className="h-4 w-4 text-primary" />
             <span>{tCom('filters') || 'Filters'}</span>
             {activeFilterCount > 0 && (
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground font-bold">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground font-bold">
                 {activeFilterCount}
               </span>
             )}
