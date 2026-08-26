@@ -9,7 +9,7 @@ import {
   Building2,
   Ticket,
   Clock,
-  Sparkles,
+  Layers,
   ArrowRight,
   Globe,
   Pause,
@@ -188,20 +188,16 @@ export function BannerCarousel({
           <div className="flex flex-wrap items-center gap-2">
             <Badge
               variant="default"
-              className="text-[11px] sm:text-xs font-bold tracking-wider uppercase shadow-md border-0"
+              className="text-[11px] sm:text-xs font-bold tracking-wide uppercase shadow-md border-0 gap-1.5"
               style={{ backgroundColor: archetypeTokens.primary, color: '#ffffff' }}
             >
-              {archetypeTokens.displayName}
-            </Badge>
-
-            <Badge variant="outline" className="bg-black/60 text-white text-[11px] sm:text-xs font-medium gap-1 border-white/20 backdrop-blur-sm">
-              <Globe className="h-3 w-3 text-primary" />
-              <span>{regionCode}</span>
+              <Globe className="h-3 w-3 inline opacity-90" />
+              <span>{regionCode.toUpperCase()} • {archetypeTokens.displayName}</span>
             </Badge>
 
             {/* Differentiated Temporal Badges */}
             {temporalStatus.isLive && (
-              <Badge className="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] sm:text-xs font-bold gap-1.5 shadow-md animate-pulse">
+              <Badge className="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] sm:text-xs font-bold gap-1.5 shadow-md">
                 <span className="h-2 w-2 rounded-full bg-white inline-block animate-ping" />
                 <span>Happening Now</span>
               </Badge>
@@ -216,7 +212,7 @@ export function BannerCarousel({
 
             {temporalStatus.isUpcoming && currentSlide.isFeatured && (
               <Badge variant="warning" className="text-[11px] sm:text-xs font-semibold gap-1 shadow-sm">
-                <Sparkles className="h-3 w-3" />
+                <Layers className="h-3 w-3" />
                 <span>{tHero('featuredSpotlight') || 'Featured Spotlight'}</span>
               </Badge>
             )}
@@ -390,7 +386,7 @@ function BannerTemporalWidget({
 
   if (temporal.isPast) {
     return (
-      <div className="inline-flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-900/80 px-3 py-1.5 text-xs font-medium text-slate-300 backdrop-blur-sm">
+      <div className="inline-flex items-center gap-1.5 rounded-full border border-slate-700 bg-slate-900/80 px-3.5 py-1 text-xs font-medium text-slate-300 backdrop-blur-sm">
         <CheckCheck className="h-3.5 w-3.5 text-slate-400" />
         <span>This event has concluded. Pass registration is closed.</span>
       </div>
@@ -399,7 +395,7 @@ function BannerTemporalWidget({
 
   if (temporal.isLive) {
     return (
-      <div className="inline-flex items-center gap-2 rounded-lg border border-emerald-500/40 bg-emerald-950/70 px-3 py-1.5 text-xs font-semibold text-emerald-300 backdrop-blur-sm shadow-md">
+      <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-950/80 px-3.5 py-1 text-xs font-semibold text-emerald-300 backdrop-blur-sm shadow-md">
         <span className="flex h-2 w-2 relative">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
           <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -413,33 +409,12 @@ function BannerTemporalWidget({
   if (!time) return null;
 
   return (
-    <div className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-black/60 px-3 py-1.5 backdrop-blur-md shadow-sm">
-      <div className="flex items-center gap-1 text-[11px] font-semibold text-primary">
-        <Clock className="h-3.5 w-3.5 animate-pulse" />
-        <span className="uppercase tracking-wider">Starts in:</span>
-      </div>
-
-      <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-white">
-        <div className="flex flex-col items-center rounded-md bg-white/10 px-2 py-0.5 min-w-[28px]">
-          <span>{time.days}</span>
-          <span className="text-[8px] font-sans font-normal text-slate-300 uppercase">d</span>
-        </div>
-        <span>:</span>
-        <div className="flex flex-col items-center rounded-md bg-white/10 px-2 py-0.5 min-w-[28px]">
-          <span>{String(time.hours).padStart(2, '0')}</span>
-          <span className="text-[8px] font-sans font-normal text-slate-300 uppercase">h</span>
-        </div>
-        <span>:</span>
-        <div className="flex flex-col items-center rounded-md bg-white/10 px-2 py-0.5 min-w-[28px]">
-          <span>{String(time.minutes).padStart(2, '0')}</span>
-          <span className="text-[8px] font-sans font-normal text-slate-300 uppercase">m</span>
-        </div>
-        <span>:</span>
-        <div className="flex flex-col items-center rounded-md bg-white/10 px-2 py-0.5 min-w-[28px]">
-          <span>{String(time.seconds).padStart(2, '0')}</span>
-          <span className="text-[8px] font-sans font-normal text-slate-300 uppercase">s</span>
-        </div>
-      </div>
+    <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/60 px-3.5 py-1 text-xs backdrop-blur-md shadow-sm">
+      <Clock className="h-3.5 w-3.5 text-primary shrink-0" />
+      <span className="text-slate-300 font-medium">Starts in:</span>
+      <span className="font-mono font-bold text-white tracking-wide">
+        {time.days}d {String(time.hours).padStart(2, '0')}h {String(time.minutes).padStart(2, '0')}m {String(time.seconds).padStart(2, '0')}s
+      </span>
     </div>
   );
 }
