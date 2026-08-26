@@ -10,7 +10,6 @@ import {
   ArrowRight,
   MapPin,
 } from 'lucide-react';
-import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { useTranslations } from 'next-intl';
 import { formatDateRange, getTimeZoneForRegion } from '@/lib/i18n/formatters';
@@ -99,41 +98,39 @@ export function HeroVenueQuickGlanceRail({
 
     let regionTxt = regionLabel;
     try {
-      const code = regionCode.toLowerCase();
-      if (code === 'id' || code === 'jp' || code === 'global') {
-        const localized = tReg(`${code}.name`);
-        if (localized && typeof localized === 'string' && !localized.includes('.')) {
-          regionTxt = localized;
-        }
+      if (tReg && typeof tReg.raw === 'function') {
+        const regObj = tReg.raw(regionCode.toLowerCase());
+        if (regObj?.name) regionTxt = regObj.name;
       }
     } catch {
-      regionTxt = regionLabel;
+      // fallback
     }
 
-    let schedule = tVen('nearUpcomingSchedule');
-    if (!schedule || typeof schedule !== 'string' || schedule === 'nearUpcomingSchedule' || schedule.includes('.')) {
-      schedule = 'Near-Upcoming Schedule';
-    }
-
-    return `${major} ${regionTxt}: ${schedule}`;
+    return `${major} ${regionTxt}`;
   };
 
   const getQuickGlanceLabel = () => {
-    const val = tVen('quickGlance');
-    if (!val || typeof val !== 'string' || val === 'quickGlance' || val.includes('.')) return '(Quick Glance)';
-    return val;
+    const label = tVen('quickGlanceSchedule');
+    if (!label || typeof label !== 'string' || label === 'quickGlanceSchedule' || label.includes('.')) {
+      return '(Quick Glance: Up to 3 Near-Upcoming Events)';
+    }
+    return label;
   };
 
   const getNoEventsLabel = () => {
-    const val = tVen('noEventsScheduled');
-    if (!val || typeof val !== 'string' || val === 'noEventsScheduled' || val.includes('.')) return 'No public events scheduled this week';
-    return val;
+    const label = tVen('noUpcomingEventsScheduled');
+    if (!label || typeof label !== 'string' || label === 'noUpcomingEventsScheduled' || label.includes('.')) {
+      return 'No public events scheduled this week';
+    }
+    return label;
   };
 
   const getViewVenueDetailLabel = () => {
-    const val = tVen('viewVenueDetail');
-    if (!val || typeof val !== 'string' || val === 'viewVenueDetail' || val.includes('.')) return 'View venue details & map';
-    return val;
+    const label = tVen('viewVenueDetailMap');
+    if (!label || typeof label !== 'string' || label === 'viewVenueDetailMap' || label.includes('.')) {
+      return 'View venue details & hall layout';
+    }
+    return label;
   };
 
   return (
@@ -147,22 +144,22 @@ export function HeroVenueQuickGlanceRail({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="flex h-5 w-5 items-center justify-center rounded-md bg-primary/10 text-primary">
-            <Building2 className="h-3 w-3" />
+            <Building2 className="h-3.5 w-3.5" />
           </div>
-          <span className="text-xs font-bold text-foreground tracking-tight">
+          <span className="text-xs sm:text-sm font-bold text-foreground tracking-tight">
             {getHeaderTitle()}
           </span>
-          <span className="text-[11px] text-muted-foreground hidden sm:inline">
+          <span className="text-xs text-muted-foreground hidden sm:inline">
             {getQuickGlanceLabel()}
           </span>
         </div>
 
-        {/* Scroll Arrows */}
-        <div className="flex items-center gap-1">
+        {/* Scroll Arrows with 44px Touch Target Padding */}
+        <div className="flex items-center gap-1.5">
           <Button
             size="icon"
             variant="ghost"
-            className="h-7 w-7 rounded-md text-muted-foreground hover:text-foreground disabled:opacity-30"
+            className="relative h-8 w-8 rounded-lg text-muted-foreground hover:text-foreground disabled:opacity-30 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
             disabled={!canScrollLeft}
             onClick={() => scroll('left')}
             aria-label="Scroll venues left"
@@ -172,7 +169,7 @@ export function HeroVenueQuickGlanceRail({
           <Button
             size="icon"
             variant="ghost"
-            className="h-7 w-7 rounded-md text-muted-foreground hover:text-foreground disabled:opacity-30"
+            className="relative h-8 w-8 rounded-lg text-muted-foreground hover:text-foreground disabled:opacity-30 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
             disabled={!canScrollRight}
             onClick={() => scroll('right')}
             aria-label="Scroll venues right"
@@ -206,14 +203,14 @@ export function HeroVenueQuickGlanceRail({
                   >
                     {venue.name}
                   </Link>
-                  <span className="text-[11px] text-muted-foreground flex items-center gap-1">
+                  <span className="text-xs text-muted-foreground flex items-center gap-1">
                     <MapPin className="h-3 w-3 text-primary/70 shrink-0" />
                     <span className="truncate">{venue.city}</span>
                   </span>
                 </div>
 
                 {hallCount > 0 && (
-                  <span className="text-[10px] font-semibold text-muted-foreground bg-muted/80 px-1.5 py-0.5 rounded shrink-0 whitespace-nowrap">
+                  <span className="text-xs font-semibold text-muted-foreground bg-muted/80 px-2 py-0.5 rounded shrink-0 whitespace-nowrap">
                     {hallCount} Halls
                   </span>
                 )}
@@ -242,10 +239,10 @@ export function HeroVenueQuickGlanceRail({
                         href={`/${locale}/events/${evt.slug}`}
                         className="group flex items-center justify-between gap-2 rounded-lg border border-border/60 bg-card/60 p-2 hover:bg-accent/40 transition-colors"
                       >
-                        <div className="min-w-0 space-y-0.5">
-                          <div className="flex items-center gap-1 flex-wrap">
+                        <div className="min-w-0 space-y-1">
+                          <div className="flex items-center gap-1.5 flex-wrap">
                             <span
-                              className="text-[9px] font-bold uppercase px-1 py-0.2 rounded whitespace-nowrap"
+                              className="text-xs font-bold uppercase px-1.5 py-0.5 rounded whitespace-nowrap"
                               style={{
                                 backgroundColor: `${tokens.primary}18`,
                                 color: tokens.primary,
@@ -254,41 +251,41 @@ export function HeroVenueQuickGlanceRail({
                               {archTitle.split('&')[0].trim()}
                             </span>
                             {evt.venueHallName && (
-                              <span className="text-[9px] font-medium text-foreground bg-muted px-1 py-0.2 rounded whitespace-nowrap">
+                              <span className="text-xs font-medium text-foreground bg-muted px-1.5 py-0.5 rounded whitespace-nowrap">
                                 {evt.venueHallName}
                               </span>
                             )}
                           </div>
-                          <p className="text-[11px] font-semibold text-foreground group-hover:text-primary transition-colors truncate">
+                          <p className="text-xs font-semibold text-foreground group-hover:text-primary transition-colors truncate">
                             {evt.title}
                           </p>
-                          <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
-                            <Calendar className="h-2.5 w-2.5 shrink-0" />
+                          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                            <Calendar className="h-3 w-3 shrink-0" />
                             <span className="truncate">{dates}</span>
                           </div>
                         </div>
 
                         <div className="h-6 w-6 rounded-full bg-muted/60 group-hover:bg-primary group-hover:text-white flex items-center justify-center shrink-0 transition-colors">
-                          <ArrowRight className="h-3 w-3" />
+                          <ArrowRight className="h-3.5 w-3.5" />
                         </div>
                       </Link>
                     );
                   })
                 ) : (
-                  <div className="p-2 text-center text-[11px] text-muted-foreground rounded-lg border border-dashed border-border/60">
+                  <div className="p-2 text-center text-xs text-muted-foreground rounded-lg border border-dashed border-border/60">
                     <span>{getNoEventsLabel()}</span>
                   </div>
                 )}
               </div>
 
               {/* Bottom Quick Link */}
-              <div className="pt-1 border-t border-border/50 text-[10px]">
+              <div className="pt-1.5 border-t border-border/50 text-xs">
                 <Link
                   href={`/${locale}/venues/${venue.slug}`}
                   className="text-primary hover:underline font-medium flex items-center justify-between"
                 >
                   <span>{getViewVenueDetailLabel()}</span>
-                  <ChevronRight className="h-3 w-3" />
+                  <ChevronRight className="h-3.5 w-3.5" />
                 </Link>
               </div>
             </div>

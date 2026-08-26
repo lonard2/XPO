@@ -17,9 +17,10 @@ import {
   CheckCheck,
   Radio,
   History,
+  MapPin,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
-import { Button } from '@/components/ui/Button';
+import { buttonVariants } from '@/components/ui/Button';
 import { useTranslations } from 'next-intl';
 import { formatDateRange, getTimeZoneForRegion, getEventTemporalStatus, type EventTemporalDetails } from '@/lib/i18n/formatters';
 import { getArchetypeTokens } from '@/lib/theming';
@@ -50,17 +51,22 @@ export function BannerCarousel({
     // eslint-disable-next-line react-hooks/rules-of-hooks
     tHome = useTranslations('home');
   } catch {
-    // Fallback if rendered outside provider
+    // Fallback if rendered outside provider in tests
   }
 
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [isPaused, setIsPaused] = React.useState(false);
+  const [timerKey, setTimerKey] = React.useState(0);
   const [touchStartX, setTouchStartX] = React.useState<number | null>(null);
   const [touchEndX, setTouchEndX] = React.useState<number | null>(null);
 
-  const totalSlides = slides.length;
+  const totalSlides = slides?.length || 0;
 
-  // Auto-play timer
+  const resetAutoPlay = React.useCallback(() => {
+    setTimerKey((k) => k + 1);
+  }, []);
+
+  // Auto-play timer with reset hygiene
   React.useEffect(() => {
     if (totalSlides <= 1 || isPaused) return;
 
@@ -69,21 +75,27 @@ export function BannerCarousel({
     }, autoPlayInterval);
 
     return () => clearInterval(timer);
-  }, [totalSlides, isPaused, autoPlayInterval]);
+  }, [totalSlides, isPaused, autoPlayInterval, timerKey]);
 
-  // Keyboard navigation
+  // Keyboard navigation with input focus scoping
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      const activeEl = document.activeElement;
+      const isInputActive = activeEl && ['INPUT', 'TEXTAREA', 'SELECT'].includes(activeEl.tagName);
+      if (isInputActive) return;
+
       if (e.key === 'ArrowLeft') {
         setCurrentIndex((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
+        resetAutoPlay();
       } else if (e.key === 'ArrowRight') {
         setCurrentIndex((prev) => (prev + 1) % totalSlides);
+        resetAutoPlay();
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [totalSlides]);
+  }, [totalSlides, resetAutoPlay]);
 
   // Touch Swipe Handlers
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -102,8 +114,10 @@ export function BannerCarousel({
 
     if (isLeftSwipe) {
       setCurrentIndex((prev) => (prev + 1) % totalSlides);
+      resetAutoPlay();
     } else if (isRightSwipe) {
       setCurrentIndex((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
+      resetAutoPlay();
     }
 
     setTouchStartX(null);
@@ -112,14 +126,17 @@ export function BannerCarousel({
 
   const goToSlide = (index: number) => {
     setCurrentIndex(index);
+    resetAutoPlay();
   };
 
   const nextSlide = () => {
     setCurrentIndex((prev) => (prev + 1) % totalSlides);
+    resetAutoPlay();
   };
 
   const prevSlide = () => {
     setCurrentIndex((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
+    resetAutoPlay();
   };
 
   if (!slides || slides.length === 0) {
@@ -165,6 +182,8 @@ export function BannerCarousel({
             key={currentSlide.id}
             src={currentSlide.heroImageUrl}
             alt={currentSlide.title}
+            fetchPriority={currentIndex === 0 ? 'high' : 'auto'}
+            loading={currentIndex === 0 ? 'eager' : 'lazy'}
             className={cn(
               "absolute inset-0 h-full w-full object-cover object-center transition-transform duration-1000 scale-[1.02]",
               temporalStatus.isPast && "grayscale-[35%] opacity-75"
@@ -188,7 +207,7 @@ export function BannerCarousel({
           <div className="flex flex-wrap items-center gap-2">
             <Badge
               variant="default"
-              className="text-[11px] sm:text-xs font-bold tracking-wide uppercase shadow-md border-0 gap-1.5"
+              className="text-xs font-bold tracking-wide uppercase shadow-md border-0 gap-1.5"
               style={{ backgroundColor: archetypeTokens.primary, color: '#ffffff' }}
             >
               <Globe className="h-3 w-3 inline opacity-90" />
@@ -197,21 +216,21 @@ export function BannerCarousel({
 
             {/* Differentiated Temporal Badges */}
             {temporalStatus.isLive && (
-              <Badge className="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] sm:text-xs font-bold gap-1.5 shadow-md">
+              <Badge className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold gap-1.5 shadow-md">
                 <span className="h-2 w-2 rounded-full bg-white inline-block animate-ping" />
                 <span>Happening Now</span>
               </Badge>
             )}
 
             {temporalStatus.isPast && (
-              <Badge variant="secondary" className="bg-slate-800 text-slate-300 border border-slate-600 text-[11px] sm:text-xs font-semibold gap-1 backdrop-blur-sm">
+              <Badge variant="secondary" className="bg-slate-800 text-slate-300 border border-slate-600 text-xs font-semibold gap-1 backdrop-blur-sm">
                 <CheckCheck className="h-3 w-3 text-slate-400" />
                 <span>Event Concluded</span>
               </Badge>
             )}
 
             {temporalStatus.isUpcoming && currentSlide.isFeatured && (
-              <Badge variant="warning" className="text-[11px] sm:text-xs font-semibold gap-1 shadow-sm">
+              <Badge variant="warning" className="text-xs font-semibold gap-1 shadow-sm">
                 <Layers className="h-3 w-3" />
                 <span>{tHero('featuredSpotlight') || 'Featured Spotlight'}</span>
               </Badge>
@@ -230,7 +249,7 @@ export function BannerCarousel({
             </p>
           )}
 
-          {/* Event Date & Venue Metadata */}
+          {/* Event Date, Venue & Exact Hall Metadata */}
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs sm:text-sm text-slate-300 pt-0.5">
             <div className="flex items-center gap-1.5 text-white font-medium">
               <Calendar className="h-4 w-4 text-primary shrink-0" />
@@ -238,12 +257,17 @@ export function BannerCarousel({
             </div>
 
             {currentSlide.venueName && (
-              <div className="flex items-center gap-1.5 text-slate-200">
+              <div className="flex items-center gap-1.5 text-slate-200 flex-wrap">
                 <Building2 className="h-4 w-4 text-primary/90 shrink-0" />
                 <span className="line-clamp-1">
                   {currentSlide.venueName}
                   {currentSlide.cityName && ` (${currentSlide.cityName})`}
                 </span>
+                {currentSlide.venueHallName && (
+                  <span className="text-xs font-semibold bg-white/15 px-2.5 py-0.5 rounded-md text-white backdrop-blur-xs border border-white/20">
+                    {currentSlide.venueHallName}
+                  </span>
+                )}
               </div>
             )}
           </div>
@@ -256,107 +280,133 @@ export function BannerCarousel({
             />
           </div>
 
-          {/* Action CTAs */}
+          {/* Accessible Action CTAs (No nested buttons inside Link) */}
           <div className="flex flex-wrap items-center gap-3 pt-2">
             {temporalStatus.isPast ? (
               <>
-                <Link href={`/${locale}/events/${currentSlide.slug}`}>
-                  <Button size="lg" variant="outline" className="gap-2 font-semibold bg-white/10 hover:bg-white/20 text-white border-white/30 backdrop-blur-md">
-                    <History className="h-4 w-4" />
-                    <span>{tHero('viewRecap') || 'View Event Recap'}</span>
-                    <ArrowRight className="h-4 w-4 ml-0.5" />
-                  </Button>
+                <Link
+                  href={`/${locale}/events/${currentSlide.slug}`}
+                  className={cn(
+                    buttonVariants({ variant: 'outline', size: 'lg' }),
+                    'gap-2 font-semibold bg-white/10 hover:bg-white/20 text-white border-white/30 backdrop-blur-md cursor-pointer'
+                  )}
+                >
+                  <History className="h-4 w-4" />
+                  <span>{tHero('viewRecap') || 'View Event Recap'}</span>
+                  <ArrowRight className="h-4 w-4 ml-0.5" />
                 </Link>
-                <Link href={`/${locale}/events`}>
-                  <Button size="lg" className="gap-2 font-semibold shadow-lg bg-primary hover:bg-primary/90 text-white border-0">
-                    <Calendar className="h-4 w-4" />
-                    <span>{tHero('exploreEventsCta') || 'Explore Upcoming Events'}</span>
-                  </Button>
+                <Link
+                  href={`/${locale}/events`}
+                  className={cn(
+                    buttonVariants({ size: 'lg' }),
+                    'gap-2 font-semibold shadow-lg bg-primary hover:bg-primary/90 text-white border-0 cursor-pointer'
+                  )}
+                >
+                  <Calendar className="h-4 w-4" />
+                  <span>{tHero('exploreEventsCta') || 'Explore Upcoming Events'}</span>
                 </Link>
               </>
             ) : temporalStatus.isLive ? (
               <>
-                <Link href={`/${locale}/events/${currentSlide.slug}`}>
-                  <Button size="lg" className="gap-2 font-semibold shadow-lg bg-emerald-600 hover:bg-emerald-700 text-white border-0 animate-pulse">
-                    <Ticket className="h-4 w-4" />
-                    <span>{tHero('getPassDoors') || 'Get Pass & Enter Doors'}</span>
-                    <ArrowRight className="h-4 w-4 ml-0.5" />
-                  </Button>
+                <Link
+                  href={`/${locale}/events/${currentSlide.slug}`}
+                  className={cn(
+                    buttonVariants({ size: 'lg' }),
+                    'gap-2 font-semibold shadow-lg bg-emerald-600 hover:bg-emerald-700 text-white border-0 animate-pulse cursor-pointer'
+                  )}
+                >
+                  <Ticket className="h-4 w-4" />
+                  <span>{tHero('getPassDoors') || 'Get Pass & Enter Doors'}</span>
+                  <ArrowRight className="h-4 w-4 ml-0.5" />
                 </Link>
-                <Link href={`/${locale}/events/${currentSlide.slug}#agenda`}>
-                  <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/30 backdrop-blur-md">
-                    <Radio className="h-4 w-4 text-emerald-400 mr-1" />
-                    <span>{tHero('liveTimetable') || 'Live Timetable'}</span>
-                  </Button>
+                <Link
+                  href={`/${locale}/events/${currentSlide.slug}#agenda`}
+                  className={cn(
+                    buttonVariants({ variant: 'outline', size: 'lg' }),
+                    'bg-white/10 hover:bg-white/20 text-white border-white/30 backdrop-blur-md cursor-pointer gap-2'
+                  )}
+                >
+                  <Radio className="h-4 w-4 text-emerald-400" />
+                  <span>{tHero('liveTimetable') || 'Live Timetable'}</span>
                 </Link>
               </>
             ) : (
               <>
-                <Link href={`/${locale}/events/${currentSlide.slug}`}>
-                  <Button size="lg" className="gap-2 font-semibold shadow-lg bg-primary hover:bg-primary/90 text-white border-0">
-                    <Ticket className="h-4 w-4" />
-                    <span>{tHero('getPass') || 'Get Event Pass'}</span>
-                    <ArrowRight className="h-4 w-4 ml-0.5" />
-                  </Button>
+                <Link
+                  href={`/${locale}/events/${currentSlide.slug}`}
+                  className={cn(
+                    buttonVariants({ size: 'lg' }),
+                    'gap-2 font-semibold shadow-lg bg-primary hover:bg-primary/90 text-white border-0 cursor-pointer'
+                  )}
+                >
+                  <Ticket className="h-4 w-4" />
+                  <span>{tHero('getPass') || 'Get Event Pass'}</span>
+                  <ArrowRight className="h-4 w-4 ml-0.5" />
                 </Link>
-                <Link href={`/${locale}/events`}>
-                  <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/30 backdrop-blur-md">
-                    <span>{tHome('viewFullSchedule') || 'View Full Schedule'}</span>
-                  </Button>
+                <Link
+                  href={`/${locale}/events`}
+                  className={cn(
+                    buttonVariants({ variant: 'outline', size: 'lg' }),
+                    'bg-white/10 hover:bg-white/20 text-white border-white/30 backdrop-blur-md cursor-pointer'
+                  )}
+                >
+                  <span>{tHome('viewFullSchedule') || 'View Full Schedule'}</span>
                 </Link>
               </>
             )}
           </div>
         </div>
 
-        {/* Carousel Navigation Controls */}
-        <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center gap-2 z-20">
-          <Button
-            size="icon"
-            variant="outline"
-            className="h-8 w-8 rounded-full bg-black/50 hover:bg-black/80 text-white border-white/20 backdrop-blur-sm"
+        {/* Carousel Navigation Controls with WCAG 44x44px Touch Targets */}
+        <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center gap-1.5 z-20">
+          <button
+            type="button"
+            className="relative flex h-10 w-10 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-black/50 hover:bg-black/80 text-white border border-white/20 backdrop-blur-sm transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
             onClick={prevSlide}
             aria-label="Previous slide"
           >
             <ChevronLeft className="h-4 w-4" />
-          </Button>
+          </button>
 
-          <Button
-            size="icon"
-            variant="outline"
-            className="h-8 w-8 rounded-full bg-black/50 hover:bg-black/80 text-white border-white/20 backdrop-blur-sm"
+          <button
+            type="button"
+            className="relative flex h-10 w-10 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-black/50 hover:bg-black/80 text-white border border-white/20 backdrop-blur-sm transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
             onClick={nextSlide}
             aria-label="Next slide"
           >
             <ChevronRight className="h-4 w-4" />
-          </Button>
+          </button>
 
-          <Button
-            size="icon"
-            variant="ghost"
-            className="h-8 w-8 rounded-full text-slate-300 hover:text-white hover:bg-white/10 hidden sm:flex"
+          <button
+            type="button"
+            className="relative flex h-10 w-10 sm:h-9 sm:w-9 items-center justify-center rounded-full text-slate-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
             onClick={() => setIsPaused(!isPaused)}
             aria-label={isPaused ? 'Resume autoplay' : 'Pause autoplay'}
           >
             {isPaused ? <Play className="h-3.5 w-3.5" /> : <Pause className="h-3.5 w-3.5" />}
-          </Button>
+          </button>
         </div>
 
-        {/* Slide Indicators */}
-        <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 flex items-center gap-1.5 z-20">
+        {/* Slide Indicators with 44px Touch Area Hitboxes */}
+        <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 flex items-center gap-1 z-20">
           {slides.map((_, idx) => (
             <button
               key={idx}
+              type="button"
               onClick={() => goToSlide(idx)}
-              className={cn(
-                'h-2 rounded-full transition-all duration-300',
-                idx === currentIndex
-                  ? 'w-6 bg-primary shadow-md'
-                  : 'w-2 bg-white/40 hover:bg-white/70'
-              )}
+              className="relative flex h-10 min-w-[20px] items-center justify-center px-1 cursor-pointer focus-visible:outline-none"
               aria-label={`Go to slide ${idx + 1}`}
               aria-current={idx === currentIndex ? 'true' : 'false'}
-            />
+            >
+              <span
+                className={cn(
+                  'h-2 rounded-full transition-all duration-300 block',
+                  idx === currentIndex
+                    ? 'w-6 bg-primary shadow-md'
+                    : 'w-2 bg-white/40 hover:bg-white/70'
+                )}
+              />
+            </button>
           ))}
         </div>
       </div>

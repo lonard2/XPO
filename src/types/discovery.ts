@@ -87,6 +87,7 @@ export interface BannerSlide {
   startDate: Date | string;
   endDate: Date | string;
   venueName?: string;
+  venueHallName?: string | null;
   cityName?: string;
   regionCode?: string; // 'ID', 'JP', 'GL'
   format?: EventFormat | string;
