@@ -388,22 +388,22 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
                   </h3>
                 </div>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                  {tHome('adminDesc') || 'Convention center directory with exact hall indexing, automated event calendar scrapers, and audit logging.'}
+                  {tHome('adminDesc') || 'Institutional convention directory with verified hall specifications, real-time schedule telemetry, and enterprise audit security.'}
                 </p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 shrink-0 lg:max-w-2xl w-full lg:w-auto">
                 <div className="flex items-center gap-2 rounded-xl bg-muted/40 p-3 text-xs text-foreground border border-border/40">
                   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
-                  <span>{tHome('adminPill1') || 'Exact Venue & Hall Mapping'}</span>
+                  <span>{tHome('adminPill1') || 'Verified Hall Floor Plans'}</span>
                 </div>
                 <div className="flex items-center gap-2 rounded-xl bg-muted/40 p-3 text-xs text-foreground border border-border/40">
                   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
-                  <span>{tHome('adminPill2') || 'Event Ingestion Pipeline'}</span>
+                  <span>{tHome('adminPill2') || 'Real-Time Schedule Telemetry'}</span>
                 </div>
                 <div className="flex items-center gap-2 rounded-xl bg-muted/40 p-3 text-xs text-foreground border border-border/40">
                   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
-                  <span>{tHome('adminPill3') || 'Role-Based Access Control (RBAC)'}</span>
+                  <span>{tHome('adminPill3') || 'Enterprise Security & Verification'}</span>
                 </div>
               </div>
             </div>

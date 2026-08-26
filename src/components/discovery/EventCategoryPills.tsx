@@ -264,6 +264,46 @@ export function EventCategoryPills({
     scrollContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
   };
 
+  // Drag to scroll logic
+  const [isDragging, setIsDragging] = React.useState(false);
+  const [startX, setStartX] = React.useState(0);
+  const [scrollLeftState, setScrollLeftState] = React.useState(0);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!scrollContainerRef.current) return;
+    setIsDragging(true);
+    setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
+    setScrollLeftState(scrollContainerRef.current.scrollLeft);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !scrollContainerRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    scrollContainerRef.current.scrollLeft = scrollLeftState - walk;
+  };
+
+  const scrollToCategoryIndex = (index: number, categoryId?: string) => {
+    if (onSelectCategory && categoryId) {
+      onSelectCategory(categoryId);
+    }
+    if (!scrollContainerRef.current) return;
+    const cardWidth = 360;
+    scrollContainerRef.current.scrollTo({
+      left: index * cardWidth,
+      behavior: 'smooth',
+    });
+  };
+
   return (
     <div className={cn('w-full space-y-4', className)}>
       {/* Section Header */}
@@ -312,10 +352,60 @@ export function EventCategoryPills({
         </div>
       </div>
 
+      {/* Quick Category Jump Pill Bar */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none -mx-1 px-1">
+        <Link href={`/${locale}/events`}>
+          <button
+            type="button"
+            className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 transition-colors whitespace-nowrap cursor-pointer"
+          >
+            <Layers className="h-3 w-3" />
+            <span>{tDisc('allArchetypes') || 'All (15)'}</span>
+          </button>
+        </Link>
+        {EVENT_CATEGORIES.map((cat, idx) => {
+          const Icon = cat.icon;
+          const isSelected = activeCategoryId === cat.id;
+          let label = cat.shortName;
+          try {
+            if (tArch && typeof tArch.raw === 'function') {
+              const obj = tArch.raw(cat.id);
+              if (obj?.tag) label = obj.tag;
+            }
+          } catch {
+            // fallback
+          }
+
+          return (
+            <button
+              key={cat.id}
+              type="button"
+              onClick={() => scrollToCategoryIndex(idx, cat.id)}
+              className={cn(
+                'flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border transition-all whitespace-nowrap cursor-pointer',
+                isSelected
+                  ? 'border-primary bg-primary text-primary-foreground font-semibold shadow-xs'
+                  : 'border-border/80 bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground'
+              )}
+            >
+              <Icon className="h-3 w-3" />
+              <span>{label}</span>
+            </button>
+          );
+        })}
+      </div>
+
       {/* Horizontally Scrollable Category Cards Carousel */}
       <div
         ref={scrollContainerRef}
-        className="flex items-stretch gap-4 overflow-x-auto pb-3 pt-1 scrollbar-none snap-x -mx-1 px-1"
+        onMouseDown={handleMouseDown}
+        onMouseLeave={handleMouseLeave}
+        onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseMove}
+        className={cn(
+          'flex items-stretch gap-4 overflow-x-auto pb-3 pt-1 scrollbar-none snap-x -mx-1 px-1 select-none',
+          isDragging ? 'cursor-grabbing' : 'cursor-grab'
+        )}
       >
         {EVENT_CATEGORIES.map((category) => {
           const Icon = category.icon;

@@ -90,6 +90,23 @@ export function EventCalendarWidget({
     });
   }, [events, selectedDate]);
 
+  // Find nearest upcoming event from selectedDate
+  const nearestUpcomingEvent = React.useMemo(() => {
+    if (eventsOnSelectedDate.length > 0 || events.length === 0) return null;
+    const sorted = [...events].sort(
+      (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+    );
+    const selTime = new Date(
+      selectedDate.getFullYear(),
+      selectedDate.getMonth(),
+      selectedDate.getDate()
+    ).getTime();
+    const upcoming = sorted.find(
+      (evt) => new Date(evt.startDate).getTime() >= selTime
+    );
+    return upcoming || sorted[0];
+  }, [events, eventsOnSelectedDate, selectedDate]);
+
   // Check if a calendar day has events
   const hasEventOnDay = (date: Date | null) => {
     if (!date) return false;
@@ -289,9 +306,30 @@ export function EventCalendarWidget({
                 );
               })
             ) : (
-              <div className="rounded-xl border border-dashed border-border/80 p-6 text-center text-xs text-muted-foreground space-y-1">
-                <p className="font-semibold text-foreground">{tCal('noEventsOnDate') || 'No events scheduled on this day.'}</p>
-                <p>{tCal('monthView') || 'Click on highlighted calendar dots or browse upcoming dates.'}</p>
+              <div className="rounded-xl border border-dashed border-border/80 p-5 text-center text-xs text-muted-foreground space-y-3 bg-muted/20">
+                <div className="space-y-1">
+                  <p className="font-semibold text-foreground">
+                    {tCal('noEventsOnDate') || 'No events scheduled on this day.'}
+                  </p>
+                  <p className="text-[11px]">
+                    Click any highlighted date dot on the calendar or jump directly to the next active trade show.
+                  </p>
+                </div>
+                {nearestUpcomingEvent && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      const d = new Date(nearestUpcomingEvent.startDate);
+                      setSelectedDate(d);
+                      setViewMonth(new Date(d.getFullYear(), d.getMonth(), 1));
+                    }}
+                    className="gap-1.5 text-xs text-primary border-primary/30 hover:bg-primary/10 cursor-pointer"
+                  >
+                    <CalendarIcon className="h-3.5 w-3.5" />
+                    <span>Jump to Next: {nearestUpcomingEvent.title}</span>
+                  </Button>
+                )}
               </div>
             )}
           </div>
