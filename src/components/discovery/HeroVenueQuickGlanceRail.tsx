@@ -8,7 +8,6 @@ import {
   ChevronLeft,
   ChevronRight,
   ArrowRight,
-  Sparkles,
   MapPin,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
@@ -186,7 +185,7 @@ export function HeroVenueQuickGlanceRail({
       {/* Horizontally Scrollable Rail */}
       <div
         ref={scrollContainerRef}
-        className="flex items-stretch gap-3.5 overflow-x-auto pb-1 scrollbar-none snap-x"
+        className="flex items-stretch gap-3.5 overflow-x-auto pb-1 scrollbar-none snap-x touch-pan-y select-none"
       >
         {venues.map((venue) => {
           const upcomingEvents = (venue.events || []).slice(0, 3);

@@ -8,7 +8,6 @@ import {
   ArrowRight,
   ShieldCheck,
   CheckCircle2,
-  Sparkles,
 } from 'lucide-react';
 import { db } from '@/lib/db';
 import { Button } from '@/components/ui/Button';
@@ -203,7 +202,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
       : tReg('global.name') || 'Global Gateways';
 
   return (
-    <div className="flex flex-col gap-10 sm:gap-14 pb-16">
+    <div className="flex flex-col gap-10 sm:gap-14 pb-24 md:pb-16">
       {/* 1. Unified Modern Hero Section: Banner Carousel + Stuck Horizontal Venue Quick-Glance Rail */}
       <section className="container pt-3 sm:pt-6">
         <HeroSection
