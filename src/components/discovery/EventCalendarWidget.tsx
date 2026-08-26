@@ -10,10 +10,9 @@ import {
   Building2,
   Ticket,
   ArrowRight,
-  Sparkles,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
-import { Button } from '@/components/ui/Button';
+import { Button, buttonVariants } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { useTranslations } from 'next-intl';
 import { formatDateRange, getTimeZoneForRegion } from '@/lib/i18n/formatters';
@@ -25,6 +24,7 @@ export interface EventCalendarWidgetProps {
   events: EventSummary[];
   locale: string;
   regionCode?: string;
+  isCalendarPage?: boolean;
   className?: string;
 }
 
@@ -32,21 +32,12 @@ export function EventCalendarWidget({
   events,
   locale,
   regionCode = 'id',
+  isCalendarPage = false,
   className,
 }: EventCalendarWidgetProps) {
-  let tCal: any = (k: string) => k;
-  let tEvents: any = (k: string) => k;
-  let tTickets: any = (k: string) => k;
-  try {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tCal = useTranslations('calendar');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tEvents = useTranslations('events');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tTickets = useTranslations('tickets');
-  } catch {
-    // Fallback
-  }
+  const tCal = useTranslations('calendar');
+  const tEvents = useTranslations('events');
+  const tTickets = useTranslations('tickets');
 
   const [selectedDate, setSelectedDate] = React.useState<Date>(() => new Date());
   const [viewMonth, setViewMonth] = React.useState<Date>(() => new Date());
@@ -163,12 +154,15 @@ export function EventCalendarWidget({
           </div>
         </div>
 
-        <Link href={`/${locale}/calendar`}>
-          <Button variant="outline" size="sm" className="gap-1.5 text-xs">
+        {!isCalendarPage && (
+          <Link
+            href={`/${locale}/calendar`}
+            className={buttonVariants({ variant: 'outline', size: 'sm', className: 'gap-1.5 text-xs font-semibold' })}
+          >
             <span>{tCal('fullTimetable') || 'Full Multi-Track Timetable'}</span>
             <ArrowRight className="h-3.5 w-3.5" />
-          </Button>
-        </Link>
+          </Link>
+        )}
       </div>
 
       {/* Dual Pane Layout (Calendar Matrix Left, Events Right) */}
@@ -181,10 +175,10 @@ export function EventCalendarWidget({
               {monthName}
             </h4>
             <div className="flex items-center gap-1">
-              <Button size="icon" variant="ghost" className="h-7 w-7 rounded-md" onClick={prevMonth}>
+              <Button size="icon" variant="ghost" className="h-7 w-7 rounded-md cursor-pointer" onClick={prevMonth} aria-label="Previous month">
                 <ChevronLeft className="h-3.5 w-3.5" />
               </Button>
-              <Button size="icon" variant="ghost" className="h-7 w-7 rounded-md" onClick={nextMonth}>
+              <Button size="icon" variant="ghost" className="h-7 w-7 rounded-md cursor-pointer" onClick={nextMonth} aria-label="Next month">
                 <ChevronRight className="h-3.5 w-3.5" />
               </Button>
             </div>
@@ -202,25 +196,29 @@ export function EventCalendarWidget({
           </div>
 
           {/* Days Grid */}
-          <div className="grid grid-cols-7 gap-1">
+          <div className="grid grid-cols-7 gap-1" role="grid">
             {calendarDays.map((cell, idx) => {
               if (!cell.dayNumber || !cell.date) {
-                return <div key={`empty-${idx}`} className="h-8" />;
+                return <div key={`empty-${idx}`} className="h-9 min-h-[36px]" aria-hidden="true" />;
               }
 
               const hasEvents = hasEventOnDay(cell.date);
               const active = isSelected(cell.date);
               const today = isToday(cell.date);
+              const cellDateStr = cell.date.toLocaleDateString(locale, { month: 'short', day: 'numeric', year: 'numeric' });
 
               return (
                 <button
                   key={cell.dayNumber}
                   onClick={() => cell.date && setSelectedDate(cell.date)}
                   type="button"
+                  aria-label={`${cellDateStr}${hasEvents ? ', events scheduled' : ''}`}
+                  aria-selected={active}
+                  aria-current={today ? 'date' : undefined}
                   className={cn(
-                    'relative flex h-8 w-full flex-col items-center justify-center rounded-lg text-xs font-semibold transition-colors',
+                    'relative flex h-9 w-full min-h-[36px] flex-col items-center justify-center rounded-lg text-xs font-semibold transition-colors cursor-pointer',
                     active
-                      ? 'bg-primary text-white shadow-xs'
+                      ? 'bg-primary text-white shadow-xs font-bold'
                       : today
                       ? 'border border-primary text-primary font-bold hover:bg-primary/10'
                       : 'text-foreground hover:bg-muted',
@@ -268,13 +266,13 @@ export function EventCalendarWidget({
                       <div className="flex items-center gap-1.5 flex-wrap">
                         <Badge
                           variant="outline"
-                          className="text-[9px] px-1.5 py-0 uppercase font-semibold"
+                          className="text-[10px] px-1.5 py-0 uppercase font-semibold"
                           style={{ color: tokens.primary, borderColor: `${tokens.primary}44` }}
                         >
                           {tokens.displayName}
                         </Badge>
                         {evt.venueHallName && (
-                          <span className="text-[10px] font-medium text-foreground bg-muted px-1.5 py-0.2 rounded">
+                          <span className="text-[10px] font-medium text-foreground bg-muted px-1.5 py-0.5 rounded">
                             {evt.venueHallName}
                           </span>
                         )}
@@ -284,7 +282,7 @@ export function EventCalendarWidget({
                         {evt.title}
                       </h4>
 
-                      <div className="flex flex-wrap items-center gap-3 text-[11px] text-muted-foreground">
+                      <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
                         <span className="flex items-center gap-1">
                           <Building2 className="h-3 w-3 text-primary/70 shrink-0" />
                           <span className="truncate">{evt.venueName}</span>
@@ -296,11 +294,12 @@ export function EventCalendarWidget({
                       </div>
                     </div>
 
-                    <Link href={`/${locale}/events/${evt.slug}`} className="shrink-0 self-start sm:self-auto">
-                      <Button size="sm" className="gap-1 text-xs cursor-pointer">
-                        <Ticket className="h-3.5 w-3.5" />
-                        <span>{tTickets('viewPass') || tTickets('bookPass') || 'Pass'}</span>
-                      </Button>
+                    <Link
+                      href={`/${locale}/events/${evt.slug}`}
+                      className={buttonVariants({ size: 'sm', className: 'gap-1 text-xs shrink-0 self-start sm:self-auto cursor-pointer font-semibold' })}
+                    >
+                      <Ticket className="h-3.5 w-3.5" />
+                      <span>{tTickets('viewPass') || tTickets('bookPass') || 'Pass'}</span>
                     </Link>
                   </div>
                 );
@@ -311,7 +310,7 @@ export function EventCalendarWidget({
                   <p className="font-semibold text-foreground">
                     {tCal('noEventsOnDate') || 'No events scheduled on this day.'}
                   </p>
-                  <p className="text-[11px]">
+                  <p className="text-xs">
                     Click any highlighted date dot on the calendar or jump directly to the next active trade show.
                   </p>
                 </div>

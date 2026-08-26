@@ -1,17 +1,12 @@
 import * as React from 'react';
 import { cookies, headers } from 'next/headers';
-import { notFound } from 'next/navigation';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { db } from '@/lib/db';
 import { FALLBACK_EVENTS } from '@/lib/discovery/fallbackData';
-import { EventCalendarWidget } from '@/components/discovery/EventCalendarWidget';
-import { EventCategoryPills } from '@/components/discovery/EventCategoryPills';
+import { CalendarInteractiveView } from '@/components/discovery/CalendarInteractiveView';
 import { Badge } from '@/components/ui/Badge';
-import { Calendar as CalendarIcon, MapPin, Building2, Ticket, Download, ArrowLeft } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { Calendar as CalendarIcon, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import { formatDateRange, getTimeZoneForRegion } from '@/lib/i18n/formatters';
-import { getArchetypeTokens } from '@/lib/theming';
 import { type EventSummary } from '@/types/discovery';
 
 interface CalendarPageProps {
@@ -33,9 +28,6 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
 
   const tCal = await getTranslations({ locale, namespace: 'calendar' });
   const tCom = await getTranslations({ locale, namespace: 'common' });
-  const tTix = await getTranslations({ locale, namespace: 'tickets' });
-  const tReg = await getTranslations({ locale, namespace: 'regions' });
-  const tArch = await getTranslations({ locale, namespace: 'archetypes' });
 
   const headerList = await headers();
   const cookieStore = await cookies();
@@ -49,16 +41,13 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
     geoHeaderRegion ||
     'id'
   ).toLowerCase();
-  const archetype = rawSearchParams.archetype;
+  const archetype = rawSearchParams.archetype || 'all';
 
   let events: any[] = [];
   try {
     const whereClause: any = {};
     if (region && region !== 'global') {
       whereClause.venue = { regionId: region };
-    }
-    if (archetype) {
-      whereClause.archetype = archetype;
     }
 
     events = await db.event.findMany({
@@ -81,9 +70,6 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
       if (region === 'global') return code === 'global' || code === 'gl';
       return true;
     });
-    if (archetype) {
-      events = events.filter((e) => e.archetype === archetype);
-    }
   }
 
   const mappedEvents: EventSummary[] = events.map((e: any) => ({
@@ -102,8 +88,6 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
     currency: region === 'id' ? 'IDR' : region === 'jp' ? 'JPY' : 'USD',
   }));
 
-  const timezone = getTimeZoneForRegion(region);
-
   return (
     <div className="min-h-screen bg-background py-8 sm:py-12">
       <div className="container space-y-8">
@@ -117,7 +101,7 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
             <span>{tCom('back') || 'Back'}</span>
           </Link>
 
-          <Badge variant="outline" className="text-xs font-semibold gap-1 uppercase">
+          <Badge variant="outline" className="text-xs font-semibold gap-1.5 uppercase px-2.5 py-1">
             <CalendarIcon className="h-3.5 w-3.5 text-primary" />
             <span>{region.toUpperCase()} {tCal('title') || 'Master Timetable'}</span>
           </Badge>
@@ -133,101 +117,13 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
           </p>
         </div>
 
-        {/* Category Filter Pills */}
-        <EventCategoryPills locale={locale} activeCategoryId={archetype} />
-
-        {/* Interactive Calendar Widget */}
-        <EventCalendarWidget
-          events={mappedEvents}
+        {/* Interactive Discovery & Timetable Workspace */}
+        <CalendarInteractiveView
+          initialEvents={mappedEvents}
           locale={locale}
-          regionCode={region}
+          region={region}
+          initialArchetype={archetype}
         />
-
-        {/* Full Chronological Timetable Section */}
-        <div className="space-y-4 pt-6 border-t border-border/70">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div>
-              <h2 className="text-lg sm:text-xl font-bold tracking-tight text-foreground">
-                {tCal('monthView') || 'Chronological Schedule Overview'}
-              </h2>
-              <p className="text-xs text-muted-foreground">{tReg('upcomingEvents') || 'All confirmed events ordered by start date.'}</p>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" className="gap-1.5 text-xs cursor-pointer">
-                <Download className="h-3.5 w-3.5" />
-                <span>{tCal('exportICal') || 'Export iCal (.ics)'}</span>
-              </Button>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-            {mappedEvents.map((evt: EventSummary) => {
-              const tokens = getArchetypeTokens(evt.archetype);
-              const dateRange = formatDateRange(evt.startDate, evt.endDate, locale, timezone);
-
-              let archetypeTitle = tokens.displayName;
-              try {
-                if (tArch && typeof (tArch as any).raw === 'function') {
-                  const raw = (tArch as any).raw(evt.archetype);
-                  if (raw?.title) archetypeTitle = raw.title;
-                }
-              } catch {
-                // fallback
-              }
-
-              return (
-                <div
-                  key={evt.id}
-                  className="flex flex-col justify-between rounded-xl border border-border/80 bg-card p-4 hover:border-primary/50 transition-all shadow-xs space-y-3"
-                >
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between gap-2">
-                      <Badge
-                        variant="default"
-                        className="text-[10px] font-bold uppercase border-0"
-                        style={{ backgroundColor: tokens.primary, color: '#ffffff' }}
-                      >
-                        {archetypeTitle}
-                      </Badge>
-                      {evt.venueHallName && (
-                        <span className="text-[10px] font-semibold text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
-                          {evt.venueHallName}
-                        </span>
-                      )}
-                    </div>
-
-                    <Link href={`/${locale}/events/${evt.slug}`}>
-                      <h3 className="text-sm font-bold text-foreground hover:text-primary transition-colors line-clamp-1">
-                        {evt.title}
-                      </h3>
-                    </Link>
-
-                    <div className="space-y-1 text-xs text-muted-foreground">
-                      <div className="flex items-center gap-1.5">
-                        <Building2 className="h-3.5 w-3.5 text-primary/80 shrink-0" />
-                        <span className="truncate">{evt.venueName} ({evt.cityName})</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-foreground font-medium">
-                        <CalendarIcon className="h-3.5 w-3.5 text-primary shrink-0" />
-                        <span>{dateRange}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="pt-2 border-t border-border/60 flex items-center justify-between">
-                    <Link href={`/${locale}/events/${evt.slug}`} className="w-full">
-                      <Button size="sm" className="w-full gap-1.5 text-xs font-semibold cursor-pointer">
-                        <Ticket className="h-3.5 w-3.5" />
-                        <span>{tTix('viewPass') || 'View Event & Tickets'}</span>
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
       </div>
     </div>
   );

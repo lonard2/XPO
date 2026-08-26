@@ -17,7 +17,7 @@ import {
   Sprout,
   Plane,
   GraduationCap,
-  Sparkles,
+  Crown,
   Layers,
   ArrowRight,
   ChevronLeft,
@@ -178,7 +178,7 @@ export const EVENT_CATEGORIES: CategoryItem[] = [
     shortName: 'Fashion & Beauty',
     tagline: 'Runway premieres, cosmetic OEM labs & retail buyer pavilions.',
     highlights: ['Runway Schedules', 'Cosmetic OEM', 'Wholesale Orders'],
-    icon: Sparkles,
+    icon: Crown,
     color: '#c026d3', // Fuchsia
     bgGradient: 'from-fuchsia-500/10 via-fuchsia-500/5 to-transparent',
     borderColor: '#e879f9',
@@ -354,15 +354,29 @@ export function EventCategoryPills({
 
       {/* Quick Category Jump Pill Bar */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none -mx-1 px-1">
-        <Link href={`/${locale}/events`}>
+        {onSelectCategory ? (
           <button
             type="button"
-            className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 transition-colors whitespace-nowrap cursor-pointer"
+            onClick={() => onSelectCategory('all')}
+            className={cn(
+              'flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border transition-colors whitespace-nowrap cursor-pointer',
+              !activeCategoryId || activeCategoryId === 'all'
+                ? 'border-primary bg-primary text-primary-foreground font-semibold shadow-xs'
+                : 'border-primary/30 bg-primary/10 text-primary hover:bg-primary/20'
+            )}
           >
             <Layers className="h-3 w-3" />
             <span>{tDisc('allArchetypes') || 'All (15)'}</span>
           </button>
-        </Link>
+        ) : (
+          <Link
+            href={`/${locale}/events`}
+            className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 transition-colors whitespace-nowrap cursor-pointer"
+          >
+            <Layers className="h-3 w-3" />
+            <span>{tDisc('allArchetypes') || 'All (15)'}</span>
+          </Link>
+        )}
         {EVENT_CATEGORIES.map((cat, idx) => {
           const Icon = cat.icon;
           const isSelected = activeCategoryId === cat.id;
