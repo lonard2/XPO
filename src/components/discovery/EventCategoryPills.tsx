@@ -403,7 +403,7 @@ export function EventCategoryPills({
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
         className={cn(
-          'flex items-stretch gap-4 overflow-x-auto pb-3 pt-1 scrollbar-none snap-x -mx-1 px-1 select-none',
+          'flex items-stretch gap-4 overflow-x-auto pb-3 pt-1 scrollbar-none snap-x -mx-1 px-1 select-none touch-pan-y',
           isDragging ? 'cursor-grabbing' : 'cursor-grab'
         )}
       >

@@ -8,7 +8,6 @@ import {
   MapPin,
   Ticket,
   ArrowRight,
-  Sparkles,
   Layers,
   Globe,
 } from 'lucide-react';
@@ -26,13 +25,15 @@ export interface EventCardProps {
   locale: string;
   className?: string;
   variant?: 'grid' | 'compact' | 'horizontal';
+  priority?: boolean;
 }
 
-export function EventCard({
+export const EventCard = React.memo(function EventCard({
   event,
   locale,
   className,
   variant = 'grid',
+  priority = false,
 }: EventCardProps) {
   let tArch: any = (k: string) => k;
   let tCom: any = (k: string) => k;
@@ -51,29 +52,39 @@ export function EventCard({
     // Fallback if rendered outside provider in tests
   }
 
-  const archetypeTokens = getArchetypeTokens(event.archetype);
+  const archetypeTokens = React.useMemo(
+    () => getArchetypeTokens(event.archetype),
+    [event.archetype]
+  );
   const regionCode = (event.region?.code || event.regionId || 'id').toLowerCase();
-  const timezone = getTimeZoneForRegion(regionCode);
-  const temporal = getEventTemporalStatus(event.startDate, event.endDate);
+  const timezone = React.useMemo(() => getTimeZoneForRegion(regionCode), [regionCode]);
+  const temporal = React.useMemo(
+    () => getEventTemporalStatus(event.startDate, event.endDate),
+    [event.startDate, event.endDate]
+  );
 
   // Price Calculation
-  const sortedTiers = event.ticketTiers && event.ticketTiers.length > 0
-    ? [...event.ticketTiers].sort((a, b) => a.price - b.price)
-    : [];
-  const lowestTier = sortedTiers[0];
-  const lowestPrice = lowestTier?.price ?? 0;
-  const currency = (lowestTier?.currency || event.region?.currency || 'IDR') as SupportedCurrency;
+  const priceDisplay = React.useMemo(() => {
+    const sortedTiers = event.ticketTiers && event.ticketTiers.length > 0
+      ? [...event.ticketTiers].sort((a, b) => a.price - b.price)
+      : [];
+    const lowestTier = sortedTiers[0];
+    const lowestPrice = lowestTier?.price ?? 0;
+    const currency = (lowestTier?.currency || event.region?.currency || 'IDR') as SupportedCurrency;
 
-  const priceDisplay = lowestPrice > 0
-    ? formatCurrency(lowestPrice, currency, locale)
-    : (tCom('free') || 'Free');
+    return lowestPrice > 0
+      ? formatCurrency(lowestPrice, currency, locale)
+      : (tCom('free') || 'Free');
+  }, [event.ticketTiers, event.region?.currency, locale, tCom]);
 
-  const dateRangeDisplay = formatDateRange(
-    event.startDate,
-    event.endDate,
-    locale,
-    timezone
-  );
+  const dateRangeDisplay = React.useMemo(() => {
+    return formatDateRange(
+      event.startDate,
+      event.endDate,
+      locale,
+      timezone
+    );
+  }, [event.startDate, event.endDate, locale, timezone]);
 
   let archetypeDisplayName = archetypeTokens.displayName;
   try {
@@ -107,7 +118,9 @@ export function EventCard({
             src={event.heroImageUrl}
             alt={event.title}
             className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
-            loading="lazy"
+            loading={priority ? 'eager' : 'lazy'}
+            fetchPriority={priority ? 'high' : 'auto'}
+            decoding="async"
           />
         ) : (
           <div
@@ -220,4 +233,4 @@ export function EventCard({
       </div>
     </Card>
   );
-}
+});
