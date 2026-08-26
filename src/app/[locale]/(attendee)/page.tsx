@@ -245,7 +245,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-border/80 pb-4">
           <div>
             <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider mb-1">
-              <Sparkles className="h-4 w-4" />
+              <Compass className="h-4 w-4" />
               <span>{tHome('featuredTradeShows') || 'Upcoming Trade Shows & Conventions'}</span>
             </div>
             <h2 className="text-xl sm:text-3xl font-extrabold tracking-tight text-foreground">
