@@ -84,19 +84,9 @@ export default function EventCustomizerPage() {
   const locale = (params?.locale as string) || "en";
   const eventId = (params?.slug || params?.id || "") as string;
 
-  let tOrg: any = (k: string) => k;
-  let tCom: any = (k: string) => k;
-  let tArch: any = (k: string) => k;
-  try {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tOrg = useTranslations("organizer");
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tCom = useTranslations("common");
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tArch = useTranslations("archetypes");
-  } catch {
-    // Fallback
-  }
+  const tOrg = useTranslations("organizer");
+  const tCom = useTranslations("common");
+  const tArch = useTranslations("archetypes");
 
   const [eventData, setEventData] = React.useState<any>(null);
   const [isLoading, setIsLoading] = React.useState(true);
@@ -317,7 +307,7 @@ export default function EventCustomizerPage() {
         {/* LEFT COLUMN: CUSTOMIZER CONTROLS (5 cols on lg) */}
         <div className="lg:col-span-5 space-y-5">
           {/* Card 0: Event Category Archetype */}
-          <Card className="p-5 border-border bg-card space-y-3">
+          <Card className="p-5 border-border bg-card space-y-3 shadow-xs">
             <div className="flex items-center justify-between">
               <h3 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
                 <Layers className="h-4 w-4 text-primary" />
@@ -326,15 +316,19 @@ export default function EventCustomizerPage() {
               <Badge variant="neutral" size="sm">15 Types</Badge>
             </div>
 
-            <p className="text-[11px] text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               Select an event category to switch layout behavior, default color tokens, and domain features.
             </p>
 
-            <div className="space-y-2">
+            <div className="space-y-1">
+              <label htmlFor="customizer-archetype-select" className="sr-only">
+                Select MICE Event Category
+              </label>
               <select
+                id="customizer-archetype-select"
                 value={archetype}
                 onChange={(e) => handleSelectArchetype(e.target.value as MiceArchetype)}
-                className="w-full h-9 rounded-lg border border-border bg-background px-3 text-xs font-medium text-foreground cursor-pointer"
+                className="w-full h-9 rounded-lg border border-border bg-background px-3 text-xs font-medium text-foreground cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
               >
                 {ALL_ARCHETYPE_OPTIONS.map((opt) => (
                   <option key={opt.id} value={opt.id}>
@@ -346,7 +340,7 @@ export default function EventCustomizerPage() {
           </Card>
 
           {/* Card 1: Theme Color Tokens */}
-          <Card className="p-5 border-border bg-card space-y-4">
+          <Card className="p-5 border-border bg-card space-y-4 shadow-xs">
             <div className="flex items-center justify-between">
               <h3 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
                 <Palette className="h-4 w-4 text-primary" />
@@ -356,7 +350,7 @@ export default function EventCustomizerPage() {
 
             {/* Quick Presets */}
             <div className="space-y-2">
-              <span className="text-[11px] font-semibold text-muted-foreground block">
+              <span className="text-xs font-semibold text-muted-foreground block">
                 Quick Palette Presets:
               </span>
               <div className="flex flex-wrap gap-1.5">
@@ -365,7 +359,7 @@ export default function EventCustomizerPage() {
                     key={p.name}
                     type="button"
                     onClick={() => handleApplyPreset(p)}
-                    className="flex items-center gap-1.5 px-2 py-1 rounded-md border border-border bg-muted/40 hover:bg-accent text-[11px] text-foreground transition-colors cursor-pointer"
+                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-border bg-muted/40 hover:bg-accent text-xs text-foreground transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
                   >
                     <span
                       className="h-2.5 w-2.5 rounded-full"
@@ -379,40 +373,46 @@ export default function EventCustomizerPage() {
 
             {/* Primary & Accent Pickers */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-border/60">
-              <div>
-                <label className="block text-xs font-semibold text-foreground mb-1">
+              <div className="space-y-1">
+                <label htmlFor="customizer-primary-color" className="block text-xs font-semibold text-foreground">
                   Primary Brand Color
                 </label>
                 <div className="flex items-center gap-2">
                   <input
+                    id="customizer-primary-color"
                     type="color"
-                    className="h-9 w-12 rounded cursor-pointer border border-border"
+                    className="h-9 w-12 rounded cursor-pointer border border-border p-0.5 bg-background"
                     value={primaryColor}
                     onChange={(e) => setPrimaryColor(e.target.value)}
+                    aria-label="Primary Brand Color picker"
                   />
                   <Input
                     value={primaryColor}
                     onChange={(e) => setPrimaryColor(e.target.value)}
-                    className="font-mono text-xs"
+                    className="font-mono text-xs h-9"
+                    aria-label="Primary Brand Color hex code"
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-foreground mb-1">
+              <div className="space-y-1">
+                <label htmlFor="customizer-accent-color" className="block text-xs font-semibold text-foreground">
                   Accent Color
                 </label>
                 <div className="flex items-center gap-2">
                   <input
+                    id="customizer-accent-color"
                     type="color"
-                    className="h-9 w-12 rounded cursor-pointer border border-border"
+                    className="h-9 w-12 rounded cursor-pointer border border-border p-0.5 bg-background"
                     value={accentColor}
                     onChange={(e) => setAccentColor(e.target.value)}
+                    aria-label="Accent Color picker"
                   />
                   <Input
                     value={accentColor}
                     onChange={(e) => setAccentColor(e.target.value)}
-                    className="font-mono text-xs"
+                    className="font-mono text-xs h-9"
+                    aria-label="Accent Color hex code"
                   />
                 </div>
               </div>
@@ -420,7 +420,7 @@ export default function EventCustomizerPage() {
           </Card>
 
           {/* Card 2: Typography Tokens */}
-          <Card className="p-5 border-border bg-card space-y-3">
+          <Card className="p-5 border-border bg-card space-y-3 shadow-xs">
             <h3 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
               <Type className="h-4 w-4 text-primary" />
               <span>Event Typography Pairings</span>
@@ -433,31 +433,33 @@ export default function EventCustomizerPage() {
                 { id: "font-mono", label: "Technical Mono", desc: "Tech & Industrial" },
                 { id: "font-legible", label: "Accessible Legible", desc: "High Readability" },
               ].map((f) => (
-                <div
+                <button
+                  type="button"
                   key={f.id}
                   onClick={() => setFontFamily(f.id)}
                   className={cn(
-                    "p-2.5 rounded-lg border text-left cursor-pointer transition-all",
+                    "p-2.5 rounded-lg border text-left cursor-pointer transition-all focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
                     fontFamily === f.id
                       ? "border-primary bg-primary/5 ring-1 ring-primary/30"
                       : "border-border hover:border-primary/40 bg-card"
                   )}
                 >
                   <div className="text-xs font-bold text-foreground">{f.label}</div>
-                  <div className="text-[10px] text-muted-foreground">{f.desc}</div>
-                </div>
+                  <div className="text-xs text-muted-foreground mt-0.5">{f.desc}</div>
+                </button>
               ))}
             </div>
           </Card>
 
           {/* Card 3: Hero Media & Badge Overrides */}
-          <Card className="p-5 border-border bg-card space-y-4">
+          <Card className="p-5 border-border bg-card space-y-4 shadow-xs">
             <h3 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
               <ImageIcon className="h-4 w-4 text-primary" />
               <span>Hero Media & Overlay Controls</span>
             </h3>
 
             <Input
+              id="customizer-hero-badge-input"
               label="Custom Hero Badge Label"
               placeholder="e.g. Official 2027 Flagship Summit"
               value={heroBadge}
@@ -467,6 +469,7 @@ export default function EventCustomizerPage() {
 
             <div>
               <Input
+                id="customizer-hero-image-url"
                 label="Hero Banner Image URL"
                 value={heroImageUrl}
                 onChange={(e) => setHeroImageUrl(e.target.value)}
@@ -477,7 +480,7 @@ export default function EventCustomizerPage() {
                     key={hip.name}
                     type="button"
                     onClick={() => setHeroImageUrl(hip.url)}
-                    className="text-[10px] px-2 py-1 bg-muted/60 hover:bg-muted border border-border rounded text-muted-foreground hover:text-foreground cursor-pointer"
+                    className="text-xs px-2.5 py-1 bg-muted/60 hover:bg-muted border border-border rounded text-muted-foreground hover:text-foreground cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
                   >
                     {hip.name}
                   </button>
@@ -487,10 +490,13 @@ export default function EventCustomizerPage() {
 
             <div className="space-y-1 pt-1">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-semibold text-foreground">Banner Overlay Opacity</span>
+                <label htmlFor="customizer-overlay-opacity" className="font-semibold text-foreground cursor-pointer">
+                  Banner Overlay Opacity
+                </label>
                 <span className="font-mono text-muted-foreground">{Math.round(bannerOverlayOpacity * 100)}%</span>
               </div>
               <input
+                id="customizer-overlay-opacity"
                 type="range"
                 min="0.30"
                 max="0.95"
@@ -503,7 +509,7 @@ export default function EventCustomizerPage() {
           </Card>
 
           {/* Card 4: Section Visibility Toggles */}
-          <Card className="p-5 border-border bg-card space-y-3">
+          <Card className="p-5 border-border bg-card space-y-3 shadow-xs">
             <h3 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
               <Sliders className="h-4 w-4 text-primary" />
               <span>Event Page Section Visibility</span>
@@ -520,7 +526,7 @@ export default function EventCustomizerPage() {
                 return (
                   <label
                     key={sec.key}
-                    className="flex items-center justify-between p-2 rounded-lg bg-muted/30 hover:bg-muted/50 border border-border/60 cursor-pointer"
+                    className="flex items-center justify-between p-2.5 rounded-lg bg-muted/30 hover:bg-muted/50 border border-border/60 cursor-pointer transition-colors"
                   >
                     <span className="font-medium text-foreground">{sec.label}</span>
                     <input
