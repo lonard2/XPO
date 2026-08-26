@@ -572,7 +572,7 @@
     "manualMode": "手动输入验证码",
     "enterQrHash": "输入或粘贴二维码哈希值...",
     "verifyPass": "验证通行证",
-    "scanSuccess": "通行证有效 — 准予入场",
+    "scanSuccess": "通行证有效 - 准予入场",
     "doubleScanWarning": "已核销（检测到重复扫码）",
     "invalidPassError": "无效或被篡改的数字签名",
     "recentScans": "闸机核验实时记录",

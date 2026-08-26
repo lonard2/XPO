@@ -572,7 +572,7 @@
     "manualMode": "Manuelle Code-Eingabe",
     "enterQrHash": "QR-Hash eingeben...",
     "verifyPass": "Pass prüfen",
-    "scanSuccess": "Ticket gültig — Einlass gewährt",
+    "scanSuccess": "Ticket gültig - Einlass gewährt",
     "doubleScanWarning": "Bereits eingecheckt (Doppelscan)",
     "invalidPassError": "Ungültige oder manipulierte Signatur",
     "recentScans": "Einlass-Protokoll",

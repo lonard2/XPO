@@ -572,7 +572,7 @@
     "manualMode": "Entrada Manual de Código",
     "enterQrHash": "Introduzca o pegue el hash QR...",
     "verifyPass": "Verificar Pase",
-    "scanSuccess": "Pase Válido — Acceso Permitido",
+    "scanSuccess": "Pase Válido - Acceso Permitido",
     "doubleScanWarning": "Ya Registrado (Acceso Duplicado)",
     "invalidPassError": "Firma Inválida o Manipulada",
     "recentScans": "Registro de Accesos en Tiempo Real",

@@ -385,8 +385,8 @@ export function PopCultureGamingView({ event, locale = "en", onSelectTier }: Arc
             <div className="space-y-1">
               <label className="font-semibold text-foreground">Select Time Window *</label>
               <select className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary">
-                <option>Session 1 — 14:00 - 15:00</option>
-                <option>Session 2 — 16:30 - 17:30</option>
+                <option>Session 1: 14:00 - 15:00</option>
+                <option>Session 2: 16:30 - 17:30</option>
               </select>
             </div>
             <div className="pt-2">

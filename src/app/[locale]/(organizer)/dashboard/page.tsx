@@ -262,7 +262,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
                     <div className="flex items-center gap-2">
                       <Building2 className="h-3.5 w-3.5 text-primary shrink-0" />
                       <span className="truncate">
-                        {event.venue?.name} {event.venueHall ? `— ${event.venueHall.name}` : ""}
+                        {event.venue?.name} {event.venueHall ? `- ${event.venueHall.name}` : ""}
                       </span>
                     </div>
                   </div>

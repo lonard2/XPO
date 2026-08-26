@@ -116,7 +116,7 @@ export function HeroVenueQuickGlanceRail({
       schedule = 'Near-Upcoming Schedule';
     }
 
-    return `${major} ${regionTxt} — ${schedule}`;
+    return `${major} ${regionTxt}: ${schedule}`;
   };
 
   const getQuickGlanceLabel = () => {

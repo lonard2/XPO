@@ -353,10 +353,10 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier }: Arch
               <div className="space-y-1">
                 <label className="font-semibold text-foreground">Preferred Time Slot *</label>
                 <select className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary">
-                  <option>Day 1 — 14:00 - 14:45</option>
-                  <option>Day 1 — 15:30 - 16:15</option>
-                  <option>Day 2 — 10:00 - 10:45</option>
-                  <option>Day 2 — 11:30 - 12:15</option>
+                  <option>Day 1: 14:00 - 14:45</option>
+                  <option>Day 1: 15:30 - 16:15</option>
+                  <option>Day 2: 10:00 - 10:45</option>
+                  <option>Day 2: 11:30 - 12:15</option>
                 </select>
               </div>
               <div className="space-y-1">

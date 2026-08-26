@@ -28,7 +28,7 @@ Execute the complete testing suite across all unit and integration layers:
 ```bash
 # Run all automated unit and integration tests
 npm test
-
+        
 # Run TypeScript type check
 npm run type-check
 

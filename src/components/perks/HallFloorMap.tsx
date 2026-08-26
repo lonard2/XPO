@@ -100,7 +100,7 @@ export function HallFloorMap({
             {tPerks("interactiveFloorPlan") || "Interactive SVG Hall Floor Plan"}
           </h3>
           <p className="text-xs sm:text-sm text-muted-foreground">
-            {venueName} {hallName ? `• ${hallName}` : ""} — {tPerks("navigateFloorPlan") || "Navigate exhibitor booths, VIP lounges, and amenities."}
+            {venueName}{hallName ? ` (${hallName})` : ""} - {tPerks("navigateFloorPlan") || "Navigate exhibitor booths, VIP lounges, and amenities."}
           </p>
         </div>
 

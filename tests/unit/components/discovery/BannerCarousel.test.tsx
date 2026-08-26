@@ -126,7 +126,7 @@ describe('Discovery Component: BannerCarousel', () => {
 
     expect(screen.getByText('Tokyo Robotics Live Championship 2026')).toBeInTheDocument();
     expect(screen.getByText('Happening Now')).toBeInTheDocument();
-    expect(screen.getByText('Event is Happening Now — Doors Open')).toBeInTheDocument();
+    expect(screen.getByText('Event is Happening Now - Doors Open')).toBeInTheDocument();
     expect(screen.getByText('Get Pass & Enter Doors')).toBeInTheDocument();
   });
 

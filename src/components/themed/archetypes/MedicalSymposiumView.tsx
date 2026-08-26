@@ -258,7 +258,7 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
                     <div className="flex items-center gap-2 text-xs text-muted-foreground">
                       <GraduationCap className="h-3.5 w-3.5 text-[var(--archetype-primary)]" />
                       <span className="font-semibold text-foreground">{agenda.speakerName}</span>
-                      {agenda.speakerRole && <span>— {agenda.speakerRole}</span>}
+                      {agenda.speakerRole && <span>, {agenda.speakerRole}</span>}
                     </div>
                   )}
                 </div>

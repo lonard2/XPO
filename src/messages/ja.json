@@ -572,7 +572,7 @@
     "manualMode": "コード手動入力",
     "enterQrHash": "QRハッシュコードを入力または貼り付け...",
     "verifyPass": "パスを照合",
-    "scanSuccess": "パス認証成功 — 入場許可",
+    "scanSuccess": "パス認証成功 - 入場許可",
     "doubleScanWarning": "入場済み（二重スキャンを検知）",
     "invalidPassError": "無効または改ざんされた署名",
     "recentScans": "入場ゲート検証ログ",

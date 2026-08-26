@@ -13,7 +13,7 @@ import {
   Moon,
   Menu,
   X,
-  Sparkles,
+  Layers,
   Calendar,
   UserCheck,
   ShieldCheck,
@@ -128,7 +128,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
 
   const navLinks = [
     { href: `/${locale}`, label: tNav("explore") || "Explore", icon: Compass },
-    { href: `/${locale}/events`, label: tNav("events") || "Events", icon: Sparkles },
+    { href: `/${locale}/events`, label: tNav("events") || "Events", icon: Layers },
     { href: `/${locale}/calendar`, label: tNav("calendar") || "Calendar", icon: Calendar },
     { href: `/${locale}/venues`, label: tNav("venues") || "Venues", icon: Building2 },
     { href: `/${locale}/my-tickets`, label: tNav("myTickets") || "My Passes", icon: Ticket },

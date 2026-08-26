@@ -572,7 +572,7 @@
     "manualMode": "Entri Kode Manual",
     "enterQrHash": "Masukkan atau tempel kode hash QR...",
     "verifyPass": "Verifikasi Pas",
-    "scanSuccess": "Pas Valid — Masuk Diizinkan",
+    "scanSuccess": "Pas Valid - Masuk Diizinkan",
     "doubleScanWarning": "Sudah Check-In (Pemindaian Ganda Terdeteksi)",
     "invalidPassError": "Tanda Tangan Tidak Valid atau Rusak",
     "recentScans": "Telemetri Verifikasi Pintu",
