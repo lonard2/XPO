@@ -149,7 +149,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
                 <span className="text-lg font-bold tracking-tight text-foreground leading-tight">
                   XPO
                 </span>
-                <span className="text-[10px] font-medium tracking-wider uppercase text-muted-foreground">
+                <span className="text-xs font-medium tracking-wider uppercase text-muted-foreground">
                   MICE Digital
                 </span>
               </div>
@@ -165,7 +165,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
                     key={link.href}
                     href={link.href}
                     className={cn(
-                      "flex items-center gap-1 lg:gap-1.5 xl:gap-2 px-2 lg:px-2.5 xl:px-3 py-1.5 lg:py-2 rounded-md text-[11px] lg:text-xs xl:text-sm font-medium whitespace-nowrap transition-colors",
+                      "flex items-center gap-1 lg:gap-1.5 xl:gap-2 px-2 lg:px-2.5 xl:px-3 py-1.5 lg:py-2 rounded-md text-xs xl:text-sm font-medium whitespace-nowrap transition-colors",
                       isActive
                         ? "bg-accent text-accent-foreground font-semibold"
                         : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
@@ -182,7 +182,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
           {/* Right Actions */}
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {/* Regional Hub Switcher */}
-            <div className="hidden xl:block">
+            <div className="hidden lg:block">
               <RegionSwitcher currentLocale={locale} activeRegionCode={activeRegion} />
             </div>
 
@@ -201,10 +201,10 @@ export function Navbar({ locale = "en" }: NavbarProps) {
               </div>
               <div className="hidden sm:flex flex-col">
                 <div className="flex items-center gap-1">
-                  <span className="font-semibold text-foreground max-w-[85px] lg:max-w-[100px] truncate text-[11px]">
+                  <span className="font-semibold text-foreground max-w-[85px] lg:max-w-[100px] truncate text-xs">
                     {user ? user.name.split(" ")[0] : (tNav("signIn") || "Sign In")}
                   </span>
-                  <Badge variant={getRoleBadgeVariant(role)} size="sm" className="text-[9px] py-0 px-1">
+                  <Badge variant={getRoleBadgeVariant(role)} size="sm" className="text-xs py-0 px-1 font-semibold">
                     {role}
                   </Badge>
                 </div>
@@ -262,7 +262,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
                   <div className="text-xs font-semibold text-foreground">
                     {user ? user.name : "Guest User"}
                   </div>
-                  <div className="text-[10px] text-muted-foreground">
+                  <div className="text-xs text-muted-foreground">
                     Active Persona: {getRoleLabel(role)}
                   </div>
                 </div>
@@ -298,7 +298,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
 
             {/* Regional Hub Selector in Mobile */}
             <div className="pt-2 border-t border-border space-y-2">
-              <span className="text-[11px] font-semibold uppercase text-muted-foreground tracking-wider block px-1">
+              <span className="text-xs font-semibold uppercase text-muted-foreground tracking-wider block px-1">
                 Select Regional Hub
               </span>
               <RegionSwitcher

@@ -9,7 +9,6 @@ import {
   Ticket,
   ArrowRight,
   Layers,
-  Globe,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
@@ -35,22 +34,10 @@ export const EventCard = React.memo(function EventCard({
   variant = 'grid',
   priority = false,
 }: EventCardProps) {
-  let tArch: any = (k: string) => k;
-  let tCom: any = (k: string) => k;
-  let tTick: any = (k: string) => k;
-  let tDisc: any = (k: string) => k;
-  try {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tArch = useTranslations('archetypes');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tCom = useTranslations('common');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tTick = useTranslations('tickets');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tDisc = useTranslations('discovery');
-  } catch {
-    // Fallback if rendered outside provider in tests
-  }
+  const tArch = useTranslations('archetypes');
+  const tCom = useTranslations('common');
+  const tTick = useTranslations('tickets');
+  const tDisc = useTranslations('discovery');
 
   const archetypeTokens = React.useMemo(
     () => getArchetypeTokens(event.archetype),
@@ -97,7 +84,6 @@ export const EventCard = React.memo(function EventCard({
   }
 
   const formatLabel = event.format ? event.format.replace(/_/g, ' ') : 'IN PERSON';
-  const scaleLabel = event.scale ? event.scale.replace(/_/g, ' ') : 'LARGE';
 
   return (
     <Card
@@ -129,7 +115,7 @@ export const EventCard = React.memo(function EventCard({
               background: `linear-gradient(135deg, ${archetypeTokens.primary}25 0%, ${archetypeTokens.accent}25 100%)`,
             }}
           >
-            <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#000_1px,transparent_1px)] dark:bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:12px_12px]" />
+            <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#090d16_1px,transparent_1px)] dark:bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:12px_12px]" />
             <Layers className="h-8 w-8 opacity-50 relative z-10" style={{ color: archetypeTokens.primary }} />
           </div>
         )}
@@ -138,7 +124,7 @@ export const EventCard = React.memo(function EventCard({
         <div className="absolute top-2.5 left-2.5 flex flex-wrap items-center gap-1.5 z-10">
           <Badge
             variant="default"
-            className="text-[10px] uppercase font-bold tracking-wider shadow-sm"
+            className="text-xs uppercase font-bold tracking-wider shadow-sm"
             style={{
               backgroundColor: archetypeTokens.primary,
               color: '#ffffff',
@@ -148,20 +134,20 @@ export const EventCard = React.memo(function EventCard({
           </Badge>
 
           {temporal.isLive && (
-            <Badge className="bg-emerald-600 text-white text-[10px] font-bold gap-1 shadow-sm">
+            <Badge className="bg-emerald-600 text-white text-xs font-bold gap-1 shadow-sm">
               <span className="h-1.5 w-1.5 rounded-full bg-white inline-block animate-ping" />
               <span>Live</span>
             </Badge>
           )}
 
           {temporal.isPast && (
-            <Badge variant="secondary" className="text-[10px] font-medium bg-black/70 text-slate-300 border border-slate-700 shadow-sm backdrop-blur-xs">
+            <Badge variant="secondary" className="text-xs font-medium bg-black/70 text-slate-300 border border-slate-700 shadow-sm backdrop-blur-xs">
               <span>Concluded</span>
             </Badge>
           )}
 
           {temporal.isUpcoming && event.isFeatured && (
-            <Badge variant="warning" className="text-[10px] font-semibold gap-1 shadow-sm">
+            <Badge variant="warning" className="text-xs font-semibold gap-1 shadow-sm">
               <Layers className="h-2.5 w-2.5" />
               <span>Featured</span>
             </Badge>
@@ -169,7 +155,7 @@ export const EventCard = React.memo(function EventCard({
         </div>
 
         <div className="absolute top-2.5 right-2.5 z-10">
-          <Badge variant="outline" className="text-[10px] uppercase font-mono bg-background/90 backdrop-blur-xs">
+          <Badge variant="outline" className="text-xs uppercase font-mono bg-background/90 backdrop-blur-xs font-semibold">
             {formatLabel}
           </Badge>
         </div>
@@ -178,7 +164,7 @@ export const EventCard = React.memo(function EventCard({
       {/* Main Content Details */}
       <div className="flex flex-1 flex-col justify-between p-5 space-y-3">
         <CardHeader className="p-0 space-y-1.5">
-          <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
             <Calendar className="h-3.5 w-3.5 text-primary shrink-0" />
             <span className="font-medium text-foreground">{dateRangeDisplay}</span>
           </div>
@@ -202,7 +188,7 @@ export const EventCard = React.memo(function EventCard({
               <Building2 className="h-3.5 w-3.5 text-primary/80 shrink-0 mt-0.5" />
               <div className="flex flex-col">
                 <span className="font-medium text-foreground line-clamp-1">{event.venue.name}</span>
-                <span className="text-[11px] text-muted-foreground flex items-center gap-1">
+                <span className="text-xs text-muted-foreground flex items-center gap-1">
                   <MapPin className="h-3 w-3 inline text-muted-foreground" />
                   {event.venue.city}
                   {event.venueHall && ` • ${event.venueHall.name}`}
@@ -214,7 +200,7 @@ export const EventCard = React.memo(function EventCard({
 
         <CardFooter className="p-0 pt-3 border-t border-border/60 flex items-center justify-between">
           <div className="flex flex-col">
-            <span className="text-[10px] uppercase font-semibold text-muted-foreground tracking-wider">
+            <span className="text-xs uppercase font-semibold text-muted-foreground tracking-wider">
               {temporal.isPast ? (tCom('date') || 'Status') : (tTick('price') || 'Price')}
             </span>
             <span className="text-sm font-extrabold text-foreground">

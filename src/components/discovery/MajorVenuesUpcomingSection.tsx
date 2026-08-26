@@ -6,17 +6,14 @@ import {
   Building2,
   Calendar,
   MapPin,
-  Ticket,
   ArrowRight,
-  Sparkles,
-  Layers,
   ChevronRight,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
+import { Card } from '@/components/ui/Card';
 import { useTranslations } from 'next-intl';
-import { formatDateRange, formatCurrency, getTimeZoneForRegion } from '@/lib/i18n/formatters';
+import { formatDateRange, getTimeZoneForRegion } from '@/lib/i18n/formatters';
 import { getArchetypeTokens } from '@/lib/theming';
 import { type VenueWithEvents } from '@/types/discovery';
 import { cn } from '@/lib/utils';
@@ -34,16 +31,8 @@ export function MajorVenuesUpcomingSection({
   regionCode,
   className,
 }: MajorVenuesUpcomingProps) {
-  let tVen: any = (k: string) => k;
-  let tArch: any = (k: string) => k;
-  try {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tVen = useTranslations('venues');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tArch = useTranslations('archetypes');
-  } catch {
-    // Fallback if rendered outside provider in tests
-  }
+  const tVen = useTranslations('venues');
+  const tArch = useTranslations('archetypes');
 
   if (!venues || venues.length === 0) {
     return null;
@@ -84,7 +73,7 @@ export function MajorVenuesUpcomingSection({
         </Link>
       </div>
 
-      {/* Major Venues Responsive Grid (Optimized for Mobile, Tablet & Widescreen Desktop) */}
+      {/* Major Venues Responsive Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 gap-6">
         {venues.map((venue) => {
           // Max 3 upcoming/current events per venue
@@ -116,7 +105,7 @@ export function MajorVenuesUpcomingSection({
                   </div>
 
                   {hallCount > 0 && (
-                    <Badge variant="secondary" className="text-[10px] font-semibold bg-background/90 text-muted-foreground border-border/60">
+                    <Badge variant="secondary" className="text-xs font-semibold bg-background/90 text-muted-foreground border-border/60">
                       {hallCount} Halls
                     </Badge>
                   )}
@@ -134,7 +123,7 @@ export function MajorVenuesUpcomingSection({
                   </h3>
                 </Link>
                 {venue.transitInfo && (
-                  <p className="text-[11px] text-muted-foreground line-clamp-1 mt-0.5 flex items-center gap-1">
+                  <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5 flex items-center gap-1">
                     <MapPin className="h-3 w-3 text-primary/70 shrink-0" />
                     <span>{venue.transitInfo}</span>
                   </p>
@@ -143,9 +132,9 @@ export function MajorVenuesUpcomingSection({
 
               {/* Up to 3 Current & Near-Upcoming Events */}
               <div className="p-4 sm:p-5 pt-0 space-y-2.5 flex-1 flex flex-col justify-start">
-                <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground pt-2 border-t border-border/60 flex items-center justify-between">
+                <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground pt-2 border-t border-border/60 flex items-center justify-between">
                   <span>Current & Near-Upcoming Events</span>
-                  <span className="text-[10px] font-normal lowercase text-primary font-mono">
+                  <span className="text-xs font-medium lowercase text-primary font-mono">
                     {upcomingEvents.length} listed
                   </span>
                 </div>
@@ -165,14 +154,14 @@ export function MajorVenuesUpcomingSection({
                             <div className="flex items-center gap-1.5 flex-wrap">
                               <Badge
                                 variant="outline"
-                                className="text-[9px] px-1.5 py-0 uppercase font-semibold"
+                                className="text-xs px-2 py-0.5 uppercase font-bold"
                                 style={{ color: tokens.primary, borderColor: `${tokens.primary}44` }}
                               >
                                 {tokens.displayName}
                               </Badge>
 
                               {evt.venueHallName && (
-                                <span className="text-[10px] font-medium text-foreground bg-muted px-1.5 py-0.2 rounded">
+                                <span className="text-xs font-medium text-foreground bg-muted px-1.5 py-0.5 rounded">
                                   {evt.venueHallName}
                                 </span>
                               )}
@@ -186,7 +175,7 @@ export function MajorVenuesUpcomingSection({
                               {evt.title}
                             </Link>
 
-                            <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
+                            <div className="flex items-center gap-1 text-xs text-muted-foreground">
                               <Calendar className="h-3 w-3 shrink-0" />
                               <span className="truncate">{dates}</span>
                             </div>
@@ -213,7 +202,7 @@ export function MajorVenuesUpcomingSection({
               <div className="px-4 sm:px-5 py-3 border-t border-border/60 bg-muted/20 flex items-center justify-between text-xs">
                 <Link
                   href={`/${locale}/venues/${venue.slug}`}
-                  className="font-medium text-primary hover:underline flex items-center gap-1 text-[11px]"
+                  className="font-medium text-primary hover:underline flex items-center gap-1 text-xs"
                 >
                   <span>Explore full {venue.name} calendar</span>
                   <ArrowRight className="h-3 w-3" />

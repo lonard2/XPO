@@ -30,26 +30,19 @@ export function HeroVenueQuickGlanceRail({
   regionCode,
   className,
 }: HeroVenueQuickGlanceRailProps) {
-  let tReg: any = (k: string) => k;
-  let tTick: any = (k: string) => k;
-  let tArch: any = (k: string) => k;
-  let tVen: any = (k: string) => k;
-  try {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tReg = useTranslations('regions');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tTick = useTranslations('tickets');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tArch = useTranslations('archetypes');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tVen = useTranslations('venues');
-  } catch {
-    // Fallback if rendered outside provider in tests
-  }
+  const tReg = useTranslations('regions');
+  const tTick = useTranslations('tickets');
+  const tArch = useTranslations('archetypes');
+  const tVen = useTranslations('venues');
 
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = React.useState(false);
   const [canScrollRight, setCanScrollRight] = React.useState(true);
+
+  // Mouse Drag-to-Scroll State
+  const [isDragging, setIsDragging] = React.useState(false);
+  const [startX, setStartX] = React.useState(0);
+  const [scrollLeftState, setScrollLeftState] = React.useState(0);
 
   const timezone = getTimeZoneForRegion(regionCode);
 
@@ -64,7 +57,7 @@ export function HeroVenueQuickGlanceRail({
     checkScroll();
     const el = scrollContainerRef.current;
     if (el) {
-      el.addEventListener('scroll', checkScroll);
+      el.addEventListener('scroll', checkScroll, { passive: true });
       window.addEventListener('resize', checkScroll);
       return () => {
         el.removeEventListener('scroll', checkScroll);
@@ -77,6 +70,24 @@ export function HeroVenueQuickGlanceRail({
     if (!scrollContainerRef.current) return;
     const scrollAmount = direction === 'left' ? -380 : 380;
     scrollContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!scrollContainerRef.current) return;
+    setIsDragging(true);
+    setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
+    setScrollLeftState(scrollContainerRef.current.scrollLeft);
+  };
+
+  const handleMouseLeave = () => setIsDragging(false);
+  const handleMouseUp = () => setIsDragging(false);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !scrollContainerRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    scrollContainerRef.current.scrollLeft = scrollLeftState - walk;
   };
 
   if (!venues || venues.length === 0) {
@@ -154,12 +165,12 @@ export function HeroVenueQuickGlanceRail({
           </span>
         </div>
 
-        {/* Scroll Arrows with 44px Touch Target Padding */}
+        {/* Scroll Arrows with 44px Touch Target Support */}
         <div className="flex items-center gap-1.5">
           <Button
             size="icon"
             variant="ghost"
-            className="relative h-8 w-8 rounded-lg text-muted-foreground hover:text-foreground disabled:opacity-30 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+            className="h-9 w-9 sm:h-8 sm:w-8 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 rounded-lg text-muted-foreground hover:text-foreground disabled:opacity-30 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
             disabled={!canScrollLeft}
             onClick={() => scroll('left')}
             aria-label="Scroll venues left"
@@ -169,7 +180,7 @@ export function HeroVenueQuickGlanceRail({
           <Button
             size="icon"
             variant="ghost"
-            className="relative h-8 w-8 rounded-lg text-muted-foreground hover:text-foreground disabled:opacity-30 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+            className="h-9 w-9 sm:h-8 sm:w-8 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 rounded-lg text-muted-foreground hover:text-foreground disabled:opacity-30 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
             disabled={!canScrollRight}
             onClick={() => scroll('right')}
             aria-label="Scroll venues right"
@@ -179,10 +190,17 @@ export function HeroVenueQuickGlanceRail({
         </div>
       </div>
 
-      {/* Horizontally Scrollable Rail */}
+      {/* Horizontally Scrollable Rail with Drag Support */}
       <div
         ref={scrollContainerRef}
-        className="flex items-stretch gap-3.5 overflow-x-auto pb-1 scrollbar-none snap-x touch-pan-y select-none"
+        onMouseDown={handleMouseDown}
+        onMouseLeave={handleMouseLeave}
+        onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseMove}
+        className={cn(
+          'flex items-stretch gap-3.5 overflow-x-auto pb-1 scrollbar-none snap-x touch-pan-y',
+          isDragging ? 'cursor-grabbing' : 'cursor-grab'
+        )}
       >
         {venues.map((venue) => {
           const upcomingEvents = (venue.events || []).slice(0, 3);
@@ -191,7 +209,7 @@ export function HeroVenueQuickGlanceRail({
           return (
             <div
               key={venue.id}
-              className="flex flex-col justify-between min-w-[300px] sm:min-w-[360px] max-w-[400px] rounded-xl border border-border/80 bg-background/80 hover:bg-background hover:border-primary/50 transition-all p-3 shadow-2xs snap-start shrink-0 space-y-2.5"
+              className="flex flex-col justify-between min-w-[300px] sm:min-w-[360px] max-w-[400px] rounded-xl border border-border/80 bg-background/80 hover:bg-background hover:border-primary/50 transition-all p-3.5 shadow-2xs snap-start shrink-0 space-y-2.5"
             >
               {/* Venue Title & Tag */}
               <div className="flex items-start justify-between gap-2">

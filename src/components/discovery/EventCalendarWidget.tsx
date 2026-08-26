@@ -13,7 +13,6 @@ import {
 } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
 import { Button, buttonVariants } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
 import { useTranslations } from 'next-intl';
 import { formatDateRange, getTimeZoneForRegion } from '@/lib/i18n/formatters';
 import { getArchetypeTokens } from '@/lib/theming';
@@ -175,17 +174,17 @@ export function EventCalendarWidget({
               {monthName}
             </h4>
             <div className="flex items-center gap-1">
-              <Button size="icon" variant="ghost" className="h-7 w-7 rounded-md cursor-pointer" onClick={prevMonth} aria-label="Previous month">
+              <Button size="icon" variant="ghost" className="h-8 w-8 sm:h-7 sm:w-7 rounded-md cursor-pointer" onClick={prevMonth} aria-label="Previous month">
                 <ChevronLeft className="h-3.5 w-3.5" />
               </Button>
-              <Button size="icon" variant="ghost" className="h-7 w-7 rounded-md cursor-pointer" onClick={nextMonth} aria-label="Next month">
+              <Button size="icon" variant="ghost" className="h-8 w-8 sm:h-7 sm:w-7 rounded-md cursor-pointer" onClick={nextMonth} aria-label="Next month">
                 <ChevronRight className="h-3.5 w-3.5" />
               </Button>
             </div>
           </div>
 
           {/* Weekday Labels */}
-          <div className="grid grid-cols-7 gap-1 text-center text-[10px] font-semibold text-muted-foreground uppercase">
+          <div className="grid grid-cols-7 gap-1 text-center text-xs font-bold text-muted-foreground uppercase">
             <span>Su</span>
             <span>Mo</span>
             <span>Tu</span>
@@ -246,7 +245,7 @@ export function EventCalendarWidget({
             <span className="text-xs font-bold text-foreground">
               {tCal('eventsOnDate') || 'Schedule for'} {selectedDateFormatted}
             </span>
-            <Badge variant="outline" className="text-[10px] font-medium">
+            <Badge variant="outline" className="text-xs font-semibold">
               {eventsOnSelectedDate.length} {tEvents('title')?.split('&')?.[0]?.trim() || 'Events'}
             </Badge>
           </div>
@@ -266,13 +265,13 @@ export function EventCalendarWidget({
                       <div className="flex items-center gap-1.5 flex-wrap">
                         <Badge
                           variant="outline"
-                          className="text-[10px] px-1.5 py-0 uppercase font-semibold"
+                          className="text-xs px-2 py-0.5 uppercase font-bold"
                           style={{ color: tokens.primary, borderColor: `${tokens.primary}44` }}
                         >
                           {tokens.displayName}
                         </Badge>
                         {evt.venueHallName && (
-                          <span className="text-[10px] font-medium text-foreground bg-muted px-1.5 py-0.5 rounded">
+                          <span className="text-xs font-medium text-foreground bg-muted px-1.5 py-0.5 rounded">
                             {evt.venueHallName}
                           </span>
                         )}
@@ -289,58 +288,47 @@ export function EventCalendarWidget({
                         </span>
                         <span className="flex items-center gap-1">
                           <Clock className="h-3 w-3 text-primary/70 shrink-0" />
-                          <span>{dates}</span>
+                          <span className="truncate">{dates}</span>
                         </span>
                       </div>
                     </div>
 
-                    <Link
-                      href={`/${locale}/events/${evt.slug}`}
-                      className={buttonVariants({ size: 'sm', className: 'gap-1 text-xs shrink-0 self-start sm:self-auto cursor-pointer font-semibold' })}
-                    >
-                      <Ticket className="h-3.5 w-3.5" />
-                      <span>{tTickets('viewPass') || tTickets('bookPass') || 'Pass'}</span>
+                    <Link href={`/${locale}/events/${evt.slug}`} className="shrink-0">
+                      <Button size="sm" variant="outline" className="gap-1 text-xs font-semibold h-8">
+                        <Ticket className="h-3.5 w-3.5" />
+                        <span>{tTickets('viewPass') || 'Pass'}</span>
+                        <ArrowRight className="h-3 w-3" />
+                      </Button>
                     </Link>
                   </div>
                 );
               })
             ) : (
-              <div className="rounded-xl border border-dashed border-border/80 p-5 text-center text-xs text-muted-foreground space-y-3 bg-muted/20">
-                <div className="space-y-1">
-                  <p className="font-semibold text-foreground">
-                    {tCal('noEventsOnDate') || 'No events scheduled on this day.'}
-                  </p>
-                  <p className="text-xs">
-                    Click any highlighted date dot on the calendar or jump directly to the next active trade show.
-                  </p>
-                </div>
+              <div className="rounded-xl border border-dashed border-border/80 p-5 text-center space-y-2 bg-muted/20">
+                <p className="text-xs text-muted-foreground">
+                  {tCal('noEventsToday') || 'No scheduled exhibitions on this date.'}
+                </p>
                 {nearestUpcomingEvent && (
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => {
-                      const d = new Date(nearestUpcomingEvent.startDate);
-                      setSelectedDate(d);
-                      setViewMonth(new Date(d.getFullYear(), d.getMonth(), 1));
-                    }}
-                    className="gap-1.5 text-xs text-primary border-primary/30 hover:bg-primary/10 cursor-pointer"
-                  >
-                    <CalendarIcon className="h-3.5 w-3.5" />
-                    <span>Jump to Next: {nearestUpcomingEvent.title}</span>
-                  </Button>
+                  <div className="pt-2">
+                    <p className="text-xs text-muted-foreground mb-1.5">
+                      {tCal('nearestUpcoming') || 'Next scheduled exhibition in this edition:'}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const targetDate = new Date(nearestUpcomingEvent.startDate);
+                        setSelectedDate(targetDate);
+                        setViewMonth(new Date(targetDate.getFullYear(), targetDate.getMonth(), 1));
+                      }}
+                      className="inline-flex items-center gap-1 text-xs font-bold text-primary hover:underline cursor-pointer bg-primary/10 hover:bg-primary/20 px-3 py-1.5 rounded-lg transition-colors"
+                    >
+                      <span>Jump to: {nearestUpcomingEvent.title}</span>
+                      <ArrowRight className="h-3 w-3" />
+                    </button>
+                  </div>
                 )}
               </div>
             )}
-          </div>
-
-          <div className="pt-2 text-right">
-            <Link
-              href={`/${locale}/events`}
-              className="text-xs font-medium text-primary hover:underline inline-flex items-center gap-1"
-            >
-              <span>{tCal('monthView') || 'Explore all upcoming events by category'}</span>
-              <ArrowRight className="h-3 w-3" />
-            </Link>
           </div>
         </div>
       </div>
