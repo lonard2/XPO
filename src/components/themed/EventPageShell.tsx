@@ -14,6 +14,11 @@ import {
   Globe,
   Layers,
   Building2,
+  Clock,
+  Map as MapIcon,
+  ShieldCheck,
+  ArrowRight,
+  Info,
 } from "lucide-react";
 import {
   type MiceArchetype,
@@ -25,10 +30,13 @@ import {
 } from "@/lib/theming";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { formatDateRange, formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
 import { TicketCheckoutDrawer } from "@/components/tickets/TicketCheckoutDrawer";
-import { cn } from "@/lib/utils";
 import { type TicketTierItem } from "@/components/tickets/TierSelector";
+import { HallFloorMap, type BoothItem } from "@/components/perks/HallFloorMap";
+import { InteractiveGuidebook, type AgendaSessionItem } from "@/components/perks/InteractiveGuidebook";
+import { cn } from "@/lib/utils";
 
 export interface EventVenueData {
   id?: string;
@@ -61,6 +69,8 @@ export interface EventPageShellProps {
   children: React.ReactNode;
   onBookPassClick?: () => void;
   ticketTiers?: TicketTierItem[];
+  agendaItems?: AgendaSessionItem[];
+  booths?: BoothItem[];
 }
 
 export function EventPageShell({
@@ -85,24 +95,19 @@ export function EventPageShell({
   children,
   onBookPassClick,
   ticketTiers = [],
+  agendaItems = [],
+  booths = [],
 }: EventPageShellProps) {
   const [isCopied, setIsCopied] = React.useState(false);
   const [scrolledPastHero, setScrolledPastHero] = React.useState(false);
   const [checkoutDrawerOpen, setCheckoutDrawerOpen] = React.useState(false);
+  const [activeTab, setActiveTab] = React.useState<"overview" | "agenda" | "floorMap" | "tickets">("overview");
 
-  let tEvents: any = (k: string) => k;
-  let tCommon: any = (k: string) => k;
-  let tArch: any = (k: string) => k;
-  try {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tEvents = useTranslations("events");
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tCommon = useTranslations("common");
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tArch = useTranslations("archetypes");
-  } catch {
-    // Fallback if rendered outside provider
-  }
+  const tEvents = useTranslations("events");
+  const tCommon = useTranslations("common");
+  const tArch = useTranslations("archetypes");
+  const tPerks = useTranslations("perks");
+  const tTickets = useTranslations("tickets");
 
   // Parse branding override if provided as JSON string
   const resolvedBranding: BrandingConfig = React.useMemo(() => {
@@ -152,7 +157,7 @@ export function EventPageShell({
     }
   };
 
-  const handleScrollToTickets = () => {
+  const handleOpenCheckout = () => {
     if (onBookPassClick) {
       onBookPassClick();
       return;
@@ -173,7 +178,15 @@ export function EventPageShell({
       ? formatCurrency(minTicketPrice, (currency as SupportedCurrency) || "IDR", locale)
       : tEvents("freeAdmission") || "Free Admission";
 
-  const archetypeDisplayTitle = tArch(`${safeArchetype}.title`) || tokens.name || archetypeMeta.label;
+  let archetypeDisplayTitle = tokens.name || archetypeMeta.label;
+  try {
+    if (tArch && typeof tArch.raw === "function") {
+      const obj = tArch.raw(safeArchetype);
+      if (obj?.title) archetypeDisplayTitle = obj.title;
+    }
+  } catch {
+    // fallback
+  }
 
   return (
     <div
@@ -225,7 +238,7 @@ export function EventPageShell({
           <div className="absolute inset-0 bg-gradient-to-t from-[var(--archetype-bg)] via-[var(--archetype-bg)]/80 to-transparent" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12 sm:pb-16 lg:pt-12">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-10 sm:pb-14 lg:pt-12">
           {/* Top Badges & Archetype Indicator */}
           <div className="flex flex-wrap items-center gap-2 mb-4">
             <span
@@ -246,18 +259,18 @@ export function EventPageShell({
               </Badge>
             )}
 
-            <Badge variant="outline" size="sm" className="border-white/20 text-white/90 bg-white/5">
+            <Badge variant="outline" size="sm" className="border-white/20 text-white/90 bg-white/5 font-semibold">
               <Layers className="h-3 w-3 mr-1 text-white/70" />
               {scale.replace("_", " ")}
             </Badge>
 
-            <Badge variant="outline" size="sm" className="border-white/20 text-white/90 bg-white/5">
+            <Badge variant="outline" size="sm" className="border-white/20 text-white/90 bg-white/5 font-semibold">
               <Globe className="h-3 w-3 mr-1 text-white/70" />
               {format.replace("_", " ")}
             </Badge>
 
             {resolvedBranding.heroBadge && (
-              <Badge variant="archetype" size="sm">
+              <Badge variant="archetype" size="sm" className="font-semibold">
                 {resolvedBranding.heroBadge}
               </Badge>
             )}
@@ -280,7 +293,7 @@ export function EventPageShell({
             <div className="flex items-center gap-3 bg-white/5 rounded-lg p-3 border border-white/10">
               <Calendar className="h-5 w-5 text-[var(--archetype-accent)] shrink-0" aria-hidden="true" />
               <div>
-                <p className="text-[11px] uppercase tracking-wider text-slate-400 font-medium">{tCommon("date") || "Dates"}</p>
+                <p className="text-xs uppercase tracking-wider text-slate-400 font-semibold">{tCommon("date") || "Dates"}</p>
                 <p className="font-semibold text-white">{formattedDate}</p>
               </div>
             </div>
@@ -288,7 +301,7 @@ export function EventPageShell({
             <div className="flex items-center gap-3 bg-white/5 rounded-lg p-3 border border-white/10">
               <MapPin className="h-5 w-5 text-[var(--archetype-accent)] shrink-0" aria-hidden="true" />
               <div>
-                <p className="text-[11px] uppercase tracking-wider text-slate-400 font-medium">{tCommon("venue") || "Venue & Location"}</p>
+                <p className="text-xs uppercase tracking-wider text-slate-400 font-semibold">{tCommon("venue") || "Venue & Location"}</p>
                 <p className="font-semibold text-white truncate max-w-[180px]">
                   {venue.name}, {venue.city}
                 </p>
@@ -298,7 +311,7 @@ export function EventPageShell({
             <div className="flex items-center gap-3 bg-white/5 rounded-lg p-3 border border-white/10">
               <Building2 className="h-5 w-5 text-[var(--archetype-accent)] shrink-0" aria-hidden="true" />
               <div>
-                <p className="text-[11px] uppercase tracking-wider text-slate-400 font-medium">Hall / Wing</p>
+                <p className="text-xs uppercase tracking-wider text-slate-400 font-semibold">Hall / Wing</p>
                 <p className="font-semibold text-white truncate max-w-[180px]">
                   {venue.hallName || "Main Exhibition Halls"}
                 </p>
@@ -308,7 +321,7 @@ export function EventPageShell({
             <div className="flex items-center gap-3 bg-white/5 rounded-lg p-3 border border-white/10">
               <Ticket className="h-5 w-5 text-[var(--archetype-accent)] shrink-0" aria-hidden="true" />
               <div>
-                <p className="text-[11px] uppercase tracking-wider text-slate-400 font-medium">{tEvents("priceFrom") || "Pass Starting From"}</p>
+                <p className="text-xs uppercase tracking-wider text-slate-400 font-semibold">{tEvents("priceFrom") || "Pass Starting From"}</p>
                 <p className="font-bold text-white">{formattedPrice}</p>
               </div>
             </div>
@@ -319,8 +332,8 @@ export function EventPageShell({
             <Button
               size="lg"
               variant="archetype"
-              onClick={handleScrollToTickets}
-              className="gap-2 font-semibold shadow-lg text-white"
+              onClick={handleOpenCheckout}
+              className="gap-2 font-semibold shadow-lg text-white cursor-pointer min-h-[44px]"
             >
               <Ticket className="h-4 w-4" aria-hidden="true" />
               {tEvents("reservePasses") || "Reserve Passes & Tickets"}
@@ -330,7 +343,7 @@ export function EventPageShell({
               variant="outline"
               size="lg"
               onClick={handleShare}
-              className="gap-2 border-white/20 bg-white/10 text-white hover:bg-white/20 hover:text-white"
+              className="gap-2 border-white/20 bg-white/10 text-white hover:bg-white/20 hover:text-white cursor-pointer min-h-[44px]"
             >
               {isCopied ? (
                 <>
@@ -346,18 +359,313 @@ export function EventPageShell({
             </Button>
           </div>
         </div>
+
+        {/* 3. Sub-Navigation Tabs Bar */}
+        <div className="border-t border-white/10 bg-black/40 backdrop-blur-md sticky top-0 z-30">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav className="flex items-center gap-1 sm:gap-2 overflow-x-auto py-2.5 scrollbar-none" aria-label="Event Sections">
+              <button
+                type="button"
+                onClick={() => setActiveTab("overview")}
+                className={cn(
+                  "flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[40px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
+                  activeTab === "overview"
+                    ? "bg-white/20 text-white shadow-xs border border-white/30"
+                    : "text-slate-300 hover:text-white hover:bg-white/10"
+                )}
+                aria-current={activeTab === "overview" ? "page" : undefined}
+              >
+                <Layers className="h-4 w-4" />
+                <span>{tEvents("overview") || "Overview"}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveTab("agenda")}
+                className={cn(
+                  "flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[40px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
+                  activeTab === "agenda"
+                    ? "bg-white/20 text-white shadow-xs border border-white/30"
+                    : "text-slate-300 hover:text-white hover:bg-white/10"
+                )}
+                aria-current={activeTab === "agenda" ? "page" : undefined}
+              >
+                <Clock className="h-4 w-4" />
+                <span>{tEvents("agenda") || "Agenda & Timetable"}</span>
+                {agendaItems.length > 0 && (
+                  <span className="flex h-5 px-1.5 items-center justify-center rounded-full bg-white/20 text-xs font-mono">
+                    {agendaItems.length}
+                  </span>
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveTab("floorMap")}
+                className={cn(
+                  "flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[40px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
+                  activeTab === "floorMap"
+                    ? "bg-white/20 text-white shadow-xs border border-white/30"
+                    : "text-slate-300 hover:text-white hover:bg-white/10"
+                )}
+                aria-current={activeTab === "floorMap" ? "page" : undefined}
+              >
+                <MapIcon className="h-4 w-4" />
+                <span>{tEvents("floorMap") || "Floor Map & Halls"}</span>
+                {booths.length > 0 && (
+                  <span className="flex h-5 px-1.5 items-center justify-center rounded-full bg-white/20 text-xs font-mono">
+                    {booths.length}
+                  </span>
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveTab("tickets")}
+                className={cn(
+                  "flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[40px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
+                  activeTab === "tickets"
+                    ? "bg-white/20 text-white shadow-xs border border-white/30"
+                    : "text-slate-300 hover:text-white hover:bg-white/10"
+                )}
+                aria-current={activeTab === "tickets" ? "page" : undefined}
+              >
+                <Ticket className="h-4 w-4" />
+                <span>{tEvents("tickets") || "Ticket Passes"}</span>
+                {ticketTiers.length > 0 && (
+                  <span className="flex h-5 px-1.5 items-center justify-center rounded-full bg-white/20 text-xs font-mono">
+                    {ticketTiers.length}
+                  </span>
+                )}
+              </button>
+            </nav>
+          </div>
+        </div>
       </header>
 
-      {/* 3. Main Content Container for Specific Archetype View */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        {children}
+      {/* 4. Main Content Container */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 pb-28 md:pb-16 space-y-12">
+        {/* Tab 1: Overview & Archetype Specialized View */}
+        {activeTab === "overview" && (
+          <div className="space-y-12">
+            {children}
+
+            {/* In-page Pass Tiers Section */}
+            {ticketTiers && ticketTiers.length > 0 && (
+              <section id="tickets-section" className="space-y-6 pt-6 border-t border-border/80">
+                <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+                  <div>
+                    <div className="flex items-center gap-2 text-xs font-semibold text-primary uppercase tracking-wider mb-1">
+                      <Ticket className="h-4 w-4" />
+                      <span>{tTickets("ticketTiers") || "Pass Tiers"}</span>
+                    </div>
+                    <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+                      {tTickets("checkoutTitle") || "Select Your Admission Tier"}
+                    </h2>
+                    <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
+                      {tTickets("digitalPassSubtitle") || "Cryptographically verified QR passes issued immediately upon reservation."}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {ticketTiers.map((tier) => {
+                    const priceFormatted =
+                      tier.price > 0
+                        ? formatCurrency(tier.price, (tier.currency || currency) as SupportedCurrency, locale)
+                        : tCommon("free") || "Free Admission";
+
+                    const isSoldOut = tier.capacity > 0 && tier.issuedCount >= tier.capacity;
+
+                    return (
+                      <Card
+                        key={tier.id}
+                        className={cn(
+                          "flex flex-col justify-between border-border/80 bg-card p-5 sm:p-6 transition-all duration-300 shadow-sm",
+                          isSoldOut
+                            ? "opacity-60 grayscale-[40%]"
+                            : "hover:border-primary/50 hover:shadow-md"
+                        )}
+                      >
+                        <div className="space-y-4">
+                          <div className="flex items-start justify-between gap-2">
+                            <div>
+                              <Badge
+                                variant={tier.tier === "VIP" ? "default" : tier.tier === "EXHIBITOR" ? "secondary" : "outline"}
+                                className="text-xs font-bold uppercase mb-2"
+                              >
+                                {tier.tier}
+                              </Badge>
+                              <h3 className="text-lg font-bold text-foreground">{tier.name}</h3>
+                            </div>
+                            <span className="text-lg font-extrabold text-foreground">{priceFormatted}</span>
+                          </div>
+
+                          {tier.description && (
+                            <p className="text-xs text-muted-foreground leading-relaxed">{tier.description}</p>
+                          )}
+
+                          {tier.perks && tier.perks.length > 0 && (
+                            <div className="space-y-2 pt-2 border-t border-border/60">
+                              <span className="text-xs font-semibold text-foreground block">
+                                {tTickets("benefits") || "Included Benefits"}:
+                              </span>
+                              <ul className="space-y-1.5 text-xs text-muted-foreground">
+                                {tier.perks.map((perk, idx) => (
+                                  <li key={idx} className="flex items-center gap-2">
+                                    <Check className="h-3.5 w-3.5 text-primary shrink-0" />
+                                    <span>{perk}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="pt-6 mt-4 border-t border-border/60">
+                          <Button
+                            variant={tier.tier === "VIP" ? "default" : "outline"}
+                            className="w-full font-semibold gap-2 min-h-[44px] cursor-pointer"
+                            disabled={isSoldOut}
+                            onClick={handleOpenCheckout}
+                          >
+                            <Ticket className="h-4 w-4" />
+                            <span>{isSoldOut ? "Sold Out" : tTickets("bookPass") || "Book Pass"}</span>
+                          </Button>
+                        </div>
+                      </Card>
+                    );
+                  })}
+                </div>
+              </section>
+            )}
+          </div>
+        )}
+
+        {/* Tab 2: Agenda & Timetable Guidebook */}
+        {activeTab === "agenda" && (
+          <div className="space-y-6">
+            <InteractiveGuidebook
+              agendaItems={agendaItems}
+              eventTitle={title}
+              locale={locale}
+            />
+          </div>
+        )}
+
+        {/* Tab 3: Floor Map & Booths */}
+        {activeTab === "floorMap" && (
+          <div className="space-y-6">
+            <HallFloorMap
+              booths={booths}
+              venueName={venue.name}
+              hallName={venue.hallName}
+              locale={locale}
+            />
+          </div>
+        )}
+
+        {/* Tab 4: Passes & Ticket Selection */}
+        {activeTab === "tickets" && (
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-border/80 pb-4">
+              <div>
+                <div className="flex items-center gap-2 text-xs font-semibold text-primary uppercase tracking-wider mb-1">
+                  <Ticket className="h-4 w-4" />
+                  <span>{tTickets("ticketTiers") || "Pass Tiers"}</span>
+                </div>
+                <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+                  {tTickets("checkoutTitle") || "Select Your Admission Tier"}
+                </h2>
+                <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
+                  {tTickets("digitalPassSubtitle") || "Cryptographically verified QR passes issued immediately upon reservation."}
+                </p>
+              </div>
+            </div>
+
+            {ticketTiers && ticketTiers.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {ticketTiers.map((tier) => {
+                  const priceFormatted =
+                    tier.price > 0
+                      ? formatCurrency(tier.price, (tier.currency || currency) as SupportedCurrency, locale)
+                      : tCommon("free") || "Free Admission";
+
+                  const isSoldOut = tier.capacity > 0 && tier.issuedCount >= tier.capacity;
+
+                  return (
+                    <Card
+                      key={tier.id}
+                      className={cn(
+                        "flex flex-col justify-between border-border/80 bg-card p-5 sm:p-6 transition-all duration-300 shadow-sm",
+                        isSoldOut
+                          ? "opacity-60 grayscale-[40%]"
+                          : "hover:border-primary/50 hover:shadow-md"
+                      )}
+                    >
+                      <div className="space-y-4">
+                        <div className="flex items-start justify-between gap-2">
+                          <div>
+                            <Badge
+                              variant={tier.tier === "VIP" ? "default" : tier.tier === "EXHIBITOR" ? "secondary" : "outline"}
+                              className="text-xs font-bold uppercase mb-2"
+                            >
+                              {tier.tier}
+                            </Badge>
+                            <h3 className="text-lg font-bold text-foreground">{tier.name}</h3>
+                          </div>
+                          <span className="text-lg font-extrabold text-foreground">{priceFormatted}</span>
+                        </div>
+
+                        {tier.description && (
+                          <p className="text-xs text-muted-foreground leading-relaxed">{tier.description}</p>
+                        )}
+
+                        {tier.perks && tier.perks.length > 0 && (
+                          <div className="space-y-2 pt-2 border-t border-border/60">
+                            <span className="text-xs font-semibold text-foreground block">
+                              {tTickets("benefits") || "Included Benefits"}:
+                            </span>
+                            <ul className="space-y-1.5 text-xs text-muted-foreground">
+                              {tier.perks.map((perk, idx) => (
+                                <li key={idx} className="flex items-center gap-2">
+                                  <Check className="h-3.5 w-3.5 text-primary shrink-0" />
+                                  <span>{perk}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="pt-6 mt-4 border-t border-border/60">
+                        <Button
+                          variant={tier.tier === "VIP" ? "default" : "outline"}
+                          className="w-full font-semibold gap-2 min-h-[44px] cursor-pointer"
+                          disabled={isSoldOut}
+                          onClick={handleOpenCheckout}
+                        >
+                          <Ticket className="h-4 w-4" />
+                          <span>{isSoldOut ? "Sold Out" : tTickets("bookPass") || "Book Pass"}</span>
+                        </Button>
+                      </div>
+                    </Card>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="p-8 text-center rounded-xl border border-dashed border-border text-muted-foreground">
+                <p className="text-sm">Pass details are currently being finalized by the event organizer.</p>
+              </div>
+            )}
+          </div>
+        )}
       </main>
 
-      {/* 4. Sticky Mobile Action Drawer (<768px) */}
+      {/* 5. Sticky Mobile Action Drawer (<768px) */}
       <div
         className={cn(
-          "fixed bottom-0 inset-x-0 z-40 md:hidden bg-card/95 backdrop-blur-md border-t border-border p-3 shadow-2xl transition-all duration-300",
-          scrolledPastHero ? "translate-y-0 opacity-100" : "translate-y-0 opacity-100"
+          "fixed bottom-0 inset-x-0 z-40 md:hidden bg-card/95 backdrop-blur-md border-t border-border p-3 shadow-2xl transition-all duration-300"
         )}
       >
         <div className="flex items-center justify-between gap-3 max-w-md mx-auto">
@@ -368,8 +676,8 @@ export function EventPageShell({
           <Button
             size="default"
             variant="archetype"
-            onClick={handleScrollToTickets}
-            className="shrink-0 font-semibold gap-1.5 shadow-md"
+            onClick={handleOpenCheckout}
+            className="shrink-0 font-semibold gap-1.5 shadow-md min-h-[44px] cursor-pointer"
           >
             <Ticket className="h-4 w-4" />
             {tEvents("bookPass") || "Book Pass"}
@@ -377,7 +685,7 @@ export function EventPageShell({
         </div>
       </div>
 
-      {/* 5. Ticket Pass Checkout Drawer */}
+      {/* 6. Ticket Pass Checkout Drawer */}
       {ticketTiers && ticketTiers.length > 0 && (
         <TicketCheckoutDrawer
           isOpen={checkoutDrawerOpen}

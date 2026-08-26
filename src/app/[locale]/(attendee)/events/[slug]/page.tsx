@@ -159,7 +159,9 @@ export default async function EventDetailPage({ params }: EventPageProps) {
       minTicketPrice={minTicketPrice}
       currency={defaultCurrency}
       locale={locale}
-      ticketTiers={event.ticketTiers}
+      ticketTiers={event.ticketTiers || []}
+      agendaItems={event.agendaItems || []}
+      booths={event.booths || []}
     >
       <ArchetypeView event={event} locale={locale} />
     </EventPageShell>
