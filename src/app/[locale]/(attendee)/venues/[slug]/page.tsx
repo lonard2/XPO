@@ -4,22 +4,15 @@ import { setRequestLocale, getTranslations } from 'next-intl/server';
 import {
   Building2,
   MapPin,
-  Train,
-  Layers,
-  Users,
-  Calendar,
   ArrowLeft,
-  Navigation,
   Globe,
   CheckCircle2,
-  ExternalLink,
-  Sparkles,
 } from 'lucide-react';
 import { db } from '@/lib/db';
-import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
-import { EventCard } from '@/components/discovery/EventCard';
+import { VenueCampusExplorer } from '@/components/discovery/VenueCampusExplorer';
+import { VenueTransitHub } from '@/components/discovery/VenueTransitHub';
+import { VenueScheduleTable } from '@/components/discovery/VenueScheduleTable';
 import { FALLBACK_VENUES, FALLBACK_EVENTS } from '@/lib/discovery/fallbackData';
 import { type VenueSummary, type DiscoveryEvent } from '@/types/discovery';
 
@@ -39,7 +32,7 @@ export async function generateMetadata({ params }: VenueDetailPageProps) {
   const venue = FALLBACK_VENUES.find((v) => v.slug === slug);
   const title = venue ? `${venue.name} | XPO Venue Hub` : 'Venue Hub | XPO';
   const description = venue
-    ? `Explore hall specifications, floor maps, rapid transit routes, and upcoming exhibitions at ${venue.name}.`
+    ? `Explore hall specifications, spatial campus topology, rapid transit routes, and upcoming exhibitions at ${venue.name}.`
     : 'MICE Venue Specifications and upcoming events.';
 
   return {
@@ -196,121 +189,33 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
         </div>
       </section>
 
-      {/* Hall Directory & Specifications */}
-      <section className="container px-4 space-y-6">
-        <div className="border-b border-border pb-4 space-y-1">
-          <h2 className="text-2xl font-bold tracking-tight text-foreground flex items-center gap-2">
-            <Layers className="h-5 w-5 text-primary" />
-            <span>{tReg('hallDirectory') || 'Hall & Pavilion Directory'} ({venue.halls?.length || 0})</span>
-          </h2>
-          <p className="text-xs text-muted-foreground">
-            {tVen('specifications') || 'Floor specifications, structural dimensions, and maximum pax capacities.'}
-          </p>
-        </div>
-
-        {venue.halls && venue.halls.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {venue.halls.map((hall) => (
-              <Card key={hall.id} className="border-border/80 bg-card">
-                <CardHeader className="p-4 pb-2">
-                  <div className="flex items-start justify-between gap-2">
-                    <CardTitle className="text-sm font-bold text-foreground">
-                      {hall.name}
-                    </CardTitle>
-                    {hall.capacity && (
-                      <Badge variant="outline" className="text-[10px] font-mono shrink-0">
-                        {hall.capacity.toLocaleString()} Pax
-                      </Badge>
-                    )}
-                  </div>
-                </CardHeader>
-                <CardContent className="p-4 pt-1 space-y-2 text-xs text-muted-foreground">
-                  {hall.floorAreaSqm && (
-                    <div className="flex items-center gap-1 text-[11px] font-medium text-foreground">
-                      <Layers className="h-3 w-3 text-primary" />
-                      <span>{hall.floorAreaSqm.toLocaleString()} sqm {tVen('grossSpace')?.toLowerCase() || 'floor area'}</span>
-                    </div>
-                  )}
-                  {hall.description && (
-                    <p className="text-[11px] text-muted-foreground leading-relaxed">
-                      {hall.description}
-                    </p>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        ) : (
-          <p className="text-xs text-muted-foreground">{tCom('notFound') || 'No individual hall specs indexed for this venue.'}</p>
-        )}
-      </section>
-
-      {/* Transit & Access Guide */}
+      {/* Campus Spatial Topology & Hall Specifications Explorer */}
       <section className="container px-4">
-        <div className="rounded-3xl border border-border bg-card p-6 sm:p-8 space-y-4 shadow-xs">
-          <div className="space-y-1">
-            <h2 className="text-xl sm:text-2xl font-bold text-foreground flex items-center gap-2">
-              <Train className="h-5 w-5 text-primary" />
-              <span>{tReg('transitGuide') || 'Getting to Venue'}: {venue.name}</span>
-            </h2>
-            <p className="text-xs text-muted-foreground">
-              {tVen('transitLogistics') || 'Verified rapid transit linkages and public navigation routes.'}
-            </p>
-          </div>
-
-          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-3xl">
-            {venue.transitInfo}
-          </p>
-
-          {/* Interactive Navigation Widget */}
-          <div className="pt-2 flex flex-wrap items-center gap-3">
-            <a
-              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(venue.name + ' ' + venue.address)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button size="sm" variant="outline" className="gap-1.5 text-xs font-semibold cursor-pointer">
-                <Navigation className="h-3.5 w-3.5 text-primary" />
-                <span>{tCom('directions') || 'Open in Google Maps'}</span>
-                <ExternalLink className="h-3 w-3 ml-1 text-muted-foreground" />
-              </Button>
-            </a>
-          </div>
-        </div>
+        <VenueCampusExplorer
+          venueName={venue.name}
+          halls={venue.halls || []}
+        />
       </section>
 
-      {/* Scheduled Exhibitions at this Venue */}
-      <section className="container px-4 space-y-6">
-        <div className="flex items-center justify-between border-b border-border pb-4">
-          <div className="space-y-1">
-            <h2 className="text-2xl font-bold tracking-tight text-foreground flex items-center gap-2">
-              <Calendar className="h-5 w-5 text-primary" />
-              <span>{tVen('happeningAtVenue') || 'Scheduled Exhibitions at this Venue'}</span>
-            </h2>
-            <p className="text-xs text-muted-foreground">
-              Current and upcoming trade shows, conferences, and conventions.
-            </p>
-          </div>
-          <Link href={`/${locale}/events`}>
-            <Button variant="outline" size="sm" className="gap-1.5 text-xs font-semibold cursor-pointer">
-              <span>{tCom('viewAll') || 'All Exhibitions'}</span>
-            </Button>
-          </Link>
-        </div>
+      {/* Structured Multi-Modal Transit & Logistics Hub */}
+      <section className="container px-4">
+        <VenueTransitHub
+          venueName={venue.name}
+          address={venue.address}
+          transitInfo={venue.transitInfo}
+          city={venue.city}
+          regionCode={regionCode}
+        />
+      </section>
 
-        {upcomingEvents.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-border p-8 text-center space-y-2">
-            <Calendar className="h-8 w-8 text-muted-foreground mx-auto" />
-            <h3 className="text-sm font-bold text-foreground">{tCom('notFound') || 'No upcoming exhibitions currently scheduled'}</h3>
-            <p className="text-xs text-muted-foreground">{tReg('subtitle') || 'Check back soon for new trade fair announcements at this venue.'}</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {upcomingEvents.map((event) => (
-              <EventCard key={event.id} event={event} locale={locale} />
-            ))}
-          </div>
-        )}
+      {/* Specialized In-Venue Timetable & Scheduled Exhibitions */}
+      <section className="container px-4">
+        <VenueScheduleTable
+          venueName={venue.name}
+          events={upcomingEvents}
+          locale={locale}
+          regionCode={regionCode.toLowerCase()}
+        />
       </section>
     </div>
   );
