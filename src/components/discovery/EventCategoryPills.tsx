@@ -22,11 +22,9 @@ import {
   ArrowRight,
   ChevronLeft,
   ChevronRight,
-  Sparkles,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/Button';
-import { Badge } from '@/components/ui/Badge';
 import { cn } from '@/lib/utils';
 
 export interface CategoryItem {
@@ -34,7 +32,7 @@ export interface CategoryItem {
   name: string;
   shortName: string;
   tagline: string;
-  specialtyTool: string;
+  ctaLabel: string;
   highlights: string[];
   icon: React.ComponentType<{ className?: string }>;
   color: string;
@@ -46,10 +44,10 @@ export const EVENT_CATEGORIES: CategoryItem[] = [
   {
     id: 'INDUSTRIAL_B2B',
     name: 'Industrial & Manufacturing B2B',
-    shortName: 'Industrial B2B',
-    tagline: 'Heavy machinery, precision tooling & automated B2B procurement.',
-    specialtyTool: 'Machinery RFQ Drawer',
-    highlights: ['Machinery Specs', 'RFQ Quotes', 'Exhibitor Booths'],
+    shortName: 'Industrial & Manufacturing',
+    tagline: 'Heavy machinery engineering, precision CNC automation, robotics tooling, and global B2B procurement tenders.',
+    ctaLabel: 'Browse Industrial Expos',
+    highlights: ['Machinery Specs', 'RFQ Tender Quotes', 'Live Robotics Demos', 'Contract Manufacturing'],
     icon: Factory,
     color: '#2563eb', // Steel Blue
     bgGradient: 'from-blue-500/10 via-blue-500/5 to-transparent',
@@ -58,10 +56,10 @@ export const EVENT_CATEGORIES: CategoryItem[] = [
   {
     id: 'TECH_DEV_SUMMIT',
     name: 'Tech, AI & Developer Summits',
-    shortName: 'Tech & AI',
-    tagline: 'Autonomous AI agents, cloud architectures & multi-track hackathons.',
-    specialtyTool: 'GitHub Livestream Track',
-    highlights: ['Multi-Track Agendas', 'GitHub Tags', 'Livestreams'],
+    shortName: 'Tech, AI & Code',
+    tagline: 'Autonomous AI engineering, distributed cloud systems, developer keynotes, and competitive multi-track hackathons.',
+    ctaLabel: 'Explore Developer Summits',
+    highlights: ['Multi-Track Keynotes', 'API Sandboxes', 'Open-Source Repos', 'Live Coding Stages'],
     icon: Cpu,
     color: '#6366f1', // Indigo
     bgGradient: 'from-indigo-500/10 via-indigo-500/5 to-transparent',
@@ -71,9 +69,9 @@ export const EVENT_CATEGORIES: CategoryItem[] = [
     id: 'MEDICAL_SYMPOSIUM',
     name: 'Medical & Healthcare Congress',
     shortName: 'Medical & Health',
-    tagline: 'Peer-reviewed research abstracts, clinical breakouts & CME accreditation.',
-    specialtyTool: 'CME Credit Calculator',
-    highlights: ['Abstract Readers', 'CME Credits', 'Accredited Badges'],
+    tagline: 'Peer-reviewed clinical research abstracts, CME medical accreditation, surgical breakthroughs, and biomedical assemblies.',
+    ctaLabel: 'Explore Clinical Symposia',
+    highlights: ['Peer-Reviewed Abstracts', 'CME Credit Tracking', 'Clinical Breakouts', 'Biomedical Innovation'],
     icon: Activity,
     color: '#0d9488', // Teal
     bgGradient: 'from-teal-500/10 via-teal-500/5 to-transparent',
@@ -82,22 +80,22 @@ export const EVENT_CATEGORIES: CategoryItem[] = [
   {
     id: 'FINANCE_INVESTOR',
     name: 'Finance, FinTech & Investor Forums',
-    shortName: 'Finance & Deals',
-    tagline: 'Private deal-rooms, venture pitch decks & institutional capital.',
-    specialtyTool: 'Deal-Room VIP Booking',
-    highlights: ['Deal-Room Booking', 'Pitch Decks', 'VIP Passes'],
+    shortName: 'Finance & Capital',
+    tagline: 'Private bilateral deal rooms, institutional capital allocation, fintech venture pitch decks, and sovereign wealth assemblies.',
+    ctaLabel: 'Access Deal-Room Suites',
+    highlights: ['Private Deal Suites', 'Venture Pitch Decks', 'Institutional LP Lounges', 'Fintech Keynotes'],
     icon: TrendingUp,
-    color: '#1e3a8a', // Deep Navy / Emerald
+    color: '#1e3a8a', // Deep Navy
     bgGradient: 'from-emerald-500/10 via-emerald-500/5 to-transparent',
     borderColor: '#10b981',
   },
   {
     id: 'POP_CULTURE_GAMING',
     name: 'Pop Culture & Gaming Expo',
-    shortName: 'Gaming & Anime',
-    tagline: 'Esports tournament arenas, cosplay catwalks & creator alley showcase.',
-    specialtyTool: 'Cosplay Catwalk Radar',
-    highlights: ['Cosplay Rules', 'Creator Alley', 'Merch Wishlist'],
+    shortName: 'Pop Culture & Gaming',
+    tagline: 'Esports championship tournament arenas, international cosplay catwalks, creator alley showcases, and premiere fandom stages.',
+    ctaLabel: 'Explore Esports & Anime Cons',
+    highlights: ['Esports Arenas', 'Cosplay Guidelines', 'Creator Alley Stalls', 'Exclusive Merch Rosters'],
     icon: Gamepad2,
     color: '#9333ea', // Purple
     bgGradient: 'from-purple-500/10 via-purple-500/5 to-transparent',
@@ -106,10 +104,10 @@ export const EVENT_CATEGORIES: CategoryItem[] = [
   {
     id: 'MUSIC_FESTIVAL',
     name: 'Music Festival & Arena Concerts',
-    shortName: 'Music & Shows',
-    tagline: 'Multi-stage real-time timelines, acoustic arenas & crowd density radar.',
-    specialtyTool: 'Stage Crowd Meter',
-    highlights: ['Stage Timelines', 'Crowd Meters', 'Gate Access'],
+    shortName: 'Music & Arena Sets',
+    tagline: 'Multi-stage acoustic arena schedules, dynamic crowd telemetry, festival lineups, and fast-track RFID wristband admissions.',
+    ctaLabel: 'Explore Live Arena Stages',
+    highlights: ['Multi-Stage Schedules', 'Live Arena Telemetry', 'Artist Lineup Timetables', 'RFID Wristband Gates'],
     icon: Music,
     color: '#e11d48', // Rose
     bgGradient: 'from-rose-500/10 via-rose-500/5 to-transparent',
@@ -119,9 +117,9 @@ export const EVENT_CATEGORIES: CategoryItem[] = [
     id: 'MEGA_EXPO_PAVILION',
     name: 'Mega Expo & Multi-Pavilion Fairs',
     shortName: 'Mega Expos & Fairs',
-    tagline: 'Multi-hectare public fairs, night fireworks & 500+ commercial tenants.',
-    specialtyTool: 'Pavilion Fireworks Map',
-    highlights: ['Pavilion Maps', 'Fireworks Schedules', 'Tenant Promos'],
+    tagline: 'Multi-hectare regional trade fairs, global nation pavilions, nocturnal fireworks spectacles, and commercial retail concourses.',
+    ctaLabel: 'Explore Fair Pavilions',
+    highlights: ['Multi-Pavilion Maps', 'Nocturnal Fireworks', 'Culinary Bazaars', 'Tenant Promotion Radar'],
     icon: Tent,
     color: '#ea580c', // Orange
     bgGradient: 'from-orange-500/10 via-orange-500/5 to-transparent',
@@ -130,10 +128,10 @@ export const EVENT_CATEGORIES: CategoryItem[] = [
   {
     id: 'AUTOMOTIVE_MOBILITY',
     name: 'Automotive, EV & Mobility Motor Show',
-    shortName: 'Auto & Mobility',
-    tagline: 'Test drive track bookings, concept vehicle debuts & EV charging tech.',
-    specialtyTool: 'Test Drive Slot Booking',
-    highlights: ['Test Drive Track', 'Concept Unveils', 'EV Tech'],
+    shortName: 'Automotive & EV',
+    tagline: 'Concept vehicle world premieres, closed-circuit test drive reservations, EV battery architectures, and autonomous mobility debuts.',
+    ctaLabel: 'Explore Motor Showcases',
+    highlights: ['Test Drive Track Slots', 'World Concept Premieres', 'EV Battery Tech', 'Autonomous Mobility'],
     icon: Car,
     color: '#dc2626', // Crimson Red
     bgGradient: 'from-red-500/10 via-red-500/5 to-transparent',
@@ -142,10 +140,10 @@ export const EVENT_CATEGORIES: CategoryItem[] = [
   {
     id: 'ENERGY_INFRASTRUCTURE',
     name: 'Energy, Mining & Green Infrastructure',
-    shortName: 'Energy & Mining',
-    tagline: 'Renewable grid concessions, mineral extraction & heavy site equipment.',
-    specialtyTool: 'Concession Grid Explorer',
-    highlights: ['Concession Maps', 'Green Grids', 'Heavy Machinery'],
+    shortName: 'Energy & Infrastructure',
+    tagline: 'Renewable grid distribution, strategic mineral extraction concessions, clean energy transitions, and heavy site machinery.',
+    ctaLabel: 'Explore Clean Energy Grids',
+    highlights: ['Concession Topographies', 'Clean Energy Grids', 'Mining Heavy Plants', 'Decarbonization Forums'],
     icon: Zap,
     color: '#d97706', // Gold / Amber
     bgGradient: 'from-amber-500/10 via-amber-500/5 to-transparent',
@@ -154,10 +152,10 @@ export const EVENT_CATEGORIES: CategoryItem[] = [
   {
     id: 'AGRITECH_FOOD',
     name: 'Agriculture, Agritech & Food Expo',
-    shortName: 'Agritech & Food',
-    tagline: 'Smart farming robotics, cold-chain logistics & culinary trade stages.',
-    specialtyTool: 'Cold-Chain Procurement',
-    highlights: ['Smart Farming Demos', 'Cold-Chain Logistics', 'Culinary Stages'],
+    shortName: 'Agritech & Food Trade',
+    tagline: 'Autonomous farming precision systems, cold-chain logistical corridors, food security symposiums, and global agricultural commodity trade.',
+    ctaLabel: 'Explore Agricultural Trade',
+    highlights: ['Precision Farming Demos', 'Cold-Chain Logistics', 'Food Commodity Trade', 'Culinary Innovation'],
     icon: Sprout,
     color: '#16a34a', // Forest Green
     bgGradient: 'from-green-500/10 via-green-500/5 to-transparent',
@@ -166,10 +164,10 @@ export const EVENT_CATEGORIES: CategoryItem[] = [
   {
     id: 'HOSPITALITY_TOURISM',
     name: 'Hospitality, Tourism & Travel Mart',
-    shortName: 'Travel & Tourism',
-    tagline: 'Destination showcases, hotelier procurement & international travel buyers.',
-    specialtyTool: 'Buyer Matchmaking Mart',
-    highlights: ['Buyer Appointments', 'Hotel Procurement', 'Airline Networks'],
+    shortName: 'Hospitality & Tourism',
+    tagline: 'International travel buyer matchmaking, luxury destination pavilions, hotelier procurement networks, and global airline assemblies.',
+    ctaLabel: 'Connect Hospitality Buyers',
+    highlights: ['Buyer Matchmaking Mart', 'Destination Pavilions', 'Hotelier Procurement', 'Aviation Networks'],
     icon: Plane,
     color: '#0891b2', // Cyan
     bgGradient: 'from-cyan-500/10 via-cyan-500/5 to-transparent',
@@ -179,9 +177,9 @@ export const EVENT_CATEGORIES: CategoryItem[] = [
     id: 'EDUCATION_EDTECH',
     name: 'Education, EdTech & Academic Summit',
     shortName: 'Education & EdTech',
-    tagline: 'Global university pavilions, scholarship grants & STEM research labs.',
-    specialtyTool: 'Scholarship Grant Radar',
-    highlights: ['University Stalls', 'Scholarship Grants', 'STEM Labs'],
+    tagline: 'Global university fairs, higher education scholarship counseling, STEM laboratory breakthroughs, and digital curriculum summits.',
+    ctaLabel: 'Explore University Summits',
+    highlights: ['World University Fairs', 'Scholarship Grant Counsel', 'STEM Research Labs', 'Digital EdTech Demos'],
     icon: GraduationCap,
     color: '#7c3aed', // Violet
     bgGradient: 'from-violet-500/10 via-violet-500/5 to-transparent',
@@ -190,10 +188,10 @@ export const EVENT_CATEGORIES: CategoryItem[] = [
   {
     id: 'FASHION_RETAIL',
     name: 'Fashion, Beauty & Luxury Retail Expo',
-    shortName: 'Fashion & Beauty',
-    tagline: 'Runway premieres, cosmetics OEM laboratories & luxury buyer orders.',
-    specialtyTool: 'Runway Live Booking',
-    highlights: ['Runway Schedules', 'Cosmetic OEM', 'Wholesale Orders'],
+    shortName: 'Fashion & Luxury',
+    tagline: 'High-fashion runway premieres, cosmetics contract manufacturing (OEM), luxury brand showrooms, and commercial wholesale procurement.',
+    ctaLabel: 'Explore Runway Showrooms',
+    highlights: ['Runway Show Schedules', 'Cosmetics OEM Labs', 'Luxury Brand Showrooms', 'Wholesale Buyer Orders'],
     icon: Crown,
     color: '#db2777', // Fuchsia
     bgGradient: 'from-fuchsia-500/10 via-fuchsia-500/5 to-transparent',
@@ -202,22 +200,22 @@ export const EVENT_CATEGORIES: CategoryItem[] = [
   {
     id: 'GOVERNMENT_DIPLOMATIC',
     name: 'Government & Diplomatic Summits',
-    shortName: 'Diplomatic Policy',
-    tagline: 'Protocol briefings, bilateral summit schedules & delegation security.',
-    specialtyTool: 'Bilateral Protocol Portal',
-    highlights: ['Protocol Briefs', 'Bilateral Schedules', 'Delegation Access'],
+    shortName: 'Diplomatic & Policy',
+    tagline: 'High-security bilateral conference suites, sovereign policy briefings, diplomatic protocol coordination, and international state delegations.',
+    ctaLabel: 'Access Diplomatic Briefings',
+    highlights: ['Protocol Briefing Dossiers', 'Bilateral Room Schedules', 'State Delegation Passes', 'Multilateral Assemblies'],
     icon: Landmark,
-    color: '#0284c7', // Sky Blue / Slate
+    color: '#0284c7', // Sky Blue
     bgGradient: 'from-sky-500/10 via-sky-500/5 to-transparent',
     borderColor: '#38bdf8',
   },
   {
     id: 'INCENTIVE_RETREAT',
     name: 'Corporate Incentive & Luxury Retreats',
-    shortName: 'Executive Retreats',
-    tagline: 'Curated excursion itineraries, gala banquets & executive wellness.',
-    specialtyTool: 'Gala Seating Planner',
-    highlights: ['Daily Itineraries', 'Gala Seating', 'Wellness Schedulers'],
+    shortName: 'Incentive & Retreats',
+    tagline: 'Curated executive incentive itineraries, bespoke gala banquets, private leadership symposiums, and wellness retreat programming.',
+    ctaLabel: 'Explore Executive Retreats',
+    highlights: ['Curated Day Itineraries', 'Bespoke Gala Seating', 'Executive Retreat Tracks', 'Private Charter Transit'],
     icon: Palmtree,
     color: '#059669', // Emerald
     bgGradient: 'from-emerald-500/10 via-emerald-500/5 to-transparent',
@@ -472,8 +470,8 @@ export function EventCategoryPills({
                 style={{ backgroundColor: category.color }}
               />
 
-              <div className="relative z-10 space-y-3.5">
-                {/* Header: Icon & Category Specialty Tag */}
+              <div className="relative z-10 space-y-4">
+                {/* Header: Icon & Category Tag Badge */}
                 <div className="flex items-center justify-between">
                   <div
                     className="flex h-11 w-11 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-105 shadow-2xs"
@@ -498,33 +496,22 @@ export function EventCategoryPills({
                   </span>
                 </div>
 
-                {/* Title & Tagline */}
+                {/* Title & Evocative Tagline */}
                 <div className="space-y-1.5">
                   <h3 className="text-base font-bold text-foreground group-hover:text-primary transition-colors leading-snug line-clamp-2 min-h-[2.75rem]">
                     {translatedTitle}
                   </h3>
-                  <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed min-h-[2.5rem]">
+                  <p className="text-xs text-muted-foreground line-clamp-3 leading-relaxed min-h-[3.25rem]">
                     {translatedDesc}
                   </p>
                 </div>
 
-                {/* Domain Specialty Tool Pill (Delight Feature) */}
-                <div className="p-2 rounded-xl bg-muted/50 border border-border/60 flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-1.5 text-foreground/90 font-semibold truncate">
-                    <Sparkles className="h-3.5 w-3.5 text-primary shrink-0" />
-                    <span className="truncate text-[11px]">{category.specialtyTool}</span>
-                  </div>
-                  <span className="text-[10px] uppercase font-mono tracking-wider text-muted-foreground px-1.5 py-0.5 rounded bg-card/80 shrink-0">
-                    Feature
-                  </span>
-                </div>
-
-                {/* Highlight Tags */}
-                <div className="flex flex-wrap gap-1.5 pt-0.5">
-                  {category.highlights.slice(0, 3).map((highlight, idx) => (
+                {/* Domain Spectrum Capabilities Tags */}
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  {category.highlights.slice(0, 4).map((highlight, idx) => (
                     <span
                       key={idx}
-                      className="text-[11px] font-medium text-foreground/80 bg-muted/80 px-2 py-0.5 rounded-lg whitespace-nowrap"
+                      className="text-[11px] font-medium text-foreground/85 bg-muted/80 px-2.5 py-0.5 rounded-lg whitespace-nowrap border border-border/40"
                     >
                       {highlight}
                     </span>
@@ -532,9 +519,9 @@ export function EventCategoryPills({
                 </div>
               </div>
 
-              {/* Bottom CTA Arrow Strip */}
-              <div className="relative z-10 pt-3.5 mt-3 border-t border-border/60 flex items-center justify-between text-xs font-semibold text-primary">
-                <span>{tCom('viewCategory') || `Explore ${category.shortName}`}</span>
+              {/* Bottom Domain CTA Arrow Strip */}
+              <div className="relative z-10 pt-4 mt-3 border-t border-border/60 flex items-center justify-between text-xs font-semibold text-primary">
+                <span>{category.ctaLabel || tCom('viewCategory') || `Explore ${category.shortName}`}</span>
                 <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 group-hover:bg-primary group-hover:text-white transition-all">
                   <ArrowRight className="h-3.5 w-3.5" />
                 </div>
