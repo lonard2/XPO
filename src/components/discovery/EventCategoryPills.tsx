@@ -237,6 +237,7 @@ export function EventCategoryPills({
   className,
 }: EventCategoryPillsProps) {
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+  const jumpBarRef = React.useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = React.useState(false);
   const [canScrollRight, setCanScrollRight] = React.useState(true);
 
@@ -320,6 +321,31 @@ export function EventCategoryPills({
     });
   };
 
+  // Roving keyboard navigation for jump pills
+  const handlePillKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const buttons = jumpBarRef.current?.querySelectorAll<HTMLButtonElement | HTMLAnchorElement>('button, a');
+    if (!buttons || buttons.length === 0) return;
+
+    const currentIndex = Array.from(buttons).indexOf(document.activeElement as any);
+    if (currentIndex === -1) return;
+
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      const nextIndex = (currentIndex + 1) % buttons.length;
+      buttons[nextIndex]?.focus();
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      const prevIndex = (currentIndex - 1 + buttons.length) % buttons.length;
+      buttons[prevIndex]?.focus();
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      buttons[0]?.focus();
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      buttons[buttons.length - 1]?.focus();
+    }
+  };
+
   return (
     <div className={cn('w-full space-y-4', className)}>
       {/* Section Header */}
@@ -368,14 +394,20 @@ export function EventCategoryPills({
         </div>
       </div>
 
-      {/* Quick Category Jump Pill Bar */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none -mx-1 px-1">
+      {/* Quick Category Jump Pill Bar with Keyboard Roving Navigation */}
+      <div
+        ref={jumpBarRef}
+        onKeyDown={handlePillKeyDown}
+        role="toolbar"
+        aria-label="Event category selection filter"
+        className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none -mx-1 px-1"
+      >
         {onSelectCategory ? (
           <button
             type="button"
             onClick={() => onSelectCategory('all')}
             className={cn(
-              'flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all whitespace-nowrap cursor-pointer',
+              'flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all whitespace-nowrap cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none',
               !activeCategoryId || activeCategoryId === 'all'
                 ? 'border-primary bg-primary text-primary-foreground font-semibold shadow-xs'
                 : 'border-border/80 bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground'
@@ -387,7 +419,7 @@ export function EventCategoryPills({
         ) : (
           <Link
             href={`/${locale}/events`}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold border border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 transition-all whitespace-nowrap cursor-pointer shadow-2xs"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold border border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 transition-all whitespace-nowrap cursor-pointer shadow-2xs focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
           >
             <Layers className="h-3.5 w-3.5" />
             <span>{tDisc('allArchetypes') || 'All (15)'}</span>
@@ -412,7 +444,7 @@ export function EventCategoryPills({
               type="button"
               onClick={() => scrollToCategoryIndex(idx, cat.id)}
               className={cn(
-                'flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium border transition-all whitespace-nowrap cursor-pointer',
+                'flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium border transition-all whitespace-nowrap cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none',
                 isSelected
                   ? 'border-primary bg-primary text-primary-foreground font-semibold shadow-xs'
                   : 'border-border/80 bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground'
@@ -425,7 +457,7 @@ export function EventCategoryPills({
         })}
       </div>
 
-      {/* Horizontally Scrollable Category Cards Carousel with Tactile Delight */}
+      {/* Horizontally Scrollable Category Cards Carousel with Tactile Polish */}
       <div
         ref={scrollContainerRef}
         onMouseDown={handleMouseDown}
@@ -457,16 +489,23 @@ export function EventCategoryPills({
 
           const cardContent = (
             <div
+              style={{
+                borderColor: isActive ? category.color : undefined,
+                boxShadow: isActive ? `0 0 24px -4px ${category.color}40` : undefined,
+              }}
               className={cn(
                 'group relative flex flex-col justify-between w-[300px] sm:w-[350px] lg:w-[370px] rounded-3xl border p-5 sm:p-6 transition-all duration-300 overflow-hidden text-left h-full snap-start shrink-0 shadow-xs',
                 isActive
-                  ? 'ring-2 ring-primary border-primary shadow-md bg-card'
+                  ? 'ring-2 ring-primary border-primary bg-card'
                   : 'border-border/80 bg-card hover:border-primary/60 hover:shadow-md hover:-translate-y-0.5'
               )}
             >
               {/* Dynamic Domain Ambient Glow */}
               <div
-                className="absolute -top-12 -right-12 h-32 w-32 rounded-full blur-2xl opacity-15 transition-opacity duration-300 group-hover:opacity-35 pointer-events-none"
+                className={cn(
+                  'absolute -top-12 -right-12 h-32 w-32 rounded-full blur-2xl transition-opacity duration-300 pointer-events-none',
+                  isActive ? 'opacity-45' : 'opacity-15 group-hover:opacity-35'
+                )}
                 style={{ backgroundColor: category.color }}
               />
 
@@ -485,7 +524,7 @@ export function EventCategoryPills({
                   </div>
 
                   <span
-                    className="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full whitespace-nowrap border"
+                    className="text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full whitespace-nowrap border"
                     style={{
                       backgroundColor: `${category.color}12`,
                       color: category.color,
@@ -511,7 +550,7 @@ export function EventCategoryPills({
                   {category.highlights.slice(0, 4).map((highlight, idx) => (
                     <span
                       key={idx}
-                      className="text-[11px] font-medium text-foreground/85 bg-muted/80 px-2.5 py-0.5 rounded-lg whitespace-nowrap border border-border/40"
+                      className="text-xs font-medium text-foreground/85 bg-muted/80 px-2.5 py-0.5 rounded-lg whitespace-nowrap border border-border/40"
                     >
                       {highlight}
                     </span>
@@ -535,7 +574,7 @@ export function EventCategoryPills({
                 key={category.id}
                 type="button"
                 onClick={() => onSelectCategory(category.id)}
-                className="shrink-0 text-left focus:outline-none cursor-pointer"
+                className="shrink-0 text-left focus:outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-primary rounded-3xl"
               >
                 {cardContent}
               </button>
@@ -546,7 +585,7 @@ export function EventCategoryPills({
             <Link
               key={category.id}
               href={`/${locale}/events?archetype=${category.id}`}
-              className="shrink-0 block focus:outline-none"
+              className="shrink-0 block focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-3xl"
             >
               {cardContent}
             </Link>
