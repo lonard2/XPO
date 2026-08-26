@@ -1,8 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { X, RotateCcw, Tag, Globe, Sparkles, Calendar, Layers } from 'lucide-react';
-import { Badge } from '@/components/ui/Badge';
+import { X, RotateCcw, Tag, Globe, Calendar, Layers, Briefcase } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useTranslations } from 'next-intl';
 import { getArchetypeTokens } from '@/lib/theming';
@@ -11,7 +10,7 @@ import { cn } from '@/lib/utils';
 
 export interface ActiveFilterChipsProps {
   filters: FilterState;
-  onRemoveFilter: (key: keyof FilterState) => void;
+  onRemoveFilter: (key: keyof FilterState, valueToRemove?: string) => void;
   onClearAll: () => void;
   className?: string;
 }
@@ -43,7 +42,9 @@ export function ActiveFilterChips({
     key: keyof FilterState;
     label: string;
     value: string;
+    subValue?: string;
     icon: React.ComponentType<{ className?: string }>;
+    accentColor?: string;
   }> = [];
 
   if (filters.keyword && filters.keyword.trim().length > 0) {
@@ -76,14 +77,23 @@ export function ActiveFilterChips({
   }
 
   if (filters.archetype && filters.archetype !== 'all') {
-    const localizedArch = tArch(`${filters.archetype}.title`);
-    const tokens = getArchetypeTokens(filters.archetype);
-    activeChips.push({
-      key: 'archetype',
-      label: localizedArch || tokens.displayName,
-      value: filters.archetype,
-      icon: Sparkles,
-    });
+    const archetypes = filters.archetype
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean);
+
+    for (const archKey of archetypes) {
+      const localizedArch = tArch(`${archKey}.title`);
+      const tokens = getArchetypeTokens(archKey);
+      activeChips.push({
+        key: 'archetype',
+        label: localizedArch && localizedArch !== `${archKey}.title` ? localizedArch : tokens.displayName,
+        value: filters.archetype,
+        subValue: archKey,
+        icon: Briefcase,
+        accentColor: tokens.primary,
+      });
+    }
   }
 
   if (filters.format && filters.format !== 'all') {
@@ -125,18 +135,25 @@ export function ActiveFilterChips({
         {tDisc('activeFilters') || 'Active Filters'} ({activeChips.length}):
       </span>
 
-      {activeChips.map((chip) => {
+      {activeChips.map((chip, idx) => {
         const Icon = chip.icon;
         return (
           <span
-            key={chip.key}
+            key={`${chip.key}-${chip.subValue || chip.value}-${idx}`}
             className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary shadow-xs transition-colors hover:bg-primary/15"
           >
-            <Icon className="h-3 w-3 shrink-0" />
+            {chip.accentColor ? (
+              <span
+                className="h-2 w-2 rounded-full shrink-0"
+                style={{ backgroundColor: chip.accentColor }}
+              />
+            ) : (
+              <Icon className="h-3 w-3 shrink-0" />
+            )}
             <span className="max-w-[160px] truncate">{chip.label}</span>
             <button
               type="button"
-              onClick={() => onRemoveFilter(chip.key)}
+              onClick={() => (chip.subValue ? onRemoveFilter(chip.key, chip.subValue) : onRemoveFilter(chip.key))}
               className="ml-0.5 rounded-full p-0.5 hover:bg-primary/20 transition-colors focus:outline-none cursor-pointer"
               aria-label={`Remove filter: ${chip.label}`}
             >

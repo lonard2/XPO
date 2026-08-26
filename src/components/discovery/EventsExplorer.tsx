@@ -3,7 +3,6 @@
 import * as React from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import {
-  Sparkles,
   Calendar,
   Layers,
   RotateCcw,
@@ -150,9 +149,13 @@ export function EventsExplorer({
         }
       }
 
-      // 4. MICE Category Archetype filter
+      // 4. MICE Category Archetype filter (Supports multi-select comma-separated)
       if (filters.archetype !== 'all') {
-        if (event.archetype.toUpperCase() !== filters.archetype.toUpperCase()) {
+        const selectedArchetypes = filters.archetype
+          .split(',')
+          .map((s) => s.trim().toUpperCase())
+          .filter(Boolean);
+        if (selectedArchetypes.length > 0 && !selectedArchetypes.includes(event.archetype.toUpperCase())) {
           return false;
         }
       }
@@ -289,21 +292,23 @@ export function EventsExplorer({
         description={tDisc('filterByRegion') || 'Filter exhibitions by region, archetype category, format, and scale.'}
         side="bottom"
       >
-        <div className="pb-6">
-          <FilterSidebar
-            filters={filters}
-            onChange={(newFilters) => {
-              handleFilterChange(newFilters);
-            }}
-            onReset={() => {
-              handleResetFilters();
-              setIsMobileDrawerOpen(false);
-            }}
-            counts={categoryCounts}
-          />
-          <div className="pt-6 border-t border-border mt-6">
+        <div className="flex flex-col max-h-[75vh]">
+          <div className="overflow-y-auto pb-4 pr-1 flex-1">
+            <FilterSidebar
+              filters={filters}
+              onChange={(newFilters) => {
+                handleFilterChange(newFilters);
+              }}
+              onReset={() => {
+                handleResetFilters();
+                setIsMobileDrawerOpen(false);
+              }}
+              counts={categoryCounts}
+            />
+          </div>
+          <div className="sticky bottom-0 bg-background/95 backdrop-blur-md border-t border-border pt-3 pb-2 z-10">
             <Button
-              className="w-full font-semibold cursor-pointer"
+              className="w-full font-semibold cursor-pointer shadow-md"
               onClick={() => setIsMobileDrawerOpen(false)}
             >
               {tDisc('applyFilters') || 'Apply Filters'} ({filteredAndSortedEvents.length} {tDisc('exhibitionsCount') || 'Results'})

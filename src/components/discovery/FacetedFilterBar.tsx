@@ -6,16 +6,11 @@ import {
   X,
   SlidersHorizontal,
   ArrowUpDown,
-  Sparkles,
-  Globe,
   Layers,
 } from 'lucide-react';
-import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
-import { Badge } from '@/components/ui/Badge';
 import { useTranslations } from 'next-intl';
 import { ActiveFilterChips } from '@/components/discovery/ActiveFilterChips';
-import { ALL_MICE_ARCHETYPES, ARCHETYPE_DEFAULTS } from '@/lib/theming';
 import { type FilterState } from '@/types/discovery';
 import { cn } from '@/lib/utils';
 
@@ -41,17 +36,11 @@ export function FacetedFilterBar({
   className,
 }: FacetedFilterBarProps) {
   let tDisc: any = (k: string) => k;
-  let tReg: any = (k: string) => k;
-  let tArch: any = (k: string) => k;
   let tCom: any = (k: string) => k;
   let tEvents: any = (k: string) => k;
   try {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     tDisc = useTranslations('discovery');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tReg = useTranslations('regions');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tArch = useTranslations('archetypes');
     // eslint-disable-next-line react-hooks/rules-of-hooks
     tCom = useTranslations('common');
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -60,15 +49,8 @@ export function FacetedFilterBar({
     // Fallback if rendered outside provider in tests
   }
 
-  const getRegionAllLabel = () => {
-    const val = tReg('all');
-    if (!val || val === 'regions.all' || val === 'all') {
-      return 'All Regional Hubs';
-    }
-    return val;
-  };
-
   const [searchTerm, setSearchTerm] = React.useState(filters.keyword);
+  const searchInputRef = React.useRef<HTMLInputElement>(null);
 
   // Synchronize local search term if filters are cleared from outside
   React.useEffect(() => {
@@ -89,6 +71,24 @@ export function FacetedFilterBar({
     return () => clearTimeout(handler);
   }, [searchTerm, filters, onChange]);
 
+  // Global '/' keyboard accelerator to focus search input
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (
+        e.key === '/' &&
+        document.activeElement?.tagName !== 'INPUT' &&
+        document.activeElement?.tagName !== 'TEXTAREA' &&
+        document.activeElement?.tagName !== 'SELECT'
+      ) {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   const handleClearSearch = () => {
     setSearchTerm('');
     onChange({
@@ -97,13 +97,31 @@ export function FacetedFilterBar({
     });
   };
 
-  const handleRemoveChip = (key: keyof FilterState) => {
+  const handleRemoveChip = (key: keyof FilterState, valueToRemove?: string) => {
     if (key === 'keyword') {
       setSearchTerm('');
+      onChange({
+        ...filters,
+        keyword: '',
+      });
+      return;
     }
+
+    if (key === 'archetype' && valueToRemove && filters.archetype !== 'all') {
+      const remaining = filters.archetype
+        .split(',')
+        .map((s) => s.trim())
+        .filter((s) => s.toUpperCase() !== valueToRemove.toUpperCase());
+      onChange({
+        ...filters,
+        archetype: remaining.length > 0 ? remaining.join(',') : 'all',
+      });
+      return;
+    }
+
     onChange({
       ...filters,
-      [key]: key === 'keyword' ? '' : 'all',
+      [key]: 'all',
     });
   };
 
@@ -118,60 +136,36 @@ export function FacetedFilterBar({
 
   return (
     <div className={cn('space-y-3', className)} aria-label="Search and filter toolbar">
-      {/* Top Search and Quick Actions Bar */}
+      {/* Top Search and Sort Bar */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-        {/* Search Input */}
+        {/* Search Input with Keyboard Shortcut */}
         <div className="relative flex-1">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
           <input
+            ref={searchInputRef}
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder={tDisc('searchPlaceholder') || 'Search events by title, keyword, city, or venue...'}
-            className="h-10 w-full rounded-xl border border-border bg-card pl-10 pr-9 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-xs"
+            placeholder={tDisc('searchPlaceholder') || 'Search exhibitions by title, keyword, city, or venue...'}
+            className="h-10 w-full rounded-xl border border-border bg-card pl-10 pr-16 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-xs"
             aria-label="Search events"
           />
-          {searchTerm && (
+          {searchTerm ? (
             <button
               type="button"
               onClick={handleClearSearch}
-              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors cursor-pointer"
               aria-label="Clear search query"
             >
               <X className="h-3.5 w-3.5" />
             </button>
+          ) : (
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none hidden sm:flex items-center">
+              <kbd className="rounded border border-border bg-muted/70 px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground">
+                /
+              </kbd>
+            </div>
           )}
-        </div>
-
-        {/* Quick Hub Selector (Desktop Only) */}
-        <div className="hidden lg:flex items-center gap-2">
-          <select
-            value={filters.region}
-            onChange={(e) => onChange({ ...filters, region: e.target.value })}
-            className="h-10 rounded-xl border border-border bg-card px-3 text-xs font-medium text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-xs cursor-pointer"
-            aria-label="Select Region Hub"
-          >
-            <option value="all">{getRegionAllLabel()}</option>
-            <option value="id">{tReg('id.name') ? `${tReg('id.name')} (ID)` : 'Indonesia Hub (ID)'}</option>
-            <option value="jp">{tReg('jp.name') ? `${tReg('jp.name')} (JP)` : 'Japan Hub (JP)'}</option>
-            <option value="global">{tReg('global.name') ? `${tReg('global.name')} (GL)` : 'Global Gateways (GL)'}</option>
-          </select>
-
-          <select
-            value={filters.archetype}
-            onChange={(e) => onChange({ ...filters, archetype: e.target.value })}
-            className="h-10 rounded-xl border border-border bg-card px-3 text-xs font-medium text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-xs cursor-pointer max-w-[180px]"
-            aria-label="Select MICE Category"
-          >
-            <option value="all">{tEvents('allCategories') || 'All Categories'}</option>
-            {ALL_MICE_ARCHETYPES.map((arch) => (
-              <option key={arch} value={arch}>
-                {tArch(`${arch}.title`) && tArch(`${arch}.title`) !== `${arch}.title`
-                  ? tArch(`${arch}.title`)
-                  : ARCHETYPE_DEFAULTS[arch].displayName}
-              </option>
-            ))}
-          </select>
         </div>
 
         {/* Sort Selector & Mobile Filter Button */}
