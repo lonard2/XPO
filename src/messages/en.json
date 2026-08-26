@@ -145,78 +145,78 @@
   "archetypes": {
     "INDUSTRIAL_B2B": {
       "title": "Industrial & Manufacturing B2B",
-      "tag": "Heavy Machinery & Sourcing",
-      "description": "Live CNC machine tooling, industrial robotics, precision metallurgy, and B2B procurement tenders."
+      "tag": "Industrial & Manufacturing",
+      "description": "Heavy machinery engineering, precision CNC automation, robotics tooling, and global B2B procurement tenders."
     },
     "TECH_DEV_SUMMIT": {
-      "title": "Tech, AI & Developer Summit",
-      "tag": "AI & Cloud Architecture",
-      "description": "Multi-track developer sessions, live code architectures, API sandboxes, and engineering hackathons."
+      "title": "Tech, AI & Developer Summits",
+      "tag": "Tech, AI & Code",
+      "description": "Autonomous AI engineering, distributed cloud systems, developer keynotes, and competitive multi-track hackathons."
     },
     "MEDICAL_SYMPOSIUM": {
-      "title": "Medical & Healthcare Symposium",
-      "tag": "CME & Clinical Research",
-      "description": "Peer-reviewed medical publications, CME professional accreditation, and specialist breakout sessions."
+      "title": "Medical & Healthcare Congress",
+      "tag": "Medical & Health",
+      "description": "Peer-reviewed clinical research abstracts, CME medical accreditation, surgical breakthroughs, and biomedical assemblies."
     },
     "FINANCE_INVESTOR": {
-      "title": "Finance, FinTech & Investor Forum",
-      "tag": "Venture & Institutional Capital",
-      "description": "Startup demo stages, private bilateral deal-rooms, and institutional capital allocation forums."
+      "title": "Finance, FinTech & Investor Forums",
+      "tag": "Finance & Capital",
+      "description": "Private bilateral deal rooms, institutional capital allocation, fintech venture pitch decks, and sovereign wealth assemblies."
     },
     "POP_CULTURE_GAMING": {
       "title": "Pop Culture & Gaming Expo",
-      "tag": "Esports & Creator Alley",
-      "description": "Cosplay stages, comic illustrator alleys, esports tournament arenas, and community meetups."
+      "tag": "Pop Culture & Gaming",
+      "description": "Esports championship tournament arenas, international cosplay catwalks, creator alley showcases, and premiere fandom stages."
     },
     "MUSIC_FESTIVAL": {
-      "title": "Music Festival & Arena Concert",
-      "tag": "Multi-Stage Live Sets",
-      "description": "Real-time stage schedules, acoustic arena maps, and RFID wristband gate access."
+      "title": "Music Festival & Arena Concerts",
+      "tag": "Music & Arena Sets",
+      "description": "Multi-stage acoustic arena schedules, dynamic crowd telemetry, festival lineups, and fast-track RFID wristband admissions."
     },
     "MEGA_EXPO_PAVILION": {
-      "title": "Mega Expo & Multi-Pavilion Fair",
-      "tag": "Consumer Pavilions & Fairs",
-      "description": "Multi-pavilion consumer shopping, nightly fireworks displays, and large-scale public culinary bazaars."
+      "title": "Mega Expo & Multi-Pavilion Fairs",
+      "tag": "Mega Expos & Fairs",
+      "description": "Multi-hectare regional trade fairs, global nation pavilions, nocturnal fireworks spectacles, and commercial retail concourses."
     },
     "AUTOMOTIVE_MOBILITY": {
-      "title": "Automotive, EV & Mobility Expo",
-      "tag": "Concept Cars & Test Drives",
-      "description": "Test drive track reservations, concept vehicle debuts, and electric mobility ecosystem technologies."
+      "title": "Automotive, EV & Mobility Motor Show",
+      "tag": "Automotive & EV",
+      "description": "Concept vehicle world premieres, closed-circuit test drive reservations, EV battery architectures, and autonomous mobility debuts."
     },
     "ENERGY_INFRASTRUCTURE": {
       "title": "Energy, Mining & Green Infrastructure",
-      "tag": "Clean Grids & Heavy Mining",
-      "description": "Renewable power grids, heavy extraction machinery, and strategic maritime energy projects."
+      "tag": "Energy & Infrastructure",
+      "description": "Renewable grid distribution, strategic mineral extraction concessions, clean energy transitions, and heavy site machinery."
     },
     "AGRITECH_FOOD": {
       "title": "Agriculture, Agritech & Food Expo",
-      "tag": "Smart Farming & Logistics",
-      "description": "Smart precision farming, cold-chain logistics networks, and international food commodity trade."
+      "tag": "Agritech & Food Trade",
+      "description": "Autonomous farming precision systems, cold-chain logistical corridors, food security symposiums, and global agricultural commodity trade."
     },
     "HOSPITALITY_TOURISM": {
       "title": "Hospitality, Tourism & Travel Mart",
-      "tag": "Destination Showcases & Hoteliers",
-      "description": "International travel buyer appointments, hospitality supply chains, and destination marketing."
+      "tag": "Hospitality & Tourism",
+      "description": "International travel buyer matchmaking, luxury destination pavilions, hotelier procurement networks, and global airline assemblies."
     },
     "EDUCATION_EDTECH": {
-      "title": "Education, EdTech & Academic Expo",
-      "tag": "University Fairs & Scholarships",
-      "description": "Global university stalls, higher education scholarship counseling, and digital learning innovations."
+      "title": "Education, EdTech & Academic Summit",
+      "tag": "Education & EdTech",
+      "description": "Global university fairs, higher education scholarship counseling, STEM laboratory breakthroughs, and digital curriculum summits."
     },
     "FASHION_RETAIL": {
       "title": "Fashion, Beauty & Luxury Retail Expo",
-      "tag": "Runway Shows & Cosmetic OEM",
-      "description": "Designer runway showcases, cosmetic contract manufacturing (OEM), and wholesale retail trade."
+      "tag": "Fashion & Luxury",
+      "description": "High-fashion runway premieres, cosmetics contract manufacturing (OEM), luxury brand showrooms, and commercial wholesale procurement."
     },
     "GOVERNMENT_DIPLOMATIC": {
-      "title": "Government & Diplomatic Summit",
-      "tag": "Diplomatic Protocol & Bilateral",
-      "description": "High-security bilateral conference suites, diplomatic briefings, and state delegation forums."
+      "title": "Government & Diplomatic Summits",
+      "tag": "Diplomatic & Policy",
+      "description": "High-security bilateral conference suites, sovereign policy briefings, diplomatic protocol coordination, and international state delegations."
     },
     "INCENTIVE_RETREAT": {
-      "title": "Corporate Incentive & Luxury Retreat",
-      "tag": "Curated Itineraries & Galas",
-      "description": "Curated corporate reward itineraries, executive leadership gatherings, and exclusive waterfront galas."
+      "title": "Corporate Incentive & Luxury Retreats",
+      "tag": "Incentive & Retreats",
+      "description": "Curated executive incentive itineraries, bespoke gala banquets, private leadership symposiums, and wellness retreat programming."
     }
   },
   "discovery": {

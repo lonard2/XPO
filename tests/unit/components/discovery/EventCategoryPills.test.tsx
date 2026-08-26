@@ -8,21 +8,21 @@ describe('EventCategoryPills', () => {
     render(<EventCategoryPills locale="en" />);
 
     expect(screen.getByText('Explore by Event Category')).toBeDefined();
-    expect(screen.getByText(/Industrial & Manufacturing/i)).toBeDefined();
-    expect(screen.getByText(/Tech, AI & Developer/i)).toBeDefined();
-    expect(screen.getByText(/Medical & Healthcare/i)).toBeDefined();
-    expect(screen.getByText(/Finance, FinTech & Investor/i)).toBeDefined();
-    expect(screen.getByText(/Pop Culture & Gaming/i)).toBeDefined();
-    expect(screen.getByText(/Music Festival/i)).toBeDefined();
-    expect(screen.getByText(/Mega Expo & Multi-Pavilion/i)).toBeDefined();
-    expect(screen.getByText(/Automotive, EV & Mobility/i)).toBeDefined();
-    expect(screen.getByText(/Energy, Mining & Green/i)).toBeDefined();
-    expect(screen.getByText(/Agriculture, Agritech & Food/i)).toBeDefined();
-    expect(screen.getByText(/Hospitality, Tourism & Travel/i)).toBeDefined();
-    expect(screen.getByText(/Education, EdTech & Academic/i)).toBeDefined();
-    expect(screen.getByText(/Fashion, Beauty & Luxury/i)).toBeDefined();
-    expect(screen.getByText(/Government & Diplomatic/i)).toBeDefined();
-    expect(screen.getByText(/Corporate Incentive/i)).toBeDefined();
+    expect(screen.getAllByText(/Industrial & Manufacturing/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Tech, AI & Developer/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Medical & Healthcare/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Finance, FinTech & Investor/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Pop Culture & Gaming/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Music Festival/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Mega Expo & Multi-Pavilion/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Automotive, EV & Mobility/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Energy, Mining & Green/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Agriculture, Agritech & Food/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Hospitality, Tourism & Travel/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Education, EdTech & Academic/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Fashion, Beauty & Luxury/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Government & Diplomatic/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Corporate Incentive/i).length).toBeGreaterThan(0);
   });
 
   it('triggers onSelectCategory callback when category card is clicked', () => {
@@ -35,8 +35,8 @@ describe('EventCategoryPills', () => {
       />
     );
 
-    const techBtn = screen.getByText(/Tech, AI & Developer/i);
-    fireEvent.click(techBtn);
+    const techBtns = screen.getAllByText(/Tech, AI & Developer/i);
+    fireEvent.click(techBtns[0]);
 
     expect(handleSelect).toHaveBeenCalledWith('TECH_DEV_SUMMIT');
   });
