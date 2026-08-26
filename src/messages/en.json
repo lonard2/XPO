@@ -308,7 +308,10 @@
     "majorVenuesIn": "Major Venues in",
     "nearUpcomingSchedule": "Near-Upcoming Schedule",
     "quickGlance": "(Quick Glance)",
-    "noEventsScheduled": "No public events scheduled this week"
+    "quickGlanceSchedule": "(Quick Glance: Up to 3 Near-Upcoming Events)",
+    "noEventsScheduled": "No public events scheduled this week",
+    "noUpcomingEventsScheduled": "No public events scheduled this week",
+    "viewVenueDetailMap": "View venue details & hall layout"
   },
   "calendar": {
     "title": "Interactive Event Calendar",
@@ -321,7 +324,9 @@
     "exportGoogle": "Add to Google Calendar",
     "today": "Today",
     "noEventsOnDate": "No scheduled events on this date.",
-    "eventsOnDate": "Event Schedule • "
+    "noEventsToday": "No scheduled exhibitions on this date.",
+    "nearestUpcoming": "Next scheduled exhibition in this edition:",
+    "eventsOnDate": "Schedule for"
   },
   "tickets": {
     "bookPass": "Book Ticket Pass",

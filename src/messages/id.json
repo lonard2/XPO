@@ -308,7 +308,10 @@
     "majorVenuesIn": "Pusat Konvensi Utama di",
     "nearUpcomingSchedule": "Jadwal Pameran Terdekat",
     "quickGlance": "(Sekilas Info)",
-    "noEventsScheduled": "Tidak ada acara publik yang dijadwalkan minggu ini"
+    "quickGlanceSchedule": "(Sekilas Info: Hingga 3 Acara Terdekat)",
+    "noEventsScheduled": "Tidak ada acara publik yang dijadwalkan minggu ini",
+    "noUpcomingEventsScheduled": "Tidak ada acara publik yang dijadwalkan minggu ini",
+    "viewVenueDetailMap": "Lihat detail venue & denah hall"
   },
   "calendar": {
     "title": "Kalender Acara Interaktif",
@@ -321,7 +324,9 @@
     "exportGoogle": "Tambahkan ke Google Calendar",
     "today": "Hari Ini",
     "noEventsOnDate": "Tidak ada acara terjadwal pada tanggal ini.",
-    "eventsOnDate": "Jadwal Pameran • "
+    "noEventsToday": "Tidak ada jadwal pameran pada tanggal ini.",
+    "nearestUpcoming": "Pameran terjadwal berikutnya di edisi ini:",
+    "eventsOnDate": "Jadwal untuk"
   },
   "tickets": {
     "bookPass": "Pesan Pas Masuk",

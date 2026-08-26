@@ -102,11 +102,7 @@ export function HeroVenueQuickGlanceRail({
   const regionLabel = regionNames[regionCode.toLowerCase()] || regionCode.toUpperCase();
 
   const getHeaderTitle = () => {
-    let major = tVen('majorVenuesIn');
-    if (!major || typeof major !== 'string' || major === 'majorVenuesIn' || major.includes('.')) {
-      major = 'Major Venues in';
-    }
-
+    const major = tVen('majorVenuesIn') || 'Major Venues in';
     let regionTxt = regionLabel;
     try {
       if (tReg && typeof tReg.raw === 'function') {
@@ -116,32 +112,7 @@ export function HeroVenueQuickGlanceRail({
     } catch {
       // fallback
     }
-
     return `${major} ${regionTxt}`;
-  };
-
-  const getQuickGlanceLabel = () => {
-    const label = tVen('quickGlanceSchedule');
-    if (!label || typeof label !== 'string' || label === 'quickGlanceSchedule' || label.includes('.')) {
-      return '(Quick Glance: Up to 3 Near-Upcoming Events)';
-    }
-    return label;
-  };
-
-  const getNoEventsLabel = () => {
-    const label = tVen('noUpcomingEventsScheduled');
-    if (!label || typeof label !== 'string' || label === 'noUpcomingEventsScheduled' || label.includes('.')) {
-      return 'No public events scheduled this week';
-    }
-    return label;
-  };
-
-  const getViewVenueDetailLabel = () => {
-    const label = tVen('viewVenueDetailMap');
-    if (!label || typeof label !== 'string' || label === 'viewVenueDetailMap' || label.includes('.')) {
-      return 'View venue details & hall layout';
-    }
-    return label;
   };
 
   return (
@@ -161,7 +132,7 @@ export function HeroVenueQuickGlanceRail({
             {getHeaderTitle()}
           </span>
           <span className="text-xs text-muted-foreground hidden sm:inline">
-            {getQuickGlanceLabel()}
+            {tVen('quickGlanceSchedule')}
           </span>
         </div>
 
@@ -291,7 +262,7 @@ export function HeroVenueQuickGlanceRail({
                   })
                 ) : (
                   <div className="p-2 text-center text-xs text-muted-foreground rounded-lg border border-dashed border-border/60">
-                    <span>{getNoEventsLabel()}</span>
+                    <span>{tVen('noUpcomingEventsScheduled')}</span>
                   </div>
                 )}
               </div>
@@ -302,7 +273,7 @@ export function HeroVenueQuickGlanceRail({
                   href={`/${locale}/venues/${venue.slug}`}
                   className="text-primary hover:underline font-medium flex items-center justify-between"
                 >
-                  <span>{getViewVenueDetailLabel()}</span>
+                  <span>{tVen('viewVenueDetailMap')}</span>
                   <ChevronRight className="h-3.5 w-3.5" />
                 </Link>
               </div>

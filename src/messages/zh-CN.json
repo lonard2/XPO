@@ -308,7 +308,10 @@
     "majorVenuesIn": "主要会展中心：",
     "nearUpcomingSchedule": "近期展会日程",
     "quickGlance": "(概览)",
-    "noEventsScheduled": "本周暂无公开日程"
+    "quickGlanceSchedule": "(快速概览：近期至多 3 场展会)",
+    "noEventsScheduled": "本周暂无公开日程",
+    "noUpcomingEventsScheduled": "本周暂无公开日程",
+    "viewVenueDetailMap": "查看场馆详情与展厅平面图"
   },
   "calendar": {
     "title": "会展交互日历",
@@ -321,6 +324,8 @@
     "exportGoogle": "添加到谷歌日历",
     "today": "今天",
     "noEventsOnDate": "该日期暂无安排展会。",
+    "noEventsToday": "该日期暂无安排展会。",
+    "nearestUpcoming": "本区域下一场排期展会：",
     "eventsOnDate": "展会日程 · "
   },
   "tickets": {
