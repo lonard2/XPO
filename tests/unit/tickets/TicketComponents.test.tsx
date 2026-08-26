@@ -7,6 +7,8 @@ import { InteractiveGuidebook, type AgendaSessionItem } from "@/components/perks
 import { HallFloorMap, type BoothItem } from "@/components/perks/HallFloorMap";
 import { TierPerksGating, type EventPerkItem } from "@/components/perks/TierPerksGating";
 
+import { PassDayOfSubnav } from "@/components/perks/PassDayOfSubnav";
+
 describe("Phase 6 Unit: Ticket & Event Treats Component System", () => {
   const sampleTiers: TicketTierItem[] = [
     {
@@ -157,10 +159,49 @@ describe("Phase 6 Unit: Ticket & Event Treats Component System", () => {
       expect(screen.getByText("HMAC-SHA256 Cryptographic Authentication Ledger")).toBeDefined();
       expect(screen.getByText("HMAC-SHA256 (256-bit)")).toBeDefined();
     });
+
+    it("opens high-contrast turnstile scanner modal on button click", () => {
+      render(<DigitalPassQR booking={sampleBooking} locale="en" />);
+
+      const turnstileBtn = screen.getByRole("button", { name: /enlarge turnstile/i });
+      fireEvent.click(turnstileBtn);
+
+      expect(screen.getByText(/Max Contrast Turnstile Mode/i)).toBeDefined();
+      expect(screen.getByText(/Hold screen flat under the optical gate/i)).toBeDefined();
+
+      const closeBtn = screen.getByRole("button", { name: /done scanning/i });
+      fireEvent.click(closeBtn);
+
+      expect(screen.queryByText(/Max Contrast Turnstile Mode/i)).toBeNull();
+    });
   });
 
   // ==========================================================================
-  // 3. INTERACTIVE GUIDEBOOK TESTS
+  // 3. DAY-OF SUBNAV TESTS
+  // ==========================================================================
+  describe("PassDayOfSubnav Component", () => {
+    it("renders all sub-navigation buttons with item counts", () => {
+      render(
+        <PassDayOfSubnav
+          hasPerks={true}
+          perksCount={3}
+          hasAgenda={true}
+          agendaCount={6}
+          hasMap={true}
+        />
+      );
+
+      expect(screen.getByRole("button", { name: /digital pass/i })).toBeDefined();
+      expect(screen.getByRole("button", { name: /vip treats/i })).toBeDefined();
+      expect(screen.getByRole("button", { name: /timetable/i })).toBeDefined();
+      expect(screen.getByRole("button", { name: /floor map/i })).toBeDefined();
+      expect(screen.getByText("3")).toBeDefined();
+      expect(screen.getByText("6")).toBeDefined();
+    });
+  });
+
+  // ==========================================================================
+  // 4. INTERACTIVE GUIDEBOOK TESTS
   // ==========================================================================
   describe("InteractiveGuidebook Component", () => {
     const sampleAgenda: AgendaSessionItem[] = [
@@ -249,7 +290,7 @@ describe("Phase 6 Unit: Ticket & Event Treats Component System", () => {
   });
 
   // ==========================================================================
-  // 4. HALL FLOOR MAP TESTS
+  // 5. HALL FLOOR MAP TESTS
   // ==========================================================================
   describe("HallFloorMap Component", () => {
     const sampleBooths: BoothItem[] = [
@@ -315,7 +356,7 @@ describe("Phase 6 Unit: Ticket & Event Treats Component System", () => {
   });
 
   // ==========================================================================
-  // 5. TIER PERKS GATING TESTS
+  // 6. TIER PERKS GATING TESTS
   // ==========================================================================
   describe("TierPerksGating Component", () => {
     const samplePerks: EventPerkItem[] = [
@@ -325,6 +366,7 @@ describe("Phase 6 Unit: Ticket & Event Treats Component System", () => {
         description: "Complimentary handcrafted espresso & cold brews at Hall A Lounge.",
         tierRequired: null, // Unlocked for all
         iconName: "Coffee",
+        location: "Hall A2 • Main Concourse Barista",
       },
       {
         id: "perk-02",
@@ -332,10 +374,11 @@ describe("Phase 6 Unit: Ticket & Event Treats Component System", () => {
         description: "Reserved high-speed meeting pods with refreshments and concierge.",
         tierRequired: "VIP",
         iconName: "ShieldCheck",
+        location: "Hall A1 • VIP Delegate Lounge",
       },
     ];
 
-    it("unlocks VIP perks for VIP attendee and generates claimable voucher", () => {
+    it("unlocks VIP perks for VIP attendee, shows location, and generates claimable voucher", () => {
       render(
         <TierPerksGating
           perks={samplePerks}
@@ -347,6 +390,8 @@ describe("Phase 6 Unit: Ticket & Event Treats Component System", () => {
 
       expect(screen.getByText("Barista Specialty Coffee")).toBeDefined();
       expect(screen.getByText("VIP Buyer Lounge & Private Meeting Room")).toBeDefined();
+      expect(screen.getByText("Hall A2 • Main Concourse Barista")).toBeDefined();
+      expect(screen.getByText("Hall A1 • VIP Delegate Lounge")).toBeDefined();
 
       // Both should be unlocked for VIP
       const redeemButtons = screen.getAllByRole("button", { name: /voucher|claim/i });
@@ -356,6 +401,7 @@ describe("Phase 6 Unit: Ticket & Event Treats Component System", () => {
       fireEvent.click(redeemButtons[1]);
 
       expect(screen.getByText(/XPO-MFG-1-PERK/i)).toBeDefined();
+      expect(screen.getByText(/Locate Redemption Hub on Map/i)).toBeDefined();
     });
 
     it("locks VIP perks when attendee has Standard Pass", () => {

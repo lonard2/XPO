@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import * as React from "react";
+import * as React from 'react';
 import {
   Gift,
   Coffee,
@@ -15,12 +15,14 @@ import {
   ShieldCheck,
   QrCode,
   Check,
-} from "lucide-react";
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
-import { useTranslations } from "next-intl";
-import { cn } from "@/lib/utils";
+  MapPin,
+  Compass,
+} from 'lucide-react';
+import { Badge } from '@/components/ui/Badge';
+import { Button } from '@/components/ui/Button';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
+import { useTranslations } from 'next-intl';
+import { cn } from '@/lib/utils';
 
 export interface EventPerkItem {
   id: string;
@@ -28,6 +30,7 @@ export interface EventPerkItem {
   description: string;
   tierRequired?: string | null;
   iconName: string;
+  location?: string;
 }
 
 export interface TierPerksGatingProps {
@@ -49,22 +52,26 @@ const PERK_ICONS: Record<string, React.ComponentType<{ className?: string }>> = 
   Sparkles: Sparkles,
 };
 
+// Default fallback redemption counters for standard MICE perks
+const DEFAULT_LOCATIONS: Record<string, string> = {
+  Coffee: 'Main Concourse • Specialty Barista Hub',
+  Wifi: 'All Exhibition Halls • High-Density SSID',
+  Gift: 'Hall A1 • VIP Delegate Welcome Counter',
+  Download: 'Digital Cloud • Instant PDF Download',
+  FileText: 'Plenary Foyer • Proceedings Desk',
+  Award: 'Executive Lounge • Concierge Suite',
+  ShieldCheck: 'Gate Turnstile • Priority Fast-Track',
+  Sparkles: 'East Wing • Networking Zone',
+};
+
 export function TierPerksGating({
   perks,
   attendeeTierName,
   bookingId,
-  locale = "en",
+  locale = 'en',
 }: TierPerksGatingProps) {
-  let tPerks: any = (k: string) => k;
-  let tCommon: any = (k: string) => k;
-  try {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tPerks = useTranslations("perks");
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tCommon = useTranslations("common");
-  } catch {
-    // Fallback
-  }
+  const tPerks = useTranslations('perks');
+  const tCommon = useTranslations('common');
 
   const [claimedPerkIds, setClaimedPerkIds] = React.useState<Set<string>>(new Set());
   const [activeVoucherId, setActiveVoucherId] = React.useState<string | null>(null);
@@ -74,12 +81,12 @@ export function TierPerksGating({
     const req = tierRequired.toLowerCase().trim();
     const userTier = attendeeTierName.toLowerCase().trim();
 
-    if (req === "vip" || req.includes("vip")) {
+    if (req === 'vip' || req.includes('vip')) {
       return (
-        userTier.includes("vip") ||
-        userTier.includes("delegate") ||
-        userTier.includes("executive") ||
-        userTier.includes("exhibitor")
+        userTier.includes('vip') ||
+        userTier.includes('delegate') ||
+        userTier.includes('executive') ||
+        userTier.includes('exhibitor')
       );
     }
     return userTier.includes(req);
@@ -90,6 +97,14 @@ export function TierPerksGating({
     setActiveVoucherId(perkId);
   };
 
+  const scrollToMap = () => {
+    const el = document.getElementById('hall-map-section');
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* 1. Header */}
@@ -97,17 +112,17 @@ export function TierPerksGating({
         <div>
           <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
             <Gift className="h-5 w-5 text-primary" />
-            {tPerks("tierTreatsTitle") || "Tier Treats & On-Site Digital Vouchers"}
+            <span>{tPerks('tierTreatsTitle') || 'Tier Treats & On-Site Digital Vouchers'}</span>
           </h3>
           <p className="text-xs sm:text-sm text-muted-foreground">
-            {tPerks("tierTreatsSubtitle") || "Exclusive perks unlocked by your"}{" "}
+            {tPerks('tierTreatsSubtitle') || 'Exclusive perks unlocked by your'}{' '}
             <span className="font-semibold text-foreground">{attendeeTierName}</span>.
           </p>
         </div>
 
         <Badge variant="archetype" size="sm" className="self-start sm:self-center gap-1.5 font-semibold">
           <Sparkles className="h-3 w-3" />
-          {attendeeTierName}
+          <span>{attendeeTierName}</span>
         </Badge>
       </div>
 
@@ -118,6 +133,7 @@ export function TierPerksGating({
           const isClaimed = claimedPerkIds.has(perk.id);
           const IconComponent = PERK_ICONS[perk.iconName] || Gift;
           const isShowingVoucher = activeVoucherId === perk.id;
+          const redemptionLocation = perk.location || DEFAULT_LOCATIONS[perk.iconName] || 'Exhibition Hall Concourse';
 
           const voucherCode = `XPO-${bookingId.substring(3, 8).toUpperCase()}-${perk.id.substring(0, 4).toUpperCase()}`;
 
@@ -125,24 +141,24 @@ export function TierPerksGating({
             <Card
               key={perk.id}
               className={cn(
-                "relative flex flex-col border transition-all duration-200",
+                'relative flex flex-col border transition-all duration-200 rounded-2xl',
                 unlocked
                   ? isClaimed
-                    ? "bg-card border-emerald-500/40 shadow-sm"
-                    : "bg-card border-border hover:border-primary/50 shadow-sm"
-                  : "bg-muted/30 border-border/60 opacity-60"
+                    ? 'bg-card border-emerald-500/40 shadow-xs'
+                    : 'bg-card border-border/80 hover:border-primary/50 shadow-xs'
+                  : 'bg-muted/30 border-border/60 opacity-60'
               )}
             >
-              <CardHeader className="p-4 pb-2">
+              <CardHeader className="p-5 pb-2">
                 <div className="flex items-center justify-between">
                   <div
                     className={cn(
-                      "h-9 w-9 rounded-lg flex items-center justify-center text-white shadow-xs",
+                      'h-9 w-9 rounded-xl flex items-center justify-center text-white shadow-xs',
                       unlocked
                         ? isClaimed
-                          ? "bg-emerald-600"
-                          : "bg-primary"
-                        : "bg-slate-700 text-slate-400"
+                          ? 'bg-emerald-600'
+                          : 'bg-primary'
+                        : 'bg-slate-700 text-slate-400'
                     )}
                   >
                     <IconComponent className="h-4 w-4" />
@@ -151,20 +167,20 @@ export function TierPerksGating({
                   <div>
                     {unlocked ? (
                       isClaimed ? (
-                        <Badge variant="success" size="sm" className="gap-1">
+                        <Badge variant="success" size="sm" className="gap-1 font-semibold">
                           <Check className="h-3 w-3" />
-                          {tPerks("unlockedBadge") || "Claimed"}
+                          <span>{tPerks('unlockedBadge') || 'Claimed'}</span>
                         </Badge>
                       ) : (
-                        <Badge variant="secondary" size="sm" className="gap-1 text-emerald-600 dark:text-emerald-400">
+                        <Badge variant="secondary" size="sm" className="gap-1 font-semibold text-emerald-600 dark:text-emerald-400">
                           <Unlock className="h-3 w-3" />
-                          {tPerks("unlockedBadge") || "Unlocked"}
+                          <span>{tPerks('unlockedBadge') || 'Unlocked'}</span>
                         </Badge>
                       )
                     ) : (
                       <Badge variant="outline" size="sm" className="gap-1 text-muted-foreground border-border">
                         <Lock className="h-3 w-3" />
-                        {tPerks("tierRequired") || "Requires"} {perk.tierRequired || "VIP"}
+                        <span>{tPerks('tierRequired') || 'Requires'} {perk.tierRequired || 'VIP'}</span>
                       </Badge>
                     )}
                   </div>
@@ -173,42 +189,58 @@ export function TierPerksGating({
                 <CardTitle className="text-base font-bold mt-2 text-foreground">
                   {perk.title}
                 </CardTitle>
+
+                {/* Physical Location Badge */}
+                <div className="flex items-center gap-1 text-[11px] text-muted-foreground font-medium pt-0.5">
+                  <MapPin className="h-3 w-3 text-primary shrink-0" />
+                  <span className="truncate">{redemptionLocation}</span>
+                </div>
               </CardHeader>
 
-              <CardContent className="p-4 pt-1 flex-1 flex flex-col justify-between space-y-4 text-xs">
+              <CardContent className="p-5 pt-2 flex-1 flex flex-col justify-between space-y-4 text-xs">
                 <p className="text-muted-foreground leading-relaxed">
                   {perk.description}
                 </p>
 
                 {unlocked ? (
                   isShowingVoucher ? (
-                    <div className="p-3 bg-muted rounded-lg border border-border space-y-1.5 animate-fade-in">
-                      <div className="flex items-center justify-between text-[11px] text-muted-foreground">
-                        <span className="font-semibold">{tPerks("voucherCode") || "Voucher Code"}</span>
-                        <Badge variant="outline" className="font-mono text-[10px]">
+                    <div className="p-3.5 bg-muted/60 rounded-xl border border-border/80 space-y-2 animate-fade-in">
+                      <div className="flex items-center justify-between text-xs text-muted-foreground">
+                        <span className="font-semibold">{tPerks('voucherCode') || 'Voucher Code'}</span>
+                        <Badge variant="outline" className="font-mono text-xs font-bold text-foreground">
                           {voucherCode}
                         </Badge>
                       </div>
                       <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1">
-                        <CheckCircle2 className="h-3 w-3" />
-                        Present to venue staff at redemption counter
+                        <CheckCircle2 className="h-3 w-3 shrink-0" />
+                        <span>Present to on-site staff at counter</span>
                       </p>
+
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={scrollToMap}
+                        className="w-full h-7 text-[11px] font-semibold gap-1 text-muted-foreground hover:text-foreground cursor-pointer"
+                      >
+                        <Compass className="h-3 w-3" />
+                        <span>Locate Redemption Hub on Map</span>
+                      </Button>
                     </div>
                   ) : (
                     <Button
                       size="sm"
-                      variant={isClaimed ? "outline" : "default"}
+                      variant={isClaimed ? 'outline' : 'default'}
                       onClick={() => handleClaim(perk.id)}
                       className="w-full text-xs font-semibold cursor-pointer"
                     >
                       <QrCode className="h-3.5 w-3.5 mr-1.5" />
-                      {isClaimed ? "View Voucher QR / Code" : (tPerks("claimPerk") || "Claim Voucher")}
+                      <span>{isClaimed ? 'View Voucher Code' : (tPerks('claimPerk') || 'Claim Voucher')}</span>
                     </Button>
                   )
                 ) : (
                   <Button size="sm" variant="ghost" disabled className="w-full text-xs opacity-60">
                     <Lock className="h-3 w-3 mr-1.5" />
-                    {tPerks("lockedBadge") || "Locked for your Pass Tier"}
+                    <span>{tPerks('lockedBadge') || 'Locked for your Pass Tier'}</span>
                   </Button>
                 )}
               </CardContent>
