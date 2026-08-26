@@ -428,7 +428,7 @@ export default function EventCustomizerPage() {
 
             <div className="grid grid-cols-2 gap-2">
               {[
-                { id: "font-sans", label: "Modern Sans", desc: "Inter / Neutral UI" },
+                { id: "font-sans", label: "Modern Sans", desc: "Plus Jakarta Sans / Modern" },
                 { id: "font-serif", label: "Editorial Serif", desc: "Classic & Medical" },
                 { id: "font-mono", label: "Technical Mono", desc: "Tech & Industrial" },
                 { id: "font-legible", label: "Accessible Legible", desc: "High Readability" },

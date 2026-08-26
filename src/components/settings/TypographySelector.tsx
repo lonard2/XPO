@@ -20,9 +20,9 @@ export function TypographySelector({ className }: { className?: string }) {
   const TYPOGRAPHY_OPTIONS = [
     {
       id: "modern-sans" as TypographyMode,
-      label: tSet("modernSans") || "Modern Sans (Inter)",
-      subtitle: "Inter / System Sans",
-      description: tSet("modernSansDesc") || "Engineered for optimal screen legibility and neutral UI presentation.",
+      label: tSet("modernSans") || "Modern Sans (Plus Jakarta Sans)",
+      subtitle: "Plus Jakarta Sans / Modern Grotesk",
+      description: tSet("modernSansDesc") || "Engineered for optimal screen legibility and high-contrast MICE UI presentation.",
       glyphSample: "Aa Bb Gg 123",
       sampleText: "Connecting global attendees, organizers, and world-class convention venues.",
       fontClass: "font-sans",

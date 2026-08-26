@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Inter, Newsreader, JetBrains_Mono, Atkinson_Hyperlegible } from "next/font/google";
+import { Plus_Jakarta_Sans, Newsreader, JetBrains_Mono, Atkinson_Hyperlegible } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { routing, Locale } from "@/i18n/routing";
@@ -12,7 +12,7 @@ import { SettingsProvider } from "@/components/settings/SettingsProvider";
 import { AuthProvider } from "@/lib/auth/session";
 import { AttendeeAIConcierge } from "@/components/ai/AttendeeAIConcierge";
 
-const inter = Inter({
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
@@ -66,7 +66,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
     <html
       lang={locale}
       dir={dir}
-      className={`scroll-smooth ${inter.variable} ${newsreader.variable} ${jetbrainsMono.variable} ${atkinsonHyperlegible.variable}`}
+      className={`scroll-smooth ${plusJakartaSans.variable} ${newsreader.variable} ${jetbrainsMono.variable} ${atkinsonHyperlegible.variable}`}
     >
       <body className="min-h-screen flex flex-col bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary">
         <NextIntlClientProvider messages={messages} locale={locale}>
