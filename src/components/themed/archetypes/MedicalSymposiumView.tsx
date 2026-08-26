@@ -117,7 +117,7 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
         <Card id="cme-credits" className="border-border bg-card shadow-md">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
-              <Badge variant="outline" size="sm" className="font-sans text-[10px] text-emerald-600 border-emerald-500/30 bg-emerald-500/10">
+              <Badge variant="outline" size="sm" className="font-sans text-xs font-semibold text-emerald-600 border-emerald-500/30 bg-emerald-500/10">
                 Accredited Congress
               </Badge>
               <Award className="h-5 w-5 text-amber-500" />
@@ -133,7 +133,7 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
                 <span>Total Congress Credits:</span>
                 <span className="text-sm font-bold text-foreground">18.5 SKP / CME</span>
               </div>
-              <p className="text-[11px] text-muted-foreground">
+              <p className="text-xs text-muted-foreground">
                 Requires attendance scan at 80% or more plenary symposiums and workshop modules.
               </p>
             </div>
@@ -148,7 +148,7 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
                 variant="outline"
                 size="sm"
                 onClick={() => setClaimedCme(true)}
-                className="w-full text-xs gap-1.5"
+                className="w-full text-xs gap-1.5 min-h-[40px] cursor-pointer"
               >
                 <FileCheck className="h-3.5 w-3.5" />
                 Register CME Physician License ID
@@ -177,7 +177,7 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
               placeholder="Search by topic, author, institution..."
               value={abstractFilter}
               onChange={(e) => setAbstractFilter(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 text-xs rounded-md bg-background border border-border focus:ring-1 focus:ring-primary"
+              className="w-full pl-9 pr-3 py-1.5 text-xs rounded-md bg-background border border-border focus:ring-1 focus:ring-primary min-h-[38px]"
             />
           </div>
         </div>
@@ -193,20 +193,20 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
                 >
                   <div className="space-y-1.5 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <Badge variant="archetype" size="sm" className="font-sans text-[10px]">
+                      <Badge variant="archetype" size="sm" className="font-sans text-xs font-semibold">
                         {abs.cmeCredits} CME Credits
                       </Badge>
-                      <span className="text-[11px] font-sans text-muted-foreground font-mono">
+                      <span className="text-xs font-sans text-muted-foreground font-mono">
                         DOI: {abs.doi}
                       </span>
                     </div>
                     <h4 className="text-base font-bold text-foreground">{abs.title}</h4>
                     <p className="text-xs font-sans text-muted-foreground">{abs.authors}</p>
-                    <p className="text-[11px] font-sans text-[var(--archetype-primary)] font-medium">
+                    <p className="text-xs font-sans text-[var(--archetype-primary)] font-semibold">
                       {abs.institution}
                     </p>
                   </div>
-                  <button className="p-1 rounded-md text-muted-foreground" aria-label="Toggle details">
+                  <button className="p-1 rounded-md text-muted-foreground cursor-pointer" aria-label="Toggle details">
                     {isExpanded ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
                   </button>
                 </div>
@@ -216,9 +216,9 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
                     <div className="p-3 bg-background rounded-md border border-border/80 leading-relaxed text-muted-foreground">
                       {abs.abstractText}
                     </div>
-                    <div className="flex items-center justify-between text-[11px] text-muted-foreground">
+                    <div className="flex items-center justify-between text-xs text-muted-foreground">
                       <span>Peer-reviewed by Congress Scientific Advisory Committee</span>
-                      <span className="text-[var(--archetype-primary)] hover:underline cursor-pointer flex items-center gap-1">
+                      <span className="text-[var(--archetype-primary)] hover:underline cursor-pointer flex items-center gap-1 font-semibold">
                         Download Full PDF <ExternalLink className="h-3 w-3" />
                       </span>
                     </div>

@@ -101,7 +101,7 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier }: Archet
               <span className="text-xs font-bold text-foreground font-sans">Live Stream Active</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <Badge variant="outline" size="sm" className="text-[10px]">
+              <Badge variant="outline" size="sm" className="text-xs font-semibold">
                 {activeStage}
               </Badge>
             </div>
@@ -112,7 +112,7 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier }: Archet
               <div className="p-4 text-center space-y-2">
                 <Radio className="h-8 w-8 text-red-500 animate-pulse mx-auto" />
                 <p className="text-xs font-sans font-semibold">Broadcasting: {activeStage}</p>
-                <p className="text-[11px] text-slate-400">1080p60 Low-Latency WebRTC Stream</p>
+                <p className="text-xs font-semibold text-slate-400">1080p60 Low-Latency WebRTC Stream</p>
               </div>
             ) : (
               <div className="text-center space-y-3 p-4">
@@ -122,7 +122,7 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier }: Archet
                 >
                   <Play className="h-6 w-6 text-white fill-white ml-0.5" />
                 </div>
-                <p className="text-xs font-sans text-slate-300">Click to tune in to {activeStage}</p>
+                <p className="text-xs font-semibold font-sans text-slate-300">Click to tune in to {activeStage}</p>
               </div>
             )}
           </div>
@@ -134,7 +134,7 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier }: Archet
                   setActiveStage("Stage 1 - Main Keynotes");
                   setStreamPlaying(true);
                 }}
-                className="px-2 py-1 rounded bg-muted hover:bg-accent text-[11px]"
+                className="px-2 py-1 rounded bg-muted hover:bg-accent text-xs font-semibold"
               >
                 Main Stage
               </button>
@@ -143,12 +143,12 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier }: Archet
                   setActiveStage("Stage 2 - AI Workshops");
                   setStreamPlaying(true);
                 }}
-                className="px-2 py-1 rounded bg-muted hover:bg-accent text-[11px]"
+                className="px-2 py-1 rounded bg-muted hover:bg-accent text-xs font-semibold"
               >
                 AI Stage
               </button>
             </div>
-            <span className="text-[11px] text-muted-foreground font-mono">1,420 Viewers</span>
+            <span className="text-xs font-semibold text-muted-foreground font-mono">1,420 Viewers</span>
           </div>
         </div>
       </section>
@@ -161,7 +161,7 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier }: Archet
               <Code2 className="h-5 w-5 text-[var(--archetype-primary)]" />
               Multi-Track Schedule & Breakouts
             </h3>
-            <p className="text-xs text-muted-foreground font-sans">
+            <p className="text-xs font-semibold text-muted-foreground font-sans">
               Filter keynotes, code walk-throughs, and lightning talks by track.
             </p>
           </div>
@@ -172,7 +172,7 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier }: Archet
               <button
                 key={track}
                 onClick={() => setActiveTrack(track)}
-                className={`px-3 py-1 text-xs rounded-md transition-colors ${
+                className={`px-3 py-1 text-xs font-semibold rounded-md transition-colors ${
                   activeTrack === track
                     ? "bg-[var(--archetype-primary)] text-white font-semibold"
                     : "bg-muted text-muted-foreground hover:text-foreground"
@@ -190,17 +190,17 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier }: Archet
               <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="space-y-1.5">
                   <div className="flex flex-wrap items-center gap-2">
-                    <Badge variant="archetype" size="sm" className="font-mono text-[10px]">
+                    <Badge variant="archetype" size="sm" className="font-mono text-xs font-semibold">
                       {agenda.track || "General Track"}
                     </Badge>
-                    <span className="text-xs text-muted-foreground flex items-center gap-1">
+                    <span className="text-xs font-semibold text-muted-foreground flex items-center gap-1">
                       <MapPin className="h-3 w-3 text-muted-foreground" />
                       {agenda.location}
                     </span>
                   </div>
                   <h4 className="text-base font-bold text-foreground font-sans">{agenda.title}</h4>
                   {agenda.speakerName && (
-                    <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                    <div className="flex items-center gap-3 text-xs font-semibold text-muted-foreground">
                       <span className="font-medium text-foreground">{agenda.speakerName}</span>
                       {agenda.speakerRole && <span className="text-muted-foreground">({agenda.speakerRole})</span>}
                       <div className="flex items-center gap-2 ml-2">
@@ -212,7 +212,7 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier }: Archet
                 </div>
 
                 <div className="sm:text-right shrink-0">
-                  <span className="inline-block px-2.5 py-1 rounded bg-muted text-xs font-mono font-medium text-foreground">
+                  <span className="inline-block px-2.5 py-1 rounded bg-muted text-xs font-semibold font-mono text-foreground">
                     {new Date(agenda.startTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} -{" "}
                     {new Date(agenda.endTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                   </span>
@@ -227,21 +227,21 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier }: Archet
       <section id="hackathon-section" className="p-6 rounded-xl bg-card border border-border space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
-            <Badge variant="warning" size="sm" className="gap-1 font-semibold">
+            <Badge variant="warning" size="sm" className="gap-1 font-semibold text-xs font-semibold">
               <Trophy className="h-3 w-3" />
               Global Developer Hackathon
             </Badge>
             <h3 className="text-2xl font-bold text-foreground font-sans">
               48-Hour Autonomous Systems Hackathon
             </h3>
-            <p className="text-xs sm:text-sm text-muted-foreground font-sans max-w-2xl">
+            <p className="text-xs font-semibold sm:text-sm text-muted-foreground font-sans max-w-2xl">
               Build production-ready multi-model agents or high-throughput distributed engines. Mentorship from lead
               architects and direct VC pitch slots for finalists.
             </p>
           </div>
           <div className="shrink-0">
             {hackathonRsvp ? (
-              <Badge variant="success" size="lg" className="gap-1.5 py-2 px-3">
+              <Badge variant="success" size="lg" className="gap-1.5 py-2 px-3 text-xs font-semibold">
                 <CheckCircle2 className="h-4 w-4" />
                 RSVP Confirmed (Team Desk Assigned)
               </Badge>
@@ -262,13 +262,13 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier }: Archet
           {hackathonBounties.map((bounty, i) => (
             <div key={i} className="p-4 rounded-lg bg-muted/40 border border-border/60 space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-amber-400">{bounty.reward}</span>
-                <Badge variant="outline" size="sm" className="text-[10px]">
+                <span className="text-xs font-semibold text-amber-400">{bounty.reward}</span>
+                <Badge variant="outline" size="sm" className="text-xs font-semibold">
                   Bounty {i + 1}
                 </Badge>
               </div>
               <h4 className="text-sm font-semibold text-foreground font-sans">{bounty.title}</h4>
-              <p className="text-[11px] text-muted-foreground">Supported by {bounty.sponsor}</p>
+              <p className="text-xs font-semibold text-muted-foreground">Supported by {bounty.sponsor}</p>
             </div>
           ))}
         </div>

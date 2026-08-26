@@ -246,7 +246,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier }: Archet
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3 text-xs">
-                <div className="p-2.5 rounded-md bg-muted/40 font-mono text-[11px] text-muted-foreground">
+                <div className="p-2.5 rounded-md bg-muted/40 font-mono text-xs text-muted-foreground">
                   {item.specs}
                 </div>
                 <div className="flex items-center justify-between pt-1">
@@ -258,7 +258,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier }: Archet
                     variant="ghost"
                     size="sm"
                     onClick={() => handleOpenRfq(item.manufacturer)}
-                    className="text-xs text-[var(--archetype-primary)] hover:underline h-7 px-2"
+                    className="text-xs text-[var(--archetype-primary)] hover:underline h-7 px-2 cursor-pointer"
                   >
                     Request Quote
                   </Button>
@@ -289,13 +289,13 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier }: Archet
                 placeholder="Search exhibitors or booth..."
                 value={boothSearch}
                 onChange={(e) => setBoothSearch(e.target.value)}
-                className="w-full pl-9 pr-3 py-1.5 text-xs rounded-md bg-background border border-border focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full pl-9 pr-3 py-1.5 text-xs rounded-md bg-background border border-border focus:outline-none focus:ring-1 focus:ring-primary min-h-[38px]"
               />
             </div>
             <select
               value={selectedIndustry}
               onChange={(e) => setSelectedIndustry(e.target.value)}
-              className="py-1.5 px-3 text-xs rounded-md bg-background border border-border focus:outline-none focus:ring-1 focus:ring-primary"
+              className="py-1.5 px-3 text-xs rounded-md bg-background border border-border focus:outline-none focus:ring-1 focus:ring-primary min-h-[38px]"
               aria-label="Filter by industry"
             >
               {industries.map((ind) => (
@@ -312,10 +312,10 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier }: Archet
             <Card key={booth.id} className="border-border/80 hover:shadow-md transition-shadow">
               <CardHeader className="p-4 pb-2">
                 <div className="flex items-center justify-between">
-                  <Badge variant="archetype" size="sm" className="font-mono">
+                  <Badge variant="archetype" size="sm" className="font-mono text-xs font-semibold">
                     {booth.boothNumber}
                   </Badge>
-                  <span className="text-[11px] text-muted-foreground">{booth.hallName}</span>
+                  <span className="text-xs text-muted-foreground">{booth.hallName}</span>
                 </div>
                 <CardTitle className="text-base mt-2">{booth.companyName}</CardTitle>
                 {booth.industry && (
@@ -331,7 +331,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier }: Archet
                     variant="outline"
                     size="sm"
                     onClick={() => handleOpenRfq(booth.companyName)}
-                    className="h-8 text-xs gap-1.5"
+                    className="h-8 text-xs gap-1.5 min-h-[36px] cursor-pointer"
                   >
                     <FileText className="h-3.5 w-3.5" />
                     Request RFQ
@@ -507,8 +507,9 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier }: Archet
                 <input
                   required
                   type="text"
+                  autoComplete="organization"
                   placeholder="e.g. PT Industri Prima"
-                  className="w-full px-3 py-2 text-xs rounded-md bg-background border border-border focus:ring-1 focus:ring-primary"
+                  className="w-full px-3 py-2 text-xs rounded-md bg-background border border-border focus:ring-1 focus:ring-primary min-h-[40px]"
                 />
               </div>
               <div className="space-y-1">
@@ -517,7 +518,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier }: Archet
                   required
                   type="text"
                   placeholder="e.g. 5 Units / Annual"
-                  className="w-full px-3 py-2 text-xs rounded-md bg-background border border-border focus:ring-1 focus:ring-primary"
+                  className="w-full px-3 py-2 text-xs rounded-md bg-background border border-border focus:ring-1 focus:ring-primary min-h-[40px]"
                 />
               </div>
             </div>
@@ -526,8 +527,9 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier }: Archet
               <input
                 required
                 type="email"
+                autoComplete="email"
                 placeholder="procurement@company.com"
-                className="w-full px-3 py-2 text-xs rounded-md bg-background border border-border focus:ring-1 focus:ring-primary"
+                className="w-full px-3 py-2 text-xs rounded-md bg-background border border-border focus:ring-1 focus:ring-primary min-h-[40px]"
               />
             </div>
             <div className="space-y-1">
@@ -540,7 +542,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier }: Archet
               />
             </div>
             <div className="pt-2">
-              <Button type="submit" variant="archetype" className="w-full gap-2">
+              <Button type="submit" variant="archetype" className="w-full gap-2 min-h-[44px] cursor-pointer">
                 <Send className="h-4 w-4" />
                 Transmit RFQ to Exhibitor
               </Button>

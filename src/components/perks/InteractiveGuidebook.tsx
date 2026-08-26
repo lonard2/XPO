@@ -305,8 +305,8 @@ export function InteractiveGuidebook({
                       Join industry leaders and peer delegates for an interactive session at {session.location}.
                       Q&A discussion and networking will follow the presentation.
                     </p>
-                    <div className="flex items-center gap-4 text-[11px] pt-1">
-                      <span className="flex items-center gap-1 text-emerald-500">
+                    <div className="flex items-center gap-4 text-xs text-muted-foreground pt-1">
+                      <span className="flex items-center gap-1 text-emerald-500 font-semibold">
                         <CheckCircle2 className="h-3.5 w-3.5" />
                         Seating Available
                       </span>

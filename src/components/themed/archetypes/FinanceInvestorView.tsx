@@ -16,6 +16,7 @@ import {
   Ticket,
   ChevronRight,
   ExternalLink,
+  Coins,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
@@ -160,7 +161,7 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier }: Arch
             <Card key={idx} className="border-border hover:border-emerald-500/50 transition-all flex flex-col">
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between text-xs mb-1">
-                  <Badge variant="outline" size="sm" className="font-mono text-[10px]">
+                  <Badge variant="outline" size="sm" className="font-mono text-xs font-semibold">
                     {deck.sector}
                   </Badge>
                   <span className="font-bold text-emerald-400">{deck.seeking}</span>
@@ -173,7 +174,7 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier }: Arch
               <CardContent className="flex-1 space-y-3 text-xs flex flex-col justify-between">
                 <div className="space-y-2">
                   <p className="text-muted-foreground leading-relaxed">{deck.pitchSummary}</p>
-                  <div className="p-2 rounded bg-muted/40 font-mono text-[11px] text-muted-foreground">
+                  <div className="p-2 rounded bg-muted/40 font-mono text-xs text-muted-foreground">
                     {deck.metrics}
                   </div>
                 </div>
@@ -182,7 +183,7 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier }: Arch
                     variant="outline"
                     size="sm"
                     onClick={() => handleBookDealRoom(deck.company)}
-                    className="w-full gap-1.5 text-xs font-semibold"
+                    className="w-full gap-1.5 text-xs font-semibold min-h-[40px] cursor-pointer"
                   >
                     <Lock className="h-3.5 w-3.5 text-amber-400" />
                     Request Deal-Room Slot
@@ -198,100 +199,89 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier }: Arch
       {event.agendaItems.length > 0 && (
         <section className="space-y-4">
           <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
-            <Clock className="h-5 w-5 text-[var(--archetype-primary)]" />
-            Executive Roundtables & Keynotes
+            <Coins className="h-5 w-5 text-emerald-400" />
+            Keynote Sessions & Deal-Making Panels
           </h3>
           <div className="space-y-3">
             {event.agendaItems.map((agenda) => (
-              <div
-                key={agenda.id}
-                className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-lg bg-card border border-border gap-3"
-              >
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <Badge variant="archetype" size="sm">
-                      {agenda.track || "Macro Strategy"}
-                    </Badge>
-                    <span className="text-xs text-muted-foreground flex items-center gap-1">
-                      <MapPin className="h-3 w-3" />
-                      {agenda.location}
+              <Card key={agenda.id} className="border-border hover:border-emerald-500/40 transition-colors">
+                <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <Badge variant="outline" size="sm" className="font-mono text-xs font-semibold">
+                        {agenda.track || "Institutional Track"}
+                      </Badge>
+                      <span className="text-xs text-muted-foreground">{agenda.location}</span>
+                    </div>
+                    <h4 className="text-base font-bold text-foreground">{agenda.title}</h4>
+                    {agenda.speakerName && (
+                      <p className="text-xs text-muted-foreground">
+                        Keynote: <span className="font-semibold text-foreground">{agenda.speakerName}</span>{" "}
+                        {agenda.speakerRole && `(${agenda.speakerRole})`}
+                      </p>
+                    )}
+                  </div>
+                  <div className="sm:text-right shrink-0">
+                    <span className="inline-block px-2.5 py-1 rounded bg-muted font-mono text-xs font-semibold text-foreground">
+                      {new Date(agenda.startTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} -{" "}
+                      {new Date(agenda.endTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                     </span>
                   </div>
-                  <h4 className="text-base font-bold text-foreground">{agenda.title}</h4>
-                  {agenda.speakerName && (
-                    <p className="text-xs text-muted-foreground">
-                      Chair: <span className="font-semibold text-foreground">{agenda.speakerName}</span>{" "}
-                      {agenda.speakerRole && `(${agenda.speakerRole})`}
-                    </p>
-                  )}
-                </div>
-                <div className="text-xs text-muted-foreground sm:text-right shrink-0">
-                  <p className="font-mono font-medium text-foreground">
-                    {new Date(agenda.startTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} -{" "}
-                    {new Date(agenda.endTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                  </p>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </section>
       )}
 
-      {/* 4. Ticket Tiers & VIP Delegate Credentials */}
+      {/* 4. Ticket Passes & Investor Credentials */}
       <section id="tickets-section" className="space-y-6 pt-4 border-t border-border">
         <div>
           <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
             <Ticket className="h-5 w-5 text-[var(--archetype-primary)]" />
-            Delegate Accreditation & LP / GP Passes
+            Institutional Delegate Credentials
           </h3>
           <p className="text-xs text-muted-foreground">
-            Accredited passes include access to private investor lounges, pitch sessions, and bilateral deal suites.
+            All passes include encrypted deal-room reservation tokens and post-event pitch deck repository access.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {event.ticketTiers.map((tier) => {
-            let benefits: string[] = [];
-            try {
-              benefits = JSON.parse(tier.benefitsJson);
-            } catch {
-              benefits = ["Private Deal Room access", "Encrypted attendee directory", "VIP Gala Banquet invitation"];
-            }
+            const priceFormatted =
+              tier.price > 0
+                ? formatCurrency(tier.price, (tier.currency || "USD") as SupportedCurrency, locale)
+                : "Complimentary Observer";
 
             return (
-              <Card key={tier.id} className="flex flex-col border-border/80 hover:border-emerald-500 transition-all">
+              <Card key={tier.id} className="border-border hover:border-emerald-500/50 transition-all flex flex-col justify-between">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg">{tier.name}</CardTitle>
-                    <Badge variant="success" size="sm">
-                      {tier.capacity - tier.soldCount} Passes
+                    <Badge variant={tier.tier === "VIP" ? "default" : "outline"} className="text-xs font-semibold">
+                      {tier.tier}
                     </Badge>
+                    <span className="text-lg font-bold text-foreground">{priceFormatted}</span>
                   </div>
-                  <div className="mt-2">
-                    <span className="text-2xl font-bold text-foreground">
-                      {tier.price > 0
-                        ? formatCurrency(tier.price, (tier.currency as SupportedCurrency) || "IDR", locale)
-                        : "Institutional Invitation"}
-                    </span>
-                  </div>
+                  <CardTitle className="text-lg mt-2">{tier.name}</CardTitle>
+                  {tier.description && (
+                    <CardDescription className="text-xs">{tier.description}</CardDescription>
+                  )}
                 </CardHeader>
-                <CardContent className="flex-1 space-y-4">
-                  <ul className="space-y-2 text-xs text-muted-foreground">
-                    {benefits.map((b, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0 mt-0.5" />
-                        <span>{b}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="pt-4 mt-auto">
-                    <Button
-                      variant="archetype"
-                      className="w-full gap-2 font-semibold"
-                      onClick={() => onSelectTier?.(tier.id)}
-                    >
+                <CardContent className="space-y-4">
+                  {tier.perks && tier.perks.length > 0 && (
+                    <ul className="space-y-1.5 text-xs text-muted-foreground border-t border-border pt-3">
+                      {tier.perks.map((perk, i) => (
+                        <li key={i} className="flex items-center gap-1.5">
+                          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
+                          <span>{perk}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  <div className="pt-2">
+                    <Button variant="archetype" className="w-full gap-2 font-semibold min-h-[44px] cursor-pointer">
                       <Ticket className="h-4 w-4" />
-                      Acquire Credential
+                      Select {tier.name}
                     </Button>
                   </div>
                 </CardContent>
@@ -345,14 +335,15 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier }: Arch
               <input
                 required
                 type="text"
+                autoComplete="organization"
                 placeholder="e.g. Apex Global Ventures"
-                className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary"
+                className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary min-h-[40px]"
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
                 <label className="font-semibold text-foreground">Preferred Time Slot *</label>
-                <select className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary">
+                <select className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary min-h-[40px]">
                   <option>Day 1: 14:00 - 14:45</option>
                   <option>Day 1: 15:30 - 16:15</option>
                   <option>Day 2: 10:00 - 10:45</option>
@@ -361,7 +352,7 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier }: Arch
               </div>
               <div className="space-y-1">
                 <label className="font-semibold text-foreground">Investment Horizon / Check Size</label>
-                <select className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary">
+                <select className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary min-h-[40px]">
                   <option>$1M - $5M USD</option>
                   <option>$5M - $15M USD</option>
                   <option>$15M+ Growth Equity</option>
@@ -377,7 +368,7 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier }: Arch
               />
             </div>
             <div className="pt-2">
-              <Button type="submit" variant="archetype" className="w-full gap-2 font-semibold">
+              <Button type="submit" variant="archetype" className="w-full gap-2 font-semibold min-h-[44px] cursor-pointer">
                 <Lock className="h-4 w-4" />
                 Confirm Deal-Room Reservation
               </Button>

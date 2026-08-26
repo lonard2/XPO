@@ -155,7 +155,7 @@ export function IncentiveRetreatView({ event, locale = "en", onSelectTier }: Arc
                   <Badge variant="archetype" size="sm">
                     {item.day}
                   </Badge>
-                  <span className="font-mono text-muted-foreground text-[11px]">{item.duration}</span>
+                  <span className="font-mono text-muted-foreground text-xs font-medium">{item.duration}</span>
                 </div>
                 <CardTitle className="text-base font-bold">{item.title}</CardTitle>
                 <CardDescription className="text-xs flex items-center gap-1 mt-1 text-muted-foreground">
@@ -164,7 +164,7 @@ export function IncentiveRetreatView({ event, locale = "en", onSelectTier }: Arc
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3 text-xs">
-                <div className="p-2.5 rounded bg-muted/40 text-muted-foreground text-[11px]">
+                <div className="p-2.5 rounded bg-muted/40 text-muted-foreground text-xs">
                   <span className="font-semibold text-emerald-400">Included Perk:</span> {item.perks}
                 </div>
               </CardContent>
@@ -197,7 +197,7 @@ export function IncentiveRetreatView({ event, locale = "en", onSelectTier }: Arc
                   variant="outline"
                   size="sm"
                   onClick={() => handleBookWellness(w.name)}
-                  className="w-full text-xs gap-1.5"
+                  className="w-full text-xs gap-1.5 min-h-[38px] cursor-pointer"
                 >
                   <Sparkles className="h-3.5 w-3.5" />
                   Schedule Appointment
@@ -316,13 +316,14 @@ export function IncentiveRetreatView({ event, locale = "en", onSelectTier }: Arc
               <input
                 required
                 type="text"
+                autoComplete="address-line1"
                 placeholder="e.g. Oceanfront Villa 14"
-                className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary"
+                className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary min-h-[40px]"
               />
             </div>
             <div className="space-y-1">
               <label className="font-semibold text-foreground">Preferred Appointment Window *</label>
-              <select className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary">
+              <select className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary min-h-[40px]">
                 <option>Morning Sanctuary (09:00 - 10:30)</option>
                 <option>Afternoon Hydrotherapy (14:30 - 16:00)</option>
                 <option>Sunset Holistic (17:30 - 19:00)</option>
@@ -337,7 +338,7 @@ export function IncentiveRetreatView({ event, locale = "en", onSelectTier }: Arc
               />
             </div>
             <div className="pt-2">
-              <Button type="submit" variant="archetype" className="w-full gap-2 font-semibold">
+              <Button type="submit" variant="archetype" className="w-full gap-2 font-semibold min-h-[44px] cursor-pointer">
                 <Sparkles className="h-4 w-4" />
                 Confirm Appointment
               </Button>

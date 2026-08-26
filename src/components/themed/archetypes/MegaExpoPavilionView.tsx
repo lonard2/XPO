@@ -113,7 +113,7 @@ export function MegaExpoPavilionView({ event, locale = "en", onSelectTier }: Arc
                   <span>{show.title}</span>
                   <span className="font-mono text-orange-400">{show.time}</span>
                 </div>
-                <p className="text-[11px] text-muted-foreground flex items-center gap-1">
+                <p className="text-xs text-muted-foreground flex items-center gap-1">
                   <MapPin className="h-3 w-3" />
                   {show.venue}
                 </p>
@@ -148,7 +148,7 @@ export function MegaExpoPavilionView({ event, locale = "en", onSelectTier }: Arc
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-4 pt-2">
-                <div className="pt-2 border-t border-border/40 flex justify-between items-center text-[11px] text-muted-foreground">
+                <div className="pt-2 border-t border-border/40 flex justify-between items-center text-xs text-muted-foreground">
                   <span>Air-Conditioned Hall</span>
                   <span className="text-orange-500 font-semibold cursor-pointer hover:underline">
                     View Booth Map
@@ -177,10 +177,10 @@ export function MegaExpoPavilionView({ event, locale = "en", onSelectTier }: Arc
             <div key={idx} className="p-4 rounded-lg bg-muted/40 border border-border/70 space-y-2">
               <div className="flex justify-between items-center text-xs">
                 <span className="font-semibold text-foreground">{promo.store}</span>
-                <span className="font-mono text-[10px] text-muted-foreground">{promo.hall}</span>
+                <span className="font-mono text-xs text-muted-foreground">{promo.hall}</span>
               </div>
               <p className="text-xs font-bold text-orange-500">{promo.discount}</p>
-              <div className="pt-1 flex items-center justify-between text-[11px] text-muted-foreground">
+              <div className="pt-1 flex items-center justify-between text-xs text-muted-foreground">
                 <span>Present XPO pass at counter</span>
                 <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
               </div>

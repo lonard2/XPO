@@ -96,7 +96,7 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier }:
         <Card id="protocol-briefing" className="border-border bg-card shadow-md">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
-              <Badge variant="outline" size="sm" className="font-sans text-[10px] text-sky-400 border-sky-400/30">
+              <Badge variant="outline" size="sm" className="font-sans text-xs font-semibold text-sky-400 border-sky-400/30">
                 Diplomatic Protocol
               </Badge>
               <Lock className="h-4 w-4 text-sky-400" />
@@ -137,7 +137,7 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier }:
                   <Badge variant="archetype" size="sm">
                     {del.country}
                   </Badge>
-                  <span className="text-muted-foreground font-mono text-[11px]">{del.lounge}</span>
+                  <span className="text-muted-foreground font-mono text-xs font-medium">{del.lounge}</span>
                 </div>
                 <CardTitle className="text-base font-bold">{del.head}</CardTitle>
               </CardHeader>
@@ -150,7 +150,7 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier }:
                     variant="outline"
                     size="sm"
                     onClick={() => handleRequestBilateral(del.country)}
-                    className="w-full gap-2 text-xs"
+                    className="w-full gap-2 text-xs min-h-[40px] cursor-pointer"
                   >
                     <FileCheck className="h-3.5 w-3.5" />
                     Request Bilateral Dialogue Slot

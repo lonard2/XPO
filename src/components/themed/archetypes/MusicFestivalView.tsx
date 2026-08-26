@@ -190,7 +190,7 @@ export function MusicFestivalView({ event, locale = "en", onSelectTier }: Archet
                       {act.location}
                     </Badge>
                     {act.track && (
-                      <Badge variant="outline" size="sm" className="text-[10px]">
+                      <Badge variant="outline" size="sm" className="text-xs font-semibold">
                         {act.track}
                       </Badge>
                     )}

@@ -195,7 +195,7 @@ export function TicketCheckoutDrawer({
                   className="w-40 h-40"
                   dangerouslySetInnerHTML={{ __html: confirmedBooking.svgQr }}
                 />
-                <span className="text-[10px] font-mono text-slate-500 mt-2 text-center truncate max-w-full">
+                <span className="text-xs font-mono text-slate-500 mt-2 text-center truncate max-w-full">
                   {confirmedBooking.qrCodeHash}
                 </span>
               </div>
@@ -203,11 +203,11 @@ export function TicketCheckoutDrawer({
 
             <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground pt-1">
               <div>
-                <span className="text-[10px] uppercase font-medium text-slate-400">Attendee</span>
+                <span className="text-xs uppercase font-semibold text-slate-400">Attendee</span>
                 <p className="font-semibold text-foreground truncate">{confirmedBooking.attendeeName}</p>
               </div>
               <div>
-                <span className="text-[10px] uppercase font-medium text-slate-400">Email</span>
+                <span className="text-xs uppercase font-semibold text-slate-400">Email</span>
                 <p className="font-semibold text-foreground truncate">{confirmedBooking.attendeeEmail}</p>
               </div>
             </div>
@@ -218,7 +218,7 @@ export function TicketCheckoutDrawer({
             <Link
               href={`/${locale}/my-tickets/${confirmedBooking.id}`}
               onClick={handleResetAndClose}
-              className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-md"
+              className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-md min-h-[44px]"
             >
               <QrCode className="h-4 w-4" />
               Open Digital Pass & Event Treats
@@ -228,7 +228,7 @@ export function TicketCheckoutDrawer({
             <Link
               href={`/${locale}/my-tickets`}
               onClick={handleResetAndClose}
-              className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-colors"
+              className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-colors min-h-[40px]"
             >
               View All My Passes
             </Link>
@@ -266,7 +266,7 @@ export function TicketCheckoutDrawer({
                     key={q}
                     type="button"
                     onClick={() => setQuantity(q)}
-                    className={`px-2.5 py-1 text-xs rounded-md border font-medium transition-colors ${
+                    className={`px-3 py-1.5 text-xs rounded-md border font-semibold transition-colors min-h-[36px] cursor-pointer ${
                       quantity === q
                         ? "bg-primary text-primary-foreground border-primary"
                         : "bg-background border-border text-foreground hover:bg-muted"
@@ -291,10 +291,11 @@ export function TicketCheckoutDrawer({
               <input
                 required
                 type="text"
+                autoComplete="name"
                 value={attendeeName}
                 onChange={(e) => setAttendeeName(e.target.value)}
                 placeholder="e.g. Alex Pratama"
-                className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg bg-background border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg bg-background border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary min-h-[42px]"
               />
             </div>
 
@@ -303,10 +304,11 @@ export function TicketCheckoutDrawer({
               <input
                 required
                 type="email"
+                autoComplete="email"
                 value={attendeeEmail}
                 onChange={(e) => setAttendeeEmail(e.target.value)}
                 placeholder="e.g. alex@company.com"
-                className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg bg-background border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg bg-background border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary min-h-[42px]"
               />
             </div>
 
@@ -315,20 +317,22 @@ export function TicketCheckoutDrawer({
                 <label className="text-xs font-medium text-foreground">Organization / Company</label>
                 <input
                   type="text"
+                  autoComplete="organization"
                   value={organization}
                   onChange={(e) => setOrganization(e.target.value)}
                   placeholder="e.g. Nusantara Tech"
-                  className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg bg-background border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                  className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg bg-background border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary min-h-[42px]"
                 />
               </div>
               <div className="space-y-1">
                 <label className="text-xs font-medium text-foreground">Job Title</label>
                 <input
                   type="text"
+                  autoComplete="organization-title"
                   value={jobTitle}
                   onChange={(e) => setJobTitle(e.target.value)}
                   placeholder="e.g. VP Engineering"
-                  className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg bg-background border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                  className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg bg-background border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary min-h-[42px]"
                 />
               </div>
             </div>
@@ -353,7 +357,7 @@ export function TicketCheckoutDrawer({
               </span>
             </div>
 
-            <div className="flex items-center gap-2 text-[11px] text-muted-foreground bg-muted/30 p-2.5 rounded-lg">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground bg-muted/30 p-2.5 rounded-lg">
               <ShieldCheck className="h-4 w-4 text-emerald-500 shrink-0" />
               <span>Tamper-proof HMAC-SHA256 vector QR code will be generated instantly.</span>
             </div>
@@ -362,7 +366,7 @@ export function TicketCheckoutDrawer({
               type="submit"
               size="lg"
               disabled={isLoading || !selectedTier}
-              className="w-full font-semibold gap-2 shadow-lg"
+              className="w-full font-semibold gap-2 shadow-lg min-h-[44px] cursor-pointer"
             >
               {isLoading ? (
                 <>

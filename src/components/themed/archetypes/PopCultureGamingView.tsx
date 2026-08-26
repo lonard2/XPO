@@ -210,7 +210,7 @@ export function PopCultureGamingView({ event, locale = "en", onSelectTier }: Arc
             <Card key={i} className="border-border/80 hover:shadow-md transition-all">
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
-                  <Badge variant="outline" size="sm" className="font-mono text-[10px]">
+                  <Badge variant="outline" size="sm" className="font-mono text-xs font-semibold">
                     {creator.table}
                   </Badge>
                   <Heart className="h-4 w-4 text-pink-500 cursor-pointer" />
@@ -219,7 +219,7 @@ export function PopCultureGamingView({ event, locale = "en", onSelectTier }: Arc
                 <CardDescription className="text-xs text-muted-foreground">{creator.genre}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-2 text-xs">
-                <div className="p-2 rounded bg-muted/30 border border-border/50 text-[11px] text-foreground">
+                <div className="p-2 rounded bg-muted/30 border border-border/50 text-xs text-foreground">
                   <span className="font-semibold text-amber-400">Exclusive Drop:</span> {creator.specialDrop}
                 </div>
               </CardContent>
