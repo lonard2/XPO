@@ -111,12 +111,13 @@ export function EventCard({
           />
         ) : (
           <div
-            className="flex h-full w-full items-center justify-center p-6 text-center"
+            className="flex h-full w-full items-center justify-center p-6 text-center relative overflow-hidden"
             style={{
-              background: `linear-gradient(135deg, ${archetypeTokens.primary}22 0%, ${archetypeTokens.accent}22 100%)`,
+              background: `linear-gradient(135deg, ${archetypeTokens.primary}25 0%, ${archetypeTokens.accent}25 100%)`,
             }}
           >
-            <Sparkles className="h-8 w-8 opacity-40" style={{ color: archetypeTokens.primary }} />
+            <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#000_1px,transparent_1px)] dark:bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:12px_12px]" />
+            <Layers className="h-8 w-8 opacity-50 relative z-10" style={{ color: archetypeTokens.primary }} />
           </div>
         )}
 
@@ -148,7 +149,7 @@ export function EventCard({
 
           {temporal.isUpcoming && event.isFeatured && (
             <Badge variant="warning" className="text-[10px] font-semibold gap-1 shadow-sm">
-              <Sparkles className="h-2.5 w-2.5" />
+              <Layers className="h-2.5 w-2.5" />
               <span>Featured</span>
             </Badge>
           )}

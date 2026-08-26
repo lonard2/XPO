@@ -198,14 +198,14 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
 
       {/* Hall Directory & Specifications */}
       <section className="container px-4 space-y-6">
-        <div className="border-b border-border pb-4">
-          <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider mb-1">
-            <Layers className="h-4 w-4" />
-            <span>{tVen('specifications') || 'Floor Specifications'}</span>
-          </div>
-          <h2 className="text-2xl font-bold tracking-tight text-foreground">
-            {tReg('hallDirectory') || 'Hall & Pavilion Directory'} ({venue.halls?.length || 0})
+        <div className="border-b border-border pb-4 space-y-1">
+          <h2 className="text-2xl font-bold tracking-tight text-foreground flex items-center gap-2">
+            <Layers className="h-5 w-5 text-primary" />
+            <span>{tReg('hallDirectory') || 'Hall & Pavilion Directory'} ({venue.halls?.length || 0})</span>
           </h2>
+          <p className="text-xs text-muted-foreground">
+            {tVen('specifications') || 'Floor specifications, structural dimensions, and maximum pax capacities.'}
+          </p>
         </div>
 
         {venue.halls && venue.halls.length > 0 ? (
@@ -248,14 +248,15 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
       {/* Transit & Access Guide */}
       <section className="container px-4">
         <div className="rounded-3xl border border-border bg-card p-6 sm:p-8 space-y-4 shadow-xs">
-          <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider">
-            <Train className="h-4 w-4" />
-            <span>{tVen('transitLogistics') || 'Transit & Access Logistics'}</span>
+          <div className="space-y-1">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground flex items-center gap-2">
+              <Train className="h-5 w-5 text-primary" />
+              <span>{tReg('transitGuide') || 'Getting to Venue'}: {venue.name}</span>
+            </h2>
+            <p className="text-xs text-muted-foreground">
+              {tVen('transitLogistics') || 'Verified rapid transit linkages and public navigation routes.'}
+            </p>
           </div>
-
-          <h2 className="text-xl sm:text-2xl font-bold text-foreground">
-            {tReg('transitGuide') || 'Getting to Venue'}: {venue.name}
-          </h2>
 
           <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-3xl">
             {venue.transitInfo}
@@ -281,17 +282,17 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
       {/* Scheduled Exhibitions at this Venue */}
       <section className="container px-4 space-y-6">
         <div className="flex items-center justify-between border-b border-border pb-4">
-          <div>
-            <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider mb-1">
-              <Sparkles className="h-4 w-4" />
-              <span>{tReg('upcomingEvents') || 'Upcoming Schedule'}</span>
-            </div>
-            <h2 className="text-2xl font-bold tracking-tight text-foreground">
-              {tVen('happeningAtVenue') || 'Scheduled Exhibitions at this Venue'}
+          <div className="space-y-1">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground flex items-center gap-2">
+              <Calendar className="h-5 w-5 text-primary" />
+              <span>{tVen('happeningAtVenue') || 'Scheduled Exhibitions at this Venue'}</span>
             </h2>
+            <p className="text-xs text-muted-foreground">
+              Current and upcoming trade shows, conferences, and conventions.
+            </p>
           </div>
           <Link href={`/${locale}/events`}>
-            <Button variant="outline" size="sm" className="gap-1.5 text-xs cursor-pointer">
+            <Button variant="outline" size="sm" className="gap-1.5 text-xs font-semibold cursor-pointer">
               <span>{tCom('viewAll') || 'All Exhibitions'}</span>
             </Button>
           </Link>

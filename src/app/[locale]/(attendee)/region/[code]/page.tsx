@@ -282,17 +282,17 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
       {/* Regional Venue Spotlights */}
       <section className="container px-4 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-border pb-4">
-          <div>
-            <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider mb-1">
-              <Building2 className="h-4 w-4" />
-              <span>{t("venueSpotlights")}</span>
-            </div>
-            <h2 className="text-2xl font-bold tracking-tight text-foreground">
-              Convention Complexes & Mega Exhibition Halls
+          <div className="space-y-1">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground flex items-center gap-2">
+              <Building2 className="h-5 w-5 text-primary" />
+              <span>{t("venueSpotlights") || "Convention Complexes & Mega Exhibition Halls"}</span>
             </h2>
+            <p className="text-xs text-muted-foreground">
+              Primary event infrastructure and multi-hall exhibition centers in this region.
+            </p>
           </div>
           <Link href={`/${locale}/venues`}>
-            <Button variant="outline" size="sm" className="gap-1.5 text-xs">
+            <Button variant="outline" size="sm" className="gap-1.5 text-xs font-semibold">
               <span>{tCommon("viewAll")}</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </Button>
@@ -386,17 +386,17 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
       {/* Upcoming Regional Events */}
       <section className="container px-4 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-border pb-4">
-          <div>
-            <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider mb-1">
-              <Sparkles className="h-4 w-4" />
-              <span>{t("upcomingEvents")}</span>
-            </div>
-            <h2 className="text-2xl font-bold tracking-tight text-foreground">
-              Scheduled Conventions & Trade Assemblies
+          <div className="space-y-1">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground flex items-center gap-2">
+              <Layers className="h-5 w-5 text-primary" />
+              <span>{t("upcomingEvents") || "Scheduled Conventions & Trade Assemblies"}</span>
             </h2>
+            <p className="text-xs text-muted-foreground">
+              Confirmed expos, keynotes, and summits taking place across regional halls.
+            </p>
           </div>
           <Link href={`/${locale}/events`}>
-            <Button variant="outline" size="sm" className="gap-1.5 text-xs">
+            <Button variant="outline" size="sm" className="gap-1.5 text-xs font-semibold">
               <span>{tCommon("viewAll")}</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </Button>
