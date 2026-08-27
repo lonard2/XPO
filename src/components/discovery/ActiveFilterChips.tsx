@@ -167,7 +167,7 @@ export function ActiveFilterChips({
         variant="ghost"
         size="sm"
         onClick={onClearAll}
-        className="h-6 px-2 text-[11px] font-semibold text-muted-foreground hover:text-foreground gap-1 cursor-pointer"
+        className="h-6 px-2 text-xs font-semibold text-muted-foreground hover:text-foreground gap-1 cursor-pointer"
       >
         <RotateCcw className="h-3 w-3" />
         <span>{tDisc('clearAll') || tDisc('clearFilters') || 'Clear All'}</span>

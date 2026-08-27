@@ -11,7 +11,7 @@ import {
   Layers,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
-import { Button } from '@/components/ui/Button';
+import { buttonVariants } from '@/components/ui/Button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/Card';
 import { useTranslations } from 'next-intl';
 import { formatCurrency, formatDateRange, getTimeZoneForRegion, getEventTemporalStatus, type SupportedCurrency } from '@/lib/i18n/formatters';
@@ -208,12 +208,16 @@ export const EventCard = React.memo(function EventCard({
             </span>
           </div>
 
-          <Link href={`/${locale}/events/${event.slug}`}>
-            <Button size="sm" variant={temporal.isPast ? 'outline' : 'default'} className="gap-1 text-xs font-semibold shadow-sm">
-              <Ticket className="h-3.5 w-3.5" />
-              <span>{temporal.isPast ? (tCom('viewDetails') || 'View Details') : (tTick('viewPass') || 'View Pass')}</span>
-              <ArrowRight className="h-3 w-3 ml-0.5 transition-transform group-hover:translate-x-0.5" />
-            </Button>
+          <Link
+            href={`/${locale}/events/${event.slug}`}
+            className={cn(
+              buttonVariants({ variant: temporal.isPast ? 'outline' : 'default', size: 'sm' }),
+              'gap-1 text-xs font-semibold shadow-sm min-h-[36px] cursor-pointer'
+            )}
+          >
+            <Ticket className="h-3.5 w-3.5" />
+            <span>{temporal.isPast ? (tCom('viewDetails') || 'View Details') : (tTick('viewPass') || 'View Pass')}</span>
+            <ArrowRight className="h-3 w-3 ml-0.5 transition-transform group-hover:translate-x-0.5" />
           </Link>
         </CardFooter>
       </div>

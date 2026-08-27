@@ -59,6 +59,8 @@ export function BannerCarousel({
   const [timerKey, setTimerKey] = React.useState(0);
   const [touchStartX, setTouchStartX] = React.useState<number | null>(null);
   const [touchEndX, setTouchEndX] = React.useState<number | null>(null);
+  const [touchStartY, setTouchStartY] = React.useState<number | null>(null);
+  const [touchEndY, setTouchEndY] = React.useState<number | null>(null);
 
   const totalSlides = slides?.length || 0;
 
@@ -97,20 +99,43 @@ export function BannerCarousel({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [totalSlides, resetAutoPlay]);
 
-  // Touch Swipe Handlers
+  // Touch Swipe Handlers with vertical scroll cancellation guard
   const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStartX(e.targetTouches[0].clientX);
+    if (e.targetTouches.length > 0) {
+      setTouchStartX(e.targetTouches[0].clientX);
+      setTouchStartY(e.targetTouches[0].clientY ?? null);
+    }
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEndX(e.targetTouches[0].clientX);
+    if (e.targetTouches.length > 0) {
+      setTouchEndX(e.targetTouches[0].clientX);
+      setTouchEndY(e.targetTouches[0].clientY ?? null);
+    }
   };
 
   const handleTouchEnd = () => {
-    if (!touchStartX || !touchEndX) return;
-    const distance = touchStartX - touchEndX;
-    const isLeftSwipe = distance > 50;
-    const isRightSwipe = distance < -50;
+    if (touchStartX === null || touchEndX === null) {
+      setTouchStartX(null);
+      setTouchEndX(null);
+      setTouchStartY(null);
+      setTouchEndY(null);
+      return;
+    }
+    const deltaX = touchStartX - touchEndX;
+    const deltaY = touchStartY !== null && touchEndY !== null ? touchStartY - touchEndY : 0;
+
+    // If vertical scroll intent is greater than horizontal swipe, ignore horizontal swipe
+    if (Math.abs(deltaY) > Math.abs(deltaX)) {
+      setTouchStartX(null);
+      setTouchEndX(null);
+      setTouchStartY(null);
+      setTouchEndY(null);
+      return;
+    }
+
+    const isLeftSwipe = deltaX > 50;
+    const isRightSwipe = deltaX < -50;
 
     if (isLeftSwipe) {
       setCurrentIndex((prev) => (prev + 1) % totalSlides);
@@ -122,6 +147,8 @@ export function BannerCarousel({
 
     setTouchStartX(null);
     setTouchEndX(null);
+    setTouchStartY(null);
+    setTouchEndY(null);
   };
 
   const goToSlide = (index: number) => {

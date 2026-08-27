@@ -60,15 +60,20 @@ export function FacetedFilterBar({
     return () => clearTimeout(handler);
   }, [searchTerm, filters, onChange]);
 
-  // Global '/' keyboard accelerator to focus search input
+  // Global '/' keyboard accelerator to focus search input (with contenteditable & modal collision guards)
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (
-        e.key === '/' &&
-        document.activeElement?.tagName !== 'INPUT' &&
-        document.activeElement?.tagName !== 'TEXTAREA' &&
-        document.activeElement?.tagName !== 'SELECT'
-      ) {
+      const activeEl = document.activeElement as HTMLElement | null;
+      const isInputActive =
+        activeEl &&
+        (['INPUT', 'TEXTAREA', 'SELECT'].includes(activeEl.tagName) ||
+          activeEl.isContentEditable ||
+          activeEl.getAttribute('contenteditable') === 'true');
+      const isModalOpen = Boolean(
+        document.querySelector('[role="dialog"][data-state="open"], [aria-modal="true"]')
+      );
+
+      if (e.key === '/' && !isInputActive && !isModalOpen) {
         e.preventDefault();
         searchInputRef.current?.focus();
       }
