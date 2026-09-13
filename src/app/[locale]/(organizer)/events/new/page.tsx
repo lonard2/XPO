@@ -71,6 +71,7 @@ export default function NewEventWizardPage() {
   const tOrg = useTranslations("organizer");
   const tCom = useTranslations("common");
   const tArch = useTranslations("archetypes");
+  const tReg = useTranslations("regions");
 
   const [currentStep, setCurrentStep] = React.useState<number>(1);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
@@ -393,6 +394,14 @@ export default function NewEventWizardPage() {
           setErrorMessage("All ticket tiers must have a descriptive title.");
           return false;
         }
+        if (!t.capacity || isNaN(Number(t.capacity)) || Number(t.capacity) <= 0) {
+          setErrorMessage("Ticket tier capacities must be a positive integer.");
+          return false;
+        }
+        if (isNaN(Number(t.price)) || Number(t.price) < 0) {
+          setErrorMessage("Ticket tier price cannot be negative.");
+          return false;
+        }
       }
       return true;
     }
@@ -541,7 +550,7 @@ export default function NewEventWizardPage() {
               size="sm"
               variant="primary"
               onClick={handleRestoreDraft}
-              className="h-8 text-xs gap-1.5 cursor-pointer"
+              className="min-h-[36px] text-xs gap-1.5 cursor-pointer"
             >
               <RotateCcw className="h-3 w-3" />
               <span>Resume Draft</span>
@@ -550,7 +559,7 @@ export default function NewEventWizardPage() {
               size="sm"
               variant="ghost"
               onClick={handleDiscardDraft}
-              className="h-8 text-xs text-muted-foreground hover:text-foreground cursor-pointer"
+              className="min-h-[36px] text-xs text-muted-foreground hover:text-foreground cursor-pointer"
             >
               Discard
             </Button>
@@ -584,7 +593,7 @@ export default function NewEventWizardPage() {
               }}
               aria-current={isCurrent ? "step" : undefined}
               className={cn(
-                "flex items-center gap-2 p-2 rounded-lg text-xs transition-colors text-left focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
+                "min-h-[36px] flex items-center gap-2 px-2.5 py-2 rounded-lg text-xs transition-colors text-left focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
                 canClick ? "cursor-pointer hover:bg-muted/60" : "cursor-default",
                 isCurrent
                   ? "bg-primary/10 text-primary font-semibold border border-primary/30"
@@ -683,7 +692,7 @@ export default function NewEventWizardPage() {
                   </label>
                   <select
                     id="wizard-format-select"
-                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-xs"
+                    className="w-full h-10 rounded-md border border-input bg-background px-3 text-xs ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     value={format}
                     onChange={(e) => setFormat(e.target.value)}
                   >
@@ -699,7 +708,7 @@ export default function NewEventWizardPage() {
                   </label>
                   <select
                     id="wizard-scale-select"
-                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-xs"
+                    className="w-full h-10 rounded-md border border-input bg-background px-3 text-xs ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     value={scale}
                     onChange={(e) => setScale(e.target.value)}
                   >
@@ -743,11 +752,22 @@ export default function NewEventWizardPage() {
                     type="button"
                     role="radio"
                     aria-checked={isSelected}
+                    tabIndex={isSelected ? 0 : -1}
                     onClick={() => handleArchetypeSelect(arch)}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" || e.key === " ") {
                         e.preventDefault();
                         handleArchetypeSelect(arch);
+                      } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+                        e.preventDefault();
+                        const currentIndex = ALL_ARCHETYPES.indexOf(arch);
+                        const nextArch = ALL_ARCHETYPES[(currentIndex + 1) % ALL_ARCHETYPES.length];
+                        handleArchetypeSelect(nextArch);
+                      } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+                        e.preventDefault();
+                        const currentIndex = ALL_ARCHETYPES.indexOf(arch);
+                        const prevArch = ALL_ARCHETYPES[(currentIndex - 1 + ALL_ARCHETYPES.length) % ALL_ARCHETYPES.length];
+                        handleArchetypeSelect(prevArch);
                       }
                     }}
                     className={cn(
@@ -806,15 +826,16 @@ export default function NewEventWizardPage() {
               className="grid grid-cols-1 sm:grid-cols-3 gap-3"
             >
               {[
-                { id: "id", name: "Indonesia Hub", desc: "JIExpo, ICE BSD, JICC, GBK" },
-                { id: "jp", name: "Japan Hub", desc: "Tokyo Big Sight, Makuhari Messe" },
-                { id: "global", name: "Global Hub", desc: "Marina Bay Sands, Messe Frankfurt" },
+                { id: "id", name: `${tReg("id.name")} (${tReg("id.code")})`, desc: tReg("id.keyVenues") },
+                { id: "jp", name: `${tReg("jp.name")} (${tReg("jp.code")})`, desc: tReg("jp.keyVenues") },
+                { id: "global", name: `${tReg("global.name")} (${tReg("global.code")})`, desc: tReg("global.keyVenues") },
               ].map((r) => (
                 <button
                   key={r.id}
                   type="button"
                   role="radio"
                   aria-checked={regionId === r.id}
+                  tabIndex={regionId === r.id ? 0 : -1}
                   onClick={() => handleRegionChange(r.id)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
@@ -823,14 +844,14 @@ export default function NewEventWizardPage() {
                     }
                   }}
                   className={cn(
-                    "p-3.5 rounded-xl border text-left cursor-pointer transition-all focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
+                    "p-3.5 rounded-xl border text-left cursor-pointer transition-all focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none min-h-[72px] flex flex-col justify-center",
                     regionId === r.id
                       ? "border-primary bg-primary/5 ring-1 ring-primary/30 shadow-xs"
                       : "border-border hover:border-primary/40 bg-card"
                   )}
                 >
                   <div className="text-xs font-bold text-foreground">{r.name}</div>
-                  <div className="text-xs text-muted-foreground mt-0.5">{r.desc}</div>
+                  <div className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{r.desc}</div>
                 </button>
               ))}
             </div>
@@ -842,7 +863,7 @@ export default function NewEventWizardPage() {
                 </label>
                 <select
                   id="wizard-venue-select"
-                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-xs"
+                  className="w-full h-10 rounded-md border border-input bg-background px-3 text-xs ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   value={venueId}
                   onChange={(e) => {
                     setVenueId(e.target.value);
@@ -866,7 +887,7 @@ export default function NewEventWizardPage() {
                 </label>
                 <select
                   id="wizard-hall-select"
-                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-xs"
+                  className="w-full h-10 rounded-md border border-input bg-background px-3 text-xs ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   value={venueHallId}
                   onChange={(e) => setVenueHallId(e.target.value)}
                 >
@@ -911,7 +932,7 @@ export default function NewEventWizardPage() {
                 {tOrg("wizardTiersSubtitle") || "Define pass pricing, capacities, and perks unlocked upon QR validation."}
               </p>
             </div>
-            <Button size="sm" variant="outline" onClick={handleAddTier} className="text-xs gap-1.5 cursor-pointer">
+            <Button size="sm" variant="outline" onClick={handleAddTier} className="min-h-[36px] text-xs gap-1.5 cursor-pointer">
               <Plus className="h-3.5 w-3.5" />
               <span>{tOrg("wizardAddTier") || "Add Ticket Pass Tier"}</span>
             </Button>
@@ -926,7 +947,7 @@ export default function NewEventWizardPage() {
                     <button
                       type="button"
                       onClick={() => handleRemoveTier(tier.id)}
-                      className="text-xs text-destructive hover:text-destructive/80 flex items-center gap-1 cursor-pointer"
+                      className="min-h-[36px] px-2.5 py-1 text-xs text-destructive hover:text-destructive/80 flex items-center gap-1 cursor-pointer"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                       <span>{tCom("delete") || "Remove"}</span>
@@ -975,7 +996,7 @@ export default function NewEventWizardPage() {
                     </label>
                     <select
                       id={`wizard-tier-currency-${idx}`}
-                      className="w-full rounded-md border border-input bg-background px-3 py-2 text-xs"
+                      className="w-full h-10 rounded-md border border-input bg-background px-3 text-xs ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                       value={tier.currency}
                       onChange={(e) => handleUpdateTier(tier.id, "currency", e.target.value)}
                     >
@@ -1111,7 +1132,7 @@ export default function NewEventWizardPage() {
       {/* WIZARD NAVIGATION CONTROLS */}
       <div className="flex items-center justify-between pt-4 border-t border-border">
         {currentStep > 1 ? (
-          <Button variant="outline" size="sm" onClick={prevStep} className="gap-1.5 cursor-pointer">
+          <Button variant="outline" size="sm" onClick={prevStep} className="min-h-[40px] px-4 text-xs font-semibold gap-1.5 cursor-pointer">
             <ArrowLeft className="h-4 w-4" />
             <span>{tOrg("wizardBack") || "Previous Step"}</span>
           </Button>
@@ -1120,7 +1141,7 @@ export default function NewEventWizardPage() {
         )}
 
         {currentStep < 4 ? (
-          <Button variant="primary" size="sm" onClick={nextStep} className="gap-1.5 cursor-pointer">
+          <Button variant="primary" size="sm" onClick={nextStep} className="min-h-[40px] px-5 text-xs font-semibold gap-1.5 cursor-pointer">
             <span>{tOrg("wizardNext") || "Continue"}</span>
             <ArrowRight className="h-4 w-4" />
           </Button>
@@ -1130,7 +1151,7 @@ export default function NewEventWizardPage() {
             size="sm"
             onClick={handleSubmitEvent}
             disabled={isSubmitting}
-            className="gap-2 bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer"
+            className="min-h-[40px] px-6 text-xs font-semibold gap-2 bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer"
           >
             <Sparkles className="h-4 w-4" />
             <span>{isSubmitting ? (tOrg("wizardCreating") || "Launching Event...") : (tOrg("wizardPublishButton") || "Publish & Open Customizer")}</span>
