@@ -428,7 +428,7 @@ export default function BoothManagerPage() {
             <span className="text-xs font-bold uppercase tracking-wider text-primary">
               {tOrg("managementHub") || "Exhibitor Operations"}
             </span>
-            <Badge variant="archetype" size="sm">Hall Floor Roster</Badge>
+            <Badge variant="secondary" size="sm" className="font-semibold">Hall Floor Roster</Badge>
           </div>
           <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground mt-1">
             {tOrg("boothsTitle") || "Booth & Tenant Management Roster"}

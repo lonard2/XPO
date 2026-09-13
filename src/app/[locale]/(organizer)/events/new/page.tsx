@@ -783,7 +783,7 @@ export default function NewEventWizardPage() {
                           {displayName}
                         </span>
                         {isSelected ? (
-                          <Badge variant="archetype" size="sm">{tCom("selected") || "Selected"}</Badge>
+                          <Badge variant="secondary" size="sm" className="font-semibold">{tCom("selected") || "Selected"}</Badge>
                         ) : (
                           <div
                             className="h-3.5 w-3.5 rounded-full border border-border"
@@ -1094,7 +1094,7 @@ export default function NewEventWizardPage() {
                 <div className="text-muted-foreground">{tOrg("wizardSummaryTitleCat") || "Title & Category:"}</div>
                 <div className="font-bold text-foreground text-sm">{title}</div>
                 <div className="flex items-center gap-2 mt-1">
-                  <Badge variant="archetype" size="sm">{tArch(`${archetype}.title`) || ARCHETYPE_DEFAULTS[archetype].displayName}</Badge>
+                  <Badge variant="secondary" size="sm" className="font-semibold uppercase tracking-wider">{tArch(`${archetype}.title`) || ARCHETYPE_DEFAULTS[archetype].displayName}</Badge>
                   <span className="text-muted-foreground uppercase">{format} • {scale}</span>
                 </div>
               </div>

@@ -244,7 +244,7 @@ export default function EventCustomizerPage() {
               <ArrowLeft className="h-3.5 w-3.5" />
               <span>Back to Dashboard</span>
             </Link>
-            <Badge variant="archetype" size="sm">Live Customizer</Badge>
+            <Badge variant="secondary" size="sm" className="font-semibold">Live Customizer</Badge>
           </div>
           <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground mt-1">
             {eventData?.title || "Visual Branding Customizer"}

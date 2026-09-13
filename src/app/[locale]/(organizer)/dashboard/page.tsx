@@ -109,7 +109,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
             <span className="text-xs font-bold uppercase tracking-wider text-primary">
               {tOrg("portalBadge") || "Organizer Portal"}
             </span>
-            <Badge variant="archetype" size="sm">
+            <Badge variant="secondary" size="sm" className="font-semibold">
               <Activity className="h-3 w-3 mr-1 text-emerald-500 animate-pulse" />
               {tOrg("dashboardTitle") || "Live Operations"}
             </Badge>
@@ -258,7 +258,12 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
               <Card key={event.id} className="border-border/80 bg-card flex flex-col justify-between hover:shadow-md transition-all">
                 <CardHeader className="p-5 pb-3">
                   <div className="flex items-start justify-between gap-3">
-                    <Badge variant="archetype" size="sm">
+                    <Badge
+                      variant="secondary"
+                      size="sm"
+                      className="font-semibold"
+                      style={{ backgroundColor: `${tokens.primary}18`, color: tokens.primary, borderColor: `${tokens.primary}30` }}
+                    >
                       {tokens.displayName}
                     </Badge>
                     <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
