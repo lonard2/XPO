@@ -55,7 +55,9 @@ export function BannerCarousel({
   }
 
   const [currentIndex, setCurrentIndex] = React.useState(0);
-  const [isPaused, setIsPaused] = React.useState(false);
+  const [isManuallyPaused, setIsManuallyPaused] = React.useState(false);
+  const [isHovered, setIsHovered] = React.useState(false);
+  const [isFocused, setIsFocused] = React.useState(false);
   const [timerKey, setTimerKey] = React.useState(0);
   const [touchStartX, setTouchStartX] = React.useState<number | null>(null);
   const [touchEndX, setTouchEndX] = React.useState<number | null>(null);
@@ -63,6 +65,7 @@ export function BannerCarousel({
   const [touchEndY, setTouchEndY] = React.useState<number | null>(null);
 
   const totalSlides = slides?.length || 0;
+  const isEffectivePaused = isManuallyPaused || isHovered || isFocused;
 
   const resetAutoPlay = React.useCallback(() => {
     setTimerKey((k) => k + 1);
@@ -70,14 +73,14 @@ export function BannerCarousel({
 
   // Auto-play timer with reset hygiene
   React.useEffect(() => {
-    if (totalSlides <= 1 || isPaused) return;
+    if (totalSlides <= 1 || isEffectivePaused) return;
 
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % totalSlides);
     }, autoPlayInterval);
 
     return () => clearInterval(timer);
-  }, [totalSlides, isPaused, autoPlayInterval, timerKey]);
+  }, [totalSlides, isEffectivePaused, autoPlayInterval, timerKey]);
 
   // Keyboard navigation with input focus scoping
   React.useEffect(() => {
@@ -189,11 +192,17 @@ export function BannerCarousel({
   return (
     <div
       className={cn(
-        'relative w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-border/80 bg-slate-950 shadow-xl select-none',
+        'relative w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-border/80 bg-slate-950 shadow-xl',
         className
       )}
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onFocus={() => setIsFocused(true)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) {
+          setIsFocused(false);
+        }
+      }}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -202,7 +211,14 @@ export function BannerCarousel({
       aria-label="Featured Events Banner"
     >
       {/* Slide Container */}
-      <div className="relative min-h-[420px] sm:min-h-[480px] lg:min-h-[520px] flex flex-col justify-end p-5 sm:p-8 lg:p-12 overflow-hidden">
+      <div
+        key={currentSlide.id}
+        role="group"
+        aria-roledescription="slide"
+        aria-label={`Slide ${currentIndex + 1} of ${totalSlides}: ${currentSlide.title}`}
+        aria-live={isEffectivePaused ? 'polite' : 'off'}
+        className="relative min-h-[420px] sm:min-h-[480px] lg:min-h-[520px] flex flex-col justify-end p-5 sm:p-8 lg:p-12 overflow-hidden"
+      >
         {/* Slide Image Layer */}
         {currentSlide.heroImageUrl ? (
           <img
@@ -407,10 +423,10 @@ export function BannerCarousel({
           <button
             type="button"
             className="relative flex h-10 w-10 sm:h-9 sm:w-9 items-center justify-center rounded-full text-slate-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/60 focus-visible:outline-none"
-            onClick={() => setIsPaused(!isPaused)}
-            aria-label={isPaused ? 'Resume autoplay' : 'Pause autoplay'}
+            onClick={() => setIsManuallyPaused(!isManuallyPaused)}
+            aria-label={isManuallyPaused ? 'Resume autoplay' : 'Pause autoplay'}
           >
-            {isPaused ? <Play className="h-3.5 w-3.5" /> : <Pause className="h-3.5 w-3.5" />}
+            {isManuallyPaused ? <Play className="h-3.5 w-3.5" /> : <Pause className="h-3.5 w-3.5" />}
           </button>
         </div>
 
@@ -423,7 +439,7 @@ export function BannerCarousel({
               onClick={() => goToSlide(idx)}
               className="relative flex h-10 min-w-[20px] items-center justify-center px-1 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black/50 rounded-full"
               aria-label={`Go to slide ${idx + 1}`}
-              aria-current={idx === currentIndex ? 'true' : 'false'}
+              aria-current={idx === currentIndex ? 'true' : undefined}
             >
               <span
                 className={cn(

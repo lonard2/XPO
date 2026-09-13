@@ -217,11 +217,20 @@ export function EventCategoryPills({
         <div className="flex items-center gap-2">
           <Link
             href={`/${locale}/events`}
-            className="text-xs font-semibold text-primary hover:underline hidden sm:inline-flex items-center gap-1 mr-2"
+            className="text-xs font-semibold text-primary hover:underline hidden sm:inline-flex items-center gap-1 mr-1"
           >
             <span>{tDisc('allArchetypes') || 'All Categories'}</span>
             <ArrowRight className="h-3 w-3" />
           </Link>
+
+          {/* Spatial Progress Counter Badge */}
+          <span
+            className="text-xs font-mono text-muted-foreground px-2 py-1 rounded-md bg-muted/70 border border-border/60 shrink-0 select-none"
+            aria-label={`Category ${activeScrollIndex + 1} of ${EVENT_CATEGORIES.length}`}
+            aria-live="polite"
+          >
+            {activeScrollIndex + 1} / {EVENT_CATEGORIES.length}
+          </span>
 
           <Button
             size="icon"
@@ -312,6 +321,9 @@ export function EventCategoryPills({
       {/* Horizontally Scrollable Category Cards Carousel with Tactile Polish */}
       <div
         ref={scrollContainerRef}
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="MICE Event Categories Carousel"
         onMouseDown={handleMouseDown}
         onMouseLeave={handleMouseLeave}
         onMouseUp={handleMouseUp}
@@ -420,6 +432,9 @@ export function EventCategoryPills({
               <button
                 key={category.id}
                 type="button"
+                role="group"
+                aria-roledescription="slide"
+                aria-label={`${category.name} category`}
                 onClick={() => onSelectCategory(category.id)}
                 className="shrink-0 text-left focus:outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-primary rounded-3xl"
               >
@@ -432,6 +447,9 @@ export function EventCategoryPills({
             <Link
               key={category.id}
               href={`/${locale}/events?archetype=${category.id}`}
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`${category.name} category`}
               className="shrink-0 block focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-3xl"
             >
               {cardContent}
