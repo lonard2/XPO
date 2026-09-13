@@ -23,7 +23,8 @@ import {
 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
+import { buttonVariants } from "@/components/ui/Button";
+import { cn } from "@/lib/utils";
 import { formatCurrency, formatDateRange } from "@/lib/i18n/formatters";
 import { getArchetypeTokens } from "@/lib/theming";
 
@@ -85,14 +86,23 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
   );
   const checkInRate = totalRegistrations > 0 ? Math.round((totalCheckedIn / totalRegistrations) * 100) : 0;
 
-  // Calculate gross ticket revenue across all bookings
-  const grossRevenue = events.reduce((acc, ev) => {
-    const eventRev = ev.bookings?.reduce((bAcc: number, b: any) => bAcc + (b.ticketTier?.price || 0), 0) || 0;
-    return acc + eventRev;
-  }, 0);
+  // Calculate gross ticket revenue grouped by currency across all bookings
+  const revenueByCurrency: Record<string, number> = {};
+  for (const ev of events) {
+    const fallbackCurrency = ev.regionId === "jp" ? "JPY" : ev.regionId === "global" ? "USD" : "IDR";
+    for (const b of ev.bookings || []) {
+      const curr = b.ticketTier?.currency || fallbackCurrency;
+      const price = b.ticketTier?.price || 0;
+      revenueByCurrency[curr] = (revenueByCurrency[curr] || 0) + price;
+    }
+  }
 
-  // Region-aware currency mapping
+  // Region-aware primary currency mapping
   const regionCurrency = locale === "jp" ? "JPY" : locale === "en" ? "USD" : "IDR";
+  const revenueCurrencies = Object.keys(revenueByCurrency);
+  const primaryCurrency = revenueCurrencies.includes(regionCurrency)
+    ? regionCurrency
+    : (revenueCurrencies[0] || regionCurrency);
 
   const totalBooths = allBooths.length;
   const occupiedBooths = allBooths.filter((b: any) => b.companyName && b.companyName.trim() !== "").length;
@@ -123,17 +133,19 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
         </div>
 
         <div className="flex items-center gap-2.5 shrink-0">
-          <Link href={`/${locale}/scanner`}>
-            <Button variant="outline" size="sm" className="gap-1.5 h-9 text-xs cursor-pointer">
-              <QrCode className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-              <span>{tOrg("doorScanner") || "Door Scanner"}</span>
-            </Button>
+          <Link
+            href={`/${locale}/scanner`}
+            className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-1.5 h-9 text-xs cursor-pointer")}
+          >
+            <QrCode className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+            <span>{tOrg("doorScanner") || "Door Scanner"}</span>
           </Link>
-          <Link href={`/${locale}/events/new`}>
-            <Button variant="primary" size="sm" className="gap-1.5 h-9 text-xs shadow-sm cursor-pointer">
-              <PlusCircle className="h-4 w-4" />
-              <span>{tOrg("launchNewEvent") || "Launch New Event"}</span>
-            </Button>
+          <Link
+            href={`/${locale}/events/new`}
+            className={cn(buttonVariants({ variant: "primary", size: "sm" }), "gap-1.5 h-9 text-xs shadow-sm cursor-pointer")}
+          >
+            <PlusCircle className="h-4 w-4" />
+            <span>{tOrg("launchNewEvent") || "Launch New Event"}</span>
           </Link>
         </div>
       </div>
@@ -179,9 +191,14 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
             </div>
             <div className="mt-3">
               <div className="text-2xl font-bold text-foreground truncate">
-                {formatCurrency(grossRevenue, regionCurrency, locale)}
+                {formatCurrency(revenueByCurrency[primaryCurrency] || 0, primaryCurrency, locale)}
               </div>
-              <div className="flex items-center gap-1 mt-1 text-xs text-muted-foreground">
+              <div className="flex flex-wrap items-center gap-1.5 mt-1 text-xs text-muted-foreground">
+                {revenueCurrencies.filter((c) => c !== primaryCurrency).map((c) => (
+                  <span key={c} className="inline-flex items-center font-medium text-foreground bg-muted/80 px-1.5 py-0.5 rounded text-xs">
+                    + {formatCurrency(revenueByCurrency[c], c, locale)}
+                  </span>
+                ))}
                 <span>{tOrg("acrossExhibitions", { count: events.length }) || `Across ${events.length} active exhibitions`}</span>
               </div>
             </div>
@@ -240,11 +257,12 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
               {tOrg("activeEventsDesc") || "Manage live branding, hall booth rosters, and door scanners for your registered events."}
             </p>
           </div>
-          <Link href={`/${locale}/events/new`}>
-            <Button variant="outline" size="sm" className="text-xs gap-1.5 cursor-pointer">
-              <PlusCircle className="h-3.5 w-3.5" />
-              <span>{tOrg("addEvent") || "Add Event"}</span>
-            </Button>
+          <Link
+            href={`/${locale}/events/new`}
+            className={cn(buttonVariants({ variant: "outline", size: "sm" }), "text-xs gap-1.5 cursor-pointer")}
+          >
+            <PlusCircle className="h-3.5 w-3.5" />
+            <span>{tOrg("addEvent") || "Add Event"}</span>
           </Link>
         </div>
 
@@ -307,32 +325,39 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
 
                   {/* Action Buttons Toolbar */}
                   <div className="pt-2 grid grid-cols-2 gap-2">
-                    <Link href={`/${locale}/events/${event.id}/ai-reports`}>
-                      <Button variant="outline" size="sm" className="w-full text-xs gap-1.5 h-8 border-indigo-500/30 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-500/10 cursor-pointer">
-                        <Sparkles className="h-3.5 w-3.5 text-indigo-500" />
-                        <span>{tOrg("viewAiReports") || "AI Reports"}</span>
-                      </Button>
+                    <Link
+                      href={`/${locale}/events/${event.id}/ai-reports`}
+                      className={cn(
+                        buttonVariants({ variant: "outline", size: "sm" }),
+                        "w-full text-xs gap-1.5 h-8 border-indigo-500/30 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-500/10 cursor-pointer"
+                      )}
+                    >
+                      <Sparkles className="h-3.5 w-3.5 text-indigo-500" />
+                      <span>{tOrg("viewAiReports") || "AI Reports"}</span>
                     </Link>
 
-                    <Link href={`/${locale}/events/${event.id}/customizer`}>
-                      <Button variant="outline" size="sm" className="w-full text-xs gap-1.5 h-8 cursor-pointer">
-                        <Palette className="h-3.5 w-3.5 text-primary" />
-                        <span>{tOrg("viewCustomizer") || "Customizer"}</span>
-                      </Button>
+                    <Link
+                      href={`/${locale}/events/${event.id}/customizer`}
+                      className={cn(buttonVariants({ variant: "outline", size: "sm" }), "w-full text-xs gap-1.5 h-8 cursor-pointer")}
+                    >
+                      <Palette className="h-3.5 w-3.5 text-primary" />
+                      <span>{tOrg("viewCustomizer") || "Customizer"}</span>
                     </Link>
 
-                    <Link href={`/${locale}/booths?eventId=${event.id}`}>
-                      <Button variant="outline" size="sm" className="w-full text-xs gap-1.5 h-8 cursor-pointer">
-                        <Store className="h-3.5 w-3.5 text-purple-500" />
-                        <span>{tOrg("viewBooths") || "Booths"}</span>
-                      </Button>
+                    <Link
+                      href={`/${locale}/booths?eventId=${event.id}`}
+                      className={cn(buttonVariants({ variant: "outline", size: "sm" }), "w-full text-xs gap-1.5 h-8 cursor-pointer")}
+                    >
+                      <Store className="h-3.5 w-3.5 text-purple-500" />
+                      <span>{tOrg("viewBooths") || "Booths"}</span>
                     </Link>
 
-                    <Link href={`/${locale}/scanner?eventId=${event.id}`}>
-                      <Button variant="outline" size="sm" className="w-full text-xs gap-1.5 h-8 cursor-pointer">
-                        <QrCode className="h-3.5 w-3.5 text-emerald-500" />
-                        <span>{tOrg("viewScanner") || "Scanner"}</span>
-                      </Button>
+                    <Link
+                      href={`/${locale}/scanner?eventId=${event.id}`}
+                      className={cn(buttonVariants({ variant: "outline", size: "sm" }), "w-full text-xs gap-1.5 h-8 cursor-pointer")}
+                    >
+                      <QrCode className="h-3.5 w-3.5 text-emerald-500" />
+                      <span>{tOrg("viewScanner") || "Scanner"}</span>
                     </Link>
                   </div>
                 </CardContent>
@@ -433,11 +458,12 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
 
           <div className="pt-3 border-t border-border flex items-center justify-between">
             <span className="text-xs text-muted-foreground">Ready to launch a new exhibition?</span>
-            <Link href={`/${locale}/events/new`}>
-              <Button size="sm" variant="primary" className="text-xs gap-1.5 cursor-pointer">
-                <PlusCircle className="h-3.5 w-3.5" />
-                <span>{tOrg("launchNewEvent") || "Create Event"}</span>
-              </Button>
+            <Link
+              href={`/${locale}/events/new`}
+              className={cn(buttonVariants({ variant: "primary", size: "sm" }), "text-xs gap-1.5 cursor-pointer")}
+            >
+              <PlusCircle className="h-3.5 w-3.5" />
+              <span>{tOrg("launchNewEvent") || "Create Event"}</span>
             </Link>
           </div>
         </Card>

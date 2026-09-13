@@ -24,7 +24,7 @@ import { useTranslations } from "next-intl";
 import { useAuth } from "@/lib/auth/session";
 import { getRoleLabel, getRoleBadgeVariant } from "@/lib/auth/rbac";
 import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
+import { Button, buttonVariants } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
 interface OrganizerLayoutProps {
@@ -117,10 +117,11 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
               <UserCheck className="h-4 w-4" />
               <span>{tOrg("switchToOrganizer") || "Switch to Organizer Persona"}</span>
             </Button>
-            <Link href={`/${locale}`}>
-              <Button variant="outline" className="w-full cursor-pointer">
-                {tCom("backToHome") || "Return to Event Discovery"}
-              </Button>
+            <Link
+              href={`/${locale}`}
+              className={cn(buttonVariants({ variant: "outline" }), "w-full sm:w-auto cursor-pointer")}
+            >
+              {tCom("backToHome") || "Back to Discovery"}
             </Link>
           </div>
         </div>
@@ -283,11 +284,12 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
             </nav>
 
             <div className="flex items-center gap-2">
-              <Link href={`/${locale}/events/new`}>
-                <Button size="sm" variant="primary" className="h-8 gap-1.5 text-xs shadow-xs cursor-pointer">
-                  <PlusCircle className="h-3.5 w-3.5" />
-                  <span className="hidden sm:inline">{tOrg("launchNewEvent") || "Launch Event"}</span>
-                </Button>
+              <Link
+                href={`/${locale}/events/new`}
+                className={cn(buttonVariants({ variant: "primary", size: "sm" }), "h-8 gap-1.5 text-xs shadow-xs cursor-pointer")}
+              >
+                <PlusCircle className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">{tOrg("launchNewEvent") || "Launch Event"}</span>
               </Link>
             </div>
           </div>
