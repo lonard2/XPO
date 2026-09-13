@@ -388,7 +388,7 @@ export function BannerCarousel({
         <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center gap-1.5 z-20">
           <button
             type="button"
-            className="relative flex h-10 w-10 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-black/50 hover:bg-black/80 text-white border border-white/20 backdrop-blur-sm transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+            className="relative flex h-10 w-10 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-black/50 hover:bg-black/80 text-white border border-white/20 backdrop-blur-sm transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/60 focus-visible:outline-none"
             onClick={prevSlide}
             aria-label="Previous slide"
           >
@@ -397,7 +397,7 @@ export function BannerCarousel({
 
           <button
             type="button"
-            className="relative flex h-10 w-10 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-black/50 hover:bg-black/80 text-white border border-white/20 backdrop-blur-sm transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+            className="relative flex h-10 w-10 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-black/50 hover:bg-black/80 text-white border border-white/20 backdrop-blur-sm transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/60 focus-visible:outline-none"
             onClick={nextSlide}
             aria-label="Next slide"
           >
@@ -406,7 +406,7 @@ export function BannerCarousel({
 
           <button
             type="button"
-            className="relative flex h-10 w-10 sm:h-9 sm:w-9 items-center justify-center rounded-full text-slate-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+            className="relative flex h-10 w-10 sm:h-9 sm:w-9 items-center justify-center rounded-full text-slate-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/60 focus-visible:outline-none"
             onClick={() => setIsPaused(!isPaused)}
             aria-label={isPaused ? 'Resume autoplay' : 'Pause autoplay'}
           >
@@ -421,7 +421,7 @@ export function BannerCarousel({
               key={idx}
               type="button"
               onClick={() => goToSlide(idx)}
-              className="relative flex h-10 min-w-[20px] items-center justify-center px-1 cursor-pointer focus-visible:outline-none"
+              className="relative flex h-10 min-w-[20px] items-center justify-center px-1 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black/50 rounded-full"
               aria-label={`Go to slide ${idx + 1}`}
               aria-current={idx === currentIndex ? 'true' : 'false'}
             >

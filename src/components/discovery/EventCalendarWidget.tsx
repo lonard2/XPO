@@ -27,6 +27,24 @@ export interface EventCalendarWidgetProps {
   className?: string;
 }
 
+function toISODateInTimezone(d: Date | string, tz: string): string {
+  try {
+    const dateObj = typeof d === 'string' ? new Date(d) : d;
+    return new Intl.DateTimeFormat('en-CA', {
+      timeZone: tz,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    }).format(dateObj);
+  } catch {
+    const dateObj = typeof d === 'string' ? new Date(d) : d;
+    const y = dateObj.getFullYear();
+    const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObj.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }
+}
+
 export function EventCalendarWidget({
   events,
   locale,
@@ -69,43 +87,38 @@ export function EventCalendarWidget({
     calendarDays.push({ dayNumber: d, date: new Date(year, month, d) });
   }
 
-  // Filter events active on selected date
+  // Filter events active on selected date (timezone-normalized to active region)
   const eventsOnSelectedDate = React.useMemo(() => {
+    const selStr = toISODateInTimezone(selectedDate, timezone);
     return events.filter((evt) => {
-      const start = new Date(evt.startDate);
-      const end = new Date(evt.endDate);
-      const sel = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate());
-      return sel >= new Date(start.getFullYear(), start.getMonth(), start.getDate()) &&
-             sel <= new Date(end.getFullYear(), end.getMonth(), end.getDate());
+      const startStr = toISODateInTimezone(evt.startDate, timezone);
+      const endStr = toISODateInTimezone(evt.endDate, timezone);
+      return selStr >= startStr && selStr <= endStr;
     });
-  }, [events, selectedDate]);
+  }, [events, selectedDate, timezone]);
 
   // Find nearest upcoming event from selectedDate
   const nearestUpcomingEvent = React.useMemo(() => {
     if (eventsOnSelectedDate.length > 0 || events.length === 0) return null;
+    const selStr = toISODateInTimezone(selectedDate, timezone);
     const sorted = [...events].sort(
       (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
     );
-    const selTime = new Date(
-      selectedDate.getFullYear(),
-      selectedDate.getMonth(),
-      selectedDate.getDate()
-    ).getTime();
-    const upcoming = sorted.find(
-      (evt) => new Date(evt.startDate).getTime() >= selTime
-    );
+    const upcoming = sorted.find((evt) => {
+      const startStr = toISODateInTimezone(evt.startDate, timezone);
+      return startStr >= selStr;
+    });
     return upcoming || sorted[0];
-  }, [events, eventsOnSelectedDate, selectedDate]);
+  }, [events, eventsOnSelectedDate, selectedDate, timezone]);
 
   // Check if a calendar day has events
   const hasEventOnDay = (date: Date | null) => {
     if (!date) return false;
+    const dayStr = toISODateInTimezone(date, timezone);
     return events.some((evt) => {
-      const start = new Date(evt.startDate);
-      const end = new Date(evt.endDate);
-      const cur = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-      return cur >= new Date(start.getFullYear(), start.getMonth(), start.getDate()) &&
-             cur <= new Date(end.getFullYear(), end.getMonth(), end.getDate());
+      const startStr = toISODateInTimezone(evt.startDate, timezone);
+      const endStr = toISODateInTimezone(evt.endDate, timezone);
+      return dayStr >= startStr && dayStr <= endStr;
     });
   };
 
