@@ -461,7 +461,7 @@ export function EventPageShell({
                         ? formatCurrency(tier.price, (tier.currency || currency) as SupportedCurrency, locale)
                         : tCommon("free") || "Free Admission";
 
-                    const isSoldOut = tier.capacity > 0 && tier.issuedCount >= tier.capacity;
+                    const isSoldOut = tier.capacity > 0 && ((tier as any).issuedCount ?? tier.soldCount) >= tier.capacity;
 
                     return (
                       <Card
@@ -477,29 +477,34 @@ export function EventPageShell({
                           <div>
                             <div className="flex items-start justify-between gap-2">
                               <div>
-                                <Badge
-                                  variant={tier.tier === "VIP" ? "default" : tier.tier === "EXHIBITOR" ? "secondary" : "outline"}
-                                  className="text-xs font-bold uppercase mb-2"
-                                >
-                                  {tier.tier}
-                                </Badge>
+                                {(() => {
+                                  const tierBadge = (tier as any).tier || (tier.name.toLowerCase().includes("vip") ? "VIP" : tier.name.toLowerCase().includes("exhibitor") ? "EXHIBITOR" : "STANDARD");
+                                  return (
+                                    <Badge
+                                      variant={tierBadge === "VIP" ? "default" : tierBadge === "EXHIBITOR" ? "secondary" : "outline"}
+                                      className="text-xs font-bold uppercase mb-2"
+                                    >
+                                      {tierBadge}
+                                    </Badge>
+                                  );
+                                })()}
                                 <h3 className="text-lg font-bold text-foreground">{tier.name}</h3>
                               </div>
                               <span className="text-lg font-extrabold text-foreground">{priceFormatted}</span>
                             </div>
 
-                            {tier.description && (
-                              <p className="text-xs text-muted-foreground leading-relaxed mt-2">{tier.description}</p>
+                            {(tier as any).description && (
+                              <p className="text-xs text-muted-foreground leading-relaxed mt-2">{(tier as any).description}</p>
                             )}
                           </div>
 
-                          {tier.perks && tier.perks.length > 0 && (
+                          {(tier as any).perks && (tier as any).perks.length > 0 && (
                             <div className="space-y-2 pt-3 mt-3 border-t border-border/60">
                               <span className="text-xs font-semibold text-foreground block">
                                 {tTickets("benefits") || "Included Benefits"}:
                               </span>
                               <ul className="space-y-1.5 text-xs text-muted-foreground">
-                                {tier.perks.map((perk, idx) => (
+                                {(tier as any).perks.map((perk: string, idx: number) => (
                                   <li key={idx} className="flex items-center gap-2">
                                     <Check className="h-3.5 w-3.5 text-primary shrink-0" />
                                     <span>{perk}</span>
@@ -512,7 +517,7 @@ export function EventPageShell({
 
                         <div className="pt-6 mt-4 border-t border-border/60">
                           <Button
-                            variant={tier.tier === "VIP" ? "default" : "outline"}
+                            variant={(tier as any).tier === "VIP" || tier.name?.toLowerCase().includes("vip") ? "default" : "outline"}
                             className="w-full font-semibold gap-2 min-h-[44px] cursor-pointer"
                             disabled={isSoldOut}
                             onClick={handleOpenCheckout}
@@ -632,7 +637,7 @@ export function EventPageShell({
                       ? formatCurrency(tier.price, (tier.currency || currency) as SupportedCurrency, locale)
                       : tCommon("free") || "Free Admission";
 
-                  const isSoldOut = tier.capacity > 0 && tier.issuedCount >= tier.capacity;
+                  const isSoldOut = tier.capacity > 0 && ((tier as any).issuedCount ?? tier.soldCount) >= tier.capacity;
 
                   return (
                     <Card
@@ -648,29 +653,34 @@ export function EventPageShell({
                         <div>
                           <div className="flex items-start justify-between gap-2">
                             <div>
-                              <Badge
-                                variant={tier.tier === "VIP" ? "default" : tier.tier === "EXHIBITOR" ? "secondary" : "outline"}
-                                className="text-xs font-bold uppercase mb-2"
-                              >
-                                {tier.tier}
-                              </Badge>
+                              {(() => {
+                                const tierBadge = (tier as any).tier || (tier.name.toLowerCase().includes("vip") ? "VIP" : tier.name.toLowerCase().includes("exhibitor") ? "EXHIBITOR" : "STANDARD");
+                                return (
+                                  <Badge
+                                    variant={tierBadge === "VIP" ? "default" : tierBadge === "EXHIBITOR" ? "secondary" : "outline"}
+                                    className="text-xs font-bold uppercase mb-2"
+                                  >
+                                    {tierBadge}
+                                  </Badge>
+                                );
+                              })()}
                               <h3 className="text-lg font-bold text-foreground">{tier.name}</h3>
                             </div>
                             <span className="text-lg font-extrabold text-foreground">{priceFormatted}</span>
                           </div>
 
-                          {tier.description && (
-                            <p className="text-xs text-muted-foreground leading-relaxed mt-2">{tier.description}</p>
+                          {(tier as any).description && (
+                            <p className="text-xs text-muted-foreground leading-relaxed mt-2">{(tier as any).description}</p>
                           )}
                         </div>
 
-                        {tier.perks && tier.perks.length > 0 && (
+                        {(tier as any).perks && (tier as any).perks.length > 0 && (
                           <div className="space-y-2 pt-3 mt-3 border-t border-border/60">
                             <span className="text-xs font-semibold text-foreground block">
                               {tTickets("benefits") || "Included Benefits"}:
                             </span>
                             <ul className="space-y-1.5 text-xs text-muted-foreground">
-                              {tier.perks.map((perk, idx) => (
+                              {(tier as any).perks.map((perk: string, idx: number) => (
                                 <li key={idx} className="flex items-center gap-2">
                                   <Check className="h-3.5 w-3.5 text-primary shrink-0" />
                                   <span>{perk}</span>
@@ -683,7 +693,7 @@ export function EventPageShell({
 
                       <div className="pt-6 mt-4 border-t border-border/60">
                         <Button
-                          variant={tier.tier === "VIP" ? "default" : "outline"}
+                          variant={(tier as any).tier === "VIP" || tier.name?.toLowerCase().includes("vip") ? "default" : "outline"}
                           className="w-full font-semibold gap-2 min-h-[44px] cursor-pointer"
                           disabled={isSoldOut}
                           onClick={handleOpenCheckout}

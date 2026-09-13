@@ -22,7 +22,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { buttonVariants } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
-import { formatCurrency, formatDateRange } from "@/lib/i18n/formatters";
+import { formatCurrency, formatDateRange, type SupportedCurrency } from "@/lib/i18n/formatters";
 import { getArchetypeTokens } from "@/lib/theming";
 
 interface DashboardPageProps {
@@ -97,9 +97,9 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
   // Region-aware primary currency mapping
   const regionCurrency = locale === "jp" ? "JPY" : locale === "en" ? "USD" : "IDR";
   const revenueCurrencies = Object.keys(revenueByCurrency);
-  const primaryCurrency = revenueCurrencies.includes(regionCurrency)
+  const primaryCurrency = (revenueCurrencies.includes(regionCurrency)
     ? regionCurrency
-    : (revenueCurrencies[0] || regionCurrency);
+    : (revenueCurrencies[0] || regionCurrency)) as SupportedCurrency;
 
   const totalBooths = allBooths.length;
   const occupiedBooths = allBooths.filter((b: any) => b.companyName && b.companyName.trim() !== "").length;
@@ -193,7 +193,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
               <div className="flex flex-wrap items-center gap-1.5 mt-1 text-xs text-muted-foreground">
                 {revenueCurrencies.filter((c) => c !== primaryCurrency).map((c) => (
                   <span key={c} className="inline-flex items-center font-medium text-foreground bg-muted/80 px-1.5 py-0.5 rounded text-xs">
-                    + {formatCurrency(revenueByCurrency[c], c, locale)}
+                    + {formatCurrency(revenueByCurrency[c], c as SupportedCurrency, locale)}
                   </span>
                 ))}
                 <span>{tOrg("acrossExhibitions", { count: events.length }) || `Across ${events.length} active exhibitions`}</span>

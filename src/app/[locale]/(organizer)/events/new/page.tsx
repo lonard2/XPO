@@ -717,10 +717,6 @@ export default function NewEventWizardPage() {
                     Slug generated from title
                   </span>
                 </div>
-                  <span className="text-xs text-muted-foreground block font-mono pl-1">
-                    Slug generated from title
-                  </span>
-                </div>
                 <Input
                   id="wizard-tagline"
                   label={tOrg("wizardTagline") || "Tagline / Hero Subtitle"}

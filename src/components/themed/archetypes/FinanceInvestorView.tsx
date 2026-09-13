@@ -247,18 +247,19 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier }: Arch
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {event.ticketTiers.map((tier) => {
+          {event.ticketTiers.map((tier: any) => {
             const priceFormatted =
               tier.price > 0
                 ? formatCurrency(tier.price, (tier.currency || "USD") as SupportedCurrency, locale)
                 : "Complimentary Observer";
+            const tierBadge = tier.tier || (tier.name?.toLowerCase().includes("vip") ? "VIP" : "Standard");
 
             return (
               <Card key={tier.id} className="border-border hover:border-emerald-500/50 transition-all flex flex-col justify-between">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
-                    <Badge variant={tier.tier === "VIP" ? "default" : "outline"} className="text-xs font-semibold">
-                      {tier.tier}
+                    <Badge variant={tierBadge === "VIP" ? "default" : "outline"} className="text-xs font-semibold">
+                      {tierBadge}
                     </Badge>
                     <span className="text-lg font-bold text-foreground">{priceFormatted}</span>
                   </div>
@@ -270,7 +271,7 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier }: Arch
                 <CardContent className="space-y-4">
                   {tier.perks && tier.perks.length > 0 && (
                     <ul className="space-y-1.5 text-xs text-muted-foreground border-t border-border pt-3">
-                      {tier.perks.map((perk, i) => (
+                      {tier.perks.map((perk: string, i: number) => (
                         <li key={i} className="flex items-center gap-1.5">
                           <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
                           <span>{perk}</span>

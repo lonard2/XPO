@@ -232,6 +232,8 @@ export interface SavedAIReportItem {
   reportType: ReportType;
   contentJson: string;
   createdAt: string;
+  focusArea?: string;
+  summaryMarkdown?: string;
   author?: {
     name: string;
     email: string;
