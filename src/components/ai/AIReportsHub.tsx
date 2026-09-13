@@ -38,7 +38,7 @@ import {
 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
+import { Button, buttonVariants } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/Tabs";
 import {
@@ -355,17 +355,21 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
         </div>
 
         <div className="flex items-center gap-2.5 shrink-0">
-          <Link href={`/${locale}/dashboard`}>
-            <Button variant="outline" size="sm" className="gap-1.5 h-9 text-xs cursor-pointer">
-              <ChevronRight className="h-4 w-4 rotate-180" />
-              <span>Back to Dashboard</span>
-            </Button>
+          <Link
+            href={`/${locale}/dashboard`}
+            className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-1.5 h-9 text-xs cursor-pointer")}
+          >
+            <ChevronRight className="h-4 w-4 rotate-180" />
+            <span>Back to Dashboard</span>
           </Link>
-          <Link href={`/${locale}/events/${event.slug}`} target="_blank">
-            <Button variant="secondary" size="sm" className="gap-1.5 h-9 text-xs cursor-pointer">
-              <ExternalLink className="h-3.5 w-3.5" />
-              <span>Public Page</span>
-            </Button>
+          <Link
+            href={`/${locale}/events/${event.slug}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(buttonVariants({ variant: "secondary", size: "sm" }), "gap-1.5 h-9 text-xs cursor-pointer")}
+          >
+            <ExternalLink className="h-3.5 w-3.5" />
+            <span>Public Page</span>
           </Link>
         </div>
       </div>

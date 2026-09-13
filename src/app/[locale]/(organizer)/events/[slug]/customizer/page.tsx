@@ -5,10 +5,8 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import {
   Palette,
-  Eye,
   Save,
   RotateCcw,
-  Sparkles,
   ExternalLink,
   CheckCircle2,
   AlertCircle,
@@ -18,7 +16,7 @@ import {
   Layers,
   ArrowLeft,
 } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+import { Button, buttonVariants } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Input } from "@/components/ui/Input";
 import { Card } from "@/components/ui/Card";
@@ -277,11 +275,14 @@ export default function EventCustomizerPage() {
           </Button>
 
           {eventData?.slug && (
-            <Link href={`/${locale}/events/${eventData.slug}`} target="_blank">
-              <Button variant="secondary" size="sm" className="text-xs gap-1.5 h-9 cursor-pointer">
-                <ExternalLink className="h-3.5 w-3.5" />
-                <span className="hidden md:inline">{tOrg("viewPublic") || "View Public"}</span>
-              </Button>
+            <Link
+              href={`/${locale}/events/${eventData.slug}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(buttonVariants({ variant: "secondary", size: "sm" }), "text-xs gap-1.5 h-9 cursor-pointer")}
+            >
+              <ExternalLink className="h-3.5 w-3.5" />
+              <span className="hidden md:inline">{tOrg("viewPublic") || "View Public"}</span>
             </Link>
           )}
         </div>
@@ -309,10 +310,10 @@ export default function EventCustomizerPage() {
           {/* Card 0: Event Category Archetype */}
           <Card className="p-5 border-border bg-card space-y-3 shadow-xs">
             <div className="flex items-center justify-between">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
+              <h2 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
                 <Layers className="h-4 w-4 text-primary" />
                 <span>MICE Event Category</span>
-              </h3>
+              </h2>
               <Badge variant="neutral" size="sm">15 Types</Badge>
             </div>
 
@@ -342,10 +343,10 @@ export default function EventCustomizerPage() {
           {/* Card 1: Theme Color Tokens */}
           <Card className="p-5 border-border bg-card space-y-4 shadow-xs">
             <div className="flex items-center justify-between">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
+              <h2 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
                 <Palette className="h-4 w-4 text-primary" />
                 <span>Primary & Accent Color Tokens</span>
-              </h3>
+              </h2>
             </div>
 
             {/* Quick Presets */}
@@ -421,10 +422,10 @@ export default function EventCustomizerPage() {
 
           {/* Card 2: Typography Tokens */}
           <Card className="p-5 border-border bg-card space-y-3 shadow-xs">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
               <Type className="h-4 w-4 text-primary" />
               <span>Event Typography Pairings</span>
-            </h3>
+            </h2>
 
             <div className="grid grid-cols-2 gap-2">
               {[
@@ -453,10 +454,10 @@ export default function EventCustomizerPage() {
 
           {/* Card 3: Hero Media & Badge Overrides */}
           <Card className="p-5 border-border bg-card space-y-4 shadow-xs">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
               <ImageIcon className="h-4 w-4 text-primary" />
               <span>Hero Media & Overlay Controls</span>
-            </h3>
+            </h2>
 
             <Input
               id="customizer-hero-badge-input"
@@ -510,10 +511,10 @@ export default function EventCustomizerPage() {
 
           {/* Card 4: Section Visibility Toggles */}
           <Card className="p-5 border-border bg-card space-y-3 shadow-xs">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
               <Sliders className="h-4 w-4 text-primary" />
               <span>Event Page Section Visibility</span>
-            </h3>
+            </h2>
 
             <div className="space-y-2 text-xs">
               {[
