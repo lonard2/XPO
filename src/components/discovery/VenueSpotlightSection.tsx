@@ -123,7 +123,7 @@ export function VenueSpotlightSection({
             <span>{tab.label}</span>
             <span
               className={cn(
-                'rounded-full px-1.5 py-0.2 text-[10px] font-mono',
+                'rounded-full px-1.5 py-0.5 text-xs font-mono',
                 activeRegionFilter === tab.id
                   ? 'bg-primary-foreground/20 text-primary-foreground'
                   : 'bg-background text-muted-foreground'
