@@ -76,6 +76,10 @@
     "viewSchedule": "Lihat Jadwal Lengkap"
   },
   "home": {
+    "searchCockpitPlaceholder": "Cari pameran, konferensi, venue (mis. JIExpo, Robotika, Medis)...",
+    "searchCockpitSubmit": "Cari Ekspo",
+    "popularSearches": "Pencarian Populer",
+    "quickFilterTitle": "Filter Cepat:",
     "featuredTradeShows": "Pameran & Konvensi Mendatang",
     "featuredInRegion": "Pameran Unggulan di",
     "viewFullSchedule": "Lihat Jadwal Lengkap",

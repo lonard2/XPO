@@ -76,6 +76,10 @@
     "viewSchedule": "全スケジュールを見る"
   },
   "home": {
+    "searchCockpitPlaceholder": "展示会、サミット、会場を検索 (例: 東京ビッグサイト、AI、医療)...",
+    "searchCockpitSubmit": "展示会を検索",
+    "popularSearches": "人気の検索",
+    "quickFilterTitle": "クイック絞り込み:",
     "featuredTradeShows": "注目の展示会・カンファレンス",
     "featuredInRegion": "注目の開催イベント -",
     "viewFullSchedule": "全日程一覧を見る",

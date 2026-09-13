@@ -76,6 +76,10 @@
     "viewSchedule": "查看完整日程"
   },
   "home": {
+    "searchCockpitPlaceholder": "搜索展会、峰会、场馆（例如：金沙博览、AI、医疗）...",
+    "searchCockpitSubmit": "搜索展会",
+    "popularSearches": "热门搜索",
+    "quickFilterTitle": "快速筛选:",
     "featuredTradeShows": "精选展会与峰会",
     "featuredInRegion": "精选展会 -",
     "viewFullSchedule": "查看完整日程",

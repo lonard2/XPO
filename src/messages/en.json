@@ -76,6 +76,10 @@
     "viewSchedule": "View Full Schedule"
   },
   "home": {
+    "searchCockpitPlaceholder": "Search exhibitions, summits, venues (e.g. JIExpo, Robotics, Medical)...",
+    "searchCockpitSubmit": "Search Expos",
+    "popularSearches": "Popular Searches",
+    "quickFilterTitle": "Quick Filter:",
     "featuredTradeShows": "Upcoming Trade Shows & Conventions",
     "featuredInRegion": "Featured Exhibitions in",
     "viewFullSchedule": "View Full Schedule",

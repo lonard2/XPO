@@ -76,6 +76,10 @@
     "viewSchedule": "Gesamten Zeitplan ansehen"
   },
   "home": {
+    "searchCockpitPlaceholder": "Messen, Gipfel, Veranstaltungsorte suchen (z. B. Messe Frankfurt, KI, Medizin)...",
+    "searchCockpitSubmit": "Messen suchen",
+    "popularSearches": "Beliebte Suchen",
+    "quickFilterTitle": "Schnellfilter:",
     "featuredTradeShows": "Kommende Fachmessen & Kongresse",
     "featuredInRegion": "Ausgewählte Messen in",
     "viewFullSchedule": "Vollständigen Kalender anzeigen",

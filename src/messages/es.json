@@ -76,6 +76,10 @@
     "viewSchedule": "Ver Programa Completo"
   },
   "home": {
+    "searchCockpitPlaceholder": "Buscar ferias, cumbres, recintos (ej. ExCeL, Robótica, Medicina)...",
+    "searchCockpitSubmit": "Buscar Ferias",
+    "popularSearches": "Búsquedas Populares",
+    "quickFilterTitle": "Filtro Rápido:",
     "featuredTradeShows": "Próximas Ferias y Convenciones",
     "featuredInRegion": "Ferias Destacadas en",
     "viewFullSchedule": "Ver Calendario Completo",

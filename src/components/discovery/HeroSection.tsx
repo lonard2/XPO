@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { BannerCarousel } from './BannerCarousel';
+import { HeroSearchBar } from './HeroSearchBar';
 import { HeroVenueQuickGlanceRail } from './HeroVenueQuickGlanceRail';
 import { type BannerSlide, type VenueWithEvents } from '@/types/discovery';
 import { cn } from '@/lib/utils';
@@ -35,7 +36,13 @@ export function HeroSection({
         className="rounded-none border-0 shadow-none"
       />
 
-      {/* 2. Seamlessly Attached Horizontally Scrollable Major Venues Quick-Glance Rail (Bottom) */}
+      {/* 2. Integrated Search & Discovery Cockpit (Middle) */}
+      <HeroSearchBar
+        locale={locale}
+        regionCode={regionCode}
+      />
+
+      {/* 3. Seamlessly Attached Horizontally Scrollable Major Venues Quick-Glance Rail (Bottom) */}
       {venues.length > 0 && (
         <HeroVenueQuickGlanceRail
           venues={venues}
