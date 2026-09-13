@@ -69,7 +69,7 @@ export function PassDayOfSubnav({
             type="button"
             onClick={() => scrollToSection('digital-pass-section')}
             className={cn(
-              'flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer',
+              'min-h-[36px] flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer',
               activeSection === 'digital-pass-section'
                 ? 'border-primary bg-primary text-primary-foreground shadow-xs'
                 : 'border-border/70 bg-card text-muted-foreground hover:text-foreground hover:bg-muted'
@@ -85,7 +85,7 @@ export function PassDayOfSubnav({
               type="button"
               onClick={() => scrollToSection('event-perks-section')}
               className={cn(
-                'flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer',
+                'min-h-[36px] flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer',
                 activeSection === 'event-perks-section'
                   ? 'border-primary bg-primary text-primary-foreground shadow-xs'
                   : 'border-border/70 bg-card text-muted-foreground hover:text-foreground hover:bg-muted'
@@ -94,7 +94,7 @@ export function PassDayOfSubnav({
               <Gift className="h-3.5 w-3.5" />
               <span>VIP Treats</span>
               {perksCount > 0 && (
-                <span className="text-[11px] font-mono px-1.5 py-0.2 rounded bg-muted/80 text-foreground">
+                <span className="text-xs font-mono px-1.5 py-0.5 rounded bg-muted/80 text-foreground">
                   {perksCount}
                 </span>
               )}
@@ -107,7 +107,7 @@ export function PassDayOfSubnav({
               type="button"
               onClick={() => scrollToSection('event-agenda-section')}
               className={cn(
-                'flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer',
+                'min-h-[36px] flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer',
                 activeSection === 'event-agenda-section'
                   ? 'border-primary bg-primary text-primary-foreground shadow-xs'
                   : 'border-border/70 bg-card text-muted-foreground hover:text-foreground hover:bg-muted'
@@ -116,7 +116,7 @@ export function PassDayOfSubnav({
               <Calendar className="h-3.5 w-3.5" />
               <span>Timetable</span>
               {agendaCount > 0 && (
-                <span className="text-[11px] font-mono px-1.5 py-0.2 rounded bg-muted/80 text-foreground">
+                <span className="text-xs font-mono px-1.5 py-0.5 rounded bg-muted/80 text-foreground">
                   {agendaCount}
                 </span>
               )}
@@ -129,7 +129,7 @@ export function PassDayOfSubnav({
               type="button"
               onClick={() => scrollToSection('hall-map-section')}
               className={cn(
-                'flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer',
+                'min-h-[36px] flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer',
                 activeSection === 'hall-map-section'
                   ? 'border-primary bg-primary text-primary-foreground shadow-xs'
                   : 'border-border/70 bg-card text-muted-foreground hover:text-foreground hover:bg-muted'

@@ -67,6 +67,7 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
   const tMy = useTranslations('myTickets');
   const tTix = useTranslations('tickets');
   const tCom = useTranslations('common');
+  const tReg = useTranslations('regions');
 
   const [activeTab, setActiveTab] = React.useState<'upcoming' | 'past' | 'all'>('upcoming');
   const [selectedRegion, setSelectedRegion] = React.useState<string>('all');
@@ -80,20 +81,20 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
     const end = new Date(endDateStr);
 
     if (now >= start && now <= end) {
-      return { label: 'Happening Today', isToday: true, isPast: false };
+      return { label: tMy('happeningToday') || 'Happening Today', isToday: true, isPast: false };
     }
     if (now > end) {
-      return { label: 'Concluded Expo', isToday: false, isPast: true };
+      return { label: tMy('concludedExpo') || 'Concluded Expo', isToday: false, isPast: true };
     }
 
     const diffDays = Math.ceil((start.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
     if (diffDays <= 1) {
-      return { label: 'Starts Tomorrow', isToday: false, isPast: false };
+      return { label: tMy('startsTomorrow') || 'Starts Tomorrow', isToday: false, isPast: false };
     }
     if (diffDays <= 7) {
-      return { label: `Starts in ${diffDays} days`, isToday: false, isPast: false };
+      return { label: tMy('startsInDays', { days: diffDays }) || `Starts in ${diffDays} days`, isToday: false, isPast: false };
     }
-    return { label: 'Upcoming Expo', isToday: false, isPast: false };
+    return { label: tMy('upcomingExpo') || 'Upcoming Expo', isToday: false, isPast: false };
   };
 
   // Categorize and filter passes
@@ -150,13 +151,13 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
               type="button"
               onClick={() => setActiveTab('upcoming')}
               className={cn(
-                'px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-2',
+                'min-h-[36px] px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-2',
                 activeTab === 'upcoming'
                   ? 'bg-card text-foreground shadow-xs'
                   : 'text-muted-foreground hover:text-foreground'
               )}
             >
-              <span>Upcoming Passes</span>
+              <span>{tMy('upcomingPasses') || 'Upcoming Passes'}</span>
               <span className="text-xs font-mono opacity-80 px-1.5 py-0.5 rounded bg-muted">
                 {upcomingCount}
               </span>
@@ -166,13 +167,13 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
               type="button"
               onClick={() => setActiveTab('past')}
               className={cn(
-                'px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-2',
+                'min-h-[36px] px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-2',
                 activeTab === 'past'
                   ? 'bg-card text-foreground shadow-xs'
                   : 'text-muted-foreground hover:text-foreground'
               )}
             >
-              <span>Past Expos</span>
+              <span>{tMy('pastExpos') || 'Past Expos'}</span>
               <span className="text-xs font-mono opacity-80 px-1.5 py-0.5 rounded bg-muted">
                 {pastCount}
               </span>
@@ -182,13 +183,13 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
               type="button"
               onClick={() => setActiveTab('all')}
               className={cn(
-                'px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-2',
+                'min-h-[36px] px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-2',
                 activeTab === 'all'
                   ? 'bg-card text-foreground shadow-xs'
                   : 'text-muted-foreground hover:text-foreground'
               )}
             >
-              <span>All ({bookings.length})</span>
+              <span>{tMy('all') || 'All'} ({bookings.length})</span>
             </button>
           </div>
 
@@ -200,49 +201,49 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
                 type="button"
                 onClick={() => setSelectedRegion('all')}
                 className={cn(
-                  'px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer whitespace-nowrap',
+                  'min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer whitespace-nowrap',
                   selectedRegion === 'all'
                     ? 'border-primary bg-primary/10 text-primary font-semibold'
                     : 'border-border text-muted-foreground hover:text-foreground'
                 )}
               >
-                All Regions
+                {tMy('allRegions') || 'All Regions'}
               </button>
               <button
                 type="button"
                 onClick={() => setSelectedRegion('id')}
                 className={cn(
-                  'px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer whitespace-nowrap',
+                  'min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer whitespace-nowrap',
                   selectedRegion === 'id'
                     ? 'border-primary bg-primary/10 text-primary font-semibold'
                     : 'border-border text-muted-foreground hover:text-foreground'
                 )}
               >
-                Indonesia (ID)
+                {tReg('id.name')} ({tReg('id.code')})
               </button>
               <button
                 type="button"
                 onClick={() => setSelectedRegion('jp')}
                 className={cn(
-                  'px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer whitespace-nowrap',
+                  'min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer whitespace-nowrap',
                   selectedRegion === 'jp'
                     ? 'border-primary bg-primary/10 text-primary font-semibold'
                     : 'border-border text-muted-foreground hover:text-foreground'
                 )}
               >
-                Japan (JP)
+                {tReg('jp.name')} ({tReg('jp.code')})
               </button>
               <button
                 type="button"
                 onClick={() => setSelectedRegion('global')}
                 className={cn(
-                  'px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer whitespace-nowrap',
+                  'min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer whitespace-nowrap',
                   selectedRegion === 'global'
                     ? 'border-primary bg-primary/10 text-primary font-semibold'
                     : 'border-border text-muted-foreground hover:text-foreground'
                 )}
               >
-                Global Gateways
+                {tReg('global.name') || 'Global Gateways'}
               </button>
             </div>
 
@@ -273,8 +274,9 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
         {/* Dynamic Summary Bar */}
         <div className="flex items-center justify-between border-t border-border/60 pt-3 text-xs text-muted-foreground">
           <span>
-            Showing <strong className="text-foreground">{filteredBookings.length}</strong> of{' '}
-            <strong className="text-foreground">{bookings.length}</strong> registered passes
+            {tMy('showing') || 'Showing'} <strong className="text-foreground">{filteredBookings.length}</strong>{' '}
+            {tMy('of') || 'of'} <strong className="text-foreground">{bookings.length}</strong>{' '}
+            {tMy('registeredPasses') || 'registered passes'}
           </span>
 
           {(searchQuery || selectedRegion !== 'all' || activeTab !== 'upcoming') && (
@@ -285,9 +287,9 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
                 setSelectedRegion('all');
                 setSearchQuery('');
               }}
-              className="text-primary hover:underline text-xs font-semibold cursor-pointer"
+              className="text-primary hover:underline text-xs font-semibold cursor-pointer min-h-[36px] px-2"
             >
-              Reset view
+              {tMy('resetView') || 'Reset view'}
             </button>
           )}
         </div>
@@ -339,7 +341,7 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
                     ) : temporalStatus.isToday ? (
                       <Badge variant="success" size="sm" className="gap-1 font-semibold text-xs">
                         <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                        <span>Happening Today</span>
+                        <span>{tMy('happeningToday') || 'Happening Today'}</span>
                       </Badge>
                     ) : (
                       <Badge variant="outline" size="sm" className="font-semibold text-xs">
@@ -365,7 +367,7 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
                         <span className="truncate">{booking.event.venue.name}</span>
                       </div>
                       {booking.event.venueHall?.name && (
-                        <div className="flex items-center gap-1 text-[11px] font-medium text-foreground/80 pl-4.5">
+                        <div className="flex items-center gap-1 text-xs font-medium text-foreground/80 pl-4.5">
                           <Building2 className="h-3 w-3 text-muted-foreground shrink-0" />
                           <span className="truncate">{booking.event.venueHall.name}</span>
                         </div>
@@ -382,15 +384,15 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
                       dangerouslySetInnerHTML={{ __html: miniSvgQr }}
                     />
                     <div className="min-w-0 flex-1 space-y-1 text-xs">
-                      <div className="flex items-center gap-1 text-muted-foreground font-mono text-[11px]">
+                      <div className="flex items-center gap-1 text-muted-foreground font-mono text-xs">
                         <Calendar className="h-3 w-3 shrink-0 text-primary" />
                         <span className="truncate">{formattedDate}</span>
                       </div>
                       <p className="font-semibold text-foreground truncate">
                         {booking.attendeeName}
                       </p>
-                      <p className="text-[11px] font-mono text-muted-foreground truncate">
-                        Pass Ref: {booking.id}
+                      <p className="text-xs font-mono text-muted-foreground truncate">
+                        {tMy('passRef') || 'Pass Ref:'} {booking.id}
                       </p>
                     </div>
                   </div>
@@ -402,7 +404,7 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
                     href={`/${locale}/my-tickets/${booking.id}`}
                     className={cn(
                       buttonVariants({ variant: 'default', size: 'sm' }),
-                      'w-full justify-center gap-2 text-xs font-semibold shadow-xs cursor-pointer'
+                      'w-full justify-center gap-2 text-xs font-semibold shadow-xs cursor-pointer min-h-[36px]'
                     )}
                   >
                     <QrCode className="h-3.5 w-3.5" />
@@ -427,7 +429,7 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
               {searchQuery
                 ? `No passes match "${searchQuery}". Try resetting your search filters.`
                 : activeTab === 'past'
-                ? 'You have no concluded event passes.'
+                ? tMy('noConcludedPasses') || 'You have no concluded event passes.'
                 : tMy('noPassesDesc') || 'You have no active convention passes reserved yet.'}
             </p>
           </div>
@@ -441,9 +443,9 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
                   setSelectedRegion('all');
                   setSearchQuery('');
                 }}
-                className="text-xs cursor-pointer"
+                className="text-xs cursor-pointer min-h-[36px]"
               >
-                Reset Filters
+                {tMy('resetFilters') || 'Reset Filters'}
               </Button>
             )}
             <Link

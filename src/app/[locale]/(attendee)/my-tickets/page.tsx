@@ -124,7 +124,7 @@ export default async function MyTicketsPage({ params }: MyTicketsPageProps) {
               href={`/${locale}/events`}
               className={cn(
                 buttonVariants({ variant: 'default', size: 'sm' }),
-                'gap-2 text-xs font-semibold shadow-xs cursor-pointer'
+                'min-h-[36px] gap-2 text-xs font-semibold shadow-xs cursor-pointer'
               )}
             >
               <Ticket className="h-4 w-4" />

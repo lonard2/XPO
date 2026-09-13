@@ -139,7 +139,7 @@ export default async function DigitalPassDetailPage({ params }: DigitalPassPageP
         <div className="flex items-center justify-between border-b border-border/60 pb-4">
           <Link
             href={`/${locale}/my-tickets`}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 min-h-[36px] text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
           >
             <ChevronLeft className="h-4 w-4" />
             <span>{tMy('title') || 'Back to My Pass Wallet'}</span>

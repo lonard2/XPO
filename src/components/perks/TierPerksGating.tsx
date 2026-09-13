@@ -191,7 +191,7 @@ export function TierPerksGating({
                 </CardTitle>
 
                 {/* Physical Location Badge */}
-                <div className="flex items-center gap-1 text-[11px] text-muted-foreground font-medium pt-0.5">
+                <div className="flex items-center gap-1 text-xs text-muted-foreground font-medium pt-0.5">
                   <MapPin className="h-3 w-3 text-primary shrink-0" />
                   <span className="truncate">{redemptionLocation}</span>
                 </div>
@@ -211,7 +211,7 @@ export function TierPerksGating({
                           {voucherCode}
                         </Badge>
                       </div>
-                      <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1">
+                      <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1">
                         <CheckCircle2 className="h-3 w-3 shrink-0" />
                         <span>Present to on-site staff at counter</span>
                       </p>
@@ -220,7 +220,7 @@ export function TierPerksGating({
                         size="sm"
                         variant="ghost"
                         onClick={scrollToMap}
-                        className="w-full h-7 text-[11px] font-semibold gap-1 text-muted-foreground hover:text-foreground cursor-pointer"
+                        className="w-full min-h-[36px] text-xs font-semibold gap-1 text-muted-foreground hover:text-foreground cursor-pointer"
                       >
                         <Compass className="h-3 w-3" />
                         <span>Locate Redemption Hub on Map</span>
@@ -231,14 +231,14 @@ export function TierPerksGating({
                       size="sm"
                       variant={isClaimed ? 'outline' : 'default'}
                       onClick={() => handleClaim(perk.id)}
-                      className="w-full text-xs font-semibold cursor-pointer"
+                      className="w-full min-h-[36px] text-xs font-semibold cursor-pointer"
                     >
                       <QrCode className="h-3.5 w-3.5 mr-1.5" />
                       <span>{isClaimed ? 'View Voucher Code' : (tPerks('claimPerk') || 'Claim Voucher')}</span>
                     </Button>
                   )
                 ) : (
-                  <Button size="sm" variant="ghost" disabled className="w-full text-xs opacity-60">
+                  <Button size="sm" variant="ghost" disabled className="w-full min-h-[36px] text-xs opacity-60">
                     <Lock className="h-3 w-3 mr-1.5" />
                     <span>{tPerks('lockedBadge') || 'Locked for your Pass Tier'}</span>
                   </Button>
