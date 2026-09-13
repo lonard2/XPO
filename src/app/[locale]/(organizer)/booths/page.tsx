@@ -7,24 +7,15 @@ import {
   Plus,
   Search,
   Filter,
-  Layers,
-  Building2,
   CheckCircle2,
-  Clock,
-  ExternalLink,
   Edit2,
-  PlusCircle,
   AlertCircle,
-  Briefcase,
   Globe,
   Tag,
-  BarChart2,
   Upload,
-  FileSpreadsheet,
-  Trash2,
   Check,
 } from "lucide-react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
+import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Input } from "@/components/ui/Input";
@@ -59,12 +50,49 @@ interface CsvParsedRow {
   error?: string;
 }
 
-export default function BoothManagerPage() {
-  const params = useParams();
-  const locale = (params?.locale as string) || "en";
+// RFC 4180 quote-aware CSV line parser
+function splitCsvLine(line: string): string[] {
+  const result: string[] = [];
+  let current = "";
+  let inQuotes = false;
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+    if (char === '"') {
+      if (inQuotes && line[i + 1] === '"') {
+        current += '"';
+        i++;
+      } else {
+        inQuotes = !inQuotes;
+      }
+    } else if (char === ',' && !inQuotes) {
+      result.push(current.trim());
+      current = "";
+    } else {
+      current += char;
+    }
+  }
+  result.push(current.trim());
+  return result;
+}
 
+// URL sanitizer to reject javascript: or data: and ensure valid web URL
+function sanitizeUrl(rawUrl: string | null | undefined): string | null {
+  if (!rawUrl) return null;
+  const trimmed = rawUrl.trim();
+  if (/^javascript:/i.test(trimmed) || /^data:/i.test(trimmed)) {
+    return null;
+  }
+  if (/^https?:\/\//i.test(trimmed)) {
+    return trimmed;
+  }
+  if (/^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/.test(trimmed)) {
+    return `https://${trimmed}`;
+  }
+  return null;
+}
+
+export default function BoothManagerPage() {
   const tOrg = useTranslations("organizer");
-  const tCom = useTranslations("common");
 
   const [booths, setBooths] = React.useState<BoothItem[]>([]);
   const [events, setEvents] = React.useState<any[]>([]);
@@ -275,8 +303,9 @@ export default function BoothManagerPage() {
     try {
       if (editingBooth) {
         // Update existing
+        const cleanWebsiteUrl = sanitizeUrl(formWebsiteUrl);
         const res = await fetch("/api/organizer/booths", {
-          method: "PUT",
+          method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             id: editingBooth.id,
@@ -284,12 +313,16 @@ export default function BoothManagerPage() {
             boothNumber: formBoothNumber,
             hallName: formHallName,
             industry: formIndustry,
-            websiteUrl: formWebsiteUrl,
+            websiteUrl: cleanWebsiteUrl,
             description: formDescription,
           }),
         });
 
         if (res.ok) {
+          const data = await res.json();
+          setBooths(booths.map((b) => (b.id === editingBooth.id ? data.booth : b)));
+        } else {
+          // Local fallback update
           setBooths(
             booths.map((b) =>
               b.id === editingBooth.id
@@ -299,7 +332,7 @@ export default function BoothManagerPage() {
                     boothNumber: formBoothNumber,
                     hallName: formHallName,
                     industry: formIndustry,
-                    websiteUrl: formWebsiteUrl,
+                    websiteUrl: cleanWebsiteUrl,
                     description: formDescription,
                   }
                 : b
@@ -309,6 +342,7 @@ export default function BoothManagerPage() {
       } else {
         // Create new
         const targetEventId = formEventId || (events[0]?.id || "ev-1");
+        const cleanWebsiteUrl = sanitizeUrl(formWebsiteUrl);
         const res = await fetch("/api/organizer/booths", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -318,7 +352,7 @@ export default function BoothManagerPage() {
             boothNumber: formBoothNumber,
             hallName: formHallName,
             industry: formIndustry,
-            websiteUrl: formWebsiteUrl,
+            websiteUrl: cleanWebsiteUrl,
             description: formDescription,
           }),
         });
@@ -335,7 +369,7 @@ export default function BoothManagerPage() {
             boothNumber: formBoothNumber,
             hallName: formHallName,
             industry: formIndustry,
-            websiteUrl: formWebsiteUrl,
+            websiteUrl: cleanWebsiteUrl,
             description: formDescription,
           };
           setBooths([...booths, newB]);
@@ -352,7 +386,7 @@ export default function BoothManagerPage() {
     }
   };
 
-  // Parse CSV text into preview rows
+  // Parse CSV text into preview rows with quote-aware parsing and bounded line count
   const handleParseCsv = (text: string) => {
     setCsvRawText(text);
     if (!text.trim()) {
@@ -360,19 +394,21 @@ export default function BoothManagerPage() {
       return;
     }
 
-    const lines = text.split(/\r?\n/).filter((l) => l.trim() !== "");
+    // Bound maximum parsed lines to 500 to prevent main-thread freeze
+    const lines = text.split(/\r?\n/).filter((l) => l.trim() !== "").slice(0, 500);
     const results: CsvParsedRow[] = [];
 
     // Check if first row is header
     const startIndex = lines[0]?.toLowerCase().includes("booth") ? 1 : 0;
 
     for (let i = startIndex; i < lines.length; i++) {
-      const parts = lines[i].split(",").map((p) => p.trim().replace(/^["']|["']$/g, ""));
+      const parts = splitCsvLine(lines[i]);
       const boothNumber = parts[0] || "";
       const hallName = parts[1] || "";
       const companyName = parts[2] || "";
       const industry = parts[3] || "";
-      const websiteUrl = parts[4] || "";
+      const rawWebsiteUrl = parts[4] || "";
+      const websiteUrl = sanitizeUrl(rawWebsiteUrl) || "";
       const description = parts[5] || "";
 
       const isValid = Boolean(boothNumber && hallName);
@@ -492,7 +528,14 @@ export default function BoothManagerPage() {
         <Card className="p-4 border-border bg-card shadow-xs">
           <div className="text-xs text-muted-foreground font-medium">{tOrg("occupancyRate") || "Floor Occupancy Rate"}</div>
           <div className="text-2xl font-bold text-foreground mt-1">{occupancyPct}%</div>
-          <div className="w-full bg-muted rounded-full h-1.5 mt-2 overflow-hidden">
+          <div
+            className="w-full bg-muted rounded-full h-1.5 mt-2 overflow-hidden"
+            role="progressbar"
+            aria-valuenow={occupancyPct}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label={tOrg("occupancyRate") || "Floor Occupancy Rate"}
+          >
             <div
               className="bg-primary h-full rounded-full transition-all"
               style={{ width: `${occupancyPct}%` }}
@@ -599,7 +642,7 @@ export default function BoothManagerPage() {
                     </h3>
                   </div>
 
-                  <Badge variant={isOccupied ? "archetype" : "success"} size="sm">
+                  <Badge variant={isOccupied ? "secondary" : "success"} size="sm">
                     {isOccupied ? "Occupied" : "Available"}
                   </Badge>
                 </div>
@@ -621,9 +664,9 @@ export default function BoothManagerPage() {
               </div>
 
               <div className="pt-4 border-t border-border/60 flex items-center justify-between gap-2 mt-4">
-                {booth.websiteUrl ? (
+                {booth.websiteUrl && sanitizeUrl(booth.websiteUrl) ? (
                   <a
-                    href={booth.websiteUrl}
+                    href={sanitizeUrl(booth.websiteUrl)!}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-xs text-primary hover:underline flex items-center gap-1 truncate"
@@ -820,8 +863,8 @@ export default function BoothManagerPage() {
                         </td>
                         <td className="p-2 font-mono">{row.boothNumber}</td>
                         <td className="p-2">{row.hallName}</td>
-                        <td className="p-2 font-medium">{row.companyName || "—"}</td>
-                        <td className="p-2">{row.industry || "—"}</td>
+                        <td className="p-2 font-medium">{row.companyName || "Unassigned"}</td>
+                        <td className="p-2">{row.industry || "General Industry"}</td>
                       </tr>
                     ))}
                   </tbody>
