@@ -48,6 +48,7 @@ export function CalendarInteractiveView({
   const tTix = useTranslations('tickets');
   const tReg = useTranslations('regions');
   const tArch = useTranslations('archetypes');
+  const tEvents = useTranslations('events');
 
   const [selectedArchetype, setSelectedArchetype] = React.useState<string>(initialArchetype);
   const [selectedVenue, setSelectedVenue] = React.useState<string>('all');
@@ -160,7 +161,9 @@ export function CalendarInteractiveView({
         {/* Active Filter Chips & Quick Reset */}
         {(selectedArchetype !== 'all' || selectedVenue !== 'all') && (
           <div className="flex flex-wrap items-center gap-2 pt-1">
-            <span className="text-xs font-semibold text-muted-foreground">Active Filter:</span>
+            <span className="text-xs font-semibold text-muted-foreground">
+              {tCal('activeFilter') || 'Active Filter:'}
+            </span>
 
             {selectedArchetype !== 'all' && activeCategoryTokens && (
               <Badge
@@ -172,7 +175,7 @@ export function CalendarInteractiveView({
                   backgroundColor: `${activeCategoryTokens.primary}10`,
                 }}
               >
-                <span>Category: {activeCategoryTokens.displayName}</span>
+                <span>{tCom('category') || 'Category'}: {activeCategoryTokens.displayName}</span>
                 <button
                   type="button"
                   onClick={() => handleSelectCategory('all')}
@@ -189,7 +192,7 @@ export function CalendarInteractiveView({
                 variant="outline"
                 className="gap-1.5 text-xs font-semibold py-1 px-2.5 border-primary/40 bg-primary/10 text-primary"
               >
-                <span>Venue: {selectedVenue}</span>
+                <span>{tCal('filterVenue') || 'Venue:'} {selectedVenue}</span>
                 <button
                   type="button"
                   onClick={() => setSelectedVenue('all')}
@@ -208,7 +211,7 @@ export function CalendarInteractiveView({
               className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground gap-1 cursor-pointer"
             >
               <RotateCcw className="h-3 w-3" />
-              <span>Reset Filters</span>
+              <span>{tCal('resetFilters') || tCom('clear') || 'Reset Filters'}</span>
             </Button>
           </div>
         )}
@@ -231,7 +234,7 @@ export function CalendarInteractiveView({
               {tCal('monthView') || 'Chronological Schedule Overview'}
             </h2>
             <p className="text-xs sm:text-sm text-muted-foreground">
-              {filteredEvents.length} confirmed MICE trade exhibitions & keynotes in {region.toUpperCase()}.
+              {tCal('confirmedScheduleDesc', { count: filteredEvents.length, region: region.toUpperCase() }) || `${filteredEvents.length} confirmed MICE trade exhibitions & keynotes in ${region.toUpperCase()}.`}
             </p>
           </div>
 
@@ -244,7 +247,7 @@ export function CalendarInteractiveView({
               className="gap-1.5 text-xs font-semibold cursor-pointer"
             >
               <Download className="h-3.5 w-3.5" />
-              <span>{isExporting ? 'Generating .ics...' : tCal('exportICal') || 'Export iCal (.ics)'}</span>
+              <span>{isExporting ? (tCal('generating') || 'Generating .ics...') : (tCal('exportICal') || 'Export iCal (.ics)')}</span>
             </Button>
           </div>
         </div>
@@ -254,20 +257,21 @@ export function CalendarInteractiveView({
           <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
             <span className="text-xs font-semibold text-muted-foreground shrink-0 flex items-center gap-1">
               <Building2 className="h-3.5 w-3.5" />
-              <span>Venue:</span>
+              <span>{tCal('filterVenue') || 'Venue:'}</span>
             </span>
 
             <button
               type="button"
               onClick={() => setSelectedVenue('all')}
               className={cn(
-                'px-3 py-1 rounded-lg text-xs font-semibold border transition-all whitespace-nowrap cursor-pointer',
+                'min-h-[36px] px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all whitespace-nowrap cursor-pointer flex items-center gap-1.5',
                 selectedVenue === 'all'
                   ? 'border-primary bg-primary text-primary-foreground shadow-xs'
                   : 'border-border/80 bg-background text-muted-foreground hover:bg-muted hover:text-foreground'
               )}
             >
-              All Venues ({initialEvents.length})
+              <span>{tCal('allVenues') || 'All Venues'}</span>
+              <span className="opacity-80 text-xs font-mono">({initialEvents.length})</span>
             </button>
 
             {availableVenues.map((venueName) => {
@@ -280,14 +284,14 @@ export function CalendarInteractiveView({
                   type="button"
                   onClick={() => setSelectedVenue(venueName)}
                   className={cn(
-                    'px-3 py-1 rounded-lg text-xs font-medium border transition-all whitespace-nowrap cursor-pointer',
+                    'min-h-[36px] px-3 py-1.5 rounded-lg text-xs font-medium border transition-all whitespace-nowrap cursor-pointer flex items-center gap-1.5',
                     isSelected
                       ? 'border-primary bg-primary text-primary-foreground font-semibold shadow-xs'
                       : 'border-border/80 bg-background text-muted-foreground hover:bg-muted hover:text-foreground'
                   )}
                 >
                   <span>{venueName}</span>
-                  <span className="ml-1.5 opacity-70 text-[11px]">({count})</span>
+                  <span className="opacity-80 text-xs font-mono">({count})</span>
                 </button>
               );
             })}
@@ -308,7 +312,7 @@ export function CalendarInteractiveView({
                     </h3>
                   </div>
                   <Badge variant="outline" className="text-xs font-semibold">
-                    {monthGroup.events.length} Events
+                    {monthGroup.events.length} {tEvents('title')?.split('&')?.[0]?.trim() || 'Events'}
                   </Badge>
                 </div>
 
@@ -337,7 +341,7 @@ export function CalendarInteractiveView({
                           <div className="flex items-center justify-between gap-2">
                             <Badge
                               variant="outline"
-                              className="text-[10px] font-bold uppercase"
+                              className="text-xs font-semibold uppercase"
                               style={{
                                 color: tokens.primary,
                                 borderColor: `${tokens.primary}55`,
@@ -347,7 +351,7 @@ export function CalendarInteractiveView({
                               {archetypeTitle}
                             </Badge>
                             {evt.venueHallName && (
-                              <span className="text-[10px] font-semibold text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
+                              <span className="text-xs font-medium text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
                                 {evt.venueHallName}
                               </span>
                             )}
@@ -394,9 +398,11 @@ export function CalendarInteractiveView({
           </div>
         ) : (
           <div className="rounded-2xl border border-dashed border-border/80 p-8 text-center space-y-3 bg-muted/10">
-            <h4 className="text-base font-bold text-foreground">No events found</h4>
-            <p className="text-xs text-muted-foreground max-w-md mx-auto">
-              No confirmed trade shows match your active filters. Try selecting another category or resetting filters.
+            <h4 className="text-base font-bold text-foreground">
+              {tCal('noEventsFound') || 'No events found'}
+            </h4>
+            <p className="text-xs text-muted-foreground max-w-md mx-auto leading-relaxed">
+              {tCal('noEventsFoundDesc') || 'No confirmed trade shows match your active filters. Try selecting another category or resetting filters.'}
             </p>
             <Button
               variant="outline"
@@ -405,7 +411,7 @@ export function CalendarInteractiveView({
               className="gap-1.5 text-xs font-semibold cursor-pointer"
             >
               <RotateCcw className="h-3.5 w-3.5" />
-              <span>Reset All Filters</span>
+              <span>{tCal('resetAllFilters') || 'Reset All Filters'}</span>
             </Button>
           </div>
         )}

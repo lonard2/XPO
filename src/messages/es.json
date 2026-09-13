@@ -376,7 +376,16 @@
     "noEventsOnDate": "No hay eventos programados para esta fecha.",
     "noEventsToday": "No hay exposiciones programadas para esta fecha.",
     "nearestUpcoming": "Próxima exposición programada en esta edición:",
-    "eventsOnDate": "Programa del Día • "
+    "eventsOnDate": "Horario para:",
+    "allVenues": "Todos los Recintos",
+    "filterVenue": "Recinto:",
+    "activeFilter": "Filtro Activo:",
+    "resetFilters": "Restablecer Filtros",
+    "resetAllFilters": "Restablecer Todos los Filtros",
+    "generating": "Generando .ics...",
+    "noEventsFound": "No se encontraron eventos",
+    "noEventsFoundDesc": "No hay ferias comerciales confirmadas que coincidan con sus filtros activos. Intente seleccionar otra categoría o restablecer los filtros.",
+    "confirmedScheduleDesc": "{count} ferias comerciales y ponencias magistrales MICE confirmadas en {region}."
   },
   "tickets": {
     "bookPass": "Reservar Pase de Entrada",

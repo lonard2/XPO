@@ -376,7 +376,16 @@
     "noEventsOnDate": "No scheduled events on this date.",
     "noEventsToday": "No scheduled exhibitions on this date.",
     "nearestUpcoming": "Next scheduled exhibition in this edition:",
-    "eventsOnDate": "Schedule for"
+    "eventsOnDate": "Schedule for",
+    "allVenues": "All Venues",
+    "filterVenue": "Venue:",
+    "activeFilter": "Active Filter:",
+    "resetFilters": "Reset Filters",
+    "resetAllFilters": "Reset All Filters",
+    "generating": "Generating .ics...",
+    "noEventsFound": "No events found",
+    "noEventsFoundDesc": "No confirmed trade shows match your active filters. Try selecting another category or resetting filters.",
+    "confirmedScheduleDesc": "{count} confirmed MICE trade exhibitions and keynotes in {region}."
   },
   "tickets": {
     "bookPass": "Book Ticket Pass",

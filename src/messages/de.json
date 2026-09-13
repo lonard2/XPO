@@ -376,7 +376,16 @@
     "noEventsOnDate": "Keine Veranstaltungen an diesem Datum.",
     "noEventsToday": "Keine Veranstaltungen an diesem Datum geplant.",
     "nearestUpcoming": "Nächste geplante Messe in dieser Region:",
-    "eventsOnDate": "Tagesprogramm • "
+    "eventsOnDate": "Tagesprogramm:",
+    "allVenues": "Alle Standorte",
+    "filterVenue": "Standort:",
+    "activeFilter": "Aktiver Filter:",
+    "resetFilters": "Filter zurücksetzen",
+    "resetAllFilters": "Alle Filter zurücksetzen",
+    "generating": ".ics wird erstellt...",
+    "noEventsFound": "Keine Veranstaltungen gefunden",
+    "noEventsFoundDesc": "Keine bestätigten Messen entsprechen Ihren aktiven Filtern. Wählen Sie eine andere Kategorie oder setzen Sie die Filter zurück.",
+    "confirmedScheduleDesc": "{count} bestätigte MICE-Messen und Keynotes in {region}."
   },
   "tickets": {
     "bookPass": "Einlasspass buchen",

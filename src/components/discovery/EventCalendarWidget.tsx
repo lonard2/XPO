@@ -293,12 +293,17 @@ export function EventCalendarWidget({
                       </div>
                     </div>
 
-                    <Link href={`/${locale}/events/${evt.slug}`} className="shrink-0">
-                      <Button size="sm" variant="outline" className="gap-1 text-xs font-semibold h-8">
-                        <Ticket className="h-3.5 w-3.5" />
-                        <span>{tTickets('viewPass') || 'Pass'}</span>
-                        <ArrowRight className="h-3 w-3" />
-                      </Button>
+                    <Link
+                      href={`/${locale}/events/${evt.slug}`}
+                      className={buttonVariants({
+                        variant: 'outline',
+                        size: 'sm',
+                        className: 'gap-1 text-xs font-semibold h-8 shrink-0 cursor-pointer',
+                      })}
+                    >
+                      <Ticket className="h-3.5 w-3.5" />
+                      <span>{tTickets('viewPass') || 'Pass'}</span>
+                      <ArrowRight className="h-3 w-3" />
                     </Link>
                   </div>
                 );

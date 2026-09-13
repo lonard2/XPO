@@ -376,7 +376,16 @@
     "noEventsOnDate": "この日に開催されるイベントはありません。",
     "noEventsToday": "この日に開催される展示会はありません。",
     "nearestUpcoming": "この地域で次に開催される展示会：",
-    "eventsOnDate": "開催スケジュール："
+    "eventsOnDate": "開催スケジュール：",
+    "allVenues": "すべての会場",
+    "filterVenue": "会場：",
+    "activeFilter": "適用中のフィルター：",
+    "resetFilters": "フィルターをリセット",
+    "resetAllFilters": "すべてのフィルターをリセット",
+    "generating": ".icsファイルを生成中...",
+    "noEventsFound": "該当するイベントが見つかりません",
+    "noEventsFoundDesc": "現在選択されている条件に一致する展示会はありません。他のカテゴリーを選択するかフィルターをリセットしてください。",
+    "confirmedScheduleDesc": "{region}で確定済みの{count}件のMICE展示会および基調講演。"
   },
   "tickets": {
     "bookPass": "入場パスを予約",

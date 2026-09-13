@@ -376,7 +376,16 @@
     "noEventsOnDate": "Tidak ada acara terjadwal pada tanggal ini.",
     "noEventsToday": "Tidak ada jadwal pameran pada tanggal ini.",
     "nearestUpcoming": "Pameran terjadwal berikutnya di edisi ini:",
-    "eventsOnDate": "Jadwal untuk"
+    "eventsOnDate": "Jadwal untuk",
+    "allVenues": "Semua Venue",
+    "filterVenue": "Venue:",
+    "activeFilter": "Filter Aktif:",
+    "resetFilters": "Reset Filter",
+    "resetAllFilters": "Reset Semua Filter",
+    "generating": "Membuat file .ics...",
+    "noEventsFound": "Tidak ada acara ditemukan",
+    "noEventsFoundDesc": "Tidak ada pameran dagang yang cocok dengan filter aktif Anda. Coba pilih kategori lain atau reset filter.",
+    "confirmedScheduleDesc": "{count} pameran dagang dan konferensi MICE terkonfirmasi di {region}."
   },
   "tickets": {
     "bookPass": "Pesan Pas Masuk",

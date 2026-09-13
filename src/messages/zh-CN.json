@@ -376,7 +376,16 @@
     "noEventsOnDate": "该日期暂无安排展会。",
     "noEventsToday": "该日期暂无安排展会。",
     "nearestUpcoming": "本区域下一场排期展会：",
-    "eventsOnDate": "展会日程 · "
+    "eventsOnDate": "日程安排：",
+    "allVenues": "所有场馆",
+    "filterVenue": "场馆：",
+    "activeFilter": "当前筛选：",
+    "resetFilters": "重置筛选",
+    "resetAllFilters": "重置所有筛选",
+    "generating": "正在生成 .ics 文件...",
+    "noEventsFound": "未找到相关展会",
+    "noEventsFoundDesc": "没有符合您当前筛选条件的确定展会。请尝试选择其他类别或重置筛选。",
+    "confirmedScheduleDesc": "在 {region} 共有 {count} 场已确定的 MICE 行业展会与主题峰会。"
   },
   "tickets": {
     "bookPass": "预订入场通行证",

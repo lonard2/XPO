@@ -24,6 +24,11 @@ const mockMessages: Record<string, Record<string, string>> = {
     exportICal: 'Export iCal (.ics)',
     eventsOnDate: 'Schedule for',
     noEventsOnDate: 'No events scheduled on this day.',
+    allVenues: 'All Venues',
+    filterVenue: 'Venue:',
+    activeFilter: 'Active Filter:',
+    resetFilters: 'Reset Filters',
+    resetAllFilters: 'Reset All Filters',
   },
   common: {
     back: 'Back',
