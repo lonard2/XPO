@@ -14,9 +14,7 @@ import {
   Calendar,
   Building2,
   TrendingUp,
-  Clock,
   Activity,
-  Zap,
 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
@@ -38,7 +36,6 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
 
   // Query events from Prisma with related bookings, tiers, booths, and venue
   let events: any[] = [];
-  let allBookings: any[] = [];
   let allBooths: any[] = [];
 
   try {
@@ -55,19 +52,6 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
         venueHall: true,
       },
       orderBy: { startDate: "asc" },
-    });
-
-    allBookings = await db.booking.findMany({
-      include: {
-        ticketTier: true,
-        event: {
-          include: {
-            venue: true,
-          },
-        },
-      },
-      orderBy: { createdAt: "desc" },
-      take: 8,
     });
 
     allBooths = await db.boothTenant.findMany();
@@ -376,108 +360,6 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
             );
           })}
         </div>
-      </div>
-
-      {/* RECENT CHECK-INS & BOOKINGS AUDIT FEED */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Left: Recent Activity Feed */}
-        <Card className="p-5 border-border/80 bg-card space-y-4 shadow-xs">
-          <div className="flex items-center justify-between">
-            <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
-              <Clock className="h-4 w-4 text-primary" />
-              <span>{tOrg("recentBookings") || "Recent Delegate Check-Ins & Bookings"}</span>
-            </h2>
-            <span className="text-xs text-muted-foreground font-mono">{allBookings.length} entries</span>
-          </div>
-
-          <div className="divide-y divide-border/60">
-            {allBookings.slice(0, 6).map((booking: any) => {
-              const isAdmitted = booking.status === "CHECKED_IN";
-              return (
-                <div key={booking.id} className="py-3 flex items-center justify-between gap-3 text-xs">
-                  <div className="min-w-0">
-                    <div className="font-semibold text-foreground truncate">
-                      {booking.attendeeName}
-                    </div>
-                    <div className="text-xs text-muted-foreground truncate">
-                      {booking.event?.title} • {booking.ticketTier?.name}
-                    </div>
-                  </div>
-                  <div className="text-right shrink-0">
-                    <Badge
-                      variant={isAdmitted ? "success" : "outline"}
-                      size="sm"
-                      className="font-semibold"
-                    >
-                      {isAdmitted ? "Admitted" : "Confirmed"}
-                    </Badge>
-                    <div className="text-xs text-muted-foreground mt-0.5 font-mono">
-                      {booking.qrCodeHash?.slice(0, 16) || "PASS-REF"}...
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-
-            {allBookings.length === 0 && (
-              <div className="py-8 text-center text-xs text-muted-foreground">
-                No delegate check-ins recorded yet today.
-              </div>
-            )}
-          </div>
-        </Card>
-
-        {/* Right: Operational Status Deck */}
-        <Card className="p-5 border-border/80 bg-card space-y-4 flex flex-col justify-between shadow-xs">
-          <div className="space-y-3">
-            <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
-              <Zap className="h-4 w-4 text-amber-500" />
-              <span>Live Operations Shortcuts</span>
-            </h2>
-            <p className="text-xs text-muted-foreground">
-              Direct access to essential on-site MICE operational workflows:
-            </p>
-
-            <div className="space-y-2.5 pt-2">
-              <Link
-                href={`/${locale}/scanner`}
-                className="p-3 bg-muted/40 hover:bg-muted/80 rounded-xl border border-border/70 flex items-start gap-3 transition-colors block"
-              >
-                <QrCode className="h-4 w-4 text-emerald-500 mt-0.5 shrink-0" />
-                <div className="text-xs">
-                  <div className="font-semibold text-foreground">Door QR Check-In Scanner</div>
-                  <div className="text-muted-foreground text-xs mt-0.5">
-                    Launch optical pass camera scanner with cryptographic validation.
-                  </div>
-                </div>
-              </Link>
-
-              <Link
-                href={`/${locale}/booths`}
-                className="p-3 bg-muted/40 hover:bg-muted/80 rounded-xl border border-border/70 flex items-start gap-3 transition-colors block"
-              >
-                <Store className="h-4 w-4 text-purple-500 mt-0.5 shrink-0" />
-                <div className="text-xs">
-                  <div className="font-semibold text-foreground">Exhibitor Booth & Floor Manager</div>
-                  <div className="text-muted-foreground text-xs mt-0.5">
-                    Allocate lots, manage tenants, and import CSV booth rosters.
-                  </div>
-                </div>
-              </Link>
-            </div>
-          </div>
-
-          <div className="pt-3 border-t border-border flex items-center justify-between">
-            <span className="text-xs text-muted-foreground">Ready to launch a new exhibition?</span>
-            <Link
-              href={`/${locale}/events/new`}
-              className={cn(buttonVariants({ variant: "primary", size: "sm" }), "text-xs gap-1.5 cursor-pointer")}
-            >
-              <PlusCircle className="h-3.5 w-3.5" />
-              <span>{tOrg("launchNewEvent") || "Create Event"}</span>
-            </Link>
-          </div>
-        </Card>
       </div>
     </div>
   );
