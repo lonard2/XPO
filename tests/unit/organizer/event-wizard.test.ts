@@ -141,5 +141,57 @@ describe("Phase 9 Unit: Event Creation Wizard & Archetype Engine", () => {
     expect(getCurrencyForRegion("global")).toBe("USD");
     expect(getCurrencyForRegion("unknown")).toBe("IDR");
   });
+
+  it("calculates physical hall capacity allocation and flags over-allocation deterministically", () => {
+    const checkHallCapacity = (
+      hallCapacity: number,
+      tiers: Array<{ capacity: number }>
+    ) => {
+      const total = tiers.reduce((sum, t) => sum + (Number(t.capacity) || 0), 0);
+      const percentage = hallCapacity > 0 ? Math.round((total / hallCapacity) * 100) : 0;
+      const isOverAllocated = total > hallCapacity;
+      return { total, percentage, isOverAllocated };
+    };
+
+    // Within capacity
+    const valid = checkHallCapacity(5000, [
+      { capacity: 3500 },
+      { capacity: 500 },
+    ]);
+    expect(valid.total).toBe(4000);
+    expect(valid.percentage).toBe(80);
+    expect(valid.isOverAllocated).toBe(false);
+
+    // Over capacity
+    const exceeded = checkHallCapacity(3500, [
+      { capacity: 3500 },
+      { capacity: 1000 },
+    ]);
+    expect(exceeded.total).toBe(4500);
+    expect(exceeded.percentage).toBe(129);
+    expect(exceeded.isOverAllocated).toBe(true);
+  });
+
+  it("preserves manual custom slug when editing title if slug is marked dirty", () => {
+    const resolveSlug = (
+      newTitle: string,
+      currentSlug: string,
+      isSlugDirty: boolean
+    ) => {
+      if (isSlugDirty) return currentSlug;
+      return newTitle
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+    };
+
+    // Auto-generation when clean
+    expect(resolveSlug("Energy Expo 2027", "", false)).toBe("energy-expo-2027");
+
+    // Preservation when user has edited custom slug
+    expect(resolveSlug("Updated Title 2028", "custom-expo-slug", true)).toBe("custom-expo-slug");
+  });
 });
+
 

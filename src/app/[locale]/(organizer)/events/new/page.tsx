@@ -4,33 +4,31 @@ import * as React from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import {
-  PlusCircle,
   ArrowRight,
   ArrowLeft,
   CheckCircle2,
-  Calendar,
   Building2,
   Ticket,
   Palette,
   Sparkles,
   Info,
-  Layers,
   Trash2,
   Plus,
-  Compass,
   AlertCircle,
+  AlertTriangle,
   ShieldCheck,
   UserCheck,
   RotateCcw,
   Save,
 } from "lucide-react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { Button, buttonVariants } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Input } from "@/components/ui/Input";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/lib/auth/session";
 import { ARCHETYPE_DEFAULTS, ARCHETYPE_METADATA, MiceArchetype, getArchetypeTokens } from "@/lib/theming";
+import { LivePreviewFrame } from "@/components/organizer/LivePreviewFrame";
 import { cn } from "@/lib/utils";
 
 const DRAFT_STORAGE_KEY = "xpo_wizard_draft_v1";
@@ -52,6 +50,20 @@ const ALL_ARCHETYPES: MiceArchetype[] = [
   "EDUCATION_EDTECH",
   "FASHION_RETAIL",
 ];
+
+interface VenueHall {
+  id: string;
+  name: string;
+  capacity?: number;
+}
+
+interface Venue {
+  id: string;
+  name: string;
+  regionId?: string;
+  city: string;
+  halls?: VenueHall[];
+}
 
 interface TicketTierDraft {
   id: string;
@@ -77,6 +89,8 @@ export default function NewEventWizardPage() {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
   const [hasDraftAvailable, setHasDraftAvailable] = React.useState(false);
+  const [isSlugDirty, setIsSlugDirty] = React.useState(false);
+  const isInitializedRef = React.useRef(false);
 
   // Step 1: General Info & Archetype
   const [title, setTitle] = React.useState("Indonesia Green Energy & Battery Expo 2027");
@@ -93,7 +107,7 @@ export default function NewEventWizardPage() {
   const [regionId, setRegionId] = React.useState("id");
   const [venueId, setVenueId] = React.useState("");
   const [venueHallId, setVenueHallId] = React.useState("");
-  const [venuesList, setVenuesList] = React.useState<any[]>([]);
+  const [venuesList, setVenuesList] = React.useState<Venue[]>([]);
   const [startDate, setStartDate] = React.useState("2027-04-14");
   const [endDate, setEndDate] = React.useState("2027-04-17");
 
@@ -145,7 +159,7 @@ export default function NewEventWizardPage() {
       }
 
       // Fallback Seeded Venues
-      const defaultVenues = [
+      const defaultVenues: Venue[] = [
         {
           id: "v-jiexpo",
           name: "JIExpo Kemayoran",
@@ -190,24 +204,26 @@ export default function NewEventWizardPage() {
 
       setVenuesList(defaultVenues);
       setVenueId(defaultVenues[0].id);
-      setVenueHallId(defaultVenues[0].halls[0].id);
+      setVenueHallId(defaultVenues[0].halls?.[0]?.id || "");
     }
 
-    loadVenues();
-
-    // Check LocalStorage Draft
-    try {
-      const saved = localStorage.getItem(DRAFT_STORAGE_KEY);
-      if (saved) {
-        setHasDraftAvailable(true);
+    loadVenues().finally(() => {
+      // Check LocalStorage Draft
+      try {
+        const saved = localStorage.getItem(DRAFT_STORAGE_KEY);
+        if (saved) {
+          setHasDraftAvailable(true);
+        }
+      } catch {
+        // Ignore storage errors
       }
-    } catch {
-      // Ignore storage errors
-    }
+      isInitializedRef.current = true;
+    });
   }, []);
 
-  // Save Draft to LocalStorage whenever critical fields change
+  // Save Draft to LocalStorage whenever critical fields change, guarded against initial mount overwrite
   React.useEffect(() => {
+    if (!isInitializedRef.current) return;
     try {
       const draftData = {
         title,
@@ -260,7 +276,10 @@ export default function NewEventWizardPage() {
       if (!saved) return;
       const d = JSON.parse(saved);
       if (d.title) setTitle(d.title);
-      if (d.slug) setSlug(d.slug);
+      if (d.slug) {
+        setSlug(d.slug);
+        setIsSlugDirty(true);
+      }
       if (d.tagline) setTagline(d.tagline);
       if (d.description) setDescription(d.description);
       if (d.archetype) setArchetype(d.archetype);
@@ -299,15 +318,17 @@ export default function NewEventWizardPage() {
     setAccentColor(defaults.accent);
   };
 
-  // Auto-slug generator
+  // Auto-slug generator (respects custom manually edited slugs)
   const handleTitleChange = (val: string) => {
     setTitle(val);
-    const generated = val
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "");
-    setSlug(generated);
+    if (!isSlugDirty) {
+      const generated = val
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+      setSlug(generated);
+    }
   };
 
   // Filtered Venues by Region
@@ -315,10 +336,22 @@ export default function NewEventWizardPage() {
     return venuesList.filter((v) => !v.regionId || v.regionId.toLowerCase() === regionId.toLowerCase());
   }, [venuesList, regionId]);
 
-  // Selected Venue Halls
+  // Selected Venue & Hall
   const selectedVenue = React.useMemo(() => {
     return venuesList.find((v) => v.id === venueId);
   }, [venuesList, venueId]);
+
+  const selectedHall = React.useMemo(() => {
+    return selectedVenue?.halls?.find((h) => h.id === venueHallId);
+  }, [selectedVenue, venueHallId]);
+
+  const totalTicketCapacity = React.useMemo(() => {
+    return ticketTiers.reduce((sum, t) => sum + (Number(t.capacity) || 0), 0);
+  }, [ticketTiers]);
+
+  const isCapacityExceeded = React.useMemo(() => {
+    return selectedHall?.capacity ? totalTicketCapacity > selectedHall.capacity : false;
+  }, [selectedHall, totalTicketCapacity]);
 
   const handleRegionChange = (newReg: string) => {
     setRegionId(newReg);
@@ -337,7 +370,7 @@ export default function NewEventWizardPage() {
     const newTier: TicketTierDraft = {
       id: `tier-${Date.now()}`,
       name: `Exhibitor / Delegate Pass ${ticketTiers.length + 1}`,
-      price: 1000000,
+      price: regionId === "jp" ? 10000 : regionId === "global" ? 75 : 1000000,
       currency: regionId === "jp" ? "JPY" : regionId === "global" ? "USD" : "IDR",
       capacity: 250,
       benefits: "All-Access Pass, Networking Dinner, Exhibition Booth Passes",
@@ -350,7 +383,7 @@ export default function NewEventWizardPage() {
     setTicketTiers(ticketTiers.filter((t) => t.id !== id));
   };
 
-  const handleUpdateTier = (id: string, field: keyof TicketTierDraft, val: any) => {
+  const handleUpdateTier = <K extends keyof TicketTierDraft>(id: string, field: K, val: TicketTierDraft[K]) => {
     setTicketTiers(
       ticketTiers.map((t) => (t.id === id ? { ...t, [field]: val } : t))
     );
@@ -502,9 +535,9 @@ export default function NewEventWizardPage() {
           </div>
           <div className="space-y-2">
             <Badge variant="warning" size="sm">{tOrg("rbacRequiredTitle") || "Organizer Access Required"}</Badge>
-            <h2 className="text-xl font-bold text-foreground">
+            <h1 className="text-xl font-bold text-foreground">
               {tOrg("wizardTitle") || "Create & Launch MICE Exhibition"}
-            </h2>
+            </h1>
             <p className="text-xs text-muted-foreground max-w-md mx-auto">
               {tOrg("wizardRbacBlocked") || "Attendee accounts are restricted from launching events. Please switch to an Organizer or Admin role to proceed."}
             </p>
@@ -513,15 +546,19 @@ export default function NewEventWizardPage() {
             <Button
               variant="primary"
               onClick={() => switchRole("ORGANIZER")}
-              className="w-full sm:w-auto gap-2 bg-amber-600 hover:bg-amber-700 text-white cursor-pointer"
+              className="w-full sm:w-auto gap-2 bg-amber-600 hover:bg-amber-700 text-white cursor-pointer min-h-[44px]"
             >
               <UserCheck className="h-4 w-4" />
               <span>{tOrg("switchToOrganizer") || "Switch to Organizer Persona"}</span>
             </Button>
-            <Link href={`/${locale}`}>
-              <Button variant="outline" className="w-full sm:w-auto cursor-pointer">
-                {tCom("backToHome") || "Back to Discovery"}
-              </Button>
+            <Link
+              href={`/${locale}`}
+              className={cn(
+                buttonVariants({ variant: "outline" }),
+                "w-full sm:w-auto cursor-pointer min-h-[44px] flex items-center justify-center"
+              )}
+            >
+              {tCom("backToHome") || "Back to Discovery"}
             </Link>
           </div>
         </div>
@@ -530,16 +567,16 @@ export default function NewEventWizardPage() {
   }
 
   return (
-    <div className="space-y-8 max-w-5xl mx-auto animate-fade-in">
+    <div className="space-y-8 max-w-7xl mx-auto animate-fade-in">
       {/* Wizard Header */}
       <div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 mb-1.5">
+          <Badge variant="outline" size="sm">{tOrg("wizardStepOf", { current: currentStep, total: 4 }) || `Step ${currentStep} of 4`}</Badge>
           <span className="text-xs font-bold uppercase tracking-wider text-primary">
             {tOrg("wizardHeader") || "Event Launch Wizard"}
           </span>
-          <Badge variant="outline" size="sm">{tOrg("wizardStepOf", { current: currentStep, total: 4 }) || `Step ${currentStep} of 4`}</Badge>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mt-1">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
           {tOrg("wizardTitle") || "Create & Launch MICE Exhibition"}
         </h1>
         <p className="text-xs sm:text-sm text-muted-foreground mt-1">
@@ -561,16 +598,16 @@ export default function NewEventWizardPage() {
               size="sm"
               variant="primary"
               onClick={handleRestoreDraft}
-              className="min-h-[36px] text-xs gap-1.5 cursor-pointer"
+              className="min-h-[44px] px-3.5 text-xs gap-1.5 cursor-pointer"
             >
-              <RotateCcw className="h-3 w-3" />
+              <RotateCcw className="h-3.5 w-3.5" />
               <span>Resume Draft</span>
             </Button>
             <Button
               size="sm"
               variant="ghost"
               onClick={handleDiscardDraft}
-              className="min-h-[36px] text-xs text-muted-foreground hover:text-foreground cursor-pointer"
+              className="min-h-[44px] px-3.5 text-xs text-muted-foreground hover:text-foreground cursor-pointer"
             >
               Discard
             </Button>
@@ -586,7 +623,6 @@ export default function NewEventWizardPage() {
           { step: 3, label: tOrg("wizardStep3") || "Ticket Passes", icon: Ticket },
           { step: 4, label: tOrg("wizardStep4") || "Branding & Review", icon: Palette },
         ].map((s) => {
-          const Icon = s.icon;
           const isCompleted = currentStep > s.step;
           const isCurrent = currentStep === s.step;
           const canClick = s.step < currentStep;
@@ -605,7 +641,7 @@ export default function NewEventWizardPage() {
               aria-label={`Step ${s.step}: ${s.label}`}
               aria-current={isCurrent ? "step" : undefined}
               className={cn(
-                "min-h-[36px] flex items-center gap-2 px-2.5 py-2 rounded-lg text-xs transition-colors text-left focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
+                "min-h-[44px] flex items-center gap-2 px-2.5 py-2 rounded-lg text-xs transition-colors text-left focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
                 canClick ? "cursor-pointer hover:bg-muted/60" : "cursor-default",
                 isCurrent
                   ? "bg-primary/10 text-primary font-semibold border border-primary/30"
@@ -614,9 +650,9 @@ export default function NewEventWizardPage() {
                   : "text-muted-foreground"
               )}
             >
-              <div
+              <span
                 className={cn(
-                  "h-6 w-6 rounded-full flex items-center justify-center text-xs shrink-0 font-bold",
+                  "h-6 w-6 rounded-full flex items-center justify-center text-xs shrink-0 font-bold inline-flex",
                   isCurrent
                     ? "bg-primary text-primary-foreground"
                     : isCompleted
@@ -625,7 +661,7 @@ export default function NewEventWizardPage() {
                 )}
               >
                 {isCompleted ? <CheckCircle2 className="h-4 w-4" /> : s.step}
-              </div>
+              </span>
               <span className="hidden sm:inline truncate">{s.label}</span>
             </button>
           );
@@ -634,7 +670,11 @@ export default function NewEventWizardPage() {
 
       {/* ERROR ALERT */}
       {errorMessage && (
-        <div className="p-3 bg-destructive/10 border border-destructive/30 rounded-lg flex items-center gap-2.5 text-xs text-destructive animate-fade-in">
+        <div
+          role="alert"
+          aria-live="assertive"
+          className="p-3.5 bg-destructive/10 border border-destructive/30 rounded-lg flex items-center gap-2.5 text-xs text-destructive animate-fade-in"
+        >
           <AlertCircle className="h-4 w-4 shrink-0" />
           <span>{errorMessage}</span>
         </div>
@@ -644,10 +684,10 @@ export default function NewEventWizardPage() {
       {currentStep === 1 && (
         <div className="space-y-6">
           <Card className="p-6 border-border bg-card space-y-4 shadow-sm">
-            <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
+            <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
               <Info className="h-4 w-4 text-primary" />
               <span>{tOrg("wizardDetailsTitle") || "Event Details & Scale"}</span>
-            </h3>
+            </h2>
 
             <div className="space-y-4">
               <Input
@@ -666,10 +706,17 @@ export default function NewEventWizardPage() {
                     label={tOrg("wizardSlug") || "URL Slug"}
                     placeholder="event-slug-identifier"
                     value={slug}
-                    onChange={(e) => setSlug(e.target.value)}
+                    onChange={(e) => {
+                      setIsSlugDirty(true);
+                      setSlug(e.target.value);
+                    }}
                     helperText={tOrg("wizardSlugHelper") || "Unique public URL path for attendee exploration."}
                     required
                   />
+                  <span className="text-xs text-muted-foreground block font-mono pl-1">
+                    Slug generated from title
+                  </span>
+                </div>
                   <span className="text-xs text-muted-foreground block font-mono pl-1">
                     Slug generated from title
                   </span>
@@ -737,9 +784,9 @@ export default function NewEventWizardPage() {
           {/* 15 Archetype Category Cards Grid */}
           <div className="space-y-3">
             <div>
-              <h3 className="text-sm font-bold text-foreground">
+              <h2 className="text-sm font-bold text-foreground">
                 {tOrg("wizardArchetypeSelect") || "Select MICE Category Archetype"}
-              </h3>
+              </h2>
               <p className="text-xs text-muted-foreground">
                 {tOrg("wizardArchetypeSubtitle") || "Each archetype automatically tailors UI tokens, custom badges, and specialized domain layouts."}
               </p>
@@ -783,38 +830,40 @@ export default function NewEventWizardPage() {
                       }
                     }}
                     className={cn(
-                      "p-4 rounded-xl border text-left cursor-pointer transition-all flex flex-col justify-between gap-3 hover:shadow-sm focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
+                      "p-4 rounded-xl border text-left cursor-pointer transition-all flex flex-col justify-between gap-3 hover:shadow-sm focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none min-h-[110px]",
                       isSelected
                         ? "border-primary bg-primary/5 ring-1 ring-primary/40 shadow-xs"
                         : "border-border bg-card hover:border-primary/40"
                     )}
                   >
-                    <div className="space-y-1.5">
-                      <div className="flex items-center justify-between">
+                    <span className="space-y-1.5 block w-full text-left">
+                      <span className="flex items-center justify-between">
                         <span className="text-xs font-bold text-foreground">
                           {displayName}
                         </span>
                         {isSelected ? (
                           <Badge variant="secondary" size="sm" className="font-semibold">{tCom("selected") || "Selected"}</Badge>
                         ) : (
-                          <div
-                            className="h-3.5 w-3.5 rounded-full border border-border"
+                          <span
+                            aria-hidden="true"
+                            className="h-3.5 w-3.5 rounded-full border border-border inline-block shrink-0"
                             style={{ backgroundColor: tokens.primary }}
                           />
                         )}
-                      </div>
-                      <p className="text-xs text-muted-foreground line-clamp-2">
+                      </span>
+                      <span className="text-xs text-muted-foreground line-clamp-2 block">
                         {desc}
-                      </p>
-                    </div>
+                      </span>
+                    </span>
 
-                    <div className="flex items-center gap-1.5 pt-2 border-t border-border/50 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1.5 pt-2 border-t border-border/50 text-xs text-muted-foreground w-full">
                       <span
-                        className="h-2 w-2 rounded-full shrink-0"
+                        aria-hidden="true"
+                        className="h-2 w-2 rounded-full shrink-0 inline-block"
                         style={{ backgroundColor: tokens.accent }}
                       />
                       <span className="truncate">{tCom("category") || "Category"}: {displayName}</span>
-                    </div>
+                    </span>
                   </button>
                 );
               })}
@@ -827,10 +876,10 @@ export default function NewEventWizardPage() {
       {currentStep === 2 && (
         <div className="space-y-6">
           <Card className="p-6 border-border bg-card space-y-4 shadow-sm">
-            <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
+            <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
               <Building2 className="h-4 w-4 text-primary" />
               <span>{tOrg("wizardVenueHalls") || "Hosting Venue & Hall Allocation"}</span>
-            </h3>
+            </h2>
 
             <div
               role="radiogroup"
@@ -874,8 +923,8 @@ export default function NewEventWizardPage() {
                       : "border-border hover:border-primary/40 bg-card"
                   )}
                 >
-                  <div className="text-xs font-bold text-foreground">{r.name}</div>
-                  <div className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{r.desc}</div>
+                  <span className="text-xs font-bold text-foreground block">{r.name}</span>
+                  <span className="text-xs text-muted-foreground mt-0.5 line-clamp-1 block">{r.desc}</span>
                 </button>
               ))}
             </div>
@@ -913,7 +962,7 @@ export default function NewEventWizardPage() {
                   value={venueHallId}
                   onChange={(e) => setVenueHallId(e.target.value)}
                 >
-                  {selectedVenue?.halls?.map((h: any) => (
+                  {selectedVenue?.halls?.map((h) => (
                     <option key={h.id} value={h.id}>
                       {h.name} {h.capacity ? `(Cap: ${h.capacity.toLocaleString()})` : ""}
                     </option>
@@ -949,18 +998,74 @@ export default function NewEventWizardPage() {
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-bold text-foreground">{tOrg("wizardTiersTitle") || "Ticket Pass Tiers & Capacities"}</h3>
+              <h2 className="text-sm font-bold text-foreground">{tOrg("wizardTiersTitle") || "Ticket Pass Tiers & Capacities"}</h2>
               <p className="text-xs text-muted-foreground">
                 {tOrg("wizardTiersSubtitle") || "Define pass pricing, capacities, and perks unlocked upon QR validation."}
               </p>
             </div>
-            <Button size="sm" variant="outline" onClick={handleAddTier} className="min-h-[36px] text-xs gap-1.5 cursor-pointer">
+            <Button size="sm" variant="outline" onClick={handleAddTier} className="min-h-[44px] px-4 text-xs gap-1.5 cursor-pointer">
               <Plus className="h-3.5 w-3.5" />
               <span>{tOrg("wizardAddTier") || "Add Ticket Pass Tier"}</span>
             </Button>
           </div>
 
-          <div className="space-y-4">
+          {/* Physical Hall Capacity Safeguard Widget */}
+          {selectedHall && (
+            <Card className="p-4 border-border bg-card shadow-xs space-y-2.5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                <div className="flex items-center gap-2 font-semibold text-foreground">
+                  <Building2 className="h-4 w-4 text-primary" />
+                  <span>Physical Hall Allocation: {selectedHall.name}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-muted-foreground">
+                    Allocated: {totalTicketCapacity.toLocaleString()} / {(selectedHall.capacity || 0).toLocaleString()} slots
+                  </span>
+                  <Badge
+                    variant={isCapacityExceeded ? "destructive" : "outline"}
+                    size="sm"
+                    className="font-mono text-xs"
+                  >
+                    {selectedHall.capacity ? Math.round((totalTicketCapacity / selectedHall.capacity) * 100) : 0}%
+                  </Badge>
+                </div>
+              </div>
+
+              {/* Allocation Progress Bar */}
+              <div
+                role="progressbar"
+                aria-label="Hall Capacity Allocation"
+                aria-valuenow={totalTicketCapacity}
+                aria-valuemin={0}
+                aria-valuemax={selectedHall.capacity || 100}
+                className="h-2 w-full bg-muted rounded-full overflow-hidden"
+              >
+                <div
+                  className={cn(
+                    "h-full transition-all duration-300 rounded-full",
+                    isCapacityExceeded ? "bg-destructive" : "bg-primary"
+                  )}
+                  style={{
+                    width: `${Math.min(
+                      selectedHall.capacity ? (totalTicketCapacity / selectedHall.capacity) * 100 : 0,
+                      100
+                    )}%`,
+                  }}
+                />
+              </div>
+
+              {isCapacityExceeded && (
+                <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg flex items-start gap-2 text-xs text-amber-700 dark:text-amber-400 animate-fade-in">
+                  <AlertTriangle className="h-4 w-4 shrink-0 mt-0.5" />
+                  <span>
+                    <strong>Capacity Alert:</strong> Total ticket pass allocation ({totalTicketCapacity.toLocaleString()}) exceeds the physical hall limit of {selectedHall.name} ({(selectedHall.capacity || 0).toLocaleString()}). Consider allocating additional halls or adjusting pass capacities.
+                  </span>
+                </div>
+              )}
+            </Card>
+          )}
+
+          <div aria-live="polite" className="space-y-4">
             {ticketTiers.map((tier, idx) => (
               <Card key={tier.id} className="p-5 border-border bg-card space-y-3 shadow-xs">
                 <div className="flex items-center justify-between">
@@ -969,7 +1074,7 @@ export default function NewEventWizardPage() {
                     <button
                       type="button"
                       onClick={() => handleRemoveTier(tier.id)}
-                      className="min-h-[36px] px-2.5 py-1 text-xs text-destructive hover:text-destructive/80 flex items-center gap-1 cursor-pointer"
+                      className="min-h-[44px] px-3 text-xs text-destructive hover:text-destructive/80 flex items-center gap-1 cursor-pointer"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                       <span>{tCom("delete") || "Remove"}</span>
@@ -1045,118 +1150,147 @@ export default function NewEventWizardPage() {
 
       {/* STEP 4: Branding & Confirmation Review */}
       {currentStep === 4 && (
-        <div className="space-y-6">
-          <Card className="p-6 border-border bg-card space-y-4 shadow-sm">
-            <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
-              <Palette className="h-4 w-4 text-primary" />
-              <span>{tOrg("wizardBrandingTitle") || "Visual Branding & Review"}</span>
-            </h3>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          {/* Left Column: Branding Controls and Specification Summary */}
+          <div className="lg:col-span-5 space-y-6">
+            <Card className="p-6 border-border bg-card space-y-4 shadow-sm">
+              <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
+                <Palette className="h-4 w-4 text-primary" />
+                <span>{tOrg("wizardBrandingTitle") || "Visual Branding & Palette"}</span>
+              </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="wizard-primary-color" className="block text-xs font-semibold text-foreground mb-1.5">
-                  {tOrg("wizardPrimaryColor") || "Primary Accent Color"}
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    id="wizard-primary-color"
-                    type="color"
-                    className="h-9 w-12 rounded cursor-pointer border border-border"
-                    value={primaryColor}
-                    onChange={(e) => setPrimaryColor(e.target.value)}
-                  />
-                  <Input
-                    id="wizard-primary-color-text"
-                    aria-label="Primary accent color hex code"
-                    value={primaryColor}
-                    onChange={(e) => setPrimaryColor(e.target.value)}
-                    className="font-mono"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label htmlFor="wizard-accent-color" className="block text-xs font-semibold text-foreground mb-1.5">
-                  {tOrg("wizardAccentColor") || "Secondary Accent Color"}
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    id="wizard-accent-color"
-                    type="color"
-                    className="h-9 w-12 rounded cursor-pointer border border-border"
-                    value={accentColor}
-                    onChange={(e) => setAccentColor(e.target.value)}
-                  />
-                  <Input
-                    id="wizard-accent-color-text"
-                    aria-label="Secondary accent color hex code"
-                    value={accentColor}
-                    onChange={(e) => setAccentColor(e.target.value)}
-                    className="font-mono"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <Input
-              id="wizard-hero-image"
-              label={tOrg("wizardHeroImage") || "Hero Banner Image URL"}
-              value={heroImageUrl}
-              onChange={(e) => setHeroImageUrl(e.target.value)}
-            />
-          </Card>
-
-          {/* Review Summary Card */}
-          <Card className="p-6 border-border bg-card space-y-4 shadow-sm">
-            <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-              <span>{tOrg("wizardSummaryTitle") || "Event Specification Summary"}</span>
-            </h3>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-              <div className="space-y-1.5">
-                <div className="text-muted-foreground">{tOrg("wizardSummaryTitleCat") || "Title & Category:"}</div>
-                <div className="font-bold text-foreground text-sm">{title}</div>
-                <div className="flex items-center gap-2 mt-1">
-                  <Badge variant="secondary" size="sm" className="font-semibold uppercase tracking-wider">{tArch(`${archetype}.title`) || ARCHETYPE_DEFAULTS[archetype].displayName}</Badge>
-                  <span className="text-muted-foreground uppercase">{format} • {scale}</span>
-                </div>
-              </div>
-
-              <div className="space-y-1.5">
-                <div className="text-muted-foreground">{tOrg("wizardSummaryVenueDates") || "Hosting Venue & Dates:"}</div>
-                <div className="font-semibold text-foreground">
-                  {selectedVenue?.name || "Selected Venue"}
-                </div>
-                <div className="text-muted-foreground">
-                  {startDate} to {endDate}
-                </div>
-              </div>
-            </div>
-
-            <div className="pt-3 border-t border-border/60">
-              <div className="text-xs font-semibold text-foreground mb-2">
-                {tOrg("wizardSummaryTiers", { count: ticketTiers.length }) || `Configured Pass Tiers (${ticketTiers.length})`}
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {ticketTiers.map((t) => (
-                  <div key={t.id} className="p-2.5 bg-muted/40 rounded-lg text-xs">
-                    <div className="font-semibold text-foreground">{t.name}</div>
-                    <div className="text-muted-foreground text-xs">
-                      {t.price === 0 ? "Free" : `${t.currency} ${t.price.toLocaleString()}`} • Cap: {t.capacity}
-                    </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="wizard-primary-color" className="block text-xs font-semibold text-foreground mb-1.5">
+                    {tOrg("wizardPrimaryColor") || "Primary Accent Color"}
+                  </label>
+                  <div className="flex items-center gap-2">
+                    <input
+                      id="wizard-primary-color"
+                      type="color"
+                      className="h-11 w-14 rounded cursor-pointer border border-border shrink-0"
+                      value={primaryColor}
+                      onChange={(e) => setPrimaryColor(e.target.value)}
+                    />
+                    <Input
+                      id="wizard-primary-color-text"
+                      aria-label="Primary accent color hex code"
+                      value={primaryColor}
+                      onChange={(e) => setPrimaryColor(e.target.value)}
+                      className="font-mono min-h-[44px]"
+                    />
                   </div>
-                ))}
+                </div>
+
+                <div>
+                  <label htmlFor="wizard-accent-color" className="block text-xs font-semibold text-foreground mb-1.5">
+                    {tOrg("wizardAccentColor") || "Secondary Accent Color"}
+                  </label>
+                  <div className="flex items-center gap-2">
+                    <input
+                      id="wizard-accent-color"
+                      type="color"
+                      className="h-11 w-14 rounded cursor-pointer border border-border shrink-0"
+                      value={accentColor}
+                      onChange={(e) => setAccentColor(e.target.value)}
+                    />
+                    <Input
+                      id="wizard-accent-color-text"
+                      aria-label="Secondary accent color hex code"
+                      value={accentColor}
+                      onChange={(e) => setAccentColor(e.target.value)}
+                      className="font-mono min-h-[44px]"
+                    />
+                  </div>
+                </div>
               </div>
+
+              <Input
+                id="wizard-hero-image"
+                label={tOrg("wizardHeroImage") || "Hero Banner Image URL"}
+                value={heroImageUrl}
+                onChange={(e) => setHeroImageUrl(e.target.value)}
+                className="min-h-[44px]"
+              />
+            </Card>
+
+            {/* Review Summary Card */}
+            <Card className="p-6 border-border bg-card space-y-4 shadow-sm">
+              <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                <span>{tOrg("wizardSummaryTitle") || "Event Specification Summary"}</span>
+              </h2>
+
+              <div className="grid grid-cols-1 gap-4 text-xs">
+                <div className="space-y-1.5">
+                  <div className="text-muted-foreground">{tOrg("wizardSummaryTitleCat") || "Title & Category:"}</div>
+                  <div className="font-bold text-foreground text-sm">{title}</div>
+                  <div className="flex items-center gap-2 mt-1">
+                    <Badge variant="secondary" size="sm" className="font-semibold uppercase tracking-wider">{tArch(`${archetype}.title`) || ARCHETYPE_DEFAULTS[archetype].displayName}</Badge>
+                    <span className="text-muted-foreground uppercase">{format} • {scale}</span>
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <div className="text-muted-foreground">{tOrg("wizardSummaryVenueDates") || "Hosting Venue & Dates:"}</div>
+                  <div className="font-semibold text-foreground">
+                    {selectedVenue?.name || "Selected Venue"}
+                    {selectedHall ? ` - ${selectedHall.name}` : ""}
+                  </div>
+                  <div className="text-muted-foreground">
+                    {startDate} to {endDate}
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-3 border-t border-border/60">
+                <div className="text-xs font-semibold text-foreground mb-2">
+                  {tOrg("wizardSummaryTiers", { count: ticketTiers.length }) || `Configured Pass Tiers (${ticketTiers.length})`}
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {ticketTiers.map((t) => (
+                    <div key={t.id} className="p-2.5 bg-muted/40 rounded-lg text-xs">
+                      <div className="font-semibold text-foreground">{t.name}</div>
+                      <div className="text-muted-foreground text-xs">
+                        {t.price === 0 ? "Free" : `${t.currency} ${t.price.toLocaleString()}`} • Cap: {t.capacity}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          {/* Right Column: Live Visual Preview Canvas */}
+          <div className="lg:col-span-7 lg:sticky lg:top-6 space-y-3">
+            <div className="flex items-center justify-between">
+              <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
+                <Sparkles className="h-4 w-4 text-primary" />
+                <span>Live Multi-Device Visual Preview</span>
+              </h2>
+              <Badge variant="outline" size="sm" className="text-xs font-medium">Real-time Simulation</Badge>
             </div>
-          </Card>
+            <LivePreviewFrame
+              eventTitle={title || "Untitled Exhibition"}
+              tagline={tagline}
+              archetype={archetype}
+              venueName={selectedVenue?.name}
+              hallName={selectedHall?.name}
+              datesText={startDate && endDate ? `${startDate} to ${endDate}` : undefined}
+              heroImageUrl={heroImageUrl}
+              primaryColor={primaryColor}
+              accentColor={accentColor}
+              fontFamily={ARCHETYPE_DEFAULTS[archetype]?.fontFamily || "font-sans"}
+              ticketTiers={ticketTiers}
+            />
+          </div>
         </div>
       )}
 
       {/* WIZARD NAVIGATION CONTROLS */}
       <div className="flex items-center justify-between pt-4 border-t border-border">
         {currentStep > 1 ? (
-          <Button variant="outline" size="sm" onClick={prevStep} className="min-h-[40px] px-4 text-xs font-semibold gap-1.5 cursor-pointer">
+          <Button variant="outline" size="sm" onClick={prevStep} className="min-h-[44px] px-4 text-xs font-semibold gap-1.5 cursor-pointer">
             <ArrowLeft className="h-4 w-4" />
             <span>{tOrg("wizardBack") || "Previous Step"}</span>
           </Button>
@@ -1165,7 +1299,7 @@ export default function NewEventWizardPage() {
         )}
 
         {currentStep < 4 ? (
-          <Button variant="primary" size="sm" onClick={nextStep} className="min-h-[40px] px-5 text-xs font-semibold gap-1.5 cursor-pointer">
+          <Button variant="primary" size="sm" onClick={nextStep} className="min-h-[44px] px-5 text-xs font-semibold gap-1.5 cursor-pointer">
             <span>{tOrg("wizardNext") || "Continue"}</span>
             <ArrowRight className="h-4 w-4" />
           </Button>
@@ -1175,7 +1309,7 @@ export default function NewEventWizardPage() {
             size="sm"
             onClick={handleSubmitEvent}
             disabled={isSubmitting}
-            className="min-h-[40px] px-6 text-xs font-semibold gap-2 bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer"
+            className="min-h-[44px] px-6 text-xs font-semibold gap-2 bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer"
           >
             <Sparkles className="h-4 w-4" />
             <span>{isSubmitting ? (tOrg("wizardCreating") || "Launching Event...") : (tOrg("wizardPublishButton") || "Publish & Open Customizer")}</span>

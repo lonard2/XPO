@@ -9,18 +9,13 @@ import {
   Building2,
   Ticket,
   Sparkles,
-  ExternalLink,
   Users,
-  CheckCircle2,
-  ArrowRight,
   Coffee,
   Download,
   Layers,
 } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
-import { MiceArchetype, getArchetypeTokens, BrandingConfig } from "@/lib/theming";
+import { MiceArchetype, getArchetypeTokens } from "@/lib/theming";
 import { cn } from "@/lib/utils";
 
 export type ViewportMode = "desktop" | "tablet" | "mobile";
@@ -218,14 +213,14 @@ export function LivePreviewFrame({
             type="button"
             onClick={() => setViewport("desktop")}
             className={cn(
-              "p-1.5 rounded text-xs transition-colors flex items-center gap-1 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
+              "min-h-[44px] px-3 py-1.5 rounded text-xs transition-colors flex items-center gap-1.5 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
               viewport === "desktop"
                 ? "bg-card text-foreground font-semibold shadow-xs"
                 : "text-muted-foreground hover:text-foreground"
             )}
             aria-label="Desktop viewport"
           >
-            <Monitor className="h-3.5 w-3.5" />
+            <Monitor className="h-4 w-4" />
             <span className="hidden sm:inline text-xs">Desktop (100%)</span>
           </button>
 
@@ -233,14 +228,14 @@ export function LivePreviewFrame({
             type="button"
             onClick={() => setViewport("tablet")}
             className={cn(
-              "p-1.5 rounded text-xs transition-colors flex items-center gap-1 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
+              "min-h-[44px] px-3 py-1.5 rounded text-xs transition-colors flex items-center gap-1.5 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
               viewport === "tablet"
                 ? "bg-card text-foreground font-semibold shadow-xs"
                 : "text-muted-foreground hover:text-foreground"
             )}
             aria-label="Tablet viewport"
           >
-            <Tablet className="h-3.5 w-3.5" />
+            <Tablet className="h-4 w-4" />
             <span className="hidden sm:inline text-xs">Tablet (768px)</span>
           </button>
 
@@ -248,14 +243,14 @@ export function LivePreviewFrame({
             type="button"
             onClick={() => setViewport("mobile")}
             className={cn(
-              "p-1.5 rounded text-xs transition-colors flex items-center gap-1 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
+              "min-h-[44px] px-3 py-1.5 rounded text-xs transition-colors flex items-center gap-1.5 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
               viewport === "mobile"
                 ? "bg-card text-foreground font-semibold shadow-xs"
                 : "text-muted-foreground hover:text-foreground"
             )}
             aria-label="Mobile viewport"
           >
-            <Smartphone className="h-3.5 w-3.5" />
+            <Smartphone className="h-4 w-4" />
             <span className="hidden sm:inline text-xs">Mobile (375px)</span>
           </button>
         </div>
