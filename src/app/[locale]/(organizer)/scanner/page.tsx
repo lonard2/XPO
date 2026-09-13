@@ -2,14 +2,7 @@
 
 import * as React from "react";
 import { useSearchParams } from "next/navigation";
-import {
-  QrCode,
-  Building2,
-  Layers,
-  Sparkles,
-  ShieldCheck,
-  Zap,
-} from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { CheckInScanner } from "@/components/organizer/CheckInScanner";
 import { useTranslations } from "next-intl";
@@ -30,15 +23,12 @@ export default function DoorScannerPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/80 pb-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-primary">
-              {tOrg("scannerDoorOps") || "Door Entry & Gate Operations"}
-            </span>
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+              {tOrg("scannerTitle") || "Door Staff QR Check-In Console"}
+            </h1>
             <Badge variant="success" size="sm">{tOrg("scannerReadyBadge") || "Gate Scanner Ready"}</Badge>
           </div>
-          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground mt-1">
-            {tOrg("scannerTitle") || "Door Staff QR Check-In Console"}
-          </h1>
-          <p className="text-xs text-muted-foreground mt-0.5">
+          <p className="text-xs text-muted-foreground mt-1">
             {tOrg("scannerSubtitle") || "Validate attendee digital passes using HMAC-SHA256 signature verification, double-scan detection, and live perk unlocks."}
           </p>
         </div>

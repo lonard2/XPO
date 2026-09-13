@@ -114,11 +114,13 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
   const [cameraActive, setCameraActive] = React.useState(false);
   const [cameraError, setCameraError] = React.useState<string | null>(null);
   const streamRef = React.useRef<MediaStream | null>(null);
+  const isMountedRef = React.useRef(true);
+  const audioCtxRef = React.useRef<AudioContext | null>(null);
 
   // In-flight verification mutex
   const isVerifyingRef = React.useRef(false);
 
-  // Start Camera Stream
+  // Start Camera Stream with unmount race-condition protection
   const startCamera = React.useCallback(async () => {
     setCameraError(null);
     if (typeof navigator === "undefined" || !navigator.mediaDevices?.getUserMedia) {
@@ -136,6 +138,11 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
         audio: false,
       });
 
+      if (!isMountedRef.current) {
+        stream.getTracks().forEach((t) => t.stop());
+        return;
+      }
+
       streamRef.current = stream;
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
@@ -143,6 +150,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
       }
       setCameraActive(true);
     } catch (err: any) {
+      if (!isMountedRef.current) return;
       setCameraActive(false);
       if (err.name === "NotAllowedError" || err.name === "PermissionDeniedError") {
         setCameraError("Camera access denied. Please grant camera permission or use manual code entry.");
@@ -164,6 +172,21 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
   }, []);
 
   React.useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((t) => t.stop());
+        streamRef.current = null;
+      }
+      if (audioCtxRef.current && audioCtxRef.current.state !== "closed") {
+        audioCtxRef.current.close().catch(() => {});
+        audioCtxRef.current = null;
+      }
+    };
+  }, []);
+
+  React.useEffect(() => {
     if (inputMode === "camera") {
       startCamera();
     } else {
@@ -174,14 +197,21 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
     };
   }, [inputMode, startCamera, stopCamera]);
 
-  // Audio chime synthesis using Web Audio API
+  // Audio chime synthesis using Web Audio API singleton
   const playSound = React.useCallback(
     (type: "success" | "warning" | "error") => {
       if (!soundEnabled || typeof window === "undefined") return;
       try {
-        const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
-        if (!AudioContext) return;
-        const ctx = new AudioContext();
+        const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+        if (!AudioContextClass) return;
+
+        if (!audioCtxRef.current || audioCtxRef.current.state === "closed") {
+          audioCtxRef.current = new AudioContextClass();
+        }
+        const ctx = audioCtxRef.current;
+        if (ctx.state === "suspended") {
+          ctx.resume().catch(() => {});
+        }
 
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
@@ -396,7 +426,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
         </Card>
         <Card className="p-3.5 border-border bg-card text-center shadow-xs">
           <div className="text-xs uppercase font-semibold text-muted-foreground">{tOrg("scannerDoubleBlocked") || "Double Scans Blocked"}</div>
-          <div className="text-xl font-bold text-amber-500 mt-0.5">{doubleScansCount}</div>
+          <div className="text-xl font-bold text-amber-700 dark:text-amber-400 mt-0.5">{doubleScansCount}</div>
         </Card>
         <Card className="p-3.5 border-border bg-card text-center shadow-xs">
           <div className="text-xs uppercase font-semibold text-muted-foreground">{tOrg("scannerFraudBlocked") || "Invalid / Fraud Blocked"}</div>
@@ -409,20 +439,20 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
         <div className="lg:col-span-7 space-y-4">
           <Card className="p-5 border-border bg-card space-y-4 shadow-sm">
             {/* Mode Switcher & Audio Toggle */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-2">
               <div className="flex items-center bg-muted/60 p-1 rounded-lg border border-border/60 gap-1">
                 <button
                   type="button"
                   aria-pressed={inputMode === "camera"}
                   onClick={() => setInputMode("camera")}
                   className={cn(
-                    "px-3 py-1.5 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
+                    "min-h-[44px] px-3.5 py-2 rounded-md text-xs font-semibold flex items-center gap-2 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
                     inputMode === "camera"
                       ? "bg-card text-foreground shadow-xs"
                       : "text-muted-foreground hover:text-foreground"
                   )}
                 >
-                  <Camera className="h-3.5 w-3.5" />
+                  <Camera className="h-4 w-4" />
                   <span>{tOrg("cameraMode") || "Camera Stream"}</span>
                 </button>
 
@@ -431,13 +461,13 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   aria-pressed={inputMode === "manual"}
                   onClick={() => setInputMode("manual")}
                   className={cn(
-                    "px-3 py-1.5 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
+                    "min-h-[44px] px-3.5 py-2 rounded-md text-xs font-semibold flex items-center gap-2 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
                     inputMode === "manual"
                       ? "bg-card text-foreground shadow-xs"
                       : "text-muted-foreground hover:text-foreground"
                   )}
                 >
-                  <Search className="h-3.5 w-3.5" />
+                  <Search className="h-4 w-4" />
                   <span>{tOrg("manualMode") || "Manual Hash Input"}</span>
                 </button>
               </div>
@@ -445,7 +475,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-8 px-2.5 text-xs gap-1.5 cursor-pointer"
+                className="min-h-[44px] min-w-[44px] px-3 text-xs gap-1.5 cursor-pointer"
                 onClick={() => setSoundEnabled(!soundEnabled)}
                 aria-label="Toggle audio feedback"
               >
@@ -489,9 +519,9 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                           variant="outline"
                           size="sm"
                           onClick={startCamera}
-                          className="h-8 text-xs border-white/20 text-white hover:bg-white/10 gap-1.5"
+                          className="min-h-[44px] text-xs px-3.5 border-white/20 text-white hover:bg-white/10 gap-1.5 cursor-pointer"
                         >
-                          <RefreshCw className="h-3 w-3" />
+                          <RefreshCw className="h-3.5 w-3.5" />
                           <span>Retry Sensor</span>
                         </Button>
                         <Button
@@ -499,7 +529,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                           variant="primary"
                           size="sm"
                           onClick={() => setInputMode("manual")}
-                          className="h-8 text-xs"
+                          className="min-h-[44px] text-xs px-4 cursor-pointer"
                         >
                           Type Code by Keyboard
                         </Button>
@@ -582,7 +612,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   size="sm"
                   onClick={simulateValidStandardPass}
                   disabled={isVerifying}
-                  className="text-xs h-8 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10 cursor-pointer"
+                  className="text-xs min-h-[44px] py-2 px-2.5 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10 cursor-pointer"
                 >
                   {tOrg("scannerValidPass") || "Valid Pass"}
                 </Button>
@@ -593,7 +623,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   size="sm"
                   onClick={simulateValidVipPass}
                   disabled={isVerifying}
-                  className="text-xs h-8 border-primary/30 text-primary hover:bg-primary/10 cursor-pointer"
+                  className="text-xs min-h-[44px] py-2 px-2.5 border-primary/30 text-primary hover:bg-primary/10 cursor-pointer"
                 >
                   {tOrg("scannerVipPass") || "VIP Delegate"}
                 </Button>
@@ -604,7 +634,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   size="sm"
                   onClick={simulateDoubleScan}
                   disabled={isVerifying}
-                  className="text-xs h-8 border-amber-500/30 text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 cursor-pointer"
+                  className="text-xs min-h-[44px] py-2 px-2.5 border-amber-500/30 text-amber-700 dark:text-amber-400 hover:bg-amber-500/10 cursor-pointer"
                 >
                   {tOrg("scannerDoubleScan") || "Double Scan"}
                 </Button>
@@ -615,7 +645,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   size="sm"
                   onClick={simulateTamperedSignature}
                   disabled={isVerifying}
-                  className="text-xs h-8 border-rose-500/30 text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 cursor-pointer"
+                  className="text-xs min-h-[44px] py-2 px-2.5 border-rose-500/30 text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 cursor-pointer"
                 >
                   {tOrg("scannerFraudTamper") || "Fraud / Tamper"}
                 </Button>
@@ -625,7 +655,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
         </div>
 
         {/* RIGHT COLUMN: REAL-TIME VERIFICATION FEEDBACK (5 cols) */}
-        <div className="lg:col-span-5 space-y-4">
+        <div className="lg:col-span-5 space-y-4" aria-live="assertive" role="status" aria-atomic="true">
           {/* Active Result Card */}
           {lastResult ? (
             <Card
