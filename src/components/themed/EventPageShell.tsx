@@ -99,7 +99,6 @@ export function EventPageShell({
   booths = [],
 }: EventPageShellProps) {
   const [isCopied, setIsCopied] = React.useState(false);
-  const [scrolledPastHero, setScrolledPastHero] = React.useState(false);
   const [checkoutDrawerOpen, setCheckoutDrawerOpen] = React.useState(false);
   const [activeTab, setActiveTab] = React.useState<"overview" | "agenda" | "floorMap" | "tickets">("overview");
 
@@ -120,19 +119,6 @@ export function EventPageShell({
   const tokens = getArchetypeTokens(safeArchetype, resolvedBranding);
   const cssVariables = getArchetypeCssVariables(safeArchetype, resolvedBranding);
   const archetypeMeta = ARCHETYPE_METAS[safeArchetype] || ARCHETYPE_METAS.INDUSTRIAL_B2B;
-
-  // Track scroll for sticky mobile action visibility
-  React.useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 350) {
-        setScrolledPastHero(true);
-      } else {
-        setScrolledPastHero(false);
-      }
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const handleShare = async () => {
     if (typeof window !== "undefined") {
@@ -311,9 +297,9 @@ export function EventPageShell({
             <div className="flex items-center gap-3 bg-white/5 rounded-lg p-3 border border-white/10">
               <Building2 className="h-5 w-5 text-[var(--archetype-accent)] shrink-0" aria-hidden="true" />
               <div>
-                <p className="text-xs uppercase tracking-wider text-slate-400 font-semibold">Hall / Wing</p>
+                <p className="text-xs uppercase tracking-wider text-slate-400 font-semibold">{tEvents("hallOrWing") || "Hall / Wing"}</p>
                 <p className="font-semibold text-white truncate max-w-[180px]">
-                  {venue.hallName || "Main Exhibition Halls"}
+                  {venue.hallName || tEvents("hallDefault") || "Main Exhibition Halls"}
                 </p>
               </div>
             </div>
@@ -368,7 +354,7 @@ export function EventPageShell({
                 type="button"
                 onClick={() => setActiveTab("overview")}
                 className={cn(
-                  "flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[40px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
+                  "flex items-center gap-2 px-3.5 py-2.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[44px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
                   activeTab === "overview"
                     ? "bg-white/20 text-white shadow-xs border border-white/30"
                     : "text-slate-300 hover:text-white hover:bg-white/10"
@@ -383,7 +369,7 @@ export function EventPageShell({
                 type="button"
                 onClick={() => setActiveTab("agenda")}
                 className={cn(
-                  "flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[40px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
+                  "flex items-center gap-2 px-3.5 py-2.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[44px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
                   activeTab === "agenda"
                     ? "bg-white/20 text-white shadow-xs border border-white/30"
                     : "text-slate-300 hover:text-white hover:bg-white/10"
@@ -403,7 +389,7 @@ export function EventPageShell({
                 type="button"
                 onClick={() => setActiveTab("floorMap")}
                 className={cn(
-                  "flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[40px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
+                  "flex items-center gap-2 px-3.5 py-2.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[44px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
                   activeTab === "floorMap"
                     ? "bg-white/20 text-white shadow-xs border border-white/30"
                     : "text-slate-300 hover:text-white hover:bg-white/10"
@@ -423,7 +409,7 @@ export function EventPageShell({
                 type="button"
                 onClick={() => setActiveTab("tickets")}
                 className={cn(
-                  "flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[40px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
+                  "flex items-center gap-2 px-3.5 py-2.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[44px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
                   activeTab === "tickets"
                     ? "bg-white/20 text-white shadow-xs border border-white/30"
                     : "text-slate-300 hover:text-white hover:bg-white/10"
@@ -481,32 +467,34 @@ export function EventPageShell({
                       <Card
                         key={tier.id}
                         className={cn(
-                          "flex flex-col justify-between border-border/80 bg-card p-5 sm:p-6 transition-all duration-300 shadow-sm",
+                          "flex flex-col justify-between h-full border-border/80 bg-card p-5 sm:p-6 transition-all duration-300 shadow-sm",
                           isSoldOut
                             ? "opacity-60 grayscale-[40%]"
                             : "hover:border-primary/50 hover:shadow-md"
                         )}
                       >
-                        <div className="space-y-4">
-                          <div className="flex items-start justify-between gap-2">
-                            <div>
-                              <Badge
-                                variant={tier.tier === "VIP" ? "default" : tier.tier === "EXHIBITOR" ? "secondary" : "outline"}
-                                className="text-xs font-bold uppercase mb-2"
-                              >
-                                {tier.tier}
-                              </Badge>
-                              <h3 className="text-lg font-bold text-foreground">{tier.name}</h3>
+                        <div className="space-y-4 flex-1 flex flex-col justify-between">
+                          <div>
+                            <div className="flex items-start justify-between gap-2">
+                              <div>
+                                <Badge
+                                  variant={tier.tier === "VIP" ? "default" : tier.tier === "EXHIBITOR" ? "secondary" : "outline"}
+                                  className="text-xs font-bold uppercase mb-2"
+                                >
+                                  {tier.tier}
+                                </Badge>
+                                <h3 className="text-lg font-bold text-foreground">{tier.name}</h3>
+                              </div>
+                              <span className="text-lg font-extrabold text-foreground">{priceFormatted}</span>
                             </div>
-                            <span className="text-lg font-extrabold text-foreground">{priceFormatted}</span>
+
+                            {tier.description && (
+                              <p className="text-xs text-muted-foreground leading-relaxed mt-2">{tier.description}</p>
+                            )}
                           </div>
 
-                          {tier.description && (
-                            <p className="text-xs text-muted-foreground leading-relaxed">{tier.description}</p>
-                          )}
-
                           {tier.perks && tier.perks.length > 0 && (
-                            <div className="space-y-2 pt-2 border-t border-border/60">
+                            <div className="space-y-2 pt-3 mt-3 border-t border-border/60">
                               <span className="text-xs font-semibold text-foreground block">
                                 {tTickets("benefits") || "Included Benefits"}:
                               </span>
@@ -545,23 +533,76 @@ export function EventPageShell({
         {/* Tab 2: Agenda & Timetable Guidebook */}
         {activeTab === "agenda" && (
           <div className="space-y-6">
-            <InteractiveGuidebook
-              agendaItems={agendaItems}
-              eventTitle={title}
-              locale={locale}
-            />
+            {agendaItems && agendaItems.length > 0 ? (
+              <InteractiveGuidebook
+                agendaItems={agendaItems}
+                eventTitle={title}
+                locale={locale}
+              />
+            ) : (
+              <div className="p-8 sm:p-12 text-center rounded-2xl border border-dashed border-border max-w-lg mx-auto space-y-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary mx-auto">
+                  <Clock className="h-6 w-6" />
+                </div>
+                <div className="space-y-1">
+                  <h3 className="text-base font-bold text-foreground">
+                    {tEvents("noAgendaPublished") || "Timetable in preparation"}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
+                    {tEvents("noAgendaPublishedDesc") || "The detailed session schedule and speaker tracks will be announced closer to the event opening."}
+                  </p>
+                </div>
+                {ticketTiers && ticketTiers.length > 0 && (
+                  <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setActiveTab("tickets")}
+                      className="text-xs font-semibold gap-1.5 min-h-[40px] cursor-pointer"
+                    >
+                      <Ticket className="h-3.5 w-3.5" />
+                      <span>{tEvents("checkPassTiers") || "View Pass Tiers"}</span>
+                    </Button>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
 
         {/* Tab 3: Floor Map & Booths */}
         {activeTab === "floorMap" && (
           <div className="space-y-6">
-            <HallFloorMap
-              booths={booths}
-              venueName={venue.name}
-              hallName={venue.hallName}
-              locale={locale}
-            />
+            {booths && booths.length > 0 ? (
+              <HallFloorMap
+                booths={booths}
+                venueName={venue.name}
+                hallName={venue.hallName}
+                locale={locale}
+              />
+            ) : (
+              <div className="p-8 sm:p-12 text-center rounded-2xl border border-dashed border-border max-w-lg mx-auto space-y-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary mx-auto">
+                  <MapIcon className="h-6 w-6" />
+                </div>
+                <div className="space-y-1">
+                  <h3 className="text-base font-bold text-foreground">
+                    {tEvents("noBoothsPublished") || "Floor plan in preparation"}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
+                    {tEvents("noBoothsPublishedDesc") || "Exhibitor booth allocations and hall layouts are currently being mapped."}
+                  </p>
+                </div>
+                <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
+                  <Link href={`/${locale}/venues/${venue.slug}`}>
+                    <Button variant="outline" size="sm" className="text-xs font-semibold gap-1.5 min-h-[40px]">
+                      <Building2 className="h-3.5 w-3.5" />
+                      <span>{tEvents("exploreVenueDetails") || "Explore Venue Details"}</span>
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -597,32 +638,34 @@ export function EventPageShell({
                     <Card
                       key={tier.id}
                       className={cn(
-                        "flex flex-col justify-between border-border/80 bg-card p-5 sm:p-6 transition-all duration-300 shadow-sm",
+                        "flex flex-col justify-between h-full border-border/80 bg-card p-5 sm:p-6 transition-all duration-300 shadow-sm",
                         isSoldOut
                           ? "opacity-60 grayscale-[40%]"
                           : "hover:border-primary/50 hover:shadow-md"
                       )}
                     >
-                      <div className="space-y-4">
-                        <div className="flex items-start justify-between gap-2">
-                          <div>
-                            <Badge
-                              variant={tier.tier === "VIP" ? "default" : tier.tier === "EXHIBITOR" ? "secondary" : "outline"}
-                              className="text-xs font-bold uppercase mb-2"
-                            >
-                              {tier.tier}
-                            </Badge>
-                            <h3 className="text-lg font-bold text-foreground">{tier.name}</h3>
+                      <div className="space-y-4 flex-1 flex flex-col justify-between">
+                        <div>
+                          <div className="flex items-start justify-between gap-2">
+                            <div>
+                              <Badge
+                                variant={tier.tier === "VIP" ? "default" : tier.tier === "EXHIBITOR" ? "secondary" : "outline"}
+                                className="text-xs font-bold uppercase mb-2"
+                              >
+                                {tier.tier}
+                              </Badge>
+                              <h3 className="text-lg font-bold text-foreground">{tier.name}</h3>
+                            </div>
+                            <span className="text-lg font-extrabold text-foreground">{priceFormatted}</span>
                           </div>
-                          <span className="text-lg font-extrabold text-foreground">{priceFormatted}</span>
+
+                          {tier.description && (
+                            <p className="text-xs text-muted-foreground leading-relaxed mt-2">{tier.description}</p>
+                          )}
                         </div>
 
-                        {tier.description && (
-                          <p className="text-xs text-muted-foreground leading-relaxed">{tier.description}</p>
-                        )}
-
                         {tier.perks && tier.perks.length > 0 && (
-                          <div className="space-y-2 pt-2 border-t border-border/60">
+                          <div className="space-y-2 pt-3 mt-3 border-t border-border/60">
                             <span className="text-xs font-semibold text-foreground block">
                               {tTickets("benefits") || "Included Benefits"}:
                             </span>
@@ -654,8 +697,26 @@ export function EventPageShell({
                 })}
               </div>
             ) : (
-              <div className="p-8 text-center rounded-xl border border-dashed border-border text-muted-foreground">
-                <p className="text-sm">Pass details are currently being finalized by the event organizer.</p>
+              <div className="p-8 sm:p-12 text-center rounded-2xl border border-dashed border-border max-w-lg mx-auto space-y-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary mx-auto">
+                  <Ticket className="h-6 w-6" />
+                </div>
+                <div className="space-y-1">
+                  <h3 className="text-base font-bold text-foreground">
+                    {tEvents("noPassesPublished") || "Pass details in preparation"}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
+                    {tEvents("noPassesPublishedDesc") || "Pass allocations and pricing tiers will be published once finalized by the organizer."}
+                  </p>
+                </div>
+                <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
+                  <Link href={`/${locale}/venues/${venue.slug}`}>
+                    <Button variant="outline" size="sm" className="text-xs font-semibold gap-1.5 min-h-[40px]">
+                      <Building2 className="h-3.5 w-3.5" />
+                      <span>{tEvents("exploreVenueDetails") || "Explore Venue Details"}</span>
+                    </Button>
+                  </Link>
+                </div>
               </div>
             )}
           </div>

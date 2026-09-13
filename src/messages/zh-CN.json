@@ -312,7 +312,17 @@
     "submitRfq": "提交采购询价（RFQ）",
     "browseBooths": "查看展商展位",
     "dealRoomTitle": "B2B商谈室对接",
-    "dealRoomDesc": "认证买家与采购高管可享专属商务贵宾室服务。"
+    "dealRoomDesc": "认证买家与采购高管可享专属商务贵宾室服务。",
+    "hallOrWing": "展厅 / 展翼",
+    "hallDefault": "主展厅区域",
+    "noPassesPublished": "入场通行证详情筹备中",
+    "noPassesPublishedDesc": "通行证配额与票价层级将在主办方确认后正式发布。",
+    "noAgendaPublished": "日程时间表筹备中",
+    "noAgendaPublishedDesc": "详细会议议程与演讲嘉宾排期将在临近开展前公布。",
+    "noBoothsPublished": "展位平面图筹备中",
+    "noBoothsPublishedDesc": "参展商展位划分与展馆平面布局目前正在规划中。",
+    "checkPassTiers": "查看通行证层级",
+    "exploreVenueDetails": "查看展馆详情"
   },
   "venues": {
     "title": "会展中心与展厅名录",

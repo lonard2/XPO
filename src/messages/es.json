@@ -312,7 +312,17 @@
     "submitRfq": "Solicitar Cotización (RFQ)",
     "browseBooths": "Ver Stands de Expositores",
     "dealRoomTitle": "Salas de Negociación B2B",
-    "dealRoomDesc": "Los compradores verificados y directores de compras disponen de acceso a salas VIP."
+    "dealRoomDesc": "Los compradores verificados y directores de compras disponen de acceso a salas VIP.",
+    "hallOrWing": "Pabellón / Ala",
+    "hallDefault": "Pabellones Principales",
+    "noPassesPublished": "Detalles de pases en preparación",
+    "noPassesPublishedDesc": "La asignación de pases y niveles de precios se publicarán una vez finalizados por el organizador.",
+    "noAgendaPublished": "Horario en preparación",
+    "noAgendaPublishedDesc": "El programa detallado de sesiones y ponentes se anunciará más cerca de la inauguración.",
+    "noBoothsPublished": "Plano de planta en preparación",
+    "noBoothsPublishedDesc": "Las ubicaciones de stands y la distribución de pabellones se están definiendo actualmente.",
+    "checkPassTiers": "Ver Categorías de Pases",
+    "exploreVenueDetails": "Explorar Detalles del Recinto"
   },
   "venues": {
     "title": "Recintos Feriales y Directorio de Pabellones",

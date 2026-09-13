@@ -312,7 +312,17 @@
     "submitRfq": "Angebotsanfrage (RFQ) stellen",
     "browseBooths": "Ausstellerstände ansehen",
     "dealRoomTitle": "B2B-Verhandlungsräume",
-    "dealRoomDesc": "Verifizierte Facheinkäufer erhalten exklusiven Zugang zur Business Lounge."
+    "dealRoomDesc": "Verifizierte Facheinkäufer erhalten exklusiven Zugang zur Business Lounge.",
+    "hallOrWing": "Halle / Flügel",
+    "hallDefault": "Hauptausstellungshallen",
+    "noPassesPublished": "Passdetails in Vorbereitung",
+    "noPassesPublishedDesc": "Ticketkontingente und Preiskategorien werden nach Fertigstellung durch den Veranstalter veröffentlicht.",
+    "noAgendaPublished": "Zeitplan in Vorbereitung",
+    "noAgendaPublishedDesc": "Das detaillierte Sitzungsprogramm und die Referenten werden kurz vor Beginn bekanntgegeben.",
+    "noBoothsPublished": "Hallenplan in Vorbereitung",
+    "noBoothsPublishedDesc": "Ausstellerstände und Hallenpläne werden derzeit vom Veranstalter kartiert.",
+    "checkPassTiers": "Pass-Kategorien ansehen",
+    "exploreVenueDetails": "Veranstaltungsort erkunden"
   },
   "venues": {
     "title": "Kongresszentren & Hallenverzeichnis",

@@ -312,7 +312,17 @@
     "submitRfq": "Submit RFQ / Tender",
     "browseBooths": "Browse Exhibitor Booths",
     "dealRoomTitle": "B2B Deal-Room Facilitation",
-    "dealRoomDesc": "Verified buyers and procurement executives receive trade lounge access."
+    "dealRoomDesc": "Verified buyers and procurement executives receive trade lounge access.",
+    "hallOrWing": "Hall / Wing",
+    "hallDefault": "Main Exhibition Halls",
+    "noPassesPublished": "Pass details in preparation",
+    "noPassesPublishedDesc": "Pass allocations and pricing tiers will be published once finalized by the organizer.",
+    "noAgendaPublished": "Timetable in preparation",
+    "noAgendaPublishedDesc": "The detailed session schedule and speaker tracks will be announced closer to the event opening.",
+    "noBoothsPublished": "Floor plan in preparation",
+    "noBoothsPublishedDesc": "Exhibitor booth allocations and hall layouts are currently being mapped.",
+    "checkPassTiers": "View Pass Tiers",
+    "exploreVenueDetails": "Explore Venue Details"
   },
   "venues": {
     "title": "Convention Centers & Hall Directory",

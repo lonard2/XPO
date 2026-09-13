@@ -312,7 +312,17 @@
     "submitRfq": "見積依頼（RFQ）を送信",
     "browseBooths": "出展ブース一覧を見る",
     "dealRoomTitle": "B2B商談ルーム案内",
-    "dealRoomDesc": "認証済みバイヤーおよび調達担当者は専用ビジネスラウンジをご利用いただけます。"
+    "dealRoomDesc": "認証済みバイヤーおよび調達担当者は専用ビジネスラウンジをご利用いただけます。",
+    "hallOrWing": "ホール / 展示棟",
+    "hallDefault": "メイン展示ホール",
+    "noPassesPublished": "パス詳細は準備中です",
+    "noPassesPublishedDesc": "パスの種類および料金設定は主催者による確定後に公開されます。",
+    "noAgendaPublished": "タイムテーブルは準備中です",
+    "noAgendaPublishedDesc": "詳細なセッションスケジュールと登壇者情報は開催直前に公開されます。",
+    "noBoothsPublished": "フロアマップは準備中です",
+    "noBoothsPublishedDesc": "出展ブースの配置およびホール構成は現在調整中です。",
+    "checkPassTiers": "パスカテゴリを見る",
+    "exploreVenueDetails": "会場詳細を見る"
   },
   "venues": {
     "title": "コンベンションセンター＆ホール一覧",

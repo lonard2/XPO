@@ -312,7 +312,17 @@
     "submitRfq": "Kirim Permintaan Tender (RFQ)",
     "browseBooths": "Lihat Stan Eksibitor",
     "dealRoomTitle": "Fasilitasi Ruang Kesepakatan B2B",
-    "dealRoomDesc": "Pembeli terverifikasi dan eksekutif pengadaan mendapatkan akses lounge bisnis eksklusif."
+    "dealRoomDesc": "Pembeli terverifikasi dan eksekutif pengadaan mendapatkan akses lounge bisnis eksklusif.",
+    "hallOrWing": "Aula / Sayap",
+    "hallDefault": "Kompleks Aula Utama",
+    "noPassesPublished": "Rincian tiket sedang disiapkan",
+    "noPassesPublishedDesc": "Alokasi tiket dan tingkatan harga akan diumumkan setelah difinalisasi oleh penyelenggara.",
+    "noAgendaPublished": "Jadwal acara sedang disiapkan",
+    "noAgendaPublishedDesc": "Jadwal sesi lengkap dan daftar pembicara akan diumumkan menjelang hari pembukaan acara.",
+    "noBoothsPublished": "Denah lantai sedang disiapkan",
+    "noBoothsPublishedDesc": "Penempatan stan pameran dan denah aula saat ini sedang dipetakan.",
+    "checkPassTiers": "Lihat Kategori Tiket",
+    "exploreVenueDetails": "Jelajahi Rincian Lokasi"
   },
   "venues": {
     "title": "Pusat Konvensi & Direktori Hall",
