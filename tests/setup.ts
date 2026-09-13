@@ -11,9 +11,15 @@ vi.mock("next-intl", () => {
       };
       const nsMessages = namespace ? (enMessages as any)[namespace] || {} : enMessages;
 
-      const t = (key: string) => {
-        const val = getNested(nsMessages, key);
-        return val !== undefined ? val : key;
+      const t = (key: string, values?: Record<string, any>) => {
+        let val = getNested(nsMessages, key);
+        if (val === undefined) return key;
+        if (typeof val === "string" && values) {
+          Object.entries(values).forEach(([k, v]) => {
+            val = (val as string).replace(new RegExp(`\\{${k}\\}`, "g"), String(v));
+          });
+        }
+        return val;
       };
       t.raw = (key: string) => {
         const val = getNested(nsMessages, key);

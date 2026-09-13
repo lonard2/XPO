@@ -44,7 +44,7 @@ export function VenueSpotlightCard({
   return (
     <Card
       className={cn(
-        'group relative flex flex-col justify-between overflow-hidden border-border/80 bg-card transition-all duration-300 hover:border-primary/50 hover:shadow-xl hover:-translate-y-1',
+        'group relative flex flex-col justify-between h-full overflow-hidden border-border/80 bg-card transition-all duration-300 hover:border-primary/50 hover:shadow-xl hover:-translate-y-1',
         className
       )}
     >
@@ -77,7 +77,7 @@ export function VenueSpotlightCard({
         <div className="absolute bottom-2.5 right-2.5 z-10">
           <Badge variant="outline" className="text-xs font-semibold bg-background/90 backdrop-blur-xs">
             <Layers className="h-3.5 w-3.5 mr-1 inline text-primary" />
-            {hallCount > 0 ? `${hallCount} Halls` : 'Multi-Hall Complex'}
+            {hallCount > 0 ? (tVen('hallsCount', { count: hallCount }) || `${hallCount} Halls`) : (tVen('multiHallComplex') || 'Multi-Hall Complex')}
           </Badge>
         </div>
       </div>
@@ -104,22 +104,22 @@ export function VenueSpotlightCard({
           {/* Capacity and Specs Grid */}
           <div className="grid grid-cols-2 gap-2 rounded-xl bg-muted/40 p-2.5 text-xs">
             <div className="flex flex-col">
-              <span className="text-muted-foreground text-[11px] uppercase font-medium">
+              <span className="text-muted-foreground text-xs uppercase font-medium">
                 {tReg('capacity') || 'Capacity'}
               </span>
               <span className="font-bold text-foreground flex items-center gap-1 mt-0.5">
                 <Users className="h-3.5 w-3.5 text-primary" />
-                {calculatedCapacity > 0 ? `${calculatedCapacity.toLocaleString()} Pax` : 'Campus Scale'}
+                {calculatedCapacity > 0 ? `${calculatedCapacity.toLocaleString()} Pax` : (tVen('campusScale') || 'Campus Scale')}
               </span>
             </div>
 
             <div className="flex flex-col">
-              <span className="text-muted-foreground text-[11px] uppercase font-medium">
+              <span className="text-muted-foreground text-xs uppercase font-medium">
                 {tVen('grossSpace') || 'Floor Area'}
               </span>
               <span className="font-bold text-foreground flex items-center gap-1 mt-0.5">
                 <Layers className="h-3.5 w-3.5 text-primary" />
-                {calculatedFloorArea > 0 ? `${calculatedFloorArea.toLocaleString()} sqm` : 'Multi-Hall Layout'}
+                {calculatedFloorArea > 0 ? `${calculatedFloorArea.toLocaleString()} sqm` : (tVen('multiHallLayout') || 'Multi-Hall Layout')}
               </span>
             </div>
           </div>

@@ -143,21 +143,21 @@ export function VenueDirectoryExplorer({
       }
     };
 
-    checkRegion((c) => c === 'id', 'id', 'Indonesia');
-    checkRegion((c) => c === 'jp', 'jp', 'Japan');
-    checkRegion((c) => ['gl', 'global'].includes(c), 'global', 'Global Gateways');
+    checkRegion((c) => c === 'id', 'id', tReg('id.name') || 'Indonesia');
+    checkRegion((c) => c === 'jp', 'jp', tReg('jp.name') || 'Japan');
+    checkRegion((c) => ['gl', 'global'].includes(c), 'global', tReg('global.name') || 'Global Gateways');
 
     return otherMatches;
-  }, [venues, filteredVenues.length, searchQuery, selectedRegion]);
+  }, [venues, filteredVenues.length, searchQuery, selectedRegion, tReg]);
 
   const regionDisplayName =
     selectedRegion === 'id'
-      ? 'Indonesia'
+      ? (tReg('id.name') || 'Indonesia')
       : selectedRegion === 'jp'
-      ? 'Japan'
+      ? (tReg('jp.name') || 'Japan')
       : selectedRegion === 'global'
-      ? 'Global Gateways'
-      : 'All Regions';
+      ? (tReg('global.name') || 'Global Gateways')
+      : (tVen('allRegions') || tCom('all') || 'All Regions');
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -170,14 +170,14 @@ export function VenueDirectoryExplorer({
               type="button"
               onClick={() => handleSelectRegion('all')}
               className={cn(
-                'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5',
+                'min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5',
                 selectedRegion === 'all'
                   ? 'bg-card text-foreground shadow-xs'
                   : 'text-muted-foreground hover:text-foreground'
               )}
             >
               <Globe2 className="h-3.5 w-3.5" />
-              <span>All Regions</span>
+              <span>{tVen('allRegions') || 'All Regions'}</span>
               <span className="text-xs font-mono opacity-80 px-1.5 py-0.5 rounded bg-muted">
                 {venues.length}
               </span>
@@ -187,13 +187,13 @@ export function VenueDirectoryExplorer({
               type="button"
               onClick={() => handleSelectRegion('id')}
               className={cn(
-                'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5',
+                'min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5',
                 selectedRegion === 'id'
                   ? 'bg-card text-foreground shadow-xs'
                   : 'text-muted-foreground hover:text-foreground'
               )}
             >
-              <span>Indonesia (ID)</span>
+              <span>{tReg('id.name') || 'Indonesia'} (ID)</span>
               <span className="text-xs font-mono opacity-80 px-1.5 py-0.5 rounded bg-muted">
                 {indonesianCount}
               </span>
@@ -203,13 +203,13 @@ export function VenueDirectoryExplorer({
               type="button"
               onClick={() => handleSelectRegion('jp')}
               className={cn(
-                'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5',
+                'min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5',
                 selectedRegion === 'jp'
                   ? 'bg-card text-foreground shadow-xs'
                   : 'text-muted-foreground hover:text-foreground'
               )}
             >
-              <span>Japan (JP)</span>
+              <span>{tReg('jp.name') || 'Japan'} (JP)</span>
               <span className="text-xs font-mono opacity-80 px-1.5 py-0.5 rounded bg-muted">
                 {japanCount}
               </span>
@@ -219,13 +219,13 @@ export function VenueDirectoryExplorer({
               type="button"
               onClick={() => handleSelectRegion('global')}
               className={cn(
-                'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5',
+                'min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5',
                 selectedRegion === 'global'
                   ? 'bg-card text-foreground shadow-xs'
                   : 'text-muted-foreground hover:text-foreground'
               )}
             >
-              <span>Global Gateways</span>
+              <span>{tReg('global.name') || 'Global Gateways'}</span>
               <span className="text-xs font-mono opacity-80 px-1.5 py-0.5 rounded bg-muted">
                 {globalCount}
               </span>
@@ -236,8 +236,8 @@ export function VenueDirectoryExplorer({
           <div className="flex flex-col sm:flex-row items-center gap-2.5">
             <div className="relative w-full sm:w-72">
               <Input
-                aria-label="Search venues, cities, or halls"
-                placeholder="Search venue, city, or hall..."
+                aria-label={tVen('searchVenuesPlaceholder') || 'Search venues, cities, or halls'}
+                placeholder={tVen('searchVenuesPlaceholder') || 'Search venue, city, or hall...'}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 iconPrefix={<Search className="h-4 w-4 text-muted-foreground" />}
@@ -247,8 +247,8 @@ export function VenueDirectoryExplorer({
                 <button
                   type="button"
                   onClick={() => setSearchQuery('')}
-                  aria-label="Clear search"
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-1"
+                  aria-label={tCom('clear') || 'Clear search'}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-1 cursor-pointer"
                 >
                   <X className="h-3.5 w-3.5" />
                 </button>
@@ -258,7 +258,7 @@ export function VenueDirectoryExplorer({
             {/* MICE Sort Selector */}
             <div className="flex items-center gap-1.5 w-full sm:w-auto">
               <label htmlFor="venue-sort" className="sr-only">
-                Sort venues by
+                {tVen('sortBy') || 'Sort venues by'}
               </label>
               <select
                 id="venue-sort"
@@ -266,9 +266,9 @@ export function VenueDirectoryExplorer({
                 onChange={(e) => setSortBy(e.target.value as any)}
                 className="h-10 px-3 rounded-xl border border-border/80 bg-background text-xs font-medium text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
               >
-                <option value="alpha">Alphabetical (A - Z)</option>
-                <option value="capacity">Largest Capacity (Pax)</option>
-                <option value="area">Largest Floor Space (m²)</option>
+                <option value="alpha">{tVen('sortAlphabetical') || 'Alphabetical (A - Z)'}</option>
+                <option value="capacity">{tVen('sortCapacity') || 'Largest Capacity (Pax)'}</option>
+                <option value="area">{tVen('sortFloorArea') || 'Largest Floor Space (sqm)'}</option>
               </select>
             </div>
           </div>
@@ -278,10 +278,10 @@ export function VenueDirectoryExplorer({
         <div className="flex items-center justify-between border-t border-border/60 pt-3 text-xs text-muted-foreground">
           <div className="flex items-center gap-2">
             <span>
-              Showing <strong className="text-foreground">{filteredVenues.length}</strong> of{' '}
-              <strong className="text-foreground">{venues.length}</strong> verified convention complexes
+              {tVen('showing') || 'Showing'} <strong className="text-foreground">{filteredVenues.length}</strong> {tVen('of') || 'of'}{' '}
+              <strong className="text-foreground">{venues.length}</strong> {tVen('verifiedComplexes') || 'verified convention complexes'}
             </span>
-            <Badge variant="outline" className="text-[11px] font-mono">
+            <Badge variant="outline" className="text-xs font-mono">
               {regionDisplayName}
             </Badge>
           </div>
@@ -296,7 +296,7 @@ export function VenueDirectoryExplorer({
               }}
               className="text-primary hover:underline text-xs font-semibold cursor-pointer"
             >
-              Reset all filters
+              {tVen('resetAllFilters') || 'Reset all filters'}
             </button>
           )}
         </div>
@@ -313,9 +313,15 @@ export function VenueDirectoryExplorer({
         <div className="p-12 text-center border border-dashed border-border/80 rounded-3xl bg-card/40 space-y-4">
           <Building2 className="h-12 w-12 text-muted-foreground mx-auto" />
           <div className="space-y-1">
-            <h3 className="text-base font-bold text-foreground">No Venues Found</h3>
+            <h3 className="text-base font-bold text-foreground">{tVen('noVenuesFound') || 'No Venues Found'}</h3>
             <p className="text-xs text-muted-foreground max-w-md mx-auto leading-relaxed">
-              No convention centers in <strong className="text-foreground">{regionDisplayName}</strong> match &ldquo;{searchQuery}&rdquo;.
+              {searchQuery ? (
+                <>
+                  No convention centers in <strong className="text-foreground">{regionDisplayName}</strong> match &ldquo;{searchQuery}&rdquo;.
+                </>
+              ) : (
+                (tVen('noVenuesMatch') || 'No convention centers match your search criteria in this edition.')
+              )}
             </p>
           </div>
 
@@ -323,7 +329,7 @@ export function VenueDirectoryExplorer({
           {otherRegionMatches.length > 0 && (
             <div className="rounded-2xl border border-primary/20 bg-primary/5 p-4 max-w-md mx-auto text-xs space-y-2">
               <span className="font-semibold text-foreground block">
-                Found matching venues in other regional editions:
+                {tVen('foundInOtherRegions') || 'Matching venues found in other regional editions:'}
               </span>
               <div className="flex flex-wrap items-center justify-center gap-2">
                 {otherRegionMatches.map((m) => (
@@ -334,7 +340,7 @@ export function VenueDirectoryExplorer({
                     onClick={() => handleSelectRegion(m.region)}
                     className="text-xs gap-1 cursor-pointer"
                   >
-                    <span>View in {m.regionLabel} ({m.count})</span>
+                    <span>{tVen('viewInRegion') || 'View in'} {m.regionLabel} ({m.count})</span>
                   </Button>
                 ))}
               </div>
@@ -350,7 +356,7 @@ export function VenueDirectoryExplorer({
             }}
             className="text-xs cursor-pointer"
           >
-            {tCom('clear') || 'Reset Filters'}
+            {tVen('resetAllFilters') || tCom('clear') || 'Reset Filters'}
           </Button>
         </div>
       )}
