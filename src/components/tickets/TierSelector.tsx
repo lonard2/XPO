@@ -32,7 +32,11 @@ export function TierSelector({
   compact = false,
 }: TierSelectorProps) {
   return (
-    <div className={cn("space-y-3", compact ? "space-y-2" : "space-y-4")}>
+    <div
+      role="radiogroup"
+      aria-label="Ticket tier options"
+      className={cn("space-y-3", compact ? "space-y-2" : "space-y-4")}
+    >
       {tiers.map((tier) => {
         const isSelected = selectedTierId === tier.id;
         const remaining = Math.max(0, tier.capacity - tier.soldCount);
@@ -54,7 +58,8 @@ export function TierSelector({
           <div
             key={tier.id}
             onClick={() => !isSoldOut && onSelectTier(tier.id)}
-            role="button"
+            role="radio"
+            aria-checked={isSelected}
             tabIndex={isSoldOut ? -1 : 0}
             onKeyDown={(e) => {
               if ((e.key === "Enter" || e.key === " ") && !isSoldOut) {

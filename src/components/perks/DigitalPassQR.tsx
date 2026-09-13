@@ -233,6 +233,8 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
             <div className="relative group">
               {/* Render Vector SVG QR */}
               <div
+                role="img"
+                aria-label={`Cryptographic Admission Pass QR Code for ${booking.attendeeName}`}
                 className="w-56 h-56 sm:w-64 sm:h-64 select-none"
                 dangerouslySetInnerHTML={{ __html: svgQrString }}
               />
@@ -441,6 +443,8 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
             {/* High-Contrast Black/White QR Display */}
             <div className="p-4 rounded-2xl bg-white border-2 border-black inline-block shadow-sm">
               <div
+                role="img"
+                aria-label={`High-Contrast Turnstile QR Pass Code for ${booking.attendeeName}`}
                 className="w-64 h-64 sm:w-72 sm:h-72 select-none mx-auto"
                 dangerouslySetInnerHTML={{ __html: turnstileQrString }}
               />

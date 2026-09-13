@@ -327,7 +327,7 @@ export function HallFloorMap({
         </div>
 
         {/* Legend Overlay (Bottom Right) */}
-        <div className="absolute bottom-3 right-3 bg-slate-900/90 backdrop-blur-xs border border-slate-800 rounded-lg p-2.5 text-[10px] text-slate-300 space-y-1">
+        <div className="absolute bottom-3 right-3 bg-slate-900/90 backdrop-blur-xs border border-slate-800 rounded-lg p-2.5 text-xs text-slate-300 space-y-1">
           <div className="flex items-center gap-1.5">
             <div className="h-2.5 w-2.5 rounded-xs bg-blue-600" />
             <span>Exhibitor Booth</span>

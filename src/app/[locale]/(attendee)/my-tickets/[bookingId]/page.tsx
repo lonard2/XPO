@@ -149,7 +149,7 @@ export default async function DigitalPassDetailPage({ params }: DigitalPassPageP
             <span className="text-xs font-mono text-muted-foreground hidden sm:inline">
               Pass Ref: {booking.id}
             </span>
-            <Badge variant="archetype" size="sm">
+            <Badge variant="secondary" size="sm" className="font-semibold uppercase tracking-wider">
               {booking.ticketTier.name}
             </Badge>
           </div>

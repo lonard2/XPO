@@ -69,7 +69,7 @@ export function PassDayOfSubnav({
             type="button"
             onClick={() => scrollToSection('digital-pass-section')}
             className={cn(
-              'min-h-[36px] flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer',
+              'min-h-[44px] sm:min-h-[36px] flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer',
               activeSection === 'digital-pass-section'
                 ? 'border-primary bg-primary text-primary-foreground shadow-xs'
                 : 'border-border/70 bg-card text-muted-foreground hover:text-foreground hover:bg-muted'
@@ -85,7 +85,7 @@ export function PassDayOfSubnav({
               type="button"
               onClick={() => scrollToSection('event-perks-section')}
               className={cn(
-                'min-h-[36px] flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer',
+                'min-h-[44px] sm:min-h-[36px] flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer',
                 activeSection === 'event-perks-section'
                   ? 'border-primary bg-primary text-primary-foreground shadow-xs'
                   : 'border-border/70 bg-card text-muted-foreground hover:text-foreground hover:bg-muted'
@@ -107,7 +107,7 @@ export function PassDayOfSubnav({
               type="button"
               onClick={() => scrollToSection('event-agenda-section')}
               className={cn(
-                'min-h-[36px] flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer',
+                'min-h-[44px] sm:min-h-[36px] flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer',
                 activeSection === 'event-agenda-section'
                   ? 'border-primary bg-primary text-primary-foreground shadow-xs'
                   : 'border-border/70 bg-card text-muted-foreground hover:text-foreground hover:bg-muted'
@@ -129,7 +129,7 @@ export function PassDayOfSubnav({
               type="button"
               onClick={() => scrollToSection('hall-map-section')}
               className={cn(
-                'min-h-[36px] flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer',
+                'min-h-[44px] sm:min-h-[36px] flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer',
                 activeSection === 'hall-map-section'
                   ? 'border-primary bg-primary text-primary-foreground shadow-xs'
                   : 'border-border/70 bg-card text-muted-foreground hover:text-foreground hover:bg-muted'
