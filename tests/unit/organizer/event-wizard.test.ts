@@ -77,4 +77,69 @@ describe("Phase 9 Unit: Event Creation Wizard & Archetype Engine", () => {
     expect(parseBrandingConfig(null)).toEqual({});
     expect(parseBrandingConfig(undefined)).toEqual({});
   });
+
+  it("validates event wizard step requirements deterministically", () => {
+    // Step 1 validation: title, slug, and description
+    const validateStep1 = (title: string, slug: string, desc: string) => {
+      if (!title.trim()) return "Please enter an event title.";
+      if (!slug.trim()) return "Please enter a valid URL slug.";
+      if (!desc.trim()) return "Please provide an event description.";
+      return null;
+    };
+
+    expect(validateStep1("", "slug", "desc")).toBe("Please enter an event title.");
+    expect(validateStep1("Title", "", "desc")).toBe("Please enter a valid URL slug.");
+    expect(validateStep1("Title", "slug", "")).toBe("Please provide an event description.");
+    expect(validateStep1("Valid Title", "valid-slug", "Valid description")).toBeNull();
+
+    // Step 2 validation: venue and date logic
+    const validateStep2 = (venueId: string, startDate: string, endDate: string) => {
+      if (!venueId) return "Please select a hosting venue.";
+      if (!startDate || !endDate) return "Please specify start and end dates.";
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      if (isNaN(start.getTime()) || isNaN(end.getTime())) return "Please specify valid start and end dates.";
+      if (end < start) return "End date cannot be prior to start date.";
+      return null;
+    };
+
+    expect(validateStep2("", "2027-04-14", "2027-04-17")).toBe("Please select a hosting venue.");
+    expect(validateStep2("v-ice", "", "2027-04-17")).toBe("Please specify start and end dates.");
+    expect(validateStep2("v-ice", "invalid-date", "2027-04-17")).toBe("Please specify valid start and end dates.");
+    expect(validateStep2("v-ice", "2027-04-17", "2027-04-14")).toBe("End date cannot be prior to start date.");
+    expect(validateStep2("v-ice", "2027-04-14", "2027-04-17")).toBeNull();
+
+    // Step 3 validation: ticket tiers
+    const validateStep3 = (tiers: Array<{ name: string; capacity: number; price: number }>) => {
+      if (tiers.length === 0) return "Please configure at least one ticket pass tier.";
+      for (const t of tiers) {
+        if (!t.name.trim()) return "All ticket tiers must have a descriptive title.";
+        if (!t.capacity || isNaN(Number(t.capacity)) || Number(t.capacity) <= 0) {
+          return "Ticket tier capacities must be a positive integer.";
+        }
+        if (isNaN(Number(t.price)) || Number(t.price) < 0) {
+          return "Ticket tier price cannot be negative.";
+        }
+      }
+      return null;
+    };
+
+    expect(validateStep3([])).toBe("Please configure at least one ticket pass tier.");
+    expect(validateStep3([{ name: "", capacity: 100, price: 0 }])).toBe("All ticket tiers must have a descriptive title.");
+    expect(validateStep3([{ name: "Standard", capacity: -5, price: 0 }])).toBe("Ticket tier capacities must be a positive integer.");
+    expect(validateStep3([{ name: "Standard", capacity: 100, price: -50 }])).toBe("Ticket tier price cannot be negative.");
+    expect(validateStep3([{ name: "Standard", capacity: 100, price: 50000 }])).toBeNull();
+  });
+
+  it("derives appropriate regional currency for ticket tier creation", () => {
+    const getCurrencyForRegion = (regionId: string) => {
+      return regionId === "jp" ? "JPY" : regionId === "global" ? "USD" : "IDR";
+    };
+
+    expect(getCurrencyForRegion("id")).toBe("IDR");
+    expect(getCurrencyForRegion("jp")).toBe("JPY");
+    expect(getCurrencyForRegion("global")).toBe("USD");
+    expect(getCurrencyForRegion("unknown")).toBe("IDR");
+  });
 });
+

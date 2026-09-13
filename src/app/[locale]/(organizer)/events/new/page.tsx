@@ -325,9 +325,10 @@ export default function NewEventWizardPage() {
     const matching = venuesList.filter((v) => !v.regionId || v.regionId.toLowerCase() === newReg.toLowerCase());
     if (matching.length > 0) {
       setVenueId(matching[0].id);
-      if (matching[0].halls && matching[0].halls.length > 0) {
-        setVenueHallId(matching[0].halls[0].id);
-      }
+      setVenueHallId(matching[0].halls?.[0]?.id || "");
+    } else {
+      setVenueId("");
+      setVenueHallId("");
     }
   };
 
@@ -363,6 +364,10 @@ export default function NewEventWizardPage() {
         setErrorMessage("Please enter an event title.");
         return false;
       }
+      if (!slug.trim()) {
+        setErrorMessage("Please enter a valid URL slug.");
+        return false;
+      }
       if (!description.trim()) {
         setErrorMessage("Please provide an event description.");
         return false;
@@ -378,7 +383,13 @@ export default function NewEventWizardPage() {
         setErrorMessage("Please specify start and end dates.");
         return false;
       }
-      if (new Date(endDate) < new Date(startDate)) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+        setErrorMessage("Please specify valid start and end dates.");
+        return false;
+      }
+      if (end < start) {
         setErrorMessage("End date cannot be prior to start date.");
         return false;
       }
@@ -591,6 +602,7 @@ export default function NewEventWizardPage() {
                   setCurrentStep(s.step);
                 }
               }}
+              aria-label={`Step ${s.step}: ${s.label}`}
               aria-current={isCurrent ? "step" : undefined}
               className={cn(
                 "min-h-[36px] flex items-center gap-2 px-2.5 py-2 rounded-lg text-xs transition-colors text-left focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
@@ -841,6 +853,18 @@ export default function NewEventWizardPage() {
                     if (e.key === "Enter" || e.key === " ") {
                       e.preventDefault();
                       handleRegionChange(r.id);
+                    } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+                      e.preventDefault();
+                      const regions = ["id", "jp", "global"];
+                      const currentIndex = regions.indexOf(r.id);
+                      const nextReg = regions[(currentIndex + 1) % regions.length];
+                      handleRegionChange(nextReg);
+                    } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+                      e.preventDefault();
+                      const regions = ["id", "jp", "global"];
+                      const currentIndex = regions.indexOf(r.id);
+                      const prevReg = regions[(currentIndex - 1 + regions.length) % regions.length];
+                      handleRegionChange(prevReg);
                     }
                   }}
                   className={cn(
@@ -868,9 +892,7 @@ export default function NewEventWizardPage() {
                   onChange={(e) => {
                     setVenueId(e.target.value);
                     const v = venuesList.find((ven) => ven.id === e.target.value);
-                    if (v && v.halls && v.halls.length > 0) {
-                      setVenueHallId(v.halls[0].id);
-                    }
+                    setVenueHallId(v?.halls?.[0]?.id || "");
                   }}
                 >
                   {filteredVenues.map((v) => (
@@ -1045,6 +1067,7 @@ export default function NewEventWizardPage() {
                   />
                   <Input
                     id="wizard-primary-color-text"
+                    aria-label="Primary accent color hex code"
                     value={primaryColor}
                     onChange={(e) => setPrimaryColor(e.target.value)}
                     className="font-mono"
@@ -1066,6 +1089,7 @@ export default function NewEventWizardPage() {
                   />
                   <Input
                     id="wizard-accent-color-text"
+                    aria-label="Secondary accent color hex code"
                     value={accentColor}
                     onChange={(e) => setAccentColor(e.target.value)}
                     className="font-mono"
