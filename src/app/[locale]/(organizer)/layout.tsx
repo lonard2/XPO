@@ -72,9 +72,7 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
   const getBreadcrumbs = () => {
     const crumbs = [{ label: tOrg("crumbOrganizerHub") || "Organizer Hub", href: `/${locale}/dashboard` }];
 
-    if (pathname.includes("/dashboard")) {
-      crumbs.push({ label: tOrg("dashboardNav") || "Dashboard", href: `/${locale}/dashboard` });
-    } else if (pathname.includes("/events/new")) {
+    if (pathname.includes("/events/new")) {
       crumbs.push({ label: tOrg("crumbNewEvent") || "New Event Wizard", href: `/${locale}/events/new` });
     } else if (pathname.includes("/customizer")) {
       crumbs.push({ label: tOrg("crumbCustomizer") || "Live Visual Customizer", href: pathname });
@@ -208,11 +206,11 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8 cursor-pointer"
+              className="h-10 w-10 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
               aria-label="Toggle navigation menu"
               onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
             >
-              {isMobileSidebarOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+              {isMobileSidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
             <span className="text-xs font-bold text-foreground">
               {tOrg("portalBadge") || "Organizer Portal"}
@@ -236,7 +234,7 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
                     href={item.href}
                     onClick={() => setIsMobileSidebarOpen(false)}
                     className={cn(
-                      "flex items-center gap-3 p-2.5 rounded-lg text-xs font-medium transition-colors",
+                      "flex items-center gap-3 p-2.5 min-h-[44px] rounded-lg text-xs font-medium transition-colors",
                       isActive
                         ? "bg-primary text-primary-foreground font-semibold"
                         : "text-foreground hover:bg-accent"
@@ -250,7 +248,7 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
               <Link
                 href={`/${locale}`}
                 onClick={() => setIsMobileSidebarOpen(false)}
-                className="flex items-center gap-3 p-2.5 rounded-lg text-xs font-medium text-muted-foreground hover:text-foreground pt-2 border-t border-border"
+                className="flex items-center gap-3 p-2.5 min-h-[44px] rounded-lg text-xs font-medium text-muted-foreground hover:text-foreground pt-2 border-t border-border"
               >
                 <Compass className="h-4 w-4 text-emerald-500" />
                 <span>{tOrg("switchToAttendee") || "Return to Attendee Portal"}</span>

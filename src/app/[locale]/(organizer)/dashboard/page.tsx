@@ -11,13 +11,10 @@ import {
   Palette,
   QrCode,
   Sparkles,
-  ExternalLink,
   Calendar,
   Building2,
   TrendingUp,
-  ArrowUpRight,
   Clock,
-  Layers,
   Activity,
   Zap,
 } from "lucide-react";
@@ -216,7 +213,14 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
               <div className="text-2xl font-bold text-foreground">
                 {checkInRate}% <span className="text-xs font-normal text-muted-foreground">{tOrg("checkedInCount", { count: totalCheckedIn }) || `(${totalCheckedIn} checked-in)`}</span>
               </div>
-              <div className="w-full bg-muted rounded-full h-1.5 mt-2 overflow-hidden">
+              <div
+                className="w-full bg-muted rounded-full h-1.5 mt-2 overflow-hidden"
+                role="progressbar"
+                aria-label={tOrg("kpiCheckIn") || "Check-In Velocity"}
+                aria-valuenow={checkInRate}
+                aria-valuemin={0}
+                aria-valuemax={100}
+              >
                 <div
                   className="bg-amber-500 h-full rounded-full transition-all"
                   style={{ width: `${Math.max(checkInRate, totalRegistrations > 0 ? 4 : 0)}%` }}
@@ -237,7 +241,14 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
               <div className="text-2xl font-bold text-foreground">
                 {totalBooths > 0 ? `${boothOccupancy}%` : "0%"} <span className="text-xs font-normal text-muted-foreground">{tOrg("boothsUnitsCount", { occupied: occupiedBooths, total: totalBooths }) || `(${occupiedBooths}/${totalBooths} units)`}</span>
               </div>
-              <div className="w-full bg-muted rounded-full h-1.5 mt-2 overflow-hidden">
+              <div
+                className="w-full bg-muted rounded-full h-1.5 mt-2 overflow-hidden"
+                role="progressbar"
+                aria-label={tOrg("kpiOccupancy") || "Booth Occupancy Rate"}
+                aria-valuenow={boothOccupancy}
+                aria-valuemin={0}
+                aria-valuemax={100}
+              >
                 <div
                   className="bg-purple-500 h-full rounded-full transition-all"
                   style={{ width: `${boothOccupancy}%` }}
@@ -372,10 +383,10 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
         {/* Left: Recent Activity Feed */}
         <Card className="p-5 border-border/80 bg-card space-y-4 shadow-xs">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
+            <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
               <Clock className="h-4 w-4 text-primary" />
               <span>{tOrg("recentBookings") || "Recent Delegate Check-Ins & Bookings"}</span>
-            </h3>
+            </h2>
             <span className="text-xs text-muted-foreground font-mono">{allBookings.length} entries</span>
           </div>
 
@@ -419,10 +430,10 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
         {/* Right: Operational Status Deck */}
         <Card className="p-5 border-border/80 bg-card space-y-4 flex flex-col justify-between shadow-xs">
           <div className="space-y-3">
-            <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
+            <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
               <Zap className="h-4 w-4 text-amber-500" />
               <span>Live Operations Shortcuts</span>
-            </h3>
+            </h2>
             <p className="text-xs text-muted-foreground">
               Direct access to essential on-site MICE operational workflows:
             </p>
