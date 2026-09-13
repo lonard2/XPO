@@ -6,8 +6,11 @@ import {
   Layers,
   Cpu,
   ArrowRight,
-  ShieldCheck,
   CheckCircle2,
+  Building2,
+  Ticket,
+  Sparkles,
+  Calendar,
 } from 'lucide-react';
 import { db } from '@/lib/db';
 import { Button } from '@/components/ui/Button';
@@ -261,152 +264,199 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
-          {featuredEvents.map((event, idx) => (
-            <EventCard key={event.id} event={event} locale={locale} priority={idx < 3} />
-          ))}
-        </div>
+        {featuredEvents.length === 0 ? (
+          <div className="rounded-2xl border border-dashed border-border p-8 sm:p-12 text-center max-w-xl mx-auto space-y-4">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary mx-auto">
+              <Calendar className="h-6 w-6" />
+            </div>
+            <div className="space-y-1">
+              <h3 className="text-base font-bold text-foreground">
+                {tHome('noUpcomingEventsInRegion') || 'No upcoming exhibitions scheduled in this country edition yet.'}
+              </h3>
+              <p className="text-xs sm:text-sm text-muted-foreground">
+                {tHome('noUpcomingEventsInRegionDesc') || 'Discover upcoming flagship summits in other country editions or browse the full event calendar.'}
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
+              <Link href={`/${locale}/events`}>
+                <Button variant="outline" size="sm" className="text-xs font-semibold gap-1.5">
+                  <span>{tHome('browseAllRegionsEvents') || tNav('events') || 'Browse All Exhibitions'}</span>
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </Button>
+              </Link>
+              <Link href={`/${locale}/venues`}>
+                <Button variant="ghost" size="sm" className="text-xs font-semibold gap-1.5">
+                  <Building2 className="h-3.5 w-3.5" />
+                  <span>{tNav('venues') || 'Venue Directory'}</span>
+                </Button>
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
+            {featuredEvents.map((event, idx) => (
+              <EventCard key={event.id} event={event} locale={locale} priority={idx < 3} />
+            ))}
+          </div>
+        )}
       </section>
 
-      {/* 5. Multi-Sided Platform Portals (Asymmetric Bento Showcase) */}
+      {/* 5. Attendee Experience & Venue Wayfinding Hub (Asymmetric Bento Showcase) */}
       <section className="container space-y-8">
         <div className="max-w-2xl space-y-2">
           <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-            {tHome('completeSolutionsTitle') || 'Complete Event Solutions for All Participants'}
+            {tHome('completeSolutionsTitle') || 'Attendee Experience & Venue Wayfinding Hub'}
           </h2>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            {tHome('completeSolutionsSubtitle') || 'Dedicated portals crafted for attendees, event organizers, and venue directors.'}
+            {tHome('completeSolutionsSubtitle') || 'Essential tools for physical convention attendance: interactive hall maps, offline turnstile passes, and verified schedules.'}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Bento Cell 1: Attendee Experience (Dominant Primary Cell - 7 Cols) */}
+          {/* Bento Cell 1: Interactive Hall Maps & Wayfinding (Dominant Primary Cell - 7 Cols) */}
           <div className="lg:col-span-7 rounded-2xl border border-border/80 bg-gradient-to-br from-card via-card to-blue-500/5 p-6 sm:p-8 flex flex-col justify-between shadow-sm hover:border-primary/40 hover:shadow-md transition-all">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400">
-                  <Compass className="h-6 w-6" />
+                  <Building2 className="h-6 w-6" />
                 </div>
                 <span className="text-xs font-semibold px-3 py-1 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400">
-                  Attendee Hub
+                  Hall Wayfinding
                 </span>
               </div>
 
               <div className="space-y-1.5">
                 <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-                  {tHome('attendeeTitle') || 'Attendee Experience'}
+                  {tHome('attendeeTitle') || 'Interactive Hall Maps & Indoor Wayfinding'}
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  {tHome('attendeeDesc') || 'Discover trade shows, reserve passes, explore interactive hall floor plans, and consult the AI concierge.'}
+                  {tHome('attendeeDesc') || 'Explore high-resolution hall layouts, locate exhibitor booths, keynote stages, and transit connections across world-class convention complexes.'}
                 </p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
                 <div className="flex items-start gap-2 rounded-xl bg-muted/40 p-3 text-xs text-foreground border border-border/40">
                   <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
-                  <span>{tHome('attendeePill1') || '15 Domain Event Category Layouts'}</span>
+                  <span>{tHome('attendeePill1') || 'Exact Hall Specifications'}</span>
                 </div>
                 <div className="flex items-start gap-2 rounded-xl bg-muted/40 p-3 text-xs text-foreground border border-border/40">
                   <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
-                  <span>{tHome('attendeePill2') || 'Instant Digital Passes & QR Verification'}</span>
+                  <span>{tHome('attendeePill2') || 'Direct Transit & Shuttle Access'}</span>
                 </div>
                 <div className="flex items-start gap-2 rounded-xl bg-muted/40 p-3 text-xs text-foreground border border-border/40">
                   <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
-                  <span>{tHome('attendeePill3') || 'Hall Floor Maps & Day-of Perks'}</span>
+                  <span>{tHome('attendeePill3') || 'Interactive Stage Schedules'}</span>
                 </div>
               </div>
             </div>
 
             <div className="pt-6 border-t border-border/60 mt-6 flex items-center justify-between">
-              <Link href={`/${locale}/events`}>
+              <Link href={`/${locale}/venues`}>
                 <Button variant="primary" size="sm" className="gap-2 font-semibold">
-                  <span>{tNav('events') || 'Browse All Exhibitions'}</span>
+                  <span>{tHome('attendeeCta') || 'Explore Venues & Halls'}</span>
                   <ArrowRight className="h-3.5 w-3.5" />
                 </Button>
               </Link>
             </div>
           </div>
 
-          {/* Bento Cell 2: Organizer Portal (5 Cols) */}
+          {/* Bento Cell 2: Offline Cryptographic Passes (5 Cols) */}
           <div className="lg:col-span-5 rounded-2xl border border-border/80 bg-gradient-to-br from-card via-card to-indigo-500/5 p-6 sm:p-8 flex flex-col justify-between shadow-sm hover:border-indigo-500/40 hover:shadow-md transition-all">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
-                  <Layers className="h-6 w-6" />
+                  <Ticket className="h-6 w-6" />
                 </div>
                 <span className="text-xs font-semibold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
-                  Organizer Suite
+                  Instant Turnstile
                 </span>
               </div>
 
               <div className="space-y-1.5">
                 <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-                  {tHome('organizerTitle') || 'Organizer Portal'}
+                  {tHome('passHubTitle') || 'Offline Cryptographic Passes'}
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  {tHome('organizerDesc') || 'Event publishing wizard, real-time live visual customizer, booth/tenant manager, and QR badge scanner.'}
+                  {tHome('passHubDesc') || 'Access tamper-proof HMAC-SHA256 digital passes stored securely on your device. Scan through optical turnstiles in under 2 seconds without internet access.'}
                 </p>
               </div>
 
               <div className="space-y-2.5 pt-2 text-xs text-foreground">
                 <div className="flex items-center gap-2.5">
                   <CheckCircle2 className="h-4 w-4 text-indigo-500 shrink-0" />
-                  <span>{tHome('organizerPill1') || 'Live Split-Screen Customizer'}</span>
+                  <span>{tHome('passHubPill1') || 'Offline Local Storage'}</span>
                 </div>
                 <div className="flex items-center gap-2.5">
                   <CheckCircle2 className="h-4 w-4 text-indigo-500 shrink-0" />
-                  <span>{tHome('organizerPill2') || 'Executive Analytics & Reports'}</span>
+                  <span>{tHome('passHubPill2') || 'Instant Optical Scan'}</span>
                 </div>
                 <div className="flex items-center gap-2.5">
                   <CheckCircle2 className="h-4 w-4 text-indigo-500 shrink-0" />
-                  <span>{tHome('organizerPill3') || 'Onsite QR Check-in System'}</span>
+                  <span>{tHome('passHubPill3') || 'Cryptographic Verification'}</span>
                 </div>
               </div>
             </div>
 
             <div className="pt-6 border-t border-border/60 mt-6">
-              <Link href={`/${locale}/dashboard`}>
+              <Link href={`/${locale}/my-tickets`}>
                 <Button variant="outline" size="sm" className="w-full gap-2 font-semibold justify-center">
-                  <span>{tHome('organizerTitle') || 'Organizer Dashboard'}</span>
+                  <span>{tHome('passHubCta') || 'View My Passes'}</span>
                   <ArrowRight className="h-3.5 w-3.5" />
                 </Button>
               </Link>
             </div>
           </div>
 
-          {/* Bento Cell 3: Platform Governance & Infrastructure (Panoramic 12 Cols) */}
+          {/* Bento Cell 3: B2B Deal-Rooms, VIP Privileges & Day-of Perks (Panoramic 12 Cols) */}
           <div className="lg:col-span-12 rounded-2xl border border-border/80 bg-gradient-to-r from-card via-card to-emerald-500/5 p-6 sm:p-8 shadow-sm hover:border-emerald-500/40 hover:shadow-md transition-all">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
               <div className="space-y-2 max-w-xl">
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
-                    <ShieldCheck className="h-5 w-5" />
+                    <Sparkles className="h-5 w-5" />
                   </div>
                   <h3 className="text-lg sm:text-xl font-bold tracking-tight text-foreground">
-                    {tHome('adminTitle') || 'Venue & Platform Governance'}
+                    {tHome('networkingPerksTitle') || 'B2B Deal-Rooms, VIP Privileges & Day-of Perks'}
                   </h3>
                 </div>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                  {tHome('adminDesc') || 'Institutional convention directory with verified hall specifications, real-time schedule telemetry, and enterprise audit security.'}
+                  {tHome('networkingPerksDesc') || 'Unlock executive buyer lounges, pre-scheduled bilateral meeting rooms, CME accreditation for medical symposiums, and curated attendee guidebook perks.'}
                 </p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 shrink-0 lg:max-w-2xl w-full lg:w-auto">
                 <div className="flex items-center gap-2 rounded-xl bg-muted/40 p-3 text-xs text-foreground border border-border/40">
                   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
-                  <span>{tHome('adminPill1') || 'Verified Hall Floor Plans'}</span>
+                  <span>{tHome('networkingPerksPill1') || 'B2B Procurement Matchmaking'}</span>
                 </div>
                 <div className="flex items-center gap-2 rounded-xl bg-muted/40 p-3 text-xs text-foreground border border-border/40">
                   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
-                  <span>{tHome('adminPill2') || 'Real-Time Schedule Telemetry'}</span>
+                  <span>{tHome('networkingPerksPill2') || 'VIP Executive Lounge Access'}</span>
                 </div>
                 <div className="flex items-center gap-2 rounded-xl bg-muted/40 p-3 text-xs text-foreground border border-border/40">
                   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
-                  <span>{tHome('adminPill3') || 'Enterprise Security & Verification'}</span>
+                  <span>{tHome('networkingPerksPill3') || 'Accredited Symposium Tracks'}</span>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Organizer Callout Strip (Secondary Audience Routing) */}
+        <div className="rounded-xl border border-border/60 bg-muted/30 px-5 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+          <div className="flex items-center gap-2.5 text-muted-foreground text-center sm:text-left">
+            <Layers className="h-4 w-4 text-primary shrink-0" />
+            <span>
+              <strong className="text-foreground font-semibold">{tHome('organizerCalloutTitle') || 'Hosting an Exhibition or Industry Summit?'}</strong>{' '}
+              {tHome('organizerCalloutDesc') || 'Access the Organizer Portal to publish events, configure booth allocations, customize visual themes, and deploy optical turnstile check-in.'}
+            </span>
+          </div>
+          <Link href={`/${locale}/dashboard`} className="shrink-0">
+            <Button variant="outline" size="sm" className="text-xs font-semibold gap-1.5 h-8">
+              <span>{tHome('organizerCalloutBtn') || 'Open Organizer Portal'}</span>
+              <ArrowRight className="h-3 w-3" />
+            </Button>
+          </Link>
         </div>
       </section>
 
