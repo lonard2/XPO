@@ -233,7 +233,7 @@ export function FilterSidebar({
                   <span>{hub.label}</span>
                 </div>
                 {count !== undefined && (
-                  <span className="text-[10px] text-muted-foreground font-mono">({count})</span>
+                  <span className="text-xs text-muted-foreground font-mono">({count})</span>
                 )}
               </button>
             );
@@ -249,7 +249,7 @@ export function FilterSidebar({
             <span>{tDisc('verticalsTitle') || tDisc('filterByArchetype') || 'Explore by Event Category'}</span>
           </label>
           {selectedArchetypes.length > 0 && (
-            <span className="text-[10px] text-primary font-semibold font-mono">
+            <span className="text-xs text-primary font-semibold font-mono">
               {selectedArchetypes.length} selected
             </span>
           )}
@@ -283,7 +283,7 @@ export function FilterSidebar({
           {/* 4 Industry Clusters */}
           {MICE_INDUSTRY_CLUSTERS.map((cluster) => (
             <div key={cluster.id} className="space-y-1 pt-1 border-t border-border/50">
-              <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider px-2 block">
+              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-2 block">
                 {cluster.label}
               </span>
               {cluster.archetypes.map((archKey) => {
@@ -326,7 +326,7 @@ export function FilterSidebar({
                       </span>
                     </div>
                     {count !== undefined && (
-                      <span className="text-[10px] text-muted-foreground font-mono ml-1 shrink-0">({count})</span>
+                      <span className="text-xs text-muted-foreground font-mono ml-1 shrink-0">({count})</span>
                     )}
                   </button>
                 );
