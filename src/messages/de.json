@@ -62,9 +62,9 @@
   },
   "hero": {
     "badge": "XPO Digitales MICE-Ökosystem",
-    "title": "Globale Messen, Kongresse & Events,",
-    "titleHighlight": "Neu Definiert",
-    "subtitle": "Die digitale Plattform für Fachbesucher, Messeveranstalter und erstklassige Kongresszentren in Indonesien, Japan und weltweit.",
+    "title": "Globale Messen, Kongresse & Events:",
+    "titleHighlight": "Enterprise-Infrastruktur",
+    "subtitle": "Die institutionelle Plattform für Fachdelegierte, Messeveranstalter und erstklassige Kongresszentren in Indonesien, Japan und internationalen Gateways.",
     "exploreEvents": "Events Entdecken",
     "venueDirectory": "Messezentren",
     "spotlightHubs": "Länderausgaben",
@@ -508,7 +508,7 @@
     "admin": "SuperAdmin"
   },
   "footer": {
-    "brandDescription": "Das digitale Ökosystem für Meetings, Incentives, Konferenzen und Ausstellungen (MICE) weltweit.",
+    "brandDescription": "Enterprise-Plattform für Tagungen, Kongresse und Fachmessen (MICE) weltweit.",
     "verifiedEcosystem": "Verifiziertes MICE-Ökosystem",
     "countryEditions": "Länderausgaben",
     "eventCategories": "Event-Kategorien",

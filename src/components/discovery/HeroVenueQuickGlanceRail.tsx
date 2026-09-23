@@ -199,7 +199,7 @@ export function HeroVenueQuickGlanceRail({
                 </div>
 
                 {hallCount > 0 && (
-                  <span className="text-xs font-semibold text-muted-foreground bg-muted/80 px-2 py-0.5 rounded shrink-0 whitespace-nowrap">
+                  <span className="text-xs font-semibold text-muted-foreground bg-muted/80 px-2 py-0.5 rounded shrink-0 whitespace-nowrap tabular-nums">
                     {hallCount} Halls
                   </span>
                 )}
@@ -250,7 +250,7 @@ export function HeroVenueQuickGlanceRail({
                           </p>
                           <div className="flex items-center gap-1 text-xs text-muted-foreground">
                             <Calendar className="h-3 w-3 shrink-0" />
-                            <span className="truncate">{dates}</span>
+                            <span className="truncate tabular-nums">{dates}</span>
                           </div>
                         </div>
 

@@ -252,7 +252,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
               <Compass className="h-4 w-4" />
               <span>{tHome('featuredTradeShows') || 'Upcoming Trade Shows & Conventions'}</span>
             </div>
-            <h2 className="text-xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+            <h2 className="text-xl sm:text-3xl font-extrabold tracking-tight text-foreground text-balance">
               {tHome('featuredInRegion') || 'Featured Exhibitions in'} {regionLocalizedName}
             </h2>
           </div>
@@ -272,10 +272,10 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
               <Calendar className="h-6 w-6" />
             </div>
             <div className="space-y-1">
-              <h3 className="text-base font-bold text-foreground">
+              <h3 className="text-base font-bold text-foreground text-balance">
                 {tHome('noUpcomingEventsInRegion') || 'No upcoming exhibitions scheduled in this country edition yet.'}
               </h3>
-              <p className="text-xs sm:text-sm text-muted-foreground">
+              <p className="text-xs sm:text-sm text-muted-foreground text-pretty">
                 {tHome('noUpcomingEventsInRegionDesc') || 'Discover upcoming flagship summits in other country editions or browse the full event calendar.'}
               </p>
             </div>
@@ -308,10 +308,10 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
       {/* 5. Attendee Experience & Venue Wayfinding Hub (Asymmetric Bento Showcase) */}
       <section className="container space-y-8">
         <div className="max-w-2xl space-y-2">
-          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground text-balance">
             {tHome('completeSolutionsTitle') || 'Attendee Experience & Venue Wayfinding Hub'}
           </h2>
-          <p className="text-sm text-muted-foreground leading-relaxed">
+          <p className="text-sm text-muted-foreground leading-relaxed text-pretty">
             {tHome('completeSolutionsSubtitle') || 'Essential tools for physical convention attendance: interactive hall maps, offline turnstile passes, and verified schedules.'}
           </p>
         </div>
@@ -330,10 +330,10 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
               </div>
 
               <div className="space-y-1.5">
-                <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+                <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground text-balance">
                   {tHome('attendeeTitle') || 'Interactive Hall Maps & Indoor Wayfinding'}
                 </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
+                <p className="text-sm text-muted-foreground leading-relaxed text-pretty">
                   {tHome('attendeeDesc') || 'Explore high-resolution hall layouts, locate exhibitor booths, keynote stages, and transit connections across world-class convention complexes.'}
                 </p>
               </div>
@@ -378,10 +378,10 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
               </div>
 
               <div className="space-y-1.5">
-                <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+                <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground text-balance">
                   {tHome('passHubTitle') || 'Offline Cryptographic Passes'}
                 </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
+                <p className="text-sm text-muted-foreground leading-relaxed text-pretty">
                   {tHome('passHubDesc') || 'Access tamper-proof HMAC-SHA256 digital passes stored securely on your device. Scan through optical turnstiles in under 2 seconds without internet access.'}
                 </p>
               </div>
@@ -421,11 +421,11 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
                     <Sparkles className="h-5 w-5" />
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold tracking-tight text-foreground">
+                  <h3 className="text-lg sm:text-xl font-bold tracking-tight text-foreground text-balance">
                     {tHome('networkingPerksTitle') || 'B2B Deal-Rooms, VIP Privileges & Day-of Perks'}
                   </h3>
                 </div>
-                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed text-pretty">
                   {tHome('networkingPerksDesc') || 'Unlock executive buyer lounges, pre-scheduled bilateral meeting rooms, CME accreditation for medical symposiums, and curated attendee guidebook perks.'}
                 </p>
               </div>
@@ -475,7 +475,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
               <Cpu className="h-5 w-5" />
               <span>{tHome('conciergeBannerTitle') || 'Attendee Event Concierge & Reporting Hub'}</span>
             </div>
-            <p className="text-xs text-muted-foreground max-w-xl">
+            <p className="text-xs text-muted-foreground max-w-xl text-pretty">
               {tHome('conciergeBannerDesc') || 'Access real-time hall navigation, transit logistics, timetable schedules, and comprehensive organizer analytics reports.'}
             </p>
           </div>

@@ -166,17 +166,17 @@ export const EventCard = React.memo(function EventCard({
         <CardHeader className="p-0 space-y-1.5">
           <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
             <Calendar className="h-3.5 w-3.5 text-primary shrink-0" />
-            <span className="font-medium text-foreground">{dateRangeDisplay}</span>
+            <span className="font-medium text-foreground tabular-nums">{dateRangeDisplay}</span>
           </div>
 
-          <h3 className="text-base font-bold text-foreground leading-snug line-clamp-2 group-hover:text-primary transition-colors">
+          <h3 className="text-base font-bold text-foreground leading-snug line-clamp-2 text-balance group-hover:text-primary transition-colors">
             <Link href={`/${locale}/events/${event.slug}`} className="hover:underline">
               {event.title}
             </Link>
           </h3>
 
           {event.tagline && (
-            <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+            <p className="text-xs text-muted-foreground line-clamp-2 text-pretty leading-relaxed">
               {event.tagline}
             </p>
           )}
@@ -203,7 +203,7 @@ export const EventCard = React.memo(function EventCard({
             <span className="text-xs uppercase font-semibold text-muted-foreground tracking-wider">
               {temporal.isPast ? (tCom('date') || 'Status') : (tTick('price') || 'Price')}
             </span>
-            <span className="text-sm font-extrabold text-foreground">
+            <span className="text-sm font-extrabold text-foreground tabular-nums">
               {temporal.isPast ? 'Concluded' : priceDisplay}
             </span>
           </div>

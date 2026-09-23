@@ -281,13 +281,13 @@ export function BannerCarousel({
           </div>
 
           {/* Event Title */}
-          <h2 className="text-xl sm:text-3xl lg:text-5xl font-extrabold tracking-tight text-white leading-[1.18] drop-shadow-md">
+          <h2 className="text-xl sm:text-3xl lg:text-5xl font-extrabold tracking-tight text-white leading-[1.18] drop-shadow-md text-balance">
             {currentSlide.title}
           </h2>
 
           {/* Event Tagline */}
           {currentSlide.tagline && (
-            <p className="text-xs sm:text-sm lg:text-base text-slate-200 line-clamp-2 max-w-xl leading-relaxed drop-shadow-sm">
+            <p className="text-xs sm:text-sm lg:text-base text-slate-200 line-clamp-2 max-w-xl leading-relaxed drop-shadow-sm text-pretty">
               {currentSlide.tagline}
             </p>
           )}
@@ -296,7 +296,7 @@ export function BannerCarousel({
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs sm:text-sm text-slate-300 pt-0.5">
             <div className="flex items-center gap-1.5 text-white font-medium">
               <Calendar className="h-4 w-4 text-primary shrink-0" />
-              <span>{dateRangeDisplay}</span>
+              <span className="tabular-nums">{dateRangeDisplay}</span>
             </div>
 
             {currentSlide.venueName && (
@@ -505,7 +505,7 @@ function BannerTemporalWidget({
     <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/60 px-3.5 py-1 text-xs backdrop-blur-md shadow-sm">
       <Clock className="h-3.5 w-3.5 text-primary shrink-0" />
       <span className="text-slate-300 font-medium">Starts in:</span>
-      <span className="font-mono font-bold text-white tracking-wide">
+      <span className="font-mono font-bold text-white tracking-wide tabular-nums">
         {time.days}d {String(time.hours).padStart(2, '0')}h {String(time.minutes).padStart(2, '0')}m {String(time.seconds).padStart(2, '0')}s
       </span>
     </div>

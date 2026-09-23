@@ -62,9 +62,9 @@
   },
   "hero": {
     "badge": "Ecosistema Digital MICE XPO",
-    "title": "Ferias Globales, Convenciones y Congresos,",
-    "titleHighlight": "Reimaginados",
-    "subtitle": "La plataforma digital que conecta a delegados, organizadores y los principales centros de convenciones de Indonesia, Japón y el mundo.",
+    "title": "Ferias Globales, Convenciones y Congresos:",
+    "titleHighlight": "Infraestructura Integrada",
+    "subtitle": "Plataforma institucional que conecta a delegados comerciales, organizadores y los principales centros de convenciones de Indonesia, Japón y el mundo.",
     "exploreEvents": "Explorar Ferias",
     "venueDirectory": "Directorio de Recintos",
     "spotlightHubs": "Ediciones Nacionales",
@@ -508,7 +508,7 @@
     "admin": "SuperAdmin"
   },
   "footer": {
-    "brandDescription": "El ecosistema digital líder para Reuniones, Incentivos, Convenciones y Exposiciones (MICE) a nivel global.",
+    "brandDescription": "Plataforma digital empresarial para Reuniones, Incentivos, Conferencias y Exposiciones (MICE) a nivel global.",
     "verifiedEcosystem": "Ecosistema MICE Verificado",
     "countryEditions": "Ediciones Nacionales",
     "eventCategories": "Categorías de Eventos",

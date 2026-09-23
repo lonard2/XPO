@@ -62,9 +62,9 @@
   },
   "hero": {
     "badge": "Ekosistem Digital MICE XPO",
-    "title": "Pameran Global, Konvensi & Ekspo,",
-    "titleHighlight": "Didefinisikan Ulang",
-    "subtitle": "Platform multi-sisi yang menghubungkan pengunjung, penyelenggara acara, dan pusat konvensi berstandar internasional di Indonesia, Jepang, dan seluruh dunia.",
+    "title": "Pameran Global, Konvensi & Ekspo:",
+    "titleHighlight": "Infrastruktur Terpadu",
+    "subtitle": "Platform enterprise yang menghubungkan delegasi bisnis, penyelenggara, dan pusat konvensi terkemuka di Indonesia, Jepang, dan gerbang global.",
     "exploreEvents": "Jelajahi Pameran",
     "venueDirectory": "Direktori Venue",
     "spotlightHubs": "Edisi Negara",
@@ -508,7 +508,7 @@
     "admin": "SuperAdmin"
   },
   "footer": {
-    "brandDescription": "Ekosistem digital terdepan untuk Pertemuan, Insentif, Konferensi, dan Pameran (MICE) di seluruh dunia.",
+    "brandDescription": "Infrastruktur digital enterprise untuk Pertemuan, Insentif, Konferensi, dan Pameran (MICE) di seluruh dunia.",
     "verifiedEcosystem": "Ekosistem MICE Terverifikasi",
     "countryEditions": "Edisi Negara",
     "eventCategories": "Kategori Acara",

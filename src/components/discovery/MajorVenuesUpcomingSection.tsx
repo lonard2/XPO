@@ -105,7 +105,7 @@ export function MajorVenuesUpcomingSection({
                   </div>
 
                   {hallCount > 0 && (
-                    <Badge variant="secondary" className="text-xs font-semibold bg-background/90 text-muted-foreground border-border/60">
+                    <Badge variant="secondary" className="text-xs font-semibold bg-background/90 text-muted-foreground border-border/60 tabular-nums">
                       {hallCount} Halls
                     </Badge>
                   )}
@@ -134,7 +134,7 @@ export function MajorVenuesUpcomingSection({
               <div className="p-4 sm:p-5 pt-0 space-y-2.5 flex-1 flex flex-col justify-start">
                 <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground pt-2 border-t border-border/60 flex items-center justify-between">
                   <span>Current & Near-Upcoming Events</span>
-                  <span className="text-xs font-medium lowercase text-primary font-mono">
+                  <span className="text-xs font-medium lowercase text-primary font-mono tabular-nums">
                     {upcomingEvents.length} listed
                   </span>
                 </div>
@@ -177,7 +177,7 @@ export function MajorVenuesUpcomingSection({
 
                             <div className="flex items-center gap-1 text-xs text-muted-foreground">
                               <Calendar className="h-3 w-3 shrink-0" />
-                              <span className="truncate">{dates}</span>
+                              <span className="truncate tabular-nums">{dates}</span>
                             </div>
                           </div>
 

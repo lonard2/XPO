@@ -62,9 +62,9 @@
   },
   "hero": {
     "badge": "XPO Digital MICE Ecosystem",
-    "title": "Global Events, Conventions & Expos,",
-    "titleHighlight": "Reimagined",
-    "subtitle": "The multi-sided digital ecosystem connecting attendees, organizers, and world-class convention venues across Indonesia, Japan, and international gateways.",
+    "title": "Global Conventions, Expos & Summits:",
+    "titleHighlight": "Enterprise Infrastructure",
+    "subtitle": "Institutional digital platform connecting trade delegates, organizers, and world-class convention complexes across Indonesia, Japan, and global gateways.",
     "exploreEvents": "Explore Events",
     "venueDirectory": "Venue Directory",
     "spotlightHubs": "Country Editions",
@@ -508,7 +508,7 @@
     "admin": "SuperAdmin"
   },
   "footer": {
-    "brandDescription": "The next-generation digital ecosystem for Meetings, Incentives, Conferences, and Exhibitions worldwide.",
+    "brandDescription": "Enterprise digital platform for Meetings, Incentives, Conferences, and Exhibitions worldwide.",
     "verifiedEcosystem": "Verified MICE Ecosystem",
     "countryEditions": "Country Editions",
     "eventCategories": "Event Categories",

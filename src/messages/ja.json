@@ -62,9 +62,9 @@
   },
   "hero": {
     "badge": "XPO デジタルMICEプラットフォーム",
-    "title": "国際イベント・展示会・学会を、",
-    "titleHighlight": "再定義する",
-    "subtitle": "インドネシア、日本、そして世界各国の主要コンベンションセンターを繋ぐ、次世代MICEエコシステム。",
+    "title": "国際展示会・コンベンション・学術会議：",
+    "titleHighlight": "統合インフラ",
+    "subtitle": "インドネシア、日本、そして世界主要都市のコンベンションセンターを結ぶ、エンタープライズMICEプラットフォーム。",
     "exploreEvents": "イベントを探す",
     "venueDirectory": "会場ディレクトリ",
     "spotlightHubs": "国・地域版",
@@ -508,7 +508,7 @@
     "admin": "最高管理者"
   },
   "footer": {
-    "brandDescription": "会議、報奨旅行、国際会議、展示会（MICE）のための次世代デジタルエコシステム。",
+    "brandDescription": "国際会議、インセンティブ、コンベンション、展示会（MICE）のための統合デジタルプラットフォーム。",
     "verifiedEcosystem": "認定MICEエコシステム",
     "countryEditions": "国・地域版",
     "eventCategories": "イベントカテゴリー",

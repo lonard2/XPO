@@ -62,9 +62,9 @@
   },
   "hero": {
     "badge": "XPO 会展数字生态平台",
-    "title": "重塑全球峰会、展览与大会的",
-    "titleHighlight": "数字化未来",
-    "subtitle": "连接参会者、主办方与印度尼西亚、日本及全球顶级会展中心的数字化平台。",
+    "title": "全球峰会、国际会展与行业大会：",
+    "titleHighlight": "企业级基础设施",
+    "subtitle": "连接商务代表、主办方与印度尼西亚、日本及全球顶级会展中心的数字化基础设施平台。",
     "exploreEvents": "浏览展会",
     "venueDirectory": "场馆名录",
     "spotlightHubs": "国家/地区版本",
@@ -508,7 +508,7 @@
     "admin": "超级管理员"
   },
   "footer": {
-    "brandDescription": "面向全球会议、奖励旅游、大型大会与展览（MICE）的下一代数字生态平台。",
+    "brandDescription": "服务于全球会议、奖励旅游、行业大会与大型展览（MICE）的企业级数字平台。",
     "verifiedEcosystem": "认证数字会展生态",
     "countryEditions": "国家/地区版本",
     "eventCategories": "展会分类",

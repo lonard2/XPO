@@ -105,10 +105,10 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
               {tOrg("dashboardTitle") || "Live Operations"}
             </Badge>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mt-1">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mt-1 text-balance">
             {tOrg("dashboardTitle") || "Organizer Operations Dashboard"}
           </h1>
-          <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+          <p className="text-xs sm:text-sm text-muted-foreground mt-1 text-pretty">
             {tOrg("dashboardSubtitle") || "Monitor real-time attendee registrations, gross ticket volume, gate check-in velocity, and exhibitor booths."}
           </p>
         </div>
@@ -135,9 +135,9 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
       <div className="space-y-2">
         <div className="flex items-center justify-between px-1">
           <span className="text-xs font-medium text-muted-foreground">
-            Live Metrics • Data as of {currentFreshnessTime}
+            Live Metrics • Data as of <span className="tabular-nums">{currentFreshnessTime}</span>
           </span>
-          <span className="text-xs text-muted-foreground font-mono">
+          <span className="text-xs text-muted-foreground font-mono tabular-nums">
             {events.length} active {events.length === 1 ? "exhibition" : "exhibitions"}
           </span>
         </div>
@@ -152,7 +152,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
               </div>
             </div>
             <div className="mt-3">
-              <div className="text-2xl font-bold text-foreground">
+              <div className="text-2xl font-bold text-foreground tabular-nums">
                 {totalRegistrations.toLocaleString()} <span className="text-xs font-normal text-muted-foreground">{tCom("attendees") || "delegates"}</span>
               </div>
               <div className="flex items-center gap-1 mt-1 text-xs text-emerald-600 dark:text-emerald-400 font-medium">
@@ -171,12 +171,12 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
               </div>
             </div>
             <div className="mt-3">
-              <div className="text-2xl font-bold text-foreground truncate">
+              <div className="text-2xl font-bold text-foreground truncate tabular-nums">
                 {formatCurrency(revenueByCurrency[primaryCurrency] || 0, primaryCurrency, locale)}
               </div>
               <div className="flex flex-wrap items-center gap-1.5 mt-1 text-xs text-muted-foreground">
                 {revenueCurrencies.filter((c) => c !== primaryCurrency).map((c) => (
-                  <span key={c} className="inline-flex items-center font-medium text-foreground bg-muted/80 px-1.5 py-0.5 rounded text-xs">
+                  <span key={c} className="inline-flex items-center font-medium text-foreground bg-muted/80 px-1.5 py-0.5 rounded text-xs tabular-nums">
                     + {formatCurrency(revenueByCurrency[c], c as SupportedCurrency, locale)}
                   </span>
                 ))}
@@ -194,7 +194,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
               </div>
             </div>
             <div className="mt-3">
-              <div className="text-2xl font-bold text-foreground">
+              <div className="text-2xl font-bold text-foreground tabular-nums">
                 {checkInRate}% <span className="text-xs font-normal text-muted-foreground">{tOrg("checkedInCount", { count: totalCheckedIn }) || `(${totalCheckedIn} checked-in)`}</span>
               </div>
               <div
@@ -222,7 +222,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
               </div>
             </div>
             <div className="mt-3">
-              <div className="text-2xl font-bold text-foreground">
+              <div className="text-2xl font-bold text-foreground tabular-nums">
                 {totalBooths > 0 ? `${boothOccupancy}%` : "0%"} <span className="text-xs font-normal text-muted-foreground">{tOrg("boothsUnitsCount", { occupied: occupiedBooths, total: totalBooths }) || `(${occupiedBooths}/${totalBooths} units)`}</span>
               </div>
               <div
@@ -296,7 +296,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
                   <div className="space-y-1.5 text-xs text-muted-foreground pt-2 border-t border-border/60">
                     <div className="flex items-center gap-2">
                       <Calendar className="h-3.5 w-3.5 text-primary shrink-0" />
-                      <span>{formatDateRange(event.startDate, event.endDate, locale)}</span>
+                      <span className="tabular-nums">{formatDateRange(event.startDate, event.endDate, locale)}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Building2 className="h-3.5 w-3.5 text-primary shrink-0" />
@@ -310,11 +310,11 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
                   <div className="grid grid-cols-2 gap-2 bg-muted/40 p-2.5 rounded-lg text-center text-xs">
                     <div>
                       <div className="text-xs uppercase font-semibold text-muted-foreground">{tOrg("bookingsCount") || "Bookings"}</div>
-                      <div className="text-sm font-bold text-foreground">{registrationsCount}</div>
+                      <div className="text-sm font-bold text-foreground tabular-nums">{registrationsCount}</div>
                     </div>
                     <div>
                       <div className="text-xs uppercase font-semibold text-muted-foreground">{tOrg("boothsCount") || "Floor Booths"}</div>
-                      <div className="text-sm font-bold text-foreground">{boothsCount}</div>
+                      <div className="text-sm font-bold text-foreground tabular-nums">{boothsCount}</div>
                     </div>
                   </div>
 
