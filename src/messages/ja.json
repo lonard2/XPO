@@ -38,7 +38,8 @@
     "category": "カテゴリー",
     "selected": "選択済み",
     "delete": "削除",
-    "backToHome": "ディスカバリーに戻る"
+    "backToHome": "ディスカバリーに戻る",
+    "skipToContent": "メインコンテンツへスキップ"
   },
   "nav": {
     "brand": "XPO",
@@ -516,6 +517,8 @@
     "createExhibition": "展示会を作成・公開",
     "settingsLink": "システム＆コンシェルジュ設定",
     "allRightsReserved": "無断転載を禁じます。",
+    "privacyPolicy": "プライバシーポリシー",
+    "termsOfService": "利用規約",
     "infrastructureBadge": "エンタープライズMICEインフラ",
     "accessibleBadge": "マルチデバイス対応アクセシビリティ"
   },

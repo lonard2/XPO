@@ -34,6 +34,15 @@ const mockSlides: BannerSlide[] = [
 ];
 
 describe('Discovery Component: BannerCarousel', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-09-01T00:00:00Z'));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it('T1.1: renders first slide with title, tagline, and countdown timer for upcoming event', () => {
     render(<BannerCarousel slides={mockSlides} locale="en" />);
 

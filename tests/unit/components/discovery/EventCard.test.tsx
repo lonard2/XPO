@@ -1,5 +1,5 @@
 import React from 'react';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { EventCard } from '@/components/discovery/EventCard';
 import { type DiscoveryEvent } from '@/types/discovery';
@@ -39,6 +39,15 @@ const mockEvent: DiscoveryEvent = {
 };
 
 describe('Discovery Component: EventCard', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-09-01T00:00:00Z'));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it('T1.1: renders event title, tagline, venue details, and archetype badge', () => {
     render(<EventCard event={mockEvent} locale="en" />);
 

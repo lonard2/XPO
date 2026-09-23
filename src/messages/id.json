@@ -38,7 +38,8 @@
     "category": "Kategori",
     "selected": "Terpilih",
     "delete": "Hapus",
-    "backToHome": "Kembali ke Beranda"
+    "backToHome": "Kembali ke Beranda",
+    "skipToContent": "Loncat ke konten utama"
   },
   "nav": {
     "brand": "XPO",
@@ -516,6 +517,8 @@
     "createExhibition": "Buat & Terbitkan Pameran",
     "settingsLink": "Preferensi Sistem & Asisten",
     "allRightsReserved": "Hak cipta dilindungi undang-undang.",
+    "privacyPolicy": "Kebijakan Privasi",
+    "termsOfService": "Syarat & Ketentuan Layanan",
     "infrastructureBadge": "Infrastruktur MICE Terpercaya",
     "accessibleBadge": "Arsitektur Aksesibel Lintas Perangkat"
   },

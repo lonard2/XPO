@@ -140,8 +140,23 @@ export function Footer({ locale = "en" }: { locale?: string }) {
         </div>
       </div>
 
-      <div className="container border-t border-border/60 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-muted-foreground gap-4">
+      <div className="container border-t border-border/60 pt-6 flex flex-col md:flex-row items-center justify-between text-xs text-muted-foreground gap-4">
         <p>© 2026 XPO MICE Digital Ecosystem. {getSafe(tFoot, "allRightsReserved", "All rights reserved.")}</p>
+        <div className="flex items-center gap-3">
+          <Link
+            href={`/${locale}/privacy`}
+            className="hover:text-foreground transition-colors underline-offset-4 hover:underline"
+          >
+            {getSafe(tFoot, "privacyPolicy", "Privacy Policy")}
+          </Link>
+          <span>•</span>
+          <Link
+            href={`/${locale}/terms`}
+            className="hover:text-foreground transition-colors underline-offset-4 hover:underline"
+          >
+            {getSafe(tFoot, "termsOfService", "Terms of Service")}
+          </Link>
+        </div>
         <p className="flex items-center gap-2 flex-wrap">
           <span>{getSafe(tFoot, "infrastructureBadge", "Enterprise MICE Infrastructure")}</span>
           <span>•</span>

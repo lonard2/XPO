@@ -38,7 +38,8 @@
     "category": "类别",
     "selected": "已选择",
     "delete": "删除",
-    "backToHome": "返回发现页"
+    "backToHome": "返回发现页",
+    "skipToContent": "跳转至主要内容"
   },
   "nav": {
     "brand": "XPO",
@@ -516,6 +517,8 @@
     "createExhibition": "创建并发布展会",
     "settingsLink": "系统与智能导览偏好",
     "allRightsReserved": "保留所有权利。",
+    "privacyPolicy": "隐私政策",
+    "termsOfService": "服务条款",
     "infrastructureBadge": "企业级会展基础设施",
     "accessibleBadge": "多端自适应无障碍架构"
   },

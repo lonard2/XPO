@@ -38,7 +38,8 @@
     "category": "Categoría",
     "selected": "Seleccionado",
     "delete": "Eliminar",
-    "backToHome": "Volver a Descubrir"
+    "backToHome": "Volver a Descubrir",
+    "skipToContent": "Saltar al contenido principal"
   },
   "nav": {
     "brand": "XPO",
@@ -516,6 +517,8 @@
     "createExhibition": "Crear y Publicar Feria",
     "settingsLink": "Ajustes de Sistema y Asistente",
     "allRightsReserved": "Todos los derechos reservados.",
+    "privacyPolicy": "Política de Privacidad",
+    "termsOfService": "Términos del Servicio",
     "infrastructureBadge": "Infraestructura MICE Empresarial",
     "accessibleBadge": "Arquitectura Accesible Multidispositivo"
   },

@@ -62,6 +62,8 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   const messages = await getMessages();
   const dir = getLocaleDirection(locale);
 
+  const skipLabel = (messages as any)?.common?.skipToContent || "Skip to main content";
+
   return (
     <html
       lang={locale}
@@ -69,11 +71,19 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
       className={`scroll-smooth ${plusJakartaSans.variable} ${newsreader.variable} ${jetbrainsMono.variable} ${atkinsonHyperlegible.variable}`}
     >
       <body className="min-h-screen flex flex-col bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-xl focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-xs font-semibold transition-all"
+        >
+          {skipLabel}
+        </a>
         <NextIntlClientProvider messages={messages} locale={locale}>
           <AuthProvider>
             <SettingsProvider>
               <Navbar locale={locale} />
-              <main className="flex-1">{children}</main>
+              <main id="main-content" tabIndex={-1} className="flex-1 outline-none">
+                {children}
+              </main>
               <Footer locale={locale} />
               <MobileBottomNav locale={locale} />
               <AttendeeAIConcierge locale={locale} />
