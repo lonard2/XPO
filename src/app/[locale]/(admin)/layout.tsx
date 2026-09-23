@@ -85,7 +85,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const breadcrumbs = getBreadcrumbs();
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex flex-col bg-muted/20">
+    <div className="min-h-[calc(100dvh-4rem)] flex flex-col bg-muted/20">
       {/* Role Permission Gate Banner (if not ADMIN) */}
       {role !== "ADMIN" && (
         <div className="bg-amber-500/15 border-b border-amber-500/30 px-4 py-2.5 flex items-center justify-between text-xs text-amber-800 dark:text-amber-300">
@@ -112,7 +112,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           {/* Active Admin Persona Card */}
           <div className="p-3.5 rounded-xl border border-border bg-background/70 space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Governance Portal
               </span>
               <Badge variant={getRoleBadgeVariant("ADMIN")} size="sm">
@@ -127,7 +127,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 <h4 className="text-xs font-bold text-foreground truncate">
                   {user?.role === "ADMIN" ? user.name : "Platform Administrator"}
                 </h4>
-                <p className="text-[10px] text-muted-foreground truncate">
+                <p className="text-xs text-muted-foreground truncate">
                   XPO System Governance & Audit
                 </p>
               </div>
@@ -136,20 +136,20 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
           {/* System Health Indicators */}
           <div className="p-3 rounded-xl border border-border/60 bg-muted/30 space-y-2">
-            <div className="flex items-center justify-between text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+            <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               <span className="flex items-center gap-1.5">
                 <Activity className="h-3 w-3 text-emerald-500" />
                 System Health
               </span>
               <span className="text-emerald-500 font-bold">100% Operational</span>
             </div>
-            <div className="space-y-1.5 text-[11px]">
+            <div className="space-y-1.5 text-xs">
               <div className="flex items-center justify-between text-muted-foreground">
                 <span className="flex items-center gap-1.5">
                   <Database className="h-3 w-3 text-primary" />
                   Prisma DB Engine
                 </span>
-                <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-[10px] font-medium">
+                <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-xs font-medium">
                   <CheckCircle2 className="h-2.5 w-2.5" /> Online
                 </span>
               </div>
@@ -158,7 +158,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                   <RefreshCw className="h-3 w-3 text-amber-500" />
                   Ingestion Scraper
                 </span>
-                <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-[10px] font-medium">
+                <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-xs font-medium">
                   <CheckCircle2 className="h-2.5 w-2.5" /> Standby
                 </span>
               </div>
@@ -167,7 +167,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                   <Cpu className="h-3 w-3 text-indigo-500" />
                   OpenRouter Multi-AI
                 </span>
-                <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-[10px] font-medium">
+                <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-xs font-medium">
                   <CheckCircle2 className="h-2.5 w-2.5" /> Active (6 Models)
                 </span>
               </div>
@@ -176,7 +176,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                   <Lock className="h-3 w-3 text-rose-500" />
                   HMAC Pass Verifier
                 </span>
-                <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-[10px] font-medium">
+                <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-xs font-medium">
                   <CheckCircle2 className="h-2.5 w-2.5" /> SHA-256
                 </span>
               </div>
@@ -185,7 +185,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
           {/* Navigation Links */}
           <div className="space-y-1">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground px-2 mb-2">
+            <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground px-2 mb-2">
               Platform Administration
             </div>
             {navItems.map((item) => {
@@ -205,7 +205,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                   <Icon className={cn("h-4 w-4 mt-0.5 shrink-0", isActive ? "text-primary-foreground" : "text-primary")} />
                   <div>
                     <div className="leading-tight">{item.label}</div>
-                    <div className={cn("text-[10px] font-normal leading-tight mt-0.5", isActive ? "text-primary-foreground/80" : "text-muted-foreground")}>
+                    <div className={cn("text-xs font-normal leading-tight mt-0.5", isActive ? "text-primary-foreground/80" : "text-muted-foreground")}>
                       {item.description}
                     </div>
                   </div>
@@ -216,7 +216,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
           {/* Portal Switchers */}
           <div className="pt-4 border-t border-border/70 space-y-1 mt-auto">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground px-2 mb-1">
+            <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground px-2 mb-1">
               Switch Portals
             </div>
             <Link

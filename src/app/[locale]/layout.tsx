@@ -38,8 +38,23 @@ const atkinsonHyperlegible = Atkinson_Hyperlegible({
 });
 
 export const metadata: Metadata = {
-  title: "XPO | MICE Digital Ecosystem",
-  description: "Global digital ecosystem for Meetings, Incentives, Conferences, and Exhibitions.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://xpo.events"),
+  title: {
+    default: "XPO - MICE Digital Ecosystem",
+    template: "%s | XPO",
+  },
+  description: "Enterprise digital platform connecting trade delegates, exhibition organizers, and world-class convention complexes across Indonesia, Japan, and global gateways.",
+  openGraph: {
+    type: "website",
+    siteName: "XPO MICE Platform",
+    title: "XPO - MICE Digital Ecosystem",
+    description: "Enterprise digital platform connecting trade delegates, exhibition organizers, and world-class convention complexes across Indonesia, Japan, and global gateways.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "XPO - MICE Digital Ecosystem",
+    description: "Enterprise digital platform connecting trade delegates, exhibition organizers, and world-class convention complexes across Indonesia, Japan, and global gateways.",
+  },
 };
 
 export function generateStaticParams() {

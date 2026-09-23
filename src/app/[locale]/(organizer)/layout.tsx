@@ -92,7 +92,7 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
   // Enforce RBAC Access Barrier for Attendee role across Organizer Portal
   if (role === "ATTENDEE") {
     return (
-      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-6 bg-muted/20 animate-fade-in">
+      <div className="min-h-[calc(100dvh-4rem)] flex items-center justify-center p-6 bg-muted/20 animate-fade-in">
         <div className="max-w-md w-full p-8 bg-card border border-border rounded-2xl shadow-sm space-y-5 text-center">
           <div className="h-16 w-16 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 mx-auto flex items-center justify-center">
             <ShieldCheck className="h-8 w-8" />
@@ -128,7 +128,7 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
   }
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex flex-col bg-muted/20">
+    <div className="min-h-[calc(100dvh-4rem)] flex flex-col bg-muted/20">
       <div className="flex-1 flex flex-col lg:flex-row">
         {/* DESKTOP SIDEBAR */}
         <aside className="hidden lg:flex w-72 flex-col border-r border-border/80 bg-card/60 backdrop-blur-sm shrink-0 p-5 space-y-6">

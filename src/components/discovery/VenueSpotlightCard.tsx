@@ -44,7 +44,7 @@ export function VenueSpotlightCard({
   return (
     <Card
       className={cn(
-        'group relative flex flex-col justify-between h-full overflow-hidden border-border/80 bg-card transition-all duration-300 hover:border-primary/50 hover:shadow-xl hover:-translate-y-1',
+        'group relative flex flex-col justify-between h-full overflow-hidden border-border/80 bg-card transition-all duration-300 hover:border-primary/60 hover:shadow-md hover:-translate-y-0.5 shadow-xs',
         className
       )}
     >
