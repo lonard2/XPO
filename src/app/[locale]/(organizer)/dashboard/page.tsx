@@ -144,7 +144,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Card 1: Total Registrations */}
-          <Card className="p-5 border-border/80 bg-card hover:border-primary/40 transition-all shadow-xs">
+          <Card className="p-5 border-border/80 bg-card hover:border-primary/60 transition-all shadow-xs">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-muted-foreground">{tOrg("kpiTickets") || "Total Registrations"}</span>
               <div className="h-8 w-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
@@ -163,7 +163,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
           </Card>
 
           {/* Card 2: Gross Ticket Revenue */}
-          <Card className="p-5 border-border/80 bg-card hover:border-primary/40 transition-all shadow-xs">
+          <Card className="p-5 border-border/80 bg-card hover:border-primary/60 transition-all shadow-xs">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-muted-foreground">{tOrg("kpiRevenue") || "Gross Ticket Revenue"}</span>
               <div className="h-8 w-8 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
@@ -186,7 +186,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
           </Card>
 
           {/* Card 3: Gate Check-in Velocity */}
-          <Card className="p-5 border-border/80 bg-card hover:border-primary/40 transition-all shadow-xs">
+          <Card className="p-5 border-border/80 bg-card hover:border-primary/60 transition-all shadow-xs">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-muted-foreground">{tOrg("kpiCheckIn") || "Check-In Velocity"}</span>
               <div className="h-8 w-8 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
@@ -214,7 +214,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
           </Card>
 
           {/* Card 4: Booth Occupancy */}
-          <Card className="p-5 border-border/80 bg-card hover:border-primary/40 transition-all shadow-xs">
+          <Card className="p-5 border-border/80 bg-card hover:border-primary/60 transition-all shadow-xs">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-muted-foreground">{tOrg("kpiOccupancy") || "Booth Occupancy Rate"}</span>
               <div className="h-8 w-8 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center">
@@ -268,7 +268,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
             const boothsCount = event.booths?.length || 0;
 
             return (
-              <Card key={event.id} className="border-border/80 bg-card flex flex-col justify-between hover:shadow-md transition-all">
+              <Card key={event.id} className="border-border/80 bg-card flex flex-col justify-between hover:border-primary/60 hover:shadow-md transition-all shadow-xs">
                 <CardHeader className="p-5 pb-3">
                   <div className="flex items-start justify-between gap-3">
                     <Badge

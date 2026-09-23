@@ -144,10 +144,10 @@ export function formatCurrency(
  * Formats a date range into a localized, timezone-aware human readable string.
  *
  * Examples:
- * - Same day: "Sep 14, 2026" or "14 Sep 2026, 09:00 – 18:00"
- * - Same month: "Sep 14 – 17, 2026"
- * - Different months: "Jun 10 – Jul 12, 2026"
- * - Different years: "Dec 28, 2026 – Jan 3, 2027"
+ * - Same day: "Sep 14, 2026" or "14 Sep 2026, 09:00 - 18:00"
+ * - Same month: "Sep 14 - 17, 2026"
+ * - Different months: "Jun 10 - Jul 12, 2026"
+ * - Different years: "Dec 28, 2026 - Jan 3, 2027"
  */
 export function formatDateRange(
   startDate: Date | string,
@@ -185,9 +185,9 @@ export function formatDateRange(
     if (startFormatted === endFormatted) {
       return startFormatted;
     }
-    return `${startFormatted} – ${endFormatted}`;
+    return `${startFormatted} - ${endFormatted}`;
   } catch {
-    return `${start.toLocaleDateString()} – ${end.toLocaleDateString()}`;
+    return `${start.toLocaleDateString()} - ${end.toLocaleDateString()}`;
   }
 }
 

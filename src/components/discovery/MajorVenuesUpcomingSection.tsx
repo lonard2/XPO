@@ -83,7 +83,7 @@ export function MajorVenuesUpcomingSection({
           return (
             <Card
               key={venue.id}
-              className="flex flex-col justify-between overflow-hidden border-border/80 bg-card hover:border-primary/50 transition-all duration-300 shadow-sm hover:shadow-md"
+              className="flex flex-col justify-between overflow-hidden border-border/80 bg-card hover:border-primary/60 transition-all duration-300 shadow-xs hover:shadow-md"
             >
               {/* Venue Header Banner */}
               <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-900">

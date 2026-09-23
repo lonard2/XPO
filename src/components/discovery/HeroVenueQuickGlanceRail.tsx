@@ -180,7 +180,7 @@ export function HeroVenueQuickGlanceRail({
           return (
             <div
               key={venue.id}
-              className="flex flex-col justify-between min-w-[300px] sm:min-w-[360px] max-w-[400px] rounded-xl border border-border/80 bg-background/80 hover:bg-background hover:border-primary/50 transition-all p-3.5 shadow-2xs snap-start shrink-0 space-y-2.5"
+              className="flex flex-col justify-between min-w-[300px] sm:min-w-[360px] max-w-[400px] rounded-xl border border-border/80 bg-background/80 hover:bg-background hover:border-primary/60 transition-all p-3.5 shadow-xs snap-start shrink-0 space-y-2.5"
             >
               {/* Venue Title & Tag */}
               <div className="flex items-start justify-between gap-2">

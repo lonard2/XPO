@@ -89,7 +89,7 @@ export const EventCard = React.memo(function EventCard({
     <Card
       interactive
       className={cn(
-        'group relative flex flex-col justify-between overflow-hidden border-border/80 bg-card transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:-translate-y-1',
+        'group relative flex flex-col justify-between overflow-hidden border-border/80 bg-card transition-all duration-300 hover:border-primary/60 hover:shadow-md hover:-translate-y-0.5',
         variant === 'horizontal' && 'md:flex-row md:items-center',
         className
       )}
