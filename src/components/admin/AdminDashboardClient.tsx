@@ -276,11 +276,11 @@ export function AdminDashboardClient({
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs bg-muted/30 p-2.5 rounded-lg border border-border/50">
                     <div>
-                      <span className="text-muted-foreground block text-[10px] uppercase font-semibold">Event Title</span>
+                      <span className="text-muted-foreground block text-xs uppercase font-semibold">Event Title</span>
                       <span className="font-medium text-foreground">{req.eventTitle}</span>
                     </div>
                     <div>
-                      <span className="text-muted-foreground block text-[10px] uppercase font-semibold">Requested Venue</span>
+                      <span className="text-muted-foreground block text-xs uppercase font-semibold">Requested Venue</span>
                       <span className="font-medium text-foreground">{req.requestedVenue}</span>
                     </div>
                     <div className="sm:col-span-2 pt-1 border-t border-border/40 text-[11px] text-muted-foreground">
@@ -339,7 +339,7 @@ export function AdminDashboardClient({
             <div className="p-3 bg-muted/40 rounded-xl border border-border/60 text-xs space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground">Fingerprint Algorithm:</span>
-                <span className="font-mono text-[10px] font-semibold text-foreground">SHA-256 (Venue+Title+Date)</span>
+                <span className="font-mono text-xs font-semibold text-foreground">SHA-256 (Venue+Title+Date)</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground">Deduplication State:</span>
@@ -397,7 +397,7 @@ export function AdminDashboardClient({
                   className="p-3 rounded-lg border border-border/70 bg-background/60 text-xs space-y-1"
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <span className="font-mono text-[10px] font-bold text-foreground truncate">
+                    <span className="font-mono text-xs font-bold text-foreground truncate">
                       {log.action}
                     </span>
                     {getSeverityBadge(log.severity)}
@@ -408,7 +408,7 @@ export function AdminDashboardClient({
                   <p className="text-[11px] text-foreground leading-relaxed pt-0.5">
                     {log.details}
                   </p>
-                  <div className="text-[10px] text-muted-foreground font-mono pt-1">
+                  <div className="text-xs text-muted-foreground font-mono pt-1">
                     {log.timestamp} • {log.id}
                   </div>
                 </div>

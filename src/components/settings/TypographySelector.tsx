@@ -110,7 +110,7 @@ export function TypographySelector({ className }: { className?: string }) {
                     <span className="text-sm font-semibold text-foreground block">
                       {opt.label}
                     </span>
-                    <span className="text-[11px] text-muted-foreground block font-mono">
+                    <span className="text-xs text-muted-foreground block font-mono">
                       {opt.subtitle}
                     </span>
                   </div>
@@ -133,7 +133,7 @@ export function TypographySelector({ className }: { className?: string }) {
                   <span className={cn("text-base font-bold text-foreground", opt.fontClass)}>
                     {opt.glyphSample}
                   </span>
-                  <span className="text-[10px] uppercase font-mono text-muted-foreground">
+                  <span className="text-xs uppercase font-mono text-muted-foreground">
                     Preview
                   </span>
                 </div>

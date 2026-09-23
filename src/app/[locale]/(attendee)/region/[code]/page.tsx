@@ -313,7 +313,7 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
                     <CardTitle className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">
                       {venue.name}
                     </CardTitle>
-                    <Badge variant="outline" className="text-[10px] shrink-0 font-mono">
+                    <Badge variant="outline" size="sm" className="shrink-0 font-mono">
                       {venue.city}
                     </Badge>
                   </div>
@@ -327,7 +327,7 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
                   {/* Halls Tag Preview */}
                   {venue.halls && venue.halls.length > 0 && (
                     <div className="space-y-1.5 rounded-lg bg-muted/40 p-2.5">
-                      <div className="flex items-center justify-between text-[11px] font-semibold text-foreground">
+                      <div className="flex items-center justify-between text-xs font-semibold text-foreground">
                         <span className="flex items-center gap-1">
                           <Layers className="h-3.5 w-3.5 text-primary" />
                           <span>Halls & Pavilions ({venue.halls.length})</span>
@@ -340,13 +340,13 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
                         {venue.halls.slice(0, 4).map((hall: VenueHallModel) => (
                           <span
                             key={hall.id}
-                            className="inline-block rounded border border-border/60 bg-background px-1.5 py-0.5 text-[10px] text-foreground font-medium"
+                            className="inline-block rounded border border-border/60 bg-background px-1.5 py-0.5 text-xs text-foreground font-medium"
                           >
                             {hall.name}
                           </span>
                         ))}
                         {venue.halls.length > 4 && (
-                          <span className="text-[10px] text-muted-foreground self-center">
+                          <span className="text-xs text-muted-foreground self-center">
                             +{venue.halls.length - 4} more
                           </span>
                         )}
@@ -429,10 +429,10 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
                 <Card key={event.id} interactive className="flex flex-col justify-between overflow-hidden group">
                   <CardHeader className="p-5 pb-3 space-y-2">
                     <div className="flex items-center justify-between gap-2">
-                      <Badge variant="archetype" className="text-[10px] uppercase font-bold tracking-wide">
+                      <Badge variant="archetype" size="sm" className="uppercase font-bold tracking-wide">
                         {event.archetype.replace(/_/g, " ")}
                       </Badge>
-                      <Badge variant="outline" className="text-[10px] uppercase font-mono">
+                      <Badge variant="outline" size="sm" className="uppercase font-mono">
                         {event.format}
                       </Badge>
                     </div>
@@ -464,7 +464,7 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
 
                   <CardFooter className="p-5 pt-3 border-t border-border/50 flex items-center justify-between bg-muted/10">
                     <div className="flex flex-col">
-                      <span className="text-[10px] text-muted-foreground uppercase">{tCommon("price")}</span>
+                      <span className="text-xs text-muted-foreground uppercase">{tCommon("price")}</span>
                       <span className="text-sm font-bold text-foreground">{priceText}</span>
                     </div>
 

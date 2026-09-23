@@ -36,7 +36,7 @@ export function AIConciergeToggle({ className }: { className?: string }) {
               {isMounted && (
                 <Badge
                   variant={aiConciergeEnabled ? "success" : "neutral"}
-                  className="text-[10px] uppercase font-mono tracking-wider"
+                  className="text-xs uppercase font-mono tracking-wider"
                 >
                   {aiConciergeEnabled ? "Active" : "Disabled"}
                 </Badge>
@@ -77,7 +77,7 @@ export function AIConciergeToggle({ className }: { className?: string }) {
             <span className="text-xs font-semibold text-foreground block">
               Venue Wayfinding
             </span>
-            <p className="text-[11px] text-muted-foreground leading-normal">
+            <p className="text-xs text-muted-foreground leading-normal">
               Locate specific exhibitor booths, plenary halls, and registration counters.
             </p>
           </div>
@@ -89,7 +89,7 @@ export function AIConciergeToggle({ className }: { className?: string }) {
             <span className="text-xs font-semibold text-foreground block">
               Live Timetable Synthesis
             </span>
-            <p className="text-[11px] text-muted-foreground leading-normal">
+            <p className="text-xs text-muted-foreground leading-normal">
               Summarize keynote tracks, speaker panels, and room schedule conflicts.
             </p>
           </div>
@@ -101,7 +101,7 @@ export function AIConciergeToggle({ className }: { className?: string }) {
             <span className="text-xs font-semibold text-foreground block">
               Multi-Model Gateway
             </span>
-            <p className="text-[11px] text-muted-foreground leading-normal">
+            <p className="text-xs text-muted-foreground leading-normal">
               Powered by OpenRouter streaming models with intelligent offline fallbacks.
             </p>
           </div>
@@ -113,7 +113,7 @@ export function AIConciergeToggle({ className }: { className?: string }) {
             <span className="text-xs font-semibold text-foreground block">
               Privacy Preserving
             </span>
-            <p className="text-[11px] text-muted-foreground leading-normal">
+            <p className="text-xs text-muted-foreground leading-normal">
               Chat history is kept strictly in local browser state and can be cleared anytime.
             </p>
           </div>

@@ -158,7 +158,7 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
               {/* Metric Badges */}
               <div className="grid grid-cols-3 gap-3 pt-2">
                 <div className="rounded-xl border border-border/80 bg-muted/30 p-3 text-center">
-                  <span className="text-[10px] uppercase font-semibold text-muted-foreground block">
+                  <span className="text-xs uppercase font-semibold text-muted-foreground block">
                     {tVen('totalHalls')?.split(' ')?.[1] || 'Halls'}
                   </span>
                   <span className="text-base sm:text-lg font-bold text-foreground mt-0.5 block">
@@ -167,7 +167,7 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
                 </div>
 
                 <div className="rounded-xl border border-border/80 bg-muted/30 p-3 text-center">
-                  <span className="text-[10px] uppercase font-semibold text-muted-foreground block">
+                  <span className="text-xs uppercase font-semibold text-muted-foreground block">
                     {tReg('capacity') || 'Max Capacity'}
                   </span>
                   <span className="text-base sm:text-lg font-bold text-foreground mt-0.5 block">
@@ -176,7 +176,7 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
                 </div>
 
                 <div className="rounded-xl border border-border/80 bg-muted/30 p-3 text-center">
-                  <span className="text-[10px] uppercase font-semibold text-muted-foreground block">
+                  <span className="text-xs uppercase font-semibold text-muted-foreground block">
                     {tVen('grossSpace') || 'Total Area'}
                   </span>
                   <span className="text-base sm:text-lg font-bold text-foreground mt-0.5 block">

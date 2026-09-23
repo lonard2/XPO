@@ -176,7 +176,7 @@ export function AuditLogsViewerClient({
                       <span className="font-mono text-xs font-bold text-foreground">
                         {log.action}
                       </span>
-                      <Badge variant="outline" size="sm" className="text-[10px]">
+                      <Badge variant="outline" size="sm" className="text-xs">
                         {log.category}
                       </Badge>
                       {getSeverityBadge(log.severity)}
@@ -190,11 +190,11 @@ export function AuditLogsViewerClient({
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs bg-muted/30 p-2.5 rounded-lg border border-border/40">
                     <div>
-                      <span className="text-muted-foreground block text-[10px] uppercase font-semibold">Actor / Origin</span>
+                      <span className="text-muted-foreground block text-xs uppercase font-semibold">Actor / Origin</span>
                       <span className="font-medium text-foreground">{log.actor}</span>
                     </div>
                     <div>
-                      <span className="text-muted-foreground block text-[10px] uppercase font-semibold">Target Resource</span>
+                      <span className="text-muted-foreground block text-xs uppercase font-semibold">Target Resource</span>
                       <span className="font-medium text-foreground">{log.target}</span>
                     </div>
                     <div className="sm:col-span-2 pt-1 border-t border-border/40">

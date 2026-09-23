@@ -166,7 +166,7 @@ export function VenueCampusExplorer({
                   <div className="space-y-2">
                     <div className="flex items-start justify-between gap-2">
                       <div>
-                        <span className="text-[10px] uppercase font-bold text-primary tracking-wider block">
+                        <span className="text-xs uppercase font-bold text-primary tracking-wider block">
                           Exhibition Facility
                         </span>
                         <h3 className="text-sm sm:text-base font-bold text-foreground mt-0.5">
@@ -175,7 +175,7 @@ export function VenueCampusExplorer({
                       </div>
 
                       {hall.capacity && (
-                        <Badge variant="outline" className="text-[10px] font-mono shrink-0">
+                        <Badge variant="outline" className="text-xs font-mono shrink-0">
                           {hall.capacity.toLocaleString()} Pax
                         </Badge>
                       )}
@@ -202,8 +202,8 @@ export function VenueCampusExplorer({
                       <span className="truncate">Floor Load: <strong className="text-foreground">{specs.floorLoad}</strong></span>
                     </div>
                     <div className="flex items-center justify-between text-primary font-medium pt-0.5">
-                      <span className="text-[10px]">{specs.columnSpan}</span>
-                      <span className="text-[10px] underline">Select Hall</span>
+                      <span className="text-xs">{specs.columnSpan}</span>
+                      <span className="text-xs underline">Select Hall</span>
                     </div>
                   </div>
                 </div>
@@ -218,7 +218,7 @@ export function VenueCampusExplorer({
             <div className="border-b border-border/60 pb-3 space-y-1">
               <div className="flex items-center gap-1.5">
                 <CheckCircle2 className="h-4 w-4 text-primary" />
-                <span className="text-[10px] font-bold uppercase tracking-wider text-primary">
+                <span className="text-xs font-bold uppercase tracking-wider text-primary">
                   Selected Specification
                 </span>
               </div>
@@ -233,13 +233,13 @@ export function VenueCampusExplorer({
             {/* Quick Metrics */}
             <div className="grid grid-cols-2 gap-2 text-center">
               <div className="rounded-xl border border-border/70 bg-card p-2.5">
-                <span className="text-[10px] text-muted-foreground uppercase font-semibold block">Capacity</span>
+                <span className="text-xs text-muted-foreground uppercase font-semibold block">Capacity</span>
                 <span className="text-sm font-bold text-foreground mt-0.5 block">
                   {selectedHall.capacity?.toLocaleString() || 'N/A'} Pax
                 </span>
               </div>
               <div className="rounded-xl border border-border/70 bg-card p-2.5">
-                <span className="text-[10px] text-muted-foreground uppercase font-semibold block">Floor Area</span>
+                <span className="text-xs text-muted-foreground uppercase font-semibold block">Floor Area</span>
                 <span className="text-sm font-bold text-foreground mt-0.5 block">
                   {selectedHall.floorAreaSqm?.toLocaleString() || 'N/A'} m²
                 </span>

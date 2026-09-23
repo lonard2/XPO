@@ -86,7 +86,7 @@ export function VenueScheduleTable({
                   <div className="flex items-center justify-between gap-2">
                     <Badge
                       variant="outline"
-                      className="text-[10px] font-bold uppercase"
+                      className="text-xs font-bold uppercase"
                       style={{
                         color: tokens.primary,
                         borderColor: `${tokens.primary}55`,
@@ -96,7 +96,7 @@ export function VenueScheduleTable({
                       {tokens.displayName}
                     </Badge>
 
-                    <span className="text-[10px] font-semibold text-muted-foreground bg-muted px-2 py-0.5 rounded">
+                    <span className="text-xs font-semibold text-muted-foreground bg-muted px-2 py-0.5 rounded">
                       {hallName}
                     </span>
                   </div>

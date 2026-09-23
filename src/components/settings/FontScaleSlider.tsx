@@ -109,7 +109,7 @@ export function FontScaleSlider({ className }: { className?: string }) {
 
       {/* Live Preview Box */}
       <div className="rounded-lg bg-muted/40 border border-border/60 p-3.5 space-y-1">
-        <span className="text-[10px] uppercase font-mono tracking-wider text-muted-foreground block mb-1">
+        <span className="text-xs uppercase font-mono tracking-wider text-muted-foreground block mb-1">
           Live Scale Preview
         </span>
         <div style={{ fontSize: `${fontScale}rem` }} className="transition-all duration-150">

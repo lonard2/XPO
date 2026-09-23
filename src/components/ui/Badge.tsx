@@ -14,6 +14,7 @@ const badgeVariants = cva(
         outline: "text-foreground border-border",
         success: "border-emerald-500/20 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300",
         warning: "border-amber-500/20 bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300",
+        info: "border-sky-500/20 bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-300",
         archetype: "border-[var(--archetype-border)] bg-[var(--archetype-surface)] text-[var(--archetype-primary)] shadow-sm",
       },
       size: {

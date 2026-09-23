@@ -19,6 +19,10 @@ colors:
   emerald-verified: "#10b981"
   amber-warning: "#f59e0b"
   rose-destructive: "#e11d48"
+  success: "#10b981"
+  warning: "#f59e0b"
+  destructive: "#e11d48"
+  info: "#0284c7"
   category-industrial: "#2563eb"
   category-tech: "#6366f1"
   category-medical: "#0d9488"
@@ -34,7 +38,90 @@ colors:
   category-hospitality: "#0891b2"
   category-education: "#7c3aed"
   category-fashion: "#db2777"
+  archetype-industrial-primary: "#2563eb"
+  archetype-industrial-accent: "#f59e0b"
+  archetype-industrial-bg: "#0f172a"
+  archetype-industrial-surface: "#1e293b"
+  archetype-industrial-border: "#3b82f6"
+  archetype-tech-primary: "#6366f1"
+  archetype-tech-accent: "#06b6d4"
+  archetype-tech-bg: "#090d16"
+  archetype-tech-surface: "#131b2e"
+  archetype-tech-border: "#818cf8"
+  archetype-medical-primary: "#0d9488"
+  archetype-medical-accent: "#10b981"
+  archetype-medical-bg: "#f8fafc"
+  archetype-medical-surface: "#ffffff"
+  archetype-medical-border: "#2dd4bf"
+  archetype-finance-primary: "#1e3a8a"
+  archetype-finance-accent: "#10b981"
+  archetype-finance-bg: "#0a0f1d"
+  archetype-finance-surface: "#111827"
+  archetype-finance-border: "#10b981"
+  archetype-popculture-primary: "#9333ea"
+  archetype-popculture-accent: "#ec4899"
+  archetype-popculture-bg: "#180828"
+  archetype-popculture-surface: "#2d124d"
+  archetype-popculture-border: "#c084fc"
+  archetype-music-primary: "#e11d48"
+  archetype-music-accent: "#8b5cf6"
+  archetype-music-bg: "#110714"
+  archetype-music-surface: "#260c2c"
+  archetype-music-border: "#fb7185"
+  archetype-megaexpo-primary: "#ea580c"
+  archetype-megaexpo-accent: "#16a34a"
+  archetype-megaexpo-bg: "#0c121e"
+  archetype-megaexpo-surface: "#162032"
+  archetype-megaexpo-border: "#fb923c"
+  archetype-diplomatic-primary: "#0284c7"
+  archetype-diplomatic-accent: "#ca8a04"
+  archetype-diplomatic-bg: "#020617"
+  archetype-diplomatic-surface: "#0f172a"
+  archetype-diplomatic-border: "#38bdf8"
+  archetype-retreat-primary: "#059669"
+  archetype-retreat-accent: "#d97706"
+  archetype-retreat-bg: "#062016"
+  archetype-retreat-surface: "#0e3828"
+  archetype-retreat-border: "#10b981"
+  archetype-automotive-primary: "#dc2626"
+  archetype-automotive-accent: "#f97316"
+  archetype-automotive-bg: "#09090b"
+  archetype-automotive-surface: "#18181b"
+  archetype-automotive-border: "#f87171"
+  archetype-energy-primary: "#d97706"
+  archetype-energy-accent: "#16a34a"
+  archetype-energy-bg: "#0c0a09"
+  archetype-energy-surface: "#1c1917"
+  archetype-energy-border: "#f59e0b"
+  archetype-agritech-primary: "#16a34a"
+  archetype-agritech-accent: "#84cc16"
+  archetype-agritech-bg: "#052e16"
+  archetype-agritech-surface: "#064e3b"
+  archetype-agritech-border: "#22c55e"
+  archetype-hospitality-primary: "#0891b2"
+  archetype-hospitality-accent: "#38bdf8"
+  archetype-hospitality-bg: "#083344"
+  archetype-hospitality-surface: "#0e7490"
+  archetype-hospitality-border: "#06b6d4"
+  archetype-education-primary: "#7c3aed"
+  archetype-education-accent: "#a855f7"
+  archetype-education-bg: "#1e1b4b"
+  archetype-education-surface: "#312e81"
+  archetype-education-border: "#8b5cf6"
+  archetype-fashion-primary: "#db2777"
+  archetype-fashion-accent: "#4f46e5"
+  archetype-fashion-bg: "#2e1065"
+  archetype-fashion-surface: "#3b0764"
+  archetype-fashion-border: "#ec4899"
 typography:
+  font-sans:
+    fontFamily: "Font-Sans, Plus Jakarta Sans, system-ui, sans-serif"
+  font-serif:
+    fontFamily: "Font-Serif, Newsreader, Georgia, serif"
+  font-mono:
+    fontFamily: "Font-Mono, JetBrains Mono, monospace"
+  font-legible:
+    fontFamily: "Font-Legible, Atkinson Hyperlegible, sans-serif"
   display:
     fontFamily: "Plus Jakarta Sans, system-ui, sans-serif"
     fontSize: "clamp(2.25rem, 5vw, 3.75rem)"
@@ -65,6 +152,12 @@ typography:
     fontWeight: 600
     lineHeight: 1.2
     letterSpacing: "0.025em"
+  caption:
+    fontFamily: "Plus Jakarta Sans, system-ui, sans-serif"
+    fontSize: "0.6875rem"
+    fontWeight: 500
+    lineHeight: 1.3
+    letterSpacing: "0.02em"
 rounded:
   sm: "4px"
   md: "8px"
@@ -122,13 +215,14 @@ The interface balances dense, operational MICE data (ceiling heights, floor load
 XPO utilizes a dual-layer color system: an enterprise slate neutral foundation paired with 15 specialized MICE category identity palettes.
 
 ### Core Neutral & Semantic Palette:
-- **Primary Navy/Blue**: `#2563eb` (Default Action) / `#1d4ed8` (Hover) / `#3b82f6` (Dark Mode Accent).
+- **Primary Action**: `#2563eb` (Default Action) / `#1d4ed8` (Hover) / `#3b82f6` (Dark Mode Accent).
 - **Background Surfaces**: Light `#f8fafc` / Dark `#090d16` (Deep Slate Obsidian).
 - **Card Surfaces**: Light `#ffffff` / Dark `#0f172a` / Sub-surface `#1e293b`.
 - **Structural Borders**: Light `#e2e8f0` / Dark `#1e293b` (1px clean demarcation).
-- **Verified Status (Gate & Security)**: `#10b981` (Emerald 500) with subtle pulse animation.
-- **Warning & Capacity Alerts**: `#f59e0b` (Amber 500).
-- **Destructive & Cancelled**: `#e11d48` (Rose 600).
+- **Semantic Success**: `--success` `#10b981` (Emerald 500) for verified gate pass authentication and operational states.
+- **Semantic Warning**: `--warning` `#f59e0b` (Amber 500) for capacity alerts and standby notices.
+- **Semantic Destructive**: `--destructive` `#e11d48` (Rose 600) for cancellations, errors, and pass revocations.
+- **Semantic Info**: `--info` `#0284c7` (Sky 500) for protocol briefings, guidance, and informational tracks.
 
 ### 15 MICE Domain Category Archetypes:
 Each of the 15 MICE event categories defines a dedicated CSS variable scope:

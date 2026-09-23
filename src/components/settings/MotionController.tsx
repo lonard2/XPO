@@ -103,7 +103,7 @@ export function MotionController({ className }: { className?: string }) {
                 <span className="text-sm font-semibold text-foreground block">
                   {opt.label}
                 </span>
-                <span className="text-[11px] text-muted-foreground font-mono block">
+                <span className="text-xs text-muted-foreground font-mono block">
                   {opt.subtitle}
                 </span>
               </div>
@@ -125,7 +125,7 @@ export function MotionController({ className }: { className?: string }) {
               Live Motion Test Card
             </span>
           </div>
-          <span className="text-[11px] text-muted-foreground">Hover or tap card below</span>
+          <span className="text-xs text-muted-foreground">Hover or tap card below</span>
         </div>
 
         <div
@@ -139,11 +139,11 @@ export function MotionController({ className }: { className?: string }) {
           <div className="flex items-center justify-between">
             <div>
               <span className="text-xs font-bold text-foreground">Interactive MICE Booth Card</span>
-              <p className="text-[11px] text-muted-foreground">
+              <p className="text-xs text-muted-foreground">
                 Testing {motionMode.toUpperCase()} physics curve & hover dynamics
               </p>
             </div>
-            <span className="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-primary/10 text-primary border border-primary/20">
+            <span className="px-2 py-0.5 rounded text-xs font-mono font-semibold bg-primary/10 text-primary border border-primary/20">
               HALL 4 - B12
             </span>
           </div>

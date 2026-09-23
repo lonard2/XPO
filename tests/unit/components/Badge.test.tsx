@@ -9,11 +9,14 @@ describe("UI Primitive: Badge", () => {
     expect(screen.getByText("Featured Event")).toBeInTheDocument();
   });
 
-  it("applies success and warning variant styles", () => {
+  it("applies success, warning, and info variant styles", () => {
     const { rerender } = render(<Badge variant="success">Confirmed</Badge>);
     expect(screen.getByText("Confirmed")).toHaveClass("text-emerald-700");
 
     rerender(<Badge variant="warning">Few Tickets Left</Badge>);
     expect(screen.getByText("Few Tickets Left")).toHaveClass("text-amber-700");
+
+    rerender(<Badge variant="info">Upcoming Track</Badge>);
+    expect(screen.getByText("Upcoming Track")).toHaveClass("text-sky-700");
   });
 });

@@ -147,7 +147,7 @@ export function LanguageSwitcher({
           aria-label="Supported languages"
           className="absolute right-0 mt-1.5 w-56 origin-top-right rounded-xl border border-border bg-card p-1.5 shadow-xl z-50 animate-in fade-in-0 zoom-in-95 duration-100"
         >
-          <div className="px-2.5 py-1.5 border-b border-border/50 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
+          <div className="px-2.5 py-1.5 border-b border-border/50 text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
             <Languages className="h-3 w-3 text-primary" />
             <span>Select Language</span>
           </div>
@@ -171,7 +171,7 @@ export function LanguageSwitcher({
                 >
                   <div className="flex flex-col">
                     <span className="font-medium text-foreground">{lang.nativeLabel}</span>
-                    <span className="text-[10px] text-muted-foreground">{lang.label}</span>
+                    <span className="text-xs text-muted-foreground">{lang.label}</span>
                   </div>
                   {isSelected && <Check className="h-3.5 w-3.5 text-primary stroke-[2.5]" />}
                 </button>

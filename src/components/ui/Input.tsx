@@ -45,7 +45,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           )}
         </div>
         {error && <p className="text-xs text-destructive mt-1">{error}</p>}
-        {helperText && !error && <p className="text-[11px] text-muted-foreground mt-1">{helperText}</p>}
+        {helperText && !error && <p className="text-xs text-muted-foreground mt-1">{helperText}</p>}
       </div>
     );
   }

@@ -189,7 +189,7 @@ export function AttendeeAIConcierge({ locale = "en", eventContext }: AttendeeAIC
     // Clean lightweight markdown parser for bold, lists, and paragraphs
     const paragraphs = text.split("\n\n");
     return (
-      <div className="space-y-2 text-xs sm:text-[13px] leading-relaxed">
+      <div className="space-y-2 text-xs sm:text-sm leading-relaxed">
         {paragraphs.map((para, pIdx) => {
           if (para.startsWith("* ") || para.startsWith("- ")) {
             const items = para.split("\n");
@@ -281,11 +281,11 @@ export function AttendeeAIConcierge({ locale = "en", eventContext }: AttendeeAIC
                   <h3 className="text-xs sm:text-sm font-bold text-foreground">
                     Attendee AI Concierge
                   </h3>
-                  <Badge variant="success" className="text-[9px] px-1 py-0 h-4">
+                  <Badge variant="success" className="text-xs px-1.5 py-0 h-4">
                     Online
                   </Badge>
                 </div>
-                <span className="text-[10px] text-muted-foreground font-mono">
+                <span className="text-xs text-muted-foreground font-mono">
                   Gemini 3.5 Flash Lite
                 </span>
               </div>
@@ -353,12 +353,12 @@ export function AttendeeAIConcierge({ locale = "en", eventContext }: AttendeeAIC
                         )}
                       </div>
                     ) : (
-                      <p className="text-xs sm:text-[13px] leading-relaxed whitespace-pre-wrap">
+                      <p className="text-xs sm:text-sm leading-relaxed whitespace-pre-wrap">
                         {msg.content}
                       </p>
                     )}
                   </div>
-                  <span className="text-[9px] text-muted-foreground mt-1 px-1 font-mono">
+                  <span className="text-xs text-muted-foreground mt-1 px-1 font-mono">
                     {msg.timestamp}
                   </span>
                 </div>

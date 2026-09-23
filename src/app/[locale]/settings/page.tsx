@@ -195,11 +195,11 @@ export default function SettingsPage({ params }: SettingsPageProps) {
                   <span className="font-semibold text-foreground font-mono">
                     google/gemini-3.5-flash-lite
                   </span>
-                  <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold">
+                  <span className="text-xs uppercase font-mono px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold">
                     Default Copilot
                   </span>
                 </div>
-                <p className="text-muted-foreground leading-relaxed text-[11px]">
+                <p className="text-muted-foreground leading-relaxed text-xs">
                   Sub-second token streaming for real-time attendee FAQs, shuttle schedules, and hall wayfinding.
                 </p>
               </div>
@@ -209,11 +209,11 @@ export default function SettingsPage({ params }: SettingsPageProps) {
                   <span className="font-semibold text-foreground font-mono">
                     google/gemini-3.7-flash
                   </span>
-                  <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-primary/10 text-primary font-bold">
+                  <span className="text-xs uppercase font-mono px-1.5 py-0.5 rounded bg-primary/10 text-primary font-bold">
                     Multi-Modal
                   </span>
                 </div>
-                <p className="text-muted-foreground leading-relaxed text-[11px]">
+                <p className="text-muted-foreground leading-relaxed text-xs">
                   Complex reasoning across multi-day exhibition schedules and spatial hall floor maps.
                 </p>
               </div>

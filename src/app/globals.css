@@ -28,6 +28,15 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
+    --success: 142.1 76.2% 36.3%;
+    --success-foreground: 210 40% 98%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 24 9.8% 10%;
+
+    --info: 199 89% 48%;
+    --info-foreground: 210 40% 98%;
+
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 221 83% 53%;
@@ -75,6 +84,15 @@
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
+    --success: 142.1 70.6% 45.3%;
+    --success-foreground: 144.9 80.4% 10%;
+
+    --warning: 48 96% 53%;
+    --warning-foreground: 26 83.3% 14.1%;
+
+    --info: 199 89% 55%;
+    --info-foreground: 200 98% 10%;
+
     --border: 217 33% 18%;
     --input: 217 33% 18%;
     --ring: 224 76% 48%;
@@ -93,6 +111,14 @@
     --primary: 48 100% 50%;
     --primary-foreground: 0 0% 0%;
     --ring: 48 100% 50%;
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 120 100% 50%;
+    --success-foreground: 0 0% 0%;
+    --warning: 60 100% 50%;
+    --warning-foreground: 0 0% 0%;
+    --info: 180 100% 50%;
+    --info-foreground: 0 0% 0%;
   }
 
   /* Font Scale Adjustments */

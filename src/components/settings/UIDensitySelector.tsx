@@ -109,7 +109,7 @@ export function UIDensitySelector({ className }: { className?: string }) {
                   <div
                     key={idx}
                     className={cn(
-                      "flex items-center justify-between rounded bg-background border border-border/50 text-[10px] text-muted-foreground",
+                      "flex items-center justify-between rounded bg-background border border-border/50 text-xs text-muted-foreground",
                       opt.rowPaddingClass
                     )}
                   >

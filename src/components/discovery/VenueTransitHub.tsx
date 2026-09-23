@@ -136,7 +136,7 @@ export function VenueTransitHub({
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <Train className="h-4 w-4" />
             </div>
-            <Badge variant="outline" className="text-[10px] uppercase font-semibold">
+            <Badge variant="outline" className="text-xs uppercase font-semibold">
               Rapid Rail
             </Badge>
           </div>
@@ -152,7 +152,7 @@ export function VenueTransitHub({
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <Bus className="h-4 w-4" />
             </div>
-            <Badge variant="outline" className="text-[10px] uppercase font-semibold">
+            <Badge variant="outline" className="text-xs uppercase font-semibold">
               Bus / BRT
             </Badge>
           </div>
@@ -168,7 +168,7 @@ export function VenueTransitHub({
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <Car className="h-4 w-4" />
             </div>
-            <Badge variant="outline" className="text-[10px] uppercase font-semibold">
+            <Badge variant="outline" className="text-xs uppercase font-semibold">
               Parking
             </Badge>
           </div>
@@ -184,7 +184,7 @@ export function VenueTransitHub({
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <Plane className="h-4 w-4" />
             </div>
-            <Badge variant="outline" className="text-[10px] uppercase font-semibold">
+            <Badge variant="outline" className="text-xs uppercase font-semibold">
               Airport
             </Badge>
           </div>

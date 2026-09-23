@@ -198,21 +198,21 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
                     <p className="text-[11px] text-muted-foreground">
                       {DEMO_ACCOUNTS.ATTENDEE.jobTitle}
                     </p>
-                    <p className="text-[10px] text-muted-foreground/80 mt-0.5">
+                    <p className="text-xs text-muted-foreground/80 mt-0.5">
                       {DEMO_ACCOUNTS.ATTENDEE.organization}
                     </p>
                   </div>
                 </div>
 
                 <div className="pt-2 border-t border-border/60">
-                  <div className="text-[10px] font-semibold uppercase text-muted-foreground tracking-wider mb-1.5">
+                  <div className="text-xs font-semibold uppercase text-muted-foreground tracking-wider mb-1.5">
                     Tier: Attendee
                   </div>
                   <div className="flex flex-wrap gap-1">
-                    <span className="text-[10px] bg-muted/80 px-1.5 py-0.5 rounded text-foreground">
+                    <span className="text-xs bg-muted/80 px-1.5 py-0.5 rounded text-foreground">
                       Event Discovery
                     </span>
-                    <span className="text-[10px] bg-muted/80 px-1.5 py-0.5 rounded text-foreground">
+                    <span className="text-xs bg-muted/80 px-1.5 py-0.5 rounded text-foreground">
                       Pass Checkout
                     </span>
                   </div>
@@ -247,24 +247,24 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
                     <p className="text-[11px] text-muted-foreground">
                       {DEMO_ACCOUNTS.ORGANIZER.jobTitle}
                     </p>
-                    <p className="text-[10px] text-muted-foreground/80 mt-0.5">
+                    <p className="text-xs text-muted-foreground/80 mt-0.5">
                       {DEMO_ACCOUNTS.ORGANIZER.organization}
                     </p>
                   </div>
                 </div>
 
                 <div className="pt-2 border-t border-border/60">
-                  <div className="text-[10px] font-semibold uppercase text-muted-foreground tracking-wider mb-1.5">
+                  <div className="text-xs font-semibold uppercase text-muted-foreground tracking-wider mb-1.5">
                     Tier: Organizer
                   </div>
                   <div className="flex flex-wrap gap-1">
-                    <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded font-medium">
+                    <span className="text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded font-medium">
                       Event Wizard
                     </span>
-                    <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded font-medium">
+                    <span className="text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded font-medium">
                       Live Customizer
                     </span>
-                    <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded font-medium">
+                    <span className="text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded font-medium">
                       QR Scanner
                     </span>
                   </div>
@@ -299,24 +299,24 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
                     <p className="text-[11px] text-muted-foreground">
                       {DEMO_ACCOUNTS.ADMIN.jobTitle}
                     </p>
-                    <p className="text-[10px] text-muted-foreground/80 mt-0.5">
+                    <p className="text-xs text-muted-foreground/80 mt-0.5">
                       {DEMO_ACCOUNTS.ADMIN.organization}
                     </p>
                   </div>
                 </div>
 
                 <div className="pt-2 border-t border-border/60">
-                  <div className="text-[10px] font-semibold uppercase text-muted-foreground tracking-wider mb-1.5">
+                  <div className="text-xs font-semibold uppercase text-muted-foreground tracking-wider mb-1.5">
                     Tier: SuperAdmin
                   </div>
                   <div className="flex flex-wrap gap-1">
-                    <span className="text-[10px] bg-rose-500/10 text-rose-600 dark:text-rose-400 px-1.5 py-0.5 rounded font-medium">
+                    <span className="text-xs bg-rose-500/10 text-rose-600 dark:text-rose-400 px-1.5 py-0.5 rounded font-medium">
                       Venue Ingestion
                     </span>
-                    <span className="text-[10px] bg-rose-500/10 text-rose-600 dark:text-rose-400 px-1.5 py-0.5 rounded font-medium">
+                    <span className="text-xs bg-rose-500/10 text-rose-600 dark:text-rose-400 px-1.5 py-0.5 rounded font-medium">
                       Crawler Pipeline
                     </span>
-                    <span className="text-[10px] bg-rose-500/10 text-rose-600 dark:text-rose-400 px-1.5 py-0.5 rounded font-medium">
+                    <span className="text-xs bg-rose-500/10 text-rose-600 dark:text-rose-400 px-1.5 py-0.5 rounded font-medium">
                       Audit Logs
                     </span>
                   </div>
@@ -418,7 +418,7 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
                     <tr key={item.permission} className="hover:bg-muted/30 transition-colors">
                       <td className="py-2 px-3">
                         <div className="font-medium text-foreground">{item.title}</div>
-                        <div className="text-[10px] text-muted-foreground">{item.description}</div>
+                        <div className="text-xs text-muted-foreground">{item.description}</div>
                       </td>
                       <td className="py-2 px-2 text-center">
                         {item.attendee ? (

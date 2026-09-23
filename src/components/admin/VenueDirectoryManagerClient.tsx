@@ -416,7 +416,7 @@ export function VenueDirectoryManagerClient({
                     <div className="flex items-center gap-2">
                       <Layers className="h-4 w-4 text-primary shrink-0" />
                       <div>
-                        <span className="text-[10px] text-muted-foreground block uppercase font-semibold">Indexed Halls</span>
+                        <span className="text-xs text-muted-foreground block uppercase font-semibold">Indexed Halls</span>
                         <span className="font-bold text-foreground">
                           {venue.halls?.length || 0} Halls
                         </span>
@@ -425,7 +425,7 @@ export function VenueDirectoryManagerClient({
                     <div className="flex items-center gap-2">
                       <Users className="h-4 w-4 text-emerald-500 shrink-0" />
                       <div>
-                        <span className="text-[10px] text-muted-foreground block uppercase font-semibold">Max Capacity</span>
+                        <span className="text-xs text-muted-foreground block uppercase font-semibold">Max Capacity</span>
                         <span className="font-bold text-foreground">
                           {totalCapacity > 0 ? `${totalCapacity.toLocaleString()} seats` : "Flexible"}
                         </span>
@@ -436,17 +436,17 @@ export function VenueDirectoryManagerClient({
                   {/* Exact Hall Badges Preview */}
                   {venue.halls && venue.halls.length > 0 && (
                     <div className="space-y-1.5">
-                      <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground block">
+                      <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">
                         Exact Stage & Hall Directory:
                       </span>
                       <div className="flex flex-wrap gap-1">
                         {venue.halls.slice(0, 5).map((hall, idx) => (
-                          <Badge key={idx} variant="outline" size="sm" className="text-[10px] bg-background/60">
+                          <Badge key={idx} variant="outline" size="sm" className="text-xs bg-background/60">
                             {hall.name} ({hall.capacity ? `${hall.capacity.toLocaleString()}p` : "Hall"})
                           </Badge>
                         ))}
                         {venue.halls.length > 5 && (
-                          <Badge variant="neutral" size="sm" className="text-[10px]">
+                          <Badge variant="neutral" size="sm" className="text-xs">
                             +{venue.halls.length - 5} more
                           </Badge>
                         )}
@@ -475,7 +475,7 @@ export function VenueDirectoryManagerClient({
                     <span>View GPS Pin</span>
                   </button>
 
-                  <span className="text-[10px] text-muted-foreground font-mono">
+                  <span className="text-xs text-muted-foreground font-mono">
                     {venue.slug}
                   </span>
                 </CardFooter>
@@ -641,7 +641,7 @@ export function VenueDirectoryManagerClient({
                   className="p-2.5 rounded-lg border border-border/80 bg-muted/30 grid grid-cols-12 gap-2 items-center text-xs"
                 >
                   <div className="col-span-4">
-                    <label className="block text-[10px] text-muted-foreground font-semibold">Hall Name</label>
+                    <label className="block text-xs text-muted-foreground font-semibold">Hall Name</label>
                     <Input
                       placeholder="e.g. Nusantara Hall 2"
                       value={hall.name}
@@ -651,7 +651,7 @@ export function VenueDirectoryManagerClient({
                     />
                   </div>
                   <div className="col-span-3">
-                    <label className="block text-[10px] text-muted-foreground font-semibold">Capacity (Seats)</label>
+                    <label className="block text-xs text-muted-foreground font-semibold">Capacity (Seats)</label>
                     <Input
                       type="number"
                       placeholder="3500"
@@ -661,7 +661,7 @@ export function VenueDirectoryManagerClient({
                     />
                   </div>
                   <div className="col-span-3">
-                    <label className="block text-[10px] text-muted-foreground font-semibold">Area (Sqm)</label>
+                    <label className="block text-xs text-muted-foreground font-semibold">Area (Sqm)</label>
                     <Input
                       type="number"
                       placeholder="5000"
@@ -729,13 +729,13 @@ export function VenueDirectoryManagerClient({
 
               <div className="grid grid-cols-2 gap-3 p-3 bg-background rounded-lg border border-border">
                 <div>
-                  <span className="text-[10px] uppercase font-semibold text-muted-foreground block">Latitude</span>
+                  <span className="text-xs uppercase font-semibold text-muted-foreground block">Latitude</span>
                   <span className="font-mono text-xs font-bold text-foreground">
                     {mapVenue.latitude ? mapVenue.latitude.toFixed(6) : "N/A (Geo-indexed)"}
                   </span>
                 </div>
                 <div>
-                  <span className="text-[10px] uppercase font-semibold text-muted-foreground block">Longitude</span>
+                  <span className="text-xs uppercase font-semibold text-muted-foreground block">Longitude</span>
                   <span className="font-mono text-xs font-bold text-foreground">
                     {mapVenue.longitude ? mapVenue.longitude.toFixed(6) : "N/A (Geo-indexed)"}
                   </span>
@@ -743,12 +743,12 @@ export function VenueDirectoryManagerClient({
               </div>
 
               <div className="space-y-1">
-                <span className="text-[10px] uppercase font-semibold text-muted-foreground block">Full Address</span>
+                <span className="text-xs uppercase font-semibold text-muted-foreground block">Full Address</span>
                 <p className="text-foreground">{mapVenue.address}</p>
               </div>
 
               <div className="space-y-1">
-                <span className="text-[10px] uppercase font-semibold text-muted-foreground block">Transit Routing</span>
+                <span className="text-xs uppercase font-semibold text-muted-foreground block">Transit Routing</span>
                 <p className="text-muted-foreground leading-relaxed">{mapVenue.transitInfo}</p>
               </div>
             </div>

@@ -18,7 +18,7 @@ const OFFLINE_FALLBACK_HTML = `<!DOCTYPE html>
   <title>Offline Mode | XPO MICE Digital Ecosystem</title>
   <style>
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Plus Jakarta Sans", sans-serif;
       background-color: #0a0f1d;
       color: #f8fafc;
       display: flex;
@@ -36,7 +36,7 @@ const OFFLINE_FALLBACK_HTML = `<!DOCTYPE html>
       padding: 32px;
       max-width: 480px;
       text-align: center;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 20px 25px -5px #020617;
     }
     .badge {
       display: inline-block;

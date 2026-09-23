@@ -155,7 +155,7 @@ export function CrawlerConsoleClient({
         <CardContent className="space-y-4 pt-0">
           {/* Target Venues Grid */}
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block mb-2">
+            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground block mb-2">
               Target Venue Feeds ({selectedVenues.length}/{registeredVenues.length} Selected):
             </span>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5">
@@ -174,7 +174,7 @@ export function CrawlerConsoleClient({
                   >
                     <div>
                       <div className="leading-tight">{venue.venueName}</div>
-                      <div className="text-[10px] font-normal text-muted-foreground mt-0.5">
+                      <div className="text-xs font-normal text-muted-foreground mt-0.5">
                         {venue.regionCode.toUpperCase()} • {venue.eventCount} Scheduled Feeds
                       </div>
                     </div>
@@ -251,7 +251,7 @@ export function CrawlerConsoleClient({
             <div className="rounded-xl border border-border overflow-hidden">
               <div className="max-h-72 overflow-y-auto">
                 <table className="w-full text-left text-xs border-collapse">
-                  <thead className="bg-muted/50 text-[10px] font-bold uppercase tracking-wider text-muted-foreground border-b border-border sticky top-0">
+                  <thead className="bg-muted/50 text-xs font-bold uppercase tracking-wider text-muted-foreground border-b border-border sticky top-0">
                     <tr>
                       <th className="p-3">Event Title</th>
                       <th className="p-3">Venue</th>
@@ -270,16 +270,16 @@ export function CrawlerConsoleClient({
                         </td>
                         <td className="p-3">
                           {evt.action === "INSERTED" ? (
-                            <Badge variant="success" size="sm" className="text-[10px]">
+                            <Badge variant="success" size="sm">
                               INSERTED
                             </Badge>
                           ) : (
-                            <Badge variant="neutral" size="sm" className="text-[10px]">
+                            <Badge variant="neutral" size="sm">
                               SKIPPED (DUPLICATE)
                             </Badge>
                           )}
                         </td>
-                        <td className="p-3 font-mono text-[10px] text-muted-foreground">
+                        <td className="p-3 font-mono text-xs text-muted-foreground">
                           {evt.fingerprint.slice(0, 16)}...{evt.fingerprint.slice(-8)}
                         </td>
                       </tr>
@@ -325,10 +325,10 @@ export function CrawlerConsoleClient({
                       {rec.status}
                     </Badge>
                     <span className="font-mono font-bold text-foreground">{rec.runId}</span>
-                    <span className="text-muted-foreground text-[11px]">{rec.timestamp}</span>
+                    <span className="text-muted-foreground text-xs">{rec.timestamp}</span>
                   </div>
 
-                  <div className="flex items-center gap-3 text-[11px]">
+                  <div className="flex items-center gap-3 text-xs">
                     <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
                       +{rec.insertedCount} new
                     </span>
