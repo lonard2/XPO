@@ -22,6 +22,7 @@ import { buttonVariants } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 import { formatCurrency, formatDateRange, type SupportedCurrency } from "@/lib/i18n/formatters";
 import { getArchetypeTokens } from "@/lib/theming";
+import { OrganizerOnboardingGuide } from "@/components/organizer/OrganizerOnboardingGuide";
 
 interface DashboardPageProps {
   params: Promise<{ locale: string }>;
@@ -243,6 +244,15 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
         </div>
       </div>
 
+      {/* ONBOARDING & ROADMAP GUIDE */}
+      <OrganizerOnboardingGuide
+        locale={locale}
+        hasEvents={events.length > 0}
+        hasTickets={totalRegistrations > 0}
+        hasBooths={totalBooths > 0}
+        totalEvents={events.length}
+      />
+
       {/* ACTIVE EVENTS MANAGEMENT ROSTER */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
@@ -261,8 +271,39 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-          {events.map((event) => {
+        {events.length === 0 ? (
+          <Card className="p-8 border-border bg-card text-center space-y-4 shadow-xs">
+            <div className="h-12 w-12 rounded-2xl bg-primary/10 text-primary mx-auto flex items-center justify-center">
+              <Building2 className="h-6 w-6" />
+            </div>
+            <div className="space-y-1.5 max-w-md mx-auto">
+              <h3 className="text-base font-bold text-foreground">
+                No Active Exhibitions Yet
+              </h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Create your first MICE exhibition to configure custom branding, allocate hall booths, and issue cryptographic ticket passes.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-2.5 pt-2">
+              <Link
+                href={`/${locale}/events/new`}
+                className={cn(buttonVariants({ variant: "primary", size: "sm" }), "text-xs gap-1.5 cursor-pointer")}
+              >
+                <PlusCircle className="h-3.5 w-3.5" />
+                <span>Launch First Exhibition</span>
+              </Link>
+              <Link
+                href={`/${locale}/events/new?template=industrial`}
+                className={cn(buttonVariants({ variant: "outline", size: "sm" }), "text-xs gap-1.5 cursor-pointer")}
+              >
+                <Sparkles className="h-3.5 w-3.5 text-primary" />
+                <span>Start with Industrial B2B Template</span>
+              </Link>
+            </div>
+          </Card>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+            {events.map((event) => {
             const tokens = getArchetypeTokens(event.archetype);
             const registrationsCount = event.bookings?.length || 0;
             const boothsCount = event.booths?.length || 0;
@@ -360,6 +401,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
             );
           })}
         </div>
+      )}
       </div>
     </div>
   );

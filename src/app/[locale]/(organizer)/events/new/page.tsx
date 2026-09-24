@@ -74,6 +74,152 @@ interface TicketTierDraft {
   benefits: string;
 }
 
+interface TemplatePreset {
+  id: string;
+  label: string;
+  title: string;
+  slug: string;
+  tagline: string;
+  description: string;
+  archetype: MiceArchetype;
+  format: string;
+  scale: string;
+  primaryColor: string;
+  accentColor: string;
+  ticketTiers: TicketTierDraft[];
+}
+
+const TEMPLATES: Record<string, TemplatePreset> = {
+  industrial: {
+    id: "industrial",
+    label: "Industrial B2B Machinery Expo",
+    title: "Indonesia International Industrial Machinery & Automation Expo 2027",
+    slug: "indonesia-industrial-machinery-automation-expo-2027",
+    tagline: "Smart Manufacturing, CNC Robotics & Heavy Precision Engineering",
+    description: "Connecting 20,000+ trade buyers, procurement directors, and industrial automation specialists across 5 halls. Features RFQ matchmaking, bilateral machinery contracts, and live robotics demonstrations.",
+    archetype: "INDUSTRIAL_B2B",
+    format: "IN_PERSON",
+    scale: "GLOBAL_MEGA",
+    primaryColor: "#0284c7",
+    accentColor: "#d97706",
+    ticketTiers: [
+      {
+        id: "tier-ind-1",
+        name: "Standard Trade Buyer Pass",
+        price: 0,
+        currency: "IDR",
+        capacity: 5000,
+        benefits: "Exhibition Floor Access, Daily Open Keynotes, Digital Guidebook",
+      },
+      {
+        id: "tier-ind-2",
+        name: "VIP Procurement Delegate Pass",
+        price: 1000000,
+        currency: "IDR",
+        capacity: 500,
+        benefits: "Fast-Track Turnstile Entry, VIP Deal Room Access, B2B Matchmaking App, Gala Dinner",
+      },
+    ],
+  },
+  tech: {
+    id: "tech",
+    label: "Tech & AI Developer Summit",
+    title: "Asia AI Systems & Developer Congress 2027",
+    slug: "asia-ai-systems-developer-congress-2027",
+    tagline: "Frontier Foundation Models, Agentic Tooling & Autonomous Cloud Infra",
+    description: "3 days of deep-dive technical keynotes, multi-track code workshops, and hackathons with 6,000+ software engineers, researchers, and venture partners.",
+    archetype: "TECH_DEV_SUMMIT",
+    format: "HYBRID",
+    scale: "LARGE",
+    primaryColor: "#4f46e5",
+    accentColor: "#06b6d4",
+    ticketTiers: [
+      {
+        id: "tier-tech-1",
+        name: "Developer General Pass",
+        price: 250000,
+        currency: "IDR",
+        capacity: 3000,
+        benefits: "All-Track Keynotes, Workshop Access, Digital Badge",
+      },
+      {
+        id: "tier-tech-2",
+        name: "All-Access Speaker & VIP Pass",
+        price: 1500000,
+        currency: "IDR",
+        capacity: 300,
+        benefits: "VIP Lounge, Speaker Dinner, GitHub Hackathon Fast-Track, Slide Archive",
+      },
+    ],
+  },
+  gaming: {
+    id: "gaming",
+    label: "Pop Culture & Gaming Fair",
+    title: "Tokyo & Jakarta Pop Culture & Gaming Expo 2027",
+    slug: "tokyo-jakarta-pop-culture-gaming-expo-2027",
+    tagline: "Cosplay Championships, Indie Game Alley & Interactive Esports Arena",
+    description: "Celebrating pop culture, creator alley art, gaming tournaments, and international cosplay showcases across 4 interactive pavilions.",
+    archetype: "POP_CULTURE_GAMING",
+    format: "IN_PERSON",
+    scale: "LARGE",
+    primaryColor: "#e11d48",
+    accentColor: "#8b5cf6",
+    ticketTiers: [
+      {
+        id: "tier-game-1",
+        name: "Single-Day Fan Pass",
+        price: 150000,
+        currency: "IDR",
+        capacity: 8000,
+        benefits: "Pavilion Access, Cosplay Hall Entry, Stage Viewing",
+      },
+      {
+        id: "tier-game-2",
+        name: "VIP Fast-Pass & Creator Meet",
+        price: 600000,
+        currency: "IDR",
+        capacity: 600,
+        benefits: "Early Hall Access, Priority Stage Seating, Exclusive Merch Pack",
+      },
+    ],
+  },
+};
+
+const ARCHETYPE_CLUSTERS = [
+  { id: "ALL", label: "All Archetypes (15)" },
+  {
+    id: "TRADE",
+    label: "Trade & Industry (5)",
+    list: [
+      "INDUSTRIAL_B2B",
+      "AUTOMOTIVE_MOBILITY",
+      "ENERGY_INFRASTRUCTURE",
+      "AGRITECH_FOOD",
+      "HOSPITALITY_TOURISM",
+    ],
+  },
+  {
+    id: "TECH",
+    label: "Tech & Science (3)",
+    list: ["TECH_DEV_SUMMIT", "MEDICAL_SYMPOSIUM", "EDUCATION_EDTECH"],
+  },
+  {
+    id: "CULTURE",
+    label: "Entertainment & Culture (4)",
+    list: [
+      "POP_CULTURE_GAMING",
+      "MUSIC_FESTIVAL",
+      "MEGA_EXPO_PAVILION",
+      "FASHION_RETAIL",
+    ],
+  },
+  {
+    id: "POLICY",
+    label: "Corporate & Policy (3)",
+    list: ["FINANCE_INVESTOR", "GOVERNMENT_DIPLOMATIC", "INCENTIVE_RETREAT"],
+  },
+];
+
 export default function NewEventWizardPage() {
   const router = useRouter();
   const params = useParams();
@@ -90,6 +236,7 @@ export default function NewEventWizardPage() {
   const [errorMessage, setErrorMessage] = React.useState("");
   const [hasDraftAvailable, setHasDraftAvailable] = React.useState(false);
   const [isSlugDirty, setIsSlugDirty] = React.useState(false);
+  const [selectedCluster, setSelectedCluster] = React.useState<string>("ALL");
   const isInitializedRef = React.useRef(false);
 
   // Step 1: General Info & Archetype
@@ -102,6 +249,23 @@ export default function NewEventWizardPage() {
   const [archetype, setArchetype] = React.useState<MiceArchetype>("ENERGY_INFRASTRUCTURE");
   const [format, setFormat] = React.useState("IN_PERSON");
   const [scale, setScale] = React.useState("LARGE");
+
+  const handleApplyTemplate = React.useCallback((templateKey: string) => {
+    const tmpl = TEMPLATES[templateKey];
+    if (!tmpl) return;
+    setTitle(tmpl.title);
+    setSlug(tmpl.slug);
+    setTagline(tmpl.tagline);
+    setDescription(tmpl.description);
+    setArchetype(tmpl.archetype);
+    setFormat(tmpl.format);
+    setScale(tmpl.scale);
+    setPrimaryColor(tmpl.primaryColor);
+    setAccentColor(tmpl.accentColor);
+    setTicketTiers(tmpl.ticketTiers);
+    setIsSlugDirty(true);
+    setErrorMessage("");
+  }, []);
 
   // Step 2: Venue & Hall
   const [regionId, setRegionId] = React.useState("id");
@@ -217,6 +381,18 @@ export default function NewEventWizardPage() {
       } catch {
         // Ignore storage errors
       }
+
+      // Check URL query parameter for onboarding template
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const tmplKey = urlParams.get("template");
+        if (tmplKey && TEMPLATES[tmplKey]) {
+          handleApplyTemplate(tmplKey);
+        }
+      } catch {
+        // Ignore
+      }
+
       isInitializedRef.current = true;
     });
   }, []);
@@ -683,6 +859,42 @@ export default function NewEventWizardPage() {
       {/* STEP 1: General Info & Category Archetype */}
       {currentStep === 1 && (
         <div className="space-y-6">
+          {/* Quick-Start Templates Onboarding Bar */}
+          <div className="p-4 bg-primary/5 border border-primary/20 rounded-xl space-y-2.5">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+              <div className="flex items-center gap-2">
+                <Sparkles className="h-4 w-4 text-primary shrink-0" />
+                <span className="text-xs font-bold text-foreground">
+                  Fast-Track Onboarding: Start with a Pre-configured Template
+                </span>
+              </div>
+              <span className="text-xs text-muted-foreground">
+                Auto-fills metadata, archetype tokens, and sample passes
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
+              {Object.values(TEMPLATES).map((tmpl) => (
+                <button
+                  key={tmpl.id}
+                  type="button"
+                  onClick={() => handleApplyTemplate(tmpl.id)}
+                  className="p-3 rounded-lg border border-border/80 bg-background hover:border-primary/60 hover:bg-primary/5 text-left transition-all cursor-pointer group"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">
+                      {tmpl.label}
+                    </span>
+                    <ArrowRight className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
+                  </div>
+                  <p className="text-xs text-muted-foreground line-clamp-1 mt-1">
+                    {tmpl.tagline}
+                  </p>
+                </button>
+              ))}
+            </div>
+          </div>
+
           <Card className="p-6 border-border bg-card space-y-4 shadow-sm">
             <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
               <Info className="h-4 w-4 text-primary" />
@@ -788,12 +1000,37 @@ export default function NewEventWizardPage() {
               </p>
             </div>
 
+            {/* Archetype Domain Cluster Filter Tabs */}
+            <div className="flex flex-wrap gap-1.5 pb-1">
+              {ARCHETYPE_CLUSTERS.map((cluster) => {
+                const isSelected = selectedCluster === cluster.id;
+                return (
+                  <button
+                    key={cluster.id}
+                    type="button"
+                    onClick={() => setSelectedCluster(cluster.id)}
+                    className={cn(
+                      "px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors cursor-pointer",
+                      isSelected
+                        ? "bg-primary text-primary-foreground shadow-xs"
+                        : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
+                    )}
+                  >
+                    {cluster.label}
+                  </button>
+                );
+              })}
+            </div>
+
             <div
               role="radiogroup"
               aria-label="Select MICE Category Archetype"
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"
             >
-              {ALL_ARCHETYPES.map((arch) => {
+              {(selectedCluster === "ALL"
+                ? ALL_ARCHETYPES
+                : (ARCHETYPE_CLUSTERS.find((c) => c.id === selectedCluster)?.list as MiceArchetype[]) || ALL_ARCHETYPES
+              ).map((arch) => {
                 const meta = ARCHETYPE_METADATA[arch];
                 const tokens = ARCHETYPE_DEFAULTS[arch];
                 const isSelected = archetype === arch;
@@ -1002,6 +1239,71 @@ export default function NewEventWizardPage() {
             <Button size="sm" variant="outline" onClick={handleAddTier} className="min-h-[44px] px-4 text-xs gap-1.5 cursor-pointer">
               <Plus className="h-3.5 w-3.5" />
               <span>{tOrg("wizardAddTier") || "Add Ticket Pass Tier"}</span>
+            </Button>
+          </div>
+
+          {/* Quick Add Pass Presets Bar */}
+          <div className="p-3 bg-muted/40 border border-border/70 rounded-xl flex flex-wrap items-center gap-2 text-xs">
+            <span className="font-semibold text-foreground flex items-center gap-1.5 mr-1">
+              <Sparkles className="h-3.5 w-3.5 text-primary" />
+              <span>Pass Presets:</span>
+            </span>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                const freeTier: TicketTierDraft = {
+                  id: `tier-${Date.now()}`,
+                  name: "Complimentary Trade Visitor Pass",
+                  price: 0,
+                  currency: regionId === "jp" ? "JPY" : regionId === "global" ? "USD" : "IDR",
+                  capacity: 2500,
+                  benefits: "General Floor Access, Digital Guidebook, Open Keynotes",
+                };
+                setTicketTiers([...ticketTiers, freeTier]);
+              }}
+              className="text-xs h-7 px-2.5 cursor-pointer bg-background"
+            >
+              + Free Trade Pass
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                const vipTier: TicketTierDraft = {
+                  id: `tier-${Date.now()}`,
+                  name: "VIP Procurement Delegate Pass",
+                  price: regionId === "jp" ? 25000 : regionId === "global" ? 200 : 1500000,
+                  currency: regionId === "jp" ? "JPY" : regionId === "global" ? "USD" : "IDR",
+                  capacity: 250,
+                  benefits: "Fast-Track Gate, VIP Lounge, B2B Matchmaking, Gala Dinner",
+                };
+                setTicketTiers([...ticketTiers, vipTier]);
+              }}
+              className="text-xs h-7 px-2.5 cursor-pointer bg-background"
+            >
+              + VIP Buyer Pass
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                const allAccessTier: TicketTierDraft = {
+                  id: `tier-${Date.now()}`,
+                  name: "All-Access Speaker & Sponsor Pass",
+                  price: regionId === "jp" ? 45000 : regionId === "global" ? 400 : 3000000,
+                  currency: regionId === "jp" ? "JPY" : regionId === "global" ? "USD" : "IDR",
+                  capacity: 100,
+                  benefits: "Backstage Access, Speaker Lounge, Keynote Slides, VIP Parking",
+                };
+                setTicketTiers([...ticketTiers, allAccessTier]);
+              }}
+              className="text-xs h-7 px-2.5 cursor-pointer bg-background"
+            >
+              + All-Access Pass
             </Button>
           </div>
 

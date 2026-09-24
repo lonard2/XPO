@@ -693,15 +693,62 @@ export default function BoothManagerPage() {
         })}
       </div>
 
-      {filteredBooths.length === 0 && (
+      {booths.length === 0 ? (
+        <Card className="p-8 text-center bg-card rounded-xl border border-border space-y-4 shadow-xs">
+          <div className="h-12 w-12 rounded-2xl bg-purple-500/10 text-purple-600 dark:text-purple-400 mx-auto flex items-center justify-center">
+            <Store className="h-6 w-6" />
+          </div>
+          <div className="space-y-1.5 max-w-md mx-auto">
+            <h3 className="text-base font-bold text-foreground">
+              No Exhibitor Booths Allocated Yet
+            </h3>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Exhibition booths map commercial exhibitors and sponsors to specific venue hall lots. You can create lots individually or bulk-import an entire floor roster via CSV.
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-2.5 pt-2">
+            <Button
+              size="sm"
+              variant="primary"
+              onClick={handleOpenCreateModal}
+              className="text-xs gap-1.5 cursor-pointer"
+            >
+              <Plus className="h-3.5 w-3.5" />
+              <span>Create First Booth Lot</span>
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => setIsCsvModalOpen(true)}
+              className="text-xs gap-1.5 cursor-pointer"
+            >
+              <Upload className="h-3.5 w-3.5" />
+              <span>Bulk Import via CSV</span>
+            </Button>
+          </div>
+        </Card>
+      ) : filteredBooths.length === 0 ? (
         <div className="p-12 text-center bg-card rounded-xl border border-border space-y-3">
           <Store className="h-10 w-10 text-muted-foreground mx-auto" />
           <h3 className="text-sm font-bold text-foreground">No Booths Found</h3>
           <p className="text-xs text-muted-foreground max-w-sm mx-auto">
             No exhibitor booths match your active search keyword or hall filters.
           </p>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => {
+              setSearchQuery("");
+              setSelectedHall("ALL");
+              setStatusFilter("ALL");
+              setSelectedEventId("ALL");
+            }}
+            className="text-xs cursor-pointer"
+          >
+            Clear Filters
+          </Button>
         </div>
-      )}
+      ) : null}
 
       {/* EXHIBITOR ALLOCATION MODAL */}
       <Modal
