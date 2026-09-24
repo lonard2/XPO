@@ -774,7 +774,13 @@
     "scannerReadyTitle": "Siap Memindai Tiket",
     "scannerReadyDesc": "Pindai tiket peserta menggunakan kamera atau klik skenario uji cepat.",
     "scannerRecentLogs": "Log Riwayat Pemindaian",
-    "scannerNoLogs": "Belum ada riwayat pemindaian dalam sesi ini."
+    "scannerNoLogs": "Belum ada riwayat pemindaian dalam sesi ini.",
+    "scannerNetworkError": "Koneksi Terputus / Jaringan Offline",
+    "scannerRetryVerification": "Coba Verifikasi Lagi",
+    "scannerSupervisorOverride": "Izin Supervisor (Izinkan Masuk Kembali)",
+    "scannerSendResolutionDesk": "Arahkan ke Meja Resolusi",
+    "scannerNextAttendee": "Lanjut ke Peserta Berikutnya",
+    "scannerResetShift": "Reset Statistik Sesi"
   },
   "admin": {
     "dashboardTitle": "Tata Kelola & Agregator Admin",

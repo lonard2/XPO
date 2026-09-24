@@ -774,7 +774,13 @@
     "scannerReadyTitle": "パスの読み取り待機中",
     "scannerReadyDesc": "カメラ読み取りまたはクイックテストをクリックしてパスを照合してください。",
     "scannerRecentLogs": "最近の入場スキャン履歴",
-    "scannerNoLogs": "このセッションでのスキャン記録はありません。"
+    "scannerNoLogs": "このセッションでのスキャン記録はありません。",
+    "scannerNetworkError": "ネットワーク接続タイムアウト",
+    "scannerRetryVerification": "認証を再試行",
+    "scannerSupervisorOverride": "管理者オーバーライド（再入場許可）",
+    "scannerSendResolutionDesk": "トラブル対応デスクへ案内",
+    "scannerNextAttendee": "次の来場者のスキャンへ",
+    "scannerResetShift": "シフト記録をリセット"
   },
   "admin": {
     "dashboardTitle": "管理統括・アグリゲーター",

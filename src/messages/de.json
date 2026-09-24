@@ -774,7 +774,13 @@
     "scannerReadyTitle": "Bereit zum Scannen",
     "scannerReadyDesc": "Scannen Sie Tickets per Kamera oder nutzen Sie die Schnelltest-Szenarien.",
     "scannerRecentLogs": "Aktuelles Einlass-Protokoll",
-    "scannerNoLogs": "Keine Scan-Vorgänge in dieser Sitzung."
+    "scannerNoLogs": "Keine Scan-Vorgänge in dieser Sitzung.",
+    "scannerNetworkError": "Verbindungs-Timeout / Netzwerk offline",
+    "scannerRetryVerification": "Verifizierung wiederholen",
+    "scannerSupervisorOverride": "Supervisor-Freigabe (Wiedereinlass)",
+    "scannerSendResolutionDesk": "Zum Klärungsschalter begleiten",
+    "scannerNextAttendee": "Weiter zum nächsten Teilnehmer",
+    "scannerResetShift": "Schichtstatistik zurücksetzen"
   },
   "admin": {
     "dashboardTitle": "Admin-Governance & Aggregator",

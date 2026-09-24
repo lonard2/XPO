@@ -774,7 +774,13 @@
     "scannerReadyTitle": "准备扫码检票",
     "scannerReadyDesc": "使用摄像头扫码或点击下方快捷测试场景进行核验。",
     "scannerRecentLogs": "最近扫码核验记录",
-    "scannerNoLogs": "本次会话暂无扫码记录。"
+    "scannerNoLogs": "本次会话暂无扫码记录。",
+    "scannerNetworkError": "连接超时 / 网络离线",
+    "scannerRetryVerification": "重试核销",
+    "scannerSupervisorOverride": "主管授权（准予重新入场）",
+    "scannerSendResolutionDesk": "转交现场服务台处理",
+    "scannerNextAttendee": "扫描下一位观众",
+    "scannerResetShift": "重置本班次统计"
   },
   "admin": {
     "dashboardTitle": "管理统括中心",

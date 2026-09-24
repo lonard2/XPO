@@ -774,7 +774,13 @@
     "scannerReadyTitle": "Listo para Escanear Pases",
     "scannerReadyDesc": "Escanee pases con la cámara o use los escenarios de prueba rápida.",
     "scannerRecentLogs": "Registro Reciente de Accesos",
-    "scannerNoLogs": "No hay registros de escaneo en esta sesión."
+    "scannerNoLogs": "No hay registros de escaneo en esta sesión.",
+    "scannerNetworkError": "Tiempo de Espera / Red Desconectada",
+    "scannerRetryVerification": "Reintentar Verificación",
+    "scannerSupervisorOverride": "Autorización de Supervisor (Permitir Reingreso)",
+    "scannerSendResolutionDesk": "Acompañar al Mostrador de Incidencias",
+    "scannerNextAttendee": "Limpiar para el Siguiente Asistente",
+    "scannerResetShift": "Reiniciar Estadísticas del Turno"
   },
   "admin": {
     "dashboardTitle": "Gobernanza y Agregador de Administración",

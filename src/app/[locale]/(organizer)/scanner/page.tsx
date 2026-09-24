@@ -29,13 +29,13 @@ export default function DoorScannerPage() {
             <Badge variant="success" size="sm">{tOrg("scannerReadyBadge") || "Gate Scanner Ready"}</Badge>
           </div>
           <p className="text-xs text-muted-foreground mt-1">
-            {tOrg("scannerSubtitle") || "Validate attendee digital passes using HMAC-SHA256 signature verification, double-scan detection, and live perk unlocks."}
+            {tOrg("scannerSubtitle") || "Scan attendee ticket QR codes for turnstile admission, double-scan alerts, and instant perk verification."}
           </p>
         </div>
 
         <div className="flex items-center gap-2 text-xs text-muted-foreground bg-card p-2 px-3 rounded-lg border border-border shadow-xs">
           <ShieldCheck className="h-4 w-4 text-emerald-500 shrink-0" />
-          <span>{tOrg("scannerTamperGuard") || "Cryptographic Pass Tamper Protection Active"}</span>
+          <span>{tOrg("scannerTamperGuard") || "Tamper-Proof Pass Verification Active"}</span>
         </div>
       </div>
 
