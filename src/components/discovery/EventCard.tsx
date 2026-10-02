@@ -170,7 +170,7 @@ export const EventCard = React.memo(function EventCard({
           </div>
 
           <h3 className="text-base font-bold text-foreground leading-snug line-clamp-2 text-balance group-hover:text-primary transition-colors">
-            <Link href={`/${locale}/events/${event.slug}`} className="hover:underline">
+            <Link href={`/${locale}/events/${event.slug}`} className="hover:underline after:absolute after:inset-0">
               {event.title}
             </Link>
           </h3>
@@ -184,10 +184,12 @@ export const EventCard = React.memo(function EventCard({
 
         <CardContent className="p-0 space-y-2 text-xs text-muted-foreground">
           {event.venue && (
-            <div className="flex items-start gap-1.5 pt-1">
+            <div className="flex items-start gap-1.5 pt-1 relative z-10">
               <Building2 className="h-3.5 w-3.5 text-primary/80 shrink-0 mt-0.5" />
               <div className="flex flex-col">
-                <span className="font-medium text-foreground line-clamp-1">{event.venue.name}</span>
+                <Link href={`/${locale}/venues/${event.venue.slug}`} className="font-medium text-foreground line-clamp-1 hover:underline hover:text-primary transition-colors">
+                  {event.venue.name}
+                </Link>
                 <span className="text-xs text-muted-foreground flex items-center gap-1">
                   <MapPin className="h-3 w-3 inline text-muted-foreground" />
                   {event.venue.city}
@@ -198,7 +200,7 @@ export const EventCard = React.memo(function EventCard({
           )}
         </CardContent>
 
-        <CardFooter className="p-0 pt-3 border-t border-border/60 flex items-center justify-between">
+        <CardFooter className="p-0 pt-3 border-t border-border/60 flex items-center justify-between relative z-10">
           <div className="flex flex-col">
             <span className="text-xs uppercase font-semibold text-muted-foreground tracking-wider">
               {temporal.isPast ? (tCom('date') || 'Status') : (tTick('price') || 'Price')}
@@ -212,7 +214,7 @@ export const EventCard = React.memo(function EventCard({
             href={`/${locale}/events/${event.slug}`}
             className={cn(
               buttonVariants({ variant: temporal.isPast ? 'outline' : 'default', size: 'sm' }),
-              'gap-1 text-xs font-semibold shadow-sm min-h-[36px] cursor-pointer'
+              'gap-1 text-xs font-semibold shadow-sm min-h-[44px] min-w-[44px] px-3.5 cursor-pointer'
             )}
           >
             <Ticket className="h-3.5 w-3.5" />

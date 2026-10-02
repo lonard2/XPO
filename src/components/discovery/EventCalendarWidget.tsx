@@ -187,11 +187,11 @@ export function EventCalendarWidget({
               {monthName}
             </h4>
             <div className="flex items-center gap-1">
-              <Button size="icon" variant="ghost" className="h-8 w-8 sm:h-7 sm:w-7 rounded-md cursor-pointer" onClick={prevMonth} aria-label="Previous month">
-                <ChevronLeft className="h-3.5 w-3.5" />
+              <Button size="icon" variant="ghost" className="h-10 w-10 sm:h-8 sm:w-8 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 rounded-lg cursor-pointer flex items-center justify-center hover:bg-muted" onClick={prevMonth} aria-label="Previous month">
+                <ChevronLeft className="h-4 w-4 sm:h-3.5 sm:w-3.5" />
               </Button>
-              <Button size="icon" variant="ghost" className="h-8 w-8 sm:h-7 sm:w-7 rounded-md cursor-pointer" onClick={nextMonth} aria-label="Next month">
-                <ChevronRight className="h-3.5 w-3.5" />
+              <Button size="icon" variant="ghost" className="h-10 w-10 sm:h-8 sm:w-8 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 rounded-lg cursor-pointer flex items-center justify-center hover:bg-muted" onClick={nextMonth} aria-label="Next month">
+                <ChevronRight className="h-4 w-4 sm:h-3.5 sm:w-3.5" />
               </Button>
             </div>
           </div>
@@ -211,7 +211,7 @@ export function EventCalendarWidget({
           <div className="grid grid-cols-7 gap-1" role="grid">
             {calendarDays.map((cell, idx) => {
               if (!cell.dayNumber || !cell.date) {
-                return <div key={`empty-${idx}`} className="h-9 min-h-[36px]" aria-hidden="true" />;
+                return <div key={`empty-${idx}`} className="h-10 min-h-[40px] sm:h-9 sm:min-h-[36px]" aria-hidden="true" />;
               }
 
               const hasEvents = hasEventOnDay(cell.date);
@@ -228,7 +228,7 @@ export function EventCalendarWidget({
                   aria-selected={active}
                   aria-current={today ? 'date' : undefined}
                   className={cn(
-                    'relative flex h-9 w-full min-h-[36px] flex-col items-center justify-center rounded-lg text-xs font-semibold transition-colors cursor-pointer',
+                    'relative flex h-10 w-full min-h-[40px] sm:h-9 sm:min-h-[36px] flex-col items-center justify-center rounded-lg text-xs font-semibold transition-colors cursor-pointer',
                     active
                       ? 'bg-primary text-white shadow-xs font-bold'
                       : today

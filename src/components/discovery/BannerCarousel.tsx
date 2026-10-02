@@ -404,7 +404,7 @@ export function BannerCarousel({
         <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center gap-1.5 z-20">
           <button
             type="button"
-            className="relative flex h-10 w-10 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-black/50 hover:bg-black/80 text-white border border-white/20 backdrop-blur-sm transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/60 focus-visible:outline-none"
+            className="relative flex h-10 w-10 sm:h-9 sm:w-9 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 items-center justify-center rounded-full bg-black/50 hover:bg-black/80 text-white border border-white/20 backdrop-blur-sm transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/60 focus-visible:outline-none"
             onClick={prevSlide}
             aria-label="Previous slide"
           >
@@ -413,7 +413,7 @@ export function BannerCarousel({
 
           <button
             type="button"
-            className="relative flex h-10 w-10 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-black/50 hover:bg-black/80 text-white border border-white/20 backdrop-blur-sm transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/60 focus-visible:outline-none"
+            className="relative flex h-10 w-10 sm:h-9 sm:w-9 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 items-center justify-center rounded-full bg-black/50 hover:bg-black/80 text-white border border-white/20 backdrop-blur-sm transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/60 focus-visible:outline-none"
             onClick={nextSlide}
             aria-label="Next slide"
           >
@@ -422,7 +422,7 @@ export function BannerCarousel({
 
           <button
             type="button"
-            className="relative flex h-10 w-10 sm:h-9 sm:w-9 items-center justify-center rounded-full text-slate-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/60 focus-visible:outline-none"
+            className="relative flex h-10 w-10 sm:h-9 sm:w-9 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 items-center justify-center rounded-full text-slate-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/60 focus-visible:outline-none"
             onClick={() => setIsManuallyPaused(!isManuallyPaused)}
             aria-label={isManuallyPaused ? 'Resume autoplay' : 'Pause autoplay'}
           >
@@ -430,8 +430,8 @@ export function BannerCarousel({
           </button>
         </div>
 
-        {/* Slide Indicators with 44px Touch Area Hitboxes */}
-        <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 flex items-center gap-1 z-20">
+        {/* Slide Indicators with Backdrop Pill Scrim & 44px Touch Area Hitboxes */}
+        <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 flex items-center gap-1 z-20 bg-black/40 backdrop-blur-md px-2 py-1 rounded-full border border-white/10 shadow-sm">
           {slides.map((_, idx) => (
             <button
               key={idx}
