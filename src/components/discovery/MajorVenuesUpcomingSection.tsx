@@ -182,8 +182,8 @@ export function MajorVenuesUpcomingSection({
                           </div>
 
                           <Link href={`/${locale}/events/${evt.slug}`} className="shrink-0">
-                            <Button size="sm" variant="ghost" className="h-7 w-7 p-0 rounded-full hover:bg-primary hover:text-white transition-colors">
-                              <ArrowRight className="h-3.5 w-3.5" />
+                            <Button size="sm" variant="ghost" className="h-9 w-9 sm:h-8 sm:w-8 p-0 rounded-full hover:bg-primary hover:text-white transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer">
+                              <ArrowRight className="h-4 w-4" />
                               <span className="sr-only">View Event</span>
                             </Button>
                           </Link>

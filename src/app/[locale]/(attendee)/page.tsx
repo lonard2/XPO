@@ -17,6 +17,7 @@ import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/Button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
 import { HeroSection } from '@/components/discovery/HeroSection';
+import { MajorVenuesUpcomingSection } from '@/components/discovery/MajorVenuesUpcomingSection';
 import { EventCategoryPills } from '@/components/discovery/EventCategoryPills';
 import { EventCalendarWidget } from '@/components/discovery/EventCalendarWidget';
 import { EventCard } from '@/components/discovery/EventCard';
@@ -207,17 +208,28 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
 
   return (
     <div className="flex flex-col gap-10 sm:gap-14 pb-24 md:pb-16">
-      {/* 1. Unified Modern Hero Section: Banner Carousel + Stuck Horizontal Venue Quick-Glance Rail */}
+      {/* 1. Hero Stage: Dynamic Banner Carousel + Search Cockpit */}
       <section className="container pt-3 sm:pt-6">
         <HeroSection
           slides={bannerSlides}
-          venues={majorVenuesWithEvents}
           locale={locale}
           regionCode={activeRegionCode}
+          showVenueRail={false}
         />
       </section>
 
-      {/* 2. Horizontally Scrollable 15 MICE Event Category Cards */}
+      {/* 2. Happening at Major Venues: Dedicated Campus Spotlight & Near-Upcoming Hall Listings */}
+      {majorVenuesWithEvents.length > 0 && (
+        <section className="container">
+          <MajorVenuesUpcomingSection
+            venues={majorVenuesWithEvents}
+            locale={locale}
+            regionCode={activeRegionCode}
+          />
+        </section>
+      )}
+
+      {/* 3. Horizontally Scrollable 15 MICE Event Category Cards */}
       <section className="container">
         <EventCategoryPills locale={locale} />
       </section>

@@ -9,19 +9,24 @@ import { cn } from '@/lib/utils';
 
 export interface HeroSectionProps {
   slides: BannerSlide[];
-  venues: VenueWithEvents[];
+  venues?: VenueWithEvents[];
   locale: string;
   regionCode: string;
   className?: string;
+  showVenueRail?: boolean;
 }
 
 export function HeroSection({
   slides,
-  venues,
+  venues = [],
   locale,
   regionCode,
   className,
+  showVenueRail,
 }: HeroSectionProps) {
+  // Only render attached rail when explicitly enabled or when venues provided without explicit disable
+  const shouldRenderRail = showVenueRail === true || (showVenueRail === undefined && venues.length > 0);
+
   return (
     <div
       className={cn(
@@ -42,8 +47,8 @@ export function HeroSection({
         regionCode={regionCode}
       />
 
-      {/* 3. Seamlessly Attached Horizontally Scrollable Major Venues Quick-Glance Rail (Bottom) */}
-      {venues.length > 0 && (
+      {/* 3. Seamlessly Attached Horizontally Scrollable Major Venues Quick-Glance Rail (Optional) */}
+      {shouldRenderRail && (
         <HeroVenueQuickGlanceRail
           venues={venues}
           locale={locale}

@@ -188,7 +188,7 @@ export function HeroSearchBar({
             key={tag.label}
             type="button"
             onClick={() => handleTagClick(tag)}
-            className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-muted/60 hover:bg-primary/15 text-muted-foreground hover:text-primary border border-border/60 hover:border-primary/30 transition-all cursor-pointer min-h-[28px]"
+            className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-muted/60 hover:bg-primary/15 text-muted-foreground hover:text-primary border border-border/60 hover:border-primary/30 transition-all cursor-pointer min-h-[36px]"
           >
             {tag.label}
           </button>
