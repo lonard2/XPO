@@ -130,4 +130,32 @@ describe('Discovery Component: FacetedFilterBar', () => {
       expect.objectContaining({ keyword: '' })
     );
   });
+
+  it('T1.5: triggers onViewModeChange when clicking grid and table view toggle buttons', () => {
+    const handleViewModeChange = vi.fn();
+
+    render(
+      <FacetedFilterBar
+        filters={initialFilters}
+        onChange={vi.fn()}
+        onReset={vi.fn()}
+        totalResults={5}
+        sortBy="date_asc"
+        onSortChange={vi.fn()}
+        onOpenMobileFilters={vi.fn()}
+        viewMode="grid"
+        onViewModeChange={handleViewModeChange}
+      />
+    );
+
+    const tableBtn = screen.getByRole('button', { name: /dense table view/i });
+    fireEvent.click(tableBtn);
+
+    expect(handleViewModeChange).toHaveBeenCalledWith('table');
+
+    const gridBtn = screen.getByRole('button', { name: /grid view/i });
+    fireEvent.click(gridBtn);
+
+    expect(handleViewModeChange).toHaveBeenCalledWith('grid');
+  });
 });

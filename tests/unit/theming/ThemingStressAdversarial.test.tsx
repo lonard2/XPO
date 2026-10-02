@@ -49,8 +49,8 @@ describe('Empirical Challenge: Theming Engine & CSS Variable Injection Stress Su
       }
     });
 
-    it('handles all 15 recognized MICE archetypes with valid distinct color variables', () => {
-      expect(ALL_MICE_ARCHETYPES).toHaveLength(15);
+    it('handles all 22 recognized MICE archetypes with valid distinct color variables', () => {
+      expect(ALL_MICE_ARCHETYPES).toHaveLength(22);
 
       for (const arch of ALL_MICE_ARCHETYPES) {
         expect(isValidArchetype(arch)).toBe(true);

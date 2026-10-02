@@ -39,7 +39,8 @@
     "selected": "Terpilih",
     "delete": "Hapus",
     "backToHome": "Kembali ke Beranda",
-    "skipToContent": "Loncat ke konten utama"
+    "skipToContent": "Loncat ke konten utama",
+    "filters": "Filter"
   },
   "nav": {
     "brand": "XPO",
@@ -241,6 +242,41 @@
       "title": "Program Insentif & Retret Korporat",
       "tag": "Rencana Perjalanan & Jamuan Gala",
       "description": "Rencana perjalanan penghargaan korporat, agenda kebersamaan tim eksekutif, dan jamuan gala eksklusif."
+    },
+    "BUILDING_PROPTECH": {
+      "title": "Ekspo Material Bangunan, Arsitektur & PropTech",
+      "tag": "Material Bangunan & PropTech",
+      "description": "Material konstruksi berkelanjutan, permodelan BIM arsitektural, otomasi properti cerdas, dan pengadaan konstruksi sipil."
+    },
+    "AEROSPACE_DEFENSE": {
+      "title": "Ekspo Dirgantara, Penerbangan & Pertahanan",
+      "tag": "Kedirgantaraan & Pertahanan",
+      "description": "Demonstrasi terbang jet tempur, sistem alutsista pertahanan, pengadaan pesawat komersial, dan avionik drone otonom."
+    },
+    "SUPPLY_CHAIN_LOGISTICS": {
+      "title": "Teknologi Rantai Pasok, Logistik & Pengemasan",
+      "tag": "Logistik & Pergudangan",
+      "description": "Robotika pergudangan otonom (AGV/AMR), koridor kargo multimodal, otomatisasi lini pengemasan, dan distribusi rantai dingin."
+    },
+    "FRANCHISE_LICENSING": {
+      "title": "Peluang Usaha Waralaba, Ritel & UKM",
+      "tag": "Waralaba & Lisensi",
+      "description": "Konsep waralaba siap pakai, lisensi hak kekayaan intelektual, kemitraan bisnis UKM, dan perjanjian multi-unit F&B."
+    },
+    "FAITH_PILGRIMAGE_CONGRESS": {
+      "title": "Kongres Komunitas, Haji, Umrah & Standar Halal",
+      "tag": "Haji, Umrah & Halal",
+      "description": "Logistik perjalanan haji & umrah terakreditasi, standardisasi industri halal, musyawarah ulama internasional, dan konvensi keumatan."
+    },
+    "SPORTS_OUTDOOR": {
+      "title": "Ekspo Olahraga, Kebugaran & Petualangan Alam",
+      "tag": "Olahraga & Alam Terbuka",
+      "description": "Pengambilan nomor dada maraton (bib), arena uji perlengkapan lari trail, sains kedokteran olahraga, dan sirkuit rintangan."
+    },
+    "MEDIA_BROADCAST": {
+      "title": "Teknologi Media, Penyiaran & Pro-AV",
+      "tag": "Penyiaran & Media",
+      "description": "Panggung volume produksi virtual LED, perutean siaran IP SMPTE ST 2110, tata suara konser line-array, dan optik kamera sinema."
     }
   },
   "discovery": {
@@ -262,7 +298,7 @@
     "activeFilters": "Filter Aktif",
     "noEventsFound": "Tidak ada acara yang cocok dengan kriteria filter saat ini.",
     "resetFilters": "Atur Ulang Pencarian",
-    "verticalsBadge": "15 Kategori Vertikal MICE",
+    "verticalsBadge": "22 Kategori Vertikal MICE",
     "verticalsTitle": "Jelajahi Berdasarkan Kategori Acara",
     "showingResults": "Menampilkan",
     "exhibitionsCount": "pameran",
@@ -278,7 +314,10 @@
     "allDates": "Semua Tanggal",
     "upcomingExhibitions": "Pameran Mendatang",
     "thisMonth": "Bulan Ini",
-    "nextMonth": "Bulan Depan"
+    "nextMonth": "Bulan Depan",
+    "city": "Kota / Metropolis Penyelenggara",
+    "filterByCity": "Filter Berdasarkan Kota",
+    "allCities": "Semua Kota"
   },
   "events": {
     "title": "Direktori Acara & Jadwal",

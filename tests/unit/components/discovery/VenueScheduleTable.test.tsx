@@ -18,20 +18,19 @@ const mockEvents: DiscoveryEvent[] = [
       name: 'JIExpo Kemayoran',
       slug: 'jiexpo-kemayoran',
       city: 'Jakarta',
-      country: 'Indonesia',
       address: 'Arena JIExpo',
       regionId: 'id',
+      transitInfo: 'KRL Commuter Line to Rajawali Station',
     },
     venueHall: {
       id: 'hall-1',
       name: 'Hall A1-A3',
       capacity: 10000,
       floorAreaSqm: 12000,
-      venueId: 'v1',
     },
     regionId: 'id',
-    minPrice: 150000,
-    currency: 'IDR',
+    scale: 'LARGE',
+    format: 'IN_PERSON',
   },
 ];
 

@@ -9,6 +9,8 @@ import {
   SlidersHorizontal,
   Briefcase,
   Check,
+  MapPin,
+  ChevronDown,
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useTranslations } from 'next-intl';
@@ -36,42 +38,61 @@ export const MICE_INDUSTRY_CLUSTERS: Array<{
   archetypes: MiceArchetype[];
 }> = [
   {
-    id: 'tech_science_policy',
-    label: 'Digital, Science & Governance',
+    id: 'digital_tech_media',
+    label: 'Digital, Tech & Media',
     archetypes: [
       'TECH_DEV_SUMMIT',
-      'MEDICAL_SYMPOSIUM',
-      'GOVERNMENT_DIPLOMATIC',
+      'MEDIA_BROADCAST',
       'EDUCATION_EDTECH',
     ],
   },
   {
-    id: 'industry_infrastructure',
-    label: 'Heavy Industry & Mobility',
+    id: 'heavy_industry_infrastructure',
+    label: 'Heavy Industry & Infrastructure',
     archetypes: [
       'INDUSTRIAL_B2B',
       'AUTOMOTIVE_MOBILITY',
+      'BUILDING_PROPTECH',
       'ENERGY_INFRASTRUCTURE',
+    ],
+  },
+  {
+    id: 'sovereign_defense_aviation',
+    label: 'Sovereign Affairs, Defense & Aviation',
+    archetypes: [
+      'GOVERNMENT_DIPLOMATIC',
+      'AEROSPACE_DEFENSE',
+    ],
+  },
+  {
+    id: 'enterprise_supply_finance',
+    label: 'Enterprise Trade, Supply Chain & Finance',
+    archetypes: [
+      'SUPPLY_CHAIN_LOGISTICS',
+      'FINANCE_INVESTOR',
+      'FRANCHISE_LICENSING',
       'AGRITECH_FOOD',
     ],
   },
   {
-    id: 'finance_trade_enterprise',
-    label: 'Finance, Trade & Enterprise',
+    id: 'health_travel_faith',
+    label: 'Healthcare, Travel & Faith Communities',
     archetypes: [
-      'FINANCE_INVESTOR',
+      'MEDICAL_SYMPOSIUM',
       'HOSPITALITY_TOURISM',
+      'FAITH_PILGRIMAGE_CONGRESS',
       'INCENTIVE_RETREAT',
     ],
   },
   {
-    id: 'consumer_culture_lifestyle',
-    label: 'Culture, Lifestyle & Festivals',
+    id: 'culture_lifestyle_sports',
+    label: 'Culture, Lifestyle, Sports & Entertainment',
     archetypes: [
       'POP_CULTURE_GAMING',
       'MUSIC_FESTIVAL',
       'MEGA_EXPO_PAVILION',
       'FASHION_RETAIL',
+      'SPORTS_OUTDOOR',
     ],
   },
 ];
@@ -84,22 +105,20 @@ export function FilterSidebar({
   counts,
   className,
 }: FilterSidebarProps) {
-  let tDisc: any = (k: string) => k;
-  let tReg: any = (k: string) => k;
-  let tArch: any = (k: string) => k;
-  let tCom: any = (k: string) => k;
-  try {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tDisc = useTranslations('discovery');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tReg = useTranslations('regions');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tArch = useTranslations('archetypes');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tCom = useTranslations('common');
-  } catch {
-    // Fallback if rendered outside provider in tests
-  }
+  const tDisc = useTranslations('discovery');
+  const tReg = useTranslations('regions');
+  const tArch = useTranslations('archetypes');
+  const tCom = useTranslations('common');
+
+  // Progressive disclosure: default all clusters to expanded
+  const [collapsedClusters, setCollapsedClusters] = React.useState<Record<string, boolean>>({});
+
+  const toggleCluster = (clusterId: string) => {
+    setCollapsedClusters((prev) => ({
+      ...prev,
+      [clusterId]: !prev[clusterId],
+    }));
+  };
 
   const handleFilterChange = <K extends keyof FilterState>(key: K, value: FilterState[K]) => {
     onChange({
@@ -241,7 +260,52 @@ export function FilterSidebar({
         </div>
       </div>
 
-      {/* 2. MICE Category Archetype Filter (Grouped into 4 Industry Clusters) */}
+      {/* 2. City / Host Metropolis Filter */}
+      {availableCities.length > 0 && (
+        <div className="space-y-2.5">
+          <label className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
+            <MapPin className="h-3.5 w-3.5 text-primary" />
+            <span>{tDisc('city')}</span>
+          </label>
+          <div className="flex flex-wrap gap-1.5 max-h-36 overflow-y-auto pr-1">
+            <button
+              type="button"
+              onClick={() => handleFilterChange('city', 'all')}
+              className={cn(
+                'px-2.5 py-1 rounded-lg text-xs font-medium border text-center transition-colors cursor-pointer',
+                filters.city === 'all'
+                  ? 'border-primary bg-primary/10 text-primary font-semibold'
+                  : 'border-border/60 bg-card text-muted-foreground hover:bg-muted hover:text-foreground'
+              )}
+            >
+              {tDisc('allCities') || 'All Cities'}
+            </button>
+            {availableCities.map((city) => {
+              const isSelected =
+                filters.city.toLowerCase() === city.toLowerCase() ||
+                (filters.city !== 'all' && city.toLowerCase().includes(filters.city.toLowerCase()));
+              return (
+                <button
+                  key={city}
+                  type="button"
+                  onClick={() => handleFilterChange('city', isSelected ? 'all' : city)}
+                  className={cn(
+                    'px-2.5 py-1 rounded-lg text-xs font-medium border text-center transition-colors cursor-pointer truncate max-w-full',
+                    isSelected
+                      ? 'border-primary bg-primary/10 text-primary font-semibold'
+                      : 'border-border/60 bg-card text-muted-foreground hover:bg-muted hover:text-foreground'
+                  )}
+                  title={city}
+                >
+                  {city}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* 3. MICE Category Archetype Filter (Grouped into 4 Industry Clusters) */}
       <div className="space-y-2.5">
         <div className="flex items-center justify-between">
           <label className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
@@ -280,59 +344,91 @@ export function FilterSidebar({
             </div>
           </button>
 
-          {/* 4 Industry Clusters */}
-          {MICE_INDUSTRY_CLUSTERS.map((cluster) => (
-            <div key={cluster.id} className="space-y-1 pt-1 border-t border-border/50">
-              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-2 block">
-                {cluster.label}
-              </span>
-              {cluster.archetypes.map((archKey) => {
-                const item = ARCHETYPE_DEFAULTS[archKey] || {
-                  primary: '#2563eb',
-                  displayName: archKey.replace(/_/g, ' '),
-                };
-                const isSelected = selectedArchetypes.includes(archKey);
-                const count = counts?.archetypes?.[archKey];
+          {/* 4 Industry Clusters with Progressive Disclosure */}
+          {MICE_INDUSTRY_CLUSTERS.map((cluster) => {
+            const isCollapsed = !!collapsedClusters[cluster.id];
+            const activeInClusterCount = cluster.archetypes.filter((a) =>
+              selectedArchetypes.includes(a)
+            ).length;
 
-                return (
-                  <button
-                    key={archKey}
-                    type="button"
-                    onClick={() => handleToggleArchetype(archKey)}
-                    className={cn(
-                      'w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left cursor-pointer',
-                      isSelected
-                        ? 'bg-primary/10 text-primary font-semibold'
-                        : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                    )}
-                  >
-                    <div className="flex items-center gap-2 min-w-0">
-                      <div
-                        className={cn(
-                          'h-3.5 w-3.5 rounded-md border flex items-center justify-center shrink-0 transition-colors',
-                          isSelected ? 'border-primary bg-primary text-primary-foreground' : 'border-muted-foreground/40'
-                        )}
-                      >
-                        {isSelected && <Check className="h-2.5 w-2.5 stroke-[3]" />}
-                      </div>
-                      <span
-                        className="h-2 w-2 rounded-full shrink-0"
-                        style={{ backgroundColor: item.primary }}
-                      />
-                      <span className="truncate">
-                        {tArch(`${archKey}.title`) && tArch(`${archKey}.title`) !== `${archKey}.title`
-                          ? tArch(`${archKey}.title`)
-                          : item.displayName}
+            return (
+              <div key={cluster.id} className="pt-2 border-t border-border/50">
+                <button
+                  type="button"
+                  onClick={() => toggleCluster(cluster.id)}
+                  aria-expanded={!isCollapsed}
+                  className="w-full flex items-center justify-between px-2 py-1 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors cursor-pointer rounded-md focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  <span className="uppercase tracking-wider truncate text-[11px]">{cluster.label}</span>
+                  <div className="flex items-center gap-1.5 shrink-0 ml-2">
+                    {activeInClusterCount > 0 && (
+                      <span className="px-1.5 py-0.5 rounded-full bg-primary/10 text-primary text-[11px] font-mono font-bold">
+                        {activeInClusterCount}
                       </span>
-                    </div>
-                    {count !== undefined && (
-                      <span className="text-xs text-muted-foreground font-mono ml-1 shrink-0">({count})</span>
                     )}
-                  </button>
-                );
-              })}
-            </div>
-          ))}
+                    <ChevronDown
+                      className={cn(
+                        'h-3.5 w-3.5 transition-transform duration-200',
+                        !isCollapsed ? 'rotate-180' : ''
+                      )}
+                    />
+                  </div>
+                </button>
+
+                {!isCollapsed && (
+                  <div className="space-y-1 mt-1">
+                    {cluster.archetypes.map((archKey) => {
+                      const item = ARCHETYPE_DEFAULTS[archKey] || {
+                        primary: '#2563eb',
+                        displayName: archKey.replace(/_/g, ' '),
+                      };
+                      const isSelected = selectedArchetypes.includes(archKey);
+                      const count = counts?.archetypes?.[archKey];
+
+                      return (
+                        <button
+                          key={archKey}
+                          type="button"
+                          onClick={() => handleToggleArchetype(archKey)}
+                          className={cn(
+                            'w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left cursor-pointer',
+                            isSelected
+                              ? 'bg-primary/10 text-primary font-semibold'
+                              : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                          )}
+                        >
+                          <div className="flex items-center gap-2 min-w-0">
+                            <div
+                              className={cn(
+                                'h-3.5 w-3.5 rounded-md border flex items-center justify-center shrink-0 transition-colors',
+                                isSelected
+                                  ? 'border-primary bg-primary text-primary-foreground'
+                                  : 'border-muted-foreground/40'
+                              )}
+                            >
+                              {isSelected && <Check className="h-2.5 w-2.5 stroke-[3]" />}
+                            </div>
+                            <span
+                              className="h-2 w-2 rounded-full shrink-0"
+                              style={{ backgroundColor: item.primary }}
+                            />
+                            <span className="truncate">
+                              {tArch(`${archKey}.title`) && tArch(`${archKey}.title`) !== `${archKey}.title`
+                                ? tArch(`${archKey}.title`)
+                                : item.displayName}
+                            </span>
+                          </div>
+                          {count !== undefined && (
+                            <span className="text-xs text-muted-foreground font-mono ml-1 shrink-0">({count})</span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
 

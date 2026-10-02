@@ -39,7 +39,8 @@
     "selected": "Seleccionado",
     "delete": "Eliminar",
     "backToHome": "Volver a Descubrir",
-    "skipToContent": "Saltar al contenido principal"
+    "skipToContent": "Saltar al contenido principal",
+    "filters": "Filtros"
   },
   "nav": {
     "brand": "XPO",
@@ -241,6 +242,41 @@
       "title": "Programa de Incentivos y Retiros Corporativos",
       "tag": "Itinerarios de Incentivo y Cenas de Gala",
       "description": "Itinerarios corporativos de bienestar, retiros de liderazgo para directivos y cenas de gala frente al mar."
+    },
+    "BUILDING_PROPTECH": {
+      "title": "Exposición de Materiales de Construcción, Arquitectura y PropTech",
+      "tag": "Materiales y PropTech",
+      "description": "Materiales sostenibles, modelos BIM arquitectónicos, automatización de inmuebles y licitaciones de construcción."
+    },
+    "AEROSPACE_DEFENSE": {
+      "title": "Feria Internacional Aeroespacial, de Aviación y Defensa",
+      "tag": "Aeroespacial y Defensa",
+      "description": "Demostraciones de vuelo acrobático, sistemas de aviónica militar, compra de aeronaves y drones tácticos."
+    },
+    "SUPPLY_CHAIN_LOGISTICS": {
+      "title": "Tecnología de Cadena de Suministro, Logística y Empaque",
+      "tag": "Logística y Robótica AGV",
+      "description": "Robótica de almacenes (AGV/AMR), corredores de carga multimodal, embalaje automatizado y cadena de frío."
+    },
+    "FRANCHISE_LICENSING": {
+      "title": "Franquicias, Comercio Minorista y Oportunidades PyME",
+      "tag": "Franquicias y Licencias",
+      "description": "Modelos comerciales llave en mano, licencias de marca, inversiones PyME y contratos multiunidad de gastronomía."
+    },
+    "FAITH_PILGRIMAGE_CONGRESS": {
+      "title": "Congreso de Peregrinación, Comunidad y Normas Halal",
+      "tag": "Peregrinación y Halal",
+      "description": "Logística de viajes sagrados, estándares halal internacionales, asambleas religiosas y traducción simultánea."
+    },
+    "SPORTS_OUTDOOR": {
+      "title": "Exposición de Deportes, Fitness y Aventura al Aire Libre",
+      "tag": "Deportes y Aventura",
+      "description": "Recogida oficial de dorsales de maratón, circuitos de prueba de equipo, medicina deportiva y pistas de obstáculos."
+    },
+    "MEDIA_BROADCAST": {
+      "title": "Tecnología de Medios, Transmisión y Pro-AV",
+      "tag": "Transmisión y Pro-AV",
+      "description": "Estudios virtuales con pantallas LED, enrutamiento IP SMPTE ST 2110 y audición de line-array para conciertos."
     }
   },
   "discovery": {
@@ -262,7 +298,7 @@
     "activeFilters": "Filtros Activos",
     "noEventsFound": "No se encontraron eventos con los filtros seleccionados.",
     "resetFilters": "Restablecer Búsqueda",
-    "verticalsBadge": "15 categorías MICE especializadas",
+    "verticalsBadge": "22 categorías MICE especializadas",
     "verticalsTitle": "Explorar por Categoría de Evento",
     "showingResults": "Mostrando",
     "exhibitionsCount": "ferias",
@@ -278,7 +314,10 @@
     "allDates": "Todas las Fechas",
     "upcomingExhibitions": "Próximas Exposiciones",
     "thisMonth": "Este Mes",
-    "nextMonth": "Próximo Mes"
+    "nextMonth": "Próximo Mes",
+    "city": "Ciudad / Metrópoli Anfitriona",
+    "filterByCity": "Filtrar por Ciudad",
+    "allCities": "Todas las Ciudades"
   },
   "events": {
     "title": "Directorio de Eventos y Calendario",

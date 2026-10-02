@@ -6,6 +6,8 @@ import { Badge } from "@/components/ui/Badge";
 import { formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
 import { cn } from "@/lib/utils";
 
+import { type MiceArchetype } from "@/lib/theming";
+
 export interface TicketTierItem {
   id: string;
   name: string;
@@ -22,6 +24,36 @@ export interface TierSelectorProps {
   onSelectTier: (tierId: string) => void;
   locale?: string;
   compact?: boolean;
+  archetype?: MiceArchetype | string;
+}
+
+function getDomainBadge(name: string, arch?: string): string | null {
+  if (!arch) return null;
+  const lower = name.toLowerCase();
+  switch (arch) {
+    case "AUTOMOTIVE_MOBILITY":
+      return lower.includes("vip") || lower.includes("track") ? "Paddock Pass" : "Test Driver";
+    case "AEROSPACE_DEFENSE":
+      return lower.includes("vip") || lower.includes("delegate") ? "Security L2" : "Flight Line";
+    case "BUILDING_PROPTECH":
+      return lower.includes("vip") ? "Principal Architect" : "CPD Accredited";
+    case "SUPPLY_CHAIN_LOGISTICS":
+      return lower.includes("vip") ? "Logistics Executive" : "Fleet Operator";
+    case "FRANCHISE_LICENSING":
+      return lower.includes("vip") ? "Master Franchisee" : "Verified Investor";
+    case "FAITH_PILGRIMAGE_CONGRESS":
+      return lower.includes("vip") ? "Muassasa Leader" : "Pilgrim Delegate";
+    case "SPORTS_OUTDOOR":
+      return lower.includes("vip") ? "Athlete Wave A" : "Bib Holder";
+    case "MEDIA_BROADCAST":
+      return lower.includes("vip") ? "Broadcast Crew" : "Studio Press";
+    case "MEDICAL_SYMPOSIUM":
+      return lower.includes("vip") ? "CME Accredited" : "Clinical Pass";
+    case "TECH_DEV_SUMMIT":
+      return lower.includes("vip") ? "Full Stack VIP" : "Dev Pass";
+    default:
+      return null;
+  }
 }
 
 export function TierSelector({
@@ -30,6 +62,7 @@ export function TierSelector({
   onSelectTier,
   locale = "en",
   compact = false,
+  archetype,
 }: TierSelectorProps) {
   return (
     <div
@@ -100,6 +133,11 @@ export function TierSelector({
                     <span className="font-semibold text-sm sm:text-base text-foreground leading-snug">
                       {tier.name}
                     </span>
+                    {getDomainBadge(tier.name, archetype) && (
+                      <Badge variant="outline" size="sm" className="font-semibold text-xs border-primary/40 text-primary bg-primary/10">
+                        {getDomainBadge(tier.name, archetype)}
+                      </Badge>
+                    )}
                     {isVip && (
                       <Badge variant="archetype" size="sm" className="gap-1 font-semibold">
                         <Sparkles className="h-3 w-3 text-amber-500" />

@@ -6,6 +6,8 @@ import {
   X,
   SlidersHorizontal,
   ArrowUpDown,
+  LayoutGrid,
+  List,
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useTranslations } from 'next-intl';
@@ -21,6 +23,8 @@ export interface FacetedFilterBarProps {
   sortBy: string;
   onSortChange: (sort: string) => void;
   onOpenMobileFilters: () => void;
+  viewMode?: 'grid' | 'table';
+  onViewModeChange?: (mode: 'grid' | 'table') => void;
   className?: string;
 }
 
@@ -32,6 +36,8 @@ export function FacetedFilterBar({
   sortBy,
   onSortChange,
   onOpenMobileFilters,
+  viewMode = 'grid',
+  onViewModeChange,
   className,
 }: FacetedFilterBarProps) {
   const tDisc = useTranslations('discovery');
@@ -148,7 +154,7 @@ export function FacetedFilterBar({
             <button
               type="button"
               onClick={handleClearSearch}
-              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors cursor-pointer"
+              className="absolute right-2 top-1/2 -translate-y-1/2 flex h-7 w-7 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors cursor-pointer"
               aria-label="Clear search query"
             >
               <X className="h-3.5 w-3.5" />
@@ -178,6 +184,46 @@ export function FacetedFilterBar({
             </select>
             <ArrowUpDown className="absolute right-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground pointer-events-none" />
           </div>
+
+          {/* View Mode Toggle (Grid vs. Dense Table) */}
+          {onViewModeChange && (
+            <div
+              className="hidden sm:inline-flex items-center rounded-xl border border-border bg-card p-0.5 shadow-xs"
+              role="group"
+              aria-label="View mode toggle"
+            >
+              <button
+                type="button"
+                onClick={() => onViewModeChange('grid')}
+                className={cn(
+                  'flex h-8.5 w-8.5 items-center justify-center rounded-lg transition-colors cursor-pointer',
+                  viewMode === 'grid'
+                    ? 'bg-primary text-primary-foreground shadow-xs font-bold'
+                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                )}
+                aria-label="Grid view"
+                title="Grid view"
+                aria-pressed={viewMode === 'grid'}
+              >
+                <LayoutGrid className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => onViewModeChange('table')}
+                className={cn(
+                  'flex h-8.5 w-8.5 items-center justify-center rounded-lg transition-colors cursor-pointer',
+                  viewMode === 'table'
+                    ? 'bg-primary text-primary-foreground shadow-xs font-bold'
+                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                )}
+                aria-label="Dense table view"
+                title="Dense table view"
+                aria-pressed={viewMode === 'table'}
+              >
+                <List className="h-4 w-4" />
+              </button>
+            </div>
+          )}
 
           {/* Mobile Filter Toggle Drawer Button */}
           <Button

@@ -18,8 +18,8 @@ describe("Phase 5 Unit: Dynamic MICE Category Theming Engine", () => {
   // TIER 1: FEATURE COVERAGE (Core Token & CSS Var Resolution)
   // ==========================================================================
 
-  it("T1.1: resolves distinct default theme tokens for all 15 MICE archetypes", () => {
-    expect(ARCHETYPE_LIST).toHaveLength(15);
+  it("T1.1: resolves distinct default theme tokens for all 22 MICE archetypes", () => {
+    expect(ARCHETYPE_LIST).toHaveLength(22);
     for (const archetype of allArchetypes) {
       const tokens = getArchetypeTokens(archetype);
       expect(tokens.primary).toMatch(/^#[0-9a-fA-F]{6}$/);

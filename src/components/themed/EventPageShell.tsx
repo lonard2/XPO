@@ -774,6 +774,7 @@ export function EventPageShell({
               hallName: venue.hallName,
             },
             ticketTiers,
+            archetype: safeArchetype,
           }}
         />
       )}

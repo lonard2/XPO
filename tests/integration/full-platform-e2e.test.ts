@@ -302,8 +302,8 @@ describe("XPO Full-Platform End-to-End Integration Suite (Milestone 9 Hardening)
   // JOURNEY 3: UI/UX Settings Suite & Theme Engine
   // ==========================================================================
   describe("Journey 3: UI/UX Settings Suite, Theming & Motion Preferences", () => {
-    it("E2E 3.1: Validates all 15 MICE archetype theme definitions and CSS token injection", () => {
-      expect(ARCHETYPE_LIST.length).toBe(15);
+    it("E2E 3.1: Validates all 22 MICE archetype theme definitions and CSS token injection", () => {
+      expect(ARCHETYPE_LIST.length).toBe(22);
 
       for (const archetype of ARCHETYPE_LIST) {
         const tokens = getArchetypeTokens(archetype);

@@ -97,13 +97,13 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
 
       {/* Hero Header Section */}
       <section className="container px-4">
-        <div className="rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/10 via-background to-background p-6 sm:p-10 shadow-xs">
-          <div className="max-w-3xl space-y-3">
+        <div className="rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/10 via-background to-background p-5 sm:p-8 lg:p-10 shadow-xs">
+          <div className="max-w-3xl space-y-2.5 sm:space-y-3">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-semibold">
               <Compass className="h-3.5 w-3.5" />
               <span>{tEvents('discoveryEngineBadge') || 'Attendee Discovery Engine'}</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground">
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground">
               {tEvents('eventsTitle') || 'MICE Events & International Expos'}
             </h1>
             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">

@@ -10,7 +10,6 @@ const mockHalls: VenueHallSummary[] = [
     capacity: 12000,
     floorAreaSqm: 15000,
     description: 'Heavy machinery exhibition hall with direct freight roll-up dock.',
-    venueId: 'v1',
   },
   {
     id: 'hall-plenary',
@@ -18,7 +17,6 @@ const mockHalls: VenueHallSummary[] = [
     capacity: 5000,
     floorAreaSqm: 6000,
     description: 'Acoustically isolated plenary auditorium for diplomatic summits.',
-    venueId: 'v1',
   },
   {
     id: 'hall-b1',
@@ -26,7 +24,6 @@ const mockHalls: VenueHallSummary[] = [
     capacity: 8000,
     floorAreaSqm: 9000,
     description: 'Modular exhibition hall for developer showcases.',
-    venueId: 'v1',
   },
 ];
 

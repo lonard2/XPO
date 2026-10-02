@@ -5,7 +5,8 @@ import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface DrawerProps {
-  isOpen: boolean;
+  isOpen?: boolean;
+  open?: boolean;
   onClose: () => void;
   title?: string;
   description?: string;
@@ -16,6 +17,7 @@ interface DrawerProps {
 
 export function Drawer({
   isOpen,
+  open,
   onClose,
   title,
   description,
@@ -23,13 +25,15 @@ export function Drawer({
   side = "right",
   className,
 }: DrawerProps) {
+  const visible = Boolean(open ?? isOpen);
+
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen) {
+      if (e.key === "Escape" && visible) {
         onClose();
       }
     };
-    if (isOpen) {
+    if (visible) {
       document.body.style.overflow = "hidden";
       window.addEventListener("keydown", handleKeyDown);
     }
@@ -37,9 +41,9 @@ export function Drawer({
       document.body.style.overflow = "unset";
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isOpen, onClose]);
+  }, [visible, onClose]);
 
-  if (!isOpen) return null;
+  if (!visible) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex" role="dialog" aria-modal="true">

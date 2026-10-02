@@ -59,6 +59,7 @@ export interface DigitalPassQRProps {
         hallName?: string | null;
       };
       heroImageUrl?: string | null;
+      archetype?: string;
     };
   };
   locale?: string;
@@ -227,6 +228,48 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
               </p>
             </div>
           </div>
+
+          {/* Domain-Specific Gate Accreditation Protocol */}
+          {(() => {
+            const arch = booking.event.archetype;
+            if (!arch) return null;
+            let protocolText: string | null = null;
+            switch (arch) {
+              case 'AEROSPACE_DEFENSE':
+                protocolText = 'Security Protocol: Present photographic ID and clearance pass at Flight Line Gate C.';
+                break;
+              case 'AUTOMOTIVE_MOBILITY':
+                protocolText = 'Paddock Access: Driver license required at Pit Lane Gate 2 for closed-circuit track entry.';
+                break;
+              case 'BUILDING_PROPTECH':
+                protocolText = 'Architect Accreditation: Collect CPD credit stamp at Hall 1 Registration Concierge.';
+                break;
+              case 'SUPPLY_CHAIN_LOGISTICS':
+                protocolText = 'Logistics Turnstile: Express RFID badge barcode scan at Freight Terminal Gate A.';
+                break;
+              case 'FRANCHISE_LICENSING':
+                protocolText = 'Investor Lounge: Valid for 1-on-1 discovery room entry at Hall 1 Franchise Row.';
+                break;
+              case 'FAITH_PILGRIMAGE_CONGRESS':
+                protocolText = 'Simultaneous Interpretation: Collect multi-language FM receiver headset at Plenary Gate.';
+                break;
+              case 'SPORTS_OUTDOOR':
+                protocolText = 'Athlete Bib Collection: Present QR code at Hall 1 Timing Tag Express Dispenser.';
+                break;
+              case 'MEDIA_BROADCAST':
+                protocolText = 'Broadcast Press / Crew: Equipment clearance pass at Virtual Production Stage A.';
+                break;
+              default:
+                protocolText = null;
+            }
+            if (!protocolText) return null;
+            return (
+              <div className="p-3 rounded-xl bg-primary/10 border border-primary/20 text-xs text-foreground flex items-center gap-2.5">
+                <Sparkles className="h-4 w-4 text-primary shrink-0" />
+                <span className="font-medium">{protocolText}</span>
+              </div>
+            );
+          })()}
 
           {/* QR Code Presentation Box with Center Watermark */}
           <div className="flex flex-col items-center justify-center p-6 sm:p-8 rounded-2xl bg-white text-slate-900 border border-slate-200 shadow-inner max-w-sm mx-auto">

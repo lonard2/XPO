@@ -42,6 +42,7 @@ export interface TicketCheckoutDrawerProps {
       hallName?: string | null;
     };
     ticketTiers: TicketTierItem[];
+    archetype?: string;
   };
   isOpen: boolean;
   onClose: () => void;
@@ -312,6 +313,7 @@ export function TicketCheckoutDrawer({
               onSelectTier={(id) => setSelectedTierId(id)}
               locale={locale}
               compact={false}
+              archetype={event.archetype}
             />
           </div>
 

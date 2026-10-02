@@ -39,7 +39,8 @@
     "selected": "選択済み",
     "delete": "削除",
     "backToHome": "ディスカバリーに戻る",
-    "skipToContent": "メインコンテンツへスキップ"
+    "skipToContent": "メインコンテンツへスキップ",
+    "filters": "フィルター"
   },
   "nav": {
     "brand": "XPO",
@@ -241,6 +242,41 @@
       "title": "法人インセンティブ＆リトリート",
       "tag": "報奨旅行・祝賀ガラディナー",
       "description": "企業報奨ウェルネス日程、役員リーダーシップリトリート、海辺の祝賀ガラディナー。"
+    },
+    "BUILDING_PROPTECH": {
+      "title": "建築建材・設計・プロップテック展",
+      "tag": "建築資材＆プロップテック",
+      "description": "持続可能建築材料、建築BIMモデリング技術、スマートビルディング自動化、建設調達商談。"
+    },
+    "AEROSPACE_DEFENSE": {
+      "title": "国際航空宇宙・防衛装備品エキスポ",
+      "tag": "航空宇宙＆防衛技術",
+      "description": "戦闘機アクロバット飛行展示、防衛電子アビオニクス、民間航空機調達、無人ドローン防衛システム。"
+    },
+    "SUPPLY_CHAIN_LOGISTICS": {
+      "title": "サプライチェーン・物流自動化・包装技術展",
+      "tag": "物流＆AGV搬送ロボット",
+      "description": "自律搬送ロボット(AGV/AMR)、国際複合一貫輸送ルート、スマート包装自動化、定温コールドチェーン。"
+    },
+    "FRANCHISE_LICENSING": {
+      "title": "フランチャイズ・リテール・中小ビジネス機会展",
+      "tag": "FC展開＆ライセンス",
+      "description": "パッケージ化FCビジネスモデル、商標知的財産ライセンス、中小企業協業投資、飲食マルチユニット契約。"
+    },
+    "FAITH_PILGRIMAGE_CONGRESS": {
+      "title": "巡礼サービス・ハラール産業・信仰コミュニティ大会",
+      "tag": "巡礼＆ハラール標準",
+      "description": "認定巡礼渡航ロジスティクス、国際ハラール基準相互承認、宗教学術会議、多言語同時通訳全体会合。"
+    },
+    "SPORTS_OUTDOOR": {
+      "title": "スポーツ・フィットネス＆アウトドア総合展",
+      "tag": "スポーツ＆アウトドア",
+      "description": "マラソン公式ゼッケン引換、トレイル走行試験コース、スポーツ科学・医学診断、障害物スラローム。"
+    },
+    "MEDIA_BROADCAST": {
+      "title": "放送映像・プロAV技術展",
+      "tag": "放送＆プロAV",
+      "description": "インカメラVFXバーチャルプロダクションLED、SMPTE ST 2110非圧縮IP伝送、大型コンサート音響試聴。"
     }
   },
   "discovery": {
@@ -262,7 +298,7 @@
     "activeFilters": "適用中のフィルター",
     "noEventsFound": "条件に一致するイベントが見つかりませんでした。",
     "resetFilters": "検索条件をリセット",
-    "verticalsBadge": "15の専門MICEカテゴリー",
+    "verticalsBadge": "22の専門MICEカテゴリー",
     "verticalsTitle": "カテゴリーから探す",
     "showingResults": "表示中:",
     "exhibitionsCount": "件のイベント",
@@ -278,7 +314,10 @@
     "allDates": "全日程",
     "upcomingExhibitions": "今後の展示会",
     "thisMonth": "今月",
-    "nextMonth": "来月"
+    "nextMonth": "来月",
+    "city": "開催都市 / メトロポリス",
+    "filterByCity": "都市で絞り込む",
+    "allCities": "すべての都市"
   },
   "events": {
     "title": "イベント一覧＆スケジュール",

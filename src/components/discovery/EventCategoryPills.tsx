@@ -18,6 +18,13 @@ import {
   Plane,
   GraduationCap,
   Sparkles,
+  Building2,
+  Shield,
+  Truck,
+  Store,
+  Compass,
+  Trophy,
+  Video,
   Layers,
   ArrowRight,
 } from 'lucide-react';
@@ -45,6 +52,13 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   Plane,
   GraduationCap,
   Sparkles,
+  Building2,
+  Shield,
+  Truck,
+  Store,
+  Compass,
+  Trophy,
+  Video,
 };
 
 export interface CategoryItem {
@@ -99,7 +113,7 @@ export function EventCategoryPills({
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-primary uppercase tracking-wider mb-1">
             <Layers className="h-4 w-4" />
-            <span>{tDisc('verticalsBadge') || '15 Specialized MICE Verticals'}</span>
+            <span>{tDisc('verticalsBadge') || '22 Specialized MICE Verticals'}</span>
           </div>
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight text-foreground">
             {tDisc('verticalsTitle') || 'Explore by Event Category'}

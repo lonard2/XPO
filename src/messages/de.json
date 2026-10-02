@@ -39,7 +39,8 @@
     "selected": "Ausgewählt",
     "delete": "Löschen",
     "backToHome": "Zurück zur Übersicht",
-    "skipToContent": "Zum Hauptinhalt springen"
+    "skipToContent": "Zum Hauptinhalt springen",
+    "filters": "Filter"
   },
   "nav": {
     "brand": "XPO",
@@ -241,6 +242,41 @@
       "title": "Incentive-Reisen & Firmenretreat",
       "tag": "Reiserouten & Galadinner",
       "description": "Maßgeschneiderte Incentive-Programme, Führungskräfte-Workshops und exklusive Galadinner am Wasser."
+    },
+    "BUILDING_PROPTECH": {
+      "title": "Baumaterialien, Architektur & PropTech Messe",
+      "tag": "Baustoffe & PropTech",
+      "description": "Nachhaltige Baumaterialien, BIM-Modellierung, intelligente Gebäudetechnik und Bauausschreibungen."
+    },
+    "AEROSPACE_DEFENSE": {
+      "title": "Luft- und Raumfahrt & Verteidigungsmesse",
+      "tag": "Luftfahrt & Verteidigung",
+      "description": "Flugvorführungen, militärische Avionik, zivile Flugzeugbeschaffung und autonome Drohnensysteme."
+    },
+    "SUPPLY_CHAIN_LOGISTICS": {
+      "title": "Lieferkette, Logistik & Verpackungstechnik",
+      "tag": "Logistik & AGV-Robotik",
+      "description": "Fahrerlose Transportsysteme (FTS/AMR), multimodale Frachtkorridore und automatisierte Verpackungslinien."
+    },
+    "FRANCHISE_LICENSING": {
+      "title": "Franchise, Einzelhandel & KMU-Geschäftschancen",
+      "tag": "Franchise & Lizenzierung",
+      "description": "Schlüsselfertige Filialkonzepte, Markenlizenzierung, KMU-Beteiligungen und Gastronomie-Verträge."
+    },
+    "FAITH_PILGRIMAGE_CONGRESS": {
+      "title": "Pilgerreisen, Halal-Standards & Glaubenskongress",
+      "tag": "Pilgerfahrt & Halal-Standards",
+      "description": "Zertifizierte Pilgerlogistik, internationale Halal-Standards und mehrsprachige Plenarkonferenzen."
+    },
+    "SPORTS_OUTDOOR": {
+      "title": "Sport, Fitness & Outdoor-Erlebnismesse",
+      "tag": "Sport & Outdoor",
+      "description": "Marathon-Startnummernausgabe, Trail-Teststrecken, Sportmedizin und Hindernisparcours."
+    },
+    "MEDIA_BROADCAST": {
+      "title": "Medien-, Broadcast- & Pro-AV-Technologiemesse",
+      "tag": "Broadcast & Pro-AV",
+      "description": "Virtuelle LED-Filmstudios, unkomprimierte SMPTE ST 2110 IP-Übertragung und Konzert-Line-Arrays."
     }
   },
   "discovery": {
@@ -262,7 +298,7 @@
     "activeFilters": "Aktive Filter",
     "noEventsFound": "Keine Events entsprechen den aktuellen Filterkriterien.",
     "resetFilters": "Suche zurücksetzen",
-    "verticalsBadge": "15 spezialisierte MICE-Kategorien",
+    "verticalsBadge": "22 spezialisierte MICE-Kategorien",
     "verticalsTitle": "Nach Eventkategorie entdecken",
     "showingResults": "Angezeigt:",
     "exhibitionsCount": "Messen",
@@ -278,7 +314,10 @@
     "allDates": "Alle Termine",
     "upcomingExhibitions": "Kommende Messen",
     "thisMonth": "Diesen Monat",
-    "nextMonth": "Nächsten Monat"
+    "nextMonth": "Nächsten Monat",
+    "city": "Stadt / Veranstaltungsmetropole",
+    "filterByCity": "Nach Stadt filtern",
+    "allCities": "Alle Städte"
   },
   "events": {
     "title": "Messeverzeichnis & Kalender",

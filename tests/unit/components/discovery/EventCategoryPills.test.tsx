@@ -4,7 +4,7 @@ import React from 'react';
 import { EventCategoryPills } from '@/components/discovery/EventCategoryPills';
 
 describe('EventCategoryPills', () => {
-  it('renders all 15 MICE domain category options', () => {
+  it('renders all 22 MICE domain category options', () => {
     render(<EventCategoryPills locale="en" />);
 
     expect(screen.getByText('Explore by Event Category')).toBeDefined();
@@ -23,6 +23,13 @@ describe('EventCategoryPills', () => {
     expect(screen.getAllByText(/Fashion, Beauty & Luxury/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Government & Diplomatic/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Corporate Incentive/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Building, Architecture & PropTech/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Aerospace, Aviation & Defense/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Supply Chain, Logistics & Packaging/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Franchise, Retail & SME Business/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Faith, Pilgrimage & Community/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Sports, Fitness & Outdoor Adventure/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Media, Broadcast & Pro-AV/i).length).toBeGreaterThan(0);
   });
 
   it('triggers onSelectCategory callback when category card is clicked', () => {

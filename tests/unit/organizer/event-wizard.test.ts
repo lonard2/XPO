@@ -9,7 +9,7 @@ import {
 } from "@/lib/theming";
 
 describe("Phase 9 Unit: Event Creation Wizard & Archetype Engine", () => {
-  it("verifies all 15 MICE category archetypes have valid default theme tokens", () => {
+  it("verifies all 22 MICE category archetypes have valid default theme tokens", () => {
     const archetypes: MiceArchetype[] = [
       "INDUSTRIAL_B2B",
       "TECH_DEV_SUMMIT",
@@ -26,6 +26,13 @@ describe("Phase 9 Unit: Event Creation Wizard & Archetype Engine", () => {
       "HOSPITALITY_TOURISM",
       "EDUCATION_EDTECH",
       "FASHION_RETAIL",
+      "BUILDING_PROPTECH",
+      "AEROSPACE_DEFENSE",
+      "SUPPLY_CHAIN_LOGISTICS",
+      "FRANCHISE_LICENSING",
+      "FAITH_PILGRIMAGE_CONGRESS",
+      "SPORTS_OUTDOOR",
+      "MEDIA_BROADCAST",
     ];
 
     for (const arch of archetypes) {

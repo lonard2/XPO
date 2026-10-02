@@ -39,7 +39,8 @@
     "selected": "已选择",
     "delete": "删除",
     "backToHome": "返回发现页",
-    "skipToContent": "跳转至主要内容"
+    "skipToContent": "跳转至主要内容",
+    "filters": "筛选"
   },
   "nav": {
     "brand": "XPO",
@@ -241,6 +242,41 @@
       "title": "高端奖励旅游与企业年会",
       "tag": "定制考察与海滨晚宴",
       "description": "企业专属康养考察日程、高管领导力研讨活动与海滨庆祝晚宴盛典。"
+    },
+    "BUILDING_PROPTECH": {
+      "title": "绿色建筑建材与智慧地产科技展",
+      "tag": "绿色建材与科技地产",
+      "description": "可持续建筑材料、建筑BIM三维建模组件、智慧楼宇物联网与工程采购洽谈。"
+    },
+    "AEROSPACE_DEFENSE": {
+      "title": "国际航空航天与国防装备博览会",
+      "tag": "航空航天与防务系统",
+      "description": "特技超音速飞行表演、国防电子航电系统、民用客机采购与无人无人机防御系统。"
+    },
+    "SUPPLY_CHAIN_LOGISTICS": {
+      "title": "供应链物流、仓储机器人与包装技术展",
+      "tag": "智慧物流与AGV机器人",
+      "description": "无人仓储搬运AGV机器人、多式联运货运通道、智能自动化包装产线与全程冷链。"
+    },
+    "FRANCHISE_LICENSING": {
+      "title": "连锁加盟、新零售与中小企业创富展",
+      "tag": "加盟连锁与品牌授权",
+      "description": "成熟零售加盟模式、知识产权IP授权、中小企业合资创业与餐饮多店特许协议。"
+    },
+    "FAITH_PILGRIMAGE_CONGRESS": {
+      "title": "朝觐服务、清真产业与信仰社群大会",
+      "tag": "朝觐服务与清真标准",
+      "description": "资质认证朝觐行程组织、国际清真互认标准审计、跨宗教文明研讨与多语种同传全体大会。"
+    },
+    "SPORTS_OUTDOOR": {
+      "title": "体育运动、全民健身与户外探险展",
+      "tag": "体育赛事与户外探险",
+      "description": "马拉松比赛号码布现场领取、越野装备测试赛道、运动医学机能检测与障碍越野巡回赛。"
+    },
+    "MEDIA_BROADCAST": {
+      "title": "影视广播工程与专业音视频技术展",
+      "tag": "广播影视与专业AV",
+      "description": "虚拟拍摄LED立面影棚、SMPTE ST 2110无压缩IP视频分发、大型演唱会线性阵列试听。"
     }
   },
   "discovery": {
@@ -262,7 +298,7 @@
     "activeFilters": "当前筛选条件",
     "noEventsFound": "暂无符合条件的展会。",
     "resetFilters": "重置筛选条件",
-    "verticalsBadge": "15大专业会展垂直分类",
+    "verticalsBadge": "22大专业会展垂直分类",
     "verticalsTitle": "按展会类别探索",
     "showingResults": "正在显示",
     "exhibitionsCount": "场展会",
@@ -278,7 +314,10 @@
     "allDates": "全部日期",
     "upcomingExhibitions": "即将举行的展会",
     "thisMonth": "本月",
-    "nextMonth": "下月"
+    "nextMonth": "下月",
+    "city": "举办城市 / 都会区",
+    "filterByCity": "按城市筛选",
+    "allCities": "所有城市"
   },
   "events": {
     "title": "展会名录与日程",

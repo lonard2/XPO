@@ -12,6 +12,7 @@ import {
 import { Button } from '@/components/ui/Button';
 import { Drawer } from '@/components/ui/Drawer';
 import { EventCard } from '@/components/discovery/EventCard';
+import { EventTableView } from '@/components/discovery/EventTableView';
 import { FacetedFilterBar } from '@/components/discovery/FacetedFilterBar';
 import { FilterSidebar } from '@/components/discovery/FilterSidebar';
 import { useTranslations } from 'next-intl';
@@ -23,21 +24,16 @@ export interface EventsExplorerProps {
   initialFilters?: Partial<FilterState>;
 }
 
+export const INITIAL_PAGE_SIZE = 12;
+export const PAGE_SIZE_INCREMENT = 12;
+
 export function EventsExplorer({
   initialEvents,
   locale,
   initialFilters,
 }: EventsExplorerProps) {
-  let tDisc: any = (k: string) => k;
-  let tCom: any = (k: string) => k;
-  try {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tDisc = useTranslations('discovery');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tCom = useTranslations('common');
-  } catch {
-    // Fallback
-  }
+  const tDisc = useTranslations('discovery');
+  const tCom = useTranslations('common');
 
   const router = useRouter();
   const pathname = usePathname();
@@ -58,7 +54,14 @@ export function EventsExplorer({
 
   const [filters, setFilters] = React.useState<FilterState>(parseQueryFilters);
   const [sortBy, setSortBy] = React.useState<string>(() => searchParams.get('sortBy') || 'date_asc');
+  const [viewMode, setViewMode] = React.useState<'grid' | 'table'>('grid');
+  const [visibleCount, setVisibleCount] = React.useState(INITIAL_PAGE_SIZE);
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = React.useState(false);
+
+  // Reset pagination when filters or sort change
+  React.useEffect(() => {
+    setVisibleCount(INITIAL_PAGE_SIZE);
+  }, [filters, sortBy]);
 
   // Synchronize region filter if URL searchParams change externally (e.g. via RegionSwitcher)
   React.useEffect(() => {
@@ -144,7 +147,9 @@ export function EventsExplorer({
 
       // 3. City filter
       if (filters.city !== 'all') {
-        if (event.venue?.city.toLowerCase() !== filters.city.toLowerCase()) {
+        const targetCity = filters.city.toLowerCase().trim();
+        const eventCity = event.venue?.city?.toLowerCase().trim() || '';
+        if (eventCity !== targetCity && !eventCity.includes(targetCity)) {
           return false;
         }
       }
@@ -176,10 +181,25 @@ export function EventsExplorer({
 
       // 7. Date Range filter
       if (filters.dateRange !== 'all') {
-        const eventStart = new Date(event.startDate).getTime();
-        const now = Date.now();
+        const eventStartDate = new Date(event.startDate);
+        const eventStart = eventStartDate.getTime();
+        const now = new Date();
+
+        if (Number.isNaN(eventStart)) return false;
+
+        const eventEndDate = event.endDate ? new Date(event.endDate) : eventStartDate;
+        const eventEnd = Number.isNaN(eventEndDate.getTime()) ? eventStart : eventEndDate.getTime();
+
         if (filters.dateRange === 'upcoming') {
-          if (eventStart < now - 1000 * 60 * 60 * 24 * 30) return false;
+          if (eventStart < now.getTime() - 1000 * 60 * 60 * 24 * 30) return false;
+        } else if (filters.dateRange === 'this_month') {
+          const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0).getTime();
+          const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999).getTime();
+          if (eventEnd < startOfMonth || eventStart > endOfMonth) return false;
+        } else if (filters.dateRange === 'next_month') {
+          const startOfNextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1, 0, 0, 0, 0).getTime();
+          const endOfNextMonth = new Date(now.getFullYear(), now.getMonth() + 2, 0, 23, 59, 59, 999).getTime();
+          if (eventEnd < startOfNextMonth || eventStart > endOfNextMonth) return false;
         }
       }
 
@@ -219,6 +239,30 @@ export function EventsExplorer({
     return { archetypes, regions };
   }, [initialEvents]);
 
+  // Compute distinct available cities from events, scoped to active region
+  const availableCities = React.useMemo(() => {
+    const citiesSet = new Set<string>();
+    for (const evt of initialEvents) {
+      if (filters.region !== 'all') {
+        const targetRegion = filters.region.toLowerCase();
+        const eventRegion = (evt.region?.code || evt.regionId || '').toLowerCase();
+        const matchesRegion =
+          (targetRegion === 'id' && eventRegion === 'id') ||
+          (targetRegion === 'jp' && eventRegion === 'jp') ||
+          (targetRegion === 'global' && ['gl', 'global'].includes(eventRegion));
+        if (!matchesRegion) continue;
+      }
+      if (evt.venue?.city) {
+        citiesSet.add(evt.venue.city);
+      }
+    }
+    return Array.from(citiesSet).sort((a, b) => a.localeCompare(b));
+  }, [initialEvents, filters.region]);
+
+  const displayedEvents = React.useMemo(() => {
+    return filteredAndSortedEvents.slice(0, visibleCount);
+  }, [filteredAndSortedEvents, visibleCount]);
+
   return (
     <div className="flex flex-col gap-8 pb-16">
       {/* Faceted Filter & Search Toolbar */}
@@ -232,6 +276,8 @@ export function EventsExplorer({
             sortBy={sortBy}
             onSortChange={handleSortChange}
             onOpenMobileFilters={() => setIsMobileDrawerOpen(true)}
+            viewMode={viewMode}
+            onViewModeChange={setViewMode}
           />
         </div>
       </section>
@@ -245,11 +291,12 @@ export function EventsExplorer({
               filters={filters}
               onChange={handleFilterChange}
               onReset={handleResetFilters}
+              availableCities={availableCities}
               counts={categoryCounts}
             />
           </aside>
 
-          {/* Right Event Grid */}
+          {/* Right Event Grid or Table */}
           <main className="lg:col-span-9 space-y-6">
             {filteredAndSortedEvents.length === 0 ? (
               <div className="rounded-3xl border border-dashed border-border/80 bg-card/50 p-10 sm:p-14 text-center space-y-4">
@@ -273,16 +320,61 @@ export function EventsExplorer({
                   <span>{tDisc('resetFilters') || tDisc('clearFilters') || 'Reset All Filters'}</span>
                 </Button>
               </div>
+            ) : viewMode === 'table' ? (
+              <div className="space-y-6">
+                <EventTableView
+                  events={displayedEvents}
+                  locale={locale}
+                />
+                {visibleCount < filteredAndSortedEvents.length && (
+                  <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-border/60">
+                    <p className="text-xs text-muted-foreground font-mono">
+                      Showing <span className="font-semibold text-foreground">{displayedEvents.length}</span> of{' '}
+                      <span className="font-semibold text-foreground">{filteredAndSortedEvents.length}</span> exhibitions
+                    </p>
+                    <Button
+                      variant="outline"
+                      onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE_INCREMENT)}
+                      className="gap-2 text-xs font-semibold cursor-pointer w-full sm:w-auto"
+                    >
+                      <span>Load More Exhibitions</span>
+                      <span className="text-[11px] font-mono text-muted-foreground">
+                        (+{Math.min(PAGE_SIZE_INCREMENT, filteredAndSortedEvents.length - visibleCount)})
+                      </span>
+                    </Button>
+                  </div>
+                )}
+              </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                {filteredAndSortedEvents.map((event, idx) => (
-                  <EventCard
-                    key={event.id}
-                    event={event}
-                    locale={locale}
-                    priority={idx < 3}
-                  />
-                ))}
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                  {displayedEvents.map((event, idx) => (
+                    <EventCard
+                      key={event.id}
+                      event={event}
+                      locale={locale}
+                      priority={idx < 3}
+                    />
+                  ))}
+                </div>
+                {visibleCount < filteredAndSortedEvents.length && (
+                  <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-border/60">
+                    <p className="text-xs text-muted-foreground font-mono">
+                      Showing <span className="font-semibold text-foreground">{displayedEvents.length}</span> of{' '}
+                      <span className="font-semibold text-foreground">{filteredAndSortedEvents.length}</span> exhibitions
+                    </p>
+                    <Button
+                      variant="outline"
+                      onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE_INCREMENT)}
+                      className="gap-2 text-xs font-semibold cursor-pointer w-full sm:w-auto"
+                    >
+                      <span>Load More Exhibitions</span>
+                      <span className="text-[11px] font-mono text-muted-foreground">
+                        (+{Math.min(PAGE_SIZE_INCREMENT, filteredAndSortedEvents.length - visibleCount)})
+                      </span>
+                    </Button>
+                  </div>
+                )}
               </div>
             )}
           </main>
@@ -308,6 +400,7 @@ export function EventsExplorer({
                 handleResetFilters();
                 setIsMobileDrawerOpen(false);
               }}
+              availableCities={availableCities}
               counts={categoryCounts}
             />
           </div>

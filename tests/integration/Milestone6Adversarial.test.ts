@@ -303,7 +303,7 @@ describe("Milestone 6 Adversarial Stress & Security Suite (Phases 8 & 9)", () =>
   // SECTION 3: LIVE PREVIEW FRAME & ARCHETYPE THEMING INTEGRITY
   // ==========================================================================
   describe("3. Live Preview Theming Tokens & Responsive Viewports", () => {
-    it("ADV-3.1: verifies all 15 MICE archetypes provide valid default hex colors and typography tokens", () => {
+    it("ADV-3.1: verifies all 22 MICE archetypes provide valid default hex colors and typography tokens", () => {
       const allArchetypes: MiceArchetype[] = [
         "INDUSTRIAL_B2B",
         "TECH_DEV_SUMMIT",
@@ -320,6 +320,13 @@ describe("Milestone 6 Adversarial Stress & Security Suite (Phases 8 & 9)", () =>
         "HOSPITALITY_TOURISM",
         "EDUCATION_EDTECH",
         "FASHION_RETAIL",
+        "BUILDING_PROPTECH",
+        "AEROSPACE_DEFENSE",
+        "SUPPLY_CHAIN_LOGISTICS",
+        "FRANCHISE_LICENSING",
+        "FAITH_PILGRIMAGE_CONGRESS",
+        "SPORTS_OUTDOOR",
+        "MEDIA_BROADCAST",
       ];
 
       for (const arch of allArchetypes) {

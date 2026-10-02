@@ -98,4 +98,7 @@ temp/
 .temp/
 .eslintcache
 .stylelintcache
+*.tsbuildinfo
+.impeccable/
 .agents/
+

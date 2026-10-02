@@ -39,7 +39,8 @@
     "selected": "Selected",
     "delete": "Delete",
     "backToHome": "Back to Discovery",
-    "skipToContent": "Skip to main content"
+    "skipToContent": "Skip to main content",
+    "filters": "Filters"
   },
   "nav": {
     "brand": "XPO",
@@ -241,6 +242,41 @@
       "title": "Corporate Incentive & Luxury Retreats",
       "tag": "Incentive & Retreats",
       "description": "Curated executive incentive itineraries, bespoke gala banquets, private leadership symposiums, and wellness retreat programming."
+    },
+    "BUILDING_PROPTECH": {
+      "title": "Building, Architecture & PropTech Expo",
+      "tag": "Building & PropTech",
+      "description": "Sustainable building materials, architectural BIM technology, smart property automation, and civil construction procurement."
+    },
+    "AEROSPACE_DEFENSE": {
+      "title": "Aerospace, Aviation & Defense Expo",
+      "tag": "Aerospace & Defense",
+      "description": "Supersonic flight demonstrations, military defense systems, commercial aviation procurement, and unmanned drone avionics."
+    },
+    "SUPPLY_CHAIN_LOGISTICS": {
+      "title": "Supply Chain, Logistics & Packaging Tech",
+      "tag": "Logistics & Packaging",
+      "description": "Autonomous warehouse robotics (AGV/AMR), multimodal freight logistics, smart packaging automation, and cold-chain distribution."
+    },
+    "FRANCHISE_LICENSING": {
+      "title": "Franchise, Retail & SME Business Opportunity",
+      "tag": "Franchise & SME",
+      "description": "Turnkey retail franchise concepts, intellectual property licensing, SME business opportunities, and F&B multi-unit agreements."
+    },
+    "FAITH_PILGRIMAGE_CONGRESS": {
+      "title": "Faith, Pilgrimage & Community Congress",
+      "tag": "Faith & Pilgrimage",
+      "description": "Hajj & Umrah pilgrimage logistics, accredited Halal industry standards, international clerical assemblies, and religious community conventions."
+    },
+    "SPORTS_OUTDOOR": {
+      "title": "Sports, Fitness & Outdoor Adventure Expo",
+      "tag": "Sports & Outdoor",
+      "description": "Competitive marathon bib collections, endurance equipment testing arenas, high-altitude expedition gear, and sports medicine summits."
+    },
+    "MEDIA_BROADCAST": {
+      "title": "Media, Broadcast & Pro-AV Technology Mart",
+      "tag": "Media & Broadcast",
+      "description": "Virtual production LED walls, SMPTE ST 2110 IP broadcast routing, line-array pro-audio listening, and cinema camera optics."
     }
   },
   "discovery": {
@@ -262,7 +298,7 @@
     "activeFilters": "Active Filters",
     "noEventsFound": "No events match your current filter criteria.",
     "resetFilters": "Reset Search Filters",
-    "verticalsBadge": "15 Specialized MICE Verticals",
+    "verticalsBadge": "22 Specialized MICE Verticals",
     "verticalsTitle": "Explore by Event Category",
     "showingResults": "Showing",
     "exhibitionsCount": "exhibitions",
@@ -278,7 +314,10 @@
     "allDates": "All Dates",
     "upcomingExhibitions": "Upcoming Exhibitions",
     "thisMonth": "This Month",
-    "nextMonth": "Next Month"
+    "nextMonth": "Next Month",
+    "city": "City / Host Metropolis",
+    "filterByCity": "Filter by City",
+    "allCities": "All Cities"
   },
   "events": {
     "title": "Event Directory & Timetable",

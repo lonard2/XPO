@@ -27,6 +27,23 @@ export interface EventCardProps {
   priority?: boolean;
 }
 
+function getContrastTextColor(hexColor?: string): string {
+  if (!hexColor || !hexColor.startsWith('#')) return '#ffffff';
+  const hex = hexColor.replace('#', '');
+  const r8 = parseInt(hex.substring(0, 2), 16) || 0;
+  const g8 = parseInt(hex.substring(2, 4), 16) || 0;
+  const b8 = parseInt(hex.substring(4, 6), 16) || 0;
+
+  const toLinear = (c: number) => {
+    const s = c / 255;
+    return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+  };
+
+  const L = 0.2126 * toLinear(r8) + 0.7152 * toLinear(g8) + 0.0722 * toLinear(b8);
+  // When relative luminance L > 0.2, dark text yields higher contrast ratio than white
+  return L > 0.2 ? '#0f172a' : '#ffffff';
+}
+
 export const EventCard = React.memo(function EventCard({
   event,
   locale,
@@ -127,7 +144,7 @@ export const EventCard = React.memo(function EventCard({
             className="text-xs uppercase font-bold tracking-wider shadow-sm"
             style={{
               backgroundColor: archetypeTokens.primary,
-              color: '#ffffff',
+              color: getContrastTextColor(archetypeTokens.primary),
             }}
           >
             {archetypeTokens.displayName.split('&')[0].trim()}
@@ -141,7 +158,7 @@ export const EventCard = React.memo(function EventCard({
           )}
 
           {temporal.isPast && (
-            <Badge variant="secondary" className="text-xs font-medium bg-black/70 text-slate-300 border border-slate-700 shadow-sm backdrop-blur-xs">
+            <Badge variant="secondary" className="text-xs font-medium bg-black/70 text-slate-300 border border-slate-700 shadow-sm backdrop-blur-sm">
               <span>Concluded</span>
             </Badge>
           )}
@@ -155,7 +172,7 @@ export const EventCard = React.memo(function EventCard({
         </div>
 
         <div className="absolute top-2.5 right-2.5 z-10">
-          <Badge variant="outline" className="text-xs uppercase font-mono bg-background/90 backdrop-blur-xs font-semibold">
+          <Badge variant="outline" className="text-xs uppercase font-mono bg-background/90 backdrop-blur-sm font-semibold">
             {formatLabel}
           </Badge>
         </div>

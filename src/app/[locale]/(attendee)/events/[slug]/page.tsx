@@ -13,6 +13,19 @@ import {
   MegaExpoPavilionView,
   GovernmentDiplomaticView,
   IncentiveRetreatView,
+  AutomotiveMobilityView,
+  EnergyInfrastructureView,
+  AgritechFoodView,
+  HospitalityTourismView,
+  EducationEdTechView,
+  FashionRetailView,
+  BuildingPropTechView,
+  AerospaceDefenseView,
+  SupplyChainLogisticsView,
+  FranchiseLicensingView,
+  FaithPilgrimageCongressView,
+  SportsOutdoorView,
+  MediaBroadcastView,
 } from "@/components/themed/archetypes";
 
 interface EventPageProps {
@@ -22,7 +35,7 @@ interface EventPageProps {
   }>;
 }
 
-// Map archetypes to component views
+// Map every archetype 1-to-1 to its dedicated specialized view
 const ARCHETYPE_VIEW_MAP: Record<MiceArchetype, React.ComponentType<any>> = {
   INDUSTRIAL_B2B: IndustrialB2BView,
   TECH_DEV_SUMMIT: TechDevSummitView,
@@ -33,12 +46,19 @@ const ARCHETYPE_VIEW_MAP: Record<MiceArchetype, React.ComponentType<any>> = {
   MEGA_EXPO_PAVILION: MegaExpoPavilionView,
   GOVERNMENT_DIPLOMATIC: GovernmentDiplomaticView,
   INCENTIVE_RETREAT: IncentiveRetreatView,
-  AUTOMOTIVE_MOBILITY: IndustrialB2BView,
-  ENERGY_INFRASTRUCTURE: IndustrialB2BView,
-  AGRITECH_FOOD: IndustrialB2BView,
-  HOSPITALITY_TOURISM: IncentiveRetreatView,
-  EDUCATION_EDTECH: TechDevSummitView,
-  FASHION_RETAIL: PopCultureGamingView,
+  AUTOMOTIVE_MOBILITY: AutomotiveMobilityView,
+  ENERGY_INFRASTRUCTURE: EnergyInfrastructureView,
+  AGRITECH_FOOD: AgritechFoodView,
+  HOSPITALITY_TOURISM: HospitalityTourismView,
+  EDUCATION_EDTECH: EducationEdTechView,
+  FASHION_RETAIL: FashionRetailView,
+  BUILDING_PROPTECH: BuildingPropTechView,
+  AEROSPACE_DEFENSE: AerospaceDefenseView,
+  SUPPLY_CHAIN_LOGISTICS: SupplyChainLogisticsView,
+  FRANCHISE_LICENSING: FranchiseLicensingView,
+  FAITH_PILGRIMAGE_CONGRESS: FaithPilgrimageCongressView,
+  SPORTS_OUTDOOR: SportsOutdoorView,
+  MEDIA_BROADCAST: MediaBroadcastView,
 };
 
 export async function generateMetadata({ params }: EventPageProps) {

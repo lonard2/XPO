@@ -21,22 +21,10 @@ export function ActiveFilterChips({
   onClearAll,
   className,
 }: ActiveFilterChipsProps) {
-  let tDisc: any = (k: string) => k;
-  let tReg: any = (k: string) => k;
-  let tArch: any = (k: string) => k;
-  let tCom: any = (k: string) => k;
-  try {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tDisc = useTranslations('discovery');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tReg = useTranslations('regions');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tArch = useTranslations('archetypes');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tCom = useTranslations('common');
-  } catch {
-    // Fallback
-  }
+  const tDisc = useTranslations('discovery');
+  const tReg = useTranslations('regions');
+  const tArch = useTranslations('archetypes');
+  const tCom = useTranslations('common');
 
   const activeChips: Array<{
     key: keyof FilterState;
@@ -154,7 +142,7 @@ export function ActiveFilterChips({
             <button
               type="button"
               onClick={() => (chip.subValue ? onRemoveFilter(chip.key, chip.subValue) : onRemoveFilter(chip.key))}
-              className="ml-0.5 rounded-full p-0.5 hover:bg-primary/20 transition-colors focus:outline-none cursor-pointer"
+              className="ml-1 -mr-1 flex h-5 w-5 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none transition-colors cursor-pointer"
               aria-label={`Remove filter: ${chip.label}`}
             >
               <X className="h-3 w-3" />
@@ -167,7 +155,7 @@ export function ActiveFilterChips({
         variant="ghost"
         size="sm"
         onClick={onClearAll}
-        className="h-6 px-2 text-xs font-semibold text-muted-foreground hover:text-foreground gap-1 cursor-pointer"
+        className="h-7 sm:h-6 px-2.5 text-xs font-semibold text-muted-foreground hover:text-foreground gap-1 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary"
       >
         <RotateCcw className="h-3 w-3" />
         <span>{tDisc('clearAll') || tDisc('clearFilters') || 'Clear All'}</span>
