@@ -169,7 +169,7 @@ export function EventCalendarWidget({
         {!isCalendarPage && (
           <Link
             href={`/${locale}/calendar`}
-            className={buttonVariants({ variant: 'outline', size: 'sm', className: 'gap-1.5 text-xs font-semibold' })}
+            className={buttonVariants({ variant: 'outline', size: 'sm', className: 'gap-1.5 text-xs font-semibold min-h-[44px] sm:min-h-[36px]' })}
           >
             <span>{tCal('fullTimetable') || 'Full Multi-Track Timetable'}</span>
             <ArrowRight className="h-3.5 w-3.5" />
@@ -187,10 +187,10 @@ export function EventCalendarWidget({
               {monthName}
             </h4>
             <div className="flex items-center gap-1">
-              <Button size="icon" variant="ghost" className="h-10 w-10 sm:h-8 sm:w-8 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 rounded-lg cursor-pointer flex items-center justify-center hover:bg-muted" onClick={prevMonth} aria-label="Previous month">
+              <Button size="icon" variant="ghost" className="h-10 w-10 sm:h-9 sm:w-9 min-h-[44px] min-w-[44px] sm:min-h-[36px] sm:min-w-[36px] rounded-lg cursor-pointer flex items-center justify-center hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2" onClick={prevMonth} aria-label="Previous month">
                 <ChevronLeft className="h-4 w-4 sm:h-3.5 sm:w-3.5" />
               </Button>
-              <Button size="icon" variant="ghost" className="h-10 w-10 sm:h-8 sm:w-8 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 rounded-lg cursor-pointer flex items-center justify-center hover:bg-muted" onClick={nextMonth} aria-label="Next month">
+              <Button size="icon" variant="ghost" className="h-10 w-10 sm:h-9 sm:w-9 min-h-[44px] min-w-[44px] sm:min-h-[36px] sm:min-w-[36px] rounded-lg cursor-pointer flex items-center justify-center hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2" onClick={nextMonth} aria-label="Next month">
                 <ChevronRight className="h-4 w-4 sm:h-3.5 sm:w-3.5" />
               </Button>
             </div>
@@ -211,7 +211,7 @@ export function EventCalendarWidget({
           <div className="grid grid-cols-7 gap-1" role="grid">
             {calendarDays.map((cell, idx) => {
               if (!cell.dayNumber || !cell.date) {
-                return <div key={`empty-${idx}`} className="h-10 min-h-[40px] sm:h-9 sm:min-h-[36px]" aria-hidden="true" />;
+                return <div key={`empty-${idx}`} className="h-10 min-h-[44px] sm:h-9 sm:min-h-[36px]" aria-hidden="true" />;
               }
 
               const hasEvents = hasEventOnDay(cell.date);
@@ -228,7 +228,7 @@ export function EventCalendarWidget({
                   aria-selected={active}
                   aria-current={today ? 'date' : undefined}
                   className={cn(
-                    'relative flex h-10 w-full min-h-[40px] sm:h-9 sm:min-h-[36px] flex-col items-center justify-center rounded-lg text-xs font-semibold transition-colors cursor-pointer',
+                    'relative flex h-10 w-full min-h-[44px] sm:h-9 sm:min-h-[36px] flex-col items-center justify-center rounded-lg text-xs font-semibold transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
                     active
                       ? 'bg-primary text-white shadow-xs font-bold'
                       : today
@@ -311,7 +311,7 @@ export function EventCalendarWidget({
                       className={buttonVariants({
                         variant: 'outline',
                         size: 'sm',
-                        className: 'gap-1 text-xs font-semibold h-8 shrink-0 cursor-pointer',
+                        className: 'gap-1.5 text-xs font-semibold min-h-[44px] sm:min-h-[36px] px-3 shrink-0 cursor-pointer',
                       })}
                     >
                       <Ticket className="h-3.5 w-3.5" />
@@ -338,7 +338,7 @@ export function EventCalendarWidget({
                         setSelectedDate(targetDate);
                         setViewMonth(new Date(targetDate.getFullYear(), targetDate.getMonth(), 1));
                       }}
-                      className="inline-flex items-center gap-1 text-xs font-bold text-primary hover:underline cursor-pointer bg-primary/10 hover:bg-primary/20 px-3 py-1.5 rounded-lg transition-colors"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:underline cursor-pointer bg-primary/10 hover:bg-primary/20 px-3.5 py-2 min-h-[44px] sm:min-h-[36px] rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                     >
                       <span>Jump to: {nearestUpcomingEvent.title}</span>
                       <ArrowRight className="h-3 w-3" />

@@ -11,7 +11,7 @@ import {
   Layers,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
-import { Button } from '@/components/ui/Button';
+import { buttonVariants } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { useTranslations } from 'next-intl';
 import { formatDateRange, getTimeZoneForRegion } from '@/lib/i18n/formatters';
@@ -66,11 +66,15 @@ export function MajorVenuesUpcomingSection({
           </p>
         </div>
 
-        <Link href={`/${locale}/venues`}>
-          <Button variant="outline" size="sm" className="gap-1.5 text-xs self-start sm:self-auto whitespace-nowrap min-h-[36px] font-semibold">
-            <span>{tVen('title')?.split('&')?.[0]?.trim() || `View All ${currentRegionName} Venues`}</span>
-            <ChevronRight className="h-3.5 w-3.5" />
-          </Button>
+        <Link
+          href={`/${locale}/venues`}
+          className={cn(
+            buttonVariants({ variant: 'outline', size: 'sm' }),
+            'gap-1.5 text-xs self-start sm:self-auto whitespace-nowrap min-h-[44px] sm:min-h-[36px] font-semibold'
+          )}
+        >
+          <span>{tVen('title')?.split('&')?.[0]?.trim() || `View All ${currentRegionName} Venues`}</span>
+          <ChevronRight className="h-3.5 w-3.5" />
         </Link>
       </div>
 
@@ -175,7 +179,7 @@ export function MajorVenuesUpcomingSection({
 
                             <Link
                               href={`/${locale}/events/${evt.slug}`}
-                              className="block text-xs sm:text-sm font-bold text-foreground group-hover/evt:text-primary transition-colors truncate"
+                              className="block text-xs sm:text-sm font-bold text-foreground group-hover/evt:text-primary transition-colors truncate after:absolute after:inset-0 focus-visible:outline-none"
                               title={evt.title}
                             >
                               {evt.title}
@@ -187,16 +191,12 @@ export function MajorVenuesUpcomingSection({
                             </div>
                           </div>
 
-                          <Link href={`/${locale}/events/${evt.slug}`} className="shrink-0">
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              className="h-10 w-10 sm:h-9 sm:w-9 p-0 rounded-full hover:bg-primary hover:text-primary-foreground transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer border border-border/40 hover:border-primary"
-                            >
-                              <ArrowRight className="h-4 w-4" />
-                              <span className="sr-only">View Event</span>
-                            </Button>
-                          </Link>
+                          <div
+                            aria-hidden="true"
+                            className="h-10 w-10 sm:h-9 sm:w-9 p-0 rounded-full bg-background/50 group-hover/evt:bg-primary group-hover/evt:text-primary-foreground transition-colors min-h-[44px] min-w-[44px] sm:min-h-[36px] sm:min-w-[36px] flex items-center justify-center shrink-0 border border-border/40 group-hover/evt:border-primary pointer-events-none"
+                          >
+                            <ArrowRight className="h-4 w-4" />
+                          </div>
                         </div>
                       );
                     })}

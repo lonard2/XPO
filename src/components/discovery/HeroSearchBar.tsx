@@ -152,10 +152,10 @@ export function HeroSearchBar({
               <button
                 type="button"
                 onClick={() => setQuery('')}
-                className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
+                className="flex items-center justify-center h-8 w-8 min-h-[32px] min-w-[32px] sm:h-7 sm:w-7 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors cursor-pointer"
                 aria-label={tCom('clear') || 'Clear search query'}
               >
-                <X className="h-3.5 w-3.5" />
+                <X className="h-4 w-4" />
               </button>
             )}
 
@@ -188,7 +188,7 @@ export function HeroSearchBar({
             key={tag.label}
             type="button"
             onClick={() => handleTagClick(tag)}
-            className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-muted/60 hover:bg-primary/15 text-muted-foreground hover:text-primary border border-border/60 hover:border-primary/30 transition-all cursor-pointer min-h-[36px]"
+            className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-muted/60 hover:bg-primary/15 text-muted-foreground hover:text-primary border border-border/60 hover:border-primary/30 transition-all cursor-pointer min-h-[44px] sm:min-h-[36px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
             {tag.label}
           </button>

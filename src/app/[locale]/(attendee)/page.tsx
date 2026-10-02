@@ -229,12 +229,12 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         </section>
       )}
 
-      {/* 3. Horizontally Scrollable 15 MICE Event Category Cards */}
+      {/* 3. 15 MICE Event Category Matrix */}
       <section className="container">
         <EventCategoryPills locale={locale} />
       </section>
 
-      {/* 3. Integrated Interactive Event Calendar Guide */}
+      {/* 4. Integrated Interactive Event Calendar Guide */}
       <section className="container">
         <EventCalendarWidget
           events={featuredEvents.map((e) => ({
@@ -256,7 +256,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         />
       </section>
 
-      {/* 4. Featured Trade Expos & Conferences Grid (Widescreen Multi-Column) */}
+      {/* 5. Featured Trade Expos & Conferences Grid (Widescreen Multi-Column) */}
       <section className="container space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-border/80 pb-4">
           <div>
@@ -271,7 +271,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
 
           <Link
             href={`/${locale}/events`}
-            className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'min-h-[36px] gap-1.5 text-xs font-semibold')}
+            className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'min-h-[44px] sm:min-h-[36px] gap-1.5 text-xs font-semibold')}
           >
             <span>{tHome('viewFullSchedule') || 'View Full Schedule'}</span>
             <ArrowRight className="h-3.5 w-3.5" />
@@ -294,14 +294,14 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
             <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
               <Link
                 href={`/${locale}/events`}
-                className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'min-h-[36px] text-xs font-semibold gap-1.5')}
+                className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'min-h-[44px] sm:min-h-[36px] text-xs font-semibold gap-1.5')}
               >
                 <span>{tHome('browseAllRegionsEvents') || tNav('events') || 'Browse All Exhibitions'}</span>
                 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
               <Link
                 href={`/${locale}/venues`}
-                className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'min-h-[36px] text-xs font-semibold gap-1.5')}
+                className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'min-h-[44px] sm:min-h-[36px] text-xs font-semibold gap-1.5')}
               >
                 <Building2 className="h-3.5 w-3.5" />
                 <span>{tNav('venues') || 'Venue Directory'}</span>
@@ -317,7 +317,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         )}
       </section>
 
-      {/* 5. Attendee Experience & Venue Wayfinding Hub (Asymmetric Bento Showcase) */}
+      {/* 6. Attendee Experience & Venue Wayfinding Hub (Asymmetric Bento Showcase) */}
       <section className="container space-y-8">
         <div className="max-w-2xl space-y-2">
           <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground text-balance">
@@ -369,7 +369,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
             <div className="pt-6 border-t border-border/60 mt-6 flex items-center justify-between">
               <Link
                 href={`/${locale}/venues`}
-                className={cn(buttonVariants({ variant: 'primary', size: 'sm' }), 'min-h-[36px] gap-2 font-semibold')}
+                className={cn(buttonVariants({ variant: 'primary', size: 'sm' }), 'min-h-[44px] sm:min-h-[36px] gap-2 font-semibold')}
               >
                 <span>{tHome('attendeeCta') || 'Explore Venues & Halls'}</span>
                 <ArrowRight className="h-3.5 w-3.5" />
@@ -417,7 +417,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
             <div className="pt-6 border-t border-border/60 mt-6">
               <Link
                 href={`/${locale}/my-tickets`}
-                className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'min-h-[36px] w-full gap-2 font-semibold justify-center')}
+                className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'min-h-[44px] sm:min-h-[36px] w-full gap-2 font-semibold justify-center')}
               >
                 <span>{tHome('passHubCta') || 'View My Passes'}</span>
                 <ArrowRight className="h-3.5 w-3.5" />
@@ -471,7 +471,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
           </div>
           <Link
             href={`/${locale}/dashboard`}
-            className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'min-h-[36px] text-xs font-semibold gap-1.5 shrink-0')}
+            className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'min-h-[44px] sm:min-h-[36px] text-xs font-semibold gap-1.5 shrink-0')}
           >
             <span>{tHome('organizerCalloutBtn') || 'Open Organizer Portal'}</span>
             <ArrowRight className="h-3 w-3" />
@@ -493,7 +493,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
           </div>
           <Link
             href={`/${locale}/settings`}
-            className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'min-h-[36px] whitespace-nowrap gap-2 text-xs')}
+            className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'min-h-[44px] sm:min-h-[36px] whitespace-nowrap gap-2 text-xs')}
           >
             <span>{tHome('conciergeBannerBtn') || 'Preferences & Concierge Settings'}</span>
             <ArrowRight className="h-3.5 w-3.5" />
