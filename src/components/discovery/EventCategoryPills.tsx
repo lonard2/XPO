@@ -37,6 +37,7 @@ import { useTranslations } from 'next-intl';
 import {
   ARCHETYPE_LIST,
   ARCHETYPE_METAS,
+  ARCHETYPE_SUBTITLES,
   MICE_INDUSTRY_CLUSTERS,
   type MiceArchetype,
   type MiceIndustryCluster,
@@ -72,6 +73,7 @@ export interface CategoryItem {
   id: MiceArchetype;
   name: string;
   shortName: string;
+  subtitle: string;
   tagline: string;
   ctaLabel: string;
   highlights: string[];
@@ -87,6 +89,7 @@ export const EVENT_CATEGORIES: CategoryItem[] = ARCHETYPE_LIST.map((id) => {
     id,
     name: meta.label,
     shortName: meta.shortName,
+    subtitle: ARCHETYPE_SUBTITLES[id] || meta.tagline,
     tagline: meta.tagline,
     ctaLabel: meta.ctaLabel,
     highlights: meta.highlights,
@@ -157,10 +160,12 @@ export function EventCategoryPills({
     const isActive = activeCategoryId === category.id;
 
     let translatedTitle = category.name;
+    let translatedSubtitle = category.subtitle;
     try {
       if (tArch && typeof tArch.raw === 'function') {
         const obj = tArch.raw(category.id);
         if (obj?.title) translatedTitle = obj.title;
+        if (obj?.subtitle) translatedSubtitle = obj.subtitle;
       }
     } catch {
       // fallback
@@ -169,7 +174,7 @@ export function EventCategoryPills({
     const tileContent = (
       <div
         className={cn(
-          'group relative flex flex-col justify-between p-3.5 sm:p-4 rounded-2xl border transition-all duration-200 text-left h-full min-h-[110px] sm:min-h-[120px] shadow-xs cursor-pointer',
+          'group relative flex flex-col justify-between p-3.5 sm:p-4 rounded-2xl border transition-all duration-200 text-left h-full min-h-[125px] sm:min-h-[135px] shadow-xs cursor-pointer',
           isActive
             ? 'border-primary ring-2 ring-primary/30 bg-primary/5 shadow-sm'
             : 'border-border/80 bg-card hover:border-primary/50 hover:bg-muted/30 hover:shadow-sm'
@@ -196,6 +201,9 @@ export function EventCategoryPills({
           <h3 className="text-xs sm:text-sm font-bold text-foreground group-hover:text-primary transition-colors leading-snug line-clamp-2">
             {translatedTitle}
           </h3>
+          <p className="text-[11px] text-muted-foreground mt-1 line-clamp-1 leading-normal font-normal">
+            {translatedSubtitle}
+          </p>
         </div>
       </div>
     );

@@ -62,6 +62,14 @@ describe('EventCategoryPills', () => {
     expect(arrowIcons.length).toBe(22);
   });
 
+  it('renders descriptive subtitles below category titles', () => {
+    render(<EventCategoryPills locale="en" />);
+
+    expect(screen.getByText('Factory machinery, robotics, and industrial tools')).toBeInTheDocument();
+    expect(screen.getByText('Software development, cloud systems, and AI')).toBeInTheDocument();
+    expect(screen.getByText('Video games, comics, animation, and cosplay')).toBeInTheDocument();
+  });
+
   it('filters displayed categories when a specific cluster tab is clicked', () => {
     render(<EventCategoryPills locale="en" />);
 

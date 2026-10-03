@@ -58,6 +58,7 @@ export interface ArchetypeMeta {
   shortName: string;
   description: string;
   tagline: string;
+  subtitle?: string;
   ctaLabel: string;
   industry: string;
   sampleEventTitle: string;
@@ -383,6 +384,31 @@ export const ARCHETYPE_LIST: MiceArchetype[] = [
 ];
 
 export const ALL_MICE_ARCHETYPES = ARCHETYPE_LIST;
+
+export const ARCHETYPE_SUBTITLES: Record<MiceArchetype, string> = {
+  INDUSTRIAL_B2B: "Factory machinery, robotics, and industrial tools",
+  AUTOMOTIVE_MOBILITY: "Cars, electric vehicles, and transport technology",
+  BUILDING_PROPTECH: "Building materials, construction, and property technology",
+  ENERGY_INFRASTRUCTURE: "Power generation, mining equipment, and renewables",
+  TECH_DEV_SUMMIT: "Software development, cloud systems, and AI",
+  MEDIA_BROADCAST: "Audio-video gear, studio equipment, and broadcasting",
+  EDUCATION_EDTECH: "Universities, student exchange, and learning tools",
+  SUPPLY_CHAIN_LOGISTICS: "Warehousing, freight shipping, and packaging lines",
+  FINANCE_INVESTOR: "Banking, financial technology, and investment firms",
+  FRANCHISE_LICENSING: "Franchise brands, retail concepts, and business licenses",
+  AGRITECH_FOOD: "Farming equipment, crops, and food processing",
+  GOVERNMENT_DIPLOMATIC: "Intergovernmental forums and public policy meetings",
+  AEROSPACE_DEFENSE: "Commercial aviation, defense equipment, and aircraft",
+  MEDICAL_SYMPOSIUM: "Hospital equipment, clinical medicine, and pharmaceuticals",
+  HOSPITALITY_TOURISM: "Hotels, tour operators, and tourism boards",
+  FAITH_PILGRIMAGE_CONGRESS: "Hajj travel services, community gatherings, and halal goods",
+  INCENTIVE_RETREAT: "Company offsites, group travel, and executive retreats",
+  POP_CULTURE_GAMING: "Video games, comics, animation, and cosplay",
+  MUSIC_FESTIVAL: "Live concerts, arena tours, and stage productions",
+  MEGA_EXPO_PAVILION: "Country pavilions, trade fairs, and consumer expos",
+  FASHION_RETAIL: "Clothing, cosmetics, jewelry, and fashion brands",
+  SPORTS_OUTDOOR: "Sporting equipment, gym gear, and outdoor recreation",
+};
 
 export const ARCHETYPE_METAS: Record<MiceArchetype, ArchetypeMeta> = {
   INDUSTRIAL_B2B: {
