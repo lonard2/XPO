@@ -187,9 +187,18 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
       {/* METRIC KPI STAT CARDS */}
       <div className="space-y-2">
         <div className="flex items-center justify-between px-1">
-          <span className="text-xs font-medium text-muted-foreground">
-            Live Metrics • Data as of <span className="tabular-nums">{currentFreshnessTime}</span>
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-medium text-muted-foreground">
+              Live Metrics • Data as of <span className="tabular-nums">{currentFreshnessTime}</span>
+            </span>
+            <Link
+              href={`/${locale}/dashboard`}
+              aria-label="Refresh dashboard metrics"
+              className="inline-flex items-center justify-center text-muted-foreground hover:text-foreground min-h-[44px] min-w-[44px] sm:min-h-[28px] sm:min-w-[28px] p-1 rounded-md transition-colors cursor-pointer"
+            >
+              <RotateCw className="h-3 w-3" />
+            </Link>
+          </div>
           <span className="text-xs text-muted-foreground font-mono tabular-nums">
             {events.length} active {events.length === 1 ? "exhibition" : "exhibitions"}
           </span>

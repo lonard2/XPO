@@ -124,6 +124,21 @@ export function OrganizerEventsRoster({ events, locale }: OrganizerEventsRosterP
     return result;
   }, [events, activeTab, searchQuery]);
 
+  const tabsList: EventOperationalStatus[] = ["ALL", "LIVE", "UPCOMING", "CONCLUDED"];
+
+  const handleTabKeyDown = (e: React.KeyboardEvent, currentTab: EventOperationalStatus) => {
+    const currentIndex = tabsList.indexOf(currentTab);
+    if (e.key === "ArrowRight") {
+      e.preventDefault();
+      const nextTab = tabsList[(currentIndex + 1) % tabsList.length];
+      setActiveTab(nextTab);
+    } else if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      const prevTab = tabsList[(currentIndex - 1 + tabsList.length) % tabsList.length];
+      setActiveTab(prevTab);
+    }
+  };
+
   return (
     <div className="space-y-4">
       {/* Header and Add Action */}
@@ -158,9 +173,11 @@ export function OrganizerEventsRoster({ events, locale }: OrganizerEventsRosterP
             type="button"
             role="tab"
             aria-selected={activeTab === "ALL"}
+            tabIndex={activeTab === "ALL" ? 0 : -1}
             onClick={() => setActiveTab("ALL")}
+            onKeyDown={(e) => handleTabKeyDown(e, "ALL")}
             className={cn(
-              "px-3 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer min-h-[36px] flex items-center gap-1.5",
+              "px-3 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer min-h-[44px] sm:min-h-[36px] flex items-center gap-1.5",
               activeTab === "ALL"
                 ? "bg-background text-foreground shadow-xs border border-border/80"
                 : "text-muted-foreground hover:text-foreground hover:bg-background/50"
@@ -177,9 +194,11 @@ export function OrganizerEventsRoster({ events, locale }: OrganizerEventsRosterP
             type="button"
             role="tab"
             aria-selected={activeTab === "LIVE"}
+            tabIndex={activeTab === "LIVE" ? 0 : -1}
             onClick={() => setActiveTab("LIVE")}
+            onKeyDown={(e) => handleTabKeyDown(e, "LIVE")}
             className={cn(
-              "px-3 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer min-h-[36px] flex items-center gap-1.5",
+              "px-3 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer min-h-[44px] sm:min-h-[36px] flex items-center gap-1.5",
               activeTab === "LIVE"
                 ? "bg-background text-foreground shadow-xs border border-border/80"
                 : "text-muted-foreground hover:text-foreground hover:bg-background/50"
@@ -196,9 +215,11 @@ export function OrganizerEventsRoster({ events, locale }: OrganizerEventsRosterP
             type="button"
             role="tab"
             aria-selected={activeTab === "UPCOMING"}
+            tabIndex={activeTab === "UPCOMING" ? 0 : -1}
             onClick={() => setActiveTab("UPCOMING")}
+            onKeyDown={(e) => handleTabKeyDown(e, "UPCOMING")}
             className={cn(
-              "px-3 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer min-h-[36px] flex items-center gap-1.5",
+              "px-3 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer min-h-[44px] sm:min-h-[36px] flex items-center gap-1.5",
               activeTab === "UPCOMING"
                 ? "bg-background text-foreground shadow-xs border border-border/80"
                 : "text-muted-foreground hover:text-foreground hover:bg-background/50"
@@ -215,9 +236,11 @@ export function OrganizerEventsRoster({ events, locale }: OrganizerEventsRosterP
             type="button"
             role="tab"
             aria-selected={activeTab === "CONCLUDED"}
+            tabIndex={activeTab === "CONCLUDED" ? 0 : -1}
             onClick={() => setActiveTab("CONCLUDED")}
+            onKeyDown={(e) => handleTabKeyDown(e, "CONCLUDED")}
             className={cn(
-              "px-3 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer min-h-[36px] flex items-center gap-1.5",
+              "px-3 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer min-h-[44px] sm:min-h-[36px] flex items-center gap-1.5",
               activeTab === "CONCLUDED"
                 ? "bg-background text-foreground shadow-xs border border-border/80"
                 : "text-muted-foreground hover:text-foreground hover:bg-background/50"
@@ -239,14 +262,14 @@ export function OrganizerEventsRoster({ events, locale }: OrganizerEventsRosterP
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Filter by title, hall, or venue..."
             aria-label="Filter exhibitions by title, hall, or venue"
-            className="pl-8 pr-8 h-9 text-xs"
+            className="pl-8 pr-10 h-9 min-h-[44px] sm:min-h-[36px] text-xs"
           />
           {searchQuery && (
             <button
               type="button"
               onClick={() => setSearchQuery("")}
               aria-label="Clear search query"
-              className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-muted-foreground hover:text-foreground cursor-pointer min-h-[28px] min-w-[28px] flex items-center justify-center"
+              className="absolute right-1 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer min-h-[44px] min-w-[44px] sm:min-h-[32px] sm:min-w-[32px] flex items-center justify-center rounded-md"
             >
               <X className="h-3.5 w-3.5" />
             </button>
@@ -362,7 +385,13 @@ export function OrganizerEventsRoster({ events, locale }: OrganizerEventsRosterP
                     <div className="flex items-center gap-2">
                       <Building2 className="h-3.5 w-3.5 text-primary shrink-0" />
                       <span className="truncate">
-                        {event.venue?.name} {event.venueHall ? `- ${event.venueHall.name}` : ""}
+                        {event.venue?.name ? (
+                          <>
+                            {event.venue.name} {event.venueHall ? `- ${event.venueHall.name}` : ""}
+                          </>
+                        ) : (
+                          "Venue Unassigned"
+                        )}
                       </span>
                     </div>
                   </div>

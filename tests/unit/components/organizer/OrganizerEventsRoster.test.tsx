@@ -95,4 +95,42 @@ describe("OrganizerEventsRoster Component", () => {
       screen.getByLabelText(/view ai analytics reports for manufacturing indonesia 2026/i)
     ).toBeInTheDocument();
   });
+
+  it("supports keyboard arrow navigation across operational status tabs", () => {
+    render(<OrganizerEventsRoster events={mockEvents} locale="en" />);
+
+    const allTab = screen.getByRole("tab", { name: /all/i });
+    allTab.focus();
+
+    // ArrowRight should switch to Live Now
+    fireEvent.keyDown(allTab, { key: "ArrowRight" });
+    expect(screen.getByRole("tab", { name: /live now/i })).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByText("Manufacturing Indonesia 2026")).toBeInTheDocument();
+    expect(screen.queryByText("Asia AI Developer Summit 2027")).not.toBeInTheDocument();
+
+    // ArrowLeft should cycle back to Concluded
+    const liveTab = screen.getByRole("tab", { name: /live now/i });
+    fireEvent.keyDown(liveTab, { key: "ArrowLeft" });
+    expect(screen.getByRole("tab", { name: /all/i })).toHaveAttribute("aria-selected", "true");
+  });
+
+  it("handles unassigned venue gracefully without throwing or leaving empty gaps", () => {
+    const eventWithoutVenue: OrganizerEventItem[] = [
+      {
+        id: "evt-no-venue",
+        slug: "unassigned-expo-2026",
+        title: "Unassigned Expo 2026",
+        description: "Expo pending hall assignment.",
+        archetype: "TECH_DEV_SUMMIT",
+        format: "IN_PERSON",
+        startDate: new Date().toISOString(),
+        endDate: new Date(Date.now() + 86400000).toISOString(),
+        venue: null,
+        venueHall: null,
+      },
+    ];
+
+    render(<OrganizerEventsRoster events={eventWithoutVenue} locale="en" />);
+    expect(screen.getByText("Venue Unassigned")).toBeInTheDocument();
+  });
 });
