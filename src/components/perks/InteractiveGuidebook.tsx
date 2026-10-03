@@ -140,19 +140,19 @@ export function InteractiveGuidebook({
 
       {/* 2. Room Change / Live Alert Banner */}
       {showAlertBanner && (
-        <div className="rounded-xl bg-amber-500/10 border border-amber-500/30 p-3.5 flex items-start justify-between gap-3 text-xs text-amber-500 animate-fade-in">
+        <div className="rounded-xl bg-amber-500/10 border border-amber-500/30 p-3.5 flex items-start justify-between gap-3 text-xs animate-fade-in">
           <div className="flex items-start gap-2.5">
-            <Bell className="h-4 w-4 shrink-0 mt-0.5 text-amber-500" />
+            <Bell className="h-4 w-4 shrink-0 mt-0.5 text-amber-600 dark:text-amber-400" />
             <div>
-              <span className="font-semibold text-amber-400">Live Stage Alert:</span>
-              <p className="text-amber-200/90 mt-0.5">
+              <span className="font-bold text-amber-900 dark:text-amber-300">Live Stage Alert:</span>
+              <p className="text-amber-950 dark:text-amber-200/90 mt-0.5 leading-relaxed">
                 Plenary Keynotes and Opening Ceremonies commence in Main Exhibition Hall A1. VIP delegate seating opens 30 minutes prior.
               </p>
             </div>
           </div>
           <button
             onClick={() => setShowAlertBanner(false)}
-            className="text-amber-400/80 hover:text-amber-300 text-xs shrink-0 cursor-pointer"
+            className="text-amber-800 dark:text-amber-300 hover:text-amber-950 dark:hover:text-amber-100 text-xs font-semibold shrink-0 cursor-pointer p-1 rounded-md hover:bg-amber-500/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
           >
             {tCommon("cancel") || "Dismiss"}
           </button>

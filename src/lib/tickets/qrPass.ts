@@ -1,4 +1,5 @@
 import * as crypto from "crypto";
+import QRCode from "qrcode";
 
 export interface TicketPassPayload {
   bookingId: string;
@@ -124,7 +125,8 @@ export function verifyTicketHash(
 
 /**
  * Generates an SVG XML string representing a high-contrast vector QR Pass code
- * with position detection patterns, pseudo-deterministic data matrix, and security watermarks.
+ * compliant with ISO/IEC 18004 standard (Reed-Solomon Error Correction Level M)
+ * with authentic finder patterns, timing tracks, and verification metadata.
  */
 export function generateSvgQrCode(
   data: string,
@@ -135,80 +137,41 @@ export function generateSvgQrCode(
   const backgroundColor = options.backgroundColor || "#ffffff";
   const hashVal = crypto.createHash("md5").update(data).digest("hex");
 
-  // Generate a deterministic grid of 21x21 data modules based on data hash
-  const gridSize = 21;
-  const moduleSize = (size * 0.8) / gridSize;
-  const offset = size * 0.1;
+  try {
+    const qr = QRCode.create(data, { errorCorrectionLevel: "M" });
+    const moduleCount = qr.modules.size;
+    const margin = 2;
+    const totalGrid = moduleCount + margin * 2;
+    const moduleSize = size / totalGrid;
 
-  const modules: string[] = [];
+    const modules: string[] = [];
 
-  // Corner patterns (top-left, top-right, bottom-left) in 21x21 coordinates:
-  // Top-Left: 0..6, 0..6
-  // Top-Right: 14..20, 0..6
-  // Bottom-Left: 0..6, 14..20
-  const isCornerFinder = (r: number, c: number): boolean => {
-    if (r <= 6 && c <= 6) return true;
-    if (r <= 6 && c >= 14) return true;
-    if (r >= 14 && c <= 6) return true;
-    return false;
-  };
-
-  // Generate data modules
-  for (let r = 0; r < gridSize; r++) {
-    for (let c = 0; c < gridSize; c++) {
-      if (isCornerFinder(r, c)) continue;
-
-      // Deterministic bit derivation from hash & coordinates
-      const bitIndex = (r * gridSize + c) % (hashVal.length * 4);
-      const hexChar = hashVal.charAt(Math.floor(bitIndex / 4));
-      const hexNum = parseInt(hexChar, 16);
-      const isFilled = ((hexNum >> (bitIndex % 4)) & 1) === 1 || (r + c) % 3 === 0;
-
-      if (isFilled) {
-        const x = offset + c * moduleSize;
-        const y = offset + r * moduleSize;
-        modules.push(
-          `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${(moduleSize * 0.95).toFixed(2)}" height="${(moduleSize * 0.95).toFixed(2)}" fill="${primaryColor}" rx="1" />`
-        );
+    for (let r = 0; r < moduleCount; r++) {
+      for (let c = 0; c < moduleCount; c++) {
+        if (qr.modules.get(r, c)) {
+          const x = (c + margin) * moduleSize;
+          const y = (r + margin) * moduleSize;
+          modules.push(
+            `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${moduleSize.toFixed(2)}" height="${moduleSize.toFixed(2)}" fill="${primaryColor}" />`
+          );
+        }
       }
     }
-  }
 
-  // Corner Position Detection Targets (Standard 7x7 module proportions)
-  const renderFinderPattern = (startX: number, startY: number) => {
-    const finderSize = moduleSize * 7;
-    return `
-  <!-- Finder Pattern at (${startX.toFixed(1)}, ${startY.toFixed(1)}) -->
-  <rect x="${startX.toFixed(2)}" y="${startY.toFixed(2)}" width="${finderSize.toFixed(2)}" height="${finderSize.toFixed(2)}" fill="${primaryColor}" rx="${(moduleSize * 0.8).toFixed(1)}" />
-  <rect x="${(startX + moduleSize).toFixed(2)}" y="${(startY + moduleSize).toFixed(2)}" width="${(finderSize - moduleSize * 2).toFixed(2)}" height="${(finderSize - moduleSize * 2).toFixed(2)}" fill="${backgroundColor}" rx="${(moduleSize * 0.5).toFixed(1)}" />
-  <rect x="${(startX + moduleSize * 2).toFixed(2)}" y="${(startY + moduleSize * 2).toFixed(2)}" width="${(finderSize - moduleSize * 4).toFixed(2)}" height="${(finderSize - moduleSize * 4).toFixed(2)}" fill="${primaryColor}" rx="${(moduleSize * 0.3).toFixed(1)}" />`;
-  };
-
-  const tlFinder = renderFinderPattern(offset, offset);
-  const trFinder = renderFinderPattern(offset + moduleSize * 14, offset);
-  const blFinder = renderFinderPattern(offset, offset + moduleSize * 14);
-
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" data-qr-encoded="${data}" data-checksum="${hashVal}">
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" data-qr-encoded="${data}" data-checksum="${hashVal}">
   <rect width="${size}" height="${size}" fill="${backgroundColor}" rx="16" />
-  
-  <!-- QR Corner Position Detection Patterns -->
-  <rect x="${(size * 0.08).toFixed(1)}" y="${(size * 0.08).toFixed(1)}" width="${(size * 0.24).toFixed(1)}" height="${(size * 0.24).toFixed(1)}" fill="${primaryColor}" rx="4" />
-  <rect x="${(size * 0.12).toFixed(1)}" y="${(size * 0.12).toFixed(1)}" width="${(size * 0.16).toFixed(1)}" height="${(size * 0.16).toFixed(1)}" fill="${backgroundColor}" rx="2" />
-  <rect x="${(size * 0.15).toFixed(1)}" y="${(size * 0.15).toFixed(1)}" width="${(size * 0.10).toFixed(1)}" height="${(size * 0.10).toFixed(1)}" fill="${primaryColor}" />
-  
-  <rect x="${(size * 0.68).toFixed(1)}" y="${(size * 0.08).toFixed(1)}" width="${(size * 0.24).toFixed(1)}" height="${(size * 0.24).toFixed(1)}" fill="${primaryColor}" rx="4" />
-  <rect x="${(size * 0.72).toFixed(1)}" y="${(size * 0.12).toFixed(1)}" width="${(size * 0.16).toFixed(1)}" height="${(size * 0.16).toFixed(1)}" fill="${backgroundColor}" rx="2" />
-  <rect x="${(size * 0.75).toFixed(1)}" y="${(size * 0.15).toFixed(1)}" width="${(size * 0.10).toFixed(1)}" height="${(size * 0.10).toFixed(1)}" fill="${primaryColor}" />
-  
-  <rect x="${(size * 0.08).toFixed(1)}" y="${(size * 0.68).toFixed(1)}" width="${(size * 0.24).toFixed(1)}" height="${(size * 0.24).toFixed(1)}" fill="${primaryColor}" rx="4" />
-  <rect x="${(size * 0.12).toFixed(1)}" y="${(size * 0.72).toFixed(1)}" width="${(size * 0.16).toFixed(1)}" height="${(size * 0.16).toFixed(1)}" fill="${backgroundColor}" rx="2" />
-  <rect x="${(size * 0.15).toFixed(1)}" y="${(size * 0.75).toFixed(1)}" width="${(size * 0.10).toFixed(1)}" height="${(size * 0.10).toFixed(1)}" fill="${primaryColor}" />
 
-  <!-- Encoded Data Blocks Matrix -->
+  <!-- ISO/IEC 18004 Standard QR Matrix Modules -->
   ${modules.join("\n  ")}
 
   <!-- Center Verification Holographic Stamp -->
-  <circle cx="${(size / 2).toFixed(1)}" cy="${(size / 2).toFixed(1)}" r="${(size * 0.08).toFixed(1)}" fill="${backgroundColor}" stroke="${primaryColor}" stroke-width="2" />
-  <circle cx="${(size / 2).toFixed(1)}" cy="${(size / 2).toFixed(1)}" r="${(size * 0.05).toFixed(1)}" fill="${primaryColor}" opacity="0.85" />
+  <circle cx="${(size / 2).toFixed(1)}" cy="${(size / 2).toFixed(1)}" r="${(size * 0.05).toFixed(1)}" fill="${backgroundColor}" stroke="${primaryColor}" stroke-width="1.5" />
+  <circle cx="${(size / 2).toFixed(1)}" cy="${(size / 2).toFixed(1)}" r="${(size * 0.03).toFixed(1)}" fill="${primaryColor}" opacity="0.9" />
 </svg>`;
+  } catch (err) {
+    console.error("Failed to generate standard QR code:", err);
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" data-qr-encoded="${data}" data-checksum="${hashVal}">
+  <rect width="${size}" height="${size}" fill="${backgroundColor}" rx="16" />
+</svg>`;
+  }
 }
