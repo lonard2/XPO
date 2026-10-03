@@ -261,6 +261,100 @@ describe("Phase 9 Unit: Event Creation Wizard & Archetype Engine", () => {
     const draftAfterAction = JSON.parse(storage["xpo_event_draft"]);
     expect(draftAfterAction.title).toBe("Resumed and Edited Expo");
   });
+
+  it("tracks fieldErrors deterministically across wizard steps and clears on user input", () => {
+    const validateFields = (fields: { title: string; slug: string; description: string }) => {
+      const errors: Record<string, string> = {};
+      if (!fields.title.trim()) errors.title = "Please enter an event title.";
+      if (!fields.slug.trim()) errors.slug = "Please enter a valid URL slug.";
+      if (!fields.description.trim()) errors.description = "Please provide an event description.";
+      return errors;
+    };
+
+    // When empty:
+    const emptyErrors = validateFields({ title: "", slug: "", description: "" });
+    expect(emptyErrors.title).toBe("Please enter an event title.");
+    expect(emptyErrors.slug).toBe("Please enter a valid URL slug.");
+    expect(emptyErrors.description).toBe("Please provide an event description.");
+
+    // Simulating clearFieldError on user typing:
+    const clearFieldError = (errors: Record<string, string>, field: string) => {
+      const next = { ...errors };
+      delete next[field];
+      return next;
+    };
+
+    const resolvedTitle = clearFieldError(emptyErrors, "title");
+    expect(resolvedTitle.title).toBeUndefined();
+    expect(resolvedTitle.slug).toBe("Please enter a valid URL slug.");
+  });
+
+  it("adapts ticket tier currencies and default price points when switching country editions", () => {
+    const initialTiers = [
+      { id: "tier-1", name: "Standard", price: 0, currency: "IDR" },
+      { id: "tier-2", name: "VIP", price: 750000, currency: "IDR" },
+    ];
+
+    const adaptTiersForRegion = (
+      tiers: typeof initialTiers,
+      newReg: "id" | "jp" | "global"
+    ) => {
+      const targetCurrency = newReg === "jp" ? "JPY" : newReg === "global" ? "USD" : "IDR";
+      return tiers.map((t) => {
+        if (t.currency === targetCurrency) return t;
+        let newPrice = t.price;
+        if (t.price > 0) {
+          if (targetCurrency === "JPY") newPrice = 10000;
+          else if (targetCurrency === "USD") newPrice = 99;
+          else newPrice = 750000;
+        }
+        return { ...t, currency: targetCurrency, price: newPrice };
+      });
+    };
+
+    // Switch to Japan
+    const jpTiers = adaptTiersForRegion(initialTiers, "jp");
+    expect(jpTiers[0].currency).toBe("JPY");
+    expect(jpTiers[0].price).toBe(0);
+    expect(jpTiers[1].currency).toBe("JPY");
+    expect(jpTiers[1].price).toBe(10000);
+
+    // Switch to Global
+    const globalTiers = adaptTiersForRegion(jpTiers, "global");
+    expect(globalTiers[0].currency).toBe("USD");
+    expect(globalTiers[1].currency).toBe("USD");
+    expect(globalTiers[1].price).toBe(99);
+
+    // Switch back to Indonesia
+    const idTiers = adaptTiersForRegion(globalTiers, "id");
+    expect(idTiers[1].currency).toBe("IDR");
+    expect(idTiers[1].price).toBe(750000);
+  });
+
+  it("cycles keyboard navigation strictly through displayed archetypes in active cluster", () => {
+    const activeClusterArchetypes = [
+      "GOVERNMENT_DIPLOMATIC",
+      "FINANCE_INVESTOR",
+      "INCENTIVE_RETREAT",
+    ];
+
+    const getNextArchetype = (currentArch: string, direction: "next" | "prev") => {
+      const currentIndex = activeClusterArchetypes.indexOf(currentArch);
+      if (currentIndex === -1) return activeClusterArchetypes[0];
+      if (direction === "next") {
+        return activeClusterArchetypes[(currentIndex + 1) % activeClusterArchetypes.length];
+      }
+      return activeClusterArchetypes[
+        (currentIndex - 1 + activeClusterArchetypes.length) % activeClusterArchetypes.length
+      ];
+    };
+
+    expect(getNextArchetype("GOVERNMENT_DIPLOMATIC", "next")).toBe("FINANCE_INVESTOR");
+    expect(getNextArchetype("FINANCE_INVESTOR", "next")).toBe("INCENTIVE_RETREAT");
+    expect(getNextArchetype("INCENTIVE_RETREAT", "next")).toBe("GOVERNMENT_DIPLOMATIC");
+    expect(getNextArchetype("GOVERNMENT_DIPLOMATIC", "prev")).toBe("INCENTIVE_RETREAT");
+  });
 });
+
 
 

@@ -259,10 +259,20 @@ export default function NewEventWizardPage() {
   const [currentStep, setCurrentStep] = React.useState<number>(1);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
+  const [fieldErrors, setFieldErrors] = React.useState<Record<string, string>>({});
   const [hasDraftAvailable, setHasDraftAvailable] = React.useState(false);
   const [isSlugDirty, setIsSlugDirty] = React.useState(false);
   const [selectedCluster, setSelectedCluster] = React.useState<string>("ALL");
   const isInitializedRef = React.useRef(false);
+
+  const clearFieldError = React.useCallback((field: string) => {
+    setFieldErrors((prev) => {
+      if (!prev[field]) return prev;
+      const next = { ...prev };
+      delete next[field];
+      return next;
+    });
+  }, []);
 
   // Step 1: General Info & Archetype
   const [title, setTitle] = React.useState("Indonesia Green Energy & Battery Expo 2027");
@@ -292,8 +302,12 @@ export default function NewEventWizardPage() {
     setErrorMessage("");
   }, []);
 
-  // Step 2: Venue & Hall
-  const [regionId, setRegionId] = React.useState("id");
+  // Step 2: Venue & Hall (Regional defaults derived from route locale)
+  const initialRegion = React.useMemo(() => {
+    return locale === "ja" ? "jp" : locale === "global" ? "global" : "id";
+  }, [locale]);
+
+  const [regionId, setRegionId] = React.useState(initialRegion);
   const [venueId, setVenueId] = React.useState("");
   const [venueHallId, setVenueHallId] = React.useState("");
   const [venueHallIds, setVenueHallIds] = React.useState<string[]>([]);
@@ -302,20 +316,23 @@ export default function NewEventWizardPage() {
   const [endDate, setEndDate] = React.useState("2027-04-17");
 
   // Step 3: Ticket Tiers
+  const defaultCurrency = initialRegion === "jp" ? "JPY" : initialRegion === "global" ? "USD" : "IDR";
+  const defaultPaidPrice = initialRegion === "jp" ? 10000 : initialRegion === "global" ? 99 : 750000;
+
   const [ticketTiers, setTicketTiers] = React.useState<TicketTierDraft[]>([
     {
       id: "tier-1",
       name: "Standard Trade Visitor Pass",
       price: 0,
-      currency: "IDR",
+      currency: defaultCurrency,
       capacity: 3500,
       benefits: "Exhibition Floor Access, Daily Open Keynotes, Digital Guidebook",
     },
     {
       id: "tier-2",
       name: "VIP Buyer & Delegate Pass",
-      price: 750000,
-      currency: "IDR",
+      price: defaultPaidPrice,
+      currency: defaultCurrency,
       capacity: 400,
       benefits: "Fast-Track QR Gate, VIP Procurement Lounge, B2B Matchmaking App, Speaker Slide Downloads",
     },
@@ -587,6 +604,7 @@ export default function NewEventWizardPage() {
 
   const handleRegionChange = (newReg: string) => {
     setRegionId(newReg);
+    clearFieldError("venueId");
     const matching = venuesList.filter((v) => !v.regionId || v.regionId.toLowerCase() === newReg.toLowerCase());
     if (matching.length > 0) {
       setVenueId(matching[0].id);
@@ -598,6 +616,25 @@ export default function NewEventWizardPage() {
       setVenueHallIds([]);
       setVenueHallId("");
     }
+
+    // Adapt ticket tier currencies dynamically to match selected country edition
+    const targetCurrency = newReg === "jp" ? "JPY" : newReg === "global" ? "USD" : "IDR";
+    setTicketTiers((prev) =>
+      prev.map((t) => {
+        if (t.currency === targetCurrency) return t;
+        let newPrice = t.price;
+        if (t.price > 0) {
+          if (targetCurrency === "JPY") {
+            newPrice = 10000;
+          } else if (targetCurrency === "USD") {
+            newPrice = 99;
+          } else {
+            newPrice = 750000;
+          }
+        }
+        return { ...t, currency: targetCurrency, price: newPrice };
+      })
+    );
   };
 
   const handleToggleHall = (hallId: string) => {
@@ -656,74 +693,78 @@ export default function NewEventWizardPage() {
   // Validation before advancing
   const validateStep = (step: number): boolean => {
     setErrorMessage("");
+    const errors: Record<string, string> = {};
+
     if (step === 1) {
       if (!title.trim()) {
-        setErrorMessage("Please enter an event title.");
-        return false;
+        errors.title = "Please enter an event title.";
       }
       if (!slug.trim()) {
-        setErrorMessage("Please enter a valid URL slug.");
-        return false;
+        errors.slug = "Please enter a valid URL slug.";
       }
       if (!description.trim()) {
-        setErrorMessage("Please provide an event description.");
-        return false;
+        errors.description = "Please provide an event description.";
       }
-      return true;
-    }
-    if (step === 2) {
+    } else if (step === 2) {
       if (!venueId) {
-        setErrorMessage("Please select a hosting venue.");
-        return false;
+        errors.venueId = "Please select a hosting venue.";
       }
-      if (!startDate || !endDate) {
-        setErrorMessage("Please specify start and end dates.");
-        return false;
+      if (!startDate) {
+        errors.startDate = "Please specify an opening date.";
       }
-      const start = new Date(startDate);
-      const end = new Date(endDate);
-      if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-        setErrorMessage("Please specify valid start and end dates.");
-        return false;
+      if (!endDate) {
+        errors.endDate = "Please specify a closing date.";
       }
-      if (end < start) {
-        setErrorMessage("End date cannot be prior to start date.");
-        return false;
+      if (startDate && endDate) {
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+          errors.startDate = "Please specify valid start and end dates.";
+        } else if (end < start) {
+          errors.endDate = "Closing date cannot be prior to opening date.";
+        }
       }
-      return true;
-    }
-    if (step === 3) {
+    } else if (step === 3) {
       if (ticketTiers.length === 0) {
-        setErrorMessage("Please configure at least one ticket pass tier.");
-        return false;
+        errors.tiers = "Please configure at least one ticket pass tier.";
       }
       for (const t of ticketTiers) {
         if (!t.name.trim()) {
-          setErrorMessage("All ticket tiers must have a descriptive title.");
-          return false;
+          errors[`tier_name_${t.id}`] = "All ticket tiers must have a descriptive title.";
         }
         if (!t.capacity || isNaN(Number(t.capacity)) || Number(t.capacity) <= 0) {
-          setErrorMessage("Ticket tier capacities must be a positive integer.");
-          return false;
+          errors[`tier_capacity_${t.id}`] = "Ticket tier capacities must be a positive integer.";
         }
         if (isNaN(Number(t.price)) || Number(t.price) < 0) {
-          setErrorMessage("Ticket tier price cannot be negative.");
-          return false;
+          errors[`tier_price_${t.id}`] = "Ticket tier price cannot be negative.";
         }
       }
-      return true;
     }
+
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      const firstError = Object.values(errors)[0];
+      setErrorMessage(firstError);
+      if (typeof window !== "undefined") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      return false;
+    }
+
+    setFieldErrors({});
     return true;
   };
 
   const nextStep = () => {
     if (validateStep(currentStep)) {
+      setFieldErrors({});
       setCurrentStep((prev) => Math.min(prev + 1, 4));
     }
   };
 
   const prevStep = () => {
     setErrorMessage("");
+    setFieldErrors({});
     setCurrentStep((prev) => Math.max(prev - 1, 1));
   };
 
@@ -1024,7 +1065,12 @@ export default function NewEventWizardPage() {
                 label={tOrg("wizardEventTitle") || "Exhibition Title"}
                 placeholder="e.g. Indonesia Green Energy & Battery Expo 2027"
                 value={title}
-                onChange={(e) => handleTitleChange(e.target.value)}
+                onChange={(e) => {
+                  handleTitleChange(e.target.value);
+                  clearFieldError("title");
+                }}
+                error={fieldErrors.title}
+                aria-invalid={!!fieldErrors.title}
                 required
               />
 
@@ -1038,7 +1084,10 @@ export default function NewEventWizardPage() {
                     onChange={(e) => {
                       setIsSlugDirty(true);
                       setSlug(e.target.value);
+                      clearFieldError("slug");
                     }}
+                    error={fieldErrors.slug}
+                    aria-invalid={!!fieldErrors.slug}
                     helperText={tOrg("wizardSlugHelper") || "Unique public URL path for attendee exploration."}
                     required
                   />
@@ -1064,11 +1113,23 @@ export default function NewEventWizardPage() {
                 <textarea
                   id="wizard-description"
                   rows={3}
-                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-xs ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className={cn(
+                    "w-full rounded-md border bg-background px-3 py-2 text-xs ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors",
+                    fieldErrors.description
+                      ? "border-destructive focus-visible:ring-destructive"
+                      : "border-input"
+                  )}
+                  aria-invalid={!!fieldErrors.description}
                   value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  onChange={(e) => {
+                    setDescription(e.target.value);
+                    clearFieldError("description");
+                  }}
                   placeholder={tOrg("wizardDescPlaceholder") || "Provide comprehensive details about the scheduled convention..."}
                 />
+                {fieldErrors.description && (
+                  <p className="text-xs text-destructive mt-1">{fieldErrors.description}</p>
+                )}
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-border/50">
@@ -1183,13 +1244,13 @@ export default function NewEventWizardPage() {
                         handleArchetypeSelect(arch);
                       } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
                         e.preventDefault();
-                        const currentIndex = ARCHETYPE_LIST.indexOf(arch);
-                        const nextArch = ARCHETYPE_LIST[(currentIndex + 1) % ARCHETYPE_LIST.length];
+                        const currentIndex = displayedArchetypes.indexOf(arch);
+                        const nextArch = displayedArchetypes[(currentIndex + 1) % displayedArchetypes.length];
                         handleArchetypeSelect(nextArch);
                       } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
                         e.preventDefault();
-                        const currentIndex = ARCHETYPE_LIST.indexOf(arch);
-                        const prevArch = ARCHETYPE_LIST[(currentIndex - 1 + ARCHETYPE_LIST.length) % ARCHETYPE_LIST.length];
+                        const currentIndex = displayedArchetypes.indexOf(arch);
+                        const prevArch = displayedArchetypes[(currentIndex - 1 + displayedArchetypes.length) % displayedArchetypes.length];
                         handleArchetypeSelect(prevArch);
                       }
                     }}
@@ -1226,9 +1287,9 @@ export default function NewEventWizardPage() {
                         )}
                       </div>
 
-                      <h3 className="text-xs sm:text-sm font-bold text-foreground leading-snug line-clamp-1">
+                      <span className="block text-xs sm:text-sm font-bold text-foreground leading-snug line-clamp-1">
                         {displayName}
-                      </h3>
+                      </span>
                       <p className="text-[11px] text-muted-foreground mt-1 line-clamp-2 leading-relaxed">
                         {subtitle}
                       </p>
@@ -1352,10 +1413,15 @@ export default function NewEventWizardPage() {
                 </label>
                 <select
                   id="wizard-venue-select"
-                  className="w-full h-11 rounded-md border border-input bg-background px-3 text-xs ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className={cn(
+                    "w-full h-11 rounded-md border bg-background px-3 text-xs ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors",
+                    fieldErrors.venueId ? "border-destructive focus-visible:ring-destructive" : "border-input"
+                  )}
+                  aria-invalid={!!fieldErrors.venueId}
                   value={venueId}
                   onChange={(e) => {
                     setVenueId(e.target.value);
+                    clearFieldError("venueId");
                     const v = venuesList.find((ven) => ven.id === e.target.value);
                     const initialHalls = v?.halls?.[0]?.id ? [v.halls[0].id] : [];
                     setVenueHallIds(initialHalls);
@@ -1368,6 +1434,9 @@ export default function NewEventWizardPage() {
                     </option>
                   ))}
                 </select>
+                {fieldErrors.venueId && (
+                  <p className="text-xs text-destructive mt-1">{fieldErrors.venueId}</p>
+                )}
               </div>
 
               <div>
@@ -1487,7 +1556,12 @@ export default function NewEventWizardPage() {
                   label={tOrg("wizardStartDate") || "Opening Date"}
                   type="date"
                   value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
+                  onChange={(e) => {
+                    setStartDate(e.target.value);
+                    clearFieldError("startDate");
+                  }}
+                  error={fieldErrors.startDate}
+                  aria-invalid={!!fieldErrors.startDate}
                   required
                 />
                 <Input
@@ -1495,7 +1569,12 @@ export default function NewEventWizardPage() {
                   label={tOrg("wizardEndDate") || "Closing Date"}
                   type="date"
                   value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
+                  onChange={(e) => {
+                    setEndDate(e.target.value);
+                    clearFieldError("endDate");
+                  }}
+                  error={fieldErrors.endDate}
+                  aria-invalid={!!fieldErrors.endDate}
                   required
                 />
               </div>
@@ -1549,7 +1628,7 @@ export default function NewEventWizardPage() {
                 };
                 setTicketTiers([...ticketTiers, freeTier]);
               }}
-              className="text-xs h-8 px-3 cursor-pointer bg-background"
+              className="text-xs min-h-[44px] sm:min-h-[36px] px-3.5 cursor-pointer bg-background"
             >
               + Free Trade Pass
             </Button>
@@ -1568,7 +1647,7 @@ export default function NewEventWizardPage() {
                 };
                 setTicketTiers([...ticketTiers, vipTier]);
               }}
-              className="text-xs h-8 px-3 cursor-pointer bg-background"
+              className="text-xs min-h-[44px] sm:min-h-[36px] px-3.5 cursor-pointer bg-background"
             >
               + VIP Buyer Pass
             </Button>
@@ -1587,7 +1666,7 @@ export default function NewEventWizardPage() {
                 };
                 setTicketTiers([...ticketTiers, allAccessTier]);
               }}
-              className="text-xs h-8 px-3 cursor-pointer bg-background"
+              className="text-xs min-h-[44px] sm:min-h-[36px] px-3.5 cursor-pointer bg-background"
             >
               + All-Access Pass
             </Button>
@@ -1653,6 +1732,12 @@ export default function NewEventWizardPage() {
           )}
 
           {/* Ticket Pass Cards */}
+          {fieldErrors.tiers && (
+            <div role="alert" className="p-3 bg-destructive/10 border border-destructive/30 rounded-xl text-xs text-destructive font-semibold">
+              {fieldErrors.tiers}
+            </div>
+          )}
+
           <div aria-live="polite" className="space-y-4">
             {ticketTiers.map((tier, idx) => (
               <Card key={tier.id} className="p-5 border-border bg-card space-y-4 shadow-xs">
@@ -1684,7 +1769,12 @@ export default function NewEventWizardPage() {
                       label={tOrg("wizardTierName") || "Pass Tier Name"}
                       placeholder="e.g. Standard Trade Visitor Pass"
                       value={tier.name}
-                      onChange={(e) => handleUpdateTier(tier.id, "name", e.target.value)}
+                      onChange={(e) => {
+                        handleUpdateTier(tier.id, "name", e.target.value);
+                        clearFieldError(`tier_name_${tier.id}`);
+                      }}
+                      error={fieldErrors[`tier_name_${tier.id}`]}
+                      aria-invalid={!!fieldErrors[`tier_name_${tier.id}`]}
                       required
                     />
                   </div>
@@ -1695,7 +1785,12 @@ export default function NewEventWizardPage() {
                       type="number"
                       placeholder="500"
                       value={tier.capacity}
-                      onChange={(e) => handleUpdateTier(tier.id, "capacity", Number(e.target.value))}
+                      onChange={(e) => {
+                        handleUpdateTier(tier.id, "capacity", Number(e.target.value));
+                        clearFieldError(`tier_capacity_${tier.id}`);
+                      }}
+                      error={fieldErrors[`tier_capacity_${tier.id}`]}
+                      aria-invalid={!!fieldErrors[`tier_capacity_${tier.id}`]}
                       required
                     />
                   </div>
@@ -1709,7 +1804,12 @@ export default function NewEventWizardPage() {
                       type="number"
                       placeholder="0"
                       value={tier.price}
-                      onChange={(e) => handleUpdateTier(tier.id, "price", Number(e.target.value))}
+                      onChange={(e) => {
+                        handleUpdateTier(tier.id, "price", Number(e.target.value));
+                        clearFieldError(`tier_price_${tier.id}`);
+                      }}
+                      error={fieldErrors[`tier_price_${tier.id}`]}
+                      aria-invalid={!!fieldErrors[`tier_price_${tier.id}`]}
                     />
                   </div>
                   <div>
