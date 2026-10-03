@@ -278,142 +278,92 @@ export function EventCategoryPills({
         </Link>
       </div>
 
-      {/* Segmented Cluster Tabs (Horizontal Scrollable Thumb Zone on Mobile) */}
-      <div className="space-y-2">
-        <div className="flex items-center justify-between sm:hidden">
-          <span className="text-xs font-semibold text-muted-foreground">
-            Industry Clusters:
-          </span>
-          {selectedCluster !== 'all' && (
-            <button
-              type="button"
-              onClick={() => setSelectedCluster('all')}
-              className="text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1 cursor-pointer min-h-[36px]"
-            >
-              <RotateCcw className="h-3 w-3" />
-              <span>Show All (22)</span>
-            </button>
+      {/* Segmented Cluster Tabs (Spacious, Touch-Friendly Thumb Zone on Mobile and Tablet) */}
+      <div
+        role="tablist"
+        aria-label="Filter MICE categories by industry cluster"
+        onKeyDown={handleTabKeyDown}
+        className="flex items-center gap-2 sm:gap-2.5 overflow-x-auto no-scrollbar py-2 px-0.5"
+      >
+        <button
+          ref={(el) => {
+            tabRefs.current[0] = el;
+          }}
+          id="cluster-tab-all"
+          type="button"
+          role="tab"
+          aria-selected={selectedCluster === 'all'}
+          aria-controls="cluster-panel-all"
+          tabIndex={selectedCluster === 'all' ? 0 : -1}
+          onClick={() => setSelectedCluster('all')}
+          className={cn(
+            'inline-flex items-center shrink-0 min-h-[44px] px-4 py-2.5 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap cursor-pointer transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-xs',
+            selectedCluster === 'all'
+              ? 'bg-primary text-primary-foreground shadow-sm'
+              : 'bg-card border border-border/80 text-muted-foreground hover:text-foreground hover:bg-muted/60'
           )}
-        </div>
-
-        <div
-          role="tablist"
-          aria-label="Filter MICE categories by industry cluster"
-          onKeyDown={handleTabKeyDown}
-          className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1"
         >
-          <button
-            ref={(el) => {
-              tabRefs.current[0] = el;
-            }}
-            id="cluster-tab-all"
-            type="button"
-            role="tab"
-            aria-selected={selectedCluster === 'all'}
-            aria-controls="cluster-panel-all"
-            tabIndex={selectedCluster === 'all' ? 0 : -1}
-            onClick={() => setSelectedCluster('all')}
+          <span>All Categories</span>
+          <span
             className={cn(
-              'min-h-[44px] min-w-[44px] px-3.5 py-2.5 rounded-xl text-xs whitespace-nowrap cursor-pointer transition-all flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+              'ml-2 inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full text-[11px] font-bold transition-colors',
               selectedCluster === 'all'
-                ? 'bg-primary text-primary-foreground font-bold shadow-xs'
-                : 'bg-card border border-border/80 text-muted-foreground hover:text-foreground hover:bg-muted/50 font-medium'
+                ? 'bg-primary-foreground/20 text-primary-foreground'
+                : 'bg-muted text-muted-foreground'
             )}
           >
-            <span>All Categories</span>
-            <span
+            22
+          </span>
+        </button>
+
+        {MICE_INDUSTRY_CLUSTERS.map((cluster, idx) => {
+          const isSelected = selectedCluster === cluster.id;
+          return (
+            <button
+              key={cluster.id}
+              ref={(el) => {
+                tabRefs.current[idx + 1] = el;
+              }}
+              id={`cluster-tab-${cluster.id}`}
+              type="button"
+              role="tab"
+              aria-selected={isSelected}
+              aria-controls={`cluster-panel-${cluster.id}`}
+              tabIndex={isSelected ? 0 : -1}
+              onClick={() => setSelectedCluster(cluster.id)}
               className={cn(
-                'text-[11px] px-1.5 py-0.2 rounded-full font-bold',
-                selectedCluster === 'all'
-                  ? 'bg-primary-foreground/20 text-primary-foreground'
-                  : 'bg-muted text-muted-foreground'
+                'inline-flex items-center shrink-0 min-h-[44px] px-4 py-2.5 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap cursor-pointer transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-xs',
+                isSelected
+                  ? 'bg-primary text-primary-foreground shadow-sm'
+                  : 'bg-card border border-border/80 text-muted-foreground hover:text-foreground hover:bg-muted/60'
               )}
             >
-              22
-            </span>
-          </button>
-
-          {MICE_INDUSTRY_CLUSTERS.map((cluster, idx) => {
-            const isSelected = selectedCluster === cluster.id;
-            return (
-              <button
-                key={cluster.id}
-                ref={(el) => {
-                  tabRefs.current[idx + 1] = el;
-                }}
-                id={`cluster-tab-${cluster.id}`}
-                type="button"
-                role="tab"
-                aria-selected={isSelected}
-                aria-controls={`cluster-panel-${cluster.id}`}
-                tabIndex={isSelected ? 0 : -1}
-                onClick={() => setSelectedCluster(cluster.id)}
+              <span>{cluster.shortLabel}</span>
+              <span
                 className={cn(
-                  'min-h-[44px] min-w-[44px] px-3.5 py-2.5 rounded-xl text-xs whitespace-nowrap cursor-pointer transition-all flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+                  'ml-2 inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full text-[11px] font-bold transition-colors',
                   isSelected
-                    ? 'bg-primary text-primary-foreground font-bold shadow-xs'
-                    : 'bg-card border border-border/80 text-muted-foreground hover:text-foreground hover:bg-muted/50 font-medium'
+                    ? 'bg-primary-foreground/20 text-primary-foreground'
+                    : 'bg-muted text-muted-foreground'
                 )}
               >
-                <span>{cluster.shortLabel}</span>
-                <span
-                  className={cn(
-                    'text-[11px] px-1.5 py-0.2 rounded-full font-bold',
-                    isSelected
-                      ? 'bg-primary-foreground/20 text-primary-foreground'
-                      : 'bg-muted text-muted-foreground'
-                  )}
-                >
-                  {cluster.archetypes.length}
-                </span>
-              </button>
-            );
-          })}
-        </div>
+                {cluster.archetypes.length}
+              </span>
+            </button>
+          );
+        })}
       </div>
 
-      {/* Categories View Engine: Balanced Cluster Groups */}
+      {/* Categories View Engine: Compact Unified Grid or Focused Cluster */}
       {selectedCluster === 'all' ? (
         <div
           id="cluster-panel-all"
           role="tabpanel"
           aria-labelledby="cluster-tab-all"
           tabIndex={0}
-          className="space-y-6 sm:space-y-8 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/40 rounded-2xl"
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-3.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/40 rounded-2xl"
         >
-          {MICE_INDUSTRY_CLUSTERS.map((cluster) => {
-            const items = cluster.archetypes
-              .map((arch) => CATEGORY_MAP[arch])
-              .filter(Boolean);
-
-            return (
-              <div key={cluster.id} className="space-y-3">
-                <div className="flex items-center justify-between border-b border-border/60 pb-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs sm:text-sm font-bold text-foreground">
-                      {cluster.label}
-                    </span>
-                    <span className="text-[11px] font-semibold text-muted-foreground px-2 py-0.5 rounded-full bg-muted border border-border/40">
-                      {items.length} Verticals
-                    </span>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={() => setSelectedCluster(cluster.id)}
-                    className="text-xs font-semibold text-primary hover:underline cursor-pointer min-h-[36px] px-2 flex items-center gap-1"
-                  >
-                    <span>Focus Cluster</span>
-                    <ChevronRight className="h-3 w-3" />
-                  </button>
-                </div>
-
-                <div className={getClusterGridClass(items.length)}>
-                  {items.map((category) => renderCategoryTile(category))}
-                </div>
-              </div>
-            );
-          })}
+          {EVENT_CATEGORIES.map((category) => renderCategoryTile(category))}
         </div>
       ) : (
         activeClusterObj && (
@@ -424,20 +374,25 @@ export function EventCategoryPills({
             tabIndex={0}
             className="space-y-4 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/40 rounded-2xl"
           >
-            <div className="flex items-center justify-between bg-muted/40 border border-border/60 p-3 sm:p-4 rounded-xl">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-muted/40 border border-border/60 p-3.5 sm:p-4 rounded-xl">
               <div>
-                <h3 className="text-sm sm:text-base font-bold text-foreground">
-                  {activeClusterObj.label}
-                </h3>
-                <p className="text-xs text-muted-foreground">
-                  Displaying all {activeClusterObj.archetypes.length} specialized archetypes in this sector.
+                <div className="flex items-center gap-2">
+                  <h3 className="text-sm sm:text-base font-bold text-foreground">
+                    {activeClusterObj.label}
+                  </h3>
+                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-primary/10 text-primary">
+                    {activeClusterObj.archetypes.length} Verticals
+                  </span>
+                </div>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Displaying specialized MICE categories in this sector.
                 </p>
               </div>
 
               <button
                 type="button"
                 onClick={() => setSelectedCluster('all')}
-                className="text-xs font-semibold text-primary hover:underline cursor-pointer min-h-[44px] px-3 py-2 flex items-center gap-1.5 rounded-lg hover:bg-primary/10 transition-colors"
+                className="text-xs font-semibold text-primary hover:underline cursor-pointer min-h-[44px] px-3 py-2 flex items-center gap-1.5 rounded-lg hover:bg-primary/10 transition-colors self-start sm:self-auto"
               >
                 <RotateCcw className="h-3.5 w-3.5" />
                 <span>Show All (22)</span>

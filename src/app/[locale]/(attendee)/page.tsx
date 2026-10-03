@@ -226,34 +226,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         </section>
       )}
 
-      {/* 3. 22 MICE Event Category Matrix */}
-      <section className="container">
-        <EventCategoryPills locale={locale} />
-      </section>
-
-      {/* 4. Integrated Interactive Event Calendar Guide */}
-      <section className="container">
-        <EventCalendarWidget
-          events={featuredEvents.map((e) => ({
-            id: e.id,
-            title: e.title,
-            slug: e.slug,
-            archetype: e.archetype,
-            startDate: e.startDate,
-            endDate: e.endDate,
-            venueName: e.venue?.name || 'Grand Convention Hall',
-            venueHallName: e.venueHall?.name || null,
-            cityName: e.venue?.city || 'Jakarta',
-            regionCode: activeRegionCode,
-            lowestPrice: e.ticketTiers?.[0]?.price ?? 0,
-            currency: e.ticketTiers?.[0]?.currency || 'IDR',
-          }))}
-          locale={locale}
-          regionCode={activeRegionCode}
-        />
-      </section>
-
-      {/* 5. Featured Trade Expos & Conferences Grid (Widescreen Multi-Column) */}
+      {/* 3. Featured Trade Expos & Conferences Grid (Widescreen Multi-Column) */}
       <section className="container space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-border/80 pb-4">
           <div>
@@ -312,6 +285,33 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
             ))}
           </div>
         )}
+      </section>
+
+      {/* 4. Integrated Interactive Event Calendar Guide */}
+      <section className="container">
+        <EventCalendarWidget
+          events={featuredEvents.map((e) => ({
+            id: e.id,
+            title: e.title,
+            slug: e.slug,
+            archetype: e.archetype,
+            startDate: e.startDate,
+            endDate: e.endDate,
+            venueName: e.venue?.name || 'Grand Convention Hall',
+            venueHallName: e.venueHall?.name || null,
+            cityName: e.venue?.city || 'Jakarta',
+            regionCode: activeRegionCode,
+            lowestPrice: e.ticketTiers?.[0]?.price ?? 0,
+            currency: e.ticketTiers?.[0]?.currency || 'IDR',
+          }))}
+          locale={locale}
+          regionCode={activeRegionCode}
+        />
+      </section>
+
+      {/* 5. 22 MICE Event Category Matrix */}
+      <section className="container">
+        <EventCategoryPills locale={locale} />
       </section>
 
       {/* 6. Attendee Experience & Venue Wayfinding Hub (Asymmetric Bento Showcase) */}

@@ -174,9 +174,9 @@
       "description": "Heavy machinery engineering, precision CNC automation, robotics tooling, and global B2B procurement tenders."
     },
     "TECH_DEV_SUMMIT": {
-      "title": "Tech, AI & Developer Summits",
-      "tag": "Tech, AI & Code",
-      "description": "Autonomous AI engineering, distributed cloud systems, developer keynotes, and competitive multi-track hackathons."
+      "title": "Technology, AI & Consumer Electronics",
+      "tag": "Tech & Electronics",
+      "description": "Autonomous AI engineering, distributed cloud systems, developer keynotes, and consumer electronics showcases."
     },
     "MEDICAL_SYMPOSIUM": {
       "title": "Medical & Healthcare Congress",
@@ -194,9 +194,9 @@
       "description": "Esports championship tournament arenas, international cosplay catwalks, creator alley showcases, and premiere fandom stages."
     },
     "MUSIC_FESTIVAL": {
-      "title": "Music Festival & Arena Concerts",
-      "tag": "Music & Arena Sets",
-      "description": "Multi-stage acoustic arena schedules, dynamic crowd telemetry, festival lineups, and fast-track RFID wristband admissions."
+      "title": "Music, Stage & Performing Arts",
+      "tag": "Music & Performing Arts",
+      "description": "Multi-stage acoustic arena schedules, dynamic crowd telemetry, festival lineups, and live stage theatrical productions."
     },
     "MEGA_EXPO_PAVILION": {
       "title": "Mega Expo & Multi-Pavilion Fairs",

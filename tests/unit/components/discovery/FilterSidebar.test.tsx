@@ -63,7 +63,7 @@ describe('Discovery Component: FilterSidebar', () => {
       />
     );
 
-    const techSummit = screen.getByRole('button', { name: /tech, ai & developer/i });
+    const techSummit = screen.getByRole('button', { name: /technology.*electronics|tech.*electronics/i });
     fireEvent.click(techSummit);
 
     expect(handleChange).toHaveBeenCalledWith(

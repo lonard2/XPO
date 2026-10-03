@@ -9,11 +9,11 @@ describe('EventCategoryPills', () => {
 
     expect(screen.getByText('Explore by Event Category')).toBeDefined();
     expect(screen.getAllByText(/Industrial & Manufacturing/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Tech, AI & Developer/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Technology, AI & Consumer Electronics/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Medical & Healthcare/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Finance, FinTech & Investor/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Pop Culture & Gaming/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Music Festival/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Music, Stage & Performing Arts/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Mega Expo & Multi-Pavilion/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Automotive, EV & Mobility/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Energy, Mining & Green/i).length).toBeGreaterThan(0);
@@ -66,7 +66,7 @@ describe('EventCategoryPills', () => {
     render(<EventCategoryPills locale="en" />);
 
     expect(screen.getByText('Factory machinery, robotics, and industrial tools')).toBeInTheDocument();
-    expect(screen.getByText('Software development, cloud systems, and AI')).toBeInTheDocument();
+    expect(screen.getByText('Software, cloud platforms, and consumer electronics')).toBeInTheDocument();
     expect(screen.getByText('Video games, comics, animation, and cosplay')).toBeInTheDocument();
   });
 
@@ -115,7 +115,7 @@ describe('EventCategoryPills', () => {
       />
     );
 
-    const techBtns = screen.getAllByText(/Tech, AI & Developer/i);
+    const techBtns = screen.getAllByText(/Technology, AI & Consumer Electronics/i);
     fireEvent.click(techBtns[0]);
 
     expect(handleSelect).toHaveBeenCalledWith('TECH_DEV_SUMMIT');

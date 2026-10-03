@@ -61,11 +61,11 @@ const HERO_IMAGE_PRESETS = [
 
 const ALL_ARCHETYPE_OPTIONS: Array<{ id: MiceArchetype; name: string; tag: string }> = [
   { id: "INDUSTRIAL_B2B", name: "Industrial & Manufacturing B2B", tag: "Heavy Machinery & Sourcing" },
-  { id: "TECH_DEV_SUMMIT", name: "Tech, AI & Developer Summit", tag: "AI & Cloud Architecture" },
+  { id: "TECH_DEV_SUMMIT", name: "Technology, AI & Consumer Electronics", tag: "Tech & Consumer Electronics" },
   { id: "MEDICAL_SYMPOSIUM", name: "Medical & Healthcare Congress", tag: "CME & Clinical Trials" },
   { id: "FINANCE_INVESTOR", name: "Finance, FinTech & VC Forum", tag: "Venture & Institutional Capital" },
   { id: "POP_CULTURE_GAMING", name: "Pop Culture, Gaming & Comic Con", tag: "Esports & Creator Alley" },
-  { id: "MUSIC_FESTIVAL", name: "Music Festival & Live Arena", tag: "Multi-Stage Live Concerts" },
+  { id: "MUSIC_FESTIVAL", name: "Music, Stage & Performing Arts", tag: "Live Concerts & Theater Shows" },
   { id: "MEGA_EXPO_PAVILION", name: "Mega Fair & Consumer Pavilion", tag: "Consumer & Fireworks Expo" },
   { id: "AUTOMOTIVE_MOBILITY", name: "Automotive, EV & Mobility Expo", tag: "Concept Cars & Test Drives" },
   { id: "ENERGY_INFRASTRUCTURE", name: "Energy, Mining & Infrastructure", tag: "Clean Grids & Mining" },

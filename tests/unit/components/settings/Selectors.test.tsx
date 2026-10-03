@@ -141,7 +141,7 @@ describe("UI/UX Settings Suite Component Selectors", () => {
     });
 
     // Select interest chip
-    const techChip = screen.getByRole("button", { name: /Tech.*Developer/i });
+    const techChip = screen.getByRole("button", { name: /Technology.*Electronics|Tech.*Electronics/i });
     act(() => {
       fireEvent.click(techChip);
     });

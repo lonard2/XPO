@@ -11,11 +11,11 @@ import { cn } from "@/lib/utils";
 
 const MICE_INTEREST_ARCHETYPES = [
   { id: "INDUSTRIAL_B2B", label: "Industrial & Manufacturing B2B" },
-  { id: "TECH_DEV_SUMMIT", label: "Tech & Developer Summit" },
+  { id: "TECH_DEV_SUMMIT", label: "Technology, AI & Consumer Electronics" },
   { id: "MEDICAL_SYMPOSIUM", label: "Medical & Healthcare Congress" },
   { id: "FINANCE_INVESTOR", label: "Finance, FinTech & VC Forum" },
   { id: "POP_CULTURE_GAMING", label: "Pop Culture, Gaming & Comic Con" },
-  { id: "MUSIC_FESTIVAL", label: "Music Festival & Live Arena" },
+  { id: "MUSIC_FESTIVAL", label: "Music, Stage & Performing Arts" },
   { id: "MEGA_EXPO_PAVILION", label: "Mega Fair & Consumer Pavilion" },
   { id: "AUTOMOTIVE_MOBILITY", label: "Automotive, EV & Mobility Expo" },
   { id: "ENERGY_INFRASTRUCTURE", label: "Energy, Mining & Infrastructure" },

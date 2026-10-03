@@ -104,7 +104,7 @@ export function Footer({ locale = "en" }: { locale?: string }) {
           </h4>
           <ul className="space-y-2 text-xs text-muted-foreground">
             <li>{getSafe(tArch, "INDUSTRIAL_B2B.title", "Industrial & Manufacturing B2B")}</li>
-            <li>{getSafe(tArch, "TECH_DEV_SUMMIT.title", "Tech, AI & Developer Summits")}</li>
+            <li>{getSafe(tArch, "TECH_DEV_SUMMIT.title", "Technology, AI & Consumer Electronics")}</li>
             <li>{getSafe(tArch, "MEDICAL_SYMPOSIUM.title", "Medical & Healthcare Congress")}</li>
             <li>{getSafe(tArch, "AUTOMOTIVE_MOBILITY.title", "Automotive, EV & Mobility Motor Show")}</li>
             <li>{getSafe(tArch, "POP_CULTURE_GAMING.title", "Pop Culture, Gaming & Comic Con")}</li>
