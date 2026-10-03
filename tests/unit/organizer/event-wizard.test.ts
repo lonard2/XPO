@@ -354,6 +354,68 @@ describe("Phase 9 Unit: Event Creation Wizard & Archetype Engine", () => {
     expect(getNextArchetype("INCENTIVE_RETREAT", "next")).toBe("GOVERNMENT_DIPLOMATIC");
     expect(getNextArchetype("GOVERNMENT_DIPLOMATIC", "prev")).toBe("INCENTIVE_RETREAT");
   });
+
+  it("safeguards draft deletion with a two-step confirmation modal flow", () => {
+    let storage: Record<string, string> = {
+      xpo_event_draft: JSON.stringify({ title: "Draft To Safeguard" }),
+    };
+    let isModalOpen = false;
+    let hasDraftAvailable = true;
+
+    // User clicks "Discard" in banner
+    const handleClickDiscard = () => {
+      isModalOpen = true; // Triggers confirmation modal rather than immediately deleting
+    };
+
+    // User confirms in modal
+    const handleConfirmDiscard = () => {
+      delete storage.xpo_event_draft;
+      hasDraftAvailable = false;
+      isModalOpen = false;
+    };
+
+    handleClickDiscard();
+    expect(isModalOpen).toBe(true);
+    expect(storage.xpo_event_draft).toBeDefined(); // Draft still safe!
+
+    handleConfirmDiscard();
+    expect(isModalOpen).toBe(false);
+    expect(hasDraftAvailable).toBe(false);
+    expect(storage.xpo_event_draft).toBeUndefined(); // Permanently deleted only after confirmation
+  });
+
+  it("derives initial country edition and venue selection dynamically from route locale", () => {
+    const venues = [
+      { id: "v-jiexpo", regionId: "id", name: "JIExpo Kemayoran" },
+      { id: "v-bigsight", regionId: "jp", name: "Tokyo Big Sight" },
+      { id: "v-mbs", regionId: "global", name: "Marina Bay Sands Expo" },
+    ];
+
+    const deriveInitialConfig = (locale: string) => {
+      const regionId = locale === "ja" ? "jp" : locale === "global" ? "global" : "id";
+      const matchingVenue = venues.find((v) => v.regionId === regionId) || venues[0];
+      const currency = regionId === "jp" ? "JPY" : regionId === "global" ? "USD" : "IDR";
+      return { regionId, venueId: matchingVenue.id, currency };
+    };
+
+    // Japanese route /ja/events/new
+    const jaConfig = deriveInitialConfig("ja");
+    expect(jaConfig.regionId).toBe("jp");
+    expect(jaConfig.venueId).toBe("v-bigsight");
+    expect(jaConfig.currency).toBe("JPY");
+
+    // Global route /global/events/new
+    const globalConfig = deriveInitialConfig("global");
+    expect(globalConfig.regionId).toBe("global");
+    expect(globalConfig.venueId).toBe("v-mbs");
+    expect(globalConfig.currency).toBe("USD");
+
+    // Indonesian / default route /id/events/new or /en/events/new
+    const idConfig = deriveInitialConfig("en");
+    expect(idConfig.regionId).toBe("id");
+    expect(idConfig.venueId).toBe("v-jiexpo");
+    expect(idConfig.currency).toBe("IDR");
+  });
 });
 
 

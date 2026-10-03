@@ -51,6 +51,7 @@ import { Card } from "@/components/ui/Card";
 import { Button, buttonVariants } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Input } from "@/components/ui/Input";
+import { Modal } from "@/components/ui/Modal";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/lib/auth/session";
 import {
@@ -263,6 +264,7 @@ export default function NewEventWizardPage() {
   const [hasDraftAvailable, setHasDraftAvailable] = React.useState(false);
   const [isSlugDirty, setIsSlugDirty] = React.useState(false);
   const [selectedCluster, setSelectedCluster] = React.useState<string>("ALL");
+  const [showDiscardModal, setShowDiscardModal] = React.useState(false);
   const isInitializedRef = React.useRef(false);
 
   const clearFieldError = React.useCallback((field: string) => {
@@ -274,16 +276,14 @@ export default function NewEventWizardPage() {
     });
   }, []);
 
-  // Step 1: General Info & Archetype
-  const [title, setTitle] = React.useState("Indonesia Green Energy & Battery Expo 2027");
-  const [slug, setSlug] = React.useState("indonesia-green-energy-battery-expo-2027");
-  const [tagline, setTagline] = React.useState("The Premier EV Ecosystem, Battery Logistics & Clean Grid Assembly");
-  const [description, setDescription] = React.useState(
-    "Join 15,000+ industry delegates, OEMs, and battery grid engineers across 4 exhibition halls. Featuring bilateral procurement contracts, live technical keynotes, and renewable power infrastructure demos."
-  );
-  const [archetype, setArchetype] = React.useState<MiceArchetype>("ENERGY_INFRASTRUCTURE");
+  // Step 1: General Info & Archetype (Clean initial canvas with template accelerators)
+  const [title, setTitle] = React.useState("");
+  const [slug, setSlug] = React.useState("");
+  const [tagline, setTagline] = React.useState("");
+  const [description, setDescription] = React.useState("");
+  const [archetype, setArchetype] = React.useState<MiceArchetype>("INDUSTRIAL_B2B");
   const [format, setFormat] = React.useState("IN_PERSON");
-  const [scale, setScale] = React.useState("LARGE");
+  const [scale, setScale] = React.useState("MEDIUM");
 
   const handleApplyTemplate = React.useCallback((templateKey: string) => {
     const tmpl = TEMPLATES[templateKey];
@@ -354,8 +354,10 @@ export default function NewEventWizardPage() {
           const data = await res.json();
           if (data.venues && data.venues.length > 0) {
             setVenuesList(data.venues);
-            setVenueId(data.venues[0].id);
-            const initialHalls = data.venues[0].halls?.[0]?.id ? [data.venues[0].halls[0].id] : [];
+            const matching = data.venues.filter((v: Venue) => !v.regionId || v.regionId.toLowerCase() === initialRegion.toLowerCase());
+            const chosenVenue = matching[0] || data.venues[0];
+            setVenueId(chosenVenue.id);
+            const initialHalls = chosenVenue.halls?.[0]?.id ? [chosenVenue.halls[0].id] : [];
             setVenueHallId(initialHalls[0] || "");
             setVenueHallIds(initialHalls);
             return;
@@ -410,8 +412,10 @@ export default function NewEventWizardPage() {
       ];
 
       setVenuesList(defaultVenues);
-      setVenueId(defaultVenues[0].id);
-      const initialHalls = defaultVenues[0].halls?.[0]?.id ? [defaultVenues[0].halls[0].id] : [];
+      const matching = defaultVenues.filter((v) => !v.regionId || v.regionId.toLowerCase() === initialRegion.toLowerCase());
+      const chosenVenue = matching[0] || defaultVenues[0];
+      setVenueId(chosenVenue.id);
+      const initialHalls = chosenVenue.halls?.[0]?.id ? [chosenVenue.halls[0].id] : [];
       setVenueHallId(initialHalls[0] || "");
       setVenueHallIds(initialHalls);
     }
@@ -540,12 +544,17 @@ export default function NewEventWizardPage() {
   };
 
   const handleDiscardDraft = () => {
+    setShowDiscardModal(true);
+  };
+
+  const handleConfirmDiscardDraft = () => {
     try {
       localStorage.removeItem(DRAFT_STORAGE_KEY);
-      setHasDraftAvailable(false);
     } catch {
       // Ignore
     }
+    setHasDraftAvailable(false);
+    setShowDiscardModal(false);
   };
 
   // Update Archetype default colors when archetype changes
@@ -944,6 +953,41 @@ export default function NewEventWizardPage() {
         </div>
       )}
 
+      {/* DISCARD DRAFT CONFIRMATION MODAL */}
+      <Modal
+        isOpen={showDiscardModal}
+        onClose={() => setShowDiscardModal(false)}
+        title="Discard Unsaved Event Draft?"
+        size="md"
+      >
+        <div className="space-y-4 pt-2">
+          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+            Are you sure you want to discard your stored event draft? All previously configured title, venue, hall allocation quotas, and ticket tiers will be permanently removed. This action cannot be reversed.
+          </p>
+          <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-border/60">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setShowDiscardModal(false)}
+              className="min-h-[44px] px-4 text-xs font-semibold cursor-pointer"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              size="sm"
+              onClick={handleConfirmDiscardDraft}
+              className="min-h-[44px] px-4 text-xs font-semibold cursor-pointer gap-1.5"
+            >
+              <Trash2 className="h-3.5 w-3.5" />
+              <span>Discard Draft</span>
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
       {/* STEP PROGRESS TRACKER BAR */}
       <nav aria-label="Wizard Steps" className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3 border-b border-border/80 pb-5">
         {WIZARD_STEPS.map((s) => {
@@ -1203,7 +1247,7 @@ export default function NewEventWizardPage() {
                     aria-selected={isSelected}
                     onClick={() => setSelectedCluster(cluster.id)}
                     className={cn(
-                      "inline-flex items-center shrink-0 min-h-[40px] px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap cursor-pointer transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-xs",
+                      "inline-flex items-center shrink-0 min-h-[44px] px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap cursor-pointer transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-xs",
                       isSelected
                         ? "bg-primary text-primary-foreground shadow-sm"
                         : "bg-card border border-border/80 text-muted-foreground hover:text-foreground hover:bg-muted/60"
@@ -1890,7 +1934,7 @@ export default function NewEventWizardPage() {
                         setAccentColor(pal.accent);
                       }}
                       className={cn(
-                        "p-2 rounded-lg border text-left text-xs transition-all cursor-pointer flex items-center gap-2 hover:border-primary/60",
+                        "min-h-[44px] p-2.5 rounded-xl border text-left text-xs transition-all cursor-pointer flex items-center gap-2 hover:border-primary/60",
                         primaryColor === pal.primary
                           ? "border-primary bg-primary/5 ring-1 ring-primary/30"
                           : "border-border/80 bg-background"
@@ -1916,7 +1960,7 @@ export default function NewEventWizardPage() {
                     <input
                       id="wizard-primary-color"
                       type="color"
-                      className="h-10 w-12 rounded cursor-pointer border border-border shrink-0"
+                      className="h-11 w-12 rounded-lg cursor-pointer border border-border shrink-0"
                       value={primaryColor}
                       onChange={(e) => setPrimaryColor(e.target.value)}
                     />
@@ -1938,7 +1982,7 @@ export default function NewEventWizardPage() {
                     <input
                       id="wizard-accent-color"
                       type="color"
-                      className="h-10 w-12 rounded cursor-pointer border border-border shrink-0"
+                      className="h-11 w-12 rounded-lg cursor-pointer border border-border shrink-0"
                       value={accentColor}
                       onChange={(e) => setAccentColor(e.target.value)}
                     />
