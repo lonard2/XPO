@@ -67,6 +67,7 @@ export function PassDayOfSubnav({
           {/* Digital Pass Button */}
           <button
             type="button"
+            aria-current={activeSection === 'digital-pass-section' ? 'true' : undefined}
             onClick={() => scrollToSection('digital-pass-section')}
             className={cn(
               'min-h-[44px] sm:min-h-[36px] flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer',
@@ -83,6 +84,7 @@ export function PassDayOfSubnav({
           {hasPerks && (
             <button
               type="button"
+              aria-current={activeSection === 'event-perks-section' ? 'true' : undefined}
               onClick={() => scrollToSection('event-perks-section')}
               className={cn(
                 'min-h-[44px] sm:min-h-[36px] flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer',
@@ -105,6 +107,7 @@ export function PassDayOfSubnav({
           {hasAgenda && (
             <button
               type="button"
+              aria-current={activeSection === 'event-agenda-section' ? 'true' : undefined}
               onClick={() => scrollToSection('event-agenda-section')}
               className={cn(
                 'min-h-[44px] sm:min-h-[36px] flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer',
@@ -127,6 +130,7 @@ export function PassDayOfSubnav({
           {hasMap && (
             <button
               type="button"
+              aria-current={activeSection === 'hall-map-section' ? 'true' : undefined}
               onClick={() => scrollToSection('hall-map-section')}
               className={cn(
                 'min-h-[44px] sm:min-h-[36px] flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer',

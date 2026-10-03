@@ -520,6 +520,7 @@
     "claimPerk": "Klaim Voucher",
     "voucherCode": "Kode Voucher",
     "unlockedBadge": "Terbuka",
+    "claimedBadge": "Sudah Diklaim",
     "lockedBadge": "Terkunci (Tingkatkan Pas)"
   },
   "auth": {

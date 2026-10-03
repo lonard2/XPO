@@ -174,6 +174,21 @@ describe("Phase 6 Unit: Ticket & Event Treats Component System", () => {
 
       expect(screen.queryByText(/Max Contrast Turnstile Mode/i)).toBeNull();
     });
+
+    it("displays exact venue hall name when venueHall object is supplied", () => {
+      const bookingWithExactHall = {
+        ...sampleBooking,
+        event: {
+          ...sampleBooking.event,
+          venueHall: {
+            name: "Nusantara Hall 2",
+          },
+        },
+      };
+
+      render(<DigitalPassQR booking={bookingWithExactHall} locale="en" />);
+      expect(screen.getByText(/Nusantara Hall 2/i)).toBeDefined();
+    });
   });
 
   // ==========================================================================
@@ -197,6 +212,22 @@ describe("Phase 6 Unit: Ticket & Event Treats Component System", () => {
       expect(screen.getByRole("button", { name: /floor map/i })).toBeDefined();
       expect(screen.getByText("3")).toBeDefined();
       expect(screen.getByText("6")).toBeDefined();
+    });
+
+    it("marks active section button with aria-current='true'", () => {
+      render(
+        <PassDayOfSubnav
+          hasPerks={true}
+          hasAgenda={true}
+          hasMap={true}
+        />
+      );
+
+      const passButton = screen.getByRole("button", { name: /digital pass/i });
+      expect(passButton.getAttribute("aria-current")).toBe("true");
+
+      const mapButton = screen.getByRole("button", { name: /floor map/i });
+      expect(mapButton.getAttribute("aria-current")).toBeNull();
     });
   });
 
@@ -330,7 +361,7 @@ describe("Phase 6 Unit: Ticket & Event Treats Component System", () => {
       fireEvent.change(searchInput, { target: { value: "Apex" } });
 
       // Click on Apex booth svg text
-      const apexElement = screen.getByText("Apex Robotics …");
+      const apexElement = screen.getByText(/Apex Robotics/i);
       fireEvent.click(apexElement);
 
       expect(screen.getByText("Apex Robotics Systems")).toBeDefined();
@@ -420,6 +451,24 @@ describe("Phase 6 Unit: Ticket & Event Treats Component System", () => {
       // Only 1 redeem button for the coffee perk
       const redeemButtons = screen.getAllByRole("button", { name: /voucher|claim/i });
       expect(redeemButtons.length).toBe(1);
+    });
+
+    it("restores claimed perks from localStorage", () => {
+      const storageKey = "xpo_perks_claimed_bk-mfg-99999";
+      localStorage.setItem(storageKey, JSON.stringify(["perk-01"]));
+
+      render(
+        <TierPerksGating
+          perks={samplePerks}
+          attendeeTierName="VIP Delegate Pass"
+          bookingId="bk-mfg-99999"
+          locale="en"
+        />
+      );
+
+      // perk-01 should be Claimed
+      expect(screen.getByText("Claimed")).toBeDefined();
+      localStorage.removeItem(storageKey);
     });
   });
 });

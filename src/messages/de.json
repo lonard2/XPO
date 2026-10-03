@@ -520,6 +520,7 @@
     "claimPerk": "Gutschein einlösen",
     "voucherCode": "Gutscheincode",
     "unlockedBadge": "Freigeschaltet",
+    "claimedBadge": "Eingelöst",
     "lockedBadge": "Gesperrt (Upgrade erforderlich)"
   },
   "auth": {

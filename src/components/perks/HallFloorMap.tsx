@@ -138,7 +138,7 @@ export function HallFloorMap({
             variant="ghost"
             size="sm"
             onClick={handleZoomIn}
-            className="h-7 w-7 p-0 cursor-pointer"
+            className="h-9 w-9 min-h-[36px] min-w-[36px] p-0 cursor-pointer"
             title="Zoom In"
             aria-label="Zoom In"
           >
@@ -148,7 +148,7 @@ export function HallFloorMap({
             variant="ghost"
             size="sm"
             onClick={handleZoomOut}
-            className="h-7 w-7 p-0 cursor-pointer"
+            className="h-9 w-9 min-h-[36px] min-w-[36px] p-0 cursor-pointer"
             title="Zoom Out"
             aria-label="Zoom Out"
           >
@@ -158,7 +158,7 @@ export function HallFloorMap({
             variant="ghost"
             size="sm"
             onClick={handleResetZoom}
-            className="h-7 w-7 p-0 cursor-pointer"
+            className="h-9 w-9 min-h-[36px] min-w-[36px] p-0 cursor-pointer"
             title="Reset Zoom"
             aria-label="Reset Zoom"
           >
@@ -179,7 +179,7 @@ export function HallFloorMap({
                 setSelectedBooth(null);
               }}
               className={cn(
-                "px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors border cursor-pointer",
+                "min-h-[44px] sm:min-h-[36px] px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors border cursor-pointer",
                 selectedHall === h
                   ? "bg-primary text-primary-foreground border-primary"
                   : "bg-muted/40 text-muted-foreground border-border hover:bg-muted"
@@ -345,7 +345,7 @@ export function HallFloorMap({
                     fontFamily="sans-serif"
                   >
                     {booth.companyName.length > 15
-                      ? booth.companyName.substring(0, 14) + "…"
+                      ? booth.companyName.substring(0, 14) + "..."
                       : booth.companyName}
                   </text>
 
@@ -394,8 +394,9 @@ export function HallFloorMap({
                 <span className="text-xs text-muted-foreground">{selectedBooth.hallName}</span>
               </div>
               <button
+                type="button"
                 onClick={() => setSelectedBooth(null)}
-                className="text-xs text-muted-foreground hover:text-foreground"
+                className="text-xs text-muted-foreground hover:text-foreground cursor-pointer min-h-[36px] px-2.5 py-1 rounded-md hover:bg-muted"
               >
                 Close
               </button>

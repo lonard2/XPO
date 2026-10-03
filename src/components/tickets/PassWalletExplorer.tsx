@@ -146,12 +146,16 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
       <div className="space-y-4 p-4 rounded-3xl border border-border/80 bg-card shadow-xs">
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
           {/* Triage Tabs (Upcoming vs Past) */}
-          <div className="flex items-center gap-1.5 bg-muted/60 p-1 rounded-2xl border border-border/60">
+          <div
+            aria-label="Pass status filters"
+            className="flex items-center gap-1.5 bg-muted/60 p-1 rounded-2xl border border-border/60"
+          >
             <button
               type="button"
+              aria-pressed={activeTab === 'upcoming'}
               onClick={() => setActiveTab('upcoming')}
               className={cn(
-                'min-h-[36px] px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-2',
+                'min-h-[44px] sm:min-h-[36px] px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-2',
                 activeTab === 'upcoming'
                   ? 'bg-card text-foreground shadow-xs'
                   : 'text-muted-foreground hover:text-foreground'
@@ -165,9 +169,10 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
 
             <button
               type="button"
+              aria-pressed={activeTab === 'past'}
               onClick={() => setActiveTab('past')}
               className={cn(
-                'min-h-[36px] px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-2',
+                'min-h-[44px] sm:min-h-[36px] px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-2',
                 activeTab === 'past'
                   ? 'bg-card text-foreground shadow-xs'
                   : 'text-muted-foreground hover:text-foreground'
@@ -181,9 +186,10 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
 
             <button
               type="button"
+              aria-pressed={activeTab === 'all'}
               onClick={() => setActiveTab('all')}
               className={cn(
-                'min-h-[36px] px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-2',
+                'min-h-[44px] sm:min-h-[36px] px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-2',
                 activeTab === 'all'
                   ? 'bg-card text-foreground shadow-xs'
                   : 'text-muted-foreground hover:text-foreground'
@@ -201,7 +207,7 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
                 type="button"
                 onClick={() => setSelectedRegion('all')}
                 className={cn(
-                  'min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer whitespace-nowrap',
+                  'min-h-[44px] sm:min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer whitespace-nowrap',
                   selectedRegion === 'all'
                     ? 'border-primary bg-primary/10 text-primary font-semibold'
                     : 'border-border text-muted-foreground hover:text-foreground'
@@ -213,7 +219,7 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
                 type="button"
                 onClick={() => setSelectedRegion('id')}
                 className={cn(
-                  'min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer whitespace-nowrap',
+                  'min-h-[44px] sm:min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer whitespace-nowrap',
                   selectedRegion === 'id'
                     ? 'border-primary bg-primary/10 text-primary font-semibold'
                     : 'border-border text-muted-foreground hover:text-foreground'
@@ -225,7 +231,7 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
                 type="button"
                 onClick={() => setSelectedRegion('jp')}
                 className={cn(
-                  'min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer whitespace-nowrap',
+                  'min-h-[44px] sm:min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer whitespace-nowrap',
                   selectedRegion === 'jp'
                     ? 'border-primary bg-primary/10 text-primary font-semibold'
                     : 'border-border text-muted-foreground hover:text-foreground'
@@ -237,7 +243,7 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
                 type="button"
                 onClick={() => setSelectedRegion('global')}
                 className={cn(
-                  'min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer whitespace-nowrap',
+                  'min-h-[44px] sm:min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer whitespace-nowrap',
                   selectedRegion === 'global'
                     ? 'border-primary bg-primary/10 text-primary font-semibold'
                     : 'border-border text-muted-foreground hover:text-foreground'
@@ -262,9 +268,9 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
                   type="button"
                   onClick={() => setSearchQuery('')}
                   aria-label="Clear search"
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-1 cursor-pointer"
+                  className="absolute right-1.5 top-1/2 -translate-y-1/2 h-8 w-8 min-h-[36px] min-w-[36px] inline-flex items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/80 cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 >
-                  <X className="h-3.5 w-3.5" />
+                  <X className="h-4 w-4" />
                 </button>
               )}
             </div>
@@ -402,9 +408,11 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
                 <div className="p-4 bg-muted/30 border-t border-border/80 mt-auto relative z-10">
                   <Link
                     href={`/${locale}/my-tickets/${booking.id}`}
+                    tabIndex={-1}
+                    aria-hidden="true"
                     className={cn(
                       buttonVariants({ variant: 'default', size: 'sm' }),
-                      'w-full justify-center gap-2 text-xs font-semibold shadow-xs cursor-pointer min-h-[36px]'
+                      'w-full justify-center gap-2 text-xs font-semibold shadow-xs cursor-pointer min-h-[44px] sm:min-h-[36px]'
                     )}
                   >
                     <QrCode className="h-3.5 w-3.5" />

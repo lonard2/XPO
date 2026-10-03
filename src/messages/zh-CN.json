@@ -520,6 +520,7 @@
     "claimPerk": "领取礼券",
     "voucherCode": "礼券代码",
     "unlockedBadge": "已解锁",
+    "claimedBadge": "已领取",
     "lockedBadge": "未解锁 (需升级票种)"
   },
   "auth": {

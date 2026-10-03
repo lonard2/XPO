@@ -128,7 +128,7 @@ export function InteractiveGuidebook({
             variant={filterBookmarkedOnly ? "primary" : "outline"}
             size="sm"
             onClick={() => setFilterBookmarkedOnly(!filterBookmarkedOnly)}
-            className="text-xs gap-1.5 h-9 cursor-pointer"
+            className="text-xs gap-1.5 min-h-[44px] sm:min-h-[36px] h-9 cursor-pointer"
           >
             <Star
               className={cn("h-3.5 w-3.5", filterBookmarkedOnly ? "fill-current" : "")}
@@ -179,7 +179,7 @@ export function InteractiveGuidebook({
               key={track}
               onClick={() => setSelectedTrack(track)}
               className={cn(
-                "px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors border cursor-pointer",
+                "px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors border cursor-pointer min-h-[44px] sm:min-h-[36px]",
                 selectedTrack === track
                   ? "bg-primary text-primary-foreground border-primary"
                   : "bg-muted/40 text-muted-foreground border-border hover:bg-muted"
@@ -225,9 +225,19 @@ export function InteractiveGuidebook({
             return (
               <div
                 key={session.id}
+                role="button"
+                tabIndex={0}
+                aria-expanded={isExpanded}
+                aria-controls={`session-detail-${session.id}`}
                 onClick={() => setSelectedSessionId(isExpanded ? null : session.id)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setSelectedSessionId(isExpanded ? null : session.id);
+                  }
+                }}
                 className={cn(
-                  "rounded-xl border p-4 transition-all duration-200 cursor-pointer bg-card hover:border-primary/50",
+                  "rounded-xl border p-4 transition-all duration-200 cursor-pointer bg-card hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                   isBookmarked ? "border-primary/40 bg-primary/2" : "border-border"
                 )}
               >
@@ -272,8 +282,9 @@ export function InteractiveGuidebook({
                       variant={isBookmarked ? "secondary" : "ghost"}
                       size="sm"
                       onClick={(e) => toggleBookmark(session.id, e)}
+                      aria-label={isBookmarked ? `Remove ${session.title} from agenda` : `Save ${session.title} to agenda`}
                       className={cn(
-                        "h-8 px-2.5 text-xs gap-1.5",
+                        "min-h-[44px] sm:min-h-[36px] h-9 px-3 text-xs gap-1.5 cursor-pointer relative z-10",
                         isBookmarked ? "text-amber-500 bg-amber-500/10 border border-amber-500/20" : ""
                       )}
                     >
@@ -290,7 +301,10 @@ export function InteractiveGuidebook({
 
                 {/* Expanded Session Details */}
                 {isExpanded && (
-                  <div className="mt-3 pt-3 border-t border-border/60 text-xs text-muted-foreground space-y-2 animate-fade-in">
+                  <div
+                    id={`session-detail-${session.id}`}
+                    className="mt-3 pt-3 border-t border-border/60 text-xs text-muted-foreground space-y-2 animate-fade-in"
+                  >
                     <p>
                       Join industry leaders and peer delegates for an interactive session at {session.location}.
                       Q&A discussion and networking will follow the presentation.

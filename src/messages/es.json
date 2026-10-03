@@ -520,6 +520,7 @@
     "claimPerk": "Canjear Cupón",
     "voucherCode": "Código de Cupón",
     "unlockedBadge": "Desbloqueado",
+    "claimedBadge": "Reclamado",
     "lockedBadge": "Bloqueado (Requiere Mejora de Pase)"
   },
   "auth": {

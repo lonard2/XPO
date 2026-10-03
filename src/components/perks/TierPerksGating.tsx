@@ -76,6 +76,22 @@ export function TierPerksGating({
   const [claimedPerkIds, setClaimedPerkIds] = React.useState<Set<string>>(new Set());
   const [activeVoucherId, setActiveVoucherId] = React.useState<string | null>(null);
 
+  // Restore claimed perks from localStorage
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      const saved = localStorage.getItem(`xpo_perks_claimed_${bookingId}`);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          setClaimedPerkIds(new Set(parsed));
+        }
+      }
+    } catch {
+      // Ignore
+    }
+  }, [bookingId]);
+
   const isTierEligible = (tierRequired?: string | null): boolean => {
     if (!tierRequired) return true; // Available for all
     const req = tierRequired.toLowerCase().trim();
@@ -93,7 +109,18 @@ export function TierPerksGating({
   };
 
   const handleClaim = (perkId: string) => {
-    setClaimedPerkIds((prev) => new Set([...prev, perkId]));
+    setClaimedPerkIds((prev) => {
+      const next = new Set([...prev, perkId]);
+      try {
+        localStorage.setItem(
+          `xpo_perks_claimed_${bookingId}`,
+          JSON.stringify(Array.from(next))
+        );
+      } catch {
+        // Ignore
+      }
+      return next;
+    });
     setActiveVoucherId(perkId);
   };
 
@@ -169,7 +196,7 @@ export function TierPerksGating({
                       isClaimed ? (
                         <Badge variant="success" size="sm" className="gap-1 font-semibold">
                           <Check className="h-3 w-3" />
-                          <span>{tPerks('unlockedBadge') || 'Claimed'}</span>
+                          <span>{tPerks('claimedBadge') || 'Claimed'}</span>
                         </Badge>
                       ) : (
                         <Badge variant="secondary" size="sm" className="gap-1 font-semibold text-emerald-600 dark:text-emerald-400">
@@ -204,7 +231,10 @@ export function TierPerksGating({
 
                 {unlocked ? (
                   isShowingVoucher ? (
-                    <div className="p-3.5 bg-muted/60 rounded-xl border border-border/80 space-y-2 animate-fade-in">
+                    <div
+                      className="p-3.5 bg-muted/60 rounded-xl border border-border/80 space-y-2 animate-fade-in"
+                      aria-live="polite"
+                    >
                       <div className="flex items-center justify-between text-xs text-muted-foreground">
                         <span className="font-semibold">{tPerks('voucherCode') || 'Voucher Code'}</span>
                         <Badge variant="outline" className="font-mono text-xs font-bold text-foreground">
@@ -220,7 +250,7 @@ export function TierPerksGating({
                         size="sm"
                         variant="ghost"
                         onClick={scrollToMap}
-                        className="w-full min-h-[36px] text-xs font-semibold gap-1 text-muted-foreground hover:text-foreground cursor-pointer"
+                        className="w-full min-h-[44px] sm:min-h-[36px] text-xs font-semibold gap-1 text-muted-foreground hover:text-foreground cursor-pointer"
                       >
                         <Compass className="h-3 w-3" />
                         <span>Locate Redemption Hub on Map</span>
@@ -231,14 +261,14 @@ export function TierPerksGating({
                       size="sm"
                       variant={isClaimed ? 'outline' : 'default'}
                       onClick={() => handleClaim(perk.id)}
-                      className="w-full min-h-[36px] text-xs font-semibold cursor-pointer"
+                      className="w-full min-h-[44px] sm:min-h-[36px] text-xs font-semibold cursor-pointer"
                     >
                       <QrCode className="h-3.5 w-3.5 mr-1.5" />
                       <span>{isClaimed ? 'View Voucher Code' : (tPerks('claimPerk') || 'Claim Voucher')}</span>
                     </Button>
                   )
                 ) : (
-                  <Button size="sm" variant="ghost" disabled className="w-full min-h-[36px] text-xs opacity-60">
+                  <Button size="sm" variant="ghost" disabled className="w-full min-h-[44px] sm:min-h-[36px] text-xs opacity-60">
                     <Lock className="h-3 w-3 mr-1.5" />
                     <span>{tPerks('lockedBadge') || 'Locked for your Pass Tier'}</span>
                   </Button>

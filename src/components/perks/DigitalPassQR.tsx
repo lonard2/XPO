@@ -58,6 +58,9 @@ export interface DigitalPassQRProps {
         address?: string;
         hallName?: string | null;
       };
+      venueHall?: {
+        name: string;
+      } | null;
       heroImageUrl?: string | null;
       archetype?: string;
     };
@@ -74,6 +77,19 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
   const [showSecurityModal, setShowSecurityModal] = React.useState(false);
   const [showTurnstileModal, setShowTurnstileModal] = React.useState(false);
   const [isCachedOffline, setIsCachedOffline] = React.useState(false);
+
+  // Close modals on Escape key
+  React.useEffect(() => {
+    if (!showTurnstileModal && !showSecurityModal) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setShowTurnstileModal(false);
+        setShowSecurityModal(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showTurnstileModal, showSecurityModal]);
 
   // Cache pass offline on client mount
   React.useEffect(() => {
@@ -302,7 +318,7 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
               <button
                 type="button"
                 onClick={() => setShowTurnstileModal(true)}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[36px] rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-xs font-semibold shadow-xs transition-all cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 min-h-[44px] sm:min-h-[36px] rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-xs font-semibold shadow-xs transition-all cursor-pointer"
               >
                 <Maximize2 className="h-3.5 w-3.5" />
                 <span>Enlarge Turnstile Scanner Mode</span>
@@ -337,7 +353,7 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
               </div>
               <p className="font-semibold text-foreground text-sm">{booking.event.venue.name}</p>
               <p className="text-xs text-muted-foreground">
-                {booking.event.venue.hallName || 'Main Exhibition Halls'} • {booking.event.venue.city}
+                {booking.event.venueHall?.name || booking.event.venue.hallName || 'Main Exhibition Halls'} • {booking.event.venue.city}
               </p>
             </div>
           </div>
@@ -358,12 +374,12 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
 
         {/* Action Toolbar */}
         <div className="px-6 py-4 bg-muted/40 border-t border-border flex flex-wrap items-center justify-between gap-3 print:hidden">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <Button
               variant="outline"
               size="sm"
               onClick={handleCopyHash}
-              className="min-h-[36px] h-9 text-xs gap-1.5 cursor-pointer"
+              className="min-h-[44px] sm:min-h-[36px] h-10 sm:h-9 text-xs gap-1.5 cursor-pointer"
             >
               {copiedHash ? (
                 <>
@@ -382,19 +398,19 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
               variant="outline"
               size="sm"
               onClick={handleDownloadSvg}
-              className="min-h-[36px] h-9 text-xs gap-1.5 cursor-pointer"
+              className="min-h-[44px] sm:min-h-[36px] h-10 sm:h-9 text-xs gap-1.5 cursor-pointer"
             >
               <Download className="h-3.5 w-3.5" />
               Save SVG Pass
             </Button>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <Button
               variant="outline"
               size="sm"
               onClick={() => setShowSecurityModal(!showSecurityModal)}
-              className="min-h-[36px] h-9 text-xs gap-1.5 cursor-pointer"
+              className="min-h-[44px] sm:min-h-[36px] h-10 sm:h-9 text-xs gap-1.5 cursor-pointer"
             >
               <ShieldCheck className="h-3.5 w-3.5 text-primary" />
               Security Specs
@@ -404,7 +420,7 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
               variant="primary"
               size="sm"
               onClick={handlePrint}
-              className="min-h-[36px] h-9 text-xs gap-1.5 font-semibold cursor-pointer"
+              className="min-h-[44px] sm:min-h-[36px] h-10 sm:h-9 text-xs gap-1.5 font-semibold cursor-pointer"
             >
               <Printer className="h-3.5 w-3.5" />
               Print / Save PDF
@@ -423,7 +439,7 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
               <button
                 type="button"
                 onClick={() => setShowSecurityModal(false)}
-                className="text-slate-400 hover:text-white cursor-pointer"
+                className="min-h-[36px] px-2.5 py-1 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 text-xs cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
               >
                 Close
               </button>
@@ -464,7 +480,7 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
               type="button"
               onClick={() => setShowTurnstileModal(false)}
               aria-label="Close turnstile mode"
-              className="absolute top-4 right-4 p-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer"
+              className="absolute top-4 right-4 h-10 w-10 min-h-[44px] min-w-[44px] sm:min-h-[36px] sm:min-w-[36px] inline-flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black"
             >
               <X className="h-5 w-5" />
             </button>
@@ -503,7 +519,7 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
               variant="default"
               size="sm"
               onClick={() => setShowTurnstileModal(false)}
-              className="w-full bg-black text-white hover:bg-slate-800 text-xs font-semibold cursor-pointer min-h-[36px]"
+              className="w-full bg-black text-white hover:bg-slate-800 text-xs font-semibold cursor-pointer min-h-[44px] sm:min-h-[36px]"
             >
               Done Scanning
             </Button>

@@ -520,6 +520,7 @@
     "claimPerk": "Claim Voucher",
     "voucherCode": "Voucher Code",
     "unlockedBadge": "Unlocked",
+    "claimedBadge": "Claimed",
     "lockedBadge": "Locked (Upgrade Tier)"
   },
   "auth": {

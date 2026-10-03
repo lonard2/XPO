@@ -520,6 +520,7 @@
     "claimPerk": "バウチャーを受け取る",
     "voucherCode": "バウチャーコード",
     "unlockedBadge": "利用可能",
+    "claimedBadge": "受取済み",
     "lockedBadge": "ロック中 (アップグレードが必要)"
   },
   "auth": {
