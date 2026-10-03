@@ -75,6 +75,13 @@ const ALL_ARCHETYPE_OPTIONS: Array<{ id: MiceArchetype; name: string; tag: strin
   { id: "FASHION_RETAIL", name: "Fashion, Beauty & Luxury Retail", tag: "Runways & Cosmetic OEM" },
   { id: "GOVERNMENT_DIPLOMATIC", name: "Government & Diplomatic Summit", tag: "Protocols & Bilateral Rooms" },
   { id: "INCENTIVE_RETREAT", name: "Incentive & Corporate Retreat", tag: "Excursions & Executive Galas" },
+  { id: "BUILDING_PROPTECH", name: "Building, Architecture & PropTech", tag: "Smart Building & BIM" },
+  { id: "AEROSPACE_DEFENSE", name: "Aerospace, Aviation & Defense", tag: "Avionics & Defense Systems" },
+  { id: "SUPPLY_CHAIN_LOGISTICS", name: "Supply Chain & Logistics", tag: "Freight & Autonomous Ports" },
+  { id: "FRANCHISE_LICENSING", name: "Franchise, Retail & SME", tag: "Brand Licensing & Turnkey" },
+  { id: "FAITH_PILGRIMAGE_CONGRESS", name: "Faith & Pilgrimage Congress", tag: "Hajj, Umrah & Halal Expo" },
+  { id: "SPORTS_OUTDOOR", name: "Sports, Fitness & Outdoor", tag: "Athletic Gear & Arenas" },
+  { id: "MEDIA_BROADCAST", name: "Media, Broadcast & Pro-AV", tag: "LED Volumes & 8K Stage" },
 ];
 
 export default function EventCustomizerPage() {

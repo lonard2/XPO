@@ -133,6 +133,48 @@ function getCategoryFeatureSnippet(arch: string) {
         desc: "Executive wellness itinerary planners, seaside excursion routes, and waterfront gala seating maps.",
         tags: ["Daily Itineraries", "Gala Seating Chart", "Wellness Tracks", "VIP Excursions"],
       };
+    case "BUILDING_PROPTECH":
+      return {
+        title: "BIM Modeling, Architectural Specs & PropTech Suite",
+        desc: "Smart building automation, sustainable architectural materials, and BIM software demonstrations.",
+        tags: ["BIM Demos", "Smart PropTech", "Building Materials", "Green Architecture"],
+      };
+    case "AEROSPACE_DEFENSE":
+      return {
+        title: "Flight Demonstrations, Avionics & Defense Pavilion",
+        desc: "Commercial aircraft systems, tactical defense avionics, autonomous UAV runways, and procurement lounges.",
+        tags: ["Avionics Radar", "Flight Demos", "Defense Systems", "Bilateral Procurement"],
+      };
+    case "SUPPLY_CHAIN_LOGISTICS":
+      return {
+        title: "Autonomous Warehousing & Multi-Modal Freight Hub",
+        desc: "Automated guided vehicles, port container logistics, cold-chain monitoring, and supply route tracking.",
+        tags: ["Fleet Telematics", "Cold Chain", "Port Logistics", "Warehouse AGVs"],
+      };
+    case "FRANCHISE_LICENSING":
+      return {
+        title: "Franchise Brand Discovery & SME Licensing Roster",
+        desc: "Master franchise rights, retail concept showcases, turnkey business models, and investor deal suites.",
+        tags: ["Master Franchise", "Brand Licensing", "Turnkey Models", "Investor Suites"],
+      };
+    case "FAITH_PILGRIMAGE_CONGRESS":
+      return {
+        title: "Hajj & Umrah Travel Services & Halal Expo Pavilion",
+        desc: "Pilgrimage visa operators, certified halal supply networks, and spiritual community congregation spaces.",
+        tags: ["Pilgrimage Logistics", "Halal Certification", "Travel Packages", "Community Forum"],
+      };
+    case "SPORTS_OUTDOOR":
+      return {
+        title: "Athletic Gear Arenas & Outdoor Adventure Circuit",
+        desc: "Live sportswear catwalks, interactive obstacle courses, gym equipment testing, and outdoor expeditions.",
+        tags: ["Gear Testing", "Sportswear Arenas", "Trail Obstacles", "Fitness Stages"],
+      };
+    case "MEDIA_BROADCAST":
+      return {
+        title: "Virtual Production Volumes & 8K Broadcast Stage",
+        desc: "LED virtual production walls, professional audio consoles, camera rigs, and low-latency broadcast transmission.",
+        tags: ["LED Volumes", "8K Broadcast", "Pro-AV Gear", "Studio Master Control"],
+      };
     case "INDUSTRIAL_B2B":
     default:
       return {
