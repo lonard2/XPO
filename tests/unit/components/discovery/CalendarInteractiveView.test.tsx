@@ -148,4 +148,46 @@ describe('CalendarInteractiveView Component', () => {
       'XPO MICE ID Master Timetable'
     );
   });
+
+  it('opens export menu and triggers CSV spreadsheet download', () => {
+    const csvSpy = vi.spyOn(icalModule, 'downloadCsvSchedule').mockReturnValue(true);
+
+    render(
+      <CalendarInteractiveView
+        initialEvents={mockEvents}
+        locale="en"
+        region="id"
+      />
+    );
+
+    const moreBtn = screen.getByRole('button', { name: /more export formats/i });
+    fireEvent.click(moreBtn);
+
+    expect(screen.getByText('Google Calendar')).toBeInTheDocument();
+    expect(screen.getByText('Outlook 365 Web')).toBeInTheDocument();
+    expect(screen.getByText(/CSV Spreadsheet/i)).toBeInTheDocument();
+    expect(screen.getByText(/Copy Text Summary/i)).toBeInTheDocument();
+
+    const csvOption = screen.getByRole('menuitem', { name: /csv spreadsheet/i });
+    fireEvent.click(csvOption);
+
+    expect(csvSpy).toHaveBeenCalledWith(mockEvents, 'xpo-id-schedule.csv');
+  });
+
+  it('renders Google Calendar deep link with valid URL', () => {
+    render(
+      <CalendarInteractiveView
+        initialEvents={mockEvents}
+        locale="en"
+        region="id"
+      />
+    );
+
+    const moreBtn = screen.getByRole('button', { name: /more export formats/i });
+    fireEvent.click(moreBtn);
+
+    const gcalLink = screen.getByRole('menuitem', { name: /google calendar/i });
+    expect(gcalLink).toHaveAttribute('href');
+    expect(gcalLink.getAttribute('href')).toContain('calendar.google.com/calendar/render');
+  });
 });

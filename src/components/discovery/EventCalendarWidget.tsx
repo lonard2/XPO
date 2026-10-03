@@ -25,6 +25,7 @@ export interface EventCalendarWidgetProps {
   regionCode?: string;
   isCalendarPage?: boolean;
   className?: string;
+  onSelectDate?: (date: Date) => void;
 }
 
 function toISODateInTimezone(d: Date | string, tz: string): string {
@@ -51,6 +52,7 @@ export function EventCalendarWidget({
   regionCode = 'id',
   isCalendarPage = false,
   className,
+  onSelectDate,
 }: EventCalendarWidgetProps) {
   const tCal = useTranslations('calendar');
   const tEvents = useTranslations('events');
@@ -222,7 +224,12 @@ export function EventCalendarWidget({
               return (
                 <button
                   key={cell.dayNumber}
-                  onClick={() => cell.date && setSelectedDate(cell.date)}
+                  onClick={() => {
+                    if (cell.date) {
+                      setSelectedDate(cell.date);
+                      onSelectDate?.(cell.date);
+                    }
+                  }}
                   type="button"
                   aria-label={`${cellDateStr}${hasEvents ? ', events scheduled' : ''}`}
                   aria-selected={active}
@@ -272,7 +279,7 @@ export function EventCalendarWidget({
                 return (
                   <div
                     key={evt.id}
-                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-border/80 bg-background/80 p-3 hover:border-primary/50 transition-colors"
+                    className="group relative flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-border/80 bg-background/80 p-3 hover:border-primary/50 transition-colors"
                   >
                     <div className="space-y-1 min-w-0">
                       <div className="flex items-center gap-1.5 flex-wrap">
@@ -291,7 +298,12 @@ export function EventCalendarWidget({
                       </div>
 
                       <h4 className="text-xs sm:text-sm font-bold text-foreground line-clamp-1">
-                        {evt.title}
+                        <Link
+                          href={`/${locale}/events/${evt.slug}`}
+                          className="hover:text-primary transition-colors after:absolute after:inset-0"
+                        >
+                          {evt.title}
+                        </Link>
                       </h4>
 
                       <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
@@ -311,7 +323,7 @@ export function EventCalendarWidget({
                       className={buttonVariants({
                         variant: 'outline',
                         size: 'sm',
-                        className: 'gap-1.5 text-xs font-semibold min-h-[44px] sm:min-h-[36px] px-3 shrink-0 cursor-pointer',
+                        className: 'relative z-10 gap-1.5 text-xs font-semibold min-h-[44px] sm:min-h-[36px] px-3 shrink-0 cursor-pointer',
                       })}
                     >
                       <Ticket className="h-3.5 w-3.5" />
@@ -337,6 +349,7 @@ export function EventCalendarWidget({
                         const targetDate = new Date(nearestUpcomingEvent.startDate);
                         setSelectedDate(targetDate);
                         setViewMonth(new Date(targetDate.getFullYear(), targetDate.getMonth(), 1));
+                        onSelectDate?.(targetDate);
                       }}
                       className="inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:underline cursor-pointer bg-primary/10 hover:bg-primary/20 px-3.5 py-2 min-h-[44px] sm:min-h-[36px] rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                     >

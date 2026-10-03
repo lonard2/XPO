@@ -1,5 +1,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { generateICalCalendar, downloadICalFile } from '@/lib/calendar/ical';
+import {
+  generateICalCalendar,
+  downloadICalFile,
+  generateGoogleCalendarUrl,
+  generateOutlookWebUrl,
+  generateCsvSchedule,
+  generatePlainTextSchedule,
+} from '@/lib/calendar/ical';
 import { type EventSummary } from '@/types/discovery';
 
 describe('RFC 5545 iCal Calendar Generator', () => {
@@ -81,5 +88,28 @@ describe('RFC 5545 iCal Calendar Generator', () => {
     expect(ical).toContain('BEGIN:VCALENDAR');
     expect(ical).toContain('END:VCALENDAR');
     expect(ical).not.toContain('BEGIN:VEVENT');
+  });
+
+  it('generates valid Google Calendar and Outlook Web template URLs', () => {
+    const gCalUrl = generateGoogleCalendarUrl(sampleEvents[0]);
+    expect(gCalUrl).toContain('https://calendar.google.com/calendar/render');
+    expect(gCalUrl).toContain('action=TEMPLATE');
+    expect(gCalUrl).toContain('Manufacturing+Indonesia+2026');
+
+    const outlookUrl = generateOutlookWebUrl(sampleEvents[0]);
+    expect(outlookUrl).toContain('https://outlook.live.com/calendar/0/deeplink/compose');
+    expect(outlookUrl).toContain('path=%2Fcalendar%2Faction%2Fcompose');
+    expect(outlookUrl).toContain('Manufacturing+Indonesia+2026');
+  });
+
+  it('generates valid RFC 4180 CSV and plain text itineraries', () => {
+    const csv = generateCsvSchedule(sampleEvents);
+    expect(csv).toContain('Title,Archetype,Venue,Hall,City,Start Date,End Date,Currency,Lowest Price');
+    expect(csv).toContain('Manufacturing Indonesia 2026,INDUSTRIAL_B2B,JIExpo Kemayoran,Hall A1-A3,Jakarta');
+
+    const plainText = generatePlainTextSchedule(sampleEvents);
+    expect(plainText).toContain('XPO MICE Master Schedule (2 confirmed exhibitions)');
+    expect(plainText).toContain('1. Manufacturing Indonesia 2026');
+    expect(plainText).toContain('2. Tokyo AI & Robotics Summit 2026');
   });
 });
