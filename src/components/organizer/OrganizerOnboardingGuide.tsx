@@ -46,14 +46,19 @@ export function OrganizerOnboardingGuide({
   React.useEffect(() => {
     try {
       const dismissed = localStorage.getItem(DISMISS_KEY) === "true";
-      const collapsed = localStorage.getItem(STORAGE_KEY) === "true";
+      const storedCollapsed = localStorage.getItem(STORAGE_KEY);
       setIsDismissed(dismissed);
-      setIsCollapsed(collapsed);
+      if (storedCollapsed !== null) {
+        setIsCollapsed(storedCollapsed === "true");
+      } else {
+        // Auto-collapse if events already exist to prevent pushing live operations below the fold
+        setIsCollapsed(hasEvents);
+      }
     } catch {
-      // Ignore storage errors in restricted environments
+      setIsCollapsed(hasEvents);
     }
     setIsMounted(true);
-  }, []);
+  }, [hasEvents]);
 
   const handleToggleCollapse = () => {
     const next = !isCollapsed;
@@ -61,7 +66,7 @@ export function OrganizerOnboardingGuide({
     try {
       localStorage.setItem(STORAGE_KEY, String(next));
     } catch {
-      // Ignore
+      // Ignore storage errors in restricted environments
     }
   };
 
@@ -94,7 +99,7 @@ export function OrganizerOnboardingGuide({
       title: "2. Define Ticket Passes & Tiers",
       desc: "Set pass capacities, pricing, and cryptographic HMAC-SHA256 digital entry badges.",
       completed: hasTickets,
-      href: `/${locale}/events/new?step=3`,
+      href: hasEvents ? `/${locale}/events/new` : `/${locale}/events/new?step=3`,
       actionLabel: hasTickets ? "Configured" : "Add Tiers",
       icon: Ticket,
     },
@@ -122,8 +127,8 @@ export function OrganizerOnboardingGuide({
   const progressPercent = Math.round((completedCount / milestones.length) * 100);
 
   return (
-    <Card className="border-border/80 bg-card overflow-hidden shadow-xs animate-fade-in">
-      <div className="p-5 bg-primary/5 border-b border-border/70 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <Card className="border-border/80 bg-card overflow-hidden shadow-xs animate-fade-in rounded-2xl">
+      <div className="p-4 sm:p-5 bg-primary/5 border-b border-border/70 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-start gap-3">
           <div className="h-9 w-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">
             <Compass className="h-5 w-5" />
@@ -149,7 +154,9 @@ export function OrganizerOnboardingGuide({
             size="sm"
             onClick={handleToggleCollapse}
             aria-label={isCollapsed ? "Expand onboarding guide" : "Collapse onboarding guide"}
-            className="h-8 px-2.5 text-xs text-muted-foreground hover:text-foreground cursor-pointer gap-1"
+            aria-expanded={!isCollapsed}
+            aria-controls="onboarding-guide-milestones"
+            className="h-9 sm:h-8 min-h-[44px] sm:min-h-[36px] px-3 text-xs text-muted-foreground hover:text-foreground cursor-pointer gap-1"
           >
             {isCollapsed ? (
               <>
@@ -169,7 +176,7 @@ export function OrganizerOnboardingGuide({
             size="sm"
             onClick={handleDismiss}
             aria-label="Dismiss onboarding guide"
-            className="h-8 w-8 p-0 text-muted-foreground hover:text-foreground cursor-pointer"
+            className="h-9 w-9 sm:h-8 sm:w-8 min-h-[44px] min-w-[44px] sm:min-h-[36px] sm:min-w-[36px] p-0 text-muted-foreground hover:text-foreground cursor-pointer flex items-center justify-center"
           >
             <X className="h-4 w-4" />
           </Button>
@@ -177,7 +184,7 @@ export function OrganizerOnboardingGuide({
       </div>
 
       {!isCollapsed && (
-        <div className="p-5 space-y-5">
+        <div id="onboarding-guide-milestones" className="p-5 space-y-5">
           {/* Progress bar */}
           <div className="space-y-1.5">
             <div className="flex items-center justify-between text-xs">
@@ -191,6 +198,7 @@ export function OrganizerOnboardingGuide({
               aria-valuenow={progressPercent}
               aria-valuemin={0}
               aria-valuemax={100}
+              aria-valuetext={`${progressPercent}% (${completedCount} of 4 setup milestones completed)`}
             >
               <div
                 className="bg-primary h-full rounded-full transition-all duration-300"
@@ -252,7 +260,7 @@ export function OrganizerOnboardingGuide({
                         variant: milestone.completed ? "outline" : "primary",
                         size: "sm",
                       }),
-                      "w-full text-xs h-8 gap-1.5 cursor-pointer justify-center"
+                      "w-full text-xs min-h-[44px] sm:min-h-[36px] gap-1.5 cursor-pointer justify-center"
                     )}
                   >
                     <span>{milestone.actionLabel}</span>
@@ -277,7 +285,7 @@ export function OrganizerOnboardingGuide({
                 href={`/${locale}/events/new?template=industrial`}
                 className={cn(
                   buttonVariants({ variant: "outline", size: "sm" }),
-                  "text-xs h-7 px-2.5 cursor-pointer"
+                  "text-xs min-h-[44px] sm:min-h-[36px] px-3 cursor-pointer flex items-center"
                 )}
               >
                 Industrial B2B
@@ -286,7 +294,7 @@ export function OrganizerOnboardingGuide({
                 href={`/${locale}/events/new?template=tech`}
                 className={cn(
                   buttonVariants({ variant: "outline", size: "sm" }),
-                  "text-xs h-7 px-2.5 cursor-pointer"
+                  "text-xs min-h-[44px] sm:min-h-[36px] px-3 cursor-pointer flex items-center"
                 )}
               >
                 Tech Summit
@@ -295,7 +303,7 @@ export function OrganizerOnboardingGuide({
                 href={`/${locale}/events/new?template=gaming`}
                 className={cn(
                   buttonVariants({ variant: "outline", size: "sm" }),
-                  "text-xs h-7 px-2.5 cursor-pointer"
+                  "text-xs min-h-[44px] sm:min-h-[36px] px-3 cursor-pointer flex items-center"
                 )}
               >
                 Pop Culture

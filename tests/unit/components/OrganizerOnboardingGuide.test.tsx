@@ -39,6 +39,12 @@ describe("Component: OrganizerOnboardingGuide", () => {
     );
 
     expect(screen.getByText("3 of 4 Complete")).toBeDefined();
+    
+    // Guide auto-collapses when active events exist; expand to verify milestone badges
+    const expandBtn = screen.getByRole("button", { name: /expand onboarding guide/i });
+    expect(expandBtn).toBeDefined();
+    fireEvent.click(expandBtn);
+
     const doneBadges = screen.getAllByText("Done");
     expect(doneBadges.length).toBe(3);
   });
