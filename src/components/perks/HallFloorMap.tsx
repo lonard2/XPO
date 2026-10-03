@@ -46,21 +46,14 @@ export function HallFloorMap({
   hallName,
   locale = "en",
 }: HallFloorMapProps) {
-  let tPerks: any = (k: string) => k;
-  let tVen: any = (k: string) => k;
-  let tCom: any = (k: string) => k;
-  try {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tPerks = useTranslations("perks");
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tVen = useTranslations("venues");
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tCom = useTranslations("common");
-  } catch {
-    // Fallback
-  }
+  const tPerks = useTranslations("perks");
+  const tVen = useTranslations("venues");
+  const tCom = useTranslations("common");
 
   const [zoomLevel, setZoomLevel] = React.useState<number>(1);
+  const [panOffset, setPanOffset] = React.useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = React.useState(false);
+  const dragStartRef = React.useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const [selectedHall, setSelectedHall] = React.useState<string>("ALL");
   const [selectedBooth, setSelectedBooth] = React.useState<BoothItem | null>(null);
   const [searchQuery, setSearchQuery] = React.useState<string>("");
@@ -87,8 +80,43 @@ export function HallFloorMap({
   }, [booths, selectedHall, searchQuery]);
 
   const handleZoomIn = () => setZoomLevel((z) => Math.min(2.0, z + 0.25));
-  const handleZoomOut = () => setZoomLevel((z) => Math.max(0.75, z - 0.25));
-  const handleResetZoom = () => setZoomLevel(1);
+  const handleZoomOut = () => {
+    setZoomLevel((z) => {
+      const next = Math.max(0.75, z - 0.25);
+      if (next <= 1) setPanOffset({ x: 0, y: 0 });
+      return next;
+    });
+  };
+  const handleResetZoom = () => {
+    setZoomLevel(1);
+    setPanOffset({ x: 0, y: 0 });
+  };
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    if (zoomLevel <= 1) return;
+    setIsDragging(true);
+    dragStartRef.current = { x: e.clientX - panOffset.x, y: e.clientY - panOffset.y };
+    (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
+  };
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (!isDragging || zoomLevel <= 1) return;
+    setPanOffset({
+      x: e.clientX - dragStartRef.current.x,
+      y: e.clientY - dragStartRef.current.y,
+    });
+  };
+
+  const handlePointerUp = (e: React.PointerEvent) => {
+    if (isDragging) {
+      setIsDragging(false);
+      try {
+        (e.currentTarget as HTMLElement).releasePointerCapture?.(e.pointerId);
+      } catch {
+        // Safe fallback
+      }
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -176,10 +204,21 @@ export function HallFloorMap({
       </div>
 
       {/* 3. Interactive SVG Floor Canvas */}
-      <div className="relative overflow-hidden rounded-2xl border border-border bg-slate-950 p-4 sm:p-8 min-h-[440px] flex items-center justify-center select-none shadow-xl">
+      <div
+        className={cn(
+          "relative overflow-hidden rounded-2xl border border-border bg-slate-950 p-4 sm:p-8 min-h-[440px] flex items-center justify-center select-none shadow-xl",
+          zoomLevel > 1 ? (isDragging ? "cursor-grabbing" : "cursor-grab") : "cursor-default"
+        )}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerLeave={handlePointerUp}
+      >
         <div
-          className="transition-transform duration-300 ease-out origin-center w-full max-w-4xl"
-          style={{ transform: `scale(${zoomLevel})` }}
+          className="transition-transform duration-150 ease-out origin-center w-full max-w-4xl touch-none"
+          style={{
+            transform: `translate(${panOffset.x}px, ${panOffset.y}px) scale(${zoomLevel})`,
+          }}
         >
           <svg
             viewBox="0 0 900 500"
@@ -228,7 +267,7 @@ export function HallFloorMap({
               PLENARY KEYNOTE STAGE
             </text>
             <text x="150" y="105" fill="#34d399" fontSize="10" textAnchor="middle" fontFamily="sans-serif">
-              Hall A1 • Multi-Track Audio
+              {hallName || "Main Hall"} - Multi-Track Audio
             </text>
 
             {/* Restrooms & Amenities (Bottom Left) */}

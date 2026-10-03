@@ -51,7 +51,7 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier }: Archet
   ];
 
   return (
-    <div className="space-y-12 font-mono">
+    <div className="space-y-12">
       {/* 1. Terminal / Keynote Hero Header */}
       <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-4">

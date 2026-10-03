@@ -45,19 +45,9 @@ export function InteractiveGuidebook({
   eventTitle,
   locale = "en",
 }: InteractiveGuidebookProps) {
-  let tPerks: any = (k: string) => k;
-  let tEvents: any = (k: string) => k;
-  let tCommon: any = (k: string) => k;
-  try {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tPerks = useTranslations("perks");
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tEvents = useTranslations("events");
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tCommon = useTranslations("common");
-  } catch {
-    // Fallback
-  }
+  const tPerks = useTranslations("perks");
+  const tEvents = useTranslations("events");
+  const tCommon = useTranslations("common");
 
   const [bookmarkedIds, setBookmarkedIds] = React.useState<Set<string>>(new Set());
   const [selectedTrack, setSelectedTrack] = React.useState<string>("ALL");

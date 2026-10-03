@@ -174,6 +174,113 @@ export function EventPageShell({
     // fallback
   }
 
+  const renderPassTiersGrid = () => {
+    if (!ticketTiers || ticketTiers.length === 0) {
+      return (
+        <div className="p-8 sm:p-12 text-center rounded-2xl border border-dashed border-border max-w-lg mx-auto space-y-4">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary mx-auto">
+            <Ticket className="h-6 w-6" />
+          </div>
+          <div className="space-y-1">
+            <h3 className="text-base font-bold text-foreground">
+              {tEvents("noPassesPublished") || "Pass details in preparation"}
+            </h3>
+            <p className="text-xs sm:text-sm text-muted-foreground">
+              {tEvents("noPassesPublishedDesc") || "Pass allocations and pricing tiers will be published once finalized by the organizer."}
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
+            <Link href={`/${locale}/venues/${venue.slug}`}>
+              <Button variant="outline" size="sm" className="text-xs font-semibold gap-1.5 min-h-[40px]">
+                <Building2 className="h-3.5 w-3.5" />
+                <span>{tEvents("exploreVenueDetails") || "Explore Venue Details"}</span>
+              </Button>
+            </Link>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {ticketTiers.map((tier) => {
+          const priceFormatted =
+            tier.price > 0
+              ? formatCurrency(tier.price, (tier.currency || currency) as SupportedCurrency, locale)
+              : tCommon("free") || "Free Admission";
+
+          const isSoldOut = tier.capacity > 0 && ((tier as any).issuedCount ?? tier.soldCount) >= tier.capacity;
+
+          return (
+            <Card
+              key={tier.id}
+              className={cn(
+                "flex flex-col justify-between h-full border-border/80 bg-card p-5 sm:p-6 transition-all duration-300 shadow-sm",
+                isSoldOut
+                  ? "opacity-60 grayscale-[40%]"
+                  : "hover:border-primary/50 hover:shadow-md"
+              )}
+            >
+              <div className="space-y-4 flex-1 flex flex-col justify-between">
+                <div>
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      {(() => {
+                        const tierBadge = (tier as any).tier || (tier.name.toLowerCase().includes("vip") ? "VIP" : tier.name.toLowerCase().includes("exhibitor") ? "EXHIBITOR" : "STANDARD");
+                        return (
+                          <Badge
+                            variant={tierBadge === "VIP" ? "default" : tierBadge === "EXHIBITOR" ? "secondary" : "outline"}
+                            className="text-xs font-bold uppercase mb-2"
+                          >
+                            {tierBadge}
+                          </Badge>
+                        );
+                      })()}
+                      <h3 className="text-lg font-bold text-foreground">{tier.name}</h3>
+                    </div>
+                    <span className="text-lg font-extrabold text-foreground">{priceFormatted}</span>
+                  </div>
+
+                  {(tier as any).description && (
+                    <p className="text-xs text-muted-foreground leading-relaxed mt-2">{(tier as any).description}</p>
+                  )}
+                </div>
+
+                {(tier as any).perks && (tier as any).perks.length > 0 && (
+                  <div className="space-y-2 pt-3 mt-3 border-t border-border/60">
+                    <span className="text-xs font-semibold text-foreground block">
+                      {tTickets("benefits") || "Included Benefits"}:
+                    </span>
+                    <ul className="space-y-1.5 text-xs text-muted-foreground">
+                      {(tier as any).perks.map((perk: string, idx: number) => (
+                        <li key={idx} className="flex items-center gap-2">
+                          <Check className="h-3.5 w-3.5 text-primary shrink-0" />
+                          <span>{perk}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+
+              <div className="pt-6 mt-4 border-t border-border/60">
+                <Button
+                  variant={(tier as any).tier === "VIP" || tier.name?.toLowerCase().includes("vip") ? "default" : "outline"}
+                  className="w-full font-semibold gap-2 min-h-[44px] cursor-pointer"
+                  disabled={isSoldOut}
+                  onClick={handleOpenCheckout}
+                >
+                  <Ticket className="h-4 w-4" />
+                  <span>{isSoldOut ? "Sold Out" : tTickets("bookPass") || "Book Pass"}</span>
+                </Button>
+              </div>
+            </Card>
+          );
+        })}
+      </div>
+    );
+  };
+
   return (
     <div
       id="event-page-root"
@@ -430,105 +537,48 @@ export function EventPageShell({
       </header>
 
       {/* 4. Main Content Container */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 pb-28 md:pb-16 space-y-12">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 pb-36 md:pb-16 space-y-12">
         {/* Tab 1: Overview & Archetype Specialized View */}
         {activeTab === "overview" && (
           <div className="space-y-12">
             {children}
 
-            {/* In-page Pass Tiers Section */}
+            {/* Overview Pass Tiers Callout Banner */}
             {ticketTiers && ticketTiers.length > 0 && (
-              <section id="tickets-section" className="space-y-6 pt-6 border-t border-border/80">
-                <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
-                  <div>
-                    <div className="flex items-center gap-2 text-xs font-semibold text-primary uppercase tracking-wider mb-1">
+              <section id="tickets-section" className="pt-8 border-t border-border/80">
+                <div className="rounded-2xl border border-primary/20 bg-gradient-to-r from-primary/5 via-card to-card p-6 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm">
+                  <div className="space-y-2 max-w-xl">
+                    <div className="flex items-center gap-2 text-xs font-semibold text-primary uppercase tracking-wider">
                       <Ticket className="h-4 w-4" />
                       <span>{tTickets("ticketTiers") || "Pass Tiers"}</span>
                     </div>
-                    <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+                    <h3 className="text-xl sm:text-2xl font-bold text-foreground">
                       {tTickets("checkoutTitle") || "Select Your Admission Tier"}
-                    </h2>
-                    <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-                      {tTickets("digitalPassSubtitle") || "Cryptographically verified QR passes issued immediately upon reservation."}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground">
+                      {tTickets("digitalPassSubtitle") || "Cryptographically verified QR passes issued immediately upon reservation."} Starting from <span className="font-bold text-foreground">{formattedPrice}</span>.
                     </p>
                   </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {ticketTiers.map((tier) => {
-                    const priceFormatted =
-                      tier.price > 0
-                        ? formatCurrency(tier.price, (tier.currency || currency) as SupportedCurrency, locale)
-                        : tCommon("free") || "Free Admission";
-
-                    const isSoldOut = tier.capacity > 0 && ((tier as any).issuedCount ?? tier.soldCount) >= tier.capacity;
-
-                    return (
-                      <Card
-                        key={tier.id}
-                        className={cn(
-                          "flex flex-col justify-between h-full border-border/80 bg-card p-5 sm:p-6 transition-all duration-300 shadow-sm",
-                          isSoldOut
-                            ? "opacity-60 grayscale-[40%]"
-                            : "hover:border-primary/50 hover:shadow-md"
-                        )}
-                      >
-                        <div className="space-y-4 flex-1 flex flex-col justify-between">
-                          <div>
-                            <div className="flex items-start justify-between gap-2">
-                              <div>
-                                {(() => {
-                                  const tierBadge = (tier as any).tier || (tier.name.toLowerCase().includes("vip") ? "VIP" : tier.name.toLowerCase().includes("exhibitor") ? "EXHIBITOR" : "STANDARD");
-                                  return (
-                                    <Badge
-                                      variant={tierBadge === "VIP" ? "default" : tierBadge === "EXHIBITOR" ? "secondary" : "outline"}
-                                      className="text-xs font-bold uppercase mb-2"
-                                    >
-                                      {tierBadge}
-                                    </Badge>
-                                  );
-                                })()}
-                                <h3 className="text-lg font-bold text-foreground">{tier.name}</h3>
-                              </div>
-                              <span className="text-lg font-extrabold text-foreground">{priceFormatted}</span>
-                            </div>
-
-                            {(tier as any).description && (
-                              <p className="text-xs text-muted-foreground leading-relaxed mt-2">{(tier as any).description}</p>
-                            )}
-                          </div>
-
-                          {(tier as any).perks && (tier as any).perks.length > 0 && (
-                            <div className="space-y-2 pt-3 mt-3 border-t border-border/60">
-                              <span className="text-xs font-semibold text-foreground block">
-                                {tTickets("benefits") || "Included Benefits"}:
-                              </span>
-                              <ul className="space-y-1.5 text-xs text-muted-foreground">
-                                {(tier as any).perks.map((perk: string, idx: number) => (
-                                  <li key={idx} className="flex items-center gap-2">
-                                    <Check className="h-3.5 w-3.5 text-primary shrink-0" />
-                                    <span>{perk}</span>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
-                        </div>
-
-                        <div className="pt-6 mt-4 border-t border-border/60">
-                          <Button
-                            variant={(tier as any).tier === "VIP" || tier.name?.toLowerCase().includes("vip") ? "default" : "outline"}
-                            className="w-full font-semibold gap-2 min-h-[44px] cursor-pointer"
-                            disabled={isSoldOut}
-                            onClick={handleOpenCheckout}
-                          >
-                            <Ticket className="h-4 w-4" />
-                            <span>{isSoldOut ? "Sold Out" : tTickets("bookPass") || "Book Pass"}</span>
-                          </Button>
-                        </div>
-                      </Card>
-                    );
-                  })}
+                  <div className="flex flex-wrap items-center gap-3 shrink-0">
+                    <Button
+                      size="lg"
+                      variant="archetype"
+                      onClick={() => setActiveTab("tickets")}
+                      className="font-semibold gap-2 min-h-[44px] cursor-pointer shadow-md"
+                    >
+                      <Ticket className="h-4 w-4" />
+                      <span>{tEvents("checkPassTiers") || "View Pass Tiers"} ({ticketTiers.length})</span>
+                    </Button>
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      onClick={handleOpenCheckout}
+                      className="font-semibold gap-2 min-h-[44px] cursor-pointer"
+                    >
+                      <span>{tEvents("reservePasses") || "Reserve Passes"}</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
               </section>
             )}
@@ -629,114 +679,15 @@ export function EventPageShell({
               </div>
             </div>
 
-            {ticketTiers && ticketTiers.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {ticketTiers.map((tier) => {
-                  const priceFormatted =
-                    tier.price > 0
-                      ? formatCurrency(tier.price, (tier.currency || currency) as SupportedCurrency, locale)
-                      : tCommon("free") || "Free Admission";
-
-                  const isSoldOut = tier.capacity > 0 && ((tier as any).issuedCount ?? tier.soldCount) >= tier.capacity;
-
-                  return (
-                    <Card
-                      key={tier.id}
-                      className={cn(
-                        "flex flex-col justify-between h-full border-border/80 bg-card p-5 sm:p-6 transition-all duration-300 shadow-sm",
-                        isSoldOut
-                          ? "opacity-60 grayscale-[40%]"
-                          : "hover:border-primary/50 hover:shadow-md"
-                      )}
-                    >
-                      <div className="space-y-4 flex-1 flex flex-col justify-between">
-                        <div>
-                          <div className="flex items-start justify-between gap-2">
-                            <div>
-                              {(() => {
-                                const tierBadge = (tier as any).tier || (tier.name.toLowerCase().includes("vip") ? "VIP" : tier.name.toLowerCase().includes("exhibitor") ? "EXHIBITOR" : "STANDARD");
-                                return (
-                                  <Badge
-                                    variant={tierBadge === "VIP" ? "default" : tierBadge === "EXHIBITOR" ? "secondary" : "outline"}
-                                    className="text-xs font-bold uppercase mb-2"
-                                  >
-                                    {tierBadge}
-                                  </Badge>
-                                );
-                              })()}
-                              <h3 className="text-lg font-bold text-foreground">{tier.name}</h3>
-                            </div>
-                            <span className="text-lg font-extrabold text-foreground">{priceFormatted}</span>
-                          </div>
-
-                          {(tier as any).description && (
-                            <p className="text-xs text-muted-foreground leading-relaxed mt-2">{(tier as any).description}</p>
-                          )}
-                        </div>
-
-                        {(tier as any).perks && (tier as any).perks.length > 0 && (
-                          <div className="space-y-2 pt-3 mt-3 border-t border-border/60">
-                            <span className="text-xs font-semibold text-foreground block">
-                              {tTickets("benefits") || "Included Benefits"}:
-                            </span>
-                            <ul className="space-y-1.5 text-xs text-muted-foreground">
-                              {(tier as any).perks.map((perk: string, idx: number) => (
-                                <li key={idx} className="flex items-center gap-2">
-                                  <Check className="h-3.5 w-3.5 text-primary shrink-0" />
-                                  <span>{perk}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="pt-6 mt-4 border-t border-border/60">
-                        <Button
-                          variant={(tier as any).tier === "VIP" || tier.name?.toLowerCase().includes("vip") ? "default" : "outline"}
-                          className="w-full font-semibold gap-2 min-h-[44px] cursor-pointer"
-                          disabled={isSoldOut}
-                          onClick={handleOpenCheckout}
-                        >
-                          <Ticket className="h-4 w-4" />
-                          <span>{isSoldOut ? "Sold Out" : tTickets("bookPass") || "Book Pass"}</span>
-                        </Button>
-                      </div>
-                    </Card>
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="p-8 sm:p-12 text-center rounded-2xl border border-dashed border-border max-w-lg mx-auto space-y-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary mx-auto">
-                  <Ticket className="h-6 w-6" />
-                </div>
-                <div className="space-y-1">
-                  <h3 className="text-base font-bold text-foreground">
-                    {tEvents("noPassesPublished") || "Pass details in preparation"}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-muted-foreground">
-                    {tEvents("noPassesPublishedDesc") || "Pass allocations and pricing tiers will be published once finalized by the organizer."}
-                  </p>
-                </div>
-                <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
-                  <Link href={`/${locale}/venues/${venue.slug}`}>
-                    <Button variant="outline" size="sm" className="text-xs font-semibold gap-1.5 min-h-[40px]">
-                      <Building2 className="h-3.5 w-3.5" />
-                      <span>{tEvents("exploreVenueDetails") || "Explore Venue Details"}</span>
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            )}
+            {renderPassTiersGrid()}
           </div>
         )}
       </main>
 
-      {/* 5. Sticky Mobile Action Drawer (<768px) */}
+      {/* 5. Sticky Mobile Action Drawer (<768px) - elevated to bottom-16 above MobileBottomNav */}
       <div
         className={cn(
-          "fixed bottom-0 inset-x-0 z-40 md:hidden bg-card/95 backdrop-blur-md border-t border-border p-3 shadow-2xl transition-all duration-300"
+          "fixed bottom-16 inset-x-0 z-40 md:hidden bg-card/95 backdrop-blur-md border-t border-border p-3 shadow-2xl transition-all duration-300"
         )}
       >
         <div className="flex items-center justify-between gap-3 max-w-md mx-auto">
