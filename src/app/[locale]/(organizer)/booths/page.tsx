@@ -14,6 +14,9 @@ import {
   Tag,
   Upload,
   Check,
+  Trash2,
+  UserMinus,
+  X,
 } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -121,6 +124,11 @@ export default function BoothManagerPage() {
   const [csvRawText, setCsvRawText] = React.useState("");
   const [parsedCsvRows, setParsedCsvRows] = React.useState<CsvParsedRow[]>([]);
   const [isImporting, setIsImporting] = React.useState(false);
+  const [csvImportError, setCsvImportError] = React.useState("");
+
+  // Decommission / Delete Booth State
+  const [deletingBooth, setDeletingBooth] = React.useState<BoothItem | null>(null);
+  const [isDeleting, setIsDeleting] = React.useState(false);
 
   const fetchBoothsAndEvents = React.useCallback(async () => {
     setIsLoading(true);
@@ -294,7 +302,7 @@ export default function BoothManagerPage() {
     e.preventDefault();
     setFormError("");
 
-    if (!formBoothNumber || !formHallName) {
+    if (!formBoothNumber.trim() || !formHallName.trim()) {
       setFormError("Booth number and hall name are mandatory.");
       return;
     }
@@ -318,30 +326,15 @@ export default function BoothManagerPage() {
           }),
         });
 
-        if (res.ok) {
-          const data = await res.json();
-          setBooths(booths.map((b) => (b.id === editingBooth.id ? data.booth : b)));
-        } else {
-          // Local fallback update
-          setBooths(
-            booths.map((b) =>
-              b.id === editingBooth.id
-                ? {
-                    ...b,
-                    companyName: formCompanyName,
-                    boothNumber: formBoothNumber,
-                    hallName: formHallName,
-                    industry: formIndustry,
-                    websiteUrl: cleanWebsiteUrl,
-                    description: formDescription,
-                  }
-                : b
-            )
-          );
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || "Failed to update booth lot.");
         }
+        setBooths(booths.map((b) => (b.id === editingBooth.id ? data.booth : b)));
+        setToastMessage(`Booth lot ${formBoothNumber} updated successfully.`);
       } else {
         // Create new
-        const targetEventId = formEventId || (events[0]?.id || "ev-1");
+        const targetEventId = formEventId || (selectedEventId !== "ALL" ? selectedEventId : (events[0]?.id || "ev-1"));
         const cleanWebsiteUrl = sanitizeUrl(formWebsiteUrl);
         const res = await fetch("/api/organizer/booths", {
           method: "POST",
@@ -357,26 +350,14 @@ export default function BoothManagerPage() {
           }),
         });
 
-        if (res.ok) {
-          const data = await res.json();
-          setBooths([...booths, data.booth]);
-        } else {
-          // Local fallback creation
-          const newB: BoothItem = {
-            id: `b-${Date.now()}`,
-            eventId: targetEventId,
-            companyName: formCompanyName,
-            boothNumber: formBoothNumber,
-            hallName: formHallName,
-            industry: formIndustry,
-            websiteUrl: cleanWebsiteUrl,
-            description: formDescription,
-          };
-          setBooths([...booths, newB]);
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || "Failed to allocate booth lot.");
         }
+        setBooths([...booths, data.booth]);
+        setToastMessage(`New booth lot ${formBoothNumber} allocated successfully.`);
       }
 
-      setToastMessage("Booth lot assignment saved successfully.");
       setIsModalOpen(false);
       setTimeout(() => setToastMessage(""), 3500);
     } catch (err) {
@@ -386,9 +367,61 @@ export default function BoothManagerPage() {
     }
   };
 
+  // Delete / Decommission Booth Handler
+  const handleDeleteBooth = async () => {
+    if (!deletingBooth) return;
+    setIsDeleting(true);
+    try {
+      const res = await fetch(`/api/organizer/booths?id=${deletingBooth.id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to decommission booth.");
+      }
+      setBooths(booths.filter((b) => b.id !== deletingBooth.id));
+      setToastMessage(`Booth lot "${deletingBooth.boothNumber}" decommissioned successfully.`);
+      setDeletingBooth(null);
+      setTimeout(() => setToastMessage(""), 3500);
+    } catch (err) {
+      setToastMessage(`Decommission failed: ${(err as Error).message}`);
+      setTimeout(() => setToastMessage(""), 3500);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  // One-Click Vacate / Release Tenant Handler
+  const handleVacateBooth = async (booth: BoothItem) => {
+    try {
+      const res = await fetch("/api/organizer/booths", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: booth.id,
+          companyName: "",
+          industry: null,
+          websiteUrl: null,
+          description: null,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to release tenant.");
+      }
+      setBooths(booths.map((b) => (b.id === booth.id ? data.booth : b)));
+      setToastMessage(`Tenant released from lot "${booth.boothNumber}". Space is now available.`);
+      setTimeout(() => setToastMessage(""), 3500);
+    } catch (err) {
+      setToastMessage(`Failed to release tenant: ${(err as Error).message}`);
+      setTimeout(() => setToastMessage(""), 3500);
+    }
+  };
+
   // Parse CSV text into preview rows with quote-aware parsing and bounded line count
   const handleParseCsv = (text: string) => {
     setCsvRawText(text);
+    setCsvImportError("");
     if (!text.trim()) {
       setParsedCsvRows([]);
       return;
@@ -427,32 +460,64 @@ export default function BoothManagerPage() {
     setParsedCsvRows(results);
   };
 
-  // Commit CSV batch
+  // Commit CSV batch with real Database Persistence
   const handleCommitCsvImport = async () => {
     const validRows = parsedCsvRows.filter((r) => r.valid);
     if (validRows.length === 0) return;
 
     setIsImporting(true);
-    const targetEventId = formEventId || (events[0]?.id || "ev-1");
+    setCsvImportError("");
+    const targetEventId = formEventId || (selectedEventId !== "ALL" ? selectedEventId : (events[0]?.id || "ev-1"));
 
-    const newItems: BoothItem[] = validRows.map((r, idx) => ({
-      id: `b-csv-${Date.now()}-${idx}`,
-      eventId: targetEventId,
-      boothNumber: r.boothNumber,
-      hallName: r.hallName,
-      companyName: r.companyName,
-      industry: r.industry || "General Industry",
-      websiteUrl: r.websiteUrl,
-      description: r.description,
-    }));
+    try {
+      const res = await fetch("/api/organizer/booths", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          bulk: true,
+          eventId: targetEventId,
+          booths: validRows.map((r) => ({
+            boothNumber: r.boothNumber,
+            hallName: r.hallName,
+            companyName: r.companyName,
+            industry: r.industry || "General Industry",
+            websiteUrl: r.websiteUrl,
+            description: r.description,
+          })),
+        }),
+      });
 
-    setBooths((prev) => [...prev, ...newItems]);
-    setIsImporting(false);
-    setIsCsvModalOpen(false);
-    setCsvRawText("");
-    setParsedCsvRows([]);
-    setToastMessage(`Successfully imported ${validRows.length} booth lots from CSV.`);
-    setTimeout(() => setToastMessage(""), 3500);
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to commit bulk CSV import to database.");
+      }
+
+      if (data.booths) {
+        setBooths(data.booths);
+      } else {
+        const newItems: BoothItem[] = validRows.map((r, idx) => ({
+          id: `b-csv-${Date.now()}-${idx}`,
+          eventId: targetEventId,
+          boothNumber: r.boothNumber,
+          hallName: r.hallName,
+          companyName: r.companyName,
+          industry: r.industry || "General Industry",
+          websiteUrl: r.websiteUrl,
+          description: r.description,
+        }));
+        setBooths((prev) => [...prev, ...newItems]);
+      }
+
+      setIsCsvModalOpen(false);
+      setCsvRawText("");
+      setParsedCsvRows([]);
+      setToastMessage(`Successfully persisted ${validRows.length} booth lots to database.`);
+      setTimeout(() => setToastMessage(""), 3500);
+    } catch (err) {
+      setCsvImportError((err as Error).message);
+    } finally {
+      setIsImporting(false);
+    }
   };
 
   return (
@@ -460,16 +525,15 @@ export default function BoothManagerPage() {
       {/* Header & Fast Actions */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/80 pb-4">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-primary">
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+              {tOrg("boothsTitle") || "Booth & Tenant Management Roster"}
+            </h1>
+            <Badge variant="secondary" size="sm" className="font-semibold">
               {tOrg("managementHub") || "Exhibitor Operations"}
-            </span>
-            <Badge variant="secondary" size="sm" className="font-semibold">Hall Floor Roster</Badge>
+            </Badge>
           </div>
-          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground mt-1">
-            {tOrg("boothsTitle") || "Booth & Tenant Management Roster"}
-          </h1>
-          <p className="text-xs text-muted-foreground mt-0.5">
+          <p className="text-xs text-muted-foreground mt-1">
             {tOrg("boothsSubtitle") || "Assign exhibitors to specific hall grids, track booth occupancy, and manage floor contracts."}
           </p>
         </div>
@@ -479,7 +543,7 @@ export default function BoothManagerPage() {
             variant="outline"
             size="sm"
             onClick={() => setIsCsvModalOpen(true)}
-            className="text-xs gap-1.5 h-9 cursor-pointer"
+            className="text-xs gap-1.5 min-h-[44px] px-4 cursor-pointer"
           >
             <Upload className="h-4 w-4 text-primary" />
             <span>Import CSV Roster</span>
@@ -489,7 +553,7 @@ export default function BoothManagerPage() {
             variant="primary"
             size="sm"
             onClick={handleOpenCreateModal}
-            className="text-xs gap-1.5 h-9 cursor-pointer shadow-xs"
+            className="text-xs gap-1.5 min-h-[44px] px-4 cursor-pointer shadow-xs"
           >
             <Plus className="h-4 w-4" />
             <span>{tOrg("addBooth") || "Add Booth Lot"}</span>
@@ -499,9 +563,23 @@ export default function BoothManagerPage() {
 
       {/* TOAST MESSAGE */}
       {toastMessage && (
-        <div className="p-3.5 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center gap-2.5 text-xs text-emerald-600 dark:text-emerald-400 animate-fade-in shadow-xs">
-          <CheckCircle2 className="h-4 w-4 shrink-0" />
-          <span className="font-medium">{toastMessage}</span>
+        <div
+          role="status"
+          aria-live="polite"
+          className="p-3.5 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center justify-between gap-2.5 text-xs text-emerald-600 dark:text-emerald-400 animate-fade-in shadow-xs"
+        >
+          <div className="flex items-center gap-2.5">
+            <CheckCircle2 className="h-4 w-4 shrink-0" />
+            <span className="font-medium">{toastMessage}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setToastMessage("")}
+            className="text-emerald-600 hover:text-emerald-800 dark:text-emerald-400 p-1 cursor-pointer"
+            aria-label="Dismiss notification"
+          >
+            <X className="h-4 w-4" />
+          </button>
         </div>
       )}
 
@@ -549,13 +627,13 @@ export default function BoothManagerPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {/* Search Input */}
           <div className="relative">
-            <Search className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
+            <Search className="h-4 w-4 absolute left-3 top-3.5 text-muted-foreground pointer-events-none" />
             <input
               id="booth-search-input"
               aria-label={tOrg("searchBooths") || "Search exhibitor or booth #"}
               type="text"
               placeholder={tOrg("searchBooths") || "Search exhibitor or booth #..."}
-              className="w-full pl-9 pr-3 py-1.5 bg-background border border-input rounded-md text-xs focus:outline-none focus:ring-2 focus:ring-ring"
+              className="w-full pl-9 pr-3 h-11 min-h-[44px] bg-background border border-input rounded-md text-xs focus:outline-none focus:ring-2 focus:ring-ring"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -566,7 +644,7 @@ export default function BoothManagerPage() {
             <select
               id="booth-hall-filter"
               aria-label={tOrg("allHalls") || "Filter by Exhibition Hall"}
-              className="w-full py-1.5 px-3 bg-background border border-input rounded-md text-xs"
+              className="w-full h-11 min-h-[44px] px-3 bg-background border border-input rounded-md text-xs"
               value={selectedHall}
               onChange={(e) => setSelectedHall(e.target.value)}
             >
@@ -584,7 +662,7 @@ export default function BoothManagerPage() {
             <select
               id="booth-status-filter"
               aria-label={tOrg("allStatuses") || "Filter by Occupancy Status"}
-              className="w-full py-1.5 px-3 bg-background border border-input rounded-md text-xs"
+              className="w-full h-11 min-h-[44px] px-3 bg-background border border-input rounded-md text-xs"
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
             >
@@ -599,7 +677,7 @@ export default function BoothManagerPage() {
             <select
               id="booth-event-filter"
               aria-label={tOrg("allEvents") || "Filter by Registered Event"}
-              className="w-full py-1.5 px-3 bg-background border border-input rounded-md text-xs"
+              className="w-full h-11 min-h-[44px] px-3 bg-background border border-input rounded-md text-xs"
               value={selectedEventId}
               onChange={(e) => setSelectedEventId(e.target.value)}
             >
@@ -612,143 +690,214 @@ export default function BoothManagerPage() {
             </select>
           </div>
         </div>
+
+        {/* Filtered Tally Summary Strip */}
+        <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-border/60 text-xs text-muted-foreground">
+          <div>
+            Showing <span className="font-semibold text-foreground">{filteredBooths.length}</span> of{" "}
+            <span className="font-semibold text-foreground">{totalCount}</span> floor lots{" "}
+            <span className="text-muted-foreground">
+              ({filteredBooths.filter((b) => !b.companyName || b.companyName.trim() === "").length} vacant)
+            </span>
+          </div>
+          {(searchQuery || selectedHall !== "ALL" || statusFilter !== "ALL" || selectedEventId !== "ALL") && (
+            <button
+              type="button"
+              onClick={() => {
+                setSearchQuery("");
+                setSelectedHall("ALL");
+                setStatusFilter("ALL");
+                setSelectedEventId("ALL");
+              }}
+              className="text-xs text-primary hover:underline font-medium cursor-pointer"
+            >
+              Reset filters
+            </button>
+          )}
+        </div>
       </div>
 
-      {/* BOOTHS ROSTER GRID */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredBooths.map((booth) => {
-          const isOccupied = booth.companyName && booth.companyName.trim() !== "";
-          return (
-            <Card
-              key={booth.id}
-              className={cn(
-                "p-5 border flex flex-col justify-between transition-all hover:shadow-md",
-                isOccupied
-                  ? "border-border bg-card"
-                  : "border-emerald-500/40 bg-emerald-500/5"
-              )}
-            >
-              <div className="space-y-3">
-                <div className="flex items-start justify-between gap-2">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono text-sm font-bold text-foreground">
-                        {booth.boothNumber}
-                      </span>
-                      <Badge variant="outline" size="sm">{booth.hallName}</Badge>
-                    </div>
-                    <h3 className="text-base font-bold text-foreground mt-1 truncate">
-                      {isOccupied ? booth.companyName : "Available Lot"}
-                    </h3>
-                  </div>
+      {/* BOOTHS ROSTER SECTION */}
+      <section aria-labelledby="booths-roster-heading" className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 id="booths-roster-heading" className="text-base font-bold text-foreground">
+            Exhibitor Floor Lot Roster
+          </h2>
+          <span className="text-xs text-muted-foreground">
+            {filteredBooths.length} {filteredBooths.length === 1 ? "lot displayed" : "lots displayed"}
+          </span>
+        </div>
 
-                  <Badge variant={isOccupied ? "secondary" : "success"} size="sm">
-                    {isOccupied ? "Occupied" : "Available"}
-                  </Badge>
-                </div>
-
-                <div className="space-y-1 text-xs text-muted-foreground pt-2 border-t border-border/60">
-                  {booth.industry && (
-                    <div className="flex items-center gap-1.5">
-                      <Tag className="h-3.5 w-3.5 text-primary shrink-0" />
-                      <span>{booth.industry}</span>
-                    </div>
-                  )}
-
-                  {booth.description && (
-                    <p className="text-xs text-muted-foreground line-clamp-2 mt-1">
-                      {booth.description}
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              <div className="pt-4 border-t border-border/60 flex items-center justify-between gap-2 mt-4">
-                {booth.websiteUrl && sanitizeUrl(booth.websiteUrl) ? (
-                  <a
-                    href={sanitizeUrl(booth.websiteUrl)!}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs text-primary hover:underline flex items-center gap-1 truncate"
+        {filteredBooths.length > 0 && (
+          <ul role="list" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 list-none p-0 m-0">
+            {filteredBooths.map((booth) => {
+              const isOccupied = booth.companyName && booth.companyName.trim() !== "";
+              return (
+                <li key={booth.id} className="list-none">
+                  <Card
+                    className={cn(
+                      "p-5 border flex flex-col justify-between h-full transition-all hover:shadow-md",
+                      isOccupied
+                        ? "border-border bg-card"
+                        : "border-emerald-500/40 bg-emerald-500/5"
+                    )}
                   >
-                    <Globe className="h-3.5 w-3.5" />
-                    <span className="truncate">{booth.websiteUrl.replace(/^https?:\/\//, "")}</span>
-                  </a>
-                ) : (
-                  <span className="text-xs text-muted-foreground">Unassigned tenant</span>
-                )}
+                    <div className="space-y-3">
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="font-mono text-sm font-bold text-foreground">
+                              {booth.boothNumber}
+                            </span>
+                            <Badge variant="outline" size="sm">{booth.hallName}</Badge>
+                          </div>
+                          <h3 className="text-base font-bold text-foreground mt-1 truncate">
+                            {isOccupied ? booth.companyName : "Available Lot"}
+                          </h3>
+                        </div>
 
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="text-xs h-7 gap-1"
-                  onClick={() => handleOpenEditModal(booth)}
-                >
-                  <Edit2 className="h-3 w-3" />
-                  <span>{isOccupied ? "Edit" : "Assign"}</span>
-                </Button>
-              </div>
-            </Card>
-          );
-        })}
-      </div>
+                        <Badge variant={isOccupied ? "secondary" : "success"} size="sm">
+                          {isOccupied ? "Occupied" : "Available"}
+                        </Badge>
+                      </div>
 
-      {booths.length === 0 ? (
-        <Card className="p-8 text-center bg-card rounded-xl border border-border space-y-4 shadow-xs">
-          <div className="h-12 w-12 rounded-2xl bg-purple-500/10 text-purple-600 dark:text-purple-400 mx-auto flex items-center justify-center">
-            <Store className="h-6 w-6" />
-          </div>
-          <div className="space-y-1.5 max-w-md mx-auto">
-            <h3 className="text-base font-bold text-foreground">
-              No Exhibitor Booths Allocated Yet
-            </h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              Exhibition booths map commercial exhibitors and sponsors to specific venue hall lots. You can create lots individually or bulk-import an entire floor roster via CSV.
+                      <div className="space-y-1 text-xs text-muted-foreground pt-2 border-t border-border/60">
+                        {booth.industry && (
+                          <div className="flex items-center gap-1.5">
+                            <Tag className="h-3.5 w-3.5 text-primary shrink-0" />
+                            <span>{booth.industry}</span>
+                          </div>
+                        )}
+
+                        {booth.description && (
+                          <p className="text-xs text-muted-foreground line-clamp-2 mt-1">
+                            {booth.description}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="pt-4 border-t border-border/60 flex items-center justify-between gap-2 mt-4">
+                      <div className="truncate min-w-0">
+                        {booth.websiteUrl && sanitizeUrl(booth.websiteUrl) ? (
+                          <a
+                            href={sanitizeUrl(booth.websiteUrl)!}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs text-primary hover:underline flex items-center gap-1 truncate"
+                          >
+                            <Globe className="h-3.5 w-3.5 shrink-0" />
+                            <span className="truncate">{booth.websiteUrl.replace(/^https?:\/\//, "")}</span>
+                          </a>
+                        ) : (
+                          <span className="text-xs text-muted-foreground truncate block">
+                            {isOccupied ? "No website linked" : "Available lot"}
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        {isOccupied && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="text-xs min-h-[36px] px-2.5 gap-1 text-muted-foreground hover:text-amber-600 dark:hover:text-amber-400 cursor-pointer"
+                            onClick={() => handleVacateBooth(booth)}
+                            title="Vacate / Release Tenant"
+                            aria-label={`Vacate tenant from booth ${booth.boothNumber}`}
+                          >
+                            <UserMinus className="h-3.5 w-3.5" />
+                            <span className="hidden sm:inline">Vacate</span>
+                          </Button>
+                        )}
+
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="text-xs min-h-[36px] px-2.5 gap-1 cursor-pointer"
+                          onClick={() => handleOpenEditModal(booth)}
+                          aria-label={isOccupied ? `Edit booth ${booth.boothNumber}` : `Assign booth ${booth.boothNumber}`}
+                        >
+                          <Edit2 className="h-3.5 w-3.5" />
+                          <span>{isOccupied ? "Edit" : "Assign"}</span>
+                        </Button>
+
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="text-xs min-h-[36px] px-2 text-destructive/80 hover:text-destructive hover:border-destructive/40 cursor-pointer"
+                          onClick={() => setDeletingBooth(booth)}
+                          title="Decommission Lot"
+                          aria-label={`Decommission booth ${booth.boothNumber}`}
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
+                      </div>
+                    </div>
+                  </Card>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+
+        {booths.length === 0 ? (
+          <Card className="p-8 text-center bg-card rounded-xl border border-border space-y-4 shadow-xs">
+            <div className="h-12 w-12 rounded-2xl bg-purple-500/10 text-purple-600 dark:text-purple-400 mx-auto flex items-center justify-center">
+              <Store className="h-6 w-6" />
+            </div>
+            <div className="space-y-1.5 max-w-md mx-auto">
+              <h3 className="text-base font-bold text-foreground">
+                No Exhibitor Booths Allocated Yet
+              </h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Exhibition booths map commercial exhibitors and sponsors to specific venue hall lots. You can create lots individually or bulk-import an entire floor roster via CSV.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-2.5 pt-2">
+              <Button
+                size="sm"
+                variant="primary"
+                onClick={handleOpenCreateModal}
+                className="text-xs gap-1.5 min-h-[44px] px-4 cursor-pointer"
+              >
+                <Plus className="h-3.5 w-3.5" />
+                <span>Create First Booth Lot</span>
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setIsCsvModalOpen(true)}
+                className="text-xs gap-1.5 min-h-[44px] px-4 cursor-pointer"
+              >
+                <Upload className="h-3.5 w-3.5" />
+                <span>Bulk Import via CSV</span>
+              </Button>
+            </div>
+          </Card>
+        ) : filteredBooths.length === 0 ? (
+          <div className="p-12 text-center bg-card rounded-xl border border-border space-y-3">
+            <Store className="h-10 w-10 text-muted-foreground mx-auto" />
+            <h3 className="text-sm font-bold text-foreground">No Booths Found</h3>
+            <p className="text-xs text-muted-foreground max-w-sm mx-auto">
+              No exhibitor booths match your active search keyword or hall filters.
             </p>
-          </div>
-          <div className="flex flex-wrap items-center justify-center gap-2.5 pt-2">
-            <Button
-              size="sm"
-              variant="primary"
-              onClick={handleOpenCreateModal}
-              className="text-xs gap-1.5 cursor-pointer"
-            >
-              <Plus className="h-3.5 w-3.5" />
-              <span>Create First Booth Lot</span>
-            </Button>
             <Button
               size="sm"
               variant="outline"
-              onClick={() => setIsCsvModalOpen(true)}
-              className="text-xs gap-1.5 cursor-pointer"
+              onClick={() => {
+                setSearchQuery("");
+                setSelectedHall("ALL");
+                setStatusFilter("ALL");
+                setSelectedEventId("ALL");
+              }}
+              className="text-xs min-h-[44px] px-4 cursor-pointer"
             >
-              <Upload className="h-3.5 w-3.5" />
-              <span>Bulk Import via CSV</span>
+              Clear Filters
             </Button>
           </div>
-        </Card>
-      ) : filteredBooths.length === 0 ? (
-        <div className="p-12 text-center bg-card rounded-xl border border-border space-y-3">
-          <Store className="h-10 w-10 text-muted-foreground mx-auto" />
-          <h3 className="text-sm font-bold text-foreground">No Booths Found</h3>
-          <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-            No exhibitor booths match your active search keyword or hall filters.
-          </p>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => {
-              setSearchQuery("");
-              setSelectedHall("ALL");
-              setStatusFilter("ALL");
-              setSelectedEventId("ALL");
-            }}
-            className="text-xs cursor-pointer"
-          >
-            Clear Filters
-          </Button>
-        </div>
-      ) : null}
+        ) : null}
+      </section>
 
       {/* EXHIBITOR ALLOCATION MODAL */}
       <Modal
@@ -760,7 +909,11 @@ export default function BoothManagerPage() {
       >
         <form onSubmit={handleSaveBooth} className="space-y-4 pt-2">
           {formError && (
-            <div className="p-3 bg-destructive/10 border border-destructive/30 rounded-lg flex items-center gap-2 text-xs text-destructive">
+            <div
+              role="alert"
+              aria-live="assertive"
+              className="p-3 bg-destructive/10 border border-destructive/30 rounded-lg flex items-center gap-2 text-xs text-destructive"
+            >
               <AlertCircle className="h-4 w-4 shrink-0" />
               <span>{formError}</span>
             </div>
@@ -830,6 +983,7 @@ export default function BoothManagerPage() {
               variant="outline"
               size="sm"
               onClick={() => setIsModalOpen(false)}
+              className="min-h-[44px] px-4 cursor-pointer text-xs"
             >
               Cancel
             </Button>
@@ -838,6 +992,7 @@ export default function BoothManagerPage() {
               variant="primary"
               size="sm"
               disabled={isSubmitting}
+              className="min-h-[44px] px-4 cursor-pointer text-xs"
             >
               {isSubmitting ? "Saving..." : "Save Booth"}
             </Button>
@@ -854,6 +1009,17 @@ export default function BoothManagerPage() {
         size="lg"
       >
         <div className="space-y-4 pt-2">
+          {csvImportError && (
+            <div
+              role="alert"
+              aria-live="assertive"
+              className="p-3 bg-destructive/10 border border-destructive/30 rounded-lg flex items-center gap-2 text-xs text-destructive"
+            >
+              <AlertCircle className="h-4 w-4 shrink-0" />
+              <span>{csvImportError}</span>
+            </div>
+          )}
+
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <label htmlFor="csv-input-textarea" className="text-xs font-semibold text-foreground">
@@ -861,7 +1027,7 @@ export default function BoothManagerPage() {
               </label>
               <button
                 type="button"
-                className="text-xs text-primary hover:underline"
+                className="text-xs text-primary hover:underline cursor-pointer"
                 onClick={() =>
                   handleParseCsv(
                     "BoothNumber, HallName, CompanyName, Industry, Website, Description\nHall A1 - B12, Hall A1, Apex Robotics, Automation, https://apex.io, Industrial vision systems\nHall A1 - B14, Hall A1, Synapse AI Labs, Software, https://synapse.ai, Machine learning pipelines\nHall A2 - C01, Hall A2, EcoBattery Grid, Clean Energy, https://ecobattery.org, Commercial ESS solutions"
@@ -926,6 +1092,7 @@ export default function BoothManagerPage() {
               variant="outline"
               size="sm"
               onClick={() => setIsCsvModalOpen(false)}
+              className="min-h-[44px] px-4 cursor-pointer text-xs"
             >
               Cancel
             </Button>
@@ -935,10 +1102,68 @@ export default function BoothManagerPage() {
               size="sm"
               disabled={isImporting || parsedCsvRows.filter((r) => r.valid).length === 0}
               onClick={handleCommitCsvImport}
-              className="gap-1.5"
+              className="gap-1.5 min-h-[44px] px-4 cursor-pointer text-xs"
             >
               <Check className="h-4 w-4" />
               <span>Import {parsedCsvRows.filter((r) => r.valid).length} Lots</span>
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* DECOMMISSION BOOTH LOT CONFIRMATION MODAL */}
+      <Modal
+        isOpen={!!deletingBooth}
+        onClose={() => !isDeleting && setDeletingBooth(null)}
+        title="Decommission Booth Lot"
+        description="Are you sure you want to permanently decommission this floor lot from the exhibition hall grid?"
+        size="sm"
+      >
+        <div className="space-y-4 pt-2">
+          {deletingBooth && (
+            <div className="p-3.5 bg-muted/50 rounded-lg border border-border text-xs space-y-1.5">
+              <div className="flex items-center justify-between">
+                <span className="text-muted-foreground">Booth Number:</span>
+                <span className="font-mono font-bold text-foreground">{deletingBooth.boothNumber}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-muted-foreground">Hall:</span>
+                <span className="font-semibold text-foreground">{deletingBooth.hallName}</span>
+              </div>
+              {deletingBooth.companyName && (
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">Assigned Tenant:</span>
+                  <span className="font-semibold text-foreground">{deletingBooth.companyName}</span>
+                </div>
+              )}
+            </div>
+          )}
+
+          <p className="text-xs text-destructive font-medium">
+            This action cannot be undone. Commercial assignments and telemetry records associated with this booth lot will be deleted.
+          </p>
+
+          <div className="pt-3 border-t border-border flex items-center justify-end gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              disabled={isDeleting}
+              onClick={() => setDeletingBooth(null)}
+              className="min-h-[44px] px-4 cursor-pointer text-xs"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              size="sm"
+              disabled={isDeleting}
+              onClick={handleDeleteBooth}
+              className="min-h-[44px] px-4 cursor-pointer text-xs gap-1.5"
+            >
+              <Trash2 className="h-4 w-4" />
+              <span>{isDeleting ? "Decommissioning..." : "Confirm Decommission"}</span>
             </Button>
           </div>
         </div>

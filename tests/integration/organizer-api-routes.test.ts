@@ -2,7 +2,7 @@ import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import { db } from "@/lib/db";
 import { GET as getEventsRoute, POST as createEventRoute } from "@/app/api/organizer/events/route";
 import { PUT as updateBrandingRoute } from "@/app/api/organizer/events/[id]/branding/route";
-import { GET as getBoothsRoute, POST as createBoothRoute } from "@/app/api/organizer/booths/route";
+import { GET as getBoothsRoute, POST as createBoothRoute, PATCH as updateBoothRoute, DELETE as deleteBoothRoute } from "@/app/api/organizer/booths/route";
 
 describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => {
   let sampleVenue: any;
@@ -148,5 +148,114 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
     expect(getJson.success).toBe(true);
     expect(getJson.booths.length).toBeGreaterThanOrEqual(1);
     expect(getJson.booths[0].boothNumber).toBe("Hall A1 - B10");
+  });
+
+  it("Organizer Booths: POST supports vacant lot creation and rejects duplicates (409)", async () => {
+    // 1. Create vacant lot
+    const vacantReq = new Request("http://localhost:3000/api/organizer/booths", {
+      method: "POST",
+      body: JSON.stringify({
+        eventId: createdEventId,
+        companyName: "",
+        boothNumber: "Hall A1 - B12",
+        hallName: "Hall A1",
+      }),
+    });
+    const vacantRes = await createBoothRoute(vacantReq);
+    expect(vacantRes.status).toBe(201);
+    const vacantJson = await vacantRes.json();
+    expect(vacantJson.success).toBe(true);
+    expect(vacantJson.booth.companyName).toBe("");
+
+    // 2. Reject duplicate booth number
+    const dupReq = new Request("http://localhost:3000/api/organizer/booths", {
+      method: "POST",
+      body: JSON.stringify({
+        eventId: createdEventId,
+        companyName: "Another Company",
+        boothNumber: "Hall A1 - B12",
+        hallName: "Hall A1",
+      }),
+    });
+    const dupRes = await createBoothRoute(dupReq);
+    expect(dupRes.status).toBe(409);
+    const dupJson = await dupRes.json();
+    expect(dupJson.success).toBe(false);
+    expect(dupJson.error).toContain("already registered");
+  });
+
+  it("Organizer Booths: POST supports batch CSV bulk import with database persistence", async () => {
+    const bulkReq = new Request("http://localhost:3000/api/organizer/booths", {
+      method: "POST",
+      body: JSON.stringify({
+        bulk: true,
+        eventId: createdEventId,
+        booths: [
+          {
+            boothNumber: "Hall A2 - C01",
+            hallName: "Hall A2",
+            companyName: "Solar Grid Ltd",
+            industry: "Clean Energy",
+          },
+          {
+            boothNumber: "Hall A2 - C02",
+            hallName: "Hall A2",
+            companyName: "",
+            industry: "Available",
+          },
+        ],
+      }),
+    });
+
+    const bulkRes = await createBoothRoute(bulkReq);
+    expect(bulkRes.status).toBe(201);
+    const bulkJson = await bulkRes.json();
+    expect(bulkJson.success).toBe(true);
+    expect(bulkJson.count).toBe(2);
+  });
+
+  it("Organizer Booths: PATCH updates tenant info and DELETE decommissions booth", async () => {
+    // 1. Create a booth to modify and delete
+    const createReq = new Request("http://localhost:3000/api/organizer/booths", {
+      method: "POST",
+      body: JSON.stringify({
+        eventId: createdEventId,
+        companyName: "Temporary Tenant",
+        boothNumber: "Hall B1 - D05",
+        hallName: "Hall B1",
+      }),
+    });
+    const createRes = await createBoothRoute(createReq);
+    const { booth } = await createRes.json();
+    expect(booth.id).toBeDefined();
+
+    // 2. Update via PATCH (vacate tenant)
+    const patchReq = new Request("http://localhost:3000/api/organizer/booths", {
+      method: "PATCH",
+      body: JSON.stringify({
+        id: booth.id,
+        companyName: "",
+        industry: null,
+      }),
+    });
+    const patchRes = await updateBoothRoute(patchReq);
+    expect(patchRes.status).toBe(200);
+    const patchJson = await patchRes.json();
+    expect(patchJson.success).toBe(true);
+    expect(patchJson.booth.companyName).toBe("");
+
+    // 3. Delete via DELETE
+    const deleteReq = new Request(`http://localhost:3000/api/organizer/booths?id=${booth.id}`, {
+      method: "DELETE",
+    });
+    const deleteRes = await deleteBoothRoute(deleteReq);
+    expect(deleteRes.status).toBe(200);
+    const deleteJson = await deleteRes.json();
+    expect(deleteJson.success).toBe(true);
+    expect(deleteJson.id).toBe(booth.id);
+
+    // 4. Verify booth no longer in database
+    const verify = await db.boothTenant.findUnique({ where: { id: booth.id } });
+    expect(verify).toBeNull();
   });
 });
