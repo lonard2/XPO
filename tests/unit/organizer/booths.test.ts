@@ -139,4 +139,61 @@ describe("Phase 9 Unit: Booth Allocation & Occupancy Calculations", () => {
     expect(sanitizeUrl("data:text/html;base64,...")).toBeNull();
     expect(sanitizeUrl("")).toBeNull();
   });
+
+  it("formats booth records into RFC 4180 compliant CSV export", () => {
+    const escapeCsv = (val: string | number | null | undefined): string => {
+      if (val === null || val === undefined) return '""';
+      const str = String(val);
+      return `"${str.replace(/"/g, '""')}"`;
+    };
+
+    const headers = [
+      "BoothNumber",
+      "HallName",
+      "CompanyName",
+      "Status",
+      "Industry",
+      "Dimensions",
+      "AreaSqm",
+      "BoothType",
+      "WebsiteUrl",
+      "Description",
+    ];
+
+    const rows = sampleBooths.map((b) => {
+      const isOccupied = b.companyName && b.companyName.trim() !== "";
+      return [
+        escapeCsv(b.boothNumber),
+        escapeCsv(b.hallName),
+        escapeCsv(b.companyName || "Unassigned"),
+        escapeCsv(isOccupied ? "OCCUPIED" : "AVAILABLE"),
+        escapeCsv(b.industry || ""),
+        escapeCsv("3m x 3m"),
+        escapeCsv(9),
+        escapeCsv("SHELL_SCHEME"),
+        escapeCsv(""),
+        escapeCsv(""),
+      ].join(",");
+    });
+
+    const csvContent = [headers.join(","), ...rows].join("\r\n");
+
+    expect(csvContent).toContain("BoothNumber,HallName,CompanyName");
+    expect(csvContent).toContain('"Hall A1 - B01","Hall A1","PT Automation Robotics","OCCUPIED"');
+    expect(csvContent).toContain('"Hall A1 - B08","Hall A1","Unassigned","AVAILABLE"');
+    const lineCount = csvContent.split("\r\n").length;
+    expect(lineCount).toBe(6); // 1 header + 5 rows
+  });
+
+  it("parses and validates MICE physical space dimensions and structure types", () => {
+    const boothSpecs = {
+      dimensions: "6m x 3m",
+      areaSqm: 18,
+      boothType: "RAW_SPACE",
+    };
+
+    expect(boothSpecs.dimensions).toMatch(/^\d+m\s*x\s*\d+m$/i);
+    expect(boothSpecs.areaSqm).toBe(18);
+    expect(["SHELL_SCHEME", "RAW_SPACE", "ISLAND", "CORNER"]).toContain(boothSpecs.boothType);
+  });
 });

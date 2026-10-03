@@ -147,6 +147,9 @@ model BoothTenant {
   websiteUrl  String?
   logoUrl     String?
   description String?
+  dimensions  String?  // e.g. "3m x 3m", "6m x 3m"
+  areaSqm     Float?   // e.g. 9.0, 18.0
+  boothType   String?  // "SHELL_SCHEME", "RAW_SPACE", "ISLAND", "CORNER"
 }
 
 model EventPerk {

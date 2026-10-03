@@ -258,4 +258,43 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
     const verify = await db.boothTenant.findUnique({ where: { id: booth.id } });
     expect(verify).toBeNull();
   });
+
+  it("Organizer Booths: POST and PATCH persist MICE physical space dimensions and structure types", async () => {
+    // 1. Create with physical space specs
+    const createReq = new Request("http://localhost:3000/api/organizer/booths", {
+      method: "POST",
+      body: JSON.stringify({
+        eventId: createdEventId,
+        companyName: "PT Heavy Automation",
+        boothNumber: "Hall C1 - E01",
+        hallName: "Hall C1",
+        dimensions: "12m x 6m",
+        areaSqm: 72,
+        boothType: "ISLAND",
+      }),
+    });
+    const createRes = await createBoothRoute(createReq);
+    expect(createRes.status).toBe(201);
+    const { booth } = await createRes.json();
+    expect(booth.dimensions).toBe("12m x 6m");
+    expect(booth.areaSqm).toBe(72);
+    expect(booth.boothType).toBe("ISLAND");
+
+    // 2. Update physical specs via PATCH
+    const patchReq = new Request("http://localhost:3000/api/organizer/booths", {
+      method: "PATCH",
+      body: JSON.stringify({
+        id: booth.id,
+        dimensions: "18m x 6m",
+        areaSqm: 108,
+        boothType: "RAW_SPACE",
+      }),
+    });
+    const patchRes = await updateBoothRoute(patchReq);
+    expect(patchRes.status).toBe(200);
+    const patchJson = await patchRes.json();
+    expect(patchJson.booth.dimensions).toBe("18m x 6m");
+    expect(patchJson.booth.areaSqm).toBe(108);
+    expect(patchJson.booth.boothType).toBe("RAW_SPACE");
+  });
 });

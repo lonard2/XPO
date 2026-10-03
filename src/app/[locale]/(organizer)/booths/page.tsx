@@ -17,6 +17,11 @@ import {
   Trash2,
   UserMinus,
   X,
+  LayoutGrid,
+  Table,
+  Download,
+  Maximize2,
+  Layers,
 } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -36,6 +41,9 @@ interface BoothItem {
   websiteUrl?: string | null;
   logoUrl?: string | null;
   description?: string | null;
+  dimensions?: string | null;
+  areaSqm?: number | null;
+  boothType?: string | null;
   event?: {
     title: string;
     venue?: { name: string };
@@ -47,11 +55,21 @@ interface CsvParsedRow {
   hallName: string;
   companyName: string;
   industry: string;
+  dimensions?: string;
+  areaSqm?: number | null;
+  boothType?: string;
   websiteUrl: string;
   description: string;
   valid: boolean;
   error?: string;
 }
+
+const BOOTH_TYPES: Record<string, { label: string; badgeVariant: "secondary" | "outline" | "success" }> = {
+  SHELL_SCHEME: { label: "Shell Scheme", badgeVariant: "secondary" },
+  RAW_SPACE: { label: "Raw Space", badgeVariant: "outline" },
+  ISLAND: { label: "Island Pavilion", badgeVariant: "success" },
+  CORNER: { label: "Corner Lot", badgeVariant: "outline" },
+};
 
 // RFC 4180 quote-aware CSV line parser
 function splitCsvLine(line: string): string[] {
@@ -105,6 +123,9 @@ export default function BoothManagerPage() {
   const [searchQuery, setSearchQuery] = React.useState<string>("");
   const [isLoading, setIsLoading] = React.useState(true);
 
+  // Dual View Mode
+  const [viewMode, setViewMode] = React.useState<"grid" | "table">("grid");
+
   // Single Booth Modal State
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [editingBooth, setEditingBooth] = React.useState<BoothItem | null>(null);
@@ -115,6 +136,9 @@ export default function BoothManagerPage() {
   const [formIndustry, setFormIndustry] = React.useState("");
   const [formWebsiteUrl, setFormWebsiteUrl] = React.useState("");
   const [formDescription, setFormDescription] = React.useState("");
+  const [formDimensions, setFormDimensions] = React.useState("3m x 3m");
+  const [formAreaSqm, setFormAreaSqm] = React.useState("9");
+  const [formBoothType, setFormBoothType] = React.useState("SHELL_SCHEME");
   const [formError, setFormError] = React.useState("");
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [toastMessage, setToastMessage] = React.useState("");
@@ -170,6 +194,9 @@ export default function BoothManagerPage() {
         industry: "Automation & Industrial AI",
         websiteUrl: "https://nusantara-robotics.co.id",
         description: "Heavy robotic arms and computer vision inspection systems.",
+        dimensions: "6m x 3m",
+        areaSqm: 18,
+        boothType: "RAW_SPACE",
       },
       {
         id: "b-2",
@@ -180,6 +207,9 @@ export default function BoothManagerPage() {
         industry: "Precision Machining & Tooling",
         websiteUrl: "https://tokyo-precision.jp",
         description: "5-axis CNC high-speed milling and EDM machining centers.",
+        dimensions: "6m x 6m",
+        areaSqm: 36,
+        boothType: "ISLAND",
       },
       {
         id: "b-3",
@@ -190,6 +220,9 @@ export default function BoothManagerPage() {
         industry: "Clean Energy & Storage",
         websiteUrl: "https://globalbattery.com",
         description: "Commercial lithium iron phosphate storage grids.",
+        dimensions: "3m x 3m",
+        areaSqm: 9,
+        boothType: "SHELL_SCHEME",
       },
       {
         id: "b-4",
@@ -199,6 +232,9 @@ export default function BoothManagerPage() {
         hallName: "Hall A2",
         industry: "Available",
         description: "Corner booth near VIP entrance.",
+        dimensions: "3m x 3m",
+        areaSqm: 9,
+        boothType: "CORNER",
       },
       {
         id: "b-5",
@@ -209,6 +245,9 @@ export default function BoothManagerPage() {
         industry: "Smart Factory Logistics",
         websiteUrl: "https://pacific-ia.com",
         description: "Automated guided vehicles (AGV) and warehouse conveyors.",
+        dimensions: "6m x 3m",
+        areaSqm: 18,
+        boothType: "RAW_SPACE",
       },
       {
         id: "b-6",
@@ -218,6 +257,9 @@ export default function BoothManagerPage() {
         hallName: "Hall B1",
         industry: "Available",
         description: "Standard 3x3m shell scheme lot.",
+        dimensions: "3m x 3m",
+        areaSqm: 9,
+        boothType: "SHELL_SCHEME",
       },
     ];
 
@@ -279,6 +321,9 @@ export default function BoothManagerPage() {
     setFormBoothNumber("Hall A1 - B" + (booths.length + 1).toString().padStart(2, "0"));
     setFormHallName("Hall A1");
     setFormIndustry("Manufacturing & Robotics");
+    setFormDimensions("3m x 3m");
+    setFormAreaSqm("9");
+    setFormBoothType("SHELL_SCHEME");
     setFormWebsiteUrl("");
     setFormDescription("");
     setFormError("");
@@ -292,6 +337,9 @@ export default function BoothManagerPage() {
     setFormBoothNumber(booth.boothNumber);
     setFormHallName(booth.hallName);
     setFormIndustry(booth.industry || "");
+    setFormDimensions(booth.dimensions || "3m x 3m");
+    setFormAreaSqm(booth.areaSqm ? String(booth.areaSqm) : "9");
+    setFormBoothType(booth.boothType || "SHELL_SCHEME");
     setFormWebsiteUrl(booth.websiteUrl || "");
     setFormDescription(booth.description || "");
     setFormError("");
@@ -309,9 +357,11 @@ export default function BoothManagerPage() {
 
     setIsSubmitting(true);
     try {
+      const cleanWebsiteUrl = sanitizeUrl(formWebsiteUrl);
+      const parsedArea = formAreaSqm.trim() !== "" ? parseFloat(formAreaSqm) : null;
+
       if (editingBooth) {
         // Update existing
-        const cleanWebsiteUrl = sanitizeUrl(formWebsiteUrl);
         const res = await fetch("/api/organizer/booths", {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -321,6 +371,9 @@ export default function BoothManagerPage() {
             boothNumber: formBoothNumber,
             hallName: formHallName,
             industry: formIndustry,
+            dimensions: formDimensions,
+            areaSqm: parsedArea,
+            boothType: formBoothType,
             websiteUrl: cleanWebsiteUrl,
             description: formDescription,
           }),
@@ -335,7 +388,6 @@ export default function BoothManagerPage() {
       } else {
         // Create new
         const targetEventId = formEventId || (selectedEventId !== "ALL" ? selectedEventId : (events[0]?.id || "ev-1"));
-        const cleanWebsiteUrl = sanitizeUrl(formWebsiteUrl);
         const res = await fetch("/api/organizer/booths", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -345,6 +397,9 @@ export default function BoothManagerPage() {
             boothNumber: formBoothNumber,
             hallName: formHallName,
             industry: formIndustry,
+            dimensions: formDimensions,
+            areaSqm: parsedArea,
+            boothType: formBoothType,
             websiteUrl: cleanWebsiteUrl,
             description: formDescription,
           }),
@@ -418,6 +473,60 @@ export default function BoothManagerPage() {
     }
   };
 
+  // One-Click Export Roster to CSV
+  const handleExportCsv = () => {
+    if (filteredBooths.length === 0) return;
+
+    const headers = [
+      "BoothNumber",
+      "HallName",
+      "CompanyName",
+      "Status",
+      "Industry",
+      "Dimensions",
+      "AreaSqm",
+      "BoothType",
+      "WebsiteUrl",
+      "Description",
+    ];
+
+    const escapeCsv = (val: string | number | null | undefined): string => {
+      if (val === null || val === undefined) return '""';
+      const str = String(val);
+      return `"${str.replace(/"/g, '""')}"`;
+    };
+
+    const rows = filteredBooths.map((b) => {
+      const isOccupied = b.companyName && b.companyName.trim() !== "";
+      return [
+        escapeCsv(b.boothNumber),
+        escapeCsv(b.hallName),
+        escapeCsv(b.companyName || "Unassigned"),
+        escapeCsv(isOccupied ? "OCCUPIED" : "AVAILABLE"),
+        escapeCsv(b.industry || ""),
+        escapeCsv(b.dimensions || ""),
+        escapeCsv(b.areaSqm ?? ""),
+        escapeCsv(b.boothType || ""),
+        escapeCsv(b.websiteUrl || ""),
+        escapeCsv(b.description || ""),
+      ].join(",");
+    });
+
+    const csvContent = [headers.join(","), ...rows].join("\r\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    const eventSlug = selectedEventId !== "ALL" ? selectedEventId : "all-events";
+    link.setAttribute("download", `booth-roster-${eventSlug}-${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    setToastMessage(`Exported ${filteredBooths.length} booth records to CSV.`);
+    setTimeout(() => setToastMessage(""), 3500);
+  };
+
   // Parse CSV text into preview rows with quote-aware parsing and bounded line count
   const handleParseCsv = (text: string) => {
     setCsvRawText(text);
@@ -436,13 +545,34 @@ export default function BoothManagerPage() {
 
     for (let i = startIndex; i < lines.length; i++) {
       const parts = splitCsvLine(lines[i]);
-      const boothNumber = parts[0] || "";
-      const hallName = parts[1] || "";
-      const companyName = parts[2] || "";
-      const industry = parts[3] || "";
-      const rawWebsiteUrl = parts[4] || "";
-      const websiteUrl = sanitizeUrl(rawWebsiteUrl) || "";
-      const description = parts[5] || "";
+      let boothNumber = "";
+      let hallName = "";
+      let companyName = "";
+      let industry = "";
+      let dimensions = "3m x 3m";
+      let areaSqm: number | null = 9;
+      let boothType = "SHELL_SCHEME";
+      let websiteUrl = "";
+      let description = "";
+
+      if (parts.length >= 8) {
+        boothNumber = parts[0] || "";
+        hallName = parts[1] || "";
+        companyName = parts[2] || "";
+        industry = parts[3] || "";
+        dimensions = parts[4] || "3m x 3m";
+        areaSqm = parts[5] ? parseFloat(parts[5]) : 9;
+        boothType = parts[6] || "SHELL_SCHEME";
+        websiteUrl = sanitizeUrl(parts[7]) || "";
+        description = parts[8] || "";
+      } else {
+        boothNumber = parts[0] || "";
+        hallName = parts[1] || "";
+        companyName = parts[2] || "";
+        industry = parts[3] || "";
+        websiteUrl = sanitizeUrl(parts[4]) || "";
+        description = parts[5] || "";
+      }
 
       const isValid = Boolean(boothNumber && hallName);
       results.push({
@@ -450,6 +580,9 @@ export default function BoothManagerPage() {
         hallName,
         companyName,
         industry,
+        dimensions,
+        areaSqm,
+        boothType,
         websiteUrl,
         description,
         valid: isValid,
@@ -481,6 +614,9 @@ export default function BoothManagerPage() {
             hallName: r.hallName,
             companyName: r.companyName,
             industry: r.industry || "General Industry",
+            dimensions: r.dimensions,
+            areaSqm: r.areaSqm,
+            boothType: r.boothType,
             websiteUrl: r.websiteUrl,
             description: r.description,
           })),
@@ -502,6 +638,9 @@ export default function BoothManagerPage() {
           hallName: r.hallName,
           companyName: r.companyName,
           industry: r.industry || "General Industry",
+          dimensions: r.dimensions,
+          areaSqm: r.areaSqm,
+          boothType: r.boothType,
           websiteUrl: r.websiteUrl,
           description: r.description,
         }));
@@ -538,7 +677,19 @@ export default function BoothManagerPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5 shrink-0">
+        <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleExportCsv}
+            disabled={filteredBooths.length === 0}
+            className="text-xs gap-1.5 min-h-[44px] px-4 cursor-pointer"
+            aria-label="Export booth roster to CSV"
+          >
+            <Download className="h-4 w-4 text-primary" />
+            <span>Export CSV</span>
+          </Button>
+
           <Button
             variant="outline"
             size="sm"
@@ -546,7 +697,7 @@ export default function BoothManagerPage() {
             className="text-xs gap-1.5 min-h-[44px] px-4 cursor-pointer"
           >
             <Upload className="h-4 w-4 text-primary" />
-            <span>Import CSV Roster</span>
+            <span>Import CSV</span>
           </Button>
 
           <Button
@@ -719,16 +870,53 @@ export default function BoothManagerPage() {
 
       {/* BOOTHS ROSTER SECTION */}
       <section aria-labelledby="booths-roster-heading" className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 id="booths-roster-heading" className="text-base font-bold text-foreground">
-            Exhibitor Floor Lot Roster
-          </h2>
-          <span className="text-xs text-muted-foreground">
-            {filteredBooths.length} {filteredBooths.length === 1 ? "lot displayed" : "lots displayed"}
-          </span>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 id="booths-roster-heading" className="text-base font-bold text-foreground">
+              Exhibitor Floor Lot Roster
+            </h2>
+            <span className="text-xs text-muted-foreground">
+              {filteredBooths.length} {filteredBooths.length === 1 ? "lot displayed" : "lots displayed"}
+            </span>
+          </div>
+
+          {/* Dual View Mode Toggle */}
+          <div className="flex items-center gap-1 bg-muted/60 p-1 rounded-lg border border-border shrink-0" role="group" aria-label="Roster view layout">
+            <button
+              type="button"
+              onClick={() => setViewMode("grid")}
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium min-h-[36px] cursor-pointer transition-colors",
+                viewMode === "grid"
+                  ? "bg-card text-foreground shadow-xs font-semibold"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+              aria-pressed={viewMode === "grid"}
+              aria-label="Grid view"
+            >
+              <LayoutGrid className="h-3.5 w-3.5" />
+              <span>Grid</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode("table")}
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium min-h-[36px] cursor-pointer transition-colors",
+                viewMode === "table"
+                  ? "bg-card text-foreground shadow-xs font-semibold"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+              aria-pressed={viewMode === "table"}
+              aria-label="Table view"
+            >
+              <Table className="h-3.5 w-3.5" />
+              <span>Table</span>
+            </button>
+          </div>
         </div>
 
-        {filteredBooths.length > 0 && (
+        {/* Responsive Grid View */}
+        {filteredBooths.length > 0 && viewMode === "grid" && (
           <ul role="list" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 list-none p-0 m-0">
             {filteredBooths.map((booth) => {
               const isOccupied = booth.companyName && booth.companyName.trim() !== "";
@@ -756,10 +944,28 @@ export default function BoothManagerPage() {
                           </h3>
                         </div>
 
-                        <Badge variant={isOccupied ? "secondary" : "success"} size="sm">
-                          {isOccupied ? "Occupied" : "Available"}
-                        </Badge>
+                        <div className="flex flex-col items-end gap-1">
+                          <Badge variant={isOccupied ? "secondary" : "success"} size="sm">
+                            {isOccupied ? "Occupied" : "Available"}
+                          </Badge>
+                          {booth.boothType && (
+                            <Badge variant="outline" size="sm" className="text-[11px] py-0 px-1.5 font-normal">
+                              {BOOTH_TYPES[booth.boothType]?.label || booth.boothType}
+                            </Badge>
+                          )}
+                        </div>
                       </div>
+
+                      {/* Physical Dimensions & Space */}
+                      {(booth.dimensions || booth.areaSqm) && (
+                        <div className="flex items-center gap-2 text-[11px] text-muted-foreground bg-muted/40 px-2 py-1 rounded border border-border/40">
+                          <Maximize2 className="h-3 w-3 text-primary shrink-0" />
+                          <span className="font-medium text-foreground">
+                            {booth.dimensions || "Standard Lot"}
+                          </span>
+                          {booth.areaSqm ? <span>({booth.areaSqm} m²)</span> : null}
+                        </div>
+                      )}
 
                       <div className="space-y-1 text-xs text-muted-foreground pt-2 border-t border-border/60">
                         {booth.industry && (
@@ -839,6 +1045,120 @@ export default function BoothManagerPage() {
               );
             })}
           </ul>
+        )}
+
+        {/* High-Density Table View */}
+        {filteredBooths.length > 0 && viewMode === "table" && (
+          <div className="border border-border rounded-xl bg-card overflow-hidden shadow-xs">
+            <div className="overflow-x-auto max-w-full">
+              <table className="w-full text-left border-collapse text-xs">
+                <thead className="bg-muted/70 text-muted-foreground font-semibold border-b border-border sticky top-0 z-10 backdrop-blur-xs">
+                  <tr>
+                    <th className="p-3 font-medium">Booth Lot #</th>
+                    <th className="p-3 font-medium">Hall</th>
+                    <th className="p-3 font-medium">Status</th>
+                    <th className="p-3 font-medium">Tenant / Exhibitor</th>
+                    <th className="p-3 font-medium">Industry</th>
+                    <th className="p-3 font-medium">Dimensions & Space</th>
+                    <th className="p-3 font-medium">Type</th>
+                    <th className="p-3 font-medium text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {filteredBooths.map((booth) => {
+                    const isOccupied = booth.companyName && booth.companyName.trim() !== "";
+                    return (
+                      <tr key={booth.id} className="hover:bg-muted/30 transition-colors">
+                        <td className="p-3 font-mono font-bold text-foreground">
+                          {booth.boothNumber}
+                        </td>
+                        <td className="p-3 font-medium text-foreground">
+                          <Badge variant="outline" size="sm">{booth.hallName}</Badge>
+                        </td>
+                        <td className="p-3">
+                          <Badge variant={isOccupied ? "secondary" : "success"} size="sm">
+                            {isOccupied ? "Occupied" : "Available"}
+                          </Badge>
+                        </td>
+                        <td className="p-3">
+                          <div className="font-semibold text-foreground truncate max-w-[200px]">
+                            {isOccupied ? booth.companyName : <span className="text-muted-foreground italic font-normal">Unassigned Lot</span>}
+                          </div>
+                          {booth.websiteUrl && sanitizeUrl(booth.websiteUrl) && (
+                            <a
+                              href={sanitizeUrl(booth.websiteUrl)!}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[11px] text-primary hover:underline flex items-center gap-1 mt-0.5 truncate max-w-[180px]"
+                            >
+                              <Globe className="h-3 w-3 shrink-0" />
+                              <span className="truncate">{booth.websiteUrl.replace(/^https?:\/\//, "")}</span>
+                            </a>
+                          )}
+                        </td>
+                        <td className="p-3 text-muted-foreground">
+                          {booth.industry || "-"}
+                        </td>
+                        <td className="p-3">
+                          <div className="font-mono text-xs text-foreground">
+                            {booth.dimensions || "-"}
+                          </div>
+                          {booth.areaSqm ? (
+                            <div className="text-[11px] text-muted-foreground">{booth.areaSqm} m²</div>
+                          ) : null}
+                        </td>
+                        <td className="p-3">
+                          {booth.boothType ? (
+                            <Badge variant="outline" size="sm">
+                              {BOOTH_TYPES[booth.boothType]?.label || booth.boothType}
+                            </Badge>
+                          ) : (
+                            <span className="text-muted-foreground">-</span>
+                          )}
+                        </td>
+                        <td className="p-3 text-right">
+                          <div className="flex items-center justify-end gap-1.5">
+                            {isOccupied && (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="text-xs h-8 px-2 text-muted-foreground hover:text-amber-600 dark:hover:text-amber-400 cursor-pointer"
+                                onClick={() => handleVacateBooth(booth)}
+                                title="Vacate Tenant"
+                                aria-label={`Vacate tenant from booth ${booth.boothNumber}`}
+                              >
+                                <UserMinus className="h-3.5 w-3.5" />
+                              </Button>
+                            )}
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="text-xs h-8 px-2.5 gap-1 cursor-pointer"
+                              onClick={() => handleOpenEditModal(booth)}
+                              aria-label={isOccupied ? `Edit booth ${booth.boothNumber}` : `Assign booth ${booth.boothNumber}`}
+                            >
+                              <Edit2 className="h-3.5 w-3.5" />
+                              <span>{isOccupied ? "Edit" : "Assign"}</span>
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="text-xs h-8 px-2 text-destructive/80 hover:text-destructive hover:border-destructive/40 cursor-pointer"
+                              onClick={() => setDeletingBooth(booth)}
+                              title="Decommission Lot"
+                              aria-label={`Decommission booth ${booth.boothNumber}`}
+                            >
+                              <Trash2 className="h-3.5 w-3.5" />
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
         )}
 
         {booths.length === 0 ? (
@@ -946,6 +1266,41 @@ export default function BoothManagerPage() {
             onChange={(e) => setFormCompanyName(e.target.value)}
           />
 
+          {/* MICE Physical Space & Structure */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <Input
+              id="modal-dimensions"
+              label="Dimensions"
+              placeholder="e.g. 3m x 3m, 6m x 3m"
+              value={formDimensions}
+              onChange={(e) => setFormDimensions(e.target.value)}
+            />
+            <Input
+              id="modal-area"
+              label="Floor Area (m²)"
+              type="number"
+              placeholder="e.g. 9"
+              value={formAreaSqm}
+              onChange={(e) => setFormAreaSqm(e.target.value)}
+            />
+            <div>
+              <label htmlFor="modal-booth-type" className="block text-xs font-semibold text-foreground mb-1.5">
+                Structure Type
+              </label>
+              <select
+                id="modal-booth-type"
+                className="w-full h-10 px-3 bg-background border border-input rounded-md text-xs"
+                value={formBoothType}
+                onChange={(e) => setFormBoothType(e.target.value)}
+              >
+                <option value="SHELL_SCHEME">Shell Scheme (Standard)</option>
+                <option value="RAW_SPACE">Raw Space (Custom Build)</option>
+                <option value="ISLAND">Island Pavilion (4-Side Open)</option>
+                <option value="CORNER">Corner Lot (2-Side Open)</option>
+              </select>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Input
               id="modal-industry"
@@ -1023,14 +1378,14 @@ export default function BoothManagerPage() {
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <label htmlFor="csv-input-textarea" className="text-xs font-semibold text-foreground">
-                Paste CSV Data (Columns: BoothNumber, HallName, CompanyName, Industry, Website, Description)
+                Paste CSV Data (Columns: BoothNumber, HallName, CompanyName, Industry, Dimensions, AreaSqm, BoothType, Website, Description)
               </label>
               <button
                 type="button"
                 className="text-xs text-primary hover:underline cursor-pointer"
                 onClick={() =>
                   handleParseCsv(
-                    "BoothNumber, HallName, CompanyName, Industry, Website, Description\nHall A1 - B12, Hall A1, Apex Robotics, Automation, https://apex.io, Industrial vision systems\nHall A1 - B14, Hall A1, Synapse AI Labs, Software, https://synapse.ai, Machine learning pipelines\nHall A2 - C01, Hall A2, EcoBattery Grid, Clean Energy, https://ecobattery.org, Commercial ESS solutions"
+                    "BoothNumber, HallName, CompanyName, Industry, Dimensions, AreaSqm, BoothType, Website, Description\nHall A1 - B12, Hall A1, Apex Robotics, Automation, 6m x 3m, 18, RAW_SPACE, https://apex.io, Industrial vision systems\nHall A1 - B14, Hall A1, Synapse AI Labs, Software, 3m x 3m, 9, SHELL_SCHEME, https://synapse.ai, Machine learning pipelines\nHall A2 - C01, Hall A2, EcoBattery Grid, Clean Energy, 6m x 6m, 36, ISLAND, https://ecobattery.org, Commercial ESS solutions"
                   )
                 }
               >
@@ -1042,7 +1397,7 @@ export default function BoothManagerPage() {
               rows={4}
               value={csvRawText}
               onChange={(e) => handleParseCsv(e.target.value)}
-              placeholder="Hall A1 - B01, Hall A1, PT Nusantara Robotics, Industrial Automation, https://nusantara.com, Heavy arms..."
+              placeholder="Hall A1 - B01, Hall A1, PT Nusantara Robotics, Industrial Automation, 6m x 3m, 18, RAW_SPACE, https://nusantara.com, Heavy arms..."
               className="w-full font-mono rounded-md border border-input bg-background px-3 py-2 text-xs ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             />
           </div>
@@ -1062,6 +1417,7 @@ export default function BoothManagerPage() {
                       <th className="p-2">Hall</th>
                       <th className="p-2">Company</th>
                       <th className="p-2">Industry</th>
+                      <th className="p-2">Space / Type</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
@@ -1078,6 +1434,9 @@ export default function BoothManagerPage() {
                         <td className="p-2">{row.hallName}</td>
                         <td className="p-2 font-medium">{row.companyName || "Unassigned"}</td>
                         <td className="p-2">{row.industry || "General Industry"}</td>
+                        <td className="p-2 font-mono text-[11px]">
+                          {row.dimensions || "3m x 3m"} ({row.areaSqm || 9} m²)
+                        </td>
                       </tr>
                     ))}
                   </tbody>

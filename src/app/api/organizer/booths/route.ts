@@ -58,6 +58,9 @@ export async function POST(request: Request) {
         websiteUrl?: string;
         logoUrl?: string;
         description?: string;
+        dimensions?: string;
+        areaSqm?: number | string;
+        boothType?: string;
       }
 
       const { eventId } = body;
@@ -119,6 +122,9 @@ export async function POST(request: Request) {
         websiteUrl: b.websiteUrl?.trim() || null,
         logoUrl: b.logoUrl?.trim() || null,
         description: b.description?.trim() || null,
+        dimensions: b.dimensions?.trim() || null,
+        areaSqm: typeof b.areaSqm === "number" ? b.areaSqm : (b.areaSqm ? parseFloat(String(b.areaSqm)) : null),
+        boothType: b.boothType?.trim() || null,
       }));
 
       await db.boothTenant.createMany({
@@ -155,6 +161,9 @@ export async function POST(request: Request) {
       websiteUrl,
       logoUrl,
       description,
+      dimensions,
+      areaSqm,
+      boothType,
     } = body;
 
     if (!eventId || !boothNumber || !hallName) {
@@ -189,6 +198,9 @@ export async function POST(request: Request) {
         websiteUrl: websiteUrl?.trim() || null,
         logoUrl: logoUrl?.trim() || null,
         description: description?.trim() || null,
+        dimensions: dimensions?.trim() || null,
+        areaSqm: typeof areaSqm === "number" ? areaSqm : (areaSqm ? parseFloat(String(areaSqm)) : null),
+        boothType: boothType?.trim() || null,
       },
     });
 
@@ -215,7 +227,18 @@ export async function PATCH(request: Request) {
     }
 
     const body = await request.json();
-    const { id, companyName, boothNumber, hallName, industry, websiteUrl, description } = body;
+    const {
+      id,
+      companyName,
+      boothNumber,
+      hallName,
+      industry,
+      websiteUrl,
+      description,
+      dimensions,
+      areaSqm,
+      boothType,
+    } = body;
 
     if (!id) {
       return NextResponse.json(
@@ -244,13 +267,16 @@ export async function PATCH(request: Request) {
       }
     }
 
-    const updateData: any = {};
+    const updateData: Record<string, unknown> = {};
     if (companyName !== undefined) updateData.companyName = companyName !== null ? companyName.trim() : "";
     if (boothNumber !== undefined) updateData.boothNumber = boothNumber.trim();
     if (hallName !== undefined) updateData.hallName = hallName.trim();
     if (industry !== undefined) updateData.industry = industry ? industry.trim() : null;
     if (websiteUrl !== undefined) updateData.websiteUrl = websiteUrl ? websiteUrl.trim() : null;
     if (description !== undefined) updateData.description = description ? description.trim() : null;
+    if (dimensions !== undefined) updateData.dimensions = dimensions ? dimensions.trim() : null;
+    if (areaSqm !== undefined) updateData.areaSqm = areaSqm !== null && areaSqm !== "" ? parseFloat(String(areaSqm)) : null;
+    if (boothType !== undefined) updateData.boothType = boothType ? boothType.trim() : null;
 
     const updated = await db.boothTenant.update({
       where: { id },
