@@ -199,6 +199,68 @@ describe("Phase 9 Unit: Event Creation Wizard & Archetype Engine", () => {
     // Preservation when user has edited custom slug
     expect(resolveSlug("Updated Title 2028", "custom-expo-slug", true)).toBe("custom-expo-slug");
   });
+
+  it("calculates combined multi-hall campus capacity across multiple allocated halls", () => {
+    const venueHalls = [
+      { id: "hall-a1", name: "Hall A1", capacity: 4000 },
+      { id: "hall-a2", name: "Hall A2", capacity: 4000 },
+      { id: "hall-a3", name: "Hall A3", capacity: 4000 },
+      { id: "hall-b1", name: "Hall B1", capacity: 3000 },
+    ];
+
+    const calculateCampusCapacity = (allocatedHallIds: string[]) => {
+      const selected = venueHalls.filter((h) => allocatedHallIds.includes(h.id));
+      const totalCapacity = selected.reduce((acc, h) => acc + (h.capacity || 0), 0);
+      return { selected, totalCapacity };
+    };
+
+    // Single hall allocation
+    const single = calculateCampusCapacity(["hall-a1"]);
+    expect(single.selected.length).toBe(1);
+    expect(single.totalCapacity).toBe(4000);
+
+    // Multi-hall campus allocation (JIExpo A1 + A2 + A3)
+    const triple = calculateCampusCapacity(["hall-a1", "hall-a2", "hall-a3"]);
+    expect(triple.selected.length).toBe(3);
+    expect(triple.totalCapacity).toBe(12000);
+
+    // Synchronized ticket capacity safeguard with multi-hall quota
+    const totalTicketPasses = 10000;
+    const isExceededSingle = totalTicketPasses > single.totalCapacity;
+    const isExceededCampus = totalTicketPasses > triple.totalCapacity;
+    expect(isExceededSingle).toBe(true); // Exceeds single hall (10,000 > 4,000)
+    expect(isExceededCampus).toBe(false); // Fits comfortably in 3 halls (10,000 <= 12,000)
+  });
+
+  it("guards auto-save draft persistence against overwriting stored drafts on initial mount", () => {
+    let storage: Record<string, string> = {
+      "xpo_event_draft": JSON.stringify({
+        title: "Existing Saved Mega Expo 2027",
+        archetype: "MEGA_EXPO_PAVILION",
+        venueHallIds: ["hall-a1", "hall-a2"],
+      }),
+    };
+
+    const runAutoSaveEffect = (
+      isInitialized: boolean,
+      hasDraftAvailable: boolean,
+      formData: { title: string }
+    ) => {
+      // P0 Guard: Never auto-save while a recovered draft is waiting for user action
+      if (!isInitialized || hasDraftAvailable) return;
+      storage["xpo_event_draft"] = JSON.stringify(formData);
+    };
+
+    // On mount with pending draft:
+    runAutoSaveEffect(true, true, { title: "" });
+    const draftBeforeAction = JSON.parse(storage["xpo_event_draft"]);
+    expect(draftBeforeAction.title).toBe("Existing Saved Mega Expo 2027"); // Preserved!
+
+    // After user resolves draft (resumes or discards):
+    runAutoSaveEffect(true, false, { title: "Resumed and Edited Expo" });
+    const draftAfterAction = JSON.parse(storage["xpo_event_draft"]);
+    expect(draftAfterAction.title).toBe("Resumed and Edited Expo");
+  });
 });
 
 

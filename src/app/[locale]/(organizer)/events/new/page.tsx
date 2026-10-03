@@ -296,6 +296,7 @@ export default function NewEventWizardPage() {
   const [regionId, setRegionId] = React.useState("id");
   const [venueId, setVenueId] = React.useState("");
   const [venueHallId, setVenueHallId] = React.useState("");
+  const [venueHallIds, setVenueHallIds] = React.useState<string[]>([]);
   const [venuesList, setVenuesList] = React.useState<Venue[]>([]);
   const [startDate, setStartDate] = React.useState("2027-04-14");
   const [endDate, setEndDate] = React.useState("2027-04-17");
@@ -337,9 +338,9 @@ export default function NewEventWizardPage() {
           if (data.venues && data.venues.length > 0) {
             setVenuesList(data.venues);
             setVenueId(data.venues[0].id);
-            if (data.venues[0].halls && data.venues[0].halls.length > 0) {
-              setVenueHallId(data.venues[0].halls[0].id);
-            }
+            const initialHalls = data.venues[0].halls?.[0]?.id ? [data.venues[0].halls[0].id] : [];
+            setVenueHallId(initialHalls[0] || "");
+            setVenueHallIds(initialHalls);
             return;
           }
         }
@@ -393,29 +394,38 @@ export default function NewEventWizardPage() {
 
       setVenuesList(defaultVenues);
       setVenueId(defaultVenues[0].id);
-      setVenueHallId(defaultVenues[0].halls?.[0]?.id || "");
+      const initialHalls = defaultVenues[0].halls?.[0]?.id ? [defaultVenues[0].halls[0].id] : [];
+      setVenueHallId(initialHalls[0] || "");
+      setVenueHallIds(initialHalls);
     }
 
     loadVenues().finally(() => {
       // Check LocalStorage Draft
+      let foundDraft = false;
       try {
         const saved = localStorage.getItem(DRAFT_STORAGE_KEY);
         if (saved) {
-          setHasDraftAvailable(true);
+          const parsed = JSON.parse(saved);
+          if (parsed && (parsed.title || parsed.ticketTiers?.length)) {
+            setHasDraftAvailable(true);
+            foundDraft = true;
+          }
         }
       } catch {
         // Ignore storage errors
       }
 
-      // Check URL query parameter for onboarding template
-      try {
-        const urlParams = new URLSearchParams(window.location.search);
-        const tmplKey = urlParams.get("template");
-        if (tmplKey && TEMPLATES[tmplKey]) {
-          handleApplyTemplate(tmplKey);
+      // Check URL query parameter for onboarding template if no draft is waiting
+      if (!foundDraft) {
+        try {
+          const urlParams = new URLSearchParams(window.location.search);
+          const tmplKey = urlParams.get("template");
+          if (tmplKey && TEMPLATES[tmplKey]) {
+            handleApplyTemplate(tmplKey);
+          }
+        } catch {
+          // Ignore
         }
-      } catch {
-        // Ignore
       }
 
       isInitializedRef.current = true;
@@ -425,6 +435,7 @@ export default function NewEventWizardPage() {
   // Save Draft to LocalStorage whenever critical fields change
   React.useEffect(() => {
     if (!isInitializedRef.current) return;
+    if (hasDraftAvailable) return; // P0-1: Prevent overwriting stored draft before user decision
     try {
       const draftData = {
         title,
@@ -437,6 +448,7 @@ export default function NewEventWizardPage() {
         regionId,
         venueId,
         venueHallId,
+        venueHallIds,
         startDate,
         endDate,
         ticketTiers,
@@ -451,6 +463,7 @@ export default function NewEventWizardPage() {
       // Storage full or disabled
     }
   }, [
+    hasDraftAvailable,
     title,
     slug,
     tagline,
@@ -461,6 +474,7 @@ export default function NewEventWizardPage() {
     regionId,
     venueId,
     venueHallId,
+    venueHallIds,
     startDate,
     endDate,
     ticketTiers,
@@ -488,7 +502,13 @@ export default function NewEventWizardPage() {
       if (d.scale) setScale(d.scale);
       if (d.regionId) setRegionId(d.regionId);
       if (d.venueId) setVenueId(d.venueId);
-      if (d.venueHallId) setVenueHallId(d.venueHallId);
+      if (d.venueHallIds && Array.isArray(d.venueHallIds) && d.venueHallIds.length > 0) {
+        setVenueHallIds(d.venueHallIds);
+        setVenueHallId(d.venueHallIds[0]);
+      } else if (d.venueHallId) {
+        setVenueHallId(d.venueHallId);
+        setVenueHallIds([d.venueHallId]);
+      }
       if (d.startDate) setStartDate(d.startDate);
       if (d.endDate) setEndDate(d.endDate);
       if (d.ticketTiers && Array.isArray(d.ticketTiers)) setTicketTiers(d.ticketTiers);
@@ -537,33 +557,66 @@ export default function NewEventWizardPage() {
     return venuesList.filter((v) => !v.regionId || v.regionId.toLowerCase() === regionId.toLowerCase());
   }, [venuesList, regionId]);
 
-  // Selected Venue & Hall
+  // Selected Venue & Halls (Supports multi-hall campus bookings)
   const selectedVenue = React.useMemo(() => {
     return venuesList.find((v) => v.id === venueId);
   }, [venuesList, venueId]);
 
+  const selectedHalls = React.useMemo(() => {
+    if (!selectedVenue?.halls) return [];
+    const activeIds = venueHallIds.length > 0 ? venueHallIds : (venueHallId ? [venueHallId] : []);
+    return selectedVenue.halls.filter((h) => activeIds.includes(h.id));
+  }, [selectedVenue, venueHallIds, venueHallId]);
+
   const selectedHall = React.useMemo(() => {
-    return selectedVenue?.halls?.find((h) => h.id === venueHallId);
-  }, [selectedVenue, venueHallId]);
+    return selectedHalls[0] || selectedVenue?.halls?.find((h) => h.id === venueHallId);
+  }, [selectedHalls, selectedVenue, venueHallId]);
+
+  const totalHallsCapacity = React.useMemo(() => {
+    return selectedHalls.reduce((sum, h) => sum + (h.capacity || 0), 0);
+  }, [selectedHalls]);
 
   const totalTicketCapacity = React.useMemo(() => {
     return ticketTiers.reduce((sum, t) => sum + (Number(t.capacity) || 0), 0);
   }, [ticketTiers]);
 
   const isCapacityExceeded = React.useMemo(() => {
-    return selectedHall?.capacity ? totalTicketCapacity > selectedHall.capacity : false;
-  }, [selectedHall, totalTicketCapacity]);
+    const effectiveCapacity = totalHallsCapacity > 0 ? totalHallsCapacity : (selectedHall?.capacity || 0);
+    return effectiveCapacity > 0 ? totalTicketCapacity > effectiveCapacity : false;
+  }, [totalHallsCapacity, selectedHall, totalTicketCapacity]);
 
   const handleRegionChange = (newReg: string) => {
     setRegionId(newReg);
     const matching = venuesList.filter((v) => !v.regionId || v.regionId.toLowerCase() === newReg.toLowerCase());
     if (matching.length > 0) {
       setVenueId(matching[0].id);
-      setVenueHallId(matching[0].halls?.[0]?.id || "");
+      const initialHalls = matching[0].halls?.[0]?.id ? [matching[0].halls[0].id] : [];
+      setVenueHallIds(initialHalls);
+      setVenueHallId(initialHalls[0] || "");
     } else {
       setVenueId("");
+      setVenueHallIds([]);
       setVenueHallId("");
     }
+  };
+
+  const handleToggleHall = (hallId: string) => {
+    let nextIds: string[];
+    if (venueHallIds.includes(hallId)) {
+      if (venueHallIds.length === 1) return; // Maintain at least one allocated hall
+      nextIds = venueHallIds.filter((id) => id !== hallId);
+    } else {
+      nextIds = [...venueHallIds, hallId];
+    }
+    setVenueHallIds(nextIds);
+    setVenueHallId(nextIds[0] || "");
+  };
+
+  const handleSelectAllHalls = () => {
+    if (!selectedVenue?.halls) return;
+    const allIds = selectedVenue.halls.map((h) => h.id);
+    setVenueHallIds(allIds);
+    setVenueHallId(allIds[0] || "");
   };
 
   // Add/Remove Tiers
@@ -694,7 +747,7 @@ export default function NewEventWizardPage() {
       scale,
       regionId,
       venueId,
-      venueHallId,
+      venueHallId: venueHallIds[0] || venueHallId,
       startDate: new Date(startDate).toISOString(),
       endDate: new Date(endDate).toISOString(),
       primaryColor,
@@ -1304,7 +1357,9 @@ export default function NewEventWizardPage() {
                   onChange={(e) => {
                     setVenueId(e.target.value);
                     const v = venuesList.find((ven) => ven.id === e.target.value);
-                    setVenueHallId(v?.halls?.[0]?.id || "");
+                    const initialHalls = v?.halls?.[0]?.id ? [v.halls[0].id] : [];
+                    setVenueHallIds(initialHalls);
+                    setVenueHallId(initialHalls[0] || "");
                   }}
                 >
                   {filteredVenues.map((v) => (
@@ -1316,14 +1371,33 @@ export default function NewEventWizardPage() {
               </div>
 
               <div>
-                <label htmlFor="wizard-hall-select" className="block text-xs font-semibold text-foreground mb-1.5">
-                  {tOrg("wizardSelectHall") || "Select Primary Exhibition Hall"}
-                </label>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label htmlFor="wizard-hall-select" className="block text-xs font-semibold text-foreground">
+                    {tOrg("wizardSelectHall") || "Primary Exhibition Hall"}
+                  </label>
+                  {selectedVenue?.halls && selectedVenue.halls.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={handleSelectAllHalls}
+                      className="text-[11px] font-semibold text-primary hover:underline cursor-pointer"
+                    >
+                      {venueHallIds.length === selectedVenue.halls.length
+                        ? "All Halls Allocated"
+                        : "Allocate All Campus Halls"}
+                    </button>
+                  )}
+                </div>
                 <select
                   id="wizard-hall-select"
                   className="w-full h-11 rounded-md border border-input bg-background px-3 text-xs ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   value={venueHallId}
-                  onChange={(e) => setVenueHallId(e.target.value)}
+                  onChange={(e) => {
+                    const chosen = e.target.value;
+                    setVenueHallId(chosen);
+                    if (chosen && !venueHallIds.includes(chosen)) {
+                      setVenueHallIds([chosen, ...venueHallIds]);
+                    }
+                  }}
                 >
                   {selectedVenue?.halls?.map((h) => (
                     <option key={h.id} value={h.id}>
@@ -1333,6 +1407,65 @@ export default function NewEventWizardPage() {
                 </select>
               </div>
             </div>
+
+            {/* Multi-Hall Selection Grid for Multi-Hall Campus Bookings */}
+            {selectedVenue?.halls && selectedVenue.halls.length > 1 && (
+              <div className="pt-2 border-t border-border/50 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-foreground">
+                    Campus Hall Allocation (Multi-Hall Booking):
+                  </span>
+                  <span className="text-[11px] text-muted-foreground">
+                    Select all wings reserved for this exhibition
+                  </span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                  {selectedVenue.halls.map((h) => {
+                    const isAllocated = venueHallIds.includes(h.id) || h.id === venueHallId;
+                    return (
+                      <button
+                        key={h.id}
+                        type="button"
+                        role="checkbox"
+                        aria-checked={isAllocated}
+                        onClick={() => handleToggleHall(h.id)}
+                        className={cn(
+                          "p-3 rounded-xl border text-left transition-all cursor-pointer flex items-center justify-between gap-2 min-h-[44px]",
+                          isAllocated
+                            ? "border-primary bg-primary/5 text-foreground shadow-xs ring-1 ring-primary/30"
+                            : "border-border/70 hover:border-border text-muted-foreground hover:text-foreground bg-card"
+                        )}
+                      >
+                        <div className="min-w-0 flex items-center gap-2">
+                          <div
+                            className={cn(
+                              "h-4 w-4 rounded border flex items-center justify-center shrink-0 transition-colors",
+                              isAllocated
+                                ? "bg-primary border-primary text-primary-foreground"
+                                : "border-muted-foreground/40 bg-background"
+                            )}
+                          >
+                            {isAllocated && <Check className="h-3 w-3 stroke-[3]" />}
+                          </div>
+                          <span className="text-xs font-semibold truncate">{h.name}</span>
+                        </div>
+                        <span className="text-[11px] font-mono tabular-nums shrink-0 text-muted-foreground">
+                          {h.capacity ? `${h.capacity.toLocaleString()} cap` : "Flexible"}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+                <div className="flex items-center justify-between p-2.5 rounded-lg bg-muted/40 border border-border/60 text-xs">
+                  <span className="text-muted-foreground">
+                    Combined Campus Allocation: <strong className="text-foreground">{selectedHalls.length} {selectedHalls.length === 1 ? "Hall" : "Halls"}</strong> ({selectedHalls.map((h) => h.name).join(", ")})
+                  </span>
+                  <Badge variant="outline" size="sm" className="font-mono text-xs font-bold shrink-0">
+                    {totalHallsCapacity.toLocaleString()} Combined Slots
+                  </Badge>
+                </div>
+              </div>
+            )}
 
             {/* Operational Date Window */}
             <div className="pt-2 border-t border-border/50 space-y-3">
@@ -1461,23 +1594,25 @@ export default function NewEventWizardPage() {
           </div>
 
           {/* Physical Hall Capacity Safeguard Widget */}
-          {selectedHall && (
+          {selectedHalls.length > 0 && (
             <Card className="p-5 border-border bg-card shadow-xs space-y-3">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
                 <div className="flex items-center gap-2 font-semibold text-foreground">
-                  <Building2 className="h-4 w-4 text-primary" />
-                  <span>Physical Hall Allocation: {selectedHall.name}</span>
+                  <Building2 className="h-4 w-4 text-primary shrink-0" />
+                  <span className="truncate">
+                    Physical Hall Allocation: {selectedHalls.map((h) => h.name).join(", ")}
+                  </span>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 shrink-0">
                   <span className="text-muted-foreground font-medium">
-                    Allocated: {totalTicketCapacity.toLocaleString()} / {(selectedHall.capacity || 0).toLocaleString()} slots
+                    Allocated: {totalTicketCapacity.toLocaleString()} / {(totalHallsCapacity || 0).toLocaleString()} slots
                   </span>
                   <Badge
                     variant={isCapacityExceeded ? "destructive" : "outline"}
                     size="sm"
                     className="font-mono text-xs font-bold"
                   >
-                    {selectedHall.capacity ? Math.round((totalTicketCapacity / selectedHall.capacity) * 100) : 0}% Allocated
+                    {totalHallsCapacity ? Math.round((totalTicketCapacity / totalHallsCapacity) * 100) : 0}% Allocated
                   </Badge>
                 </div>
               </div>
@@ -1488,7 +1623,8 @@ export default function NewEventWizardPage() {
                 aria-label="Hall Capacity Allocation"
                 aria-valuenow={totalTicketCapacity}
                 aria-valuemin={0}
-                aria-valuemax={selectedHall.capacity || 100}
+                aria-valuemax={totalHallsCapacity || 100}
+                aria-valuetext={`${totalHallsCapacity ? Math.round((totalTicketCapacity / totalHallsCapacity) * 100) : 0}% (${totalTicketCapacity} of ${totalHallsCapacity} allocated seats across ${selectedHalls.length} halls)`}
                 className="h-2.5 w-full bg-muted rounded-full overflow-hidden"
               >
                 <div
@@ -1498,7 +1634,7 @@ export default function NewEventWizardPage() {
                   )}
                   style={{
                     width: `${Math.min(
-                      selectedHall.capacity ? (totalTicketCapacity / selectedHall.capacity) * 100 : 0,
+                      totalHallsCapacity ? (totalTicketCapacity / totalHallsCapacity) * 100 : 0,
                       100
                     )}%`,
                   }}
@@ -1509,7 +1645,7 @@ export default function NewEventWizardPage() {
                 <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg flex items-start gap-2.5 text-xs text-amber-700 dark:text-amber-400 animate-fade-in">
                   <AlertTriangle className="h-4 w-4 shrink-0 mt-0.5" />
                   <span>
-                    <strong>Capacity Alert:</strong> Total ticket pass allocation ({totalTicketCapacity.toLocaleString()}) exceeds the physical hall limit of {selectedHall.name} ({(selectedHall.capacity || 0).toLocaleString()}). Consider allocating additional halls or adjusting pass capacities.
+                    <strong>Capacity Alert:</strong> Total ticket pass allocation ({totalTicketCapacity.toLocaleString()}) exceeds the combined physical limit of {selectedHalls.map((h) => h.name).join(", ")} ({(totalHallsCapacity || 0).toLocaleString()}). Consider allocating additional halls in Step 2 or adjusting pass capacities.
                   </span>
                 </div>
               )}
