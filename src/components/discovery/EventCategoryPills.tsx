@@ -27,6 +27,7 @@ import {
   Video,
   Layers,
   ArrowRight,
+  ArrowUpRight,
   Filter,
   Check,
   ChevronRight,
@@ -104,20 +105,6 @@ const CATEGORY_MAP: Record<MiceArchetype, CategoryItem> = EVENT_CATEGORIES.reduc
   {} as Record<MiceArchetype, CategoryItem>
 );
 
-const ARCHETYPE_CLUSTER_MAP: Record<
-  MiceArchetype,
-  { clusterId: string; shortLabel: string; label: string }
-> = MICE_INDUSTRY_CLUSTERS.reduce((acc, cluster) => {
-  cluster.archetypes.forEach((arch) => {
-    acc[arch] = {
-      clusterId: cluster.id,
-      shortLabel: cluster.shortLabel,
-      label: cluster.label,
-    };
-  });
-  return acc;
-}, {} as Record<MiceArchetype, { clusterId: string; shortLabel: string; label: string }>);
-
 const CLUSTER_IDS = ['all', ...MICE_INDUSTRY_CLUSTERS.map((c) => c.id)];
 
 export interface EventCategoryPillsProps {
@@ -168,7 +155,6 @@ export function EventCategoryPills({
   const renderCategoryTile = (category: CategoryItem) => {
     const Icon = category.icon;
     const isActive = activeCategoryId === category.id;
-    const clusterInfo = ARCHETYPE_CLUSTER_MAP[category.id];
 
     let translatedTitle = category.name;
     try {
@@ -179,8 +165,6 @@ export function EventCategoryPills({
     } catch {
       // fallback
     }
-
-    const clusterBadge = clusterInfo?.shortLabel || 'MICE Vertical';
 
     const tileContent = (
       <div
@@ -203,9 +187,9 @@ export function EventCategoryPills({
             <Icon className="h-4 w-4 sm:h-5 sm:w-5 stroke-[2.2]" />
           </div>
 
-          <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide line-clamp-1 text-right">
-            {clusterBadge}
-          </span>
+          <div className="flex items-center justify-center h-7 w-7 rounded-lg text-muted-foreground/40 transition-all duration-200 group-hover:text-primary group-hover:bg-primary/5">
+            <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </div>
         </div>
 
         <div className="mt-2.5">

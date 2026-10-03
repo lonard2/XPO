@@ -54,14 +54,12 @@ describe('EventCategoryPills', () => {
     expect(screen.getByRole('tab', { name: /Culture & Sports/i })).toBeInTheDocument();
   });
 
-  it('displays the cluster short label in the top-right tag of category cards', () => {
-    render(<EventCategoryPills locale="en" />);
+  it('renders interactive directional navigation affordances on category cards', () => {
+    const { container } = render(<EventCategoryPills locale="en" />);
 
-    const heavyIndustryTags = screen.getAllByText('Heavy Industry');
-    expect(heavyIndustryTags.length).toBeGreaterThan(0);
-
-    const digitalTechTags = screen.getAllByText('Digital & Tech');
-    expect(digitalTechTags.length).toBeGreaterThan(0);
+    // ArrowUpRight icons rendered across category cards
+    const arrowIcons = container.querySelectorAll('svg.lucide-arrow-up-right');
+    expect(arrowIcons.length).toBe(22);
   });
 
   it('filters displayed categories when a specific cluster tab is clicked', () => {
