@@ -1075,7 +1075,7 @@ export default function NewEventWizardPage() {
                   key={tmpl.id}
                   type="button"
                   onClick={() => handleApplyTemplate(tmpl.id)}
-                  className="p-3.5 rounded-xl border border-border/80 bg-background hover:border-primary/60 hover:bg-primary/5 text-left transition-all cursor-pointer group shadow-xs hover:shadow-sm"
+                  className="min-h-[44px] p-3.5 rounded-xl border border-border/80 bg-background hover:border-primary/60 hover:bg-primary/5 text-left transition-all cursor-pointer group shadow-xs hover:shadow-sm"
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">
@@ -1492,7 +1492,7 @@ export default function NewEventWizardPage() {
                     <button
                       type="button"
                       onClick={handleSelectAllHalls}
-                      className="text-[11px] font-semibold text-primary hover:underline cursor-pointer"
+                      className="min-h-[44px] inline-flex items-center text-xs font-semibold text-primary hover:underline cursor-pointer"
                     >
                       {venueHallIds.length === selectedVenue.halls.length
                         ? "All Halls Allocated"

@@ -40,6 +40,7 @@ interface LivePreviewFrameProps {
     perks: boolean;
   };
   ticketTiers?: Array<{
+    id?: string;
     name: string;
     price: number;
     currency: string;
@@ -457,7 +458,7 @@ export function LivePreviewFrame({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {ticketTiers.map((tier, idx) => (
                     <div
-                      key={tier.name}
+                      key={tier.id || `${tier.name}-${idx}`}
                       className={cn(
                         "p-4 rounded-xl border transition-all flex flex-col justify-between gap-2",
                         idx === 1
