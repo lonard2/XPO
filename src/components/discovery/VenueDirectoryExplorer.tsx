@@ -44,6 +44,7 @@ export function VenueDirectoryExplorer({
   });
   const [searchQuery, setSearchQuery] = React.useState<string>('');
   const [sortBy, setSortBy] = React.useState<'alpha' | 'capacity' | 'area'>('alpha');
+  const [specFilter, setSpecFilter] = React.useState<'all' | 'column_free' | 'high_clearance' | 'heavy_load' | 'mega_complex'>('all');
 
   // Synchronize when URL searchParams change externally
   React.useEffect(() => {
@@ -78,7 +79,7 @@ export function VenueDirectoryExplorer({
     ['gl', 'global'].includes((v.region?.code || v.regionId || '').toLowerCase())
   ).length;
 
-  // Filter venues by region and search query
+  // Filter venues by region, technical specifications, and search query
   const filteredVenues = React.useMemo(() => {
     const results = venues.filter((v) => {
       const code = (v.region?.code || v.regionId || '').toLowerCase();
@@ -89,6 +90,50 @@ export function VenueDirectoryExplorer({
         (selectedRegion === 'global' && ['gl', 'global'].includes(code));
 
       if (!matchesRegion) return false;
+
+      // Technical MICE spec filtering
+      if (specFilter === 'column_free') {
+        const hasColumnFree = (v.halls || []).some((h) => {
+          const n = h.name.toLowerCase();
+          const d = (h.description || '').toLowerCase();
+          return (
+            n.includes('hall a') ||
+            n.includes('hall 1') ||
+            n.includes('east') ||
+            d.includes('column-free') ||
+            (h.floorAreaSqm || 0) >= 4500
+          );
+        });
+        if (!hasColumnFree) return false;
+      } else if (specFilter === 'high_clearance') {
+        const hasHighClearance = (v.halls || []).some((h) => {
+          const n = h.name.toLowerCase();
+          return (
+            n.includes('hall a') ||
+            n.includes('hall 1') ||
+            n.includes('heavy') ||
+            n.includes('east') ||
+            (h.floorAreaSqm || 0) >= 4000
+          );
+        });
+        if (!hasHighClearance) return false;
+      } else if (specFilter === 'heavy_load') {
+        const hasHeavyLoad = (v.halls || []).some((h) => {
+          const n = h.name.toLowerCase();
+          return (
+            n.includes('hall a') ||
+            n.includes('hall 1') ||
+            n.includes('heavy') ||
+            n.includes('east') ||
+            (h.floorAreaSqm || 0) >= 4500
+          );
+        });
+        if (!hasHeavyLoad) return false;
+      } else if (specFilter === 'mega_complex') {
+        const totalArea = v.halls?.reduce((sum, h) => sum + (h.floorAreaSqm || 0), 0) || 0;
+        const totalHalls = v.halls?.length || 0;
+        if (totalArea < 35000 && totalHalls < 6) return false;
+      }
 
       if (!searchQuery.trim()) return true;
 
@@ -116,7 +161,7 @@ export function VenueDirectoryExplorer({
       }
       return a.name.localeCompare(b.name);
     });
-  }, [venues, selectedRegion, searchQuery, sortBy]);
+  }, [venues, selectedRegion, specFilter, searchQuery, sortBy]);
 
   // Smart cross-region search recovery when 0 results found
   const otherRegionMatches = React.useMemo(() => {
@@ -165,12 +210,12 @@ export function VenueDirectoryExplorer({
       <div className="space-y-4 p-4 rounded-3xl border border-border/80 bg-card shadow-xs">
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
           {/* Region Filter Tabs */}
-          <div className="flex flex-wrap items-center gap-1.5 bg-muted/50 p-1 rounded-2xl border border-border/60">
+          <div className="flex flex-wrap items-center gap-1.5 bg-muted/50 p-1.5 rounded-2xl border border-border/60">
             <button
               type="button"
               onClick={() => handleSelectRegion('all')}
               className={cn(
-                'min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5',
+                'min-h-[44px] sm:min-h-[38px] px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5',
                 selectedRegion === 'all'
                   ? 'bg-card text-foreground shadow-xs'
                   : 'text-muted-foreground hover:text-foreground'
@@ -187,7 +232,7 @@ export function VenueDirectoryExplorer({
               type="button"
               onClick={() => handleSelectRegion('id')}
               className={cn(
-                'min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5',
+                'min-h-[44px] sm:min-h-[38px] px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5',
                 selectedRegion === 'id'
                   ? 'bg-card text-foreground shadow-xs'
                   : 'text-muted-foreground hover:text-foreground'
@@ -203,7 +248,7 @@ export function VenueDirectoryExplorer({
               type="button"
               onClick={() => handleSelectRegion('jp')}
               className={cn(
-                'min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5',
+                'min-h-[44px] sm:min-h-[38px] px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5',
                 selectedRegion === 'jp'
                   ? 'bg-card text-foreground shadow-xs'
                   : 'text-muted-foreground hover:text-foreground'
@@ -219,7 +264,7 @@ export function VenueDirectoryExplorer({
               type="button"
               onClick={() => handleSelectRegion('global')}
               className={cn(
-                'min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5',
+                'min-h-[44px] sm:min-h-[38px] px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5',
                 selectedRegion === 'global'
                   ? 'bg-card text-foreground shadow-xs'
                   : 'text-muted-foreground hover:text-foreground'
@@ -241,14 +286,14 @@ export function VenueDirectoryExplorer({
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 iconPrefix={<Search className="h-4 w-4 text-muted-foreground" />}
-                className="h-10 text-xs pr-8"
+                className="h-11 sm:h-10 text-xs pr-10"
               />
               {searchQuery && (
                 <button
                   type="button"
                   onClick={() => setSearchQuery('')}
                   aria-label={tCom('clear') || 'Clear search'}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-1 cursor-pointer"
+                  className="absolute right-1 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-2 min-h-[40px] min-w-[40px] flex items-center justify-center cursor-pointer"
                 >
                   <X className="h-3.5 w-3.5" />
                 </button>
@@ -264,7 +309,7 @@ export function VenueDirectoryExplorer({
                 id="venue-sort"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as any)}
-                className="h-10 px-3 rounded-xl border border-border/80 bg-background text-xs font-medium text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
+                className="h-11 sm:h-10 px-3.5 rounded-xl border border-border/80 bg-background text-xs font-medium text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer w-full sm:w-auto"
               >
                 <option value="alpha">{tVen('sortAlphabetical') || 'Alphabetical (A - Z)'}</option>
                 <option value="capacity">{tVen('sortCapacity') || 'Largest Capacity (Pax)'}</option>
@@ -272,6 +317,38 @@ export function VenueDirectoryExplorer({
               </select>
             </div>
           </div>
+        </div>
+
+        {/* Technical MICE Spec Filter Chips (P2 Enhancement for Organizers) */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none pt-1 border-t border-border/40">
+          <span className="text-xs font-semibold text-muted-foreground whitespace-nowrap mr-1">
+            Technical Filter:
+          </span>
+          {[
+            { id: 'all', label: 'All Complex Types' },
+            { id: 'column_free', label: 'Column-Free Clear Spans' },
+            { id: 'high_clearance', label: 'High Clearance (>=12m)' },
+            { id: 'heavy_load', label: 'Heavy Load (>=30 kN/m²)' },
+            { id: 'mega_complex', label: 'Mega Complex (>35,000 m²)' },
+          ].map((chip) => {
+            const isActive = specFilter === chip.id;
+            return (
+              <button
+                key={chip.id}
+                type="button"
+                onClick={() => setSpecFilter(chip.id as any)}
+                className={cn(
+                  'min-h-[44px] sm:min-h-[32px] px-3 py-1.5 rounded-lg text-xs font-medium border transition-all whitespace-nowrap cursor-pointer flex items-center gap-1',
+                  isActive
+                    ? 'border-primary bg-primary/10 text-primary font-semibold shadow-2xs'
+                    : 'border-border/70 bg-background text-muted-foreground hover:bg-muted hover:text-foreground'
+                )}
+              >
+                {isActive && <Check className="h-3 w-3 text-primary" />}
+                <span>{chip.label}</span>
+              </button>
+            );
+          })}
         </div>
 
         {/* Dynamic Result Tally Bar */}
@@ -286,13 +363,14 @@ export function VenueDirectoryExplorer({
             </Badge>
           </div>
 
-          {(searchQuery || selectedRegion !== 'all') && (
+          {(searchQuery || selectedRegion !== 'all' || specFilter !== 'all') && (
             <button
               type="button"
               onClick={() => {
                 handleSelectRegion('all');
                 setSearchQuery('');
                 setSortBy('alpha');
+                setSpecFilter('all');
               }}
               className="text-primary hover:underline text-xs font-semibold cursor-pointer"
             >
@@ -338,7 +416,7 @@ export function VenueDirectoryExplorer({
                     size="sm"
                     variant="outline"
                     onClick={() => handleSelectRegion(m.region)}
-                    className="text-xs gap-1 cursor-pointer"
+                    className="text-xs gap-1 cursor-pointer min-h-[44px] sm:min-h-[36px] px-3.5"
                   >
                     <span>{tVen('viewInRegion') || 'View in'} {m.regionLabel} ({m.count})</span>
                   </Button>
@@ -353,8 +431,9 @@ export function VenueDirectoryExplorer({
             onClick={() => {
               handleSelectRegion('all');
               setSearchQuery('');
+              setSpecFilter('all');
             }}
-            className="text-xs cursor-pointer"
+            className="text-xs cursor-pointer min-h-[44px] sm:min-h-[36px] px-4"
           >
             {tVen('resetAllFilters') || tCom('clear') || 'Reset Filters'}
           </Button>

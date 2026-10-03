@@ -145,10 +145,12 @@ export function VenueSpotlightCard({
 
           <Link
             href={venueUrl}
+            tabIndex={-1}
+            aria-hidden="true"
             className={buttonVariants({
               variant: 'ghost',
               size: 'sm',
-              className: 'gap-1 text-xs font-semibold text-primary hover:bg-primary/10 cursor-pointer',
+              className: 'gap-1 text-xs font-semibold text-primary hover:bg-primary/10 cursor-pointer min-h-[36px]',
             })}
           >
             <span>{tReg('viewVenue') || 'View Venue'}</span>

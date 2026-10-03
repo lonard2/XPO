@@ -47,7 +47,29 @@ describe('VenueTransitHub Component', () => {
     fireEvent.click(copyBtn);
 
     expect(writeTextMock).toHaveBeenCalledWith('Tokyo Big Sight, 3-11-1 Ariake, Koto-ku, Tokyo');
-    expect(screen.getByText(/Address Copied/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Address Copied/i)).toBeInTheDocument();
+  });
+
+  it('handles clipboard copy error gracefully when permission is denied', async () => {
+    const writeTextMock = vi.fn().mockRejectedValue(new Error('Permission denied'));
+    Object.assign(navigator, {
+      clipboard: {
+        writeText: writeTextMock,
+      },
+    });
+
+    render(
+      <VenueTransitHub
+        venueName="Tokyo Big Sight"
+        address="3-11-1 Ariake, Koto-ku"
+        city="Tokyo"
+        regionCode="JP"
+      />
+    );
+
+    const copyBtn = screen.getByRole('button', { name: /copy venue address/i });
+    expect(() => fireEvent.click(copyBtn)).not.toThrow();
+    expect(writeTextMock).toHaveBeenCalled();
   });
 
   it('renders navigation map launcher links', () => {

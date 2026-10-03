@@ -53,7 +53,11 @@ export function VenueScheduleTable({
 
         <Link
           href={`/${locale}/calendar`}
-          className={buttonVariants({ variant: 'outline', size: 'sm', className: 'gap-1.5 text-xs font-semibold' })}
+          className={buttonVariants({
+            variant: 'outline',
+            size: 'sm',
+            className: 'gap-1.5 text-xs font-semibold min-h-[44px] sm:min-h-[36px] px-3.5',
+          })}
         >
           <span>Full Regional Calendar</span>
           <ArrowRight className="h-3.5 w-3.5" />
@@ -80,7 +84,7 @@ export function VenueScheduleTable({
             return (
               <div
                 key={evt.id}
-                className="flex flex-col justify-between rounded-2xl border border-border/80 bg-card p-5 hover:border-primary/50 transition-all shadow-xs space-y-4"
+                className="group relative flex flex-col justify-between rounded-2xl border border-border/80 bg-card p-5 hover:border-primary/50 transition-all shadow-xs space-y-4"
               >
                 <div className="space-y-2.5">
                   <div className="flex items-center justify-between gap-2">
@@ -101,8 +105,11 @@ export function VenueScheduleTable({
                     </span>
                   </div>
 
-                  <Link href={`/${locale}/events/${evt.slug}`}>
-                    <h3 className="text-base font-bold text-foreground hover:text-primary transition-colors line-clamp-1">
+                  <Link
+                    href={`/${locale}/events/${evt.slug}`}
+                    className="after:absolute after:inset-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+                  >
+                    <h3 className="text-base font-bold text-foreground group-hover:text-primary transition-colors line-clamp-1">
                       {evt.title}
                     </h3>
                   </Link>
@@ -120,12 +127,14 @@ export function VenueScheduleTable({
                   </div>
                 </div>
 
-                <div className="pt-3 border-t border-border/60">
+                <div className="pt-3 border-t border-border/60 relative z-10">
                   <Link
                     href={`/${locale}/events/${evt.slug}`}
+                    tabIndex={-1}
+                    aria-hidden="true"
                     className={buttonVariants({
                       size: 'sm',
-                      className: 'w-full gap-1.5 text-xs font-semibold cursor-pointer',
+                      className: 'w-full gap-1.5 text-xs font-semibold cursor-pointer min-h-[44px] sm:min-h-[36px]',
                     })}
                   >
                     <Ticket className="h-3.5 w-3.5" />

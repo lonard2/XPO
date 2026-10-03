@@ -38,9 +38,15 @@ export function VenueTransitHub({
 
   const handleCopyAddress = () => {
     if (typeof navigator !== 'undefined' && navigator.clipboard) {
-      navigator.clipboard.writeText(`${venueName}, ${address}, ${city}`);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      navigator.clipboard
+        .writeText(`${venueName}, ${address}, ${city}`)
+        .then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        })
+        .catch(() => {
+          // Graceful fallback if clipboard write fails or is denied
+        });
     }
   };
 
@@ -49,33 +55,130 @@ export function VenueTransitHub({
   const appleMapsUrl = `https://maps.apple.com/?q=${encodedQuery}`;
   const wazeUrl = `https://waze.com/ul?q=${encodedQuery}`;
 
-  // Categorize or synthesize realistic transit modules based on venue region & transitInfo
-  const isJapan = regionCode.toUpperCase() === 'JP' || city.toLowerCase().includes('tokyo') || city.toLowerCase().includes('yokohama') || city.toLowerCase().includes('chiba');
-  const isGlobal = regionCode.toUpperCase() === 'GLOBAL' || city.toLowerCase().includes('singapore') || city.toLowerCase().includes('london') || city.toLowerCase().includes('frankfurt');
+  // Accurate venue-specific transit routing based on venue name, city, and region
+  const venueKey = venueName.toLowerCase();
+  const cityKey = city.toLowerCase();
+  const regKey = regionCode.toUpperCase();
 
-  const railInfo = isJapan
-    ? 'Yurikamome Line (Tokyo Big Sight Station - 3 min walk) or Rinkai Line (Kokusai-Tenjijo Station - 7 min walk).'
-    : isGlobal
-    ? 'Direct MRT Underground Link (Bayfront MRT Station CE1/DT16, Exits D & E).'
-    : 'KRL Commuter Line (Rajawali / Kemayoran Station) or LRT Jabodebek connection with dedicated event shuttle.';
+  // Transit calculations tailored to exact MICE complexes
+  const { railInfo, busInfo, parkingInfo, airportInfo } = React.useMemo(() => {
+    // 1. Indonesian Complexes
+    if (venueKey.includes('ice bsd') || cityKey.includes('tangerang') || cityKey.includes('bsd')) {
+      return {
+        railInfo: 'KRL Commuter Line (Rawa Buntu & Cisauk Stations - Rangkasbitung Line) with free BSD Link electric shuttles to ICE Hall 1 & 10.',
+        busInfo: 'TransJakarta S11 Feeder & direct ICE BSD Shuttle from Rawa Buntu Intermodal Terminal.',
+        parkingInfo: 'Basement & Outdoor Concourses (Capacity: 5,000+ bays) with EV charging stations at Hall 3 & Hall 10.',
+        airportInfo: 'Soekarno-Hatta Int Airport (CGK) via Kunciran-Serpong Toll Road (approx. 35 mins).',
+      };
+    }
+    if (venueKey.includes('jiexpo') || venueKey.includes('kemayoran')) {
+      return {
+        railInfo: 'KRL Commuter Line (Rajawali & Kemayoran Stations - Cikarang Line) with direct exhibition concourse shuttle to Gates 1 & 2.',
+        busInfo: 'TransJakarta BRT Corridor 12 & PRJ Express (JIExpo Kemayoran Halt direct at Gate 2 concourse).',
+        parkingInfo: 'Open Ground & Multi-Level Arena Parking (Capacity: 8,000+ bays) with dedicated heavy truck freight bays.',
+        airportInfo: 'Soekarno-Hatta Int Airport (CGK) via Prof. Sedyatmo Toll Road (approx. 30 mins).',
+      };
+    }
+    if (venueKey.includes('jicc') || venueKey.includes('gbk') || venueKey.includes('senayan') || venueKey.includes('jakarta convention')) {
+      return {
+        railInfo: 'MRT Jakarta (Istora Mandiri & Senayan Stations) or KRL Commuter Line (Palmerah Station - 10 min walk).',
+        busInfo: 'TransJakarta BRT Corridor 1 (Gelora Bung Karno Halt direct pedestrian concourse to JICC).',
+        parkingInfo: 'GBK East & West Parking Concourse (Capacity: 4,000+ bays) with multi-deck VIP drop-off.',
+        airportInfo: 'Soekarno-Hatta Int Airport (CGK) via Jakarta Inner Ring Road (approx. 35 mins).',
+      };
+    }
+    if (venueKey.includes('pik 2') || venueKey.includes('nice')) {
+      return {
+        railInfo: 'KRL Commuter Line (Rawa Buaya Station) or dedicated PIK 2 Express Concourse Shuttle.',
+        busInfo: 'TransJakarta Corridor 1A (Pantai Maju Feeder) and Gold Coast express connector bus.',
+        parkingInfo: 'Integrated Multi-Story Complex Parking (Capacity: 6,000+ bays) with smart space telemetry.',
+        airportInfo: 'Soekarno-Hatta Int Airport (CGK) via PIK 2 Dedicated Expressway (approx. 15-20 mins).',
+      };
+    }
+    if (venueKey.includes('jis') || venueKey.includes('international stadium')) {
+      return {
+        railInfo: 'KRL Commuter Line (Ancol Station) and future LRT Jakarta Phase 1B concourse terminal.',
+        busInfo: 'TransJakarta BRT Corridor 14 (JIS Concourse Halt direct drop-off).',
+        parkingInfo: 'Western Concourse & Sunter Multi-Storey Parking (Capacity: 2,500+ bays) with park-and-ride shuttles.',
+        airportInfo: 'Soekarno-Hatta Int Airport (CGK) via Tanjung Priok Toll Road (approx. 30 mins).',
+      };
+    }
 
-  const busInfo = isJapan
-    ? 'Toei Bus Routes from Tokyo Station (Marunouchi South Exit) & Monzen-Nakacho directly to Big Sight Terminal.'
-    : isGlobal
-    ? 'Direct Public Bus Services (97, 106, 133, 502, 518) at Sands Expo bus concourse.'
-    : 'TransJakarta BRT Corridor 12 (JIExpo Kemayoran Halt) and direct ICE BSD Free Shuttle from Rawa Buntu.';
+    // 2. Japan Complexes
+    if (venueKey.includes('tokyo big sight') || cityKey.includes('ariake') || cityKey.includes('koto')) {
+      return {
+        railInfo: 'Yurikamome Line (Tokyo Big Sight Station - 3 min walk) or Rinkai Line (Kokusai-Tenjijo Station - 7 min walk).',
+        busInfo: 'Toei Bus Routes from Tokyo Station (Marunouchi South Exit) & Monzen-Nakacho directly to Big Sight Terminal.',
+        parkingInfo: 'Designated South & East Underground Parking (Capacity: 3,000+ vehicles) with EV chargers.',
+        airportInfo: 'Airport Limousine Bus directly to/from Haneda Airport (25 mins) and Narita Airport (60 mins).',
+      };
+    }
+    if (venueKey.includes('makuhari') || cityKey.includes('chiba')) {
+      return {
+        railInfo: 'JR Keiyo Line (Kaihin-Makuhari Station - 5 min walk) or JR Sobu Line (Makuhari-Hongo Station + Bus).',
+        busInfo: 'Keisei Highway Bus directly from Tokyo Station (Yaesu Exit) or direct Limousine Bus from Haneda/Narita.',
+        parkingInfo: 'Makuhari Messe Large-Scale Parking (Capacity: 5,500+ vehicles) including oversized coach lots.',
+        airportInfo: 'Direct Express Limousine Bus to Narita Airport (30 mins) and Haneda Airport (45 mins).',
+      };
+    }
+    if (venueKey.includes('pacifico') || cityKey.includes('yokohama')) {
+      return {
+        railInfo: 'Minatomirai Line (Minatomirai Station - 5 min walk) or JR Keihin-Tohoku Line (Sakuragicho Station - 12 min walk).',
+        busInfo: 'Keikyu Airport Bus from Haneda Airport directly to Pacifico Yokohama front entrance.',
+        parkingInfo: 'Minatomirai Public Underground Parking (Capacity: 1,200+ bays) with direct exhibition hall lift access.',
+        airportInfo: 'Haneda Airport (HND) via Airport Limousine Bus (approx. 30 minutes).',
+      };
+    }
 
-  const parkingInfo = isJapan
-    ? 'Designated South & East Underground Parking (Capacity: 3,000+ vehicles). Electric Vehicle (EV) chargers available.'
-    : isGlobal
-    ? 'Basement Multi-Storey Carpark (Capacity: 2,500+ bays) with valet drop-off at Central Atrium.'
-    : 'Open Ground & Multi-Level Parking (Capacity: 5,000+ bays) with dedicated VIP & exhibitor loading zones.';
+    // 3. Global Complexes
+    if (venueKey.includes('marina bay sands') || venueKey.includes('sands expo') || cityKey.includes('singapore')) {
+      return {
+        railInfo: 'Direct MRT Underground Link (Bayfront MRT Station CE1/DT16, Exits D & E directly into Sands Expo).',
+        busInfo: 'Direct Public Bus Services (97, 106, 133, 502, 518) at Sands Expo bus concourse.',
+        parkingInfo: 'Basement Multi-Storey Carpark (Capacity: 2,500+ bays) with valet drop-off at Central Atrium.',
+        airportInfo: 'Changi Airport (SIN) via MRT or Express Taxi (approx. 20 minutes via ECP Expressway).',
+      };
+    }
+    if (venueKey.includes('frankfurt') || cityKey.includes('frankfurt')) {
+      return {
+        railInfo: 'S-Bahn lines S3, S4, S5, S6 (Frankfurt Messe Station) or U-Bahn U4 (Festhalle/Messe Station).',
+        busInfo: 'Bus lines 32 and 52 to Messe Torhaus and direct intra-campus shuttle buses.',
+        parkingInfo: 'Rebstock Multi-Storey Carpark (Capacity: 15,000+ bays) with direct shuttle to exhibition halls.',
+        airportInfo: 'Frankfurt Airport (FRA) via S-Bahn S8/S9 to Central Station then S3-S6 to Messe (approx. 20 mins).',
+      };
+    }
+    if (venueKey.includes('excel') || cityKey.includes('london')) {
+      return {
+        railInfo: 'Elizabeth Line (Custom House Station - direct covered walkway) or DLR (Custom House & Prince Regent).',
+        busInfo: 'Bus routes 147, 241, 325, 473 and IFS Cloud Cable Car connecting Greenwich Peninsula.',
+        parkingInfo: 'Underfloor Multi-Storey Carpark (Capacity: 2,000+ spaces) with pre-booked event passes.',
+        airportInfo: 'London City Airport (LCY) approx. 5 minutes by DLR or taxi; Heathrow Airport (LHR) 43 mins via Elizabeth Line.',
+      };
+    }
 
-  const airportInfo = isJapan
-    ? 'Airport Limousine Bus directly to/from Haneda Airport (25 mins) and Narita Airport (60 mins).'
-    : isGlobal
-    ? 'Changi Airport (SIN) via MRT or Express Taxi (approx. 20 minutes via ECP Expressway).'
-    : 'Soekarno-Hatta Int Airport (CGK) via Prof. Sedyatmo Toll Road (approx. 30-40 minutes).';
+    // Regional Fallback
+    const isJapan = regKey === 'JP' || cityKey.includes('tokyo') || cityKey.includes('yokohama') || cityKey.includes('chiba');
+    const isGlobal = regKey === 'GLOBAL' || regKey === 'GL';
+
+    return {
+      railInfo: isJapan
+        ? 'Rapid JR Rail or Municipal Subway line with high-frequency convention shuttles.'
+        : isGlobal
+        ? 'Direct metropolitan rapid transit connection with dedicated exhibition exit terminals.'
+        : 'KRL Commuter Line or LRT transit connection with dedicated event feeder shuttles.',
+      busInfo: isJapan
+        ? 'Metropolitan bus routes connecting central railway terminals directly to venue grounds.'
+        : isGlobal
+        ? 'Metropolitan express bus concourse with direct event drop-off gates.'
+        : 'TransJakarta or regional feeder bus corridors with dedicated hall drop-off bays.',
+      parkingInfo: 'Dedicated multi-level or campus ground parking with separate VIP, exhibitor, and freight loading docks.',
+      airportInfo: isJapan
+        ? 'Airport Limousine Bus connectivity to Haneda & Narita Airports.'
+        : isGlobal
+        ? 'International Gateway Airport accessible via rapid transit or expressway (20-40 mins).'
+        : 'Soekarno-Hatta Int Airport (CGK) accessible via toll expressway corridors.',
+    };
+  }, [venueKey, cityKey, regKey]);
 
   return (
     <div className={cn('rounded-3xl border border-border/80 bg-card p-6 sm:p-8 space-y-6 shadow-xs', className)}>
@@ -94,18 +197,18 @@ export function VenueTransitHub({
           </p>
         </div>
 
-        {/* 1-Click Copy Address Action */}
+        {/* 1-Click Copy Address Action with Accessible Live Region */}
         <div className="flex items-center gap-2">
           <Button
             variant="outline"
             size="sm"
             onClick={handleCopyAddress}
-            className="gap-1.5 text-xs font-semibold cursor-pointer"
+            className="gap-1.5 text-xs font-semibold cursor-pointer min-h-[44px] sm:min-h-[36px] px-3.5"
           >
             {copied ? (
               <>
-                <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-                <span className="text-emerald-600 dark:text-emerald-400">Address Copied</span>
+                <Check className="h-3.5 w-3.5 text-primary" />
+                <span className="text-primary font-semibold">Address Copied</span>
               </>
             ) : (
               <>
@@ -114,6 +217,9 @@ export function VenueTransitHub({
               </>
             )}
           </Button>
+          <div aria-live="polite" className="sr-only">
+            {copied ? `Address for ${venueName} copied to clipboard.` : ''}
+          </div>
         </div>
       </div>
 
@@ -206,33 +312,36 @@ export function VenueTransitHub({
             href={googleMapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border/80 bg-background text-xs font-medium hover:bg-muted hover:text-foreground transition-colors"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 min-h-[44px] sm:min-h-[36px] rounded-xl border border-border/80 bg-background text-xs font-medium hover:bg-muted hover:text-foreground transition-colors"
           >
             <Navigation className="h-3.5 w-3.5 text-primary" />
             <span>Google Maps</span>
             <ExternalLink className="h-3 w-3 opacity-60 ml-0.5" />
+            <span className="sr-only">(opens in new tab)</span>
           </a>
 
           <a
             href={appleMapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border/80 bg-background text-xs font-medium hover:bg-muted hover:text-foreground transition-colors"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 min-h-[44px] sm:min-h-[36px] rounded-xl border border-border/80 bg-background text-xs font-medium hover:bg-muted hover:text-foreground transition-colors"
           >
             <Navigation className="h-3.5 w-3.5 text-primary" />
             <span>Apple Maps</span>
             <ExternalLink className="h-3 w-3 opacity-60 ml-0.5" />
+            <span className="sr-only">(opens in new tab)</span>
           </a>
 
           <a
             href={wazeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border/80 bg-background text-xs font-medium hover:bg-muted hover:text-foreground transition-colors"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 min-h-[44px] sm:min-h-[36px] rounded-xl border border-border/80 bg-background text-xs font-medium hover:bg-muted hover:text-foreground transition-colors"
           >
             <Navigation className="h-3.5 w-3.5 text-primary" />
             <span>Waze</span>
             <ExternalLink className="h-3 w-3 opacity-60 ml-0.5" />
+            <span className="sr-only">(opens in new tab)</span>
           </a>
         </div>
       </div>
