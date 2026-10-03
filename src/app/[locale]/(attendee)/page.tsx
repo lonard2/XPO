@@ -15,7 +15,6 @@ import {
 import { db } from '@/lib/db';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/Button';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
 import { HeroSection } from '@/components/discovery/HeroSection';
 import { MajorVenuesUpcomingSection } from '@/components/discovery/MajorVenuesUpcomingSection';
 import { EventCategoryPills } from '@/components/discovery/EventCategoryPills';
@@ -26,7 +25,7 @@ import {
   FALLBACK_EVENTS,
   FALLBACK_VENUES,
 } from '@/lib/discovery/fallbackData';
-import { type BannerSlide, type DiscoveryEvent, type VenueSummary, type VenueWithEvents } from '@/types/discovery';
+import { type BannerSlide, type DiscoveryEvent, type VenueWithEvents } from '@/types/discovery';
 
 export interface HomePageProps {
   params: Promise<{ locale: string }>;
@@ -82,7 +81,6 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
   });
 
   let bannerSlides: BannerSlide[] = regionFallbackSlides.length > 0 ? regionFallbackSlides : FALLBACK_BANNER_SLIDES;
-  let spotlightVenues: VenueSummary[] = regionFallbackVenues.length > 0 ? regionFallbackVenues : FALLBACK_VENUES;
   let featuredEvents: DiscoveryEvent[] = regionFallbackEvents.length > 0 ? regionFallbackEvents : FALLBACK_EVENTS;
   let majorVenuesWithEvents: VenueWithEvents[] = regionFallbackVenues.map((v) => ({
     id: v.id,
@@ -172,7 +170,6 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
     });
 
     if (dbVenues.length > 0) {
-      spotlightVenues = dbVenues as unknown as VenueSummary[];
       majorVenuesWithEvents = dbVenues.map((v) => ({
         id: v.id,
         name: v.name,
@@ -229,7 +226,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         </section>
       )}
 
-      {/* 3. 15 MICE Event Category Matrix */}
+      {/* 3. 22 MICE Event Category Matrix */}
       <section className="container">
         <EventCategoryPills locale={locale} />
       </section>

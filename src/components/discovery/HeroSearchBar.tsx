@@ -48,28 +48,12 @@ export function HeroSearchBar({
   regionCode = 'id',
   className,
 }: HeroSearchBarProps) {
-  let router: any = null;
-  try {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    router = useRouter();
-  } catch {
-    // Graceful fallback when rendered outside AppRouter in unit tests
-  }
-
+  const router = useRouter();
   const [query, setQuery] = React.useState('');
   const inputRef = React.useRef<HTMLInputElement>(null);
 
-  let tHome: any = (k: string) => k;
-  let tCom: any = (k: string) => k;
-
-  try {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tHome = useTranslations('home');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tCom = useTranslations('common');
-  } catch {
-    // Graceful fallback if rendered outside NextIntlClientProvider in testing
-  }
+  const tHome = useTranslations('home');
+  const tCom = useTranslations('common');
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -152,7 +136,7 @@ export function HeroSearchBar({
               <button
                 type="button"
                 onClick={() => setQuery('')}
-                className="flex items-center justify-center h-8 w-8 min-h-[32px] min-w-[32px] sm:h-7 sm:w-7 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors cursor-pointer"
+                className="flex items-center justify-center h-10 w-10 min-h-[44px] min-w-[44px] sm:h-8 sm:w-8 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors cursor-pointer"
                 aria-label={tCom('clear') || 'Clear search query'}
               >
                 <X className="h-4 w-4" />

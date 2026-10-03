@@ -719,6 +719,80 @@ export const ARCHETYPE_METAS: Record<MiceArchetype, ArchetypeMeta> = {
 
 export const ARCHETYPE_METADATA = ARCHETYPE_METAS;
 
+export interface MiceIndustryCluster {
+  id: string;
+  label: string;
+  shortLabel: string;
+  archetypes: MiceArchetype[];
+}
+
+export const MICE_INDUSTRY_CLUSTERS: MiceIndustryCluster[] = [
+  {
+    id: 'heavy_industry_infrastructure',
+    label: 'Heavy Industry & Infrastructure',
+    shortLabel: 'Heavy Industry',
+    archetypes: [
+      'INDUSTRIAL_B2B',
+      'AUTOMOTIVE_MOBILITY',
+      'BUILDING_PROPTECH',
+      'ENERGY_INFRASTRUCTURE',
+    ],
+  },
+  {
+    id: 'digital_tech_media',
+    label: 'Digital, Tech & Media',
+    shortLabel: 'Digital & Tech',
+    archetypes: [
+      'TECH_DEV_SUMMIT',
+      'MEDIA_BROADCAST',
+      'EDUCATION_EDTECH',
+    ],
+  },
+  {
+    id: 'enterprise_supply_finance',
+    label: 'Enterprise Trade, Supply Chain & Finance',
+    shortLabel: 'Enterprise & Trade',
+    archetypes: [
+      'SUPPLY_CHAIN_LOGISTICS',
+      'FINANCE_INVESTOR',
+      'FRANCHISE_LICENSING',
+      'AGRITECH_FOOD',
+    ],
+  },
+  {
+    id: 'sovereign_defense_aviation',
+    label: 'Sovereign Affairs, Defense & Aviation',
+    shortLabel: 'Sovereign & Defense',
+    archetypes: [
+      'GOVERNMENT_DIPLOMATIC',
+      'AEROSPACE_DEFENSE',
+    ],
+  },
+  {
+    id: 'health_travel_faith',
+    label: 'Healthcare, Travel & Faith Communities',
+    shortLabel: 'Health & Faith',
+    archetypes: [
+      'MEDICAL_SYMPOSIUM',
+      'HOSPITALITY_TOURISM',
+      'FAITH_PILGRIMAGE_CONGRESS',
+      'INCENTIVE_RETREAT',
+    ],
+  },
+  {
+    id: 'culture_lifestyle_sports',
+    label: 'Culture, Lifestyle, Sports & Entertainment',
+    shortLabel: 'Culture & Sports',
+    archetypes: [
+      'POP_CULTURE_GAMING',
+      'MUSIC_FESTIVAL',
+      'MEGA_EXPO_PAVILION',
+      'FASHION_RETAIL',
+      'SPORTS_OUTDOOR',
+    ],
+  },
+];
+
 /**
  * Validates whether a string is a recognized MiceArchetype.
  */

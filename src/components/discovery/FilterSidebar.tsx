@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useTranslations } from 'next-intl';
-import { ALL_MICE_ARCHETYPES, ARCHETYPE_DEFAULTS, type MiceArchetype } from '@/lib/theming';
+import { ALL_MICE_ARCHETYPES, ARCHETYPE_DEFAULTS, MICE_INDUSTRY_CLUSTERS, type MiceArchetype, type MiceIndustryCluster } from '@/lib/theming';
 import { type FilterState } from '@/types/discovery';
 import { cn } from '@/lib/utils';
 
@@ -32,70 +32,7 @@ export interface FilterSidebarProps {
   className?: string;
 }
 
-export const MICE_INDUSTRY_CLUSTERS: Array<{
-  id: string;
-  label: string;
-  archetypes: MiceArchetype[];
-}> = [
-  {
-    id: 'digital_tech_media',
-    label: 'Digital, Tech & Media',
-    archetypes: [
-      'TECH_DEV_SUMMIT',
-      'MEDIA_BROADCAST',
-      'EDUCATION_EDTECH',
-    ],
-  },
-  {
-    id: 'heavy_industry_infrastructure',
-    label: 'Heavy Industry & Infrastructure',
-    archetypes: [
-      'INDUSTRIAL_B2B',
-      'AUTOMOTIVE_MOBILITY',
-      'BUILDING_PROPTECH',
-      'ENERGY_INFRASTRUCTURE',
-    ],
-  },
-  {
-    id: 'sovereign_defense_aviation',
-    label: 'Sovereign Affairs, Defense & Aviation',
-    archetypes: [
-      'GOVERNMENT_DIPLOMATIC',
-      'AEROSPACE_DEFENSE',
-    ],
-  },
-  {
-    id: 'enterprise_supply_finance',
-    label: 'Enterprise Trade, Supply Chain & Finance',
-    archetypes: [
-      'SUPPLY_CHAIN_LOGISTICS',
-      'FINANCE_INVESTOR',
-      'FRANCHISE_LICENSING',
-      'AGRITECH_FOOD',
-    ],
-  },
-  {
-    id: 'health_travel_faith',
-    label: 'Healthcare, Travel & Faith Communities',
-    archetypes: [
-      'MEDICAL_SYMPOSIUM',
-      'HOSPITALITY_TOURISM',
-      'FAITH_PILGRIMAGE_CONGRESS',
-      'INCENTIVE_RETREAT',
-    ],
-  },
-  {
-    id: 'culture_lifestyle_sports',
-    label: 'Culture, Lifestyle, Sports & Entertainment',
-    archetypes: [
-      'POP_CULTURE_GAMING',
-      'MUSIC_FESTIVAL',
-      'MEGA_EXPO_PAVILION',
-      'FASHION_RETAIL',
-      'SPORTS_OUTDOOR',
-    ],
-  },
-];
+export { MICE_INDUSTRY_CLUSTERS, type MiceIndustryCluster };
 
 export function FilterSidebar({
   filters,

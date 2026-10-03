@@ -208,7 +208,7 @@ export function EventCalendarWidget({
           </div>
 
           {/* Days Grid */}
-          <div className="grid grid-cols-7 gap-1" role="grid">
+          <div className="grid grid-cols-7 gap-1" role="group" aria-label={`Calendar dates for ${monthName}`}>
             {calendarDays.map((cell, idx) => {
               if (!cell.dayNumber || !cell.date) {
                 return <div key={`empty-${idx}`} className="h-10 min-h-[44px] sm:h-9 sm:min-h-[36px]" aria-hidden="true" />;

@@ -201,10 +201,10 @@ export const EventCard = React.memo(function EventCard({
 
         <CardContent className="p-0 space-y-2 text-xs text-muted-foreground">
           {event.venue && (
-            <div className="flex items-start gap-1.5 pt-1 relative z-10">
+            <div className="flex items-start gap-1.5 pt-1">
               <Building2 className="h-3.5 w-3.5 text-primary/80 shrink-0 mt-0.5" />
               <div className="flex flex-col">
-                <Link href={`/${locale}/venues/${event.venue.slug}`} className="font-medium text-foreground line-clamp-1 hover:underline hover:text-primary transition-colors">
+                <Link href={`/${locale}/venues/${event.venue.slug}`} className="relative z-10 font-medium text-foreground line-clamp-1 hover:underline hover:text-primary transition-colors">
                   {event.venue.name}
                 </Link>
                 <span className="text-xs text-muted-foreground flex items-center gap-1">

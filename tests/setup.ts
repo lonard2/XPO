@@ -36,6 +36,20 @@ vi.mock("next-intl", () => {
   };
 });
 
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+    replace: vi.fn(),
+    prefetch: vi.fn(),
+    back: vi.fn(),
+    forward: vi.fn(),
+    refresh: vi.fn(),
+  }),
+  usePathname: () => "/",
+  useSearchParams: () => new URLSearchParams(),
+  useParams: () => ({ locale: "en" }),
+}));
+
 if (typeof window !== "undefined") {
   window.matchMedia =
     window.matchMedia ||

@@ -40,19 +40,9 @@ export function BannerCarousel({
   autoPlayInterval = 7000,
   className,
 }: BannerCarouselProps) {
-  let tHero: any = (k: string) => k;
-  let tEvents: any = (k: string) => k;
-  let tHome: any = (k: string) => k;
-  try {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tHero = useTranslations('hero');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tEvents = useTranslations('events');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tHome = useTranslations('home');
-  } catch {
-    // Fallback if rendered outside provider in tests
-  }
+  const tHero = useTranslations('hero');
+  const tEvents = useTranslations('events');
+  const tHome = useTranslations('home');
 
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [isManuallyPaused, setIsManuallyPaused] = React.useState(false);
@@ -422,7 +412,7 @@ export function BannerCarousel({
 
           <button
             type="button"
-            className="relative flex h-10 w-10 sm:h-9 sm:w-9 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 items-center justify-center rounded-full text-slate-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/60 focus-visible:outline-none"
+            className="relative flex h-10 w-10 sm:h-9 sm:w-9 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 items-center justify-center rounded-full bg-black/50 hover:bg-black/80 text-white border border-white/20 backdrop-blur-sm transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/60 focus-visible:outline-none"
             onClick={() => setIsManuallyPaused(!isManuallyPaused)}
             aria-label={isManuallyPaused ? 'Resume autoplay' : 'Pause autoplay'}
           >

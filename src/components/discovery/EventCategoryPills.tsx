@@ -27,12 +27,18 @@ import {
   Video,
   Layers,
   ArrowRight,
+  Filter,
+  Check,
+  ChevronRight,
+  RotateCcw,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import {
   ARCHETYPE_LIST,
   ARCHETYPE_METAS,
-  MiceArchetype,
+  MICE_INDUSTRY_CLUSTERS,
+  type MiceArchetype,
+  type MiceIndustryCluster,
 } from '@/lib/theming';
 import { cn } from '@/lib/utils';
 
@@ -90,6 +96,28 @@ export const EVENT_CATEGORIES: CategoryItem[] = ARCHETYPE_LIST.map((id) => {
   };
 });
 
+const CATEGORY_MAP: Record<MiceArchetype, CategoryItem> = EVENT_CATEGORIES.reduce(
+  (acc, item) => {
+    acc[item.id] = item;
+    return acc;
+  },
+  {} as Record<MiceArchetype, CategoryItem>
+);
+
+const ARCHETYPE_CLUSTER_MAP: Record<
+  MiceArchetype,
+  { clusterId: string; shortLabel: string; label: string }
+> = MICE_INDUSTRY_CLUSTERS.reduce((acc, cluster) => {
+  cluster.archetypes.forEach((arch) => {
+    acc[arch] = {
+      clusterId: cluster.id,
+      shortLabel: cluster.shortLabel,
+      label: cluster.label,
+    };
+  });
+  return acc;
+}, {} as Record<MiceArchetype, { clusterId: string; shortLabel: string; label: string }>);
+
 export interface EventCategoryPillsProps {
   locale: string;
   activeCategoryId?: string;
@@ -106,6 +134,103 @@ export function EventCategoryPills({
   const tArch = useTranslations('archetypes');
   const tDisc = useTranslations('discovery');
 
+  const [selectedCluster, setSelectedCluster] = React.useState<string>('all');
+
+  const renderCategoryTile = (category: CategoryItem) => {
+    const Icon = category.icon;
+    const isActive = activeCategoryId === category.id;
+    const clusterInfo = ARCHETYPE_CLUSTER_MAP[category.id];
+
+    let translatedTitle = category.name;
+    try {
+      if (tArch && typeof tArch.raw === 'function') {
+        const obj = tArch.raw(category.id);
+        if (obj?.title) translatedTitle = obj.title;
+      }
+    } catch {
+      // fallback
+    }
+
+    const clusterBadge = clusterInfo?.shortLabel || 'MICE Vertical';
+
+    const tileContent = (
+      <div
+        className={cn(
+          'group relative flex flex-col justify-between p-3.5 sm:p-4 rounded-2xl border transition-all duration-200 text-left h-full min-h-[110px] sm:min-h-[120px] shadow-xs cursor-pointer',
+          isActive
+            ? 'border-primary ring-2 ring-primary/30 bg-primary/5 shadow-sm'
+            : 'border-border/80 bg-card hover:border-primary/50 hover:bg-muted/30 hover:shadow-sm'
+        )}
+      >
+        <div className="flex items-start justify-between gap-2">
+          <div
+            className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl shrink-0 transition-transform duration-200 group-hover:scale-105"
+            style={{
+              backgroundColor: `${category.color}15`,
+              color: category.color,
+              border: `1px solid ${category.color}30`,
+            }}
+          >
+            <Icon className="h-4 w-4 sm:h-5 sm:w-5 stroke-[2.2]" />
+          </div>
+
+          <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide line-clamp-1 text-right">
+            {clusterBadge}
+          </span>
+        </div>
+
+        <div className="mt-2.5">
+          <h3 className="text-xs sm:text-sm font-bold text-foreground group-hover:text-primary transition-colors leading-snug line-clamp-2">
+            {translatedTitle}
+          </h3>
+        </div>
+      </div>
+    );
+
+    if (onSelectCategory) {
+      return (
+        <button
+          key={category.id}
+          type="button"
+          onClick={() => onSelectCategory(category.id)}
+          className="w-full text-left focus:outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-primary rounded-2xl"
+          aria-pressed={isActive}
+        >
+          {tileContent}
+        </button>
+      );
+    }
+
+    return (
+      <Link
+        key={category.id}
+        href={`/${locale}/events?archetype=${category.id}`}
+        className="w-full block focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-2xl"
+      >
+        {tileContent}
+      </Link>
+    );
+  };
+
+  const getClusterGridClass = (itemCount: number) => {
+    switch (itemCount) {
+      case 2:
+        return 'grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4';
+      case 3:
+        return 'grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4';
+      case 4:
+        return 'grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4';
+      case 5:
+        return 'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4';
+      default:
+        return 'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4';
+    }
+  };
+
+  const activeClusterObj = MICE_INDUSTRY_CLUSTERS.find(
+    (c) => c.id === selectedCluster
+  );
+
   return (
     <div className={cn('w-full space-y-4 sm:space-y-6', className)}>
       {/* Section Header */}
@@ -119,100 +244,177 @@ export function EventCategoryPills({
             {tDisc('verticalsTitle') || 'Explore by Event Category'}
           </h2>
           <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-            Discover exhibitions, summits, and symposiums tailored to industry sectors.
+            Discover exhibitions, summits, and symposiums tailored across 6 industry sectors.
           </p>
         </div>
 
         <Link
           href={`/${locale}/events`}
-          className="text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1 self-start sm:self-auto shrink-0 min-h-[36px] items-center"
+          className="text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1 self-start sm:self-auto shrink-0 min-h-[44px] px-2 py-2 items-center"
         >
           <span>{tDisc('allArchetypes') || 'View All Categories'}</span>
           <ArrowRight className="h-3.5 w-3.5" />
         </Link>
       </div>
 
-      {/* Distilled 5-Column Responsive Matrix */}
-      <div
-        className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4"
-        role="region"
-        aria-label="MICE Event Categories Matrix"
-      >
-        {EVENT_CATEGORIES.map((category) => {
-          const Icon = category.icon;
-          const isActive = activeCategoryId === category.id;
+      {/* Segmented Cluster Tabs (Horizontal Scrollable Thumb Zone on Mobile) */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between sm:hidden">
+          <span className="text-xs font-semibold text-muted-foreground">
+            Industry Clusters:
+          </span>
+          {selectedCluster !== 'all' && (
+            <button
+              type="button"
+              onClick={() => setSelectedCluster('all')}
+              className="text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1 cursor-pointer min-h-[36px]"
+            >
+              <RotateCcw className="h-3 w-3" />
+              <span>Show All (22)</span>
+            </button>
+          )}
+        </div>
 
-          let translatedTitle = category.name;
-          let translatedTag = category.shortName;
-          try {
-            if (tArch && typeof tArch.raw === 'function') {
-              const obj = tArch.raw(category.id);
-              if (obj?.title) translatedTitle = obj.title;
-              if (obj?.tag) translatedTag = obj.tag;
-            }
-          } catch {
-            // fallback
-          }
-
-          const tileContent = (
-            <div
+        <div
+          role="tablist"
+          aria-label="Filter MICE categories by industry cluster"
+          className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1"
+        >
+          <button
+            type="button"
+            role="tab"
+            aria-selected={selectedCluster === 'all'}
+            onClick={() => setSelectedCluster('all')}
+            className={cn(
+              'min-h-[44px] min-w-[44px] px-3.5 py-2.5 rounded-xl text-xs whitespace-nowrap cursor-pointer transition-all flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+              selectedCluster === 'all'
+                ? 'bg-primary text-primary-foreground font-bold shadow-xs'
+                : 'bg-card border border-border/80 text-muted-foreground hover:text-foreground hover:bg-muted/50 font-medium'
+            )}
+          >
+            <span>All Categories</span>
+            <span
               className={cn(
-                'group relative flex flex-col justify-between p-3.5 sm:p-4 rounded-2xl border transition-all duration-200 text-left h-full min-h-[110px] sm:min-h-[120px] shadow-xs cursor-pointer',
-                isActive
-                  ? 'border-primary ring-2 ring-primary/30 bg-primary/5 shadow-sm'
-                  : 'border-border/80 bg-card hover:border-primary/50 hover:bg-muted/30 hover:shadow-sm'
+                'text-[11px] px-1.5 py-0.2 rounded-full font-bold',
+                selectedCluster === 'all'
+                  ? 'bg-primary-foreground/20 text-primary-foreground'
+                  : 'bg-muted text-muted-foreground'
               )}
             >
-              <div className="flex items-start justify-between gap-2">
-                <div
-                  className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl shrink-0 transition-transform duration-200 group-hover:scale-105"
-                  style={{
-                    backgroundColor: `${category.color}15`,
-                    color: category.color,
-                    border: `1px solid ${category.color}30`,
-                  }}
-                >
-                  <Icon className="h-4 w-4 sm:h-5 sm:w-5 stroke-[2.2]" />
-                </div>
+              22
+            </span>
+          </button>
 
-                <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide line-clamp-1 text-right">
-                  {translatedTag}
-                </span>
-              </div>
-
-              <div className="mt-2.5">
-                <h3 className="text-xs sm:text-sm font-bold text-foreground group-hover:text-primary transition-colors leading-snug line-clamp-2">
-                  {translatedTitle}
-                </h3>
-              </div>
-            </div>
-          );
-
-          if (onSelectCategory) {
+          {MICE_INDUSTRY_CLUSTERS.map((cluster) => {
+            const isSelected = selectedCluster === cluster.id;
             return (
               <button
-                key={category.id}
+                key={cluster.id}
                 type="button"
-                onClick={() => onSelectCategory(category.id)}
-                className="w-full text-left focus:outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-primary rounded-2xl"
-                aria-pressed={isActive}
+                role="tab"
+                aria-selected={isSelected}
+                onClick={() => setSelectedCluster(cluster.id)}
+                className={cn(
+                  'min-h-[44px] min-w-[44px] px-3.5 py-2.5 rounded-xl text-xs whitespace-nowrap cursor-pointer transition-all flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+                  isSelected
+                    ? 'bg-primary text-primary-foreground font-bold shadow-xs'
+                    : 'bg-card border border-border/80 text-muted-foreground hover:text-foreground hover:bg-muted/50 font-medium'
+                )}
               >
-                {tileContent}
+                <span>{cluster.shortLabel}</span>
+                <span
+                  className={cn(
+                    'text-[11px] px-1.5 py-0.2 rounded-full font-bold',
+                    isSelected
+                      ? 'bg-primary-foreground/20 text-primary-foreground'
+                      : 'bg-muted text-muted-foreground'
+                  )}
+                >
+                  {cluster.archetypes.length}
+                </span>
               </button>
             );
-          }
-
-          return (
-            <Link
-              key={category.id}
-              href={`/${locale}/events?archetype=${category.id}`}
-              className="w-full block focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-2xl"
-            >
-              {tileContent}
-            </Link>
-          );
-        })}
+          })}
+        </div>
       </div>
+
+      {/* Categories View Engine: Balanced Cluster Groups */}
+      {selectedCluster === 'all' ? (
+        <div
+          className="space-y-6 sm:space-y-8"
+          role="region"
+          aria-label="MICE Event Categories Matrix"
+        >
+          {MICE_INDUSTRY_CLUSTERS.map((cluster) => {
+            const items = cluster.archetypes
+              .map((arch) => CATEGORY_MAP[arch])
+              .filter(Boolean);
+
+            return (
+              <div key={cluster.id} className="space-y-3">
+                <div className="flex items-center justify-between border-b border-border/60 pb-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs sm:text-sm font-bold text-foreground">
+                      {cluster.label}
+                    </span>
+                    <span className="text-[11px] font-semibold text-muted-foreground px-2 py-0.5 rounded-full bg-muted border border-border/40">
+                      {items.length} Verticals
+                    </span>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setSelectedCluster(cluster.id)}
+                    className="text-xs font-semibold text-primary hover:underline cursor-pointer min-h-[36px] px-2 flex items-center gap-1"
+                  >
+                    <span>Focus Cluster</span>
+                    <ChevronRight className="h-3 w-3" />
+                  </button>
+                </div>
+
+                <div className={getClusterGridClass(items.length)}>
+                  {items.map((category) => renderCategoryTile(category))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        activeClusterObj && (
+          <div
+            className="space-y-4"
+            role="region"
+            aria-label={`${activeClusterObj.label} Categories`}
+          >
+            <div className="flex items-center justify-between bg-muted/40 border border-border/60 p-3 sm:p-4 rounded-xl">
+              <div>
+                <h3 className="text-sm sm:text-base font-bold text-foreground">
+                  {activeClusterObj.label}
+                </h3>
+                <p className="text-xs text-muted-foreground">
+                  Displaying all {activeClusterObj.archetypes.length} specialized archetypes in this sector.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setSelectedCluster('all')}
+                className="text-xs font-semibold text-primary hover:underline cursor-pointer min-h-[44px] px-3 py-2 flex items-center gap-1.5 rounded-lg hover:bg-primary/10 transition-colors"
+              >
+                <RotateCcw className="h-3.5 w-3.5" />
+                <span>Show All (22)</span>
+              </button>
+            </div>
+
+            <div className={getClusterGridClass(activeClusterObj.archetypes.length)}>
+              {activeClusterObj.archetypes
+                .map((arch) => CATEGORY_MAP[arch])
+                .filter(Boolean)
+                .map((category) => renderCategoryTile(category))}
+            </div>
+          </div>
+        )
+      )}
     </div>
   );
 }
