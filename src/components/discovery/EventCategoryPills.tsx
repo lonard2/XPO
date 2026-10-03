@@ -118,6 +118,8 @@ const ARCHETYPE_CLUSTER_MAP: Record<
   return acc;
 }, {} as Record<MiceArchetype, { clusterId: string; shortLabel: string; label: string }>);
 
+const CLUSTER_IDS = ['all', ...MICE_INDUSTRY_CLUSTERS.map((c) => c.id)];
+
 export interface EventCategoryPillsProps {
   locale: string;
   activeCategoryId?: string;
@@ -135,6 +137,33 @@ export function EventCategoryPills({
   const tDisc = useTranslations('discovery');
 
   const [selectedCluster, setSelectedCluster] = React.useState<string>('all');
+  const tabRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
+
+  const handleTabKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const currentIndex = CLUSTER_IDS.indexOf(selectedCluster);
+    if (currentIndex === -1) return;
+
+    let nextIndex: number | null = null;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      nextIndex = (currentIndex + 1) % CLUSTER_IDS.length;
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      nextIndex = (currentIndex - 1 + CLUSTER_IDS.length) % CLUSTER_IDS.length;
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      nextIndex = 0;
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      nextIndex = CLUSTER_IDS.length - 1;
+    }
+
+    if (nextIndex !== null) {
+      const nextClusterId = CLUSTER_IDS[nextIndex];
+      setSelectedCluster(nextClusterId);
+      tabRefs.current[nextIndex]?.focus();
+    }
+  };
 
   const renderCategoryTile = (category: CategoryItem) => {
     const Icon = category.icon;
@@ -278,12 +307,19 @@ export function EventCategoryPills({
         <div
           role="tablist"
           aria-label="Filter MICE categories by industry cluster"
+          onKeyDown={handleTabKeyDown}
           className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1"
         >
           <button
+            ref={(el) => {
+              tabRefs.current[0] = el;
+            }}
+            id="cluster-tab-all"
             type="button"
             role="tab"
             aria-selected={selectedCluster === 'all'}
+            aria-controls="cluster-panel-all"
+            tabIndex={selectedCluster === 'all' ? 0 : -1}
             onClick={() => setSelectedCluster('all')}
             className={cn(
               'min-h-[44px] min-w-[44px] px-3.5 py-2.5 rounded-xl text-xs whitespace-nowrap cursor-pointer transition-all flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
@@ -305,14 +341,20 @@ export function EventCategoryPills({
             </span>
           </button>
 
-          {MICE_INDUSTRY_CLUSTERS.map((cluster) => {
+          {MICE_INDUSTRY_CLUSTERS.map((cluster, idx) => {
             const isSelected = selectedCluster === cluster.id;
             return (
               <button
                 key={cluster.id}
+                ref={(el) => {
+                  tabRefs.current[idx + 1] = el;
+                }}
+                id={`cluster-tab-${cluster.id}`}
                 type="button"
                 role="tab"
                 aria-selected={isSelected}
+                aria-controls={`cluster-panel-${cluster.id}`}
+                tabIndex={isSelected ? 0 : -1}
                 onClick={() => setSelectedCluster(cluster.id)}
                 className={cn(
                   'min-h-[44px] min-w-[44px] px-3.5 py-2.5 rounded-xl text-xs whitespace-nowrap cursor-pointer transition-all flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
@@ -341,9 +383,11 @@ export function EventCategoryPills({
       {/* Categories View Engine: Balanced Cluster Groups */}
       {selectedCluster === 'all' ? (
         <div
-          className="space-y-6 sm:space-y-8"
-          role="region"
-          aria-label="MICE Event Categories Matrix"
+          id="cluster-panel-all"
+          role="tabpanel"
+          aria-labelledby="cluster-tab-all"
+          tabIndex={0}
+          className="space-y-6 sm:space-y-8 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/40 rounded-2xl"
         >
           {MICE_INDUSTRY_CLUSTERS.map((cluster) => {
             const items = cluster.archetypes
@@ -382,9 +426,11 @@ export function EventCategoryPills({
       ) : (
         activeClusterObj && (
           <div
-            className="space-y-4"
-            role="region"
-            aria-label={`${activeClusterObj.label} Categories`}
+            id={`cluster-panel-${activeClusterObj.id}`}
+            role="tabpanel"
+            aria-labelledby={`cluster-tab-${activeClusterObj.id}`}
+            tabIndex={0}
+            className="space-y-4 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/40 rounded-2xl"
           >
             <div className="flex items-center justify-between bg-muted/40 border border-border/60 p-3 sm:p-4 rounded-xl">
               <div>

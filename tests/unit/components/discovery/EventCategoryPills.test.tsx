@@ -114,4 +114,71 @@ describe('EventCategoryPills', () => {
 
     expect(handleSelect).toHaveBeenCalledWith('TECH_DEV_SUMMIT');
   });
+
+  it('provides roving tabindex and ARIA tabpanel linkage', () => {
+    render(<EventCategoryPills locale="en" />);
+
+    const tabs = screen.getAllByRole('tab');
+    const allTab = tabs[0];
+    const heavyIndustryTab = tabs[1];
+
+    // Default state: allTab is selected, has tabIndex 0, others have tabIndex -1
+    expect(allTab).toHaveAttribute('tabindex', '0');
+    expect(allTab).toHaveAttribute('id', 'cluster-tab-all');
+    expect(allTab).toHaveAttribute('aria-controls', 'cluster-panel-all');
+    expect(heavyIndustryTab).toHaveAttribute('tabindex', '-1');
+
+    // Tabpanel is linked to active tab
+    const defaultPanel = screen.getByRole('tabpanel');
+    expect(defaultPanel).toHaveAttribute('id', 'cluster-panel-all');
+    expect(defaultPanel).toHaveAttribute('aria-labelledby', 'cluster-tab-all');
+
+    // Click another tab
+    fireEvent.click(heavyIndustryTab);
+    expect(allTab).toHaveAttribute('tabindex', '-1');
+    expect(heavyIndustryTab).toHaveAttribute('tabindex', '0');
+
+    const updatedPanel = screen.getByRole('tabpanel');
+    expect(updatedPanel).toHaveAttribute('id', 'cluster-panel-heavy_industry_infrastructure');
+    expect(updatedPanel).toHaveAttribute('aria-labelledby', 'cluster-tab-heavy_industry_infrastructure');
+  });
+
+  it('supports keyboard ArrowRight, ArrowLeft, Home, and End navigation across cluster tabs', () => {
+    render(<EventCategoryPills locale="en" />);
+
+    const tablist = screen.getByRole('tablist');
+    const tabs = screen.getAllByRole('tab');
+
+    // Initially 'all' is selected
+    expect(tabs[0]).toHaveAttribute('aria-selected', 'true');
+
+    // Press ArrowRight: navigates to index 1 (Heavy Industry)
+    fireEvent.keyDown(tablist, { key: 'ArrowRight' });
+    expect(tabs[1]).toHaveAttribute('aria-selected', 'true');
+    expect(tabs[1]).toHaveAttribute('tabindex', '0');
+    expect(tabs[0]).toHaveAttribute('tabindex', '-1');
+
+    // Press ArrowRight again: navigates to index 2 (Digital & Tech)
+    fireEvent.keyDown(tablist, { key: 'ArrowRight' });
+    expect(tabs[2]).toHaveAttribute('aria-selected', 'true');
+
+    // Press ArrowLeft: navigates back to index 1 (Heavy Industry)
+    fireEvent.keyDown(tablist, { key: 'ArrowLeft' });
+    expect(tabs[1]).toHaveAttribute('aria-selected', 'true');
+
+    // Press End: jumps to last cluster (Culture & Sports, index 6)
+    fireEvent.keyDown(tablist, { key: 'End' });
+    expect(tabs[6]).toHaveAttribute('aria-selected', 'true');
+    expect(tabs[6]).toHaveAttribute('tabindex', '0');
+
+    // Press ArrowRight on last tab: wraps around to index 0 (All Categories)
+    fireEvent.keyDown(tablist, { key: 'ArrowRight' });
+    expect(tabs[0]).toHaveAttribute('aria-selected', 'true');
+
+    // Press Home: jumps to index 0
+    fireEvent.keyDown(tablist, { key: 'End' });
+    expect(tabs[6]).toHaveAttribute('aria-selected', 'true');
+    fireEvent.keyDown(tablist, { key: 'Home' });
+    expect(tabs[0]).toHaveAttribute('aria-selected', 'true');
+  });
 });
