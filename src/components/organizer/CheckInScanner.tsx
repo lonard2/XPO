@@ -23,6 +23,8 @@ import {
   Vibrate,
   VibrateOff,
   ScanBarcode,
+  Download,
+  SwitchCamera,
 } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -137,13 +139,17 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
   const isVerifyingRef = React.useRef(false);
   const lastScannedHashRef = React.useRef<{ hash: string; time: number }>({ hash: "", time: 0 });
 
+  const [facingMode, setFacingMode] = React.useState<"environment" | "user">("environment");
+
   // Start Camera Stream with unmount race-condition protection
-  const startCamera = React.useCallback(async () => {
+  const startCamera = React.useCallback(async (overrideMode?: "environment" | "user") => {
     setCameraError(null);
     if (typeof navigator === "undefined" || !navigator.mediaDevices?.getUserMedia) {
       setCameraError("Camera capture API is not supported on this device.");
       return;
     }
+
+    const activeMode = overrideMode || facingMode;
 
     try {
       if (streamRef.current) {
@@ -151,7 +157,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
       }
 
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "environment" },
+        video: { facingMode: activeMode },
         audio: false,
       });
 
@@ -177,7 +183,13 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
         setCameraError("Unable to initialize optical camera sensor on this device. Please check hardware permissions or type code by keyboard.");
       }
     }
-  }, []);
+  }, [facingMode]);
+
+  const toggleFacingMode = React.useCallback(() => {
+    const nextMode = facingMode === "environment" ? "user" : "environment";
+    setFacingMode(nextMode);
+    startCamera(nextMode);
+  }, [facingMode, startCamera]);
 
   const stopCamera = React.useCallback(() => {
     if (streamRef.current) {
@@ -597,6 +609,50 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
     setLastResult(null);
   };
 
+  const handleExportCsv = () => {
+    if (scanHistory.length === 0) return;
+
+    const headers = [
+      "Timestamp",
+      "Status",
+      "Attendee Name",
+      "Attendee Email",
+      "Ticket Tier",
+      "Message",
+      "Raw Hash / Code",
+    ];
+
+    const escapeCsv = (val: string | undefined | null) => {
+      const str = val || "";
+      if (str.includes(",") || str.includes('"') || str.includes("\n")) {
+        return `"${str.replace(/"/g, '""')}"`;
+      }
+      return str;
+    };
+
+    const rows = scanHistory.map((scan) => [
+      escapeCsv(scan.timestamp),
+      escapeCsv(scan.status),
+      escapeCsv(scan.attendee?.name),
+      escapeCsv(scan.attendee?.email),
+      escapeCsv(scan.ticketTier?.name),
+      escapeCsv(scan.message),
+      escapeCsv(scan.rawHash),
+    ]);
+
+    const csvContent = [headers.join(","), ...rows.map((r) => r.join(","))].join("\r\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    const dateStamp = new Date().toISOString().slice(0, 10);
+    link.href = url;
+    link.setAttribute("download", `xpo-gate-scan-log-${dateStamp}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   // Staff simulation scenarios for pre-opening training
   const simulateValidStandardPass = () => {
     const payload = {
@@ -820,7 +876,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                           type="button"
                           variant="outline"
                           size="sm"
-                          onClick={startCamera}
+                          onClick={() => startCamera()}
                           className="min-h-[44px] text-xs px-3.5 border-white/20 text-white hover:bg-white/10 gap-1.5 cursor-pointer"
                         >
                           <RefreshCw className="h-3.5 w-3.5" />
@@ -841,6 +897,24 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
 
                   {!cameraError && (
                     <>
+                      {/* Top Action Bar: Camera Flip / Lens Switch */}
+                      <div className="absolute top-3 right-3 z-20">
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={toggleFacingMode}
+                          aria-label="Switch camera lens"
+                          className="min-h-[44px] px-2.5 bg-slate-900/60 backdrop-blur-md border border-white/20 text-white hover:bg-slate-900/80 text-xs gap-1.5 cursor-pointer shadow-sm"
+                          title={facingMode === "environment" ? "Switch to Front Lens" : "Switch to Rear Lens"}
+                        >
+                          <SwitchCamera className="h-4 w-4" />
+                          <span className="hidden sm:inline">
+                            {facingMode === "environment" ? "Front Lens" : "Rear Lens"}
+                          </span>
+                        </Button>
+                      </div>
+
                       <div
                         aria-hidden="true"
                         className="absolute inset-0 bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:16px_16px] opacity-40 pointer-events-none"
@@ -1313,17 +1387,30 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   {scanHistory.length} logs
                 </span>
                 {scanHistory.length > 0 && (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleResetShift}
-                    className="min-h-[36px] px-2 text-xs text-muted-foreground hover:text-foreground gap-1 cursor-pointer"
-                    title="Reset shift audit logs"
-                  >
-                    <RotateCcw className="h-3 w-3" />
-                    <span>{tOrg("scannerResetShift") || "Reset Shift"}</span>
-                  </Button>
+                  <div className="flex items-center gap-1">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={handleExportCsv}
+                      className="min-h-[36px] px-2.5 text-xs gap-1 cursor-pointer"
+                      title="Download shift scan activity as RFC 4180 CSV"
+                    >
+                      <Download className="h-3 w-3" />
+                      <span>Export CSV</span>
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleResetShift}
+                      className="min-h-[36px] px-2 text-xs text-muted-foreground hover:text-foreground gap-1 cursor-pointer"
+                      title="Reset shift audit logs"
+                    >
+                      <RotateCcw className="h-3 w-3" />
+                      <span>{tOrg("scannerResetShift") || "Reset"}</span>
+                    </Button>
+                  </div>
                 )}
               </div>
             </div>

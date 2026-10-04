@@ -161,4 +161,72 @@ describe("Phase 9 Component: CheckInScanner Door QR Console", () => {
 
     fetchSpy.mockRestore();
   });
+
+  it("toggles camera facing mode between environment and user lens", async () => {
+    window.HTMLMediaElement.prototype.play = vi.fn().mockResolvedValue(undefined);
+    const getUserMediaSpy = vi.fn().mockResolvedValue({
+      getTracks: () => [{ stop: vi.fn() }],
+    });
+    Object.defineProperty(navigator, "mediaDevices", {
+      value: { getUserMedia: getUserMediaSpy },
+      writable: true,
+      configurable: true,
+    });
+
+    render(<CheckInScanner defaultEventId="ev-1" />);
+
+    // Lens toggle button is available in the optical camera viewport
+    const switchBtn = screen.getByLabelText("Switch camera lens");
+    expect(screen.getByText("Front Lens")).toBeDefined();
+
+    await act(async () => {
+      fireEvent.click(switchBtn);
+    });
+
+    expect(getUserMediaSpy).toHaveBeenCalledWith(expect.objectContaining({
+      video: { facingMode: "user" },
+    }));
+    expect(screen.getByText("Rear Lens")).toBeDefined();
+  });
+
+  it("exports scan activity audit log as RFC 4180 CSV", async () => {
+    const createObjectURLSpy = vi.fn().mockReturnValue("blob:mock-url");
+    const revokeObjectURLSpy = vi.fn();
+    globalThis.URL.createObjectURL = createObjectURLSpy;
+    globalThis.URL.revokeObjectURL = revokeObjectURLSpy;
+
+    const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        valid: true,
+        alreadyCheckedIn: false,
+        attendee: { name: "Audit Delegate", email: "audit@example.com" },
+        ticketTier: { name: "VIP Pass" },
+      }),
+    } as any);
+
+    render(<CheckInScanner defaultEventId="ev-1" />);
+
+    // Perform a scan to populate history
+    const manualBtn = screen.getByText(/manual/i);
+    fireEvent.click(manualBtn);
+    const input = screen.getByPlaceholderText("e.g. XPO-PASS-BK1234-A8F4E290...");
+    fireEvent.change(input, { target: { value: "XPO-PASS-AUDIT-1234" } });
+    const submitBtn = screen.getByText("Validate & Check-In Pass");
+    await act(async () => {
+      fireEvent.click(submitBtn);
+    });
+
+    const clickSpy = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => {});
+
+    // Check that Export CSV button is displayed and clickable
+    const exportBtn = screen.getByText("Export CSV");
+    fireEvent.click(exportBtn);
+
+    expect(createObjectURLSpy).toHaveBeenCalled();
+    expect(revokeObjectURLSpy).toHaveBeenCalledWith("blob:mock-url");
+
+    clickSpy.mockRestore();
+    fetchSpy.mockRestore();
+  });
 });
