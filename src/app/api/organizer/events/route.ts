@@ -54,6 +54,9 @@ export async function POST(request: Request) {
       primaryColor,
       accentColor,
       heroImageUrl,
+      isPlatformCurated,
+      organizerName,
+      organizerId,
     } = body;
 
     if (!title || !description || !venueId || !startDate || !endDate) {
@@ -72,16 +75,62 @@ export async function POST(request: Request) {
 
     const uniqueSlug = `${cleanSlug}-${Date.now().toString().slice(-4)}`;
 
-    // Resolve an organizer user from DB or default to first organizer
-    const organizer = await db.user.findFirst({
-      where: { role: "ORGANIZER" },
-    }) || await db.user.findFirst();
+    // Resolve organizer or platform curation attributes based on role
+    let finalOrganizerId: string | null = null;
+    let finalIsPlatformCurated = false;
+    let finalOrganizerName: string | null = null;
 
-    if (!organizer) {
-      return NextResponse.json(
-        { success: false, error: "No organizer account found in database" },
-        { status: 500 }
-      );
+    if (userRole === "ADMIN") {
+      if (!organizerId || isPlatformCurated === true) {
+        finalOrganizerId = null;
+        finalIsPlatformCurated = true;
+        finalOrganizerName = organizerName || "XPO Platform Administration";
+      } else {
+        const targetOrganizer = await db.user.findUnique({ where: { id: organizerId } });
+        finalOrganizerId = targetOrganizer ? targetOrganizer.id : organizerId;
+        finalIsPlatformCurated = false;
+        finalOrganizerName = organizerName || targetOrganizer?.organization || targetOrganizer?.name || null;
+      }
+    } else {
+      let authUser: { id?: string; email?: string } | null = null;
+      const userCookieMatch = cookieHeader.match(/xpo_auth_user=([^;]+)/);
+      if (userCookieMatch) {
+        try {
+          authUser = JSON.parse(decodeURIComponent(userCookieMatch[1]));
+        } catch {
+          // Ignore cookie parsing error
+        }
+      }
+
+      const headerUserId = request.headers.get("x-xpo-user-id") || authUser?.id;
+      const headerUserEmail = request.headers.get("x-xpo-user-email") || authUser?.email;
+
+      let organizer = null;
+      if (headerUserId) {
+        organizer = await db.user.findUnique({ where: { id: headerUserId } });
+      }
+      if (!organizer && headerUserEmail) {
+        organizer = await db.user.findUnique({ where: { email: headerUserEmail } });
+      }
+      if (!organizer && organizerId) {
+        organizer = await db.user.findUnique({ where: { id: organizerId } });
+      }
+      if (!organizer) {
+        organizer = await db.user.findFirst({
+          where: { role: "ORGANIZER" },
+        }) || await db.user.findFirst();
+      }
+
+      if (!organizer) {
+        return NextResponse.json(
+          { success: false, error: "No organizer account found in database" },
+          { status: 500 }
+        );
+      }
+
+      finalOrganizerId = organizer.id;
+      finalIsPlatformCurated = false;
+      finalOrganizerName = organizerName || organizer.organization || organizer.name;
     }
 
     const brandingConfig = {
@@ -101,7 +150,9 @@ export async function POST(request: Request) {
         regionId,
         venueId,
         venueHallId: venueHallId || null,
-        organizerId: organizer.id,
+        organizerId: finalOrganizerId,
+        organizerName: finalOrganizerName,
+        isPlatformCurated: finalIsPlatformCurated,
         startDate: new Date(startDate),
         endDate: new Date(endDate),
         heroImageUrl: heroImageUrl || "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1600&q=80",

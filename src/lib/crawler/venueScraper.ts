@@ -486,20 +486,7 @@ export async function runVenueCrawlerBatch(options: CrawlBatchOptions = {}): Pro
           });
         }
 
-        // Resolve or create organizer user
-        let organizer = await db.user.findFirst({ where: { role: "ORGANIZER" } });
-        if (!organizer) {
-          organizer = await db.user.create({
-            data: {
-              name: item.organizerName,
-              email: `crawler-${item.slug.slice(0, 15)}@xpo-events.org`,
-              role: "ORGANIZER",
-              organization: item.organizerName,
-            },
-          });
-        }
-
-        // Create Event in database
+        // Create Event in database with decoupled platform curation
         const createdEvent = await db.event.create({
           data: {
             title: item.title,
@@ -513,7 +500,9 @@ export async function runVenueCrawlerBatch(options: CrawlBatchOptions = {}): Pro
             heroImageUrl: item.heroImageUrl,
             regionId: venue.regionId,
             venueId: venue.id,
-            organizerId: organizer.id,
+            organizerId: null,
+            organizerName: item.organizerName,
+            isPlatformCurated: true,
             ticketTiers: {
               create: [
                 {
