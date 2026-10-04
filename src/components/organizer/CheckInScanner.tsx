@@ -119,7 +119,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
   const [soundEnabled, setSoundEnabled] = React.useState(true);
   const [lastResult, setLastResult] = React.useState<ScanResult | null>(null);
   const [scanHistory, setScanHistory] = React.useState<ScanResult[]>([]);
-  const [showSimulator, setShowSimulator] = React.useState(true);
+  const [showSimulator, setShowSimulator] = React.useState(false);
 
   // Camera Hardware State & Stream Ref
   const videoRef = React.useRef<HTMLVideoElement | null>(null);
@@ -609,7 +609,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
           <div className="text-xl font-bold text-rose-500 mt-0.5">
             {invalidScansCount}
             {networkErrorsCount > 0 && (
-              <span className="text-xs font-normal text-amber-600 dark:text-amber-400 ml-1.5">
+              <span className="text-xs font-normal text-amber-700 dark:text-amber-400 ml-1.5">
                 ({networkErrorsCount} net)
               </span>
             )}
@@ -734,17 +734,104 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
 
                       <div
                         aria-hidden="true"
-                        className="relative z-10 w-56 h-56 sm:w-64 sm:h-64 border-2 border-dashed border-primary/60 rounded-2xl flex flex-col items-center justify-center p-4 bg-slate-900/30 backdrop-blur-[1px] pointer-events-none"
+                        className={cn(
+                          "relative z-10 w-56 h-56 sm:w-64 sm:h-64 border-2 border-dashed rounded-2xl flex flex-col items-center justify-center p-4 backdrop-blur-[1px] pointer-events-none transition-colors duration-200",
+                          lastResult
+                            ? lastResult.status === "CHECKED_IN"
+                              ? "border-emerald-400 bg-emerald-950/40"
+                              : lastResult.status === "DOUBLE_SCAN" || lastResult.status === "NETWORK_ERROR"
+                              ? "border-amber-400 bg-amber-950/40"
+                              : "border-rose-400 bg-rose-950/40"
+                            : "border-primary/60 bg-slate-900/30"
+                        )}
                       >
-                        <div className="absolute -top-1 -left-1 w-4 h-4 border-t-2 border-l-2 border-primary" />
-                        <div className="absolute -top-1 -right-1 w-4 h-4 border-t-2 border-r-2 border-primary" />
-                        <div className="absolute -bottom-1 -left-1 w-4 h-4 border-b-2 border-l-2 border-primary" />
-                        <div className="absolute -bottom-1 -right-1 w-4 h-4 border-b-2 border-r-2 border-primary" />
+                        <div
+                          className={cn(
+                            "absolute -top-1 -left-1 w-4 h-4 border-t-2 border-l-2 transition-colors",
+                            lastResult
+                              ? lastResult.status === "CHECKED_IN"
+                                ? "border-emerald-400"
+                                : lastResult.status === "DOUBLE_SCAN" || lastResult.status === "NETWORK_ERROR"
+                                ? "border-amber-400"
+                                : "border-rose-400"
+                              : "border-primary"
+                          )}
+                        />
+                        <div
+                          className={cn(
+                            "absolute -top-1 -right-1 w-4 h-4 border-t-2 border-r-2 transition-colors",
+                            lastResult
+                              ? lastResult.status === "CHECKED_IN"
+                                ? "border-emerald-400"
+                                : lastResult.status === "DOUBLE_SCAN" || lastResult.status === "NETWORK_ERROR"
+                                ? "border-amber-400"
+                                : "border-rose-400"
+                              : "border-primary"
+                          )}
+                        />
+                        <div
+                          className={cn(
+                            "absolute -bottom-1 -left-1 w-4 h-4 border-b-2 border-l-2 transition-colors",
+                            lastResult
+                              ? lastResult.status === "CHECKED_IN"
+                                ? "border-emerald-400"
+                                : lastResult.status === "DOUBLE_SCAN" || lastResult.status === "NETWORK_ERROR"
+                                ? "border-amber-400"
+                                : "border-rose-400"
+                              : "border-primary"
+                          )}
+                        />
+                        <div
+                          className={cn(
+                            "absolute -bottom-1 -right-1 w-4 h-4 border-b-2 border-r-2 transition-colors",
+                            lastResult
+                              ? lastResult.status === "CHECKED_IN"
+                                ? "border-emerald-400"
+                                : lastResult.status === "DOUBLE_SCAN" || lastResult.status === "NETWORK_ERROR"
+                                ? "border-amber-400"
+                                : "border-rose-400"
+                              : "border-primary"
+                          )}
+                        />
 
-                        <QrCode className="h-16 w-16 text-primary/80 animate-pulse" />
-                        <span className="text-xs font-mono text-slate-300 mt-2 text-center">
-                          {tOrg("scannerAlignTarget") || "Align Delegate QR Pass in Target"}
-                        </span>
+                        {lastResult ? (
+                          lastResult.status === "CHECKED_IN" ? (
+                            <>
+                              <CheckCircle2 className="h-16 w-16 text-emerald-400 animate-fade-in" />
+                              <span className="text-xs font-mono font-bold text-emerald-300 mt-2 text-center uppercase tracking-wider">
+                                Entry Granted
+                              </span>
+                            </>
+                          ) : lastResult.status === "DOUBLE_SCAN" ? (
+                            <>
+                              <AlertTriangle className="h-16 w-16 text-amber-400 animate-fade-in" />
+                              <span className="text-xs font-mono font-bold text-amber-300 mt-2 text-center uppercase tracking-wider">
+                                Double Scan Blocked
+                              </span>
+                            </>
+                          ) : lastResult.status === "NETWORK_ERROR" ? (
+                            <>
+                              <WifiOff className="h-16 w-16 text-amber-400 animate-pulse" />
+                              <span className="text-xs font-mono font-bold text-amber-300 mt-2 text-center uppercase tracking-wider">
+                                Network Offline
+                              </span>
+                            </>
+                          ) : (
+                            <>
+                              <XCircle className="h-16 w-16 text-rose-400 animate-fade-in" />
+                              <span className="text-xs font-mono font-bold text-rose-300 mt-2 text-center uppercase tracking-wider">
+                                Invalid Pass
+                              </span>
+                            </>
+                          )
+                        ) : (
+                          <>
+                            <QrCode className="h-16 w-16 text-primary/80 animate-pulse" />
+                            <span className="text-xs font-mono text-slate-300 mt-2 text-center">
+                              {tOrg("scannerAlignTarget") || "Align Delegate QR Pass in Target"}
+                            </span>
+                          </>
+                        )}
                       </div>
 
                       <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs font-mono text-slate-400">
@@ -1148,6 +1235,165 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
           </Card>
         </div>
       </div>
+
+      {/* MOBILE PORTRAIT STICKY TRIAGE HUD (ACTIVE ON < lg VIEWPORTS) */}
+      {lastResult && (
+        <div
+          role="status"
+          aria-live="assertive"
+          aria-atomic="true"
+          className={cn(
+            "lg:hidden fixed bottom-3 left-3 right-3 z-40 p-4 rounded-xl border-2 shadow-2xl backdrop-blur-md transition-all animate-fade-in space-y-3",
+            lastResult.status === "CHECKED_IN"
+              ? "bg-slate-950/95 border-emerald-500 text-white"
+              : lastResult.status === "DOUBLE_SCAN"
+              ? "bg-slate-950/95 border-amber-500 text-white"
+              : lastResult.status === "NETWORK_ERROR"
+              ? "bg-slate-950/95 border-amber-400 text-white"
+              : "bg-slate-950/95 border-rose-500 text-white"
+          )}
+        >
+          {/* Header Status & Tier Badge */}
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 min-w-0">
+              {lastResult.status === "CHECKED_IN" && (
+                <CheckCircle2 className="h-5 w-5 text-emerald-400 shrink-0" />
+              )}
+              {lastResult.status === "DOUBLE_SCAN" && (
+                <AlertTriangle className="h-5 w-5 text-amber-400 shrink-0" />
+              )}
+              {lastResult.status === "NETWORK_ERROR" && (
+                <WifiOff className="h-5 w-5 text-amber-400 shrink-0" />
+              )}
+              {(lastResult.status === "INVALID" || lastResult.status === "CANCELLED") && (
+                <XCircle className="h-5 w-5 text-rose-400 shrink-0" />
+              )}
+              <span className="text-sm font-bold truncate">
+                {SCAN_STATUS_MAP[lastResult.status]?.label || lastResult.status}
+              </span>
+            </div>
+
+            <span
+              className={cn(
+                "text-[11px] font-semibold px-2 py-0.5 rounded-full shrink-0 uppercase tracking-wide",
+                lastResult.status === "CHECKED_IN"
+                  ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"
+                  : lastResult.status === "DOUBLE_SCAN"
+                  ? "bg-amber-500/20 text-amber-300 border border-amber-500/40"
+                  : lastResult.status === "NETWORK_ERROR"
+                  ? "bg-amber-500/20 text-amber-300 border border-amber-500/40"
+                  : "bg-rose-500/20 text-rose-300 border border-rose-500/40"
+              )}
+            >
+              {SCAN_STATUS_MAP[lastResult.status]?.badgeText || lastResult.status}
+            </span>
+          </div>
+
+          {/* Attendee Info & Perks if present */}
+          {lastResult.attendee ? (
+            <div className="flex items-center justify-between text-xs text-slate-200 pt-1 border-t border-white/10 gap-2">
+              <div className="min-w-0">
+                <p className="font-bold text-white truncate text-sm">{lastResult.attendee.name}</p>
+                <p className="text-[11px] text-slate-300 truncate">
+                  {lastResult.ticketTier?.name} • {lastResult.attendee.email}
+                </p>
+              </div>
+              {lastResult.perks && lastResult.perks.length > 0 && (
+                <div className="flex items-center gap-1 bg-amber-400/20 text-amber-300 px-2 py-1 rounded-md text-[11px] font-medium shrink-0 border border-amber-400/30">
+                  <Sparkles className="h-3 w-3" />
+                  <span>{lastResult.perks.length} Perks</span>
+                </div>
+              )}
+            </div>
+          ) : (
+            <p className="text-xs text-slate-300 pt-1 border-t border-white/10 leading-snug">
+              {lastResult.message}
+            </p>
+          )}
+
+          {/* Single-Handed Ergonomic Actions */}
+          <div className="flex items-center gap-2 pt-1">
+            {lastResult.status === "CHECKED_IN" && (
+              <Button
+                type="button"
+                variant="primary"
+                onClick={() => setLastResult(null)}
+                className="w-full min-h-[44px] text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white cursor-pointer"
+              >
+                {tOrg("scannerNextAttendee") || "Clear for Next Attendee"}
+              </Button>
+            )}
+
+            {lastResult.status === "DOUBLE_SCAN" && (
+              <>
+                <Button
+                  type="button"
+                  variant="primary"
+                  onClick={handleOverrideReEntry}
+                  className="flex-1 min-h-[44px] text-xs font-semibold bg-amber-600 hover:bg-amber-500 text-white cursor-pointer"
+                >
+                  {tOrg("scannerSupervisorOverride") || "Override Re-Entry"}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setLastResult(null)}
+                  className="min-h-[44px] text-xs px-3 border-white/20 text-white hover:bg-white/10 cursor-pointer"
+                >
+                  Dismiss
+                </Button>
+              </>
+            )}
+
+            {lastResult.status === "NETWORK_ERROR" && (
+              <>
+                <Button
+                  type="button"
+                  variant="primary"
+                  onClick={handleRetryVerification}
+                  className="flex-1 min-h-[44px] text-xs font-semibold gap-1.5 cursor-pointer"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                  <span>{tOrg("scannerRetryVerification") || "Retry"}</span>
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setLastResult(null)}
+                  className="min-h-[44px] text-xs px-3 border-white/20 text-white hover:bg-white/10 cursor-pointer"
+                >
+                  Dismiss
+                </Button>
+              </>
+            )}
+
+            {(lastResult.status === "INVALID" || lastResult.status === "CANCELLED") && (
+              <>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    setInputMode("manual");
+                    setLastResult(null);
+                  }}
+                  className="flex-1 min-h-[44px] text-xs font-semibold gap-1.5 border-white/20 text-white hover:bg-white/10 cursor-pointer"
+                >
+                  <Search className="h-4 w-4" />
+                  <span>Manual Search</span>
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={() => setLastResult(null)}
+                  className="min-h-[44px] text-xs px-3 text-white hover:bg-white/10 cursor-pointer"
+                >
+                  Dismiss
+                </Button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

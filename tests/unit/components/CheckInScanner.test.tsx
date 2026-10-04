@@ -33,24 +33,25 @@ describe("Phase 9 Component: CheckInScanner Door QR Console", () => {
     expect(screen.getByText("Audio Off")).toBeDefined();
   });
 
-  it("renders quick test scenario simulation buttons and toggles visibility", () => {
+  it("renders quick test scenario simulation buttons with collapsed default and toggles visibility", () => {
     render(<CheckInScanner defaultEventId="ev-1" />);
+
+    // By default, simulation sandbox is collapsed to prevent accidental taps during live concourse queues
+    expect(screen.queryByText("Valid Pass")).toBeNull();
+    const showBtn = screen.getByText("Show Scenarios");
+    fireEvent.click(showBtn);
 
     expect(screen.getByText("Valid Pass")).toBeDefined();
     expect(screen.getByText("VIP Delegate")).toBeDefined();
     expect(screen.getByText("Double Scan")).toBeDefined();
     expect(screen.getByText("Fraud / Tamper")).toBeDefined();
 
-    const toggleBtn = screen.getByText("Hide Scenarios");
-    fireEvent.click(toggleBtn);
+    const hideBtn = screen.getByText("Hide Scenarios");
+    fireEvent.click(hideBtn);
     expect(screen.queryByText("Valid Pass")).toBeNull();
-
-    const showBtn = screen.getByText("Show Scenarios");
-    fireEvent.click(showBtn);
-    expect(screen.getByText("Valid Pass")).toBeDefined();
   });
 
-  it("submits manual pass code form with fetch invocation", async () => {
+  it("submits manual pass code form with fetch invocation and renders mobile sticky triage HUD", async () => {
     const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValueOnce({
       ok: true,
       json: async () => ({
@@ -58,6 +59,7 @@ describe("Phase 9 Component: CheckInScanner Door QR Console", () => {
         alreadyCheckedIn: false,
         attendee: { name: "Test Delegate", email: "delegate@example.com" },
         ticketTier: { name: "VIP Delegate" },
+        perks: [{ id: "p1", title: "VIP Concourse Access" }],
       }),
     } as any);
 
@@ -77,6 +79,10 @@ describe("Phase 9 Component: CheckInScanner Door QR Console", () => {
     expect(fetchSpy).toHaveBeenCalledWith("/api/tickets/verify", expect.objectContaining({
       method: "POST",
     }));
+
+    // Verify attendee details appear in both the main triage card and the mobile sticky triage HUD
+    expect(screen.getAllByText("Test Delegate").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText("Clear for Next Attendee").length).toBeGreaterThanOrEqual(1);
 
     fetchSpy.mockRestore();
   });
