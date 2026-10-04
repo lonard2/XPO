@@ -64,8 +64,10 @@ model VenueHall {
 
 model Event {
   id                 String       @id @default(cuid())
-  organizerId        String
-  organizer          User         @relation("OrganizerEvents", fields: [organizerId], references: [id])
+  organizerId        String?
+  organizer          User?        @relation("OrganizerEvents", fields: [organizerId], references: [id])
+  organizerName      String?      // External organizer brand or trade association
+  isPlatformCurated  Boolean      @default(false)
   regionId           String
   region             Region       @relation(fields: [regionId], references: [id])
   venueId            String
