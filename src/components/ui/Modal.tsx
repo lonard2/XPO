@@ -52,6 +52,8 @@ export function Modal({
     };
   }, [isOpen, onClose]);
 
+  const titleId = React.useId();
+
   if (!isOpen) return null;
 
   return (
@@ -59,6 +61,7 @@ export function Modal({
       className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
       role="dialog"
       aria-modal="true"
+      aria-labelledby={title ? titleId : undefined}
     >
       {/* Backdrop */}
       <div
@@ -77,7 +80,11 @@ export function Modal({
       >
         <div className="flex items-center justify-between pb-4 border-b border-border/60">
           <div>
-            {title && <h2 className="text-lg font-semibold tracking-tight text-foreground">{title}</h2>}
+            {title && (
+              <h2 id={titleId} className="text-lg font-semibold tracking-tight text-foreground">
+                {title}
+              </h2>
+            )}
             {description && <p className="text-xs text-muted-foreground mt-0.5">{description}</p>}
           </div>
           <button

@@ -1176,8 +1176,10 @@ export default function BoothManagerPage() {
                         <div className="flex items-start gap-2">
                           <button
                             type="button"
+                            role="checkbox"
+                            aria-checked={selectedBoothIds.has(booth.id)}
                             onClick={() => toggleSelectBooth(booth.id)}
-                            className="mt-0.5 inline-flex items-center justify-center p-1 rounded hover:bg-muted text-foreground cursor-pointer shrink-0"
+                            className="mt-0.5 min-w-[36px] min-h-[36px] inline-flex items-center justify-center p-1.5 rounded-lg hover:bg-muted text-foreground cursor-pointer shrink-0 transition-colors"
                             aria-label={selectedBoothIds.has(booth.id) ? `Deselect booth ${booth.boothNumber}` : `Select booth ${booth.boothNumber}`}
                           >
                             {selectedBoothIds.has(booth.id) ? (
@@ -1309,11 +1311,13 @@ export default function BoothManagerPage() {
               <table className="w-full text-left border-collapse text-xs">
                 <thead className="bg-muted/70 text-muted-foreground font-semibold border-b border-border sticky top-0 z-10 backdrop-blur-xs">
                   <tr>
-                    <th className="p-3 w-10 text-center font-medium">
+                    <th className="p-3 w-12 text-center font-medium">
                       <button
                         type="button"
+                        role="checkbox"
+                        aria-checked={allDisplayedSelected ? true : someDisplayedSelected ? "mixed" : false}
                         onClick={toggleSelectAll}
-                        className="inline-flex items-center justify-center p-1 rounded hover:bg-muted text-foreground cursor-pointer"
+                        className="min-w-[36px] min-h-[36px] inline-flex items-center justify-center p-1.5 rounded-lg hover:bg-muted text-foreground cursor-pointer transition-colors"
                         aria-label={allDisplayedSelected ? "Deselect all displayed lots" : "Select all displayed lots"}
                       >
                         {allDisplayedSelected ? (
@@ -1352,8 +1356,10 @@ export default function BoothManagerPage() {
                         <td className="p-3 text-center">
                           <button
                             type="button"
+                            role="checkbox"
+                            aria-checked={isSelected}
                             onClick={() => toggleSelectBooth(booth.id)}
-                            className="inline-flex items-center justify-center p-1 rounded hover:bg-muted text-foreground cursor-pointer"
+                            className="min-w-[36px] min-h-[36px] inline-flex items-center justify-center p-1.5 rounded-lg hover:bg-muted text-foreground cursor-pointer transition-colors"
                             aria-label={isSelected ? `Deselect booth ${booth.boothNumber}` : `Select booth ${booth.boothNumber}`}
                           >
                             {isSelected ? (
@@ -1416,7 +1422,7 @@ export default function BoothManagerPage() {
                               <Button
                                 size="sm"
                                 variant="outline"
-                                className="text-xs h-8 px-2 text-muted-foreground hover:text-amber-600 dark:hover:text-amber-400 cursor-pointer"
+                                className="text-xs min-h-[36px] h-9 px-2 text-muted-foreground hover:text-amber-600 dark:hover:text-amber-400 cursor-pointer"
                                 onClick={() => handleVacateBooth(booth)}
                                 title="Vacate Tenant"
                                 aria-label={`Vacate tenant from booth ${booth.boothNumber}`}
@@ -1427,7 +1433,7 @@ export default function BoothManagerPage() {
                             <Button
                               size="sm"
                               variant="outline"
-                              className="text-xs h-8 px-2.5 gap-1 cursor-pointer"
+                              className="text-xs min-h-[36px] h-9 px-2.5 gap-1 cursor-pointer"
                               onClick={() => handleOpenEditModal(booth)}
                               aria-label={isOccupied ? `Edit booth ${booth.boothNumber}` : `Assign booth ${booth.boothNumber}`}
                             >
@@ -1437,7 +1443,7 @@ export default function BoothManagerPage() {
                             <Button
                               size="sm"
                               variant="outline"
-                              className="text-xs h-8 px-2 text-destructive/80 hover:text-destructive hover:border-destructive/40 cursor-pointer"
+                              className="text-xs min-h-[36px] h-9 px-2 text-destructive/80 hover:text-destructive hover:border-destructive/40 cursor-pointer"
                               onClick={() => setDeletingBooth(booth)}
                               title="Decommission Lot"
                               aria-label={`Decommission booth ${booth.boothNumber}`}
