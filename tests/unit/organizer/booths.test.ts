@@ -196,4 +196,76 @@ describe("Phase 9 Unit: Booth Allocation & Occupancy Calculations", () => {
     expect(boothSpecs.areaSqm).toBe(18);
     expect(["SHELL_SCHEME", "RAW_SPACE", "ISLAND", "CORNER"]).toContain(boothSpecs.boothType);
   });
+
+  it("calculates accurate per-hall saturation telemetry metrics", () => {
+    const hallsList = ["Hall A1", "Hall A2"];
+    const hallStats = hallsList.map((hall) => {
+      const hallBooths = sampleBooths.filter((b) => b.hallName === hall);
+      const total = hallBooths.length;
+      const occupied = hallBooths.filter((b) => b.companyName && b.companyName.trim() !== "").length;
+      const available = total - occupied;
+      const saturation = total > 0 ? Math.round((occupied / total) * 100) : 0;
+      return { hall, total, occupied, available, saturation };
+    });
+
+    expect(hallStats).toHaveLength(2);
+    // Hall A1: 3 total, 2 occupied (b1, b2), 1 available (b3) => 67%
+    expect(hallStats[0]).toEqual({
+      hall: "Hall A1",
+      total: 3,
+      occupied: 2,
+      available: 1,
+      saturation: 67,
+    });
+    // Hall A2: 2 total, 1 occupied (b4), 1 available (b5) => 50%
+    expect(hallStats[1]).toEqual({
+      hall: "Hall A2",
+      total: 2,
+      occupied: 1,
+      available: 1,
+      saturation: 50,
+    });
+  });
+
+  it("handles multi-lot batch selection toggles and bulk operations", () => {
+    let selectedIds = new Set<string>();
+
+    // Toggle individual selections
+    const toggleSelect = (id: string) => {
+      if (selectedIds.has(id)) {
+        selectedIds.delete(id);
+      } else {
+        selectedIds.add(id);
+      }
+    };
+
+    toggleSelect("b1");
+    toggleSelect("b2");
+    expect(selectedIds.size).toBe(2);
+    expect(selectedIds.has("b1")).toBe(true);
+    expect(selectedIds.has("b2")).toBe(true);
+
+    toggleSelect("b1");
+    expect(selectedIds.size).toBe(1);
+    expect(selectedIds.has("b1")).toBe(false);
+
+    // Select all displayed
+    sampleBooths.forEach((b) => selectedIds.add(b.id));
+    expect(selectedIds.size).toBe(sampleBooths.length);
+
+    // Batch vacate operation on selected IDs
+    const batchVacated = sampleBooths.map((b) =>
+      selectedIds.has(b.id)
+        ? { ...b, companyName: "", industry: null }
+        : b
+    );
+    expect(batchVacated.every((b) => b.companyName === "")).toBe(true);
+
+    // Batch decommission operation on selected IDs
+    const toDeleteIds = new Set(["b1", "b2"]);
+    const remaining = sampleBooths.filter((b) => !toDeleteIds.has(b.id));
+    expect(remaining).toHaveLength(3);
+    expect(remaining.map((b) => b.id)).toEqual(["b3", "b4", "b5"]);
+  });
 });
+

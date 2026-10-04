@@ -297,4 +297,79 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
     expect(patchJson.booth.areaSqm).toBe(108);
     expect(patchJson.booth.boothType).toBe("RAW_SPACE");
   });
+
+  it("Organizer Booths: PATCH and DELETE support batch operations (bulk vacate and bulk decommission)", async () => {
+    // 1. Seed 3 booths for batch testing
+    const seededBooths = await Promise.all([
+      db.boothTenant.create({
+        data: {
+          eventId: createdEventId,
+          boothNumber: "Hall Z1 - 01",
+          hallName: "Hall Z1",
+          companyName: "Batch Tenant 1",
+          industry: "Tech",
+        },
+      }),
+      db.boothTenant.create({
+        data: {
+          eventId: createdEventId,
+          boothNumber: "Hall Z1 - 02",
+          hallName: "Hall Z1",
+          companyName: "Batch Tenant 2",
+          industry: "Tech",
+        },
+      }),
+      db.boothTenant.create({
+        data: {
+          eventId: createdEventId,
+          boothNumber: "Hall Z1 - 03",
+          hallName: "Hall Z1",
+          companyName: "Batch Tenant 3",
+          industry: "Tech",
+        },
+      }),
+    ]);
+
+    const seededIds = seededBooths.map((b) => b.id);
+
+    // 2. Batch PATCH (bulk vacate)
+    const bulkPatchReq = new Request("http://localhost:3000/api/organizer/booths", {
+      method: "PATCH",
+      body: JSON.stringify({
+        bulk: true,
+        ids: [seededIds[0], seededIds[1]],
+        companyName: "",
+        industry: null,
+      }),
+    });
+    const bulkPatchRes = await updateBoothRoute(bulkPatchReq);
+    expect(bulkPatchRes.status).toBe(200);
+    const bulkPatchJson = await bulkPatchRes.json();
+    expect(bulkPatchJson.success).toBe(true);
+    expect(bulkPatchJson.count).toBe(2);
+
+    // Verify first two are vacated in DB
+    const checkVacated = await db.boothTenant.findMany({
+      where: { id: { in: [seededIds[0], seededIds[1]] } },
+    });
+    expect(checkVacated.every((b) => b.companyName === "")).toBe(true);
+
+    // 3. Batch DELETE (bulk decommission)
+    const bulkDeleteReq = new Request("http://localhost:3000/api/organizer/booths", {
+      method: "DELETE",
+      body: JSON.stringify({ ids: seededIds }),
+    });
+    const bulkDeleteRes = await deleteBoothRoute(bulkDeleteReq);
+    expect(bulkDeleteRes.status).toBe(200);
+    const bulkDeleteJson = await bulkDeleteRes.json();
+    expect(bulkDeleteJson.success).toBe(true);
+    expect(bulkDeleteJson.count).toBe(3);
+
+    // Verify all 3 are deleted in DB
+    const checkRemaining = await db.boothTenant.findMany({
+      where: { id: { in: seededIds } },
+    });
+    expect(checkRemaining).toHaveLength(0);
+  });
 });
+

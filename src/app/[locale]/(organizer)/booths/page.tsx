@@ -22,6 +22,9 @@ import {
   Download,
   Maximize2,
   Layers,
+  CheckSquare,
+  Square,
+  MinusSquare,
 } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -153,6 +156,12 @@ export default function BoothManagerPage() {
   // Decommission / Delete Booth State
   const [deletingBooth, setDeletingBooth] = React.useState<BoothItem | null>(null);
   const [isDeleting, setIsDeleting] = React.useState(false);
+
+  // Batch Multi-Select & Bulk Operations State
+  const [selectedBoothIds, setSelectedBoothIds] = React.useState<Set<string>>(new Set());
+  const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = React.useState(false);
+  const [isBulkDeleting, setIsBulkDeleting] = React.useState(false);
+  const [isBulkVacating, setIsBulkVacating] = React.useState(false);
 
   const fetchBoothsAndEvents = React.useCallback(async () => {
     setIsLoading(true);
@@ -315,6 +324,60 @@ export default function BoothManagerPage() {
   const availableCount = totalCount - occupiedCount;
   const occupancyPct = totalCount > 0 ? Math.round((occupiedCount / totalCount) * 100) : 0;
 
+  // Per-Hall Saturation Telemetry
+  const hallStats = React.useMemo(() => {
+    return hallsList.map((hall) => {
+      const hallBooths = booths.filter((b) => {
+        if (selectedEventId !== "ALL" && b.eventId !== selectedEventId) return false;
+        return b.hallName === hall;
+      });
+      const total = hallBooths.length;
+      const occupied = hallBooths.filter((b) => b.companyName && b.companyName.trim() !== "").length;
+      const available = total - occupied;
+      const saturation = total > 0 ? Math.round((occupied / total) * 100) : 0;
+      return { hall, total, occupied, available, saturation };
+    });
+  }, [booths, hallsList, selectedEventId]);
+
+  // Batch Selection Helpers
+  const toggleSelectBooth = (id: string) => {
+    setSelectedBoothIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  };
+
+  const allDisplayedSelected =
+    filteredBooths.length > 0 && filteredBooths.every((b) => selectedBoothIds.has(b.id));
+
+  const someDisplayedSelected =
+    filteredBooths.some((b) => selectedBoothIds.has(b.id)) && !allDisplayedSelected;
+
+  const toggleSelectAll = () => {
+    if (allDisplayedSelected) {
+      setSelectedBoothIds((prev) => {
+        const next = new Set(prev);
+        filteredBooths.forEach((b) => next.delete(b.id));
+        return next;
+      });
+    } else {
+      setSelectedBoothIds((prev) => {
+        const next = new Set(prev);
+        filteredBooths.forEach((b) => next.add(b.id));
+        return next;
+      });
+    }
+  };
+
+  const clearSelection = () => {
+    setSelectedBoothIds(new Set());
+  };
+
   const handleOpenCreateModal = () => {
     setEditingBooth(null);
     setFormCompanyName("");
@@ -470,6 +533,80 @@ export default function BoothManagerPage() {
     } catch (err) {
       setToastMessage(`Failed to release tenant: ${(err as Error).message}`);
       setTimeout(() => setToastMessage(""), 3500);
+    }
+  };
+
+  // Batch Vacate Tenants Handler
+  const handleBulkVacate = async () => {
+    if (selectedBoothIds.size === 0) return;
+    const ids = Array.from(selectedBoothIds);
+    setIsBulkVacating(true);
+    try {
+      const res = await fetch("/api/organizer/booths", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          bulk: true,
+          ids,
+          companyName: "",
+          industry: null,
+          websiteUrl: null,
+          description: null,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to vacate selected booth tenants.");
+      }
+      setBooths((prev) =>
+        prev.map((b) =>
+          selectedBoothIds.has(b.id)
+            ? {
+                ...b,
+                companyName: "",
+                industry: null,
+                websiteUrl: null,
+                description: null,
+              }
+            : b
+        )
+      );
+      setToastMessage(`Released tenants from ${ids.length} selected booth lots.`);
+      clearSelection();
+      setTimeout(() => setToastMessage(""), 3500);
+    } catch (err) {
+      setToastMessage(`Batch vacate failed: ${(err as Error).message}`);
+      setTimeout(() => setToastMessage(""), 3500);
+    } finally {
+      setIsBulkVacating(false);
+    }
+  };
+
+  // Batch Decommission Booth Lots Handler
+  const handleBulkDecommission = async () => {
+    if (selectedBoothIds.size === 0) return;
+    const ids = Array.from(selectedBoothIds);
+    setIsBulkDeleting(true);
+    try {
+      const res = await fetch("/api/organizer/booths", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to decommission selected booth lots.");
+      }
+      setBooths((prev) => prev.filter((b) => !selectedBoothIds.has(b.id)));
+      setToastMessage(`Decommissioned ${ids.length} booth lots permanently.`);
+      clearSelection();
+      setIsBulkDeleteModalOpen(false);
+      setTimeout(() => setToastMessage(""), 3500);
+    } catch (err) {
+      setToastMessage(`Batch decommission failed: ${(err as Error).message}`);
+      setTimeout(() => setToastMessage(""), 3500);
+    } finally {
+      setIsBulkDeleting(false);
     }
   };
 
@@ -773,6 +910,108 @@ export default function BoothManagerPage() {
         </Card>
       </div>
 
+      {/* INTERACTIVE HALL SATURATION & 1-CLICK FILTER STRIP */}
+      {hallsList.length > 0 && (
+        <Card className="p-4 border-border bg-card shadow-xs space-y-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+            <div className="flex items-center gap-2">
+              <Layers className="h-4 w-4 text-primary" />
+              <h2 className="text-xs font-bold uppercase tracking-wider text-foreground">
+                Exhibition Hall Saturation & Capacity
+              </h2>
+            </div>
+            <span className="text-[11px] text-muted-foreground">
+              Select any hall to isolate inventory and inspect real-time allocation telemetry
+            </span>
+          </div>
+
+          <div
+            role="group"
+            aria-label="Hall saturation filters"
+            className="flex flex-wrap items-center gap-2"
+          >
+            {/* All Halls Pill */}
+            <button
+              type="button"
+              onClick={() => setSelectedHall("ALL")}
+              aria-pressed={selectedHall === "ALL"}
+              aria-label={`All Halls: ${occupiedCount} of ${totalCount} lots occupied (${occupancyPct}%)`}
+              className={cn(
+                "min-h-[44px] px-3.5 py-2 rounded-xl border text-xs flex items-center gap-2.5 transition-all cursor-pointer",
+                selectedHall === "ALL"
+                  ? "bg-primary text-primary-foreground border-primary font-semibold shadow-xs"
+                  : "bg-muted/40 border-border/80 text-muted-foreground hover:text-foreground hover:bg-muted/70"
+              )}
+            >
+              <span>All Halls</span>
+              <div
+                className="w-12 h-1.5 bg-black/20 dark:bg-white/20 rounded-full overflow-hidden inline-block"
+                role="progressbar"
+                aria-valuenow={occupancyPct}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-label="All halls occupancy rate"
+              >
+                <div
+                  className="bg-current h-full rounded-full transition-all"
+                  style={{ width: `${occupancyPct}%` }}
+                />
+              </div>
+              <span className="font-mono text-[11px] opacity-90">
+                {occupiedCount}/{totalCount} ({occupancyPct}%)
+              </span>
+            </button>
+
+            {/* Per-Hall Pills */}
+            {hallStats.map((item) => {
+              const isSelected = selectedHall === item.hall;
+              return (
+                <button
+                  key={item.hall}
+                  type="button"
+                  onClick={() => setSelectedHall(isSelected ? "ALL" : item.hall)}
+                  aria-pressed={isSelected}
+                  aria-label={`${item.hall}: ${item.occupied} of ${item.total} lots occupied (${item.saturation}%)`}
+                  className={cn(
+                    "min-h-[44px] px-3.5 py-2 rounded-xl border text-xs flex items-center gap-2.5 transition-all cursor-pointer",
+                    isSelected
+                      ? "bg-primary text-primary-foreground border-primary font-semibold shadow-xs"
+                      : "bg-muted/40 border-border/80 text-muted-foreground hover:text-foreground hover:bg-muted/70"
+                  )}
+                >
+                  <span>{item.hall}</span>
+                  <div
+                    className="w-12 h-1.5 bg-black/20 dark:bg-white/20 rounded-full overflow-hidden inline-block"
+                    role="progressbar"
+                    aria-valuenow={item.saturation}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-label={`${item.hall} occupancy rate`}
+                  >
+                    <div
+                      className={cn(
+                        "h-full rounded-full transition-all",
+                        isSelected
+                          ? "bg-current"
+                          : item.saturation >= 90
+                          ? "bg-rose-500"
+                          : item.saturation >= 70
+                          ? "bg-amber-500"
+                          : "bg-primary"
+                      )}
+                      style={{ width: `${item.saturation}%` }}
+                    />
+                  </div>
+                  <span className="font-mono text-[11px] opacity-90">
+                    {item.occupied}/{item.total} ({item.saturation}%)
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </Card>
+      )}
+
       {/* FILTER & SEARCH BAR */}
       <div className="bg-card p-4 rounded-xl border border-border shadow-xs space-y-3">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -925,23 +1164,39 @@ export default function BoothManagerPage() {
                   <Card
                     className={cn(
                       "p-5 border flex flex-col justify-between h-full transition-all hover:shadow-md",
-                      isOccupied
+                      selectedBoothIds.has(booth.id)
+                        ? "border-primary ring-2 ring-primary/40 bg-primary/5"
+                        : isOccupied
                         ? "border-border bg-card"
                         : "border-emerald-500/40 bg-emerald-500/5"
                     )}
                   >
                     <div className="space-y-3">
                       <div className="flex items-start justify-between gap-2">
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className="font-mono text-sm font-bold text-foreground">
-                              {booth.boothNumber}
-                            </span>
-                            <Badge variant="outline" size="sm">{booth.hallName}</Badge>
+                        <div className="flex items-start gap-2">
+                          <button
+                            type="button"
+                            onClick={() => toggleSelectBooth(booth.id)}
+                            className="mt-0.5 inline-flex items-center justify-center p-1 rounded hover:bg-muted text-foreground cursor-pointer shrink-0"
+                            aria-label={selectedBoothIds.has(booth.id) ? `Deselect booth ${booth.boothNumber}` : `Select booth ${booth.boothNumber}`}
+                          >
+                            {selectedBoothIds.has(booth.id) ? (
+                              <CheckSquare className="h-4 w-4 text-primary" />
+                            ) : (
+                              <Square className="h-4 w-4 text-muted-foreground" />
+                            )}
+                          </button>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="font-mono text-sm font-bold text-foreground">
+                                {booth.boothNumber}
+                              </span>
+                              <Badge variant="outline" size="sm">{booth.hallName}</Badge>
+                            </div>
+                            <h3 className="text-base font-bold text-foreground mt-1 truncate">
+                              {isOccupied ? booth.companyName : "Available Lot"}
+                            </h3>
                           </div>
-                          <h3 className="text-base font-bold text-foreground mt-1 truncate">
-                            {isOccupied ? booth.companyName : "Available Lot"}
-                          </h3>
                         </div>
 
                         <div className="flex flex-col items-end gap-1">
@@ -1054,6 +1309,22 @@ export default function BoothManagerPage() {
               <table className="w-full text-left border-collapse text-xs">
                 <thead className="bg-muted/70 text-muted-foreground font-semibold border-b border-border sticky top-0 z-10 backdrop-blur-xs">
                   <tr>
+                    <th className="p-3 w-10 text-center font-medium">
+                      <button
+                        type="button"
+                        onClick={toggleSelectAll}
+                        className="inline-flex items-center justify-center p-1 rounded hover:bg-muted text-foreground cursor-pointer"
+                        aria-label={allDisplayedSelected ? "Deselect all displayed lots" : "Select all displayed lots"}
+                      >
+                        {allDisplayedSelected ? (
+                          <CheckSquare className="h-4 w-4 text-primary" />
+                        ) : someDisplayedSelected ? (
+                          <MinusSquare className="h-4 w-4 text-primary" />
+                        ) : (
+                          <Square className="h-4 w-4 text-muted-foreground" />
+                        )}
+                      </button>
+                    </th>
                     <th className="p-3 font-medium">Booth Lot #</th>
                     <th className="p-3 font-medium">Hall</th>
                     <th className="p-3 font-medium">Status</th>
@@ -1067,8 +1338,31 @@ export default function BoothManagerPage() {
                 <tbody className="divide-y divide-border">
                   {filteredBooths.map((booth) => {
                     const isOccupied = booth.companyName && booth.companyName.trim() !== "";
+                    const isSelected = selectedBoothIds.has(booth.id);
                     return (
-                      <tr key={booth.id} className="hover:bg-muted/30 transition-colors">
+                      <tr
+                        key={booth.id}
+                        className={cn(
+                          "transition-colors",
+                          isSelected
+                            ? "bg-primary/5 hover:bg-primary/10"
+                            : "hover:bg-muted/30"
+                        )}
+                      >
+                        <td className="p-3 text-center">
+                          <button
+                            type="button"
+                            onClick={() => toggleSelectBooth(booth.id)}
+                            className="inline-flex items-center justify-center p-1 rounded hover:bg-muted text-foreground cursor-pointer"
+                            aria-label={isSelected ? `Deselect booth ${booth.boothNumber}` : `Select booth ${booth.boothNumber}`}
+                          >
+                            {isSelected ? (
+                              <CheckSquare className="h-4 w-4 text-primary" />
+                            ) : (
+                              <Square className="h-4 w-4 text-muted-foreground" />
+                            )}
+                          </button>
+                        </td>
                         <td className="p-3 font-mono font-bold text-foreground">
                           {booth.boothNumber}
                         </td>
@@ -1523,6 +1817,111 @@ export default function BoothManagerPage() {
             >
               <Trash2 className="h-4 w-4" />
               <span>{isDeleting ? "Decommissioning..." : "Confirm Decommission"}</span>
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* FLOATING STICKY BULK ACTIONS TOOLBAR */}
+      {selectedBoothIds.size > 0 && (
+        <div
+          role="toolbar"
+          aria-label="Bulk actions for selected booths"
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-card/95 backdrop-blur-md border border-primary/40 rounded-2xl shadow-2xl px-4 py-3 flex items-center gap-3 flex-wrap animate-fade-in"
+        >
+          <div className="flex items-center gap-2 text-xs font-semibold text-foreground pr-2 border-r border-border">
+            <Badge variant="secondary" size="sm" className="font-mono font-bold">
+              {selectedBoothIds.size}
+            </Badge>
+            <span>{selectedBoothIds.size === 1 ? "Lot Selected" : "Lots Selected"}</span>
+          </div>
+
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={isBulkVacating}
+            onClick={handleBulkVacate}
+            className="text-xs min-h-[36px] sm:min-h-[44px] px-3 gap-1.5 cursor-pointer text-muted-foreground hover:text-amber-600 dark:hover:text-amber-400"
+            aria-label="Vacate tenants on selected booths"
+          >
+            <UserMinus className="h-4 w-4" />
+            <span>{isBulkVacating ? "Releasing..." : "Vacate Tenants"}</span>
+          </Button>
+
+          <Button
+            variant="destructive"
+            size="sm"
+            disabled={isBulkDeleting}
+            onClick={() => setIsBulkDeleteModalOpen(true)}
+            className="text-xs min-h-[36px] sm:min-h-[44px] px-3 gap-1.5 cursor-pointer"
+            aria-label="Decommission selected booths"
+          >
+            <Trash2 className="h-4 w-4" />
+            <span>Decommission Lots</span>
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={clearSelection}
+            className="text-xs min-h-[36px] sm:min-h-[44px] px-2.5 gap-1 text-muted-foreground hover:text-foreground cursor-pointer"
+            aria-label="Clear all selections"
+          >
+            <X className="h-4 w-4" />
+            <span>Clear</span>
+          </Button>
+        </div>
+      )}
+
+      {/* BULK DECOMMISSION BOOTH LOTS CONFIRMATION MODAL */}
+      <Modal
+        isOpen={isBulkDeleteModalOpen}
+        onClose={() => !isBulkDeleting && setIsBulkDeleteModalOpen(false)}
+        title="Bulk Decommission Booth Lots"
+        description={`Are you sure you want to permanently decommission ${selectedBoothIds.size} selected floor lots from the exhibition hall grid?`}
+        size="sm"
+      >
+        <div className="space-y-4 pt-2">
+          <div className="p-3.5 bg-muted/50 rounded-lg border border-border text-xs space-y-1.5 max-h-48 overflow-y-auto">
+            <div className="font-semibold text-foreground mb-1">
+              Selected Lots for Decommission ({selectedBoothIds.size}):
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {booths
+                .filter((b) => selectedBoothIds.has(b.id))
+                .map((b) => (
+                  <Badge key={b.id} variant="outline" size="sm" className="font-mono text-[11px]">
+                    {b.boothNumber}
+                  </Badge>
+                ))}
+            </div>
+          </div>
+
+          <p className="text-xs text-destructive font-medium">
+            This action cannot be undone. Commercial assignments and telemetry records associated with all {selectedBoothIds.size} booth lots will be deleted.
+          </p>
+
+          <div className="pt-3 border-t border-border flex items-center justify-end gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              disabled={isBulkDeleting}
+              onClick={() => setIsBulkDeleteModalOpen(false)}
+              className="min-h-[44px] px-4 cursor-pointer text-xs"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              size="sm"
+              disabled={isBulkDeleting}
+              onClick={handleBulkDecommission}
+              className="min-h-[44px] px-4 cursor-pointer text-xs gap-1.5"
+            >
+              <Trash2 className="h-4 w-4" />
+              <span>{isBulkDeleting ? "Decommissioning..." : `Confirm Decommission (${selectedBoothIds.size})`}</span>
             </Button>
           </div>
         </div>

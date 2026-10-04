@@ -227,6 +227,31 @@ export async function PATCH(request: Request) {
     }
 
     const body = await request.json();
+
+    // 1. Bulk Batch Update (e.g. Bulk Vacate Tenants)
+    if (body.bulk === true && Array.isArray(body.ids)) {
+      const ids: string[] = body.ids;
+      if (ids.length === 0) {
+        return NextResponse.json(
+          { success: false, error: "No IDs provided for bulk update" },
+          { status: 400 }
+        );
+      }
+      const updateData: Record<string, unknown> = {};
+      if (body.companyName !== undefined) updateData.companyName = body.companyName !== null ? body.companyName.trim() : "";
+      if (body.industry !== undefined) updateData.industry = body.industry ? body.industry.trim() : null;
+      if (body.websiteUrl !== undefined) updateData.websiteUrl = body.websiteUrl ? body.websiteUrl.trim() : null;
+      if (body.description !== undefined) updateData.description = body.description ? body.description.trim() : null;
+
+      const result = await db.boothTenant.updateMany({
+        where: { id: { in: ids } },
+        data: updateData,
+      });
+
+      return NextResponse.json({ success: true, count: result.count, ids });
+    }
+
+    // 2. Single Booth Update
     const {
       id,
       companyName,
@@ -311,16 +336,30 @@ export async function DELETE(request: Request) {
 
     const { searchParams } = new URL(request.url);
     let id = searchParams.get("id");
+    let ids: string[] = [];
 
-    if (!id) {
-      try {
-        const body = await request.json();
-        id = body?.id;
-      } catch {
-        // Query param fallback
-      }
+    const idsParam = searchParams.get("ids");
+    if (idsParam) {
+      ids = idsParam.split(",").map((s) => s.trim()).filter(Boolean);
     }
 
+    try {
+      const body = await request.json();
+      if (body?.id) id = body.id;
+      if (Array.isArray(body?.ids)) ids = body.ids;
+    } catch {
+      // Query param fallback
+    }
+
+    // 1. Bulk Decommission Path
+    if (ids.length > 0) {
+      const result = await db.boothTenant.deleteMany({
+        where: { id: { in: ids } },
+      });
+      return NextResponse.json({ success: true, count: result.count, ids });
+    }
+
+    // 2. Single Decommission Path
     if (!id) {
       return NextResponse.json(
         { success: false, error: "Missing booth ID for deletion" },
