@@ -20,6 +20,9 @@ import {
   Check,
   ChevronDown,
   ChevronUp,
+  Vibrate,
+  VibrateOff,
+  ScanBarcode,
 } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -117,6 +120,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
   const [manualHash, setManualHash] = React.useState("");
   const [isVerifying, setIsVerifying] = React.useState(false);
   const [soundEnabled, setSoundEnabled] = React.useState(true);
+  const [hapticsEnabled, setHapticsEnabled] = React.useState(true);
   const [lastResult, setLastResult] = React.useState<ScanResult | null>(null);
   const [scanHistory, setScanHistory] = React.useState<ScanResult[]>([]);
   const [showSimulator, setShowSimulator] = React.useState(false);
@@ -266,6 +270,26 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
     [soundEnabled]
   );
 
+  const triggerHaptic = React.useCallback(
+    (type: "success" | "warning" | "error") => {
+      if (!hapticsEnabled) return;
+      if (typeof navigator !== "undefined" && "vibrate" in navigator && typeof navigator.vibrate === "function") {
+        try {
+          if (type === "success") {
+            navigator.vibrate([70]);
+          } else if (type === "warning") {
+            navigator.vibrate([60, 50, 60]);
+          } else {
+            navigator.vibrate([120, 60, 120]);
+          }
+        } catch {
+          // Ignore vibration policy errors
+        }
+      }
+    },
+    [hapticsEnabled]
+  );
+
   const verifyPassData = React.useCallback(
     async (payload: {
       qrCodeHash?: string;
@@ -312,6 +336,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
             setLastResult(result);
             setScanHistory((prev) => [result, ...prev.slice(0, 19)]);
             playSound("warning");
+            triggerHaptic("warning");
           } else {
             const result: ScanResult = {
               valid: true,
@@ -329,6 +354,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
             setLastResult(result);
             setScanHistory((prev) => [result, ...prev.slice(0, 19)]);
             playSound("success");
+            triggerHaptic("success");
           }
         } else {
           const rawErr = data.error || "";
@@ -366,6 +392,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
           setLastResult(result);
           setScanHistory((prev) => [result, ...prev.slice(0, 19)]);
           playSound("error");
+          triggerHaptic("error");
         }
       } catch (err) {
         const nowIso = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
@@ -381,12 +408,13 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
         setLastResult(result);
         setScanHistory((prev) => [result, ...prev.slice(0, 19)]);
         playSound("warning");
+        triggerHaptic("warning");
       } finally {
         isVerifyingRef.current = false;
         setIsVerifying(false);
       }
     },
-    [playSound]
+    [playSound, triggerHaptic]
   );
 
   // Optical continuous QR barcode scanning loop (native BarcodeDetector)
@@ -467,6 +495,62 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [lastResult]);
 
+  // Hardware USB/Bluetooth Barcode Scanner (HID Keyboard Wedge Mode) Listener
+  React.useEffect(() => {
+    let buffer = "";
+    let lastKeyTime = 0;
+
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      // Don't intercept when user is typing inside an input, textarea, or contentEditable element
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement ||
+        (e.target as HTMLElement)?.isContentEditable
+      ) {
+        return;
+      }
+
+      const now = Date.now();
+
+      // Enter key marks termination of standard barcode gun scan transmission
+      if (e.key === "Enter") {
+        const barcode = buffer.trim();
+        buffer = "";
+        lastKeyTime = 0;
+
+        if (barcode.length >= 6) {
+          e.preventDefault();
+          if (barcode.startsWith("{") && barcode.includes("bookingId")) {
+            try {
+              const parsed = JSON.parse(barcode);
+              verifyPassData({ payloadString: barcode, signature: parsed.signature });
+            } catch {
+              verifyPassData({ qrCodeHash: barcode });
+            }
+          } else {
+            verifyPassData({ qrCodeHash: barcode });
+          }
+        }
+        return;
+      }
+
+      // Printable single-character keystrokes sent by the barcode scanner
+      if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        // Standard hardware barcode guns send characters in rapid succession (< 80ms)
+        // If elapsed time since last keystroke is > 120ms, it is a human pause or stale input
+        if (now - lastKeyTime > 120) {
+          buffer = e.key;
+        } else {
+          buffer += e.key;
+        }
+        lastKeyTime = now;
+      }
+    };
+
+    window.addEventListener("keydown", handleGlobalKeyDown);
+    return () => window.removeEventListener("keydown", handleGlobalKeyDown);
+  }, [verifyPassData]);
+
   const handleManualSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!manualHash.trim()) return;
@@ -487,6 +571,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
     setLastResult(updated);
     setScanHistory((prev) => [updated, ...prev.slice(0, 19)]);
     playSound("success");
+    triggerHaptic("success");
   };
 
   const handleSendResolutionDesk = () => {
@@ -655,25 +740,59 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                 </button>
               </div>
 
-              <Button
-                variant="ghost"
-                size="sm"
-                className="min-h-[44px] min-w-[44px] px-3 text-xs gap-1.5 cursor-pointer"
-                onClick={() => setSoundEnabled(!soundEnabled)}
-                aria-label="Toggle audio feedback"
-              >
-                {soundEnabled ? (
-                  <>
-                    <Volume2 className="h-4 w-4 text-emerald-500" />
-                    <span className="hidden sm:inline">{tOrg("scannerAudioOn") || "Audio On"}</span>
-                  </>
-                ) : (
-                  <>
-                    <VolumeX className="h-4 w-4 text-muted-foreground" />
-                    <span className="hidden sm:inline">{tOrg("scannerAudioOff") || "Audio Off"}</span>
-                  </>
-                )}
-              </Button>
+              <div className="flex items-center gap-1">
+                {/* Hardware Barcode Wedge Indicator */}
+                <div
+                  className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-muted/60 border border-border/60 text-xs text-muted-foreground font-mono"
+                  title="USB and Bluetooth HID wedge barcode guns automatically detect ticket scans"
+                >
+                  <ScanBarcode className="h-3.5 w-3.5 text-primary" />
+                  <span>HID Wedge Ready</span>
+                </div>
+
+                {/* Tactile Haptic Vibration Toggle */}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="min-h-[44px] min-w-[44px] px-2.5 text-xs gap-1.5 cursor-pointer"
+                  onClick={() => setHapticsEnabled(!hapticsEnabled)}
+                  aria-label="Toggle tactile haptic vibration"
+                  title={hapticsEnabled ? "Haptic Vibration Active" : "Haptic Vibration Disabled"}
+                >
+                  {hapticsEnabled ? (
+                    <>
+                      <Vibrate className="h-4 w-4 text-emerald-500" />
+                      <span className="hidden sm:inline">Haptic On</span>
+                    </>
+                  ) : (
+                    <>
+                      <VibrateOff className="h-4 w-4 text-muted-foreground" />
+                      <span className="hidden sm:inline">Haptic Off</span>
+                    </>
+                  )}
+                </Button>
+
+                {/* Audio Feedback Toggle */}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="min-h-[44px] min-w-[44px] px-2.5 text-xs gap-1.5 cursor-pointer"
+                  onClick={() => setSoundEnabled(!soundEnabled)}
+                  aria-label="Toggle audio feedback"
+                >
+                  {soundEnabled ? (
+                    <>
+                      <Volume2 className="h-4 w-4 text-emerald-500" />
+                      <span className="hidden sm:inline">{tOrg("scannerAudioOn") || "Audio On"}</span>
+                    </>
+                  ) : (
+                    <>
+                      <VolumeX className="h-4 w-4 text-muted-foreground" />
+                      <span className="hidden sm:inline">{tOrg("scannerAudioOff") || "Audio Off"}</span>
+                    </>
+                  )}
+                </Button>
+              </div>
             </div>
 
             {/* CAMERA STREAM VIEWER & RETICLE HUD */}
@@ -835,9 +954,16 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                       </div>
 
                       <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs font-mono text-slate-400">
-                        <div className="flex items-center gap-1.5">
-                          <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
-                          <span>{cameraActive ? (tOrg("scannerOpticalActive") || "Optical Camera Feed Active") : "Optical Sensor Ready"}</span>
+                        <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-1.5">
+                            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
+                            <span>{cameraActive ? (tOrg("scannerOpticalActive") || "Optical Camera Feed Active") : "Optical Sensor Ready"}</span>
+                          </div>
+                          <span className="hidden sm:inline text-slate-600">•</span>
+                          <span className="hidden sm:inline-flex items-center gap-1 text-slate-300">
+                            <ScanBarcode className="h-3 w-3 text-emerald-400" />
+                            <span>HID Wedge Active</span>
+                          </span>
                         </div>
                         <span>{tOrg("scannerHmacGuard") || "Tamper Guard Active"}</span>
                       </div>

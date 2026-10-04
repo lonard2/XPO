@@ -86,4 +86,79 @@ describe("Phase 9 Component: CheckInScanner Door QR Console", () => {
 
     fetchSpy.mockRestore();
   });
+
+  it("toggles haptic vibration feedback button and invokes navigator.vibrate on scan", async () => {
+    const vibrateSpy = vi.fn();
+    Object.defineProperty(navigator, "vibrate", {
+      value: vibrateSpy,
+      writable: true,
+      configurable: true,
+    });
+
+    const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        valid: true,
+        alreadyCheckedIn: false,
+        attendee: { name: "Vibration Delegate", email: "vib@example.com" },
+        ticketTier: { name: "VIP Delegate" },
+      }),
+    } as any);
+
+    render(<CheckInScanner defaultEventId="ev-1" />);
+
+    const hapticBtn = screen.getByLabelText("Toggle tactile haptic vibration");
+    expect(screen.getByText("Haptic On")).toBeDefined();
+
+    // Trigger check in via manual code
+    const manualBtn = screen.getByText(/manual/i);
+    fireEvent.click(manualBtn);
+    const input = screen.getByPlaceholderText("e.g. XPO-PASS-BK1234-A8F4E290...");
+    fireEvent.change(input, { target: { value: "XPO-PASS-VIB-1234" } });
+    const submitBtn = screen.getByText("Validate & Check-In Pass");
+    await act(async () => {
+      fireEvent.click(submitBtn);
+    });
+
+    expect(vibrateSpy).toHaveBeenCalledWith([70]);
+
+    // Toggle off haptics
+    fireEvent.click(hapticBtn);
+    expect(screen.getByText("Haptic Off")).toBeDefined();
+
+    fetchSpy.mockRestore();
+  });
+
+  it("intercepts hardware USB/Bluetooth HID wedge barcode scanner keystrokes and submits pass on Enter", async () => {
+    const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        valid: true,
+        alreadyCheckedIn: false,
+        attendee: { name: "Hardware Scanned Delegate", email: "gun@example.com" },
+        ticketTier: { name: "General Pass" },
+      }),
+    } as any);
+
+    render(<CheckInScanner defaultEventId="ev-1" />);
+
+    // In camera mode, an external USB barcode gun sends rapid keystrokes followed by Enter
+    const barcodeSequence = "XPO-PASS-GUN-9999";
+    for (const char of barcodeSequence) {
+      fireEvent.keyDown(window, { key: char });
+    }
+    await act(async () => {
+      fireEvent.keyDown(window, { key: "Enter" });
+    });
+
+    expect(fetchSpy).toHaveBeenCalledWith("/api/tickets/verify", expect.objectContaining({
+      method: "POST",
+      body: JSON.stringify({
+        qrCodeHash: barcodeSequence,
+        autoCheckIn: true,
+      }),
+    }));
+
+    fetchSpy.mockRestore();
+  });
 });
