@@ -250,7 +250,8 @@ export default function NewEventWizardPage() {
   const router = useRouter();
   const params = useParams();
   const locale = (params?.locale as string) || "en";
-  const { role, switchRole } = useAuth();
+  const { user, role, switchRole } = useAuth();
+  const isAdmin = role === "ADMIN" || user?.role === "ADMIN";
 
   const tOrg = useTranslations("organizer");
   const tCom = useTranslations("common");
@@ -266,6 +267,19 @@ export default function NewEventWizardPage() {
   const [selectedCluster, setSelectedCluster] = React.useState<string>("ALL");
   const [showDiscardModal, setShowDiscardModal] = React.useState(false);
   const isInitializedRef = React.useRef(false);
+
+  // Admin curation & publication authority state
+  const [isPlatformCurated, setIsPlatformCurated] = React.useState<boolean>(isAdmin);
+  const [organizerName, setOrganizerName] = React.useState<string>("");
+  const [targetOrganizerId, setTargetOrganizerId] = React.useState<string>("");
+
+  const prevAdminRef = React.useRef(isAdmin);
+  React.useEffect(() => {
+    if (!prevAdminRef.current && isAdmin) {
+      setIsPlatformCurated(true);
+    }
+    prevAdminRef.current = isAdmin;
+  }, [isAdmin]);
 
   const clearFieldError = React.useCallback((field: string) => {
     setFieldErrors((prev) => {
@@ -477,6 +491,9 @@ export default function NewEventWizardPage() {
         accentColor,
         heroImageUrl,
         currentStep,
+        isPlatformCurated,
+        organizerName,
+        targetOrganizerId,
         savedAt: new Date().toISOString(),
       };
       localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draftData));
@@ -503,6 +520,9 @@ export default function NewEventWizardPage() {
     accentColor,
     heroImageUrl,
     currentStep,
+    isPlatformCurated,
+    organizerName,
+    targetOrganizerId,
   ]);
 
   // Restore Draft
@@ -537,6 +557,9 @@ export default function NewEventWizardPage() {
       if (d.accentColor) setAccentColor(d.accentColor);
       if (d.heroImageUrl) setHeroImageUrl(d.heroImageUrl);
       if (d.currentStep) setCurrentStep(d.currentStep);
+      if (d.isPlatformCurated !== undefined) setIsPlatformCurated(d.isPlatformCurated);
+      if (d.organizerName !== undefined) setOrganizerName(d.organizerName);
+      if (d.targetOrganizerId !== undefined) setTargetOrganizerId(d.targetOrganizerId);
       setHasDraftAvailable(false);
     } catch {
       // Error restoring
@@ -803,6 +826,13 @@ export default function NewEventWizardPage() {
       primaryColor,
       accentColor,
       heroImageUrl,
+      ...(isAdmin
+        ? {
+            isPlatformCurated,
+            organizerName: organizerName.trim() || undefined,
+            organizerId: isPlatformCurated ? undefined : (targetOrganizerId.trim() || undefined),
+          }
+        : {}),
       ticketTiers: ticketTiers.map((t) => ({
         name: t.name,
         price: t.price,
@@ -1090,6 +1120,131 @@ export default function NewEventWizardPage() {
               ))}
             </div>
           </div>
+
+          {/* Admin Publication Authority & Ownership Card */}
+          {isAdmin && (
+            <Card className="p-6 border-border bg-card space-y-5 shadow-sm">
+              <div className="border-b border-border/60 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                  <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
+                    <ShieldCheck className="h-4 w-4 text-primary" />
+                    <span>Event Publication Authority & Ownership</span>
+                  </h2>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Configure institutional publication rights: official platform-curated showcase or assign to a tenant account.
+                  </p>
+                </div>
+                <Badge variant="outline" size="sm" className="w-fit text-[11px] font-semibold text-primary border-primary/30 bg-primary/5">
+                  Admin Authority
+                </Badge>
+              </div>
+
+              <div
+                role="radiogroup"
+                aria-label="Event Publication Authority"
+                className="grid grid-cols-1 md:grid-cols-2 gap-3"
+              >
+                {/* Option 1: Platform-Curated / Official Venue Listing */}
+                <button
+                  type="button"
+                  role="radio"
+                  aria-checked={isPlatformCurated}
+                  onClick={() => setIsPlatformCurated(true)}
+                  className={cn(
+                    "min-h-[52px] p-4 rounded-xl border text-left cursor-pointer transition-all flex flex-col justify-between gap-2 focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none shadow-xs",
+                    isPlatformCurated
+                      ? "border-primary bg-primary/5 ring-1 ring-primary/30 shadow-xs"
+                      : "border-border/80 bg-background hover:border-primary/50 hover:bg-muted/30"
+                  )}
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <div
+                        className={cn(
+                          "h-4 w-4 rounded-full border flex items-center justify-center transition-colors shrink-0",
+                          isPlatformCurated ? "border-primary bg-primary text-primary-foreground" : "border-muted-foreground/50"
+                        )}
+                      >
+                        {isPlatformCurated && <div className="h-1.5 w-1.5 rounded-full bg-white" />}
+                      </div>
+                      <span className="text-xs font-bold text-foreground">
+                        Platform-Curated / Official Venue Listing
+                      </span>
+                    </div>
+                    <Badge variant="default" size="sm" className="text-[11px] font-semibold bg-primary/20 text-primary border-primary/30">
+                      Default
+                    </Badge>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground leading-relaxed pl-6">
+                    Appears as an official exhibition listing with a verified badge. Does not hijack or bind to registered tenant accounts.
+                  </p>
+                </button>
+
+                {/* Option 2: Assign to Registered Organizer */}
+                <button
+                  type="button"
+                  role="radio"
+                  aria-checked={!isPlatformCurated}
+                  onClick={() => setIsPlatformCurated(false)}
+                  className={cn(
+                    "min-h-[52px] p-4 rounded-xl border text-left cursor-pointer transition-all flex flex-col justify-between gap-2 focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none shadow-xs",
+                    !isPlatformCurated
+                      ? "border-primary bg-primary/5 ring-1 ring-primary/30 shadow-xs"
+                      : "border-border/80 bg-background hover:border-primary/50 hover:bg-muted/30"
+                  )}
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <div
+                        className={cn(
+                          "h-4 w-4 rounded-full border flex items-center justify-center transition-colors shrink-0",
+                          !isPlatformCurated ? "border-primary bg-primary text-primary-foreground" : "border-muted-foreground/50"
+                        )}
+                      >
+                        {!isPlatformCurated && <div className="h-1.5 w-1.5 rounded-full bg-white" />}
+                      </div>
+                      <span className="text-xs font-bold text-foreground">
+                        Assign to Registered Organizer
+                      </span>
+                    </div>
+                    <Badge variant="secondary" size="sm" className="text-[11px] font-semibold">
+                      Account Delegation
+                    </Badge>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground leading-relaxed pl-6">
+                    Bind this exhibition directly to an existing registered organizer account.
+                  </p>
+                </button>
+              </div>
+
+              {/* Sub-fields depending on selection */}
+              {isPlatformCurated ? (
+                <div className="space-y-1.5 pt-2 border-t border-border/50">
+                  <Input
+                    id="wizard-organizer-name"
+                    label="Public Organizer / Entity Name"
+                    placeholder="e.g. Jakarta International Expo, Debindo ITE, GAIKINDO"
+                    value={organizerName}
+                    onChange={(e) => setOrganizerName(e.target.value)}
+                    helperText="Appears on attendee discovery cards, hero banners, and official verification badges."
+                    className="min-h-[44px]"
+                  />
+                </div>
+              ) : (
+                <div className="space-y-1.5 pt-2 border-t border-border/50">
+                  <Input
+                    id="wizard-target-organizer-id"
+                    label="Target Organizer Account ID"
+                    placeholder="e.g. cmt2sfr7n0000laeaurwdwe44 or organizer@xpo.com"
+                    value={targetOrganizerId}
+                    onChange={(e) => setTargetOrganizerId(e.target.value)}
+                    helperText="Specify the user ID or registered email of the organizer who will own and manage this exhibition."
+                    className="min-h-[44px]"
+                  />
+                </div>
+              )}
+            </Card>
+          )}
 
           {/* Event Details Card */}
           <Card className="p-6 border-border bg-card space-y-5 shadow-sm">
@@ -2023,6 +2178,13 @@ export default function NewEventWizardPage() {
                   <div>
                     <span className="text-muted-foreground block text-[11px]">Exhibition Title:</span>
                     <span className="font-bold text-foreground text-sm">{title}</span>
+                    {isAdmin && (
+                      <span className="text-[11px] text-primary font-medium block mt-0.5">
+                        {isPlatformCurated
+                          ? `Platform-Curated (${organizerName.trim() || "Official Listing"})`
+                          : `Assigned Organizer: ${targetOrganizerId.trim() || "Unspecified"}`}
+                      </span>
+                    )}
                   </div>
                   <Badge variant="secondary" size="sm" className="font-semibold shrink-0">
                     {ARCHETYPE_DEFAULTS[archetype]?.displayName || archetype}
