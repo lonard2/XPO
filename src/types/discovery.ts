@@ -51,6 +51,15 @@ export interface VenueSummary {
 
 export interface DiscoveryEvent {
   id: string;
+  organizerId?: string | null;
+  organizerName?: string | null;
+  isPlatformCurated?: boolean;
+  organizer?: {
+    id: string;
+    name?: string | null;
+    organization?: string | null;
+    email?: string | null;
+  } | null;
   title: string;
   slug: string;
   tagline?: string | null;

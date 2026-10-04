@@ -9,6 +9,7 @@ import {
   Ticket,
   ArrowRight,
   Layers,
+  ShieldCheck,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
 import { buttonVariants } from '@/components/ui/Button';
@@ -100,6 +101,24 @@ export const EventCard = React.memo(function EventCard({
     // fallback
   }
 
+  const isCurated = Boolean(
+    event.isPlatformCurated ||
+    (event.organizerId === null && (Boolean(event.organizerName) || event.isPlatformCurated !== false))
+  );
+  const curatedBadgeLabel = event.organizerName ? 'Curated Listing' : 'Official Venue Listing';
+  const organizerAttribution = React.useMemo(() => {
+    if (isCurated) {
+      return event.organizerName || event.venue?.name || 'Official Listing';
+    }
+    if (event.organizer?.organization || event.organizer?.name) {
+      return event.organizer.organization || event.organizer.name;
+    }
+    if (event.organizerName) {
+      return event.organizerName;
+    }
+    return null;
+  }, [isCurated, event.organizerName, event.venue?.name, event.organizer]);
+
   const formatLabel = event.format ? event.format.replace(/_/g, ' ') : 'IN PERSON';
 
   return (
@@ -169,6 +188,13 @@ export const EventCard = React.memo(function EventCard({
               <span>Featured</span>
             </Badge>
           )}
+
+          {isCurated && (
+            <Badge variant="outline" className="text-xs font-semibold gap-1 shadow-sm bg-background/90 backdrop-blur-sm text-foreground border-border">
+              <ShieldCheck className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
+              <span>{curatedBadgeLabel}</span>
+            </Badge>
+          )}
         </div>
 
         <div className="absolute top-2.5 right-2.5 z-10">
@@ -200,6 +226,27 @@ export const EventCard = React.memo(function EventCard({
         </CardHeader>
 
         <CardContent className="p-0 space-y-2 text-xs text-muted-foreground">
+          {organizerAttribution && (
+            <div className="flex items-center gap-1.5 pt-0.5">
+              {isCurated ? (
+                <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+              ) : (
+                <Building2 className="h-3.5 w-3.5 text-primary/80 shrink-0" />
+              )}
+              <span className="truncate">
+                {isCurated ? (
+                  <span>
+                    Curated by <span className="font-medium text-foreground">{organizerAttribution}</span>
+                  </span>
+                ) : (
+                  <span>
+                    Organized by <span className="font-medium text-foreground">{organizerAttribution}</span>
+                  </span>
+                )}
+              </span>
+            </div>
+          )}
+
           {event.venue && (
             <div className="flex items-start gap-1.5 pt-1">
               <Building2 className="h-3.5 w-3.5 text-primary/80 shrink-0 mt-0.5" />
