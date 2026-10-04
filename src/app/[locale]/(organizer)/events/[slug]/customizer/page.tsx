@@ -20,13 +20,16 @@ import { Button, buttonVariants } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Input } from "@/components/ui/Input";
 import { Card } from "@/components/ui/Card";
+import { Modal } from "@/components/ui/Modal";
 import { LivePreviewFrame } from "@/components/organizer/LivePreviewFrame";
 import { useTranslations } from "next-intl";
 import {
   ARCHETYPE_DEFAULTS,
   MiceArchetype,
+  MICE_INDUSTRY_CLUSTERS,
   getArchetypeTokens,
   parseBrandingConfig,
+  type BrandingConfig,
 } from "@/lib/theming";
 import { cn } from "@/lib/utils";
 
@@ -117,6 +120,9 @@ export default function EventCustomizerPage() {
     perks: true,
   });
 
+  const [showArchetypeModal, setShowArchetypeModal] = React.useState(false);
+  const [pendingArchetype, setPendingArchetype] = React.useState<MiceArchetype | null>(null);
+
   // Fetch Event Data on Mount
   React.useEffect(() => {
     async function loadEvent() {
@@ -136,6 +142,17 @@ export default function EventCustomizerPage() {
             setAccentColor(defaults.accent);
             setFontFamily(branding.fontFamilyOverride || defaults.fontFamily);
             setHeroBadge(branding.heroBadge || "");
+            if (typeof branding.bannerOverlayOpacity === "number") {
+              setBannerOverlayOpacity(branding.bannerOverlayOpacity);
+            }
+            if (branding.sectionsVisibility) {
+              setSectionsVisibility({
+                agenda: branding.sectionsVisibility.agenda ?? true,
+                booths: branding.sectionsVisibility.booths ?? true,
+                tickets: branding.sectionsVisibility.tickets ?? true,
+                perks: branding.sectionsVisibility.perks ?? true,
+              });
+            }
             if (data.event.heroImageUrl) setHeroImageUrl(data.event.heroImageUrl);
             setIsLoading(false);
             return;
@@ -175,13 +192,36 @@ export default function EventCustomizerPage() {
     loadEvent();
   }, [eventId]);
 
-  const handleSelectArchetype = (newArch: MiceArchetype) => {
+  const applyArchetype = (newArch: MiceArchetype) => {
     setArchetype(newArch);
     const defaults = ARCHETYPE_DEFAULTS[newArch] || ARCHETYPE_DEFAULTS.INDUSTRIAL_B2B;
     setPrimaryColor(defaults.primary);
     setAccentColor(defaults.accent);
     setFontFamily(defaults.fontFamily);
     setHeroBadge(defaults.displayName);
+  };
+
+  const handleSelectArchetype = (newArch: MiceArchetype) => {
+    const currentDefaults = ARCHETYPE_DEFAULTS[archetype] || ARCHETYPE_DEFAULTS.INDUSTRIAL_B2B;
+    const isCustomized =
+      primaryColor !== currentDefaults.primary ||
+      accentColor !== currentDefaults.accent ||
+      fontFamily !== currentDefaults.fontFamily;
+
+    if (isCustomized) {
+      setPendingArchetype(newArch);
+      setShowArchetypeModal(true);
+    } else {
+      applyArchetype(newArch);
+    }
+  };
+
+  const handleConfirmArchetypeChange = () => {
+    if (pendingArchetype) {
+      applyArchetype(pendingArchetype);
+      setPendingArchetype(null);
+    }
+    setShowArchetypeModal(false);
   };
 
   const handleApplyPreset = (preset: typeof COLOR_PRESETS[0]) => {
@@ -197,6 +237,12 @@ export default function EventCustomizerPage() {
     setFontFamily(defaults.fontFamily);
     setHeroBadge("");
     setBannerOverlayOpacity(0.75);
+    setSectionsVisibility({
+      agenda: true,
+      booths: true,
+      tickets: true,
+      perks: true,
+    });
   };
 
   const handleSaveBranding = async () => {
@@ -204,16 +250,18 @@ export default function EventCustomizerPage() {
     setSaveSuccess(false);
     setErrorMessage("");
 
-    const brandingConfig = {
+    const brandingConfig: BrandingConfig = {
       primaryColor,
       accentColor,
       fontFamilyOverride: fontFamily,
       heroBadge: heroBadge || undefined,
       bannerOverlayOpacity,
+      sectionsVisibility,
     };
 
     try {
-      const res = await fetch(`/api/organizer/events/${eventId}/branding`, {
+      const targetId = eventData?.id || eventId;
+      const res = await fetch(`/api/organizer/events/${targetId}/branding`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -321,7 +369,7 @@ export default function EventCustomizerPage() {
                 <Layers className="h-4 w-4 text-primary" />
                 <span>MICE Event Category</span>
               </h2>
-              <Badge variant="neutral" size="sm">15 Types</Badge>
+              <Badge variant="neutral" size="sm">22 Archetypes</Badge>
             </div>
 
             <p className="text-xs text-muted-foreground">
@@ -336,12 +384,20 @@ export default function EventCustomizerPage() {
                 id="customizer-archetype-select"
                 value={archetype}
                 onChange={(e) => handleSelectArchetype(e.target.value as MiceArchetype)}
-                className="w-full h-9 rounded-lg border border-border bg-background px-3 text-xs font-medium text-foreground cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+                className="w-full h-11 rounded-lg border border-border bg-background px-3 text-xs font-medium text-foreground cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
               >
-                {ALL_ARCHETYPE_OPTIONS.map((opt) => (
-                  <option key={opt.id} value={opt.id}>
-                    {opt.name} ({opt.tag})
-                  </option>
+                {MICE_INDUSTRY_CLUSTERS.map((cluster) => (
+                  <optgroup key={cluster.id} label={cluster.label}>
+                    {cluster.archetypes.map((archKey) => {
+                      const opt = ALL_ARCHETYPE_OPTIONS.find((o) => o.id === archKey);
+                      if (!opt) return null;
+                      return (
+                        <option key={opt.id} value={opt.id}>
+                          {opt.name} ({opt.tag})
+                        </option>
+                      );
+                    })}
+                  </optgroup>
                 ))}
               </select>
             </div>
@@ -367,7 +423,7 @@ export default function EventCustomizerPage() {
                     key={p.name}
                     type="button"
                     onClick={() => handleApplyPreset(p)}
-                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-border bg-muted/40 hover:bg-accent text-xs text-foreground transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+                    className="flex items-center gap-1.5 px-3 py-1.5 min-h-[44px] sm:min-h-[36px] rounded-md border border-border bg-muted/40 hover:bg-accent text-xs text-foreground transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
                   >
                     <span
                       className="h-2.5 w-2.5 rounded-full"
@@ -488,7 +544,7 @@ export default function EventCustomizerPage() {
                     key={hip.name}
                     type="button"
                     onClick={() => setHeroImageUrl(hip.url)}
-                    className="text-xs px-2.5 py-1 bg-muted/60 hover:bg-muted border border-border rounded text-muted-foreground hover:text-foreground cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+                    className="text-xs px-3 py-1.5 min-h-[44px] sm:min-h-[36px] bg-muted/60 hover:bg-muted border border-border rounded text-muted-foreground hover:text-foreground cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
                   >
                     {hip.name}
                   </button>
@@ -534,11 +590,13 @@ export default function EventCustomizerPage() {
                 return (
                   <label
                     key={sec.key}
-                    className="flex items-center justify-between p-2.5 rounded-lg bg-muted/30 hover:bg-muted/50 border border-border/60 cursor-pointer transition-colors"
+                    className="flex items-center justify-between p-3 min-h-[44px] rounded-lg bg-muted/30 hover:bg-muted/50 border border-border/60 cursor-pointer transition-colors"
                   >
                     <span className="font-medium text-foreground">{sec.label}</span>
                     <input
                       type="checkbox"
+                      role="switch"
+                      aria-checked={isChecked}
                       checked={isChecked}
                       onChange={(e) =>
                         setSectionsVisibility({
@@ -560,6 +618,7 @@ export default function EventCustomizerPage() {
           <LivePreviewFrame
             eventTitle={eventData?.title || "Event Title Preview"}
             tagline={eventData?.tagline}
+            eventSlug={eventData?.slug}
             archetype={archetype}
             venueName={eventData?.venue?.name}
             hallName={eventData?.venueHall?.name}
@@ -575,6 +634,37 @@ export default function EventCustomizerPage() {
           />
         </div>
       </div>
+
+      {/* Confirmation Modal: Switching MICE Archetype */}
+      <Modal
+        isOpen={showArchetypeModal}
+        onClose={() => setShowArchetypeModal(false)}
+        title="Switch MICE Event Category?"
+      >
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            Switching to a different event category will reset your custom primary and accent color palette and typography pairings to the default tokens of the selected category.
+          </p>
+          <div className="flex items-center justify-end gap-2 pt-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowArchetypeModal(false)}
+              className="min-h-[44px] cursor-pointer"
+            >
+              Keep Current Customizations
+            </Button>
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={handleConfirmArchetypeChange}
+              className="min-h-[44px] bg-primary text-primary-foreground cursor-pointer"
+            >
+              Switch & Apply Category Tokens
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

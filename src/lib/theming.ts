@@ -50,6 +50,12 @@ export interface BrandingConfig {
   bannerOverlayOpacity?: number;
   customLogoUrl?: string;
   fontFamilyOverride?: string;
+  sectionsVisibility?: {
+    agenda?: boolean;
+    booths?: boolean;
+    tickets?: boolean;
+    perks?: boolean;
+  };
 }
 
 export interface ArchetypeMeta {

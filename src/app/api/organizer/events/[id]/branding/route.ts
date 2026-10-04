@@ -11,8 +11,10 @@ export async function PUT(request: Request, { params }: RouteProps) {
     const body = await request.json();
     const { brandingConfig, title, heroImageUrl } = body;
 
-    const existing = await db.event.findUnique({
-      where: { id },
+    const existing = await db.event.findFirst({
+      where: {
+        OR: [{ id }, { slug: id }],
+      },
     });
 
     if (!existing) {
@@ -23,7 +25,7 @@ export async function PUT(request: Request, { params }: RouteProps) {
     }
 
     const updated = await db.event.update({
-      where: { id },
+      where: { id: existing.id },
       data: {
         ...(title ? { title } : {}),
         ...(heroImageUrl ? { heroImageUrl } : {}),

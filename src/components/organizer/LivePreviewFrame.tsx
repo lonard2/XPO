@@ -23,6 +23,7 @@ export type ViewportMode = "desktop" | "tablet" | "mobile";
 interface LivePreviewFrameProps {
   eventTitle: string;
   tagline?: string;
+  eventSlug?: string;
   archetype: MiceArchetype | string;
   venueName?: string;
   hallName?: string;
@@ -189,6 +190,7 @@ function getCategoryFeatureSnippet(arch: string) {
 export function LivePreviewFrame({
   eventTitle,
   tagline,
+  eventSlug,
   archetype,
   venueName = "JIExpo Kemayoran",
   hallName = "Hall A1 (Main Exhibition)",
@@ -228,10 +230,16 @@ export function LivePreviewFrame({
   const getFontFamilyClass = () => {
     switch (fontFamily) {
       case "serif":
+      case "font-serif":
         return "font-serif";
       case "mono":
+      case "font-mono":
         return "font-mono";
+      case "legible":
+      case "font-legible":
+        return "font-sans tracking-wide";
       case "sans":
+      case "font-sans":
       default:
         return "font-sans";
     }
@@ -325,7 +333,7 @@ export function LivePreviewFrame({
               <div className="h-2 w-2 rounded-full bg-emerald-400/80" />
             </div>
             <div className="flex-1 bg-background/80 px-2.5 py-0.5 rounded text-foreground font-mono text-center truncate border border-border/50 text-xs">
-              https://xpo.io/events/preview-live
+              https://xpo.io/events/{eventSlug || "preview-live"}
             </div>
           </div>
 
