@@ -2,8 +2,10 @@ import React from "react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { EventCard } from "@/components/discovery/EventCard";
-import EventDetailPage, { EventOrganizerSection } from "@/app/[locale]/(attendee)/events/[slug]/page";
+import EventDetailPage from "@/app/[locale]/(attendee)/events/[slug]/page";
+import { EventOrganizerSection } from "@/components/discovery/EventOrganizerSection";
 import { type DiscoveryEvent } from "@/types/discovery";
+
 import { db } from "@/lib/db";
 
 vi.mock("next-intl/server", () => ({

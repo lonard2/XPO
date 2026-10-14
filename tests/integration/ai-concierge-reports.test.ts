@@ -85,13 +85,14 @@ describe("Phase 10 Integration: AI Concierge & Multi-Model Reporting System", ()
     const savedReport = await db.aIReport.create({
       data: {
         eventId: event!.id,
-        authorId: event!.organizerId,
+        authorId: event!.organizerId || event!.organizer!.id,
         modelUsed: reportModel,
         reportType: "DAILY_DIGEST",
         contentJson: JSON.stringify(reportData),
       },
       include: { event: true, author: true },
     });
+
 
     expect(savedReport.id).toBeDefined();
     expect(savedReport.modelUsed).toBe(reportModel);

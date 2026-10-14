@@ -5,12 +5,18 @@ import NewEventWizardPage from "@/app/[locale]/(organizer)/events/new/page";
 
 // Auth session mocking
 let mockRole: "ADMIN" | "ORGANIZER" | "ATTENDEE" = "ADMIN";
-let mockUser = {
+let mockUser: {
+  id: string;
+  email: string;
+  name: string;
+  role: "ADMIN" | "ORGANIZER" | "ATTENDEE";
+} = {
   id: "usr-admin-1",
   email: "admin@xpo.com",
   name: "Platform Admin",
-  role: "ADMIN" as const,
+  role: "ADMIN",
 };
+
 
 vi.mock("@/lib/auth/session", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@/lib/auth/session")>();
@@ -41,6 +47,8 @@ describe("Admin Platform-Curated Event Launch Wizard", () => {
       name: "Platform Admin",
       role: "ADMIN",
     };
+
+
 
     fetchMock = vi.fn().mockImplementation((url: string) => {
       if (url === "/api/venues") {
