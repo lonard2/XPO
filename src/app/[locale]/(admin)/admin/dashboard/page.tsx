@@ -119,6 +119,8 @@ export default async function AdminDashboardPage({ params }: AdminDashboardPageP
       status: "PENDING" as const,
       submittedDate: "2026-08-19",
       notes: "Requesting Hall 5, 6, 7 allocation for heavy building machinery & architecture congress.",
+      claimEventId: "evt-curated-indobuildtech",
+      targetOrganizerId: "usr-debindo-org",
     },
     {
       id: "REQ-2026-082",
@@ -145,6 +147,7 @@ export default async function AdminDashboardPage({ params }: AdminDashboardPageP
       notes: "CME accreditation credential verification and VIP delegate pass validation.",
     },
   ];
+
 
   // Pre-configured platform audit log entries
   const initialAuditLogs = [

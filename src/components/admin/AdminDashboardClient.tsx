@@ -36,6 +36,8 @@ export interface VerificationRequest {
   status: "PENDING" | "APPROVED" | "REJECTED";
   submittedDate: string;
   notes: string;
+  targetOrganizerId?: string;
+  claimEventId?: string;
 }
 
 export interface AuditLogItem {
@@ -77,25 +79,79 @@ export function AdminDashboardClient({
   const [isCrawling, setIsCrawling] = React.useState(false);
   const [crawlMessage, setCrawlMessage] = React.useState<string | null>(null);
 
-  const handleApprove = (id: string) => {
+  const [assignmentFeedback, setAssignmentFeedback] = React.useState<Record<string, string>>({});
+  const [processingId, setProcessingId] = React.useState<string | null>(null);
+
+  const handleApprove = async (id: string) => {
     const target = queue.find((q) => q.id === id);
     if (!target) return;
 
-    setQueue((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, status: "APPROVED" } : item))
-    );
+    setProcessingId(id);
 
-    const newLog: AuditLogItem = {
-      id: `LOG-${Date.now().toString().slice(-4)}`,
-      action: "ORGANIZER_VERIFICATION_APPROVED",
-      actor: "Platform Administrator",
-      target: `${target.organization} (${target.eventTitle})`,
-      severity: "SUCCESS",
-      timestamp: new Date().toISOString().replace("T", " ").slice(0, 19),
-      details: `Approved credentials and venue allocation for ${target.organizerName} at ${target.requestedVenue}.`,
-    };
+    try {
+      // If verification application is tied to an event ownership claim
+      if (target.claimEventId && target.targetOrganizerId) {
+        const res = await fetch(`/api/admin/events/${target.claimEventId}/assign`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            "x-xpo-user-role": "ADMIN",
+          },
+          body: JSON.stringify({
+            organizerId: target.targetOrganizerId,
+            organizerName: target.organization || target.organizerName,
+          }),
+        });
 
-    setLogs((prev) => [newLog, ...prev]);
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.success) {
+          setAssignmentFeedback((prev) => ({
+            ...prev,
+            [id]: `Failed to transfer event ownership: ${data.error || "Unknown server error"}`,
+          }));
+          setProcessingId(null);
+          return;
+        }
+
+        const assignLog: AuditLogItem = {
+          id: `LOG-${Date.now().toString().slice(-4)}`,
+          action: "EVENT_OWNERSHIP_TRANSFER",
+          actor: "Platform Administrator",
+          target: `${target.organization} <- Event ID: ${target.claimEventId}`,
+          severity: "SUCCESS",
+          timestamp: new Date().toISOString().replace("T", " ").slice(0, 19),
+          details: `Transferred platform-curated event "${target.eventTitle}" to verified organizer tenant "${target.organizerName}".`,
+        };
+        setLogs((prev) => [assignLog, ...prev]);
+      }
+
+      setQueue((prev) =>
+        prev.map((item) => (item.id === id ? { ...item, status: "APPROVED" } : item))
+      );
+
+      const newLog: AuditLogItem = {
+        id: `LOG-${(Date.now() + 1).toString().slice(-4)}`,
+        action: "ORGANIZER_VERIFICATION_APPROVED",
+        actor: "Platform Administrator",
+        target: `${target.organization} (${target.eventTitle})`,
+        severity: "SUCCESS",
+        timestamp: new Date().toISOString().replace("T", " ").slice(0, 19),
+        details: `Approved credentials and venue allocation for ${target.organizerName} at ${target.requestedVenue}.`,
+      };
+
+      setLogs((prev) => [newLog, ...prev]);
+      setAssignmentFeedback((prev) => ({
+        ...prev,
+        [id]: "Organizer verified successfully and event privileges granted.",
+      }));
+    } catch (err) {
+      setAssignmentFeedback((prev) => ({
+        ...prev,
+        [id]: `Network error approving request: ${(err as Error).message}`,
+      }));
+    } finally {
+      setProcessingId(null);
+    }
   };
 
   const handleReject = (id: string) => {
@@ -289,6 +345,33 @@ export function AdminDashboardClient({
                     </div>
                   </div>
 
+                  {/* Event Claim Indicator */}
+                  {req.claimEventId && (
+                    <div className="flex items-center gap-2 p-2 rounded-lg bg-primary/5 border border-primary/20 text-xs">
+                      <ShieldCheck className="h-4 w-4 text-primary shrink-0" />
+                      <div className="flex-1">
+                        <span className="font-semibold text-foreground">Staged Event Claim: </span>
+                        <span className="text-muted-foreground">
+                          Approving will transfer event ID <span className="font-mono text-foreground font-medium">{req.claimEventId}</span> and set isPlatformCurated: false.
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Feedback Message */}
+                  {assignmentFeedback[req.id] && (
+                    <div
+                      className={`p-2.5 rounded-lg text-xs border ${
+                        assignmentFeedback[req.id].startsWith("Failed") ||
+                        assignmentFeedback[req.id].startsWith("Network error")
+                          ? "bg-destructive/10 border-destructive/30 text-destructive"
+                          : "bg-emerald-500/10 border-emerald-500/30 text-emerald-800 dark:text-emerald-300"
+                      }`}
+                    >
+                      {assignmentFeedback[req.id]}
+                    </div>
+                  )}
+
                   {/* Actions */}
                   {req.status === "PENDING" && (
                     <div className="flex items-center justify-end gap-2 pt-1">
@@ -297,6 +380,7 @@ export function AdminDashboardClient({
                         variant="outline"
                         className="h-7 text-xs border-destructive/40 text-destructive hover:bg-destructive/10"
                         onClick={() => handleReject(req.id)}
+                        disabled={processingId === req.id}
                       >
                         <XCircle className="h-3 w-3 mr-1" />
                         Reject Request
@@ -304,11 +388,16 @@ export function AdminDashboardClient({
                       <Button
                         size="sm"
                         variant="primary"
-                        className="h-7 text-xs"
+                        className="h-7 text-xs min-h-[32px]"
                         onClick={() => handleApprove(req.id)}
+                        disabled={processingId === req.id}
                       >
                         <CheckCircle2 className="h-3 w-3 mr-1" />
-                        Approve & Grant Privileges
+                        {processingId === req.id
+                          ? "Transferring..."
+                          : req.claimEventId
+                          ? "Approve & Transfer Event"
+                          : "Approve & Grant Privileges"}
                       </Button>
                     </div>
                   )}
@@ -316,6 +405,7 @@ export function AdminDashboardClient({
               ))
             )}
           </CardContent>
+
         </Card>
       </div>
 
