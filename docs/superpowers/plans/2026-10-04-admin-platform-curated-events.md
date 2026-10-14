@@ -47,7 +47,7 @@
   }
   ```
 
-- [ ] **Step 1: Write the failing schema test**
+- [x] **Step 1: Write the failing schema test**
 
 Create `tests/unit/admin/event-curation-schema.test.ts` testing that Prisma client types support nullable `organizerId`, `organizerName`, and `isPlatformCurated` on `Event`.
 
@@ -87,12 +87,12 @@ describe("Event Model Curation Attributes", () => {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `npx vitest run tests/unit/admin/event-curation-schema.test.ts`  
 Expected: FAIL (type error or schema constraint violation: `organizerId` is required).
 
-- [ ] **Step 3: Update `prisma/schema.prisma` and push database schema**
+- [x] **Step 3: Update `prisma/schema.prisma` and push database schema**
 
 In `prisma/schema.prisma`, update `Event` model:
 - `organizerId String?`
@@ -102,17 +102,18 @@ In `prisma/schema.prisma`, update `Event` model:
 
 Execute: `npx prisma db push`
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `npx vitest run tests/unit/admin/event-curation-schema.test.ts`  
 Expected: PASS (1/1 test passed).
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add prisma/schema.prisma tests/unit/admin/event-curation-schema.test.ts
 git commit -m "feat(schema): make Event.organizerId optional and add isPlatformCurated and organizerName"
 ```
+
 
 ---
 
@@ -131,7 +132,7 @@ git commit -m "feat(schema): make Event.organizerId optional and add isPlatformC
     - If `userRole === "ORGANIZER"`, binds to the authenticated organizer's user ID.
   - `runVenueCrawlerBatch()`: Persists crawled events with `organizerId: null`, `organizerName: item.organizerName`, and `isPlatformCurated: true` without synthesizing dummy users.
 
-- [ ] **Step 1: Write the failing test for API route and crawler ingestion**
+- [x] **Step 1: Write the failing test for API route and crawler ingestion**
 
 Create `tests/unit/admin/event-api-curation.test.ts`:
 
@@ -166,12 +167,12 @@ describe("Crawl Ingestion Without Synthetic Users", () => {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `npx vitest run tests/unit/admin/event-api-curation.test.ts`  
 Expected: FAIL (events are inserted with synthetic organizer accounts).
 
-- [ ] **Step 3: Implement clean decoupling in `route.ts` and `venueScraper.ts`**
+- [x] **Step 3: Implement clean decoupling in `route.ts` and `venueScraper.ts`**
 
 1. In `src/app/api/organizer/events/route.ts`:
    - Read `isPlatformCurated` and `organizerName` from request body.
@@ -187,22 +188,23 @@ Expected: FAIL (events are inserted with synthetic organizer accounts).
      `organizerName: item.organizerName`,
      `isPlatformCurated: true`.
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `npx vitest run tests/unit/admin/event-api-curation.test.ts`  
 Expected: PASS.
 
-- [ ] **Step 5: Run full test suite to check for regressions**
+- [x] **Step 5: Run full test suite to check for regressions**
 
 Run: `npx vitest run`  
 Expected: 100% green across all existing suites.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/app/api/organizer/events/route.ts src/lib/crawler/venueScraper.ts tests/unit/admin/event-api-curation.test.ts
 git commit -m "feat(api): decouple event creation and crawler ingestion from mandatory organizer accounts"
 ```
+
 
 ---
 
@@ -226,16 +228,16 @@ git commit -m "feat(api): decouple event creation and crawler ingestion from man
   - If `role === "ORGANIZER"`:
     - Renders streamlined organizer flow without governance speedbumps.
 
-- [ ] **Step 1: Write test for Admin Event Wizard mode**
+- [x] **Step 1: Write test for Admin Event Wizard mode**
 
 Create `tests/unit/organizer/event-wizard-admin.test.ts` asserting payload structure when creating as Admin with platform curation vs assigned organizer.
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `npx vitest run tests/unit/organizer/event-wizard-admin.test.ts`  
 Expected: FAIL.
 
-- [ ] **Step 3: Implement Admin Publisher toggle in `src/app/[locale]/(organizer)/events/new/page.tsx`**
+- [x] **Step 3: Implement Admin Publisher toggle in `src/app/[locale]/(organizer)/events/new/page.tsx`**
 
 1. Add state:
    - `isPlatformCurated: boolean` (defaults to `true` if `role === "ADMIN"`, else `false`).
@@ -246,17 +248,18 @@ Expected: FAIL.
    - Helper text explaining: "Platform-curated events appear as official venue directory listings and do not hijack registered tenant accounts."
 3. Include `isPlatformCurated` and `organizerName` in `handleSubmit`.
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `npx vitest run tests/unit/organizer/event-wizard-admin.test.ts`  
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/app/[locale]/(organizer)/events/new/page.tsx tests/unit/organizer/event-wizard-admin.test.ts
 git commit -m "feat(wizard): add platform curation publisher options for Admin users"
 ```
+
 
 ---
 
@@ -277,15 +280,15 @@ git commit -m "feat(wizard): add platform curation publisher options for Admin u
   - If `event.organizerId` is present:
     - Renders verified organizer profile as normal.
 
-- [ ] **Step 1: Write display test for curated events**
+- [x] **Step 1: Write display test for curated events**
 
 Create `tests/unit/discovery/curated-event-display.test.ts` testing that `EventCard` and event detail logic safely render when `organizer` is `null` and `isPlatformCurated` is `true`.
 
-- [ ] **Step 2: Run test to verify it fails or exposes gaps**
+- [x] **Step 2: Run test to verify it fails or exposes gaps**
 
 Run: `npx vitest run tests/unit/discovery/curated-event-display.test.ts`
 
-- [ ] **Step 3: Update `EventCard.tsx` and `events/[slug]/page.tsx`**
+- [x] **Step 3: Update `EventCard.tsx` and `events/[slug]/page.tsx`**
 
 1. In `src/components/discovery/EventCard.tsx`:
    - Check `event.isPlatformCurated` or `!event.organizerId`.
@@ -296,17 +299,17 @@ Run: `npx vitest run tests/unit/discovery/curated-event-display.test.ts`
      - If `event.isPlatformCurated`: Display "Official Listing" badge with `ShieldCheck` icon, showing `event.organizerName` with subtitle "Curated MICE Directory Listing".
      - If regular organizer: Display standard organizer bio.
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `npx vitest run tests/unit/discovery/curated-event-display.test.ts`  
 Expected: PASS.
 
-- [ ] **Step 5: Run full test suite & detector checks**
+- [x] **Step 5: Run full test suite & detector checks**
 
 Run: `npx vitest run`  
 Run: `/Users/lonard/.gemini/config/skills/impeccable/scripts/impeccable detect "src/components/discovery/EventCard.tsx" "src/app/[locale]/(attendee)/events/[slug]/page.tsx"`
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/components/discovery/EventCard.tsx src/app/[locale]/(attendee)/events/[slug]/page.tsx tests/unit/discovery/curated-event-display.test.ts
@@ -332,36 +335,37 @@ git commit -m "feat(discovery): render platform-curated badges and external orga
   - In `AdminDashboardClient.tsx`:
     - In the Organizer Verification Queue, when an organizer application is approved (e.g. `REQ-2026-081` for `IndoBuildTech Expo`), it links and transfers the staged event to the verified organizer.
 
-- [ ] **Step 1: Write test for Event Assignment API**
+- [x] **Step 1: Write test for Event Assignment API**
 
 Create `tests/unit/admin/event-assignment.test.ts` testing authorization, successful ownership transfer, and audit logging.
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `npx vitest run tests/unit/admin/event-assignment.test.ts`  
 Expected: FAIL (404 route not found).
 
-- [ ] **Step 3: Implement `src/app/api/admin/events/[id]/assign/route.ts` and UI link in `AdminDashboardClient.tsx`**
+- [x] **Step 3: Implement `src/app/api/admin/events/[id]/assign/route.ts` and UI link in `AdminDashboardClient.tsx`**
 
 1. Create route handler validating Admin RBAC, updating event, and recording audit log.
 2. In `AdminDashboardClient.tsx`, wire the approve action to support linking staged events.
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `npx vitest run tests/unit/admin/event-assignment.test.ts`  
 Expected: PASS.
 
-- [ ] **Step 5: Run full test suite & mechanical detectors**
+- [x] **Step 5: Run full test suite & mechanical detectors**
 
 Run: `npx vitest run`  
 Run: `/Users/lonard/.gemini/config/skills/impeccable/scripts/impeccable detect "src/components/admin/AdminDashboardClient.tsx"`
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/app/api/admin/events/[id]/assign/route.ts src/components/admin/AdminDashboardClient.tsx tests/unit/admin/event-assignment.test.ts
 git commit -m "feat(admin): implement event ownership assignment and transfer flow"
 ```
+
 
 ---
 

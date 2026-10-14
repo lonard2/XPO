@@ -211,8 +211,15 @@ This master checklist tracks the development, testing, UX refinements, and educa
 - [x] Build global venue manager (`app/[locale]/(admin)/admin/venues/page.tsx` and `src/components/admin/VenueDirectoryManagerClient.tsx`) with hall creation & coordinates.
 - [x] Build simulated MICE event crawler pipeline (`src/lib/crawler/venueScraper.ts`) to ingest upcoming venue schedules with deterministic SHA-256 fingerprint deduplication.
 - [x] Build platform audit logging and organizer verification queue (`src/app/[locale]/(admin)/admin/audit/page.tsx`).
+- [x] Implement Platform-Curated & External Event Architecture:
+  - [x] Decouple `Event.organizerId` to optional nullable relation, add `organizerName` and `isPlatformCurated` flags.
+  - [x] Decouple backend creation and crawler ingestion pipeline from synthetic dummy user generation.
+  - [x] Add Admin Publisher mode in Event Wizard (`events/new`) with Platform-Curated vs Organizer Assignment toggles.
+  - [x] Attendee Portal safe null rendering and high-trust "Official Listing" curation badging in `EventCard` and event detail pages.
+  - [x] Event Ownership Claim & Assignment API (`PATCH /api/admin/events/[id]/assign`) and Admin Verification Queue integration.
 - [x] Author educational guide: `docs/guides/phase-11-admin-governance-and-crawler.md`.
-- [x] **Verification**: Crawler batch processing tests (`tests/unit/crawler/venueScraper.test.ts`), admin permission tests (`tests/unit/admin/governance.test.ts`), venue data validation (`tests/unit/admin/venueCrud.test.ts`), and integration tests (`tests/integration/admin-crawler.test.ts`). 100% test pass.
+- [x] **Verification**: Crawler batch processing tests (`tests/unit/crawler/venueScraper.test.ts`), admin permission tests (`tests/unit/admin/governance.test.ts`), venue data validation (`tests/unit/admin/venueCrud.test.ts`), curation schema tests (`tests/unit/admin/event-curation-schema.test.ts`), curation API tests (`tests/unit/admin/event-api-curation.test.ts`), admin wizard tests (`tests/unit/organizer/event-wizard-admin.test.ts`), curation display tests (`tests/unit/discovery/curated-event-display.test.ts`), assignment API tests (`tests/unit/admin/event-assignment.test.ts`), and integration tests (`tests/integration/admin-crawler.test.ts`). 100% test pass (78 files, 575 tests passing).
+
 
 ---
 
