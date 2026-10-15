@@ -1,7 +1,7 @@
 import createMiddleware from 'next-intl/middleware';
 import { NextRequest } from 'next/server';
 import { routing } from './i18n/routing';
-import { resolveRegionFromRequest } from './lib/i18n/geo';
+import { resolveRegionFromRequest, normalizeRegion } from './lib/i18n/geo';
 import { canAccessRoute, UserRole, isValidRole } from './lib/auth/rbac';
 
 const intlMiddleware = createMiddleware(routing);
@@ -13,9 +13,11 @@ export default function middleware(req: NextRequest) {
   // Attach detected/preferred region header
   response.headers.set('x-xpo-region', detectedRegion);
 
-  // If user doesn't have region cookie, set default inferred from geo
-  if (!req.cookies.has('xpo_region')) {
-    response.cookies.set('xpo_region', detectedRegion, {
+  // Persist the region only when the delegate chose it explicitly. An inferred region
+  // must not outrank the URL locale on later visits, which is how `/ja` served Indonesia.
+  const explicitRegion = normalizeRegion(req.nextUrl.searchParams.get('region'));
+  if (explicitRegion) {
+    response.cookies.set('xpo_region', explicitRegion, {
       path: '/',
       maxAge: 60 * 60 * 24 * 30, // 30 days
       sameSite: 'lax',

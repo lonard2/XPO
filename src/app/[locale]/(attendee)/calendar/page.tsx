@@ -2,6 +2,7 @@ import * as React from 'react';
 import { cookies, headers } from 'next/headers';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { db } from '@/lib/db';
+import { resolveActiveRegion } from '@/lib/i18n/geo';
 import { FALLBACK_EVENTS } from '@/lib/discovery/fallbackData';
 import { CalendarInteractiveView } from '@/components/discovery/CalendarInteractiveView';
 import { Badge } from '@/components/ui/Badge';
@@ -31,16 +32,14 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
 
   const headerList = await headers();
   const cookieStore = await cookies();
-  const geoHeaderRegion = headerList.get('x-xpo-region');
-  const cookieRegion = cookieStore.get('xpo_region')?.value;
   const rawSearchParams = await searchParams;
 
-  const region = (
-    rawSearchParams.region ||
-    cookieRegion ||
-    geoHeaderRegion ||
-    'id'
-  ).toLowerCase();
+  const region = resolveActiveRegion({
+    locale,
+    explicitRegion: rawSearchParams.region,
+    cookieRegion: cookieStore.get('xpo_region')?.value,
+    geoRegion: headerList.get('x-xpo-region'),
+  });
   const archetype = rawSearchParams.archetype || 'all';
 
   let events: any[] = [];

@@ -24,6 +24,7 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { cn } from "@/lib/utils";
+import { regionForLocale, normalizeRegion } from "@/lib/i18n/regions";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { RegionSwitcher } from "@/components/layout/RegionSwitcher";
 import { useSettings } from "@/components/settings/SettingsProvider";
@@ -60,10 +61,10 @@ export function Navbar({ locale = "en" }: NavbarProps) {
 
   const [localDarkMode, setLocalDarkMode] = React.useState(false);
 
-  // Extract active region from path, searchParams, or cookie (default 'id')
+  // Extract active region from path, ?region=, cookie, or the URL locale (default 'id')
   const regionMatch = pathname?.match(/\/region\/(id|jp|global)/i);
   const [activeRegion, setActiveRegion] = React.useState<string>(
-    regionMatch ? regionMatch[1].toLowerCase() : 'id'
+    regionMatch ? regionMatch[1].toLowerCase() : regionForLocale(locale) || 'id'
   );
 
   React.useEffect(() => {
@@ -72,20 +73,19 @@ export function Navbar({ locale = "en" }: NavbarProps) {
       return;
     }
     if (typeof window !== 'undefined') {
-      const urlParams = new URLSearchParams(window.location.search);
-      const paramRegion = urlParams.get('region');
-      if (paramRegion && ['id', 'jp', 'global'].includes(paramRegion.toLowerCase())) {
-        setActiveRegion(paramRegion.toLowerCase());
+      const explicit = normalizeRegion(new URLSearchParams(window.location.search).get('region'));
+      if (explicit) {
+        setActiveRegion(explicit);
         return;
       }
-      const match = document.cookie.match(/xpo_region=([^;]+)/);
-      if (match && ['id', 'jp', 'global'].includes(match[1].toLowerCase())) {
-        setActiveRegion(match[1].toLowerCase());
+      const cookieRegion = normalizeRegion(document.cookie.match(/xpo_region=([^;]+)/)?.[1]);
+      if (cookieRegion) {
+        setActiveRegion(cookieRegion);
         return;
       }
-      setActiveRegion('id');
+      setActiveRegion(regionForLocale(locale) || 'id');
     }
-  }, [pathname, regionMatch]);
+  }, [pathname, regionMatch, locale]);
 
   React.useEffect(() => {
     const isDark = document.documentElement.classList.contains("dark");

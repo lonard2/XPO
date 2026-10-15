@@ -25,6 +25,7 @@ import {
   FALLBACK_EVENTS,
   FALLBACK_VENUES,
 } from '@/lib/discovery/fallbackData';
+import { resolveActiveRegion } from '@/lib/i18n/geo';
 import { type BannerSlide, type DiscoveryEvent, type VenueWithEvents } from '@/types/discovery';
 
 export interface HomePageProps {
@@ -36,18 +37,16 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
   const { locale } = await params;
   const resolvedSearchParams = searchParams ? await searchParams : undefined;
 
-  // 1. Resolve active region: explicit URL param > cookie > geo header > default 'id'
+  // 1. Resolve active region: explicit URL param > cookie > locale > geo header > default 'id'
   const headerList = await headers();
   const cookieStore = await cookies();
-  const geoHeaderRegion = headerList.get('x-xpo-region');
-  const cookieRegion = cookieStore.get('xpo_region')?.value;
 
-  const activeRegionCode = (
-    resolvedSearchParams?.region ||
-    cookieRegion ||
-    geoHeaderRegion ||
-    'id'
-  ).toLowerCase();
+  const activeRegionCode = resolveActiveRegion({
+    locale,
+    explicitRegion: resolvedSearchParams?.region,
+    cookieRegion: cookieStore.get('xpo_region')?.value,
+    geoRegion: headerList.get('x-xpo-region'),
+  });
 
   setRequestLocale(locale);
 

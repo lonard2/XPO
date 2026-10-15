@@ -10,6 +10,7 @@ import {
   Globe,
 } from 'lucide-react';
 import { db } from '@/lib/db';
+import { resolveActiveRegion } from '@/lib/i18n/geo';
 import { EventsExplorer } from '@/components/discovery/EventsExplorer';
 import { FALLBACK_EVENTS } from '@/lib/discovery/fallbackData';
 import { type DiscoveryEvent } from '@/types/discovery';
@@ -34,12 +35,14 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
 
   const headerList = await headers();
   const cookieStore = await cookies();
-  const geoHeaderRegion = headerList.get('x-xpo-region');
-  const cookieRegion = cookieStore.get('xpo_region')?.value;
 
-  const defaultRegion = (cookieRegion || geoHeaderRegion || 'id').toLowerCase();
   const explicitRegion = typeof rawSearchParams.region === 'string' ? rawSearchParams.region : undefined;
-  const activeRegion = explicitRegion || defaultRegion;
+  const activeRegion = resolveActiveRegion({
+    locale,
+    explicitRegion,
+    cookieRegion: cookieStore.get('xpo_region')?.value,
+    geoRegion: headerList.get('x-xpo-region'),
+  });
 
   const tEvents = await getTranslations({ locale, namespace: 'events' });
 

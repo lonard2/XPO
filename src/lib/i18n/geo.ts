@@ -1,28 +1,31 @@
 import { NextRequest } from 'next/server';
+import { normalizeRegion, type RegionCode } from './regions';
 
-export type RegionCode = 'id' | 'jp' | 'global';
-
-export const SUPPORTED_REGIONS: readonly RegionCode[] = ['id', 'jp', 'global'] as const;
+export {
+  SUPPORTED_REGIONS,
+  regionForLocale,
+  normalizeRegion,
+  resolveActiveRegion,
+  type RegionCode,
+  type ResolveActiveRegionInput,
+} from './regions';
 
 /**
- * Resolves the user's regional destination based on GeoIP headers, accept-language, cookies, or default.
- * Indonesia (ID) -> 'id'
- * Japan (JP) -> 'jp'
- * Rest of World -> 'global'
- * Local/Default -> 'id'
+ * Resolves the user's regional destination based on cookies, query, GeoIP headers or accept-language.
+ * Country editions are inferred from the network here; the URL locale takes over in
+ * `resolveActiveRegion`, which is what server components should use.
  */
 export function resolveRegionFromRequest(req: NextRequest): RegionCode {
   // 1. Explicit user cookie preference
-  const cookieRegion = req.cookies.get('xpo_region')?.value?.toLowerCase();
-  if (cookieRegion && (cookieRegion === 'id' || cookieRegion === 'jp' || cookieRegion === 'global')) {
-    return cookieRegion as RegionCode;
+  const cookieRegion = normalizeRegion(req.cookies.get('xpo_region')?.value);
+  if (cookieRegion) {
+    return cookieRegion;
   }
 
   // 2. Query param ?region=...
-  const url = req.nextUrl;
-  const queryRegion = url.searchParams.get('region')?.toLowerCase();
-  if (queryRegion && (queryRegion === 'id' || queryRegion === 'jp' || queryRegion === 'global')) {
-    return queryRegion as RegionCode;
+  const queryRegion = normalizeRegion(req.nextUrl.searchParams.get('region'));
+  if (queryRegion) {
+    return queryRegion;
   }
 
   // 3. GeoIP headers (Vercel, Cloudflare, AWS CloudFront, standard headers)

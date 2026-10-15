@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
+import { regionForLocale, normalizeRegion } from "@/lib/i18n/regions";
 import { SupportedCurrency } from "@/lib/i18n/formatters";
 
 export interface RegionOption {
@@ -92,39 +93,35 @@ export function RegionSwitcher({
   const [isOpen, setIsOpen] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
-  // Derive initial region
+  // Derive initial region: explicit prop, then ?region=, then cookie, then the URL locale
   const [currentRegion, setCurrentRegion] = React.useState<string>(() => {
-    if (activeRegionCode) return activeRegionCode.toLowerCase();
+    const explicit = normalizeRegion(activeRegionCode);
+    if (explicit) return explicit;
     if (typeof window !== "undefined") {
-      const urlParams = new URLSearchParams(window.location.search);
-      const queryReg = urlParams.get("region");
-      if (queryReg && ["id", "jp", "global"].includes(queryReg.toLowerCase())) {
-        return queryReg.toLowerCase();
-      }
-      const match = document.cookie.match(/xpo_region=([^;]+)/);
-      if (match && ["id", "jp", "global"].includes(match[1].toLowerCase())) {
-        return match[1].toLowerCase();
-      }
+      const queryRegion = normalizeRegion(new URLSearchParams(window.location.search).get("region"));
+      if (queryRegion) return queryRegion;
+      const cookieRegion = normalizeRegion(document.cookie.match(/xpo_region=([^;]+)/)?.[1]);
+      if (cookieRegion) return cookieRegion;
     }
-    return "id";
+    return regionForLocale(currentLocale) || "id";
   });
 
   // Sync state whenever activeRegionCode, pathname, or window search changes
   React.useEffect(() => {
-    if (activeRegionCode && ["id", "jp", "global"].includes(activeRegionCode.toLowerCase())) {
-      setCurrentRegion(activeRegionCode.toLowerCase());
+    const explicit = normalizeRegion(activeRegionCode);
+    if (explicit) {
+      setCurrentRegion(explicit);
       return;
     }
     if (typeof window !== "undefined") {
-      const urlParams = new URLSearchParams(window.location.search);
-      const queryReg = urlParams.get("region");
-      if (queryReg && ["id", "jp", "global"].includes(queryReg.toLowerCase())) {
-        setCurrentRegion(queryReg.toLowerCase());
+      const queryRegion = normalizeRegion(new URLSearchParams(window.location.search).get("region"));
+      if (queryRegion) {
+        setCurrentRegion(queryRegion);
         return;
       }
-      const match = document.cookie.match(/xpo_region=([^;]+)/);
-      if (match && ["id", "jp", "global"].includes(match[1].toLowerCase())) {
-        setCurrentRegion(match[1].toLowerCase());
+      const cookieRegion = normalizeRegion(document.cookie.match(/xpo_region=([^;]+)/)?.[1]);
+      if (cookieRegion) {
+        setCurrentRegion(cookieRegion);
       }
     }
   }, [activeRegionCode, pathname]);

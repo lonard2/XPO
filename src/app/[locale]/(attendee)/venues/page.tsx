@@ -7,6 +7,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { db } from '@/lib/db';
+import { resolveActiveRegion } from '@/lib/i18n/geo';
 import { VenueDirectoryExplorer } from '@/components/discovery/VenueDirectoryExplorer';
 import { FALLBACK_VENUES } from '@/lib/discovery/fallbackData';
 import { type VenueSummary } from '@/types/discovery';
@@ -35,12 +36,14 @@ export default async function VenuesPage({ params, searchParams }: VenuesPagePro
 
   const headerList = await headers();
   const cookieStore = await cookies();
-  const geoHeaderRegion = headerList.get('x-xpo-region');
-  const cookieRegion = cookieStore.get('xpo_region')?.value;
 
-  const defaultRegion = (cookieRegion || geoHeaderRegion || 'id').toLowerCase();
   const explicitRegion = typeof rawSearchParams?.region === 'string' ? rawSearchParams.region : undefined;
-  const activeRegion = explicitRegion || defaultRegion;
+  const activeRegion = resolveActiveRegion({
+    locale,
+    explicitRegion,
+    cookieRegion: cookieStore.get('xpo_region')?.value,
+    geoRegion: headerList.get('x-xpo-region'),
+  });
 
   let venuesList: VenueSummary[] = FALLBACK_VENUES;
 
