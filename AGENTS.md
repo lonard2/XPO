@@ -51,10 +51,13 @@ All three portals (Attendee, Organizer, and Admin) must be fully responsive and 
 
 ## 4. Regional Country Editions Architecture
 
-XPO is organized as **distinct dedicated country editions**, not just a single all-in-one generic portal:
+XPO is organized as **distinct dedicated country editions**, not just a single all-in-one generic portal. The active edition resolves as `?region=` > explicit `xpo_region` cookie > URL locale > GeoIP/accept-language > `id`:
+
 1. **Indonesia Edition (`/id`)**: Dedicated to Indonesian MICE ecosystems. Defaults to Indonesian venues (**JIExpo Kemayoran**, **ICE BSD City**, **JICC Senayan**, **NICE PIK 2**, **GBK Complex**, **JIS**), Indonesian Rupiah (IDR) currency, and localized event spotlights.
-2. **Japan Edition (`/jp`)**: Dedicated to Japan MICE ecosystems. Defaults to Japanese venues (**Tokyo Big Sight**, **Makuhari Messe**, **Pacifico Yokohama**), Japanese Yen (JPY) currency, and Tokyo/Kanto event spotlights.
-3. **Global Edition (`/global`)**: Dedicated to international conventions (**Marina Bay Sands Expo**, **Messe Frankfurt**, **ExCeL London**, **McCormick Place**), USD currency, and cross-border trade showcases.
+2. **Japan Edition (`/ja`)**: Dedicated to Japan MICE ecosystems. Defaults to Japanese venues (**Tokyo Big Sight**, **Makuhari Messe**, **Pacifico Yokohama**), Japanese Yen (JPY) currency, and Tokyo/Kanto event spotlights.
+3. **Global Edition (`/en/region/global`)**: Dedicated to international conventions (**Marina Bay Sands Expo**, **Messe Frankfurt**, **ExCeL London**, **McCormick Place**), USD currency, and cross-border trade showcases.
+
+The URL locale pins the edition for `id` and `ja`, so a delegate who switches to Japanese always lands on the Japan edition even when their network geolocates elsewhere. Every edition is also reachable explicitly at `/[locale]/region/[code]` (`id`, `jp`, `global`). Region codes are not locale prefixes: `/jp` and `/global` are not routes.
 
 ### Major Venues Near-Upcoming Quick-Glance:
 Directly below the top banner carousel on each country edition, a dedicated **"Happening at Major Venues"** section displays key venues in that country, each highlighting **up to 3 current and near-upcoming events** with exact hall names (`Hall A1`, `Nusantara Hall 2`), dates, and direct pass booking.
