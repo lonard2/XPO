@@ -42,6 +42,36 @@ is evidence-based rather than asserted.
       Deferred: 6 remaining findings are token-level, not badges: the dark-mode `--primary`
       surface carrying white text (3.6:1) and `--primary` used as text on dark cards
       (3.5:1). Both affect every surface in the app, so they need a palette decision.
+      RESOLVED in todo 9.
+
+- [x] **9. Remaining dark-mode contrast, by lightening the ink rather than the hue** (`P1`)
+      Owner chose to keep the brand hue and fix the text side. Four findings had four
+      distinct causes, all confirmed by locating the exact element first:
+      * Hero CTA and the selected calendar day cell hardcoded `text-white` over `bg-primary`.
+        Dark mode pairs `--primary` (#3b82f6) with a dark `--primary-foreground`, so white was
+        the wrong ink at 3.6:1. Both now use `text-primary-foreground` (5.5:1 dark, 5.2:1
+        light) and the hero CTA finally matches every other primary button.
+      * The topbar role badge used `--archetype-primary`, which stayed `#2563eb` in dark mode
+        while `--archetype-surface` darkened to `#0f172a`. The dark block now defines a
+        lighter archetype ink, so the token is legible on its own surface. Only 3 places use
+        the token as a background, and all 3 sit inside themed event views that override it
+        inline, so the change cannot affect them.
+      * The selected cluster count chip used `bg-primary-foreground/20`, which lightened the
+        chip away from its own ink (3.6:1 dark, 4.0:1 light). It is now border-only, so the
+        count reads against the tab background in both themes.
+      * The venue-row archetype badge painted the archetype colour as text on a 7% tint of
+        itself (4.0:1). It now uses `getReadableBadgeColors`, matching the EventCard badge.
+      Result: 0 contrast failures on `/en`, `/ja` and `/id`.
+      Guarded by `tests/unit/theming/globals-contrast.test.ts`, which parses the `:root` and
+      `.dark` blocks and asserts the token pairs reach 4.5:1. Verified as a real guard by
+      reintroducing the old value, which failed at 3.45:1.
+
+- **NEW, not in the original critique: light mode.** Fixing the dark findings exposed that
+      light mode has 13 of its own, all in the muted-text range: `--muted-foreground`
+      (`#64748b`) reaches only 4.2-4.3:1 on `--muted` (`#f1f5f9`) and on `bg-primary/10`
+      tints. Six of them are the unselected cluster count chips. This is a single shared
+      token used app-wide, so it needs the same kind of decision the dark-mode `--primary`
+      just had: darken the light-mode muted ink, or keep it and accept the shortfall.
 
 - [x] **5. Discovery copy is translatable** (`P2`)
       Status labels, section kickers and tab counts were hardcoded English, so `/id` and `/ja`

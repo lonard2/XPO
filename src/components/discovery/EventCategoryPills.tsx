@@ -308,7 +308,7 @@ export function EventCategoryPills({
             className={cn(
               'ml-2 inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full text-[11px] font-bold transition-colors',
               selectedCluster === 'all'
-                ? 'bg-primary-foreground/20 text-primary-foreground'
+                ? 'border border-primary-foreground/40 text-primary-foreground'
                 : 'bg-muted text-muted-foreground'
             )}
           >
@@ -343,7 +343,7 @@ export function EventCategoryPills({
                 className={cn(
                   'ml-2 inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full text-[11px] font-bold transition-colors',
                   isSelected
-                    ? 'bg-primary-foreground/20 text-primary-foreground'
+                    ? 'border border-primary-foreground/40 text-primary-foreground'
                     : 'bg-muted text-muted-foreground'
                 )}
               >

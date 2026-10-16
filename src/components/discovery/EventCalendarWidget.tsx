@@ -237,7 +237,7 @@ export function EventCalendarWidget({
                   className={cn(
                     'relative flex h-10 w-full min-h-[44px] sm:h-9 sm:min-h-[36px] flex-col items-center justify-center rounded-lg text-xs font-semibold transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
                     active
-                      ? 'bg-primary text-white shadow-xs font-bold'
+                      ? 'bg-primary text-primary-foreground shadow-xs font-bold'
                       : today
                       ? 'border border-primary text-primary font-bold hover:bg-primary/10'
                       : 'text-foreground hover:bg-muted',
@@ -249,7 +249,7 @@ export function EventCalendarWidget({
                     <span
                       className={cn(
                         'absolute bottom-1 h-1 w-1 rounded-full',
-                        active ? 'bg-white' : 'bg-primary'
+                        active ? 'bg-primary-foreground' : 'bg-primary'
                       )}
                     />
                   )}

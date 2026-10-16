@@ -333,7 +333,7 @@ export function BannerCarousel({
                   href={`/${locale}/events`}
                   className={cn(
                     buttonVariants({ size: 'lg' }),
-                    'gap-2 font-semibold shadow-lg bg-primary hover:bg-primary/90 text-white border-0 cursor-pointer'
+                    'gap-2 font-semibold shadow-lg bg-primary hover:bg-primary/90 text-primary-foreground border-0 cursor-pointer'
                   )}
                 >
                   <Calendar className="h-4 w-4" />
@@ -370,7 +370,7 @@ export function BannerCarousel({
                   href={`/${locale}/events/${currentSlide.slug}`}
                   className={cn(
                     buttonVariants({ size: 'lg' }),
-                    'gap-2 font-semibold shadow-lg bg-primary hover:bg-primary/90 text-white border-0 cursor-pointer'
+                    'gap-2 font-semibold shadow-lg bg-primary hover:bg-primary/90 text-primary-foreground border-0 cursor-pointer'
                   )}
                 >
                   <Ticket className="h-4 w-4" />

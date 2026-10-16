@@ -100,6 +100,9 @@
     --archetype-bg: #090d16;
     --archetype-surface: #0f172a;
     --archetype-border: #1e293b;
+    /* Dark surfaces need a lighter archetype ink: the light-mode #2563eb only reaches
+       3.5:1 against --archetype-surface. Themed event views override this inline. */
+    --archetype-primary: #60a5fa;
   }
 
   .high-contrast {

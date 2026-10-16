@@ -15,7 +15,7 @@ import { buttonVariants } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { useTranslations } from 'next-intl';
 import { formatDateRange, getTimeZoneForRegion, getEventTemporalStatus } from '@/lib/i18n/formatters';
-import { getArchetypeTokens } from '@/lib/theming';
+import { getArchetypeTokens, getReadableBadgeColors } from '@/lib/theming';
 import { type VenueWithEvents } from '@/types/discovery';
 import { cn } from '@/lib/utils';
 
@@ -171,6 +171,7 @@ export function MajorVenuesUpcomingSection({
                   <div className="space-y-2">
                     {upcomingEvents.map((evt: VenueWithEvents['events'][number]) => {
                       const tokens = getArchetypeTokens(evt.archetype);
+                      const archetypeBadge = getReadableBadgeColors(tokens.primary);
                       const dates = formatDateRange(evt.startDate, evt.endDate, locale, timezone);
 
                       return (
@@ -181,12 +182,11 @@ export function MajorVenuesUpcomingSection({
                           <div className="space-y-1.5 min-w-0 flex-1">
                             <div className="flex items-center gap-1.5 flex-wrap">
                               <Badge
-                                variant="outline"
-                                className="text-[11px] px-2 py-0.5 uppercase font-bold tracking-wide"
+                                variant="default"
+                                className="text-[11px] px-2 py-0.5 uppercase font-bold tracking-wide shadow-none"
                                 style={{
-                                  color: tokens.primary,
-                                  borderColor: `${tokens.primary}44`,
-                                  backgroundColor: `${tokens.primary}12`,
+                                  backgroundColor: archetypeBadge.background,
+                                  color: archetypeBadge.color,
                                 }}
                               >
                                 {tokens.displayName}
