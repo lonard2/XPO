@@ -26,6 +26,7 @@ import {
   FALLBACK_VENUES,
 } from '@/lib/discovery/fallbackData';
 import { resolveActiveRegion } from '@/lib/i18n/geo';
+import { sortUpcomingFirst } from '@/lib/discovery/eventOrder';
 import { type BannerSlide, type DiscoveryEvent, type VenueWithEvents } from '@/types/discovery';
 
 export interface HomePageProps {
@@ -91,18 +92,20 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
     imageUrl: v.imageUrl,
     regionCode: activeRegionCode,
     halls: v.halls || [],
-    events: regionFallbackEvents
-      .filter((e) => e.venueId === v.id || e.venue?.id === v.id || e.venue?.slug === v.slug)
-      .map((e) => ({
-        id: e.id,
-        title: e.title,
-        slug: e.slug,
-        archetype: e.archetype,
-        startDate: e.startDate,
-        endDate: e.endDate,
-        venueHallName: e.venueHall?.name || null,
-        minPrice: e.ticketTiers?.[0]?.price ?? 0,
-      })),
+    events: sortUpcomingFirst(
+      regionFallbackEvents
+        .filter((e) => e.venueId === v.id || e.venue?.id === v.id || e.venue?.slug === v.slug)
+        .map((e) => ({
+          id: e.id,
+          title: e.title,
+          slug: e.slug,
+          archetype: e.archetype,
+          startDate: e.startDate,
+          endDate: e.endDate,
+          venueHallName: e.venueHall?.name || null,
+          minPrice: e.ticketTiers?.[0]?.price ?? 0,
+        }))
+    ),
   }));
 
   try {
@@ -124,7 +127,15 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
 
     if (dbEvents.length > 0) {
       featuredEvents = dbEvents as unknown as DiscoveryEvent[];
-      bannerSlides = dbEvents.filter((e) => e.isFeatured).map((evt) => {
+
+      // Hero source: featured events plus anything a delegate can still attend. Sorting
+      // below puts an attendable event first, so concluded stock never leads the carousel
+      // while a live or upcoming event exists in the region.
+      const attendableNow = (event: (typeof dbEvents)[number]) =>
+        event.endDate.getTime() >= Date.now();
+      const bannerSource = dbEvents.filter((e) => e.isFeatured || attendableNow(e));
+
+      bannerSlides = bannerSource.map((evt) => {
         const lowestTier = evt.ticketTiers?.sort((a, b) => a.price - b.price)[0];
         return {
           id: evt.id,
@@ -179,21 +190,27 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         imageUrl: v.imageUrl,
         regionCode: activeRegionCode,
         halls: v.halls.map((h) => ({ id: h.id, name: h.name, capacity: h.capacity, floorAreaSqm: h.floorAreaSqm })),
-        events: v.events.map((e) => ({
-          id: e.id,
-          title: e.title,
-          slug: e.slug,
-          archetype: e.archetype,
-          startDate: e.startDate,
-          endDate: e.endDate,
-          venueHallName: e.venueHall?.name,
-          minPrice: e.ticketTiers[0]?.price ?? 0,
-        })),
+        events: sortUpcomingFirst(
+          v.events.map((e) => ({
+            id: e.id,
+            title: e.title,
+            slug: e.slug,
+            archetype: e.archetype,
+            startDate: e.startDate,
+            endDate: e.endDate,
+            venueHallName: e.venueHall?.name,
+            minPrice: e.ticketTiers[0]?.price ?? 0,
+          }))
+        ),
       })) as VenueWithEvents[];
     }
   } catch {
     // Graceful fallback populated above
   }
+
+  // Upcoming first: the hero and the featured grid must not open on concluded events.
+  bannerSlides = sortUpcomingFirst(bannerSlides);
+  featuredEvents = sortUpcomingFirst(featuredEvents);
 
   const regionLocalizedName =
     activeRegionCode === 'id'
