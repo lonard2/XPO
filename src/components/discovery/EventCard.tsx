@@ -39,6 +39,7 @@ export const EventCard = React.memo(function EventCard({
   const tCom = useTranslations('common');
   const tTick = useTranslations('tickets');
   const tDisc = useTranslations('discovery');
+  const tEvents = useTranslations('events');
 
   const archetypeTokens = React.useMemo(
     () => getArchetypeTokens(event.archetype),
@@ -92,10 +93,10 @@ export const EventCard = React.memo(function EventCard({
     event.isPlatformCurated ||
     (event.organizerId === null && (Boolean(event.organizerName) || event.isPlatformCurated !== false))
   );
-  const curatedBadgeLabel = event.organizerName ? 'Curated Listing' : 'Official Venue Listing';
+  const curatedBadgeLabel = event.organizerName ? tEvents('curatedListing') : tEvents('officialListing');
   const organizerAttribution = React.useMemo(() => {
     if (isCurated) {
-      return event.organizerName || event.venue?.name || 'Official Listing';
+      return event.organizerName || event.venue?.name || tEvents('officialListingFallback');
     }
     if (event.organizer?.organization || event.organizer?.name) {
       return event.organizer.organization || event.organizer.name;
@@ -106,7 +107,7 @@ export const EventCard = React.memo(function EventCard({
     return null;
   }, [isCurated, event.organizerName, event.venue?.name, event.organizer]);
 
-  const formatLabel = event.format ? event.format.replace(/_/g, ' ') : 'IN PERSON';
+  const formatLabel = event.format ? event.format.replace(/_/g, ' ') : tDisc('inPerson');
 
   return (
     <Card
@@ -159,20 +160,20 @@ export const EventCard = React.memo(function EventCard({
           {temporal.isLive && (
             <Badge className="bg-emerald-600 text-white text-xs font-bold gap-1 shadow-sm">
               <span className="h-1.5 w-1.5 rounded-full bg-white inline-block animate-ping" />
-              <span>Live</span>
+              <span>{tEvents('live')}</span>
             </Badge>
           )}
 
           {temporal.isPast && (
             <Badge variant="secondary" className="text-xs font-medium bg-black/70 text-slate-300 border border-slate-700 shadow-sm backdrop-blur-sm">
-              <span>Concluded</span>
+              <span>{tEvents('concluded')}</span>
             </Badge>
           )}
 
           {temporal.isUpcoming && event.isFeatured && (
             <Badge variant="warning" className="text-xs font-semibold gap-1 shadow-sm">
               <Layers className="h-2.5 w-2.5" />
-              <span>Featured</span>
+              <span>{tEvents('featuredBadge')}</span>
             </Badge>
           )}
 
@@ -223,11 +224,11 @@ export const EventCard = React.memo(function EventCard({
               <span className="truncate">
                 {isCurated ? (
                   <span>
-                    Curated by <span className="font-medium text-foreground">{organizerAttribution}</span>
+                    {tEvents('curatedBy')} <span className="font-medium text-foreground">{organizerAttribution}</span>
                   </span>
                 ) : (
                   <span>
-                    Organized by <span className="font-medium text-foreground">{organizerAttribution}</span>
+                    {tEvents('organizedBy')} <span className="font-medium text-foreground">{organizerAttribution}</span>
                   </span>
                 )}
               </span>
@@ -257,7 +258,7 @@ export const EventCard = React.memo(function EventCard({
               {temporal.isPast ? (tCom('date') || 'Status') : (tTick('price') || 'Price')}
             </span>
             <span className="text-sm font-extrabold text-foreground tabular-nums">
-              {temporal.isPast ? 'Concluded' : priceDisplay}
+              {temporal.isPast ? tEvents('concluded') : priceDisplay}
             </span>
           </div>
 

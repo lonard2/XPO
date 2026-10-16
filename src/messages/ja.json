@@ -75,7 +75,19 @@
     "exploreEventsCta": "今後の展示会を探す",
     "liveTimetable": "リアルタイム日程",
     "viewRecap": "イベント概要・総括を見る",
-    "viewSchedule": "全スケジュールを見る"
+    "viewSchedule": "全スケジュールを見る",
+    "happeningNow": "開催中",
+    "eventConcluded": "終了しました",
+    "concludedNotice": "このイベントは終了しました。パス登録は締め切られました。",
+    "liveNotice": "イベント開催中 - 入場扉を開放しています",
+    "startsIn": "開始まで:",
+    "carouselLabel": "注目イベントバナー",
+    "previousSlide": "前のスライド",
+    "nextSlide": "次のスライド",
+    "pauseAutoplay": "自動再生を一時停止",
+    "resumeAutoplay": "自動再生を再開",
+    "goToSlide": "スライド {index} へ移動",
+    "slideLabel": "スライド {current} / {total}: {title}"
   },
   "home": {
     "searchCockpitPlaceholder": "展示会、サミット、会場を検索 (例: 東京ビッグサイト、AI、医療)...",
@@ -317,7 +329,12 @@
     "nextMonth": "来月",
     "city": "開催都市 / メトロポリス",
     "filterByCity": "都市で絞り込む",
-    "allCities": "すべての都市"
+    "allCities": "すべての都市",
+    "verticalsSubtitle": "6つの業界セクターにわたる展示会、サミット、シンポジウムを探せます。",
+    "clusterFilterLabel": "業界クラスターでMICEカテゴリを絞り込む",
+    "showAllCount": "すべて表示（{count}）",
+    "verticalCount": "{count} 分野",
+    "clusterSubtitle": "このセクターの専門MICEカテゴリを表示しています。"
   },
   "events": {
     "title": "イベント一覧＆スケジュール",
@@ -362,7 +379,15 @@
     "noBoothsPublished": "フロアマップは準備中です",
     "noBoothsPublishedDesc": "出展ブースの配置およびホール構成は現在調整中です。",
     "checkPassTiers": "パスカテゴリを見る",
-    "exploreVenueDetails": "会場詳細を見る"
+    "exploreVenueDetails": "会場詳細を見る",
+    "live": "開催中",
+    "concluded": "終了",
+    "featuredBadge": "注目",
+    "curatedListing": "キュレーション掲載",
+    "officialListing": "会場公式掲載",
+    "officialListingFallback": "公式掲載",
+    "curatedBy": "キュレーション:",
+    "organizedBy": "主催:"
   },
   "venues": {
     "title": "コンベンションセンター＆ホール一覧",
@@ -401,7 +426,13 @@
     "hallsCount": "{count} ホール",
     "multiHallComplex": "複合展示場施設",
     "campusScale": "キャンパス規模",
-    "multiHallLayout": "複合ホール構成"
+    "multiHallLayout": "複合ホール構成",
+    "editionSpotlight": "{region} エディション特集",
+    "currentUpcomingEvents": "開催中・近日開催イベント",
+    "listedCount": "{count} 件",
+    "noUpcomingDetail": "会場ディレクトリで今後の開催時期をご確認ください",
+    "exploreFullCalendar": "{venue} の全カレンダーを見る",
+    "happeningAtMajorVenues": "主要会場で開催中"
   },
   "calendar": {
     "title": "イベントカレンダー",

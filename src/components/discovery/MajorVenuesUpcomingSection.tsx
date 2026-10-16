@@ -56,10 +56,10 @@ export function MajorVenuesUpcomingSection({
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-primary uppercase tracking-wider mb-1">
             <Building2 className="h-4 w-4" />
-            <span>{currentRegionName} Edition Spotlight</span>
+            <span>{tVen('editionSpotlight', { region: currentRegionName })}</span>
           </div>
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight text-foreground">
-            {tVen('happeningAtVenue')?.split(' ')?.[0] === 'Happening' ? 'Happening at Major Venues' : (tVen('happeningAtVenue') || 'Happening at Major Venues')}
+            {tVen('happeningAtMajorVenues')}
           </h2>
           <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
             {tVen('subtitle') || 'Quick glance at active exhibitions and upcoming highlights across top convention centers.'}
@@ -139,9 +139,9 @@ export function MajorVenuesUpcomingSection({
               {/* Up to 3 Current & Near-Upcoming Events */}
               <div className="p-4 sm:p-5 pt-0 space-y-2.5 flex-1 flex flex-col justify-start">
                 <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground pt-3 border-t border-border/70 flex items-center justify-between">
-                  <span>Current & Near-Upcoming Events</span>
+                  <span>{tVen('currentUpcomingEvents')}</span>
                   <span className="text-xs font-semibold text-primary font-mono tabular-nums">
-                    {upcomingEvents.length} listed
+                    {tVen('listedCount', { count: upcomingEvents.length })}
                   </span>
                 </div>
 
@@ -204,8 +204,8 @@ export function MajorVenuesUpcomingSection({
                 ) : (
                   <div className="rounded-xl border border-dashed border-border/80 p-5 text-center text-xs text-muted-foreground my-auto flex flex-col items-center justify-center gap-1.5 bg-muted/10">
                     <Calendar className="h-4 w-4 text-muted-foreground/60" />
-                    <p className="font-medium text-foreground/80">No active public exhibitions scheduled this week</p>
-                    <p className="text-[11px] text-muted-foreground">Check upcoming season dates in the venue directory</p>
+                    <p className="font-medium text-foreground/80">{tVen('noUpcomingEventsScheduled')}</p>
+                    <p className="text-[11px] text-muted-foreground">{tVen('noUpcomingDetail')}</p>
                   </div>
                 )}
               </div>
@@ -216,7 +216,7 @@ export function MajorVenuesUpcomingSection({
                   href={`/${locale}/venues/${venue.slug}`}
                   className="font-semibold text-primary hover:text-primary/80 transition-colors flex items-center gap-1.5 text-xs group/link"
                 >
-                  <span>Explore full {venue.name} calendar</span>
+                  <span>{tVen('exploreFullCalendar', { venue: venue.name })}</span>
                   <ArrowRight className="h-3.5 w-3.5 group-hover/link:translate-x-0.5 transition-transform" />
                 </Link>
               </div>

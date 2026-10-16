@@ -75,7 +75,19 @@
     "exploreEventsCta": "探索近期展会",
     "liveTimetable": "实时日程",
     "viewRecap": "查看展会回顾",
-    "viewSchedule": "查看完整日程"
+    "viewSchedule": "查看完整日程",
+    "happeningNow": "正在进行",
+    "eventConcluded": "活动已结束",
+    "concludedNotice": "此活动已结束。通行证注册已关闭。",
+    "liveNotice": "活动正在进行 - 入口已开放",
+    "startsIn": "距开始:",
+    "carouselLabel": "精选活动横幅",
+    "previousSlide": "上一张",
+    "nextSlide": "下一张",
+    "pauseAutoplay": "暂停自动播放",
+    "resumeAutoplay": "继续自动播放",
+    "goToSlide": "转到第 {index} 张",
+    "slideLabel": "第 {current} 张，共 {total} 张：{title}"
   },
   "home": {
     "searchCockpitPlaceholder": "搜索展会、峰会、场馆（例如：金沙博览、AI、医疗）...",
@@ -317,7 +329,12 @@
     "nextMonth": "下月",
     "city": "举办城市 / 都会区",
     "filterByCity": "按城市筛选",
-    "allCities": "所有城市"
+    "allCities": "所有城市",
+    "verticalsSubtitle": "探索涵盖 6 大行业板块的展览、峰会和研讨会。",
+    "clusterFilterLabel": "按行业板块筛选 MICE 类别",
+    "showAllCount": "显示全部（{count}）",
+    "verticalCount": "{count} 个细分领域",
+    "clusterSubtitle": "显示该板块的专业 MICE 类别。"
   },
   "events": {
     "title": "展会名录与日程",
@@ -362,7 +379,15 @@
     "noBoothsPublished": "展位平面图筹备中",
     "noBoothsPublishedDesc": "参展商展位划分与展馆平面布局目前正在规划中。",
     "checkPassTiers": "查看通行证层级",
-    "exploreVenueDetails": "查看展馆详情"
+    "exploreVenueDetails": "查看展馆详情",
+    "live": "进行中",
+    "concluded": "已结束",
+    "featuredBadge": "精选",
+    "curatedListing": "精选收录",
+    "officialListing": "场馆官方收录",
+    "officialListingFallback": "官方收录",
+    "curatedBy": "精选方",
+    "organizedBy": "主办方"
   },
   "venues": {
     "title": "会展中心与展厅名录",
@@ -401,7 +426,13 @@
     "hallsCount": "{count} 个展厅",
     "multiHallComplex": "多展厅综合体",
     "campusScale": "园区级规模",
-    "multiHallLayout": "多展厅规划"
+    "multiHallLayout": "多展厅规划",
+    "editionSpotlight": "{region} 版本聚焦",
+    "currentUpcomingEvents": "进行中及即将举办的活动",
+    "listedCount": "已列出 {count} 项",
+    "noUpcomingDetail": "请查看场馆目录中的近期档期",
+    "exploreFullCalendar": "查看 {venue} 完整日历",
+    "happeningAtMajorVenues": "主要场馆活动"
   },
   "calendar": {
     "title": "会展交互日历",

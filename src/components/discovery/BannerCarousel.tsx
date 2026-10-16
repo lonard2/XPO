@@ -199,14 +199,14 @@ export function BannerCarousel({
       onTouchEnd={handleTouchEnd}
       role="region"
       aria-roledescription="carousel"
-      aria-label="Featured Events Banner"
+      aria-label={tHero('carouselLabel')}
     >
       {/* Slide Container */}
       <div
         key={currentSlide.id}
         role="group"
         aria-roledescription="slide"
-        aria-label={`Slide ${currentIndex + 1} of ${totalSlides}: ${currentSlide.title}`}
+        aria-label={tHero('slideLabel', { current: currentIndex + 1, total: totalSlides, title: currentSlide.title })}
         aria-live={isEffectivePaused ? 'polite' : 'off'}
         className="relative min-h-[420px] sm:min-h-[480px] lg:min-h-[520px] flex flex-col justify-end p-5 pt-20 pb-20 sm:p-8 lg:p-12 overflow-hidden"
       >
@@ -252,14 +252,14 @@ export function BannerCarousel({
             {temporalStatus.isLive && (
               <Badge className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold gap-1.5 shadow-md">
                 <span className="h-2 w-2 rounded-full bg-white inline-block animate-ping" />
-                <span>Happening Now</span>
+                <span>{tHero('happeningNow')}</span>
               </Badge>
             )}
 
             {temporalStatus.isPast && (
               <Badge variant="secondary" className="bg-slate-800 text-slate-300 border border-slate-600 text-xs font-semibold gap-1 backdrop-blur-sm">
                 <CheckCheck className="h-3 w-3 text-slate-400" />
-                <span>Event Concluded</span>
+                <span>{tHero('eventConcluded')}</span>
               </Badge>
             )}
 
@@ -397,7 +397,7 @@ export function BannerCarousel({
             type="button"
             className="relative flex h-10 w-10 sm:h-9 sm:w-9 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 items-center justify-center rounded-full bg-black/50 hover:bg-black/80 text-white border border-white/20 backdrop-blur-sm transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/60 focus-visible:outline-none"
             onClick={prevSlide}
-            aria-label="Previous slide"
+            aria-label={tHero('previousSlide')}
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
@@ -406,7 +406,7 @@ export function BannerCarousel({
             type="button"
             className="relative flex h-10 w-10 sm:h-9 sm:w-9 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 items-center justify-center rounded-full bg-black/50 hover:bg-black/80 text-white border border-white/20 backdrop-blur-sm transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/60 focus-visible:outline-none"
             onClick={nextSlide}
-            aria-label="Next slide"
+            aria-label={tHero('nextSlide')}
           >
             <ChevronRight className="h-4 w-4" />
           </button>
@@ -415,7 +415,7 @@ export function BannerCarousel({
             type="button"
             className="relative flex h-10 w-10 sm:h-9 sm:w-9 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 items-center justify-center rounded-full bg-black/50 hover:bg-black/80 text-white border border-white/20 backdrop-blur-sm transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/60 focus-visible:outline-none"
             onClick={() => setIsManuallyPaused(!isManuallyPaused)}
-            aria-label={isManuallyPaused ? 'Resume autoplay' : 'Pause autoplay'}
+            aria-label={isManuallyPaused ? tHero('resumeAutoplay') : tHero('pauseAutoplay')}
           >
             {isManuallyPaused ? <Play className="h-3.5 w-3.5" /> : <Pause className="h-3.5 w-3.5" />}
           </button>
@@ -429,7 +429,7 @@ export function BannerCarousel({
               type="button"
               onClick={() => goToSlide(idx)}
               className="relative flex h-10 min-w-[20px] items-center justify-center px-1 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black/50 rounded-full"
-              aria-label={`Go to slide ${idx + 1}`}
+              aria-label={tHero('goToSlide', { index: idx + 1 })}
               aria-current={idx === currentIndex ? 'true' : undefined}
             >
               <span
@@ -458,6 +458,7 @@ function BannerTemporalWidget({
   const [temporal, setTemporal] = React.useState<EventTemporalDetails>(() =>
     getEventTemporalStatus(startDate, endDate)
   );
+  const tHero = useTranslations('hero');
 
   React.useEffect(() => {
     setTemporal(getEventTemporalStatus(startDate, endDate));
@@ -472,7 +473,7 @@ function BannerTemporalWidget({
     return (
       <div className="inline-flex items-center gap-1.5 rounded-full border border-slate-700 bg-slate-900/80 px-3.5 py-1 text-xs font-medium text-slate-300 backdrop-blur-sm">
         <CheckCheck className="h-3.5 w-3.5 text-slate-400" />
-        <span>This event has concluded. Pass registration is closed.</span>
+        <span>{tHero('concludedNotice')}</span>
       </div>
     );
   }
@@ -484,7 +485,7 @@ function BannerTemporalWidget({
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
           <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
         </span>
-        <span>Event is Happening Now - Doors Open</span>
+        <span>{tHero('liveNotice')}</span>
       </div>
     );
   }
@@ -495,7 +496,7 @@ function BannerTemporalWidget({
   return (
     <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/60 px-3.5 py-1 text-xs backdrop-blur-md shadow-sm">
       <Clock className="h-3.5 w-3.5 text-primary shrink-0" />
-      <span className="text-slate-300 font-medium">Starts in:</span>
+      <span className="text-slate-300 font-medium">{tHero('startsIn')}</span>
       <span className="font-mono font-bold text-white tracking-wide tabular-nums">
         {time.days}d {String(time.hours).padStart(2, '0')}h {String(time.minutes).padStart(2, '0')}m {String(time.seconds).padStart(2, '0')}s
       </span>

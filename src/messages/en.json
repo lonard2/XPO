@@ -75,7 +75,19 @@
     "exploreEventsCta": "Explore Upcoming Events",
     "liveTimetable": "Live Timetable",
     "viewRecap": "View Event Recap",
-    "viewSchedule": "View Full Schedule"
+    "viewSchedule": "View Full Schedule",
+    "happeningNow": "Happening Now",
+    "eventConcluded": "Event Concluded",
+    "concludedNotice": "This event has concluded. Pass registration is closed.",
+    "liveNotice": "Event is Happening Now - Doors Open",
+    "startsIn": "Starts in:",
+    "carouselLabel": "Featured Events Banner",
+    "previousSlide": "Previous slide",
+    "nextSlide": "Next slide",
+    "pauseAutoplay": "Pause autoplay",
+    "resumeAutoplay": "Resume autoplay",
+    "goToSlide": "Go to slide {index}",
+    "slideLabel": "Slide {current} of {total}: {title}"
   },
   "home": {
     "searchCockpitPlaceholder": "Search exhibitions, summits, venues (e.g. JIExpo, Robotics, Medical)...",
@@ -317,7 +329,12 @@
     "nextMonth": "Next Month",
     "city": "City / Host Metropolis",
     "filterByCity": "Filter by City",
-    "allCities": "All Cities"
+    "allCities": "All Cities",
+    "verticalsSubtitle": "Discover exhibitions, summits, and symposiums tailored across 6 industry sectors.",
+    "clusterFilterLabel": "Filter MICE categories by industry cluster",
+    "showAllCount": "Show All ({count})",
+    "verticalCount": "{count} Verticals",
+    "clusterSubtitle": "Displaying specialized MICE categories in this sector."
   },
   "events": {
     "title": "Event Directory & Timetable",
@@ -362,7 +379,15 @@
     "noBoothsPublished": "Floor plan in preparation",
     "noBoothsPublishedDesc": "Exhibitor booth allocations and hall layouts are currently being mapped.",
     "checkPassTiers": "View Pass Tiers",
-    "exploreVenueDetails": "Explore Venue Details"
+    "exploreVenueDetails": "Explore Venue Details",
+    "live": "Live",
+    "concluded": "Concluded",
+    "featuredBadge": "Featured",
+    "curatedListing": "Curated Listing",
+    "officialListing": "Official Venue Listing",
+    "officialListingFallback": "Official Listing",
+    "curatedBy": "Curated by",
+    "organizedBy": "Organized by"
   },
   "venues": {
     "title": "Convention Centers & Hall Directory",
@@ -401,7 +426,13 @@
     "hallsCount": "{count} Halls",
     "multiHallComplex": "Multi-Hall Complex",
     "campusScale": "Campus Scale",
-    "multiHallLayout": "Multi-Hall Layout"
+    "multiHallLayout": "Multi-Hall Layout",
+    "editionSpotlight": "{region} Edition Spotlight",
+    "currentUpcomingEvents": "Current & Near-Upcoming Events",
+    "listedCount": "{count} listed",
+    "noUpcomingDetail": "Check upcoming season dates in the venue directory",
+    "exploreFullCalendar": "Explore full {venue} calendar",
+    "happeningAtMajorVenues": "Happening at Major Venues"
   },
   "calendar": {
     "title": "Interactive Event Calendar",

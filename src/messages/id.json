@@ -75,7 +75,19 @@
     "exploreEventsCta": "Jelajahi Pameran Mendatang",
     "liveTimetable": "Jadwal Langsung",
     "viewRecap": "Lihat Rekap Pameran",
-    "viewSchedule": "Lihat Jadwal Lengkap"
+    "viewSchedule": "Lihat Jadwal Lengkap",
+    "happeningNow": "Sedang Berlangsung",
+    "eventConcluded": "Acara Telah Selesai",
+    "concludedNotice": "Acara ini telah selesai. Pendaftaran pas ditutup.",
+    "liveNotice": "Acara Sedang Berlangsung - Pintu Dibuka",
+    "startsIn": "Mulai dalam:",
+    "carouselLabel": "Spanduk Acara Unggulan",
+    "previousSlide": "Slide sebelumnya",
+    "nextSlide": "Slide berikutnya",
+    "pauseAutoplay": "Jeda putar otomatis",
+    "resumeAutoplay": "Lanjutkan putar otomatis",
+    "goToSlide": "Ke slide {index}",
+    "slideLabel": "Slide {current} dari {total}: {title}"
   },
   "home": {
     "searchCockpitPlaceholder": "Cari pameran, konferensi, venue (mis. JIExpo, Robotika, Medis)...",
@@ -317,7 +329,12 @@
     "nextMonth": "Bulan Depan",
     "city": "Kota / Metropolis Penyelenggara",
     "filterByCity": "Filter Berdasarkan Kota",
-    "allCities": "Semua Kota"
+    "allCities": "Semua Kota",
+    "verticalsSubtitle": "Temukan pameran, summit, dan simposium di 6 sektor industri.",
+    "clusterFilterLabel": "Filter kategori MICE berdasarkan klaster industri",
+    "showAllCount": "Tampilkan Semua ({count})",
+    "verticalCount": "{count} Vertikal",
+    "clusterSubtitle": "Menampilkan kategori MICE khusus di sektor ini."
   },
   "events": {
     "title": "Direktori Acara & Jadwal",
@@ -362,7 +379,15 @@
     "noBoothsPublished": "Denah lantai sedang disiapkan",
     "noBoothsPublishedDesc": "Penempatan stan pameran dan denah aula saat ini sedang dipetakan.",
     "checkPassTiers": "Lihat Kategori Tiket",
-    "exploreVenueDetails": "Jelajahi Rincian Lokasi"
+    "exploreVenueDetails": "Jelajahi Rincian Lokasi",
+    "live": "Langsung",
+    "concluded": "Selesai",
+    "featuredBadge": "Unggulan",
+    "curatedListing": "Daftar Kurasi",
+    "officialListing": "Daftar Resmi Venue",
+    "officialListingFallback": "Daftar Resmi",
+    "curatedBy": "Dikurasi oleh",
+    "organizedBy": "Diselenggarakan oleh"
   },
   "venues": {
     "title": "Pusat Konvensi & Direktori Hall",
@@ -401,7 +426,13 @@
     "hallsCount": "{count} Hall",
     "multiHallComplex": "Kompleks Multi-Hall",
     "campusScale": "Skala Kawasan",
-    "multiHallLayout": "Tata Letak Multi-Hall"
+    "multiHallLayout": "Tata Letak Multi-Hall",
+    "editionSpotlight": "Sorotan Edisi {region}",
+    "currentUpcomingEvents": "Acara Berlangsung & Akan Datang",
+    "listedCount": "{count} terdaftar",
+    "noUpcomingDetail": "Lihat jadwal musim mendatang di direktori venue",
+    "exploreFullCalendar": "Jelajahi kalender lengkap {venue}",
+    "happeningAtMajorVenues": "Berlangsung di Venue Utama"
   },
   "calendar": {
     "title": "Kalender Acara Interaktif",

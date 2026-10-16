@@ -43,10 +43,21 @@ is evidence-based rather than asserted.
       surface carrying white text (3.6:1) and `--primary` used as text on dark cards
       (3.5:1). Both affect every surface in the app, so they need a palette decision.
 
-- [ ] **5. Discovery copy is translatable** (`P2`)
+- [x] **5. Discovery copy is translatable** (`P2`)
       Status labels, section kickers and tab counts were hardcoded English, so `/id` and `/ja`
       rendered two languages at once.
-      Accept: no hardcoded user-visible string remains in the discovery components.
+      Result: 31 keys added to all six locales (en, id, ja, zh-CN, de, es), 180 entries.
+      Reused existing keys where they already existed (`events.allCategories`,
+      `venues.noUpcomingEventsScheduled`, `discovery.inPerson`) so id/ja/zh-CN inherited
+      authored translations instead of new ones. The tab counts now derive from
+      `ARCHETYPE_LIST.length` rather than the literal 22.
+      Deliberately a zero-visual-change refactor: the EventCard archetype badge label still
+      comes from the theming token, because switching it to the authored `shortName` would
+      change a visible label and belongs in todo 8.
+      Added `tests/unit/i18n/message-parity.test.ts`, which asserts all six bundles carry an
+      identical key set, consistent ICU placeholders, and no em dashes.
+      Verified: no hardcoded user-visible string remains in the four homepage components, and
+      `/ja` plus `/id` render translated status labels, kickers and counts.
 
 - [ ] **6. The homepage has an `h1`** (`P2`)
       The document had none; every heading was an `h2`.

@@ -75,7 +75,19 @@
     "exploreEventsCta": "Explorar Próximas Exposiciones",
     "liveTimetable": "Horario en Vivo",
     "viewRecap": "Ver Resumen del Evento",
-    "viewSchedule": "Ver Programa Completo"
+    "viewSchedule": "Ver Programa Completo",
+    "happeningNow": "En curso",
+    "eventConcluded": "Evento finalizado",
+    "concludedNotice": "Este evento ha finalizado. El registro de pases está cerrado.",
+    "liveNotice": "El evento está en curso - Puertas abiertas",
+    "startsIn": "Comienza en:",
+    "carouselLabel": "Banner de eventos destacados",
+    "previousSlide": "Diapositiva anterior",
+    "nextSlide": "Diapositiva siguiente",
+    "pauseAutoplay": "Pausar reproducción automática",
+    "resumeAutoplay": "Reanudar reproducción automática",
+    "goToSlide": "Ir a la diapositiva {index}",
+    "slideLabel": "Diapositiva {current} de {total}: {title}"
   },
   "home": {
     "searchCockpitPlaceholder": "Buscar ferias, cumbres, recintos (ej. ExCeL, Robótica, Medicina)...",
@@ -317,7 +329,12 @@
     "nextMonth": "Próximo Mes",
     "city": "Ciudad / Metrópoli Anfitriona",
     "filterByCity": "Filtrar por Ciudad",
-    "allCities": "Todas las Ciudades"
+    "allCities": "Todas las Ciudades",
+    "verticalsSubtitle": "Descubre exposiciones, cumbres y simposios en 6 sectores industriales.",
+    "clusterFilterLabel": "Filtrar categorías MICE por clúster industrial",
+    "showAllCount": "Mostrar todo ({count})",
+    "verticalCount": "{count} verticales",
+    "clusterSubtitle": "Mostrando categorías MICE especializadas de este sector."
   },
   "events": {
     "title": "Directorio de Eventos y Calendario",
@@ -362,7 +379,15 @@
     "noBoothsPublished": "Plano de planta en preparación",
     "noBoothsPublishedDesc": "Las ubicaciones de stands y la distribución de pabellones se están definiendo actualmente.",
     "checkPassTiers": "Ver Categorías de Pases",
-    "exploreVenueDetails": "Explorar Detalles del Recinto"
+    "exploreVenueDetails": "Explorar Detalles del Recinto",
+    "live": "En vivo",
+    "concluded": "Finalizado",
+    "featuredBadge": "Destacado",
+    "curatedListing": "Ficha curada",
+    "officialListing": "Ficha oficial del recinto",
+    "officialListingFallback": "Ficha oficial",
+    "curatedBy": "Curado por",
+    "organizedBy": "Organizado por"
   },
   "venues": {
     "title": "Recintos Feriales y Directorio de Pabellones",
@@ -401,7 +426,13 @@
     "hallsCount": "{count} Pabellones",
     "multiHallComplex": "Complejo Multi-Pabellón",
     "campusScale": "Escala de Campus",
-    "multiHallLayout": "Diseño Multi-Pabellón"
+    "multiHallLayout": "Diseño Multi-Pabellón",
+    "editionSpotlight": "Edición {region} destacada",
+    "currentUpcomingEvents": "Eventos actuales y próximos",
+    "listedCount": "{count} listados",
+    "noUpcomingDetail": "Consulta las próximas fechas en el directorio de recintos",
+    "exploreFullCalendar": "Ver el calendario completo de {venue}",
+    "happeningAtMajorVenues": "En curso en los principales recintos"
   },
   "calendar": {
     "title": "Calendario Interactivo de Eventos",

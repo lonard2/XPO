@@ -75,7 +75,19 @@
     "exploreEventsCta": "Kommende Messen entdecken",
     "liveTimetable": "Live-Zeitplan",
     "viewRecap": "Messerückblick ansehen",
-    "viewSchedule": "Gesamten Zeitplan ansehen"
+    "viewSchedule": "Gesamten Zeitplan ansehen",
+    "happeningNow": "Läuft jetzt",
+    "eventConcluded": "Veranstaltung beendet",
+    "concludedNotice": "Diese Veranstaltung ist beendet. Die Passregistrierung ist geschlossen.",
+    "liveNotice": "Veranstaltung läuft - Türen geöffnet",
+    "startsIn": "Beginnt in:",
+    "carouselLabel": "Banner für ausgewählte Veranstaltungen",
+    "previousSlide": "Vorherige Folie",
+    "nextSlide": "Nächste Folie",
+    "pauseAutoplay": "Automatische Wiedergabe pausieren",
+    "resumeAutoplay": "Automatische Wiedergabe fortsetzen",
+    "goToSlide": "Zu Folie {index}",
+    "slideLabel": "Folie {current} von {total}: {title}"
   },
   "home": {
     "searchCockpitPlaceholder": "Messen, Gipfel, Veranstaltungsorte suchen (z. B. Messe Frankfurt, KI, Medizin)...",
@@ -317,7 +329,12 @@
     "nextMonth": "Nächsten Monat",
     "city": "Stadt / Veranstaltungsmetropole",
     "filterByCity": "Nach Stadt filtern",
-    "allCities": "Alle Städte"
+    "allCities": "Alle Städte",
+    "verticalsSubtitle": "Entdecken Sie Ausstellungen, Gipfel und Symposien aus 6 Branchensektoren.",
+    "clusterFilterLabel": "MICE-Kategorien nach Branchencluster filtern",
+    "showAllCount": "Alle anzeigen ({count})",
+    "verticalCount": "{count} Bereiche",
+    "clusterSubtitle": "Spezialisierte MICE-Kategorien in diesem Sektor."
   },
   "events": {
     "title": "Messeverzeichnis & Kalender",
@@ -362,7 +379,15 @@
     "noBoothsPublished": "Hallenplan in Vorbereitung",
     "noBoothsPublishedDesc": "Ausstellerstände und Hallenpläne werden derzeit vom Veranstalter kartiert.",
     "checkPassTiers": "Pass-Kategorien ansehen",
-    "exploreVenueDetails": "Veranstaltungsort erkunden"
+    "exploreVenueDetails": "Veranstaltungsort erkunden",
+    "live": "Live",
+    "concluded": "Beendet",
+    "featuredBadge": "Empfohlen",
+    "curatedListing": "Kuratierter Eintrag",
+    "officialListing": "Offizieller Eintrag des Veranstaltungsorts",
+    "officialListingFallback": "Offizieller Eintrag",
+    "curatedBy": "Kuratiert von",
+    "organizedBy": "Organisiert von"
   },
   "venues": {
     "title": "Kongresszentren & Hallenverzeichnis",
@@ -401,7 +426,13 @@
     "hallsCount": "{count} Hallen",
     "multiHallComplex": "Multi-Hallen-Komplex",
     "campusScale": "Campus-Maßstab",
-    "multiHallLayout": "Multi-Hallen-Layout"
+    "multiHallLayout": "Multi-Hallen-Layout",
+    "editionSpotlight": "{region}-Edition im Fokus",
+    "currentUpcomingEvents": "Aktuelle und kommende Veranstaltungen",
+    "listedCount": "{count} gelistet",
+    "noUpcomingDetail": "Kommende Saisontermine im Veranstaltungsortverzeichnis prüfen",
+    "exploreFullCalendar": "Vollständigen Kalender von {venue} ansehen",
+    "happeningAtMajorVenues": "Aktuelles an den wichtigsten Veranstaltungsorten"
   },
   "calendar": {
     "title": "Interaktiver Eventkalender",
