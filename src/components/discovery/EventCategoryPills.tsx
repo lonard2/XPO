@@ -380,7 +380,7 @@ export function EventCategoryPills({
                   <h3 className="text-sm sm:text-base font-bold text-foreground">
                     {activeClusterObj.label}
                   </h3>
-                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-primary/10 text-primary">
+                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full border border-primary/30 text-primary">
                     {tDisc('verticalCount', { count: activeClusterObj.archetypes.length })}
                   </span>
                 </div>

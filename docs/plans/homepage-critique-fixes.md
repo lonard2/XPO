@@ -67,11 +67,29 @@ is evidence-based rather than asserted.
       reintroducing the old value, which failed at 3.45:1.
 
 - **NEW, not in the original critique: light mode.** Fixing the dark findings exposed that
-      light mode has 13 of its own, all in the muted-text range: `--muted-foreground`
-      (`#64748b`) reaches only 4.2-4.3:1 on `--muted` (`#f1f5f9`) and on `bg-primary/10`
-      tints. Six of them are the unselected cluster count chips. This is a single shared
-      token used app-wide, so it needs the same kind of decision the dark-mode `--primary`
-      just had: darken the light-mode muted ink, or keep it and accept the shortfall.
+      light mode had 13 of its own, all in the muted-text range: `--muted-foreground`
+      (`#64748b`) reached only 4.2-4.3:1 on `--muted` (`#f1f5f9`) and on `bg-primary/10`
+      tints. Six of them were the unselected cluster count chips. Light-mode
+      `--muted-foreground` is now slate 600 (`#475569`), about 6.9:1, which took light mode
+      from 13 contrast failures to 1. Guarded by the same test file, plus a check that muted
+      ink passes on a 10% primary tint.
+      Also switched the cluster header's "N Verticals" chip from a 10% primary tint to a
+      border, matching the cluster tab count chip, so its label sits on the neutral panel.
+
+- **STILL OPEN, needs a decision: `text-primary` on a `bg-primary/10` tint in light mode.**
+      One failure remains after the muted fix: `#2463eb on #e6eefc` at 4.4:1, identified by
+      locating the element as the cluster header "N Verticals" chip. It is not a one-off:
+      `bg-primary/10` paired with `text-primary` appears about 70 times across the app, of
+      which roughly 25 carry text rather than just an icon (settings chips, filter chips,
+      active-filter chips, pass wallet chips, auth modal chips, selected switcher states).
+      Icon-only instances pass the 3:1 graphical-object threshold; text instances sit at
+      4.4:1 and fail by 0.1.
+      Two ways out, both a single token edit rather than a 25-file sweep:
+      (a) darken light-mode `--primary` from `#2563eb` to `#1d4ed8`, which lifts the tint
+          pair to about 6.4:1 and also improves `text-primary` on white (6.9:1) and
+          `bg-primary` with light text (6.7:1);
+      (b) leave it and accept 4.4:1 for these chips.
+      Dark mode is unaffected either way, and it is already at zero failures.
 
 - [x] **5. Discovery copy is translatable** (`P2`)
       Status labels, section kickers and tab counts were hardcoded English, so `/id` and `/ja`

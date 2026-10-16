@@ -90,4 +90,17 @@ describe("Theme token contrast (WCAG AA for small text)", () => {
 
     expect(luminance(dark["archetype-primary"])).toBeGreaterThan(luminance(dark["archetype-surface"]));
   });
+
+  it("keeps muted text legible on the muted surface in both themes", () => {
+    // Regression: light-mode --muted-foreground was #64748b, only 4.2-4.3:1 on --muted
+    // and on bg-primary/10 tints.
+    expect(ratioOn(light.muted, light["muted-foreground"])).toBeGreaterThanOrEqual(4.5);
+    expect(ratioOn(dark.muted, dark["muted-foreground"])).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it("keeps muted text legible on a 10% primary tint in light mode", () => {
+    // Cluster count chips and the calendar "today" cell sit on this tint.
+    const primaryTint = "#e6eefc";
+    expect(ratioOn(primaryTint, light["muted-foreground"])).toBeGreaterThanOrEqual(4.5);
+  });
 });

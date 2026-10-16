@@ -20,7 +20,9 @@
     --secondary-foreground: 222 47% 11.2%;
 
     --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Slate 600 rather than slate 500: #64748b only reached 4.2-4.3:1 on --muted and on
+       bg-primary/10 tints, which fails AA for small text. #475569 reaches about 6.9:1. */
+    --muted-foreground: 215 19.3% 34.5%;
 
     --accent: 215 65% 95%;
     --accent-foreground: 222 47% 11.2%;
