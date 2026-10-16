@@ -55,7 +55,7 @@ describe('Discovery Component: EventCard', () => {
     expect(screen.getByText('Premier heavy robotics and CNC exhibition')).toBeInTheDocument();
     expect(screen.getByText('JIExpo Kemayoran')).toBeInTheDocument();
     expect(screen.getByText(/Central Jakarta/)).toBeInTheDocument();
-    expect(screen.getByText('Industrial B2B')).toBeInTheDocument();
+    expect(screen.getByText('Industrial & Manufacturing')).toBeInTheDocument();
   });
 
   it('T1.2: displays featured badge when event is marked as isFeatured', () => {

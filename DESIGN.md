@@ -38,6 +38,13 @@ colors:
   category-hospitality: "#0891b2"
   category-education: "#7c3aed"
   category-fashion: "#db2777"
+  category-proptech: "#0284c7"
+  category-media: "#7c3aed"
+  category-supplychain: "#0d9488"
+  category-franchise: "#ca8a04"
+  category-aerospace: "#1e3a8a"
+  category-faith: "#047857"
+  category-sports: "#ea580c"
   archetype-industrial-primary: "#2563eb"
   archetype-industrial-accent: "#f59e0b"
   archetype-industrial-bg: "#0f172a"
@@ -212,7 +219,7 @@ The interface balances dense, operational MICE data (ceiling heights, floor load
 
 ## 2. Colors
 
-XPO utilizes a dual-layer color system: an enterprise slate neutral foundation paired with 15 specialized MICE category identity palettes.
+XPO utilizes a dual-layer color system: an enterprise slate neutral foundation paired with 22 specialized MICE category identity palettes.
 
 ### Core Neutral & Semantic Palette:
 - **Primary Action**: `#2563eb` (Default Action) / `#1d4ed8` (Hover) / `#3b82f6` (Dark Mode Accent).
@@ -224,8 +231,8 @@ XPO utilizes a dual-layer color system: an enterprise slate neutral foundation p
 - **Semantic Destructive**: `--destructive` `#e11d48` (Rose 600) for cancellations, errors, and pass revocations.
 - **Semantic Info**: `--info` `#0284c7` (Sky 500) for protocol briefings, guidance, and informational tracks.
 
-### 15 MICE Domain Category Archetypes:
-Each of the 15 MICE event categories defines a dedicated CSS variable scope:
+### 22 MICE Domain Category Archetypes:
+Each of the 22 MICE event categories defines a dedicated CSS variable scope, grouped into 6 industry clusters:
 
 | Category | Primary Color | Accent Hue | Typical Surface Theme |
 |---|:---:|:---:|---|
@@ -244,6 +251,13 @@ Each of the 15 MICE event categories defines a dedicated CSS variable scope:
 | **Hospitality & Travel Mart** | `#0891b2` (Cyan) | `#f97316` (Coral) | Maritime gateway |
 | **Education & EdTech Summit** | `#7c3aed` (Violet) | `#0284c7` (Cobalt) | Academic campus |
 | **Fashion & Luxury Retail** | `#db2777` (Fuchsia) | `#4f46e5` (Indigo) | Runway editorial |
+| **Building, Architecture & PropTech** | `#0284c7` (Sky Blue) | `#f59e0b` (Amber) | Material spec slate |
+| **Media, Broadcast & Pro-AV** | `#7c3aed` (Violet) | `#06b6d4` (Cyan) | Studio control room |
+| **Supply Chain, Logistics & Packaging** | `#0d9488` (Teal) | `#3b82f6` (Blue) | Warehouse grid |
+| **Franchise, Retail & SME Business** | `#ca8a04` (Bronze) | `#16a34a` (Green) | High-street retail |
+| **Aerospace, Aviation & Defense** | `#1e3a8a` (Deep Navy) | `#06b6d4` (Cyan) | Flight deck steel |
+| **Faith, Pilgrimage & Community** | `#047857` (Emerald) | `#d97706` (Warm Gold) | Contemplative stone |
+| **Sports, Fitness & Outdoor** | `#ea580c` (Orange) | `#0284c7` (Sky Blue) | Track and field |
 
 ---
 

@@ -79,11 +79,13 @@ export const EventCard = React.memo(function EventCard({
     );
   }, [event.startDate, event.endDate, locale, timezone]);
 
-  let archetypeDisplayName = archetypeTokens.displayName;
+  let archetypeBadgeLabel = archetypeTokens.displayName.split('&')[0].trim();
   try {
     if (tArch && typeof tArch.raw === 'function') {
       const raw = tArch.raw(event.archetype);
-      if (raw?.title) archetypeDisplayName = raw.title;
+      // `tag` is the authored short label and is translated per locale. The token
+      // display name is the untranslated fallback.
+      if (raw?.tag) archetypeBadgeLabel = raw.tag;
     }
   } catch {
     // fallback
@@ -91,7 +93,7 @@ export const EventCard = React.memo(function EventCard({
 
   const isCurated = Boolean(
     event.isPlatformCurated ||
-    (event.organizerId === null && (Boolean(event.organizerName) || event.isPlatformCurated !== false))
+    (event.organizerId === null && Boolean(event.organizerName))
   );
   const curatedBadgeLabel = event.organizerName ? tEvents('curatedListing') : tEvents('officialListing');
   const organizerAttribution = React.useMemo(() => {
@@ -154,7 +156,7 @@ export const EventCard = React.memo(function EventCard({
               color: archetypeBadge.color,
             }}
           >
-            {archetypeTokens.displayName.split('&')[0].trim()}
+            {archetypeBadgeLabel}
           </Badge>
 
           {temporal.isLive && (

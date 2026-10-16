@@ -89,11 +89,26 @@ is evidence-based rather than asserted.
       Updated `MajorVenuesUpcomingSection.test.tsx` to assert the corrected behaviour with a
       fixed clock, matching the `vi.setSystemTime` pattern EventCard.test.tsx already used.
 
-- [ ] **8. Minor cleanups** (`P3`)
-      Dead `xl:grid-cols-3` class, hardcoded calendar fallback city and currency, unused
-      `archetypeDisplayName`, a string-guard standing in for a translation, an over-broad
-      `isCurated` predicate, and docs claiming 15 categories where the code has 22.
-      Accept: each is either fixed or explicitly documented as intentional.
+- [x] **8. Minor cleanups** (`P3`) - all resolved or recorded
+      * **Fixed**: dead `xl:grid-cols-3` duplicating `lg:grid-cols-3` in the featured grid.
+      * **Fixed**: the calendar mapping's `'Grand Convention Hall'` and `'Jakarta'` fallbacks
+        invented facts for every non-Indonesian edition. Both fields are optional on
+        `EventSummary`, so they now pass `undefined` and the widget decides. The currency
+        fallback derives from `getCurrencyForRegion(activeRegionCode)`, so Japan gets JPY.
+      * **Fixed**: `EventCard` computed `archetypeDisplayName` and never used it, while the
+        badge rendered the untranslated token name, so `/ja` showed "TECH & CONSUMER
+        ELECTRONICS". The badge now uses the authored, translated `tag` field. Visible on
+        `/en` as "INDUSTRIAL & MANUFACTURING" instead of "INDUSTRIAL B2B".
+      * **Fixed**: the `isCurated` predicate treated `isPlatformCurated === undefined` as
+        curated, so any future event with no organizer and no explicit flag would be labelled
+        "Curated by {venue}". It now requires an explicit flag or an organizer name.
+      * **Fixed**: `AGENTS.md` section 5A and `DESIGN.md` both documented 15 categories with a
+        15-row colour table; the code has 22. Both now describe 22 across 6 clusters, and the
+        colour table is complete.
+      * **Recorded, not changed**: the fragile `happeningAtVenue` string-guard was already
+        removed in todo 5. `HeroVenueQuickGlanceRail` stays off on the homepage
+        (`showVenueRail={false}`) but is an opt-in variant with its own test coverage, so it is
+        a supported API rather than dead code, and AGENTS.md documents the rail as a feature.
 
 ## Explicitly out of scope
 

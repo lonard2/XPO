@@ -26,6 +26,7 @@ import {
   FALLBACK_VENUES,
 } from '@/lib/discovery/fallbackData';
 import { resolveActiveRegion } from '@/lib/i18n/geo';
+import { getCurrencyForRegion } from '@/lib/i18n/formatters';
 import { sortUpcomingFirst } from '@/lib/discovery/eventOrder';
 import { type BannerSlide, type DiscoveryEvent, type VenueWithEvents } from '@/types/discovery';
 
@@ -301,7 +302,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
             {featuredEvents.map((event, idx) => (
               <EventCard key={event.id} event={event} locale={locale} priority={idx < 3} />
             ))}
@@ -319,12 +320,12 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
             archetype: e.archetype,
             startDate: e.startDate,
             endDate: e.endDate,
-            venueName: e.venue?.name || 'Grand Convention Hall',
+            venueName: e.venue?.name,
             venueHallName: e.venueHall?.name || null,
-            cityName: e.venue?.city || 'Jakarta',
+            cityName: e.venue?.city,
             regionCode: activeRegionCode,
             lowestPrice: e.ticketTiers?.[0]?.price ?? 0,
-            currency: e.ticketTiers?.[0]?.currency || 'IDR',
+            currency: e.ticketTiers?.[0]?.currency || getCurrencyForRegion(activeRegionCode),
           }))}
           locale={locale}
           regionCode={activeRegionCode}
