@@ -30,12 +30,18 @@ is evidence-based rather than asserted.
       20px under the controls and 14px above the indicator pill, with no page overflow,
       at 320, 390, 768 and 1440.
 
-- [ ] **4. Archetype badge contrast meets AA** (`P1`, scoped)
+- [x] **4. Archetype badge contrast meets AA** (`P1`, scoped)
       Badge text was hardcoded white over archetype hues, and the existing contrast helper
       picked dark text that also failed.
-      Accept: every archetype badge renders its best available text colour, verified by test.
-      Deferred: the dark-mode `--primary` token still fails white text at 3.6:1 on the hero CTA
-      and link colour. That is a global palette change and belongs in its own task.
+      Result: contrast helpers moved into `src/lib/theming.ts`, which `src/lib/AGENTS.md`
+      already designates for contrast validation. `getReadableBadgeColors` guarantees 4.5:1
+      for all 22 archetypes by darkening the badge background in steps rather than falling
+      back to a neutral, so the hue stays recognisable. In-page detector low-contrast
+      findings dropped from 9 to 6; the `<h1>`-era MEGA_EXPO (white on orange, 3.6:1) and
+      indigo (3.6:1) badge pairs are gone.
+      Deferred: 6 remaining findings are token-level, not badges: the dark-mode `--primary`
+      surface carrying white text (3.6:1) and `--primary` used as text on dark cards
+      (3.5:1). Both affect every surface in the app, so they need a palette decision.
 
 - [ ] **5. Discovery copy is translatable** (`P2`)
       Status labels, section kickers and tab counts were hardcoded English, so `/id` and `/ja`

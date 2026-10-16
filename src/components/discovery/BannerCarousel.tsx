@@ -23,7 +23,7 @@ import { Badge } from '@/components/ui/Badge';
 import { buttonVariants } from '@/components/ui/Button';
 import { useTranslations } from 'next-intl';
 import { formatDateRange, getTimeZoneForRegion, getEventTemporalStatus, type EventTemporalDetails } from '@/lib/i18n/formatters';
-import { getArchetypeTokens } from '@/lib/theming';
+import { getArchetypeTokens, getReadableBadgeColors } from '@/lib/theming';
 import { type BannerSlide } from '@/types/discovery';
 import { cn } from '@/lib/utils';
 
@@ -165,6 +165,7 @@ export function BannerCarousel({
 
   const currentSlide = slides[currentIndex];
   const archetypeTokens = getArchetypeTokens(currentSlide.archetype);
+  const archetypeBadge = getReadableBadgeColors(archetypeTokens.primary);
   const regionCode = (currentSlide.regionCode || 'ID').toUpperCase();
   const timezone = getTimeZoneForRegion(regionCode.toLowerCase());
   const dateRangeDisplay = formatDateRange(
@@ -241,7 +242,7 @@ export function BannerCarousel({
             <Badge
               variant="default"
               className="text-xs font-bold tracking-wide uppercase shadow-md border-0 gap-1.5"
-              style={{ backgroundColor: archetypeTokens.primary, color: '#ffffff' }}
+              style={{ backgroundColor: archetypeBadge.background, color: archetypeBadge.color }}
             >
               <Globe className="h-3 w-3 inline opacity-90" />
               <span>{regionCode.toUpperCase()} • {archetypeTokens.displayName}</span>

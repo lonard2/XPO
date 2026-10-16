@@ -16,7 +16,7 @@ import { buttonVariants } from '@/components/ui/Button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/Card';
 import { useTranslations } from 'next-intl';
 import { formatCurrency, formatDateRange, getTimeZoneForRegion, getEventTemporalStatus, type SupportedCurrency } from '@/lib/i18n/formatters';
-import { getArchetypeTokens } from '@/lib/theming';
+import { getArchetypeTokens, getReadableBadgeColors } from '@/lib/theming';
 import { type DiscoveryEvent } from '@/types/discovery';
 import { cn } from '@/lib/utils';
 
@@ -26,23 +26,6 @@ export interface EventCardProps {
   className?: string;
   variant?: 'grid' | 'compact' | 'horizontal';
   priority?: boolean;
-}
-
-function getContrastTextColor(hexColor?: string): string {
-  if (!hexColor || !hexColor.startsWith('#')) return '#ffffff';
-  const hex = hexColor.replace('#', '');
-  const r8 = parseInt(hex.substring(0, 2), 16) || 0;
-  const g8 = parseInt(hex.substring(2, 4), 16) || 0;
-  const b8 = parseInt(hex.substring(4, 6), 16) || 0;
-
-  const toLinear = (c: number) => {
-    const s = c / 255;
-    return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
-  };
-
-  const L = 0.2126 * toLinear(r8) + 0.7152 * toLinear(g8) + 0.0722 * toLinear(b8);
-  // When relative luminance L > 0.2, dark text yields higher contrast ratio than white
-  return L > 0.2 ? '#0f172a' : '#ffffff';
 }
 
 export const EventCard = React.memo(function EventCard({
@@ -60,6 +43,10 @@ export const EventCard = React.memo(function EventCard({
   const archetypeTokens = React.useMemo(
     () => getArchetypeTokens(event.archetype),
     [event.archetype]
+  );
+  const archetypeBadge = React.useMemo(
+    () => getReadableBadgeColors(archetypeTokens.primary),
+    [archetypeTokens.primary]
   );
   const regionCode = (event.region?.code || event.regionId || 'id').toLowerCase();
   const timezone = React.useMemo(() => getTimeZoneForRegion(regionCode), [regionCode]);
@@ -162,8 +149,8 @@ export const EventCard = React.memo(function EventCard({
             variant="default"
             className="text-xs uppercase font-bold tracking-wider shadow-sm"
             style={{
-              backgroundColor: archetypeTokens.primary,
-              color: getContrastTextColor(archetypeTokens.primary),
+              backgroundColor: archetypeBadge.background,
+              color: archetypeBadge.color,
             }}
           >
             {archetypeTokens.displayName.split('&')[0].trim()}

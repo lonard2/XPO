@@ -886,3 +886,110 @@ export function parseBrandingConfig(jsonString?: string | null): BrandingConfig 
     return {};
   }
 }
+
+/** The two house inks available for text placed on an arbitrary colour surface. */
+const CONTRAST_INK_LIGHT = "#ffffff";
+const CONTRAST_INK_DARK = "#0f172a";
+
+interface RgbChannels {
+  r: number;
+  g: number;
+  b: number;
+}
+
+function parseHexColor(hexColor?: string | null): RgbChannels | null {
+  if (!hexColor) return null;
+  const hex = hexColor.trim().replace(/^#/, "");
+  const normalized = hex.length === 3
+    ? hex.split("").map((character) => character + character).join("")
+    : hex;
+  if (!/^[0-9a-fA-F]{6}$/.test(normalized)) return null;
+
+  return {
+    r: parseInt(normalized.slice(0, 2), 16),
+    g: parseInt(normalized.slice(2, 4), 16),
+    b: parseInt(normalized.slice(4, 6), 16),
+  };
+}
+
+/** WCAG 2.1 relative luminance. */
+function relativeLuminance({ r, g, b }: RgbChannels): number {
+  const linearise = (value: number) => {
+    const channel = value / 255;
+    return channel <= 0.03928 ? channel / 12.92 : Math.pow((channel + 0.055) / 1.055, 2.4);
+  };
+
+  return 0.2126 * linearise(r) + 0.7152 * linearise(g) + 0.0722 * linearise(b);
+}
+
+/**
+ * WCAG 2.1 contrast ratio between two colours, from 1 (identical) to 21.
+ * Returns 1 when either colour cannot be parsed, so callers never see NaN.
+ */
+export function getContrastRatio(foreground: string, background: string): number {
+  const foregroundChannels = parseHexColor(foreground);
+  const backgroundChannels = parseHexColor(background);
+  if (!foregroundChannels || !backgroundChannels) return 1;
+
+  const foregroundLuminance = relativeLuminance(foregroundChannels);
+  const backgroundLuminance = relativeLuminance(backgroundChannels);
+  const lighter = Math.max(foregroundLuminance, backgroundLuminance);
+  const darker = Math.min(foregroundLuminance, backgroundLuminance);
+
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+/**
+ * Picks whichever house ink has the higher contrast against `background`.
+ *
+ * Archetype primaries and organizer brand overrides are arbitrary hex values, so a
+ * luminance threshold cannot guarantee a passing pair: indigo needs light text while
+ * amber needs dark text, and each fails badly with the other. Comparing both candidates
+ * and taking the better one always returns the most legible available option.
+ */
+export function getContrastTextColor(background?: string | null): string {
+  const channels = parseHexColor(background);
+  if (!channels) return CONTRAST_INK_LIGHT;
+
+  const lightContrast = getContrastRatio(CONTRAST_INK_LIGHT, background as string);
+  const darkContrast = getContrastRatio(CONTRAST_INK_DARK, background as string);
+
+  return lightContrast >= darkContrast ? CONTRAST_INK_LIGHT : CONTRAST_INK_DARK;
+}
+
+function toHex({ r, g, b }: RgbChannels): string {
+  const channel = (value: number) =>
+    Math.max(0, Math.min(255, Math.round(value))).toString(16).padStart(2, "0");
+
+  return `#${channel(r)}${channel(g)}${channel(b)}`;
+}
+
+/**
+ * Returns a background and ink pair that reaches `minimumRatio` for small text.
+ *
+ * Archetype primaries are chosen for visual identity, not legibility, and a few hues
+ * cannot carry either house ink at 4.5:1: indigo manages only 4.47:1 with white. Those
+ * backgrounds are darkened in small steps until an ink passes, so a badge stays
+ * recognisably the archetype colour instead of collapsing to a neutral.
+ */
+export function getReadableBadgeColors(
+  background: string,
+  minimumRatio = 4.5
+): { background: string; color: string } {
+  const parsed = parseHexColor(background);
+  if (!parsed) {
+    return { background, color: CONTRAST_INK_LIGHT };
+  }
+
+  let current: RgbChannels = { ...parsed };
+  for (let step = 0; step < 24; step += 1) {
+    const candidate = toHex(current);
+    const color = getContrastTextColor(candidate);
+    if (getContrastRatio(color, candidate) >= minimumRatio) {
+      return { background: candidate, color };
+    }
+    current = { r: current.r * 0.9, g: current.g * 0.9, b: current.b * 0.9 };
+  }
+
+  return { background: toHex(current), color: CONTRAST_INK_LIGHT };
+}

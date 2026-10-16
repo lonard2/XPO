@@ -4,6 +4,9 @@ import {
   getArchetypeCssVariables,
   parseBrandingConfig,
   isValidArchetype,
+  getContrastRatio,
+  getContrastTextColor,
+  getReadableBadgeColors,
   ARCHETYPE_DEFAULTS,
   ARCHETYPE_LIST,
   ARCHETYPE_METAS,
@@ -158,5 +161,106 @@ describe("Phase 5 Unit: Dynamic MICE Category Theming Engine", () => {
     expect(isValidArchetype("RANDOM_STRING")).toBe(false);
     expect(isValidArchetype("")).toBe(false);
     expect(isValidArchetype("industrial_b2b")).toBe(false);
+  });
+});
+
+describe("Contrast helpers for arbitrary colour surfaces", () => {
+  it("computes known WCAG ratios", () => {
+    expect(getContrastRatio("#ffffff", "#000000")).toBeCloseTo(21, 1);
+    expect(getContrastRatio("#ffffff", "#ffffff")).toBeCloseTo(1, 2);
+  });
+
+  it("returns 1 rather than NaN for unparseable colours", () => {
+    expect(getContrastRatio("not-a-colour", "#ffffff")).toBe(1);
+    expect(getContrastRatio("#ffffff", "")).toBe(1);
+    expect(getContrastRatio("#fff", "rgb(0,0,0)")).toBe(1);
+  });
+
+  it("accepts three digit hex", () => {
+    expect(getContrastRatio("#fff", "#000")).toBeCloseTo(21, 1);
+  });
+
+  it("picks light ink for a dark surface and dark ink for a light surface", () => {
+    expect(getContrastTextColor("#0f172a")).toBe("#ffffff");
+    expect(getContrastTextColor("#fde68a")).toBe("#0f172a");
+  });
+
+  it("picks dark ink for amber, which white text fails on", () => {
+    // Regression: the MEGA_EXPO badge hardcoded white over #ea580c (3.6:1).
+    expect(getContrastTextColor("#ea580c")).toBe("#0f172a");
+    expect(getContrastRatio("#ffffff", "#ea580c")).toBeLessThan(4.5);
+  });
+
+  it("picks light ink for indigo, which dark text fails on", () => {
+    // Regression: the luminance threshold returned dark ink over #6366f1 (3.6:1).
+    expect(getContrastTextColor("#6366f1")).toBe("#ffffff");
+    expect(getContrastRatio("#0f172a", "#6366f1")).toBeLessThan(4.5);
+  });
+
+  it("always returns the better of the two inks for any archetype primary", () => {
+    for (const archetype of ARCHETYPE_LIST) {
+      const { primary } = ARCHETYPE_DEFAULTS[archetype];
+      const chosen = getContrastTextColor(primary);
+      const other = chosen === "#ffffff" ? "#0f172a" : "#ffffff";
+
+      expect(["#ffffff", "#0f172a"]).toContain(chosen);
+      expect(getContrastRatio(chosen, primary)).toBeGreaterThanOrEqual(
+        getContrastRatio(other, primary)
+      );
+    }
+  });
+
+  it("brings every archetype badge to at least 4.5:1", () => {
+    for (const archetype of ARCHETYPE_LIST) {
+      const { primary } = ARCHETYPE_DEFAULTS[archetype];
+      const badge = getReadableBadgeColors(primary);
+
+      expect(getContrastRatio(badge.color, badge.background)).toBeGreaterThanOrEqual(4.5);
+    }
+  });
+
+  it("keeps the archetype hue recognisable instead of replacing it", () => {
+    // #6366f1 only reaches 4.47:1 with white, so it must darken rather than become neutral.
+    const badge = getReadableBadgeColors("#6366f1");
+    const channels = {
+      r: parseInt(badge.background.slice(1, 3), 16),
+      g: parseInt(badge.background.slice(3, 5), 16),
+      b: parseInt(badge.background.slice(5, 7), 16),
+    };
+
+    expect(badge.color).toBe("#ffffff");
+    expect(badge.background).not.toBe("#6366f1");
+    expect(getContrastRatio(badge.color, badge.background)).toBeGreaterThanOrEqual(4.5);
+    // Still the same blue-dominant hue, not a neutral grey.
+    expect(channels.b).toBeGreaterThan(channels.r);
+    expect(channels.b).toBeGreaterThan(channels.g);
+  });
+
+  it("leaves a background alone when it already passes", () => {
+    expect(getReadableBadgeColors("#ea580c").background).toBe("#ea580c");
+    expect(getReadableBadgeColors("#0f172a").background).toBe("#0f172a");
+  });
+
+  it("honours a custom minimum ratio", () => {
+    const badge = getReadableBadgeColors("#6366f1", 4.4);
+    expect(getContrastRatio(badge.color, badge.background)).toBeGreaterThanOrEqual(4.4);
+  });
+
+  it("does not throw on an invalid background", () => {
+    expect(() => getReadableBadgeColors("nope")).not.toThrow();
+    expect(getReadableBadgeColors("nope").color).toBe("#ffffff");
+  });
+
+  it("falls back to light ink for missing or invalid input", () => {
+    expect(getContrastTextColor()).toBe("#ffffff");
+    expect(getContrastTextColor(null)).toBe("#ffffff");
+    expect(getContrastTextColor("")).toBe("#ffffff");
+    expect(getContrastTextColor("rebeccapurple")).toBe("#ffffff");
+  });
+
+  it("handles organizer brand overrides that are arbitrary hex", () => {
+    const tokens = getArchetypeTokens("INDUSTRIAL_B2B", { primaryColor: "#fff8dc" });
+    expect(tokens.primary).toBe("#fff8dc");
+    expect(getContrastTextColor(tokens.primary)).toBe("#0f172a");
   });
 });
