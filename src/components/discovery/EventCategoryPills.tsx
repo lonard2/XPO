@@ -201,7 +201,7 @@ export function EventCategoryPills({
           <h3 className="text-xs sm:text-sm font-bold text-foreground group-hover:text-primary transition-colors leading-snug line-clamp-2">
             {translatedTitle}
           </h3>
-          <p className="text-[11px] text-muted-foreground mt-1 line-clamp-1 leading-normal font-normal">
+          <p className="text-[11px] text-muted-foreground mt-1 line-clamp-2 leading-normal font-normal">
             {translatedSubtitle}
           </p>
         </div>

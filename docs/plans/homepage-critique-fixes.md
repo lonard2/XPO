@@ -70,10 +70,24 @@ is evidence-based rather than asserted.
       Guarded by `tests/unit/a11y/homepage-heading.test.ts`, matching the repo's existing
       source-scan a11y pattern.
 
-- [ ] **7. Venue and category grids stop showing emptiness** (`P2`)
+- [x] **7. Venue and category grids stop showing emptiness** (`P2`, partial by design)
       Four of six venue cards printed the same "nothing this week" empty state, and the
-      22-tile default grid left an orphaned final row.
-      Accept: a venue renders only when it has a current or upcoming event; no orphaned row.
+      category subtitle was clipped on all 22 tiles.
+      Result: the venue section now derives each venue's attendable events once and drops
+      venues with none, so on `/en` the spotlight went from 6 cards (4 of them empty) to the
+      1 venue that actually has something on. When no venue qualifies, the section explains
+      itself once instead of repeating the message per card. Venue event lists are also
+      filtered by status rather than sliced raw, which removes a label mismatch: ended events
+      were being listed under "Current & Near-Upcoming Events".
+      The category subtitle moved from `line-clamp-1` to `line-clamp-2`: 22 of 22 tiles were
+      clipped mid-phrase, now 0 of 22 are.
+      NOT FIXED, deliberately: the trailing partial row (22 tiles at 5 columns leaves 3 empty
+      cells). A uniform grid cannot be flush for 22 items at any column count except 2, since
+      22 only divides by 2 and 11. Removing it would need either invented filler tiles or a
+      grid-to-flex rewrite that distorts tile widths, and both are worse than a normal
+      trailing row. Recorded rather than papered over.
+      Updated `MajorVenuesUpcomingSection.test.tsx` to assert the corrected behaviour with a
+      fixed clock, matching the `vi.setSystemTime` pattern EventCard.test.tsx already used.
 
 - [ ] **8. Minor cleanups** (`P3`)
       Dead `xl:grid-cols-3` class, hardcoded calendar fallback city and currency, unused

@@ -14,7 +14,7 @@ import { Badge } from '@/components/ui/Badge';
 import { buttonVariants } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { useTranslations } from 'next-intl';
-import { formatDateRange, getTimeZoneForRegion } from '@/lib/i18n/formatters';
+import { formatDateRange, getTimeZoneForRegion, getEventTemporalStatus } from '@/lib/i18n/formatters';
 import { getArchetypeTokens } from '@/lib/theming';
 import { type VenueWithEvents } from '@/types/discovery';
 import { cn } from '@/lib/utils';
@@ -49,6 +49,19 @@ export function MajorVenuesUpcomingSection({
 
   const currentRegionName = regionNameMap[regionCode.toLowerCase()] || regionCode.toUpperCase();
 
+  // A venue with nothing attendable would otherwise print the same "nothing this week"
+  // card, which four of six did. Those venues are dropped; when none remain the section
+  // explains itself once instead of repeating the same message per card.
+  const attendableEventsFor = (venue: VenueWithEvents) =>
+    (venue.events || []).filter((event) => {
+      const temporal = getEventTemporalStatus(event.startDate, event.endDate);
+      return temporal.isUpcoming || temporal.isLive;
+    });
+
+  const venuesWithUpcomingEvents = venues.filter(
+    (venue) => attendableEventsFor(venue).length > 0
+  );
+
   return (
     <section className={cn('w-full space-y-6', className)}>
       {/* Section Header */}
@@ -79,10 +92,19 @@ export function MajorVenuesUpcomingSection({
       </div>
 
       {/* Major Venues Responsive Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {venues.map((venue) => {
-          // Max 3 upcoming/current events per venue
-          const upcomingEvents = (venue.events || []).slice(0, 3);
+      {venuesWithUpcomingEvents.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-border/80 bg-muted/10 p-8 sm:p-12 text-center space-y-2">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary mx-auto">
+            <Calendar className="h-6 w-6" />
+          </div>
+          <p className="text-sm font-bold text-foreground">{tVen('noUpcomingEventsScheduled')}</p>
+          <p className="text-xs text-muted-foreground">{tVen('noUpcomingDetail')}</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        {venuesWithUpcomingEvents.map((venue) => {
+          // Max 3 attendable events per venue
+          const upcomingEvents = attendableEventsFor(venue).slice(0, 3);
           const hallCount = venue.halls?.length || 0;
 
           return (
@@ -224,6 +246,7 @@ export function MajorVenuesUpcomingSection({
           );
         })}
       </div>
+      )}
     </section>
   );
 }
