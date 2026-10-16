@@ -54,6 +54,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
   const tHome = await getTranslations({ locale, namespace: 'home' });
   const tReg = await getTranslations({ locale, namespace: 'regions' });
   const tNav = await getTranslations({ locale, namespace: 'nav' });
+  const tHero = await getTranslations({ locale, namespace: 'hero' });
 
   // Filter fallback data specifically for the active region
   const regionFallbackVenues = FALLBACK_VENUES.filter((v) => {
@@ -221,6 +222,11 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
 
   return (
     <div className="flex flex-col gap-10 sm:gap-14 pb-24 md:pb-16">
+      {/* The hero rotates between events, so the page heading names the page rather than a slide. */}
+      <h1 className="sr-only">
+        {tHero('title')} {tHero('titleHighlight')}
+      </h1>
+
       {/* 1. Hero Stage: Dynamic Banner Carousel + Search Cockpit */}
       <section className="container pt-3 sm:pt-6">
         <HeroSection

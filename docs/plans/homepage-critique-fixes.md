@@ -59,9 +59,16 @@ is evidence-based rather than asserted.
       Verified: no hardcoded user-visible string remains in the four homepage components, and
       `/ja` plus `/id` render translated status labels, kickers and counts.
 
-- [ ] **6. The homepage has an `h1`** (`P2`)
+- [x] **6. The homepage has an `h1`** (`P2`)
       The document had none; every heading was an `h2`.
-      Accept: exactly one `h1` naming the page, with no skipped heading levels.
+      Result: one visually hidden `h1` naming the page, built from `hero.title` and
+      `hero.titleHighlight`, which were already authored and translated in all six locales
+      and otherwise unused. The hero rotates between events, so a slide title would have made
+      an unstable `h1`.
+      Verified: exactly one `h1` on all six locales, heading order now begins at level 1 with
+      no skipped levels, carousel top offset unchanged at 390px, no page overflow.
+      Guarded by `tests/unit/a11y/homepage-heading.test.ts`, matching the repo's existing
+      source-scan a11y pattern.
 
 - [ ] **7. Venue and category grids stop showing emptiness** (`P2`)
       Four of six venue cards printed the same "nothing this week" empty state, and the
