@@ -2,8 +2,8 @@
 name: XPO MICE Digital Ecosystem
 description: Institutional Digital Ecosystem for Global MICE Events, Venues & Passes
 colors:
-  primary: "#2563eb"
-  primary-hover: "#1d4ed8"
+  primary: "#1d4ed8"
+  primary-hover: "#2563eb"
   primary-dark: "#3b82f6"
   background-light: "#f8fafc"
   background-dark: "#090d16"
@@ -222,7 +222,7 @@ The interface balances dense, operational MICE data (ceiling heights, floor load
 XPO utilizes a dual-layer color system: an enterprise slate neutral foundation paired with 22 specialized MICE category identity palettes.
 
 ### Core Neutral & Semantic Palette:
-- **Primary Action**: `#2563eb` (Default Action) / `#1d4ed8` (Hover) / `#3b82f6` (Dark Mode Accent).
+- **Primary Action**: `#1d4ed8` (Default Action, light mode) / `#3b82f6` (Dark Mode Accent). Hover is rendered as `bg-primary/90`, which reads as a lighter step (`#2563eb`-ish) over light surfaces.
 - **Background Surfaces**: Light `#f8fafc` / Dark `#090d16` (Deep Slate Obsidian).
 - **Card Surfaces**: Light `#ffffff` / Dark `#0f172a` / Sub-surface `#1e293b`.
 - **Structural Borders**: Light `#e2e8f0` / Dark `#1e293b` (1px clean demarcation).

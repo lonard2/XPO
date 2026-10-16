@@ -61,6 +61,26 @@ function ratioOn(surface: string, foreground: string): number {
   return getContrastRatio(resolve(foreground), resolve(surface));
 }
 
+/** Composites `over` onto `base` at `alpha`, as Tailwind's `/10` opacity modifier does. */
+function tint(over: string, base: string, alpha: number): string {
+  const channels = (hex: string) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+  const overChannels = channels(over);
+  const baseChannels = channels(base);
+
+  return `#${overChannels
+    .map((value, index) =>
+      Math.round(value * alpha + baseChannels[index] * (1 - alpha))
+        .toString(16)
+        .padStart(2, "0")
+    )
+    .join("")}`;
+}
+
+/** The rendered background of a `bg-primary/10` chip on a given theme's page background. */
+function primaryTintOn(theme: Record<string, string>): string {
+  return tint(hslTripleToHex(theme.primary), hslTripleToHex(theme.background), 0.1);
+}
+
 describe("Theme token contrast (WCAG AA for small text)", () => {
   it("parses the light and dark token blocks", () => {
     expect(light.primary).toBeDefined();
@@ -100,7 +120,13 @@ describe("Theme token contrast (WCAG AA for small text)", () => {
 
   it("keeps muted text legible on a 10% primary tint in light mode", () => {
     // Cluster count chips and the calendar "today" cell sit on this tint.
-    const primaryTint = "#e6eefc";
-    expect(ratioOn(primaryTint, light["muted-foreground"])).toBeGreaterThanOrEqual(4.5);
+    expect(ratioOn(primaryTintOn(light), light["muted-foreground"])).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it("keeps primary ink legible on a 10% primary tint in both themes", () => {
+    // Regression: light-mode text-primary on bg-primary/10 was 4.4:1. Roughly 25 text
+    // chips across the app use this pair, so it is guarded at the token level.
+    expect(ratioOn(primaryTintOn(light), light.primary)).toBeGreaterThanOrEqual(4.5);
+    expect(ratioOn(primaryTintOn(dark), dark.primary)).toBeGreaterThanOrEqual(4.5);
   });
 });

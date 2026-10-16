@@ -13,7 +13,9 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
 
-    --primary: 221 83% 53%;
+    /* #1d4ed8 rather than #2563eb: text-primary on a bg-primary/10 tint only reached
+       4.4:1 at the brighter blue, which fails AA for the ~25 text chips using that pair. */
+    --primary: 224.3 76.3% 48%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;

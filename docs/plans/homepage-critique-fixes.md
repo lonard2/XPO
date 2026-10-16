@@ -76,20 +76,15 @@ is evidence-based rather than asserted.
       Also switched the cluster header's "N Verticals" chip from a 10% primary tint to a
       border, matching the cluster tab count chip, so its label sits on the neutral panel.
 
-- **STILL OPEN, needs a decision: `text-primary` on a `bg-primary/10` tint in light mode.**
-      One failure remains after the muted fix: `#2463eb on #e6eefc` at 4.4:1, identified by
-      locating the element as the cluster header "N Verticals" chip. It is not a one-off:
-      `bg-primary/10` paired with `text-primary` appears about 70 times across the app, of
-      which roughly 25 carry text rather than just an icon (settings chips, filter chips,
-      active-filter chips, pass wallet chips, auth modal chips, selected switcher states).
-      Icon-only instances pass the 3:1 graphical-object threshold; text instances sit at
-      4.4:1 and fail by 0.1.
-      Two ways out, both a single token edit rather than a 25-file sweep:
-      (a) darken light-mode `--primary` from `#2563eb` to `#1d4ed8`, which lifts the tint
-          pair to about 6.4:1 and also improves `text-primary` on white (6.9:1) and
-          `bg-primary` with light text (6.7:1);
-      (b) leave it and accept 4.4:1 for these chips.
-      Dark mode is unaffected either way, and it is already at zero failures.
+- **RESOLVED: `text-primary` on a `bg-primary/10` tint in light mode.** Owner chose to
+      darken the token. Light-mode `--primary` moved from `#2563eb` to `#1d4ed8`, which
+      lifts the tint pair from 4.4:1 to about 6.0:1 and also improves `text-primary` on
+      white (6.9:1) and `bg-primary` with light text (6.7:1). One token edit fixed all
+      ~25 text chips instead of a 25-file sweep. `DESIGN.md` was updated to match, including
+      the note that hover is rendered as `bg-primary/90` rather than a separate colour token.
+      Final state: **0 contrast failures in both light and dark mode**, verified with a cluster
+      selected so the extra chip renders. Remaining detector findings are 6 nested-card
+      frames, 1 `tiny-text` at the deliberate 11px floor, and 1 advisory `overused-font`.
 
 - [x] **5. Discovery copy is translatable** (`P2`)
       Status labels, section kickers and tab counts were hardcoded English, so `/id` and `/ja`
