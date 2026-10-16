@@ -207,7 +207,7 @@ export function BannerCarousel({
         aria-roledescription="slide"
         aria-label={`Slide ${currentIndex + 1} of ${totalSlides}: ${currentSlide.title}`}
         aria-live={isEffectivePaused ? 'polite' : 'off'}
-        className="relative min-h-[420px] sm:min-h-[480px] lg:min-h-[520px] flex flex-col justify-end p-5 sm:p-8 lg:p-12 overflow-hidden"
+        className="relative min-h-[420px] sm:min-h-[480px] lg:min-h-[520px] flex flex-col justify-end p-5 pt-20 pb-20 sm:p-8 lg:p-12 overflow-hidden"
       >
         {/* Slide Image Layer */}
         {currentSlide.heroImageUrl ? (

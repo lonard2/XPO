@@ -22,10 +22,13 @@ is evidence-based rather than asserted.
       Result: `/en` and `/id` lead with the 2027 upcoming event (countdown, "Get Event Pass");
       `/ja` leads with the Nov 2026 robotics expo. Grid order verified upcoming-first.
 
-- [ ] **3. Mobile hero no longer collides with itself** (`P1`)
+- [x] **3. Mobile hero no longer collides with itself** (`P1`)
       At 390px the carousel controls overlap the badge row and the slide-indicator pill
       overlaps the primary CTA. Both overlays are `z-20` over `z-10` content.
       Accept: no intersecting bounding boxes between the four hero bands at 390, 768 and 1440.
+      Result: reserved a top and bottom band on the slide below `sm`. Measured gaps are
+      20px under the controls and 14px above the indicator pill, with no page overflow,
+      at 320, 390, 768 and 1440.
 
 - [ ] **4. Archetype badge contrast meets AA** (`P1`, scoped)
       Badge text was hardcoded white over archetype hues, and the existing contrast helper
