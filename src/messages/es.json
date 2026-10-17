@@ -504,7 +504,11 @@
     "scheduleEmptyDesc": "Vuelva pronto para nuevos anuncios de ferias y reservas de pabellones en {venue}.",
     "defaultHall": "Pabellón principal",
     "viewEventPasses": "Ver evento y pases",
-    "hallsMetric": "Pabellones"
+    "hallsMetric": "Pabellones",
+    "meetingRoomsSearch": "Buscar salas…",
+    "meetingRoomsShowAll": "Mostrar todo ({count})",
+    "meetingRoomsShowLess": "Mostrar menos",
+    "meetingRoomsNoMatch": "Ninguna sala coincide con la búsqueda."
   },
   "calendar": {
     "title": "Calendario Interactivo de Eventos",

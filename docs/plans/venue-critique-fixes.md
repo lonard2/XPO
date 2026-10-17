@@ -34,10 +34,10 @@ One todo per commit, in order below. Each item states its acceptance check.
       Verified /ja and /id render zero English section strings. Units (Pax, m², N/A) and
       proper nouns (Google Maps, Building A, Festhalle) stay untranslated by design.
 
-- [ ] **5. Meeting-rooms search and reveal** (`P2`, `$impeccable distill`)
-      Text filter plus progressive reveal (~12 initial rows, "Show all N") in
-      `VenueMeetingRooms`, following the existing collapse pattern.
-      Accept: typing filters the grid; count updates; component tests cover it.
+- [x] **5. Meeting-rooms search and reveal** (`P2`, `$impeccable distill`)
+      Text filter plus progressive reveal (12 initial rows, "Show all N") in the rooms
+      component, with translated strings and an empty-search note. Verified live on
+      Pacifico: 12 initial, filter narrows 79 to 1. Component tests cover it.
 
 - [x] **6. Real wing vocabularies** (`P2`, `$impeccable document`)
       New `venueWings.ts` maps each of the 12 venues to its own wing rules with exact-match

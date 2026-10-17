@@ -504,7 +504,11 @@
     "scheduleEmptyDesc": "{venue}の新規展示会・ホール予約情報は近日公開予定です。",
     "defaultHall": "メインホール",
     "viewEventPasses": "イベント・パスを見る",
-    "hallsMetric": "ホール"
+    "hallsMetric": "ホール",
+    "meetingRoomsSearch": "会議室を検索…",
+    "meetingRoomsShowAll": "すべて表示（{count}）",
+    "meetingRoomsShowLess": "折りたたむ",
+    "meetingRoomsNoMatch": "条件に合う会議室がありません。"
   },
   "calendar": {
     "title": "イベントカレンダー",

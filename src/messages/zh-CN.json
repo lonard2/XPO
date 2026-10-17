@@ -504,7 +504,11 @@
     "scheduleEmptyDesc": "请稍后查看{venue}的新展公告与展厅预订动态。",
     "defaultHall": "主展厅",
     "viewEventPasses": "查看活动与通行证",
-    "hallsMetric": "展厅"
+    "hallsMetric": "展厅",
+    "meetingRoomsSearch": "搜索会议室…",
+    "meetingRoomsShowAll": "显示全部（{count}个）",
+    "meetingRoomsShowLess": "收起",
+    "meetingRoomsNoMatch": "没有符合条件的会议室。"
   },
   "calendar": {
     "title": "会展交互日历",

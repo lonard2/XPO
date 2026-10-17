@@ -504,7 +504,11 @@
     "scheduleEmptyDesc": "Check back soon for new trade fair announcements and hall booking updates for {venue}.",
     "defaultHall": "Main Exhibition Hall",
     "viewEventPasses": "View Event & Passes",
-    "hallsMetric": "Halls"
+    "hallsMetric": "Halls",
+    "meetingRoomsSearch": "Search meeting rooms...",
+    "meetingRoomsShowAll": "Show all ({count})",
+    "meetingRoomsShowLess": "Show less",
+    "meetingRoomsNoMatch": "No meeting rooms match this search."
   },
   "calendar": {
     "title": "Interactive Event Calendar",

@@ -504,7 +504,11 @@
     "scheduleEmptyDesc": "Schauen Sie bald wieder vorbei für neue Messeankündigungen und Hallenbuchungen für {venue}.",
     "defaultHall": "Hauptausstellungshalle",
     "viewEventPasses": "Event & Pässe ansehen",
-    "hallsMetric": "Hallen"
+    "hallsMetric": "Hallen",
+    "meetingRoomsSearch": "Tagungsräume suchen …",
+    "meetingRoomsShowAll": "Alle anzeigen ({count})",
+    "meetingRoomsShowLess": "Weniger anzeigen",
+    "meetingRoomsNoMatch": "Keine Tagungsräume für diese Suche."
   },
   "calendar": {
     "title": "Interaktiver Eventkalender",

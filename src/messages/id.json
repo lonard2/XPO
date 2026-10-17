@@ -504,7 +504,11 @@
     "scheduleEmptyDesc": "Kembali lagi untuk pengumuman pameran baru dan update booking hall untuk {venue}.",
     "defaultHall": "Hall Pameran Utama",
     "viewEventPasses": "Lihat Acara & Pass",
-    "hallsMetric": "Hall"
+    "hallsMetric": "Hall",
+    "meetingRoomsSearch": "Cari ruang rapat...",
+    "meetingRoomsShowAll": "Tampilkan semua ({count})",
+    "meetingRoomsShowLess": "Tampilkan lebih sedikit",
+    "meetingRoomsNoMatch": "Tidak ada ruang rapat yang cocok."
   },
   "calendar": {
     "title": "Kalender Acara Interaktif",
