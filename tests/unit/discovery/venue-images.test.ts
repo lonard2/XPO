@@ -40,7 +40,9 @@ describe("Venue image data", () => {
 
       expect(urls.length).toBeGreaterThan(0);
       for (const url of urls) {
-        const wellFormed = /^https:\/\/images\.unsplash\.com\/photo-[\w-]+\?w=\d+$/.test(url);
+        const wellFormed =
+          /^https:\/\/images\.unsplash\.com\/photo-[\w-]+\?w=\d+$/.test(url) ||
+          /^https:\/\/upload\.wikimedia\.org\/wikipedia\/commons\/[\w/%().-]+\.(jpg|jpeg|png|webp)$/i.test(url);
         expect({ file: name, url, wellFormed }).toEqual({ file: name, url, wellFormed: true });
       }
     }

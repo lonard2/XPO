@@ -509,7 +509,8 @@
     "meetingRoomsSearch": "Search meeting rooms...",
     "meetingRoomsShowAll": "Show all ({count})",
     "meetingRoomsShowLess": "Show less",
-    "meetingRoomsNoMatch": "No meeting rooms match this search."
+    "meetingRoomsNoMatch": "No meeting rooms match this search.",
+    "explorerIntro": "Structural clear heights, floor loading ratings, pax capacities, and architectural wings."
   },
   "calendar": {
     "title": "Interactive Event Calendar",

@@ -58,10 +58,11 @@ One todo per commit, in order below. Each item states its acceptance check.
       2.5.8 exempts inline), desktop-only nav links (pointer precision). The lone new
       cramped-padding flag is inline glyph line-boxes, a detector false positive.
 
-- [ ] **8. Polish and Tokyo hero photo** (`P3`, `$impeccable polish`)
-      Replace the Shinjuku street photo on Tokyo Big Sight with a verified Ariake-complex
-      shot (photo ID checked live before use). Final detector pass and full suite.
-      Accept: hero shows the actual venue; detector shows no new findings; suite green.
+- [x] **8. Polish and Tokyo hero photo** (`P3`, `$impeccable polish`)
+      Tokyo Big Sight showed a Shinjuku street photo; now shows the actual Conference
+      Tower via a verified Wikimedia Commons image (viewed before use, URL returns 200).
+      Image-URL test accepts the Commons host. Final detector: zero contrast failures;
+      remaining findings are advisory or known-intermittent. Full suite green.
 
 ## Explicitly out of scope
 

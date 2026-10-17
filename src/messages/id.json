@@ -509,7 +509,8 @@
     "meetingRoomsSearch": "Cari ruang rapat...",
     "meetingRoomsShowAll": "Tampilkan semua ({count})",
     "meetingRoomsShowLess": "Tampilkan lebih sedikit",
-    "meetingRoomsNoMatch": "Tidak ada ruang rapat yang cocok."
+    "meetingRoomsNoMatch": "Tidak ada ruang rapat yang cocok.",
+    "explorerIntro": "Tinggi plafon struktural, rating beban lantai, kapasitas, dan sayap arsitektural."
   },
   "calendar": {
     "title": "Kalender Acara Interaktif",

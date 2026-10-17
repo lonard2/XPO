@@ -278,7 +278,7 @@ export const FALLBACK_VENUES: VenueSummary[] = [
     regionId: 'jp',
     region: { id: 'jp', code: 'JP', name: 'Japan', currency: 'JPY' },
     transitInfo: 'Yurikamome Line (Tokyo Big Sight Station, 3 mins). Rinkai Line (Kokusai-Tenjijo Station, 7 mins). Water Bus Ariake Terminal.',
-    imageUrl: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=1200',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/2/20/Tokyo_Big_Sight_Conference_Tower.jpg',
     halls: [
       { id: 'tokyo-east-exhibition-hall-1', name: 'East Exhibition Hall 1', capacity: null, floorAreaSqm: 8670, description: '90 x 90 m block west of the Galleria with mobile roof.' },
       { id: 'tokyo-east-exhibition-hall-2', name: 'East Exhibition Hall 2', capacity: null, floorAreaSqm: 8350, description: 'Exhibition block west of the Galleria.' },

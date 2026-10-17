@@ -509,7 +509,8 @@
     "meetingRoomsSearch": "Buscar salas…",
     "meetingRoomsShowAll": "Mostrar todo ({count})",
     "meetingRoomsShowLess": "Mostrar menos",
-    "meetingRoomsNoMatch": "Ninguna sala coincide con la búsqueda."
+    "meetingRoomsNoMatch": "Ninguna sala coincide con la búsqueda.",
+    "explorerIntro": "Alturas estructurales, cargas de suelo, capacidades y alas arquitectónicas."
   },
   "calendar": {
     "title": "Calendario Interactivo de Eventos",

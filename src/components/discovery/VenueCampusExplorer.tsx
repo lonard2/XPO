@@ -138,7 +138,7 @@ export function VenueCampusExplorer({
             {tVen('hallDirectory', { count: halls.length })}
           </h2>
           <p className="text-xs text-muted-foreground">
-            Structural clear heights, floor loading ratings, pax capacities, and architectural wings.
+            {tVen('explorerIntro')}
           </p>
         </div>
 
