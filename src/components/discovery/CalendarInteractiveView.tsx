@@ -68,6 +68,9 @@ export function CalendarInteractiveView({
   const [isExporting, setIsExporting] = React.useState(false);
   const [copiedText, setCopiedText] = React.useState(false);
   const [exportError, setExportError] = React.useState<string | null>(null);
+  // The 22-tile vertical explorer collapses behind a disclosure so the
+  // timetable stays the workspace lead; it opens when a category is active.
+  const [filtersExpanded, setFiltersExpanded] = React.useState(initialArchetype !== 'all');
   const exportMenuRef = React.useRef<HTMLDivElement>(null);
 
   // Sync state if URL search params change externally (archetype + venue shareable)
@@ -299,13 +302,31 @@ export function CalendarInteractiveView({
               Select a specialized MICE category to narrow your calendar view.
             </p>
           </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <span className="text-xs font-semibold text-muted-foreground" aria-live="polite">
+              {tCal('resultSummary', { shown: filteredEvents.length, total: initialEvents.length }) || `Showing ${filteredEvents.length} of ${initialEvents.length}`}
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setFiltersExpanded(!filtersExpanded)}
+              aria-expanded={filtersExpanded}
+              className="gap-1.5 text-xs font-semibold cursor-pointer min-h-[44px] sm:min-h-[36px]"
+            >
+              <Layers className="h-3.5 w-3.5" />
+              <span>{filtersExpanded ? (tCal('hideVerticals') || 'Hide verticals') : (tCal('browseVerticals') || 'Browse all verticals')}</span>
+              <ChevronDown className={cn('h-3.5 w-3.5 transition-transform duration-200', filtersExpanded && 'rotate-180')} />
+            </Button>
+          </div>
         </div>
 
-        <EventCategoryPills
-          locale={locale}
-          activeCategoryId={selectedArchetype}
-          onSelectCategory={handleSelectCategory}
-        />
+        {filtersExpanded && (
+          <EventCategoryPills
+            locale={locale}
+            activeCategoryId={selectedArchetype}
+            onSelectCategory={handleSelectCategory}
+          />
+        )}
 
         {/* Active Filter Chips & Quick Reset */}
         {(selectedArchetype !== 'all' || selectedVenue !== 'all') && (
@@ -367,7 +388,7 @@ export function CalendarInteractiveView({
       </div>
 
       {/* 3. Chronological Schedule Chunked by Month Milestones */}
-      <div className="space-y-6 pt-6 border-t border-border/70">
+      <div className="space-y-6 pt-6 border-t border-border/80">
         {/* Section Header & Export Control */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>

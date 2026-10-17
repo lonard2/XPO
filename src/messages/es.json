@@ -540,7 +540,10 @@
     "copyFailed": "Copiado fallido. El navegador bloqueó el portapapeles.",
     "exportBulkGroup": "Conjunto filtrado completo",
     "exportSingleGroup": "Evento único",
-    "exportTimezoneNote": "Fechas en"
+    "exportTimezoneNote": "Fechas en",
+    "resultSummary": "Mostrando {shown} de {total}",
+    "hideVerticals": "Ocultar verticales",
+    "browseVerticals": "Ver todas las verticales"
   },
   "tickets": {
     "bookPass": "Reservar Pase de Entrada",

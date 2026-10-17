@@ -540,7 +540,10 @@
     "copyFailed": "コピーに失敗しました。ブラウザがクリップボードをブロックしました。",
     "exportBulkGroup": "フィルター済み全件",
     "exportSingleGroup": "単一イベント",
-    "exportTimezoneNote": "日時はすべて"
+    "exportTimezoneNote": "日時はすべて",
+    "resultSummary": "{total}件中{shown}件を表示",
+    "hideVerticals": "カテゴリーを隠す",
+    "browseVerticals": "全カテゴリーを見る"
   },
   "tickets": {
     "bookPass": "入場パスを予約",

@@ -34,6 +34,9 @@ const mockMessages: Record<string, Record<string, string>> = {
     exportBulkGroup: 'Full filtered set',
     exportSingleGroup: 'Single event',
     exportTimezoneNote: 'All dates shown in',
+    resultSummary: 'Showing',
+    hideVerticals: 'Hide verticals',
+    browseVerticals: 'Browse all verticals',
   },
   common: {
     back: 'Back',
@@ -262,5 +265,22 @@ describe('CalendarInteractiveView Component', () => {
 
     expect(screen.getByText(/full filtered set \(2\)/i)).toBeInTheDocument();
     expect(screen.getByText(/single event/i)).toBeInTheDocument();
+  });
+
+  it('collapses the vertical explorer behind a disclosure with a result summary', () => {
+    render(
+      <CalendarInteractiveView
+        initialEvents={mockEvents}
+        locale="en"
+        region="id"
+      />
+    );
+
+    expect(screen.getByText(/^showing/i)).toBeInTheDocument();
+    const toggle = screen.getByRole('button', { name: /browse all verticals/i });
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+
+    fireEvent.click(toggle);
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
   });
 });

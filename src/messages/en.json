@@ -540,7 +540,10 @@
     "copyFailed": "Copy failed. Your browser blocked clipboard access.",
     "exportBulkGroup": "Full filtered set",
     "exportSingleGroup": "Single event",
-    "exportTimezoneNote": "All dates shown in"
+    "exportTimezoneNote": "All dates shown in",
+    "resultSummary": "Showing {shown} of {total}",
+    "hideVerticals": "Hide verticals",
+    "browseVerticals": "Browse all verticals"
   },
   "tickets": {
     "bookPass": "Book Ticket Pass",

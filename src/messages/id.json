@@ -540,7 +540,10 @@
     "copyFailed": "Penyalinan gagal. Peramban memblokir akses papan klip.",
     "exportBulkGroup": "Satu set terfilter penuh",
     "exportSingleGroup": "Satu acara",
-    "exportTimezoneNote": "Semua tanggal dalam"
+    "exportTimezoneNote": "Semua tanggal dalam",
+    "resultSummary": "Menampilkan {shown} dari {total}",
+    "hideVerticals": "Sembunyikan vertikal",
+    "browseVerticals": "Jelajahi semua vertikal"
   },
   "tickets": {
     "bookPass": "Pesan Pas Masuk",

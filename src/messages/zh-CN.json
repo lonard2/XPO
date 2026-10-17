@@ -540,7 +540,10 @@
     "copyFailed": "复制失败。浏览器阻止了剪贴板访问。",
     "exportBulkGroup": "筛选后的全部",
     "exportSingleGroup": "单个活动",
-    "exportTimezoneNote": "日期时区为"
+    "exportTimezoneNote": "日期时区为",
+    "resultSummary": "共{total}个，显示{shown}个",
+    "hideVerticals": "隐藏类别",
+    "browseVerticals": "浏览全部类别"
   },
   "tickets": {
     "bookPass": "预订入场通行证",

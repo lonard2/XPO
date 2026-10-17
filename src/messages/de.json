@@ -540,7 +540,10 @@
     "copyFailed": "Kopieren fehlgeschlagen. Der Browser hat den Zwischenablage-Zugriff blockiert.",
     "exportBulkGroup": "Gefilterte Gesamtmenge",
     "exportSingleGroup": "Einzelnes Event",
-    "exportTimezoneNote": "Alle Daten in"
+    "exportTimezoneNote": "Alle Daten in",
+    "resultSummary": "{shown} von {total} angezeigt",
+    "hideVerticals": "Vertikale ausblenden",
+    "browseVerticals": "Alle Vertikale ansehen"
   },
   "tickets": {
     "bookPass": "Einlasspass buchen",
