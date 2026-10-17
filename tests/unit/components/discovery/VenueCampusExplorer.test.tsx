@@ -80,6 +80,19 @@ describe('VenueCampusExplorer Component', () => {
     expect(screen.getAllByText(/Verified/i).length).toBeGreaterThan(0);
   });
 
+  it('announces dossier changes to screen readers', () => {
+    const { container } = render(
+      <VenueCampusExplorer
+        venueName="JIExpo Kemayoran"
+        halls={mockHalls}
+      />
+    );
+
+    const liveRegion = container.querySelector('[aria-live="polite"]');
+    expect(liveRegion).not.toBeNull();
+    expect(liveRegion?.getAttribute('aria-atomic')).toBe('true');
+  });
+
   it('filters halls when selecting wing filter tabs', () => {
     render(
       <VenueCampusExplorer

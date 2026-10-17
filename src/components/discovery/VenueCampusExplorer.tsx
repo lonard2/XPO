@@ -165,7 +165,7 @@ export function VenueCampusExplorer({
               aria-pressed={selectedWing === 'all'}
               onClick={() => setSelectedWing('all')}
               className={cn(
-                'min-h-[44px] sm:min-h-[36px] px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all whitespace-nowrap cursor-pointer flex items-center gap-1.5',
+                'min-h-[44px] sm:min-h-[36px] px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all whitespace-nowrap cursor-pointer flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
                 selectedWing === 'all'
                   ? 'border-primary bg-primary text-primary-foreground shadow-xs'
                   : 'border-border/80 bg-muted/30 text-muted-foreground hover:bg-muted hover:text-foreground'
@@ -180,7 +180,7 @@ export function VenueCampusExplorer({
                 aria-pressed={selectedWing === wingName}
                 onClick={() => setSelectedWing(wingName)}
                 className={cn(
-                  'min-h-[44px] sm:min-h-[36px] px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all whitespace-nowrap cursor-pointer flex items-center gap-1.5',
+                  'min-h-[44px] sm:min-h-[36px] px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all whitespace-nowrap cursor-pointer flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
                   selectedWing === wingName
                     ? 'border-primary bg-primary text-primary-foreground shadow-xs'
                     : 'border-border/80 bg-muted/30 text-muted-foreground hover:bg-muted hover:text-foreground'
@@ -296,6 +296,8 @@ export function VenueCampusExplorer({
           <div
             ref={dossierRef}
             tabIndex={-1}
+            aria-live="polite"
+            aria-atomic="true"
             className="lg:col-span-4 rounded-2xl border border-border/80 bg-background/90 p-5 space-y-4 shadow-sm focus:outline-none"
           >
             <div className="border-b border-border/60 pb-3 space-y-1">

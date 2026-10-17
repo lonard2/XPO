@@ -76,3 +76,13 @@ One todo per commit, in order below. Each item states its acceptance check.
       minimum clear heights, MBS expo building spec, ICE typical hall, ExCeL 10 m halls,
       Pacifico JNTO table). Dossier and cards render Verified values with a Verified tag;
       everything else keeps the Typical qualifier. Guarded by component and DB tests.
+
+- [x] **10. Screen-reader and keyboard pass** (follow-up, approved)
+      Walked the venue page by keyboard: tab order runs skip link, header, breadcrumb,
+      hero CTAs, wing tabs, hall cards with no traps. Two real gaps fixed: the dossier
+      now carries aria-live polite plus atomic so hall selection is announced, and the wing
+      tabs gained the same focus-visible rings the hall cards already had (verified by
+      screenshot with focus on a card). Toggle, reveal, search and copy controls were
+      already correctly labelled. Guarded by a live-region component test. Recorded
+      limitation: no VoiceOver/NVDA run was possible here; the wing tabs use toggle-button
+      semantics rather than a tablist pattern, which is functional but noted.
