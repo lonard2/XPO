@@ -171,6 +171,16 @@ is evidence-based rather than asserted.
       integration test with per-venue minimums, key names, the exact hall/meeting split,
       and an assertion that no Hall 2 or Hall 7 exists at Frankfurt.
 
+- [x] **14. Meeting rooms behind a collapse filter** (new request)
+      The venue detail page listed all meeting rooms in the open, which buried the transit
+      section underneath dozens of room cards. The rooms now sit behind a collapsed toggle
+      ("Meeting Rooms (N)" with a chevron), following the FilterSidebar collapse pattern:
+      button with aria-expanded plus a controlled region, 44px touch target, collapsed by
+      default. Extracted into a client component (`VenueMeetingRooms`) because the venue
+      page is a Server Component. Verified on ICE BSD: collapsed by default, expands to all
+      29 rooms on click. Guarded by a component test covering empty, collapsed, expanded
+      and spec display states.
+
 - [x] **5. Discovery copy is translatable** (`P2`)
       Status labels, section kickers and tab counts were hardcoded English, so `/id` and `/ja`
       rendered two languages at once.
