@@ -436,7 +436,9 @@
     "meetingRooms": "Meeting Rooms",
     "specsTypical": "Typical",
     "specsUnverifiedNote": "Typical estimates. Confirm with venue operations before freight planning.",
-    "specsFreightVaries": "Access varies by hall. Confirm vehicle entry with venue operations."
+    "specsFreightVaries": "Access varies by hall. Confirm vehicle entry with venue operations.",
+    "viewScheduledEvents": "View Scheduled Events ({count})",
+    "gettingThere": "Getting There"
   },
   "calendar": {
     "title": "Interactive Event Calendar",

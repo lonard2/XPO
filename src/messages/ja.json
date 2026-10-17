@@ -436,7 +436,9 @@
     "meetingRooms": "会議室",
     "specsTypical": "目安",
     "specsUnverifiedNote": "目安の数値です。貨物搬入計画の前に会場運営者にご確認ください。",
-    "specsFreightVaries": "搬入条件はホールにより異なります。車両搬入については会場運営者にご確認ください。"
+    "specsFreightVaries": "搬入条件はホールにより異なります。車両搬入については会場運営者にご確認ください。",
+    "viewScheduledEvents": "開催イベントを見る（{count}件）",
+    "gettingThere": "アクセス"
   },
   "calendar": {
     "title": "イベントカレンダー",

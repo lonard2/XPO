@@ -23,11 +23,11 @@ One todo per commit, in order below. Each item states its acceptance check.
       Hydration warnings are dev-only and never reach production builds. Reopen with a
       reproduction protocol if it recurs; papering over it would hide real issues.
 
-- [ ] **3. Hero conversion actions** (`P1`, `$impeccable shape`)
-      Venue hero has zero CTA. Add "Scheduled Exhibitions (N)" and "Getting There" anchor
-      buttons to the hero pane plus a mobile sticky "View Events" bar. (AGENTS.md sticky rule
-      covers event pages, so this is new venue-page work, not compliance.)
-      Accept: above-the-fold CTA on desktop and mobile, verified by screenshot.
+- [x] **3. Hero conversion actions** (`P1`, `$impeccable shape`)
+      Hero carries "View Scheduled Events (N)" and "Getting There" anchors plus a mobile
+      sticky bar above the bottom nav; timetable and transit sections have scroll-mt
+      anchors. Verified by screenshot on desktop and 390px, and by clicking the sticky bar.
+      Keys added in all 6 locales.
 
 - [ ] **4. Localize the venue surface copy** (`P2`, `$impeccable clarify`)
       Move VenueCampusExplorer, VenueTransitHub, VenueScheduleTable headers and the venue

@@ -436,7 +436,9 @@
     "meetingRooms": "Salas de reuniones",
     "specsTypical": "Orientativo",
     "specsUnverifiedNote": "Estimaciones orientativas. Confirme con el recinto antes de planificar la logística.",
-    "specsFreightVaries": "El acceso varía según el pabellón. Confirme la entrada de vehículos con el recinto."
+    "specsFreightVaries": "El acceso varía según el pabellón. Confirme la entrada de vehículos con el recinto.",
+    "viewScheduledEvents": "Ver eventos programados ({count})",
+    "gettingThere": "Cómo llegar"
   },
   "calendar": {
     "title": "Calendario Interactivo de Eventos",

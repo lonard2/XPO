@@ -5,11 +5,13 @@ import {
   Building2,
   MapPin,
   ArrowLeft,
+  ArrowDown,
   Globe,
   CheckCircle2,
 } from 'lucide-react';
 import { db } from '@/lib/db';
 import { Badge } from '@/components/ui/Badge';
+import { buttonVariants } from '@/components/ui/Button';
 import { VenueCampusExplorer } from '@/components/discovery/VenueCampusExplorer';
 import { VenueMeetingRooms } from '@/components/discovery/VenueMeetingRooms';
 import { VenueTransitHub } from '@/components/discovery/VenueTransitHub';
@@ -195,10 +197,38 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
                   </span>
                 </div>
               </div>
+              {/* Conversion actions: anchor to the timetable and transit sections */}
+              <div className="flex flex-wrap items-center gap-2.5 pt-1">
+                <Link
+                  href="#venue-events"
+                  className={buttonVariants({ variant: 'default', size: 'sm' }) + ' min-h-[44px] gap-1.5 font-semibold'}
+                >
+                  <span>{tVen('viewScheduledEvents', { count: upcomingEvents.length })}</span>
+                  <ArrowDown className="h-3.5 w-3.5" />
+                </Link>
+                <Link
+                  href="#venue-transit"
+                  className={buttonVariants({ variant: 'outline', size: 'sm' }) + ' min-h-[44px] gap-1.5 font-semibold'}
+                >
+                  <MapPin className="h-3.5 w-3.5" />
+                  <span>{tVen('gettingThere')}</span>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Mobile sticky conversion bar: sits above the bottom navigation */}
+      <div className="md:hidden fixed inset-x-3 bottom-[72px] z-30">
+        <Link
+          href="#venue-events"
+          className={buttonVariants({ variant: 'default', size: 'sm' }) + ' w-full min-h-[44px] gap-1.5 font-semibold shadow-lg'}
+        >
+          <span>{tVen('viewScheduledEvents', { count: upcomingEvents.length })}</span>
+          <ArrowDown className="h-3.5 w-3.5" />
+        </Link>
+      </div>
 
       {/* Campus Spatial Topology & Hall Specifications Explorer */}
       <section className="container px-4">
@@ -214,7 +244,7 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
       )}
 
       {/* Structured Multi-Modal Transit & Logistics Hub */}
-      <section className="container px-4">
+      <section id="venue-transit" className="container px-4 scroll-mt-20">
         <VenueTransitHub
           venueName={venue.name}
           address={venue.address}
@@ -225,7 +255,7 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
       </section>
 
       {/* Specialized In-Venue Timetable & Scheduled Exhibitions */}
-      <section className="container px-4">
+      <section id="venue-events" className="container px-4 scroll-mt-20">
         <VenueScheduleTable
           venueName={venue.name}
           events={upcomingEvents}

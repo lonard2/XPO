@@ -436,7 +436,9 @@
     "meetingRooms": "Tagungsräume",
     "specsTypical": "Richtwert",
     "specsUnverifiedNote": "Typische Schätzwerte, bitte vor der Logistikplanung mit dem Veranstaltungsort bestätigen.",
-    "specsFreightVaries": "Zufahrt variiert je nach Halle, bitte Fahrzeugzufahrt mit dem Veranstaltungsort bestätigen."
+    "specsFreightVaries": "Zufahrt variiert je nach Halle, bitte Fahrzeugzufahrt mit dem Veranstaltungsort bestätigen.",
+    "viewScheduledEvents": "Geplante Events ansehen ({count})",
+    "gettingThere": "Anfahrt"
   },
   "calendar": {
     "title": "Interaktiver Eventkalender",

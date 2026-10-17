@@ -436,7 +436,9 @@
     "meetingRooms": "Ruang Rapat",
     "specsTypical": "Tipikal",
     "specsUnverifiedNote": "Estimasi tipikal. Konfirmasi dengan operator venue sebelum perencanaan logistik.",
-    "specsFreightVaries": "Akses berbeda per hall. Konfirmasi akses kendaraan dengan operator venue."
+    "specsFreightVaries": "Akses berbeda per hall. Konfirmasi akses kendaraan dengan operator venue.",
+    "viewScheduledEvents": "Lihat Acara Terjadwal ({count})",
+    "gettingThere": "Cara ke Sana"
   },
   "calendar": {
     "title": "Kalender Acara Interaktif",

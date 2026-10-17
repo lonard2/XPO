@@ -436,7 +436,9 @@
     "meetingRooms": "会议室",
     "specsTypical": "参考值",
     "specsUnverifiedNote": "以下为参考估值，货运规划前请与场馆运营方确认。",
-    "specsFreightVaries": "各展厅货运条件不同，请与场馆运营方确认车辆进出事宜。"
+    "specsFreightVaries": "各展厅货运条件不同，请与场馆运营方确认车辆进出事宜。",
+    "viewScheduledEvents": "查看已排期活动（{count}场）",
+    "gettingThere": "交通指南"
   },
   "calendar": {
     "title": "会展交互日历",
