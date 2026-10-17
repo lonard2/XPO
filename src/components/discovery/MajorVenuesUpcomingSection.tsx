@@ -49,18 +49,20 @@ export function MajorVenuesUpcomingSection({
 
   const currentRegionName = regionNameMap[regionCode.toLowerCase()] || regionCode.toUpperCase();
 
-  // A venue with nothing attendable would otherwise print the same "nothing this week"
-  // card, which four of six did. Those venues are dropped; when none remain the section
-  // explains itself once instead of repeating the same message per card.
   const attendableEventsFor = (venue: VenueWithEvents) =>
     (venue.events || []).filter((event) => {
       const temporal = getEventTemporalStatus(event.startDate, event.endDate);
       return temporal.isUpcoming || temporal.isLive;
     });
 
-  const venuesWithUpcomingEvents = venues.filter(
-    (venue) => attendableEventsFor(venue).length > 0
-  );
+  // Every venue stays in the spotlight, because this section doubles as the venue
+  // directory: hiding the five Indonesian venues without a near-term event left only
+  // JIExpo Kemayoran. Venues with something attendable lead, and the rest follow with a
+  // quiet line rather than the repeated empty-state block that used to fill four of six.
+  const orderedVenues = [
+    ...venues.filter((venue) => attendableEventsFor(venue).length > 0),
+    ...venues.filter((venue) => attendableEventsFor(venue).length === 0),
+  ];
 
   return (
     <section className={cn('w-full space-y-6', className)}>
@@ -92,17 +94,8 @@ export function MajorVenuesUpcomingSection({
       </div>
 
       {/* Major Venues Responsive Grid */}
-      {venuesWithUpcomingEvents.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-border/80 bg-muted/10 p-8 sm:p-12 text-center space-y-2">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary mx-auto">
-            <Calendar className="h-6 w-6" />
-          </div>
-          <p className="text-sm font-bold text-foreground">{tVen('noUpcomingEventsScheduled')}</p>
-          <p className="text-xs text-muted-foreground">{tVen('noUpcomingDetail')}</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {venuesWithUpcomingEvents.map((venue) => {
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        {orderedVenues.map((venue) => {
           // Max 3 attendable events per venue
           const upcomingEvents = attendableEventsFor(venue).slice(0, 3);
           const hallCount = venue.halls?.length || 0;
@@ -114,14 +107,21 @@ export function MajorVenuesUpcomingSection({
             >
               {/* Venue Header Banner */}
               <div className="relative h-36 sm:h-44 w-full overflow-hidden bg-slate-950">
-                {venue.imageUrl ? (
+                {/* Painted underneath always, so a dead image URL degrades to the gradient
+                    instead of a broken image. Two seeded venues had a 404 photo. */}
+                <div
+                  className="absolute inset-0 bg-gradient-to-r from-primary/30 via-slate-800 to-slate-900"
+                  aria-hidden="true"
+                />
+                {venue.imageUrl && (
                   <img
                     src={venue.imageUrl}
                     alt={venue.name}
-                    className="h-full w-full object-cover object-center opacity-75 hover:scale-105 transition-transform duration-700"
+                    className="absolute inset-0 h-full w-full object-cover object-center opacity-75 hover:scale-105 transition-transform duration-700"
+                    onError={(event) => {
+                      event.currentTarget.style.display = 'none';
+                    }}
                   />
-                ) : (
-                  <div className="h-full w-full bg-gradient-to-r from-primary/30 via-slate-800 to-slate-900" />
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-card via-card/40 to-transparent" />
 
@@ -224,11 +224,9 @@ export function MajorVenuesUpcomingSection({
                     })}
                   </div>
                 ) : (
-                  <div className="rounded-xl border border-dashed border-border/80 p-5 text-center text-xs text-muted-foreground my-auto flex flex-col items-center justify-center gap-1.5 bg-muted/10">
-                    <Calendar className="h-4 w-4 text-muted-foreground/60" />
-                    <p className="font-medium text-foreground/80">{tVen('noUpcomingEventsScheduled')}</p>
-                    <p className="text-[11px] text-muted-foreground">{tVen('noUpcomingDetail')}</p>
-                  </div>
+                  <p className="pt-1 text-[11px] leading-relaxed text-muted-foreground">
+                    {tVen('noUpcomingDetail')}
+                  </p>
                 )}
               </div>
 
@@ -246,7 +244,6 @@ export function MajorVenuesUpcomingSection({
           );
         })}
       </div>
-      )}
     </section>
   );
 }

@@ -86,6 +86,27 @@ is evidence-based rather than asserted.
       selected so the extra chip renders. Remaining detector findings are 6 nested-card
       frames, 1 `tiny-text` at the deliberate 11px floor, and 1 advisory `overused-font`.
 
+- **REGRESSION FIXED: the venue spotlight hid five of six Indonesian venues.** Todo 7
+      filtered out venues with no current/upcoming event, which emptied the section for any
+      edition with a sparse calendar: only JIExpo Kemayoran had a near-term event, so GBK,
+      JICC, JIS and NICE PIK 2 disappeared and ICE BSD went with them. No venue data was
+      ever deleted (all 6 remain in the database, 12 across regions); it was a render filter.
+      The section now renders every venue and orders the ones with something attendable
+      first, so JIExpo still leads. The repeated empty-state block is replaced by a single
+      quiet muted line per card, which keeps the original critique's point without hiding the
+      directory. Verified: 6 cards on `/en` and `/id`, 3 on `/ja`, correct leading order.
+
+- **FOUND while fixing the above: two venues have a dead image URL.** `JIS (Jakarta
+      International Stadium)` and `Pacifico Yokohama Convention Center` both point at
+      Unsplash photo `1508098682722-e99c43a406b2`, which returns 404; the other 18 photo ids
+      in the repo all return 200. It is defined in `prisma/seed.ts` lines 212 and 278 and in
+      `src/lib/discovery/fallbackData.ts:144`, so both the seed and the offline fallback are
+      affected. Pacifico's broken card was visible on `/ja` well before this work; JIS only
+      became visible once the venues were restored.
+      The card now paints the gradient behind the image and hides the `<img>` on error, so any
+      dead URL degrades instead of showing broken-image chrome. The two URLs themselves are
+      still dead and need replacing with a real photo, which is a content choice.
+
 - [x] **5. Discovery copy is translatable** (`P2`)
       Status labels, section kickers and tab counts were hardcoded English, so `/id` and `/ja`
       rendered two languages at once.

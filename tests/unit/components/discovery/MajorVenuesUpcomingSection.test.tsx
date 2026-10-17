@@ -122,8 +122,9 @@ describe('MajorVenuesUpcomingSection', () => {
     expect(screen.queryByText('Jakarta Mega Fair 2026')).toBeNull();
   });
 
-  it('drops a venue that has nothing attendable instead of repeating the empty state', () => {
-    // Regression: four of six venue cards printed the same "nothing this week" message.
+  it('keeps a venue in the spotlight even when it has nothing scheduled', () => {
+    // Regression: filtering out venues with no near-term event left only JIExpo
+    // Kemayoran in the Indonesia edition, hiding five of six venues entirely.
     render(
       <MajorVenuesUpcomingSection
         venues={[...mockVenues, ...concludedOnlyVenues]}
@@ -133,10 +134,24 @@ describe('MajorVenuesUpcomingSection', () => {
     );
 
     expect(screen.getByText('JIExpo Kemayoran')).toBeDefined();
-    expect(screen.queryByText('ICE BSD City')).toBeNull();
+    expect(screen.getByText('ICE BSD City')).toBeDefined();
   });
 
-  it('explains itself once when no venue has anything attendable', () => {
+  it('leads with the venues that have an upcoming event', () => {
+    const { container } = render(
+      <MajorVenuesUpcomingSection
+        venues={[...concludedOnlyVenues, ...mockVenues]}
+        locale="en"
+        regionCode="id"
+      />
+    );
+
+    const names = [...container.querySelectorAll('h3')].map((node) => node.textContent?.trim());
+    expect(names[0]).toBe('JIExpo Kemayoran');
+    expect(names[1]).toBe('ICE BSD City');
+  });
+
+  it('shows a quiet hint rather than a repeated empty-state block', () => {
     render(
       <MajorVenuesUpcomingSection
         venues={concludedOnlyVenues}
@@ -145,8 +160,8 @@ describe('MajorVenuesUpcomingSection', () => {
       />
     );
 
-    expect(screen.queryByText('ICE BSD City')).toBeNull();
-    expect(screen.getByText('No public events scheduled this week')).toBeDefined();
+    expect(screen.getByText('Check upcoming season dates in the venue directory')).toBeDefined();
+    expect(screen.queryByText('No public events scheduled this week')).toBeNull();
   });
 
   it('returns null gracefully when empty venues array is provided', () => {
