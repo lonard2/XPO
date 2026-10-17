@@ -28,6 +28,7 @@ import { Button } from "@/components/ui/Button";
 import { formatCurrency, formatDateRange } from "@/lib/i18n/formatters";
 import { AdminDashboardClient } from "@/components/admin/AdminDashboardClient";
 import { FALLBACK_VENUES, FALLBACK_EVENTS } from "@/lib/discovery/fallbackData";
+import { countHalls, isMeetingRoom } from "@/lib/discovery/venueSpaces";
 
 interface AdminDashboardPageProps {
   params: Promise<{ locale: string }>;
@@ -80,7 +81,7 @@ export default async function AdminDashboardPage({ params }: AdminDashboardPageP
 
     totalEvents = events.length;
     totalVenues = venues.length;
-    totalHalls = halls.length;
+    totalHalls = halls.filter((h) => !isMeetingRoom(h)).length;
     totalDelegates = bookings.length;
     verifiedOrganizersCount = users.length;
     venuesList = venues;
@@ -97,7 +98,7 @@ export default async function AdminDashboardPage({ params }: AdminDashboardPageP
     // Database offline fallback
     totalEvents = FALLBACK_EVENTS.length;
     totalVenues = FALLBACK_VENUES.length;
-    totalHalls = FALLBACK_VENUES.reduce((acc, v) => acc + (v.halls?.length || 0), 0);
+    totalHalls = FALLBACK_VENUES.reduce((acc, v) => acc + countHalls(v.halls), 0);
     totalDelegates = 4250;
     totalRevenue = 850000000;
     verifiedOrganizersCount = 18;

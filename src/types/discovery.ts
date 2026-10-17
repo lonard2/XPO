@@ -19,6 +19,7 @@ export interface TicketTierSummary {
 export interface VenueHallSummary {
   id: string;
   name: string;
+  kind?: string | null; // "HALL" | "MEETING_ROOM": meeting rooms are listed deeper, never counted as halls
   capacity?: number | null;
   floorAreaSqm?: number | null;
   description?: string | null;

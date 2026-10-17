@@ -191,7 +191,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         transitInfo: v.transitInfo,
         imageUrl: v.imageUrl,
         regionCode: activeRegionCode,
-        halls: v.halls.map((h) => ({ id: h.id, name: h.name, capacity: h.capacity, floorAreaSqm: h.floorAreaSqm })),
+        halls: v.halls.map((h) => ({ id: h.id, name: h.name, kind: h.kind, capacity: h.capacity, floorAreaSqm: h.floorAreaSqm })),
         events: sortUpcomingFirst(
           v.events.map((e) => ({
             id: e.id,

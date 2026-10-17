@@ -432,7 +432,8 @@
     "listedCount": "{count} terdaftar",
     "noUpcomingDetail": "Lihat jadwal musim mendatang di direktori venue",
     "exploreFullCalendar": "Jelajahi kalender lengkap {venue}",
-    "happeningAtMajorVenues": "Berlangsung di Venue Utama"
+    "happeningAtMajorVenues": "Berlangsung di Venue Utama",
+    "meetingRooms": "Ruang Rapat"
   },
   "calendar": {
     "title": "Kalender Acara Interaktif",

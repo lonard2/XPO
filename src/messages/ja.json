@@ -432,7 +432,8 @@
     "listedCount": "{count} 件",
     "noUpcomingDetail": "会場ディレクトリで今後の開催時期をご確認ください",
     "exploreFullCalendar": "{venue} の全カレンダーを見る",
-    "happeningAtMajorVenues": "主要会場で開催中"
+    "happeningAtMajorVenues": "主要会場で開催中",
+    "meetingRooms": "会議室"
   },
   "calendar": {
     "title": "イベントカレンダー",

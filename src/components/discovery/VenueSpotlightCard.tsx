@@ -16,6 +16,7 @@ import { buttonVariants } from '@/components/ui/Button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/Card';
 import { useTranslations } from 'next-intl';
 import { type VenueSummary } from '@/types/discovery';
+import { countHalls } from '@/lib/discovery/venueSpaces';
 import { cn } from '@/lib/utils';
 
 export interface VenueSpotlightCardProps {
@@ -34,7 +35,7 @@ export function VenueSpotlightCard({
   const tVen = useTranslations('venues');
   const tFoot = useTranslations('footer');
 
-  const hallCount = venue.halls?.length ?? venue._count?.halls ?? (venue as any).hallCount ?? 0;
+  const hallCount = venue.halls ? countHalls(venue.halls) : (venue._count?.halls ?? (venue as any).hallCount ?? 0);
   const calculatedCapacity = venue.halls?.reduce((sum, h) => sum + (h.capacity || 0), 0) || (venue as any).capacity || 0;
   const calculatedFloorArea = venue.halls?.reduce((sum, h) => sum + (h.floorAreaSqm || 0), 0) || (venue as any).floorAreaSqm || 0;
 

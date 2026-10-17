@@ -432,7 +432,8 @@
     "listedCount": "{count} listed",
     "noUpcomingDetail": "Check upcoming season dates in the venue directory",
     "exploreFullCalendar": "Explore full {venue} calendar",
-    "happeningAtMajorVenues": "Happening at Major Venues"
+    "happeningAtMajorVenues": "Happening at Major Venues",
+    "meetingRooms": "Meeting Rooms"
   },
   "calendar": {
     "title": "Interactive Event Calendar",

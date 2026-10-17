@@ -432,7 +432,8 @@
     "listedCount": "{count} gelistet",
     "noUpcomingDetail": "Kommende Saisontermine im Veranstaltungsortverzeichnis prüfen",
     "exploreFullCalendar": "Vollständigen Kalender von {venue} ansehen",
-    "happeningAtMajorVenues": "Aktuelles an den wichtigsten Veranstaltungsorten"
+    "happeningAtMajorVenues": "Aktuelles an den wichtigsten Veranstaltungsorten",
+    "meetingRooms": "Tagungsräume"
   },
   "calendar": {
     "title": "Interaktiver Eventkalender",

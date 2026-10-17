@@ -19,6 +19,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { db } from "@/lib/db";
+import { countHalls, hallsOnly } from "@/lib/discovery/venueSpaces";
 import {
   formatCurrency,
   formatDateRange,
@@ -34,6 +35,7 @@ import { RegionSwitcher } from "@/components/layout/RegionSwitcher";
 interface VenueHallModel {
   id: string;
   name: string;
+  kind?: string | null;
   capacity: number | null;
   floorAreaSqm: number | null;
   description: string | null;
@@ -330,14 +332,14 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
                       <div className="flex items-center justify-between text-xs font-semibold text-foreground">
                         <span className="flex items-center gap-1">
                           <Layers className="h-3.5 w-3.5 text-primary" />
-                          <span>Halls & Pavilions ({venue.halls.length})</span>
+                          <span>Halls & Pavilions ({countHalls(venue.halls)})</span>
                         </span>
                         <span className="text-muted-foreground font-mono">
                           Cap: {totalCapacity.toLocaleString()}
                         </span>
                       </div>
                       <div className="flex flex-wrap gap-1">
-                        {venue.halls.slice(0, 4).map((hall: VenueHallModel) => (
+                        {hallsOnly(venue.halls).slice(0, 4).map((hall: VenueHallModel) => (
                           <span
                             key={hall.id}
                             className="inline-block rounded border border-border/60 bg-background px-1.5 py-0.5 text-xs text-foreground font-medium"
@@ -345,9 +347,9 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
                             {hall.name}
                           </span>
                         ))}
-                        {venue.halls.length > 4 && (
+                        {countHalls(venue.halls) > 4 && (
                           <span className="text-xs text-muted-foreground self-center">
-                            +{venue.halls.length - 4} more
+                            +{countHalls(venue.halls) - 4} more
                           </span>
                         )}
                       </div>

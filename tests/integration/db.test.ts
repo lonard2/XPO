@@ -100,6 +100,45 @@ describe("Phase 2 Integration: Relational Data Models & Venue Ingestion", () => 
     expect(jis).toContain("Sky View Deck");
   });
 
+  it("marks meeting rooms with their kind and keeps them out of the hall count", async () => {
+    const venues = await db.venue.findMany({
+      where: { regionId: "id" },
+      include: { halls: true },
+    });
+
+    const kinds = new Set(venues.flatMap((v) => v.halls.map((h) => h.kind)));
+    expect(kinds.has("MEETING_ROOM")).toBe(true);
+
+    // Spot checks: one named meeting room per venue carries the kind.
+    const find = (slug: string, name: string) =>
+      venues.find((v) => v.slug === slug)?.halls.find((h) => h.name === name)?.kind;
+    expect(find("jiexpo-kemayoran", "Meeting Room 501")).toBe("MEETING_ROOM");
+    expect(find("ice-bsd-city", "Garuda Main Hall 1")).toBe("MEETING_ROOM");
+    expect(find("jcc-senayan", "Nuri Room 1")).toBe("MEETING_ROOM");
+    expect(find("nice-pik-2", "Sadewa 6")).toBe("MEETING_ROOM");
+
+    // Halls keep the default kind, including rooms with hall-like names.
+    expect(find("jiexpo-kemayoran", "Hall A")).toBe("HALL");
+    expect(find("ice-bsd-city", "Nusantara Hall")).toBe("HALL");
+
+    // The hall count behind every "N Halls" badge excludes meeting rooms.
+    const counts: Record<string, { halls: number; meeting: number }> = {};
+    for (const v of venues) {
+      counts[v.slug] = {
+        halls: v.halls.filter((h) => h.kind !== "MEETING_ROOM").length,
+        meeting: v.halls.filter((h) => h.kind === "MEETING_ROOM").length,
+      };
+    }
+    expect(counts).toEqual({
+      "jiexpo-kemayoran": { halls: 13, meeting: 31 },
+      "ice-bsd-city": { halls: 12, meeting: 29 },
+      "jcc-senayan": { halls: 8, meeting: 14 },
+      "nice-pik-2": { halls: 14, meeting: 14 },
+      "gbk-sports-complex": { halls: 16, meeting: 0 },
+      "jis-jakarta": { halls: 5, meeting: 6 },
+    });
+  });
+
   it("retrieves seeded events with relational ticket tiers, agenda items, and perks", async () => {
     const events = await db.event.findMany({
       include: {

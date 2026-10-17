@@ -15,6 +15,7 @@ import { useTranslations } from 'next-intl';
 import { formatDateRange, getTimeZoneForRegion } from '@/lib/i18n/formatters';
 import { getArchetypeTokens } from '@/lib/theming';
 import { type VenueWithEvents } from '@/types/discovery';
+import { countHalls } from '@/lib/discovery/venueSpaces';
 import { cn } from '@/lib/utils';
 
 export interface HeroVenueQuickGlanceRailProps {
@@ -175,7 +176,7 @@ export function HeroVenueQuickGlanceRail({
       >
         {venues.map((venue) => {
           const upcomingEvents = (venue.events || []).slice(0, 3);
-          const hallCount = venue.halls?.length || 0;
+          const hallCount = countHalls(venue.halls);
 
           return (
             <div

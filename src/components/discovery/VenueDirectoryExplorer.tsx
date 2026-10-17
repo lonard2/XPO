@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { useTranslations } from 'next-intl';
 import { type VenueSummary } from '@/types/discovery';
+import { countHalls } from '@/lib/discovery/venueSpaces';
 import { cn } from '@/lib/utils';
 
 export interface VenueDirectoryExplorerProps {
@@ -131,7 +132,7 @@ export function VenueDirectoryExplorer({
         if (!hasHeavyLoad) return false;
       } else if (specFilter === 'mega_complex') {
         const totalArea = v.halls?.reduce((sum, h) => sum + (h.floorAreaSqm || 0), 0) || 0;
-        const totalHalls = v.halls?.length || 0;
+        const totalHalls = countHalls(v.halls);
         if (totalArea < 35000 && totalHalls < 6) return false;
       }
 

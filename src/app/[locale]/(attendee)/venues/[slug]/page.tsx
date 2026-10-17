@@ -14,6 +14,7 @@ import { VenueCampusExplorer } from '@/components/discovery/VenueCampusExplorer'
 import { VenueTransitHub } from '@/components/discovery/VenueTransitHub';
 import { VenueScheduleTable } from '@/components/discovery/VenueScheduleTable';
 import { FALLBACK_VENUES, FALLBACK_EVENTS } from '@/lib/discovery/fallbackData';
+import { hallsOnly, meetingRoomsOnly, countHalls } from '@/lib/discovery/venueSpaces';
 import { type VenueSummary, type DiscoveryEvent } from '@/types/discovery';
 
 export interface VenueDetailPageProps {
@@ -91,6 +92,8 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
   }
 
   const regionCode = (venue.region?.code || venue.regionId || 'ID').toUpperCase();
+  const venueHalls = hallsOnly(venue.halls || []);
+  const venueMeetingRooms = meetingRoomsOnly(venue.halls || []);
   const totalCapacity = venue.halls?.reduce((acc, h) => acc + (h.capacity || 0), 0) || 25000;
   const totalFloorArea = venue.halls?.reduce((acc, h) => acc + (h.floorAreaSqm || 0), 0) || 30000;
 
@@ -169,7 +172,7 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
                     {tVen('totalHalls')?.split(' ')?.[1] || 'Halls'}
                   </span>
                   <span className="text-base sm:text-lg font-bold text-foreground mt-0.5 block">
-                    {venue.halls?.length || 4}
+                    {countHalls(venue.halls) || 4}
                   </span>
                 </div>
 
@@ -200,9 +203,56 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
       <section className="container px-4">
         <VenueCampusExplorer
           venueName={venue.name}
-          halls={venue.halls || []}
+          halls={venueHalls}
         />
       </section>
+
+      {/* Meeting Rooms: listed deeper, never counted as halls */}
+      {venueMeetingRooms.length > 0 && (
+        <section className="container px-4 space-y-4">
+          <div className="flex items-center justify-between gap-3 border-b border-border/80 pb-4">
+            <div>
+              <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider mb-1">
+                <Building2 className="h-4 w-4" />
+                <span>{tVen('meetingRooms')}</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+                {tVen('meetingRooms')} ({venueMeetingRooms.length})
+              </h2>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {venueMeetingRooms.map((room) => (
+              <div
+                key={room.id}
+                className="rounded-xl border border-border/70 bg-card/60 p-3.5 flex items-start justify-between gap-3"
+              >
+                <div className="space-y-1 min-w-0">
+                  <p className="text-sm font-bold text-foreground leading-snug">{room.name}</p>
+                  {room.description && (
+                    <p className="text-xs text-muted-foreground line-clamp-1 leading-relaxed">
+                      {room.description}
+                    </p>
+                  )}
+                </div>
+                <div className="flex flex-col items-end gap-1 shrink-0 text-xs">
+                  {room.capacity != null && (
+                    <span className="font-mono font-semibold text-foreground tabular-nums">
+                      {room.capacity.toLocaleString()} pax
+                    </span>
+                  )}
+                  {room.floorAreaSqm != null && (
+                    <span className="text-muted-foreground tabular-nums">
+                      {room.floorAreaSqm.toLocaleString()} m²
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Structured Multi-Modal Transit & Logistics Hub */}
       <section className="container px-4">
