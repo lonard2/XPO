@@ -116,6 +116,29 @@ is evidence-based rather than asserted.
       Reachability is deliberately not asserted because it would need the network and would
       make the suite flaky in CI.
 
+- [x] **10. Indonesian venue halls complete and current** (`P1`, new request)
+      All six Indonesian venues now carry their full event-usable hall and sub-venue
+      inventory: 74 halls across the region, up from 23. Figures were researched per venue
+      against the official site plus at least one independent source (Wikipedia, Cvent,
+      GBK e-booking, company profiles, reputable press), current as of October 2026, and
+      anything unverifiable was left null rather than invented. The UI already renders null
+      capacity and area as N/A.
+      JIExpo 14 (seven numbered halls A/B/C/B3/C3/D1/D2 with official areas, Gambir Expo,
+      Open Space, two ballrooms, theatre, two meeting-room groups); ICE BSD 15 (ten
+      numbered halls, Nusantara Hall, three meeting-room groups, outdoor space); JICC 11
+      (plenary, assembly, Cendrawasih, two exhibition halls, Main Lobby, Merak, Kasuari,
+      Lower Lobby, meeting-room group, outdoor); NICE PIK 2 15 (eleven numbered halls,
+      Sriwijaya hall, 14 meeting rooms, courtyard, outdoor plaza); GBK 14 (stadium, arena,
+      Istora, Madya, aquatic, tennis in/out, basketball, baseball, softball, hockey,
+      archery, squash, festival grounds); JIS 5 (bowl, sky deck, training fields,
+      hospitality, plaza).
+      The fallback dataset mirrors the seed, including two venue blocks it never had (GBK,
+      JIS). Event hall-name strings follow the official naming.
+      Fixed alongside: fallback events referenced venues by array index, so inserting the
+      two new venue blocks silently repointed Tokyo events at GBK. All 16 references now
+      use a slug lookup that throws on a missing venue.
+      Guarded by a new integration test asserting per-venue minimums and key hall names.
+
 - [x] **5. Discovery copy is translatable** (`P2`)
       Status labels, section kickers and tab counts were hardcoded English, so `/id` and `/ja`
       rendered two languages at once.

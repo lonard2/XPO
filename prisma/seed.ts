@@ -96,12 +96,20 @@ async function main() {
       imageUrl: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200",
       halls: {
         create: [
-          { name: "Hall A1-A3 (Heavy Machinery)", capacity: 12000, floorAreaSqm: 10500, description: "Reinforced flooring for industrial machinery and heavy automotive displays." },
-          { name: "Hall B1-B3 (Consumer & Electronics)", capacity: 8500, floorAreaSqm: 8000, description: "Multi-level consumer trade show and electronics pavilion." },
-          { name: "Hall C1-C3 (B2B Procurement)", capacity: 7000, floorAreaSqm: 6500, description: "Dedicated B2B sourcing booths and meeting cubicles." },
-          { name: "Hall D1-D2 (Grand Exhibition Hall)", capacity: 15000, floorAreaSqm: 11000, description: "Column-free mega hall with 14m ceiling height." },
-          { name: "Grand Ballroom", capacity: 3500, floorAreaSqm: 3000, description: "Luxury banquet and plenary keynote stage." },
-          { name: "Open Space Arena", capacity: 45000, floorAreaSqm: 35000, description: "Massive open-air festival ground for Jakarta Fair & live music." },
+          { name: "Hall A", capacity: null, floorAreaSqm: 8295, description: "East wing exhibition hall, 144 x 57.6 m concrete slab." },
+          { name: "Hall B", capacity: null, floorAreaSqm: 3994, description: "West wing exhibition hall, 78 x 51.2 m concrete slab." },
+          { name: "Hall C", capacity: null, floorAreaSqm: 3888, description: "West wing exhibition hall, 72 x 54 m tiled floor." },
+          { name: "Hall B3", capacity: null, floorAreaSqm: 5150, description: "West wing exhibition hall, 91 x 56.7 m concrete slab." },
+          { name: "Hall C3", capacity: null, floorAreaSqm: 4800, description: "West wing exhibition hall, 76 x 62.6 m concrete slab." },
+          { name: "Hall D1", capacity: null, floorAreaSqm: 4752, description: "East wing exhibition hall, 72 x 66 m tiled floor." },
+          { name: "Hall D2", capacity: null, floorAreaSqm: 4608, description: "East wing exhibition hall, 64 x 72 m heavy-duty carpet tiles." },
+          { name: "Gambir Expo", capacity: null, floorAreaSqm: 22610, description: "Six-area expo building totalling 22,610 sqm of ceramic-floor halls." },
+          { name: "Open Space", capacity: null, floorAreaSqm: 40000, description: "Open-air festival ground in two zones for Jakarta Fair and live music." },
+          { name: "Grand Ballroom", capacity: null, floorAreaSqm: null, description: "Convention centre ballroom for banquets and plenary keynotes." },
+          { name: "Junior Ballroom", capacity: null, floorAreaSqm: null, description: "Convention centre junior ballroom for mid-size banquets." },
+          { name: "JIExpo Theatre", capacity: 2500, floorAreaSqm: null, description: "2,500-seat international theatre and concert hall." },
+          { name: "Meeting Rooms (Convention Centre)", capacity: null, floorAreaSqm: null, description: "Configurable meeting rooms across Convention Centre levels 5 and 6." },
+          { name: "Meeting Rooms (Trade Mart Building)", capacity: null, floorAreaSqm: null, description: "Semeru, Lawu, Bromo, Kerinci and Rinjani meeting rooms." },
         ],
       },
     },
@@ -121,11 +129,21 @@ async function main() {
       imageUrl: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200",
       halls: {
         create: [
-          { name: "Hall 1 - 3 (Industrial & Tech)", capacity: 18000, floorAreaSqm: 15000, description: "Connected column-free halls for massive trade exhibitions." },
-          { name: "Hall 5 - 7 (International Pavilions)", capacity: 18000, floorAreaSqm: 15000, description: "Global country booths and innovation showcases." },
-          { name: "Hall 8 - 10 (Arena Stage)", capacity: 20000, floorAreaSqm: 15000, description: "Equipped for arena concerts and major esports tournaments." },
-          { name: "Nusantara Hall 2", capacity: 4000, floorAreaSqm: 4000, description: "State-of-the-art acoustic convention hall for tech keynotes." },
-          { name: "Convention Hall 1-3", capacity: 3000, floorAreaSqm: 3000, description: "Acoustic partitioned halls for medical symposia." },
+          { name: "Exhibition Hall 1", capacity: 4750, floorAreaSqm: 4860, description: "Column-free hall, 54 x 90 m, for trade fairs, concerts and sports." },
+          { name: "Exhibition Hall 2", capacity: 4750, floorAreaSqm: 4860, description: "Column-free hall, 54 x 90 m, for trade fairs, concerts and sports." },
+          { name: "Exhibition Hall 3", capacity: 4750, floorAreaSqm: 4860, description: "Column-free hall, 54 x 90 m, for trade fairs, concerts and sports." },
+          { name: "Exhibition Hall 4", capacity: 4750, floorAreaSqm: 4860, description: "Column-free hall, 54 x 90 m, for trade fairs, concerts and sports." },
+          { name: "Exhibition Hall 5", capacity: 4750, floorAreaSqm: 4860, description: "Column-free hall, 54 x 90 m, for trade fairs, concerts and sports." },
+          { name: "Exhibition Hall 6", capacity: 4750, floorAreaSqm: 4860, description: "Column-free hall, 54 x 90 m, for trade fairs, concerts and sports." },
+          { name: "Exhibition Hall 7", capacity: 4750, floorAreaSqm: 4860, description: "Column-free hall, 54 x 90 m, for trade fairs, concerts and sports." },
+          { name: "Exhibition Hall 8", capacity: 4750, floorAreaSqm: 4860, description: "Column-free hall, 54 x 90 m, for trade fairs, concerts and sports." },
+          { name: "Exhibition Hall 9", capacity: 4750, floorAreaSqm: 4860, description: "Column-free hall, 54 x 90 m, for trade fairs, concerts and sports." },
+          { name: "Exhibition Hall 10", capacity: 4750, floorAreaSqm: 4860, description: "Column-free hall, 54 x 90 m, for trade fairs, concerts and sports." },
+          { name: "Nusantara Hall", capacity: 3500, floorAreaSqm: 4000, description: "Divisible convention hall (1A, 1B, 2, 3) for plenaries, weddings and graduations." },
+          { name: "Garuda Meeting Rooms", capacity: null, floorAreaSqm: 3000, description: "Main breakout and ballroom stock including Garuda Main Hall 1 and 2." },
+          { name: "Cendana Meeting Rooms", capacity: null, floorAreaSqm: 456, description: "Six mezzanine meeting rooms, about 76 sqm each." },
+          { name: "Kalimaya Meeting Rooms", capacity: null, floorAreaSqm: 312, description: "Three lower-ground meeting rooms, about 104 sqm each." },
+          { name: "Outdoor Exhibition Space", capacity: null, floorAreaSqm: 35000, description: "Outdoor grounds for concerts, automotive showcases and sports." },
         ],
       },
     },
@@ -145,11 +163,17 @@ async function main() {
       imageUrl: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200",
       halls: {
         create: [
-          { name: "Plenary Hall", capacity: 5000, floorAreaSqm: 4500, description: "Iconic auditorium for presidential keynotes and medical congresses." },
-          { name: "Assembly Hall", capacity: 3000, floorAreaSqm: 3200, description: "Diplomatic delegations and formal gala assemblies." },
-          { name: "Exhibition Hall A", capacity: 6000, floorAreaSqm: 5500, description: "Trade show floor connecting to Senayan hospitality suites." },
-          { name: "Exhibition Hall B", capacity: 7000, floorAreaSqm: 6000, description: "Direct truck access for commercial expos." },
-          { name: "Cendrawasih Room", capacity: 1800, floorAreaSqm: 2000, description: "Acoustic scientific paper presentation rooms." },
+          { name: "Plenary Hall", capacity: 5000, floorAreaSqm: null, description: "Domed theatre for presidential keynotes and medical congresses." },
+          { name: "Assembly Hall", capacity: 3900, floorAreaSqm: 3921, description: "Partitionable banquet hall, 89.1 x 44 m, seats up to 3,900." },
+          { name: "Cendrawasih Room", capacity: 2000, floorAreaSqm: 2109, description: "Partitionable conference hall with interpretation booths." },
+          { name: "Exhibition Hall A", capacity: null, floorAreaSqm: 3060, description: "Exhibition-only floor, 68 x 45 m, 1,200 kg per sqm loading." },
+          { name: "Exhibition Hall B", capacity: null, floorAreaSqm: 6075, description: "Exhibition-only floor, 97.5 x 60 m, 1,500 kg per sqm loading." },
+          { name: "Main Lobby", capacity: null, floorAreaSqm: 5500, description: "Registration, exhibition and pre-function lobby." },
+          { name: "Merak Room", capacity: 850, floorAreaSqm: 886, description: "Divisible into Merak 1, 2 and 3 for board and breakout sessions." },
+          { name: "Kasuari Lounge", capacity: 700, floorAreaSqm: 755, description: "Lower-lobby lounge for receptions and VIP holding." },
+          { name: "Lower Lobby", capacity: 1000, floorAreaSqm: 1100, description: "Lower-level exhibition and registration space by the meeting rooms." },
+          { name: "Meeting Rooms (Lower Lobby)", capacity: null, floorAreaSqm: null, description: "Nuri 1 and 2, Maleo, Kenari, Murai, Kakatua and Summit rooms." },
+          { name: "Outdoor Exhibition", capacity: null, floorAreaSqm: 2000, description: "Open-air exhibition area as listed in venue directories." },
         ],
       },
     },
@@ -169,9 +193,21 @@ async function main() {
       imageUrl: "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=1200",
       halls: {
         create: [
-          { name: "Exhibition Halls 1 - 8", capacity: 35000, floorAreaSqm: 30000, description: "Next-gen ultra-modern sustainable trade complex." },
-          { name: "Grand Ballroom PIK 2", capacity: 5000, floorAreaSqm: 4500, description: "Luxury waterfront executive galas." },
-          { name: "Atrium Central", capacity: 8000, floorAreaSqm: 6000, description: "Natural light architectural center atrium." },
+          { name: "Exhibition Hall 1", capacity: 10080, floorAreaSqm: 5200, description: "Trade-show hall in Building A, 50 x 104 m." },
+          { name: "Exhibition Hall 2", capacity: 10080, floorAreaSqm: 5200, description: "Trade-show hall in Building A, 50 x 104 m." },
+          { name: "Exhibition Hall 3", capacity: 10080, floorAreaSqm: 5200, description: "Trade-show hall in Building A, 50 x 104 m." },
+          { name: "Exhibition Hall 3A", capacity: 10080, floorAreaSqm: 5200, description: "East cap of Building A, 50 x 104 m." },
+          { name: "Exhibition Hall 5", capacity: 10080, floorAreaSqm: 5200, description: "Trade-show hall in Building B, 50 x 104 m." },
+          { name: "Exhibition Hall 6", capacity: 10080, floorAreaSqm: 5200, description: "Trade-show hall in Building B, 50 x 104 m." },
+          { name: "Exhibition Hall 7", capacity: 10080, floorAreaSqm: 5200, description: "Trade-show hall in Building B, 50 x 104 m." },
+          { name: "Exhibition Hall 8", capacity: 10080, floorAreaSqm: 5200, description: "Trade-show hall in Building B, 50 x 104 m." },
+          { name: "Exhibition Hall 9", capacity: 8400, floorAreaSqm: 4500, description: "Trade-show hall in Building C, 60 x 75 m." },
+          { name: "Exhibition Hall 10", capacity: 8400, floorAreaSqm: 4500, description: "Trade-show hall in Building C, 60 x 75 m." },
+          { name: "Exhibition Hall 11", capacity: 8400, floorAreaSqm: 4500, description: "Trade-show hall in Building C, 60 x 75 m." },
+          { name: "Sriwijaya Convention Hall", capacity: null, floorAreaSqm: null, description: "Flexible convention and plenary hall linked to pre-function areas." },
+          { name: "Meeting Rooms Nakula and Sadewa", capacity: null, floorAreaSqm: null, description: "Fourteen cellular meeting rooms in the convention building." },
+          { name: "The Courtyard", capacity: null, floorAreaSqm: 7600, description: "Terrace and lower-deck outdoor space for performances between Buildings B and C." },
+          { name: "Outdoor Event Plaza", capacity: null, floorAreaSqm: 30000, description: "Semi-outdoor exhibition area for fairs, concerts and festivals." },
         ],
       },
     },
@@ -191,8 +227,20 @@ async function main() {
       imageUrl: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=1200",
       halls: {
         create: [
-          { name: "Istora Senayan", capacity: 10000, floorAreaSqm: 6000, description: "Historic arena for electrifying music concerts and esports finals." },
-          { name: "Stadion Utama GBK", capacity: 78000, floorAreaSqm: 50000, description: "Mega stadium concerts and nation-scale gatherings." },
+          { name: "Stadion Utama GBK", capacity: 77193, floorAreaSqm: null, description: "National football and concert stadium with single flip-up seats." },
+          { name: "Indonesia Arena", capacity: 16300, floorAreaSqm: null, description: "Five-storey multifunction arena opened for FIBA World Cup 2023." },
+          { name: "Istora Senayan", capacity: 7166, floorAreaSqm: 1250, description: "Badminton and concert palace on wood parquet, 50 x 25 m arena." },
+          { name: "Stadion Madya", capacity: 9170, floorAreaSqm: null, description: "Athletics stadium with two tribunes, also hosts league football." },
+          { name: "Aquatic Stadium", capacity: 8630, floorAreaSqm: null, description: "Semi-indoor swim venue with four pools for tournaments." },
+          { name: "Tennis Indoor Stadium", capacity: 3750, floorAreaSqm: 1600, description: "Air-conditioned indoor hall, 40 x 40 m, for concerts and volleyball." },
+          { name: "Tennis Outdoor Center Court", capacity: 3822, floorAreaSqm: 1988, description: "Two outdoor courts for Davis Cup ties and concerts." },
+          { name: "Basketball Hall", capacity: 2496, floorAreaSqm: null, description: "15 m-high indoor hall for basketball and non-sport events." },
+          { name: "Baseball Field", capacity: 1320, floorAreaSqm: null, description: "Tournament baseball diamond on zoysia grass." },
+          { name: "Softball Field", capacity: 500, floorAreaSqm: null, description: "Slow-pitch and community field, expandable with temporary stands." },
+          { name: "Hockey Field", capacity: 818, floorAreaSqm: null, description: "Field-hockey tournament pitch." },
+          { name: "Archery Field", capacity: 97, floorAreaSqm: null, description: "Tournament archery range, otherwise a training ground." },
+          { name: "Squash Stadium", capacity: 560, floorAreaSqm: null, description: "International-standard squash courts for ticketed tournaments." },
+          { name: "Plazas and Festival Grounds", capacity: null, floorAreaSqm: null, description: "Plaza Timur, east parking plaza and ring-road grounds for festivals and fun-runs." },
         ],
       },
     },
@@ -212,8 +260,11 @@ async function main() {
       imageUrl: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1200",
       halls: {
         create: [
-          { name: "Main Arena Stadium (Retractable Roof)", capacity: 82000, floorAreaSqm: 55000, description: "Asia premier retractable-roof stadium for world tours." },
-          { name: "West VIP Lounge", capacity: 1500, floorAreaSqm: 2000, description: "Executive hospitality suites and private brand lounges." },
+          { name: "Main Stadium Bowl", capacity: 82000, floorAreaSqm: null, description: "Three-tier all-seater bowl on a 105 x 68 m hybrid-grass pitch, no running track." },
+          { name: "Sky View Deck", capacity: 100, floorAreaSqm: null, description: "Level 9 observation and jogging loop, 950 m, safety-limited." },
+          { name: "Training Fields", capacity: null, floorAreaSqm: null, description: "Two full-size hybrid-turf pitches with support blocks, publicly bookable." },
+          { name: "VIP Tribune and Premium Rooms", capacity: null, floorAreaSqm: null, description: "VIP tribune, special VIP rooms and 200 wheelchair seats with companions." },
+          { name: "Outdoor Plaza and Pedestrian Ramp", capacity: null, floorAreaSqm: null, description: "Public plaza, prayer plaza and ramp links toward BMW Park." },
         ],
       },
     },
@@ -356,7 +407,7 @@ async function main() {
 
   // 6.1 INDONESIA EVENTS
   const jiexpoHalls = await prisma.venueHall.findMany({ where: { venueId: venueJIExpo.id } });
-  const hallA1 = jiexpoHalls.find((h) => h.name.includes("Hall A1")) || jiexpoHalls[0];
+  const hallA1 = jiexpoHalls.find((h) => h.name === "Hall A") || jiexpoHalls[0];
 
   const event1 = await prisma.event.create({
     data: {
@@ -389,14 +440,14 @@ async function main() {
       },
       agendaItems: {
         create: [
-          { title: "Opening Plenary: Industrial AI & Precision Tooling in Southeast Asia", speakerName: "Ir. Hendra Wijaya", speakerRole: "Chairman of Indonesian Machine Tool Association", location: "Plenary Stage - Hall A1", startTime: new Date("2026-09-14T09:30:00Z"), endTime: new Date("2026-09-14T11:00:00Z"), track: "Plenary Keynote" },
+          { title: "Opening Plenary: Industrial AI & Precision Tooling in Southeast Asia", speakerName: "Ir. Hendra Wijaya", speakerRole: "Chairman of Indonesian Machine Tool Association", location: "Plenary Stage - Hall A", startTime: new Date("2026-09-14T09:30:00Z"), endTime: new Date("2026-09-14T11:00:00Z"), track: "Plenary Keynote" },
           { title: "Smart Factory Automation & CNC Multi-Axis Live Demo", speakerName: "Klaus Schneider", speakerRole: "Chief Automation Architect, DMG MORI", location: "Live Arena - Hall A2", startTime: new Date("2026-09-14T13:30:00Z"), endTime: new Date("2026-09-14T15:00:00Z"), track: "Technical Workshop" },
         ],
       },
       booths: {
         create: [
-          { companyName: "DMG MORI Precision Tools", boothNumber: "Hall A1 - Booth 102", hallName: "Hall A1", industry: "CNC Machining", websiteUrl: "https://dmgmori.com" },
-          { companyName: "Siemens Smart Factory Solutions", boothNumber: "Hall A1 - Booth 204", hallName: "Hall A1", industry: "Automation & Digital Twins", websiteUrl: "https://siemens.com" },
+          { companyName: "DMG MORI Precision Tools", boothNumber: "Hall A - Booth 102", hallName: "Hall A", industry: "CNC Machining", websiteUrl: "https://dmgmori.com" },
+          { companyName: "Siemens Smart Factory Solutions", boothNumber: "Hall A - Booth 204", hallName: "Hall A", industry: "Automation & Digital Twins", websiteUrl: "https://siemens.com" },
           { companyName: "Fanuc Robotics Indonesia", boothNumber: "Hall A2 - Booth 310", hallName: "Hall A2", industry: "Industrial Robotics", websiteUrl: "https://fanuc.co.jp" },
         ],
       },
@@ -493,7 +544,7 @@ async function main() {
       },
       booths: {
         create: [
-          { companyName: "Astra Honda Motor Mega Pavilion", boothNumber: "Hall A1 - Mega 01", hallName: "Hall A1", industry: "Automotive", websiteUrl: "https://astra-honda.com" },
+          { companyName: "Astra Honda Motor Mega Pavilion", boothNumber: "Hall A - Mega 01", hallName: "Hall A", industry: "Automotive", websiteUrl: "https://astra-honda.com" },
         ],
       },
       perks: {
@@ -721,7 +772,7 @@ async function main() {
       modelUsed: "google/gemini-3.7-flash",
       reportType: "DAILY_DIGEST",
       contentJson: JSON.stringify({
-        summary: "Manufacturing Indonesia 2026 registration velocity increased by 42% week-over-week. Heavy interest concentrated in Smart Robotics (Hall A1) and CNC Tooling.",
+        summary: "Manufacturing Indonesia 2026 registration velocity increased by 42% week-over-week. Heavy interest concentrated in Smart Robotics (Hall A) and CNC Tooling.",
         totalRegistrations: 16200,
         revenueEstimateIdr: 540000000,
         topInterests: ["Industrial Automation", "Robotics", "Hydraulic Machinery"],
