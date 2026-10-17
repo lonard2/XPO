@@ -153,6 +153,24 @@ is evidence-based rather than asserted.
       all event venue references already use the slug lookup. Guarded by a Japan
       integration test with per-venue minimums, key names and the exact hall/meeting split.
 
+- [x] **13. Global venue halls complete and current** (new request)
+      Same treatment: Marina Bay Sands 38 rows (23 halls, 15 meeting rooms), Messe
+      Frankfurt 23 (22 halls, 1 meeting group), ExCeL London 31 (18 halls, 13 meeting
+      groups). Researched per venue against the official site plus an independent source,
+      current October 2026; unverifiable figures left null.
+      Corrections: MBS expo halls are now six individual units with official areas instead
+      of one 30,000 sqm row, plus the Grand Ballroom with its tabulated 7,000 theatre
+      figure, the Sands Theatre, plazas and SkyPark spaces; Frankfurt lists halls 1
+      through 12 honouring the real numbering (no Hall 2 or 7), the Forum halls, Congress
+      Center, Kap Europa and the Agora; ExCeL gains the six Maritime Halls from the July
+      2025 Phase 3 expansion, the named Maritime Suite room groups and Immerse LDN.
+      Under construction but not listed as inventory: MBS IR2 (opening ~2031), Frankfurt
+      South Entrance/Via Mobile, and ExCeL's western entrance, which is a site allocation
+      rather than a consent.
+      The fallback dataset is generated from the seed by script. Guarded by a Global
+      integration test with per-venue minimums, key names, the exact hall/meeting split,
+      and an assertion that no Hall 2 or Hall 7 exists at Frankfurt.
+
 - [x] **5. Discovery copy is translatable** (`P2`)
       Status labels, section kickers and tab counts were hardcoded English, so `/id` and `/ja`
       rendered two languages at once.

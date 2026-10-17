@@ -145,6 +145,52 @@ describe("Phase 2 Integration: Relational Data Models & Venue Ingestion", () => 
     });
   });
 
+  it("carries the full up-to-date hall inventory for all three global venues", async () => {
+    const venues = await db.venue.findMany({
+      where: { regionId: "global" },
+      include: { halls: true },
+    });
+
+    const names = (slug: string) =>
+      venues.find((v) => v.slug === slug)?.halls.map((h) => h.name) ?? [];
+
+    // Marina Bay Sands: six expo halls, ballrooms, theatre, plazas and meeting rooms.
+    const mbs = names("marina-bay-sands-expo");
+    expect(mbs.length).toBeGreaterThanOrEqual(36);
+    for (const hall of ["Exhibition Hall A", "Exhibition Hall F", "Sands Grand Ballroom", "Sands Theatre", "Jasmine Ballroom", "Event Plaza D2", "Sands SkyPark Observation Deck", "Angsana Meeting Room"]) {
+      expect({ hall, present: mbs.includes(hall) }).toEqual({ hall, present: true });
+    }
+
+    // Messe Frankfurt: numbered halls 1 through 12 (no 2 or 7), Forum, Congress Center and Agora.
+    const frankfurt = names("messe-frankfurt");
+    expect(frankfurt.length).toBeGreaterThanOrEqual(22);
+    for (const hall of ["Exhibition Hall 1", "Festhalle", "Exhibition Hall 5", "Exhibition Hall 12", "Galleria", "Forum Saal Panorama", "CMF Harmonie Hall", "Kap Europa Horizont Hall", "Agora Open-Air Grounds"]) {
+      expect({ hall, present: frankfurt.includes(hall) }).toEqual({ hall, present: true });
+    }
+    expect(frankfurt.some((h) => h === "Exhibition Hall 2" || h === "Exhibition Hall 7")).toBe(false);
+
+    // ExCeL London: event halls, ICC complex, Maritime expansion and the named room groups.
+    const excel = names("excel-london");
+    expect(excel.length).toBeGreaterThanOrEqual(30);
+    for (const hall of ["Event Halls North and South", "Hall Module N23", "ICC Auditorium", "ICC Capital Hall", "Platinum Suite", "ICC Maritime Hall 1", "ICC Maritime Suite", "Victoria Rooms", "Immerse LDN"]) {
+      expect({ hall, present: excel.includes(hall) }).toEqual({ hall, present: true });
+    }
+
+    // The hall count behind every "N Halls" badge excludes meeting rooms.
+    const counts: Record<string, { halls: number; meeting: number }> = {};
+    for (const v of venues) {
+      counts[v.slug] = {
+        halls: v.halls.filter((h) => h.kind !== "MEETING_ROOM").length,
+        meeting: v.halls.filter((h) => h.kind === "MEETING_ROOM").length,
+      };
+    }
+    expect(counts).toEqual({
+      "marina-bay-sands-expo": { halls: 23, meeting: 15 },
+      "messe-frankfurt": { halls: 22, meeting: 1 },
+      "excel-london": { halls: 18, meeting: 13 },
+    });
+  });
+
   it("marks meeting rooms with their kind and keeps them out of the hall count", async () => {
     const venues = await db.venue.findMany({
       where: { regionId: "id" },
