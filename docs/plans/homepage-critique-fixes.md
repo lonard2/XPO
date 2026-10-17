@@ -96,16 +96,25 @@ is evidence-based rather than asserted.
       quiet muted line per card, which keeps the original critique's point without hiding the
       directory. Verified: 6 cards on `/en` and `/id`, 3 on `/ja`, correct leading order.
 
-- **FOUND while fixing the above: two venues have a dead image URL.** `JIS (Jakarta
-      International Stadium)` and `Pacifico Yokohama Convention Center` both point at
-      Unsplash photo `1508098682722-e99c43a406b2`, which returns 404; the other 18 photo ids
-      in the repo all return 200. It is defined in `prisma/seed.ts` lines 212 and 278 and in
-      `src/lib/discovery/fallbackData.ts:144`, so both the seed and the offline fallback are
+- **RESOLVED: two venues had a dead image URL.** `JIS (Jakarta International Stadium)` and
+      `Pacifico Yokohama Convention Center` both pointed at Unsplash photo
+      `1508098682722-e99c43a406b2`, which returns 404; the other 18 photo ids in the repo all
+      return 200. It was defined in `prisma/seed.ts` lines 212 and 278 and in
+      `src/lib/discovery/fallbackData.ts:144`, so the seed and the offline fallback were both
       affected. Pacifico's broken card was visible on `/ja` well before this work; JIS only
       became visible once the venues were restored.
-      The card now paints the gradient behind the image and hides the `<img>` on error, so any
-      dead URL degrades instead of showing broken-image chrome. The two URLs themselves are
-      still dead and need replacing with a real photo, which is a content choice.
+      Replacements were chosen by looking at candidates rather than guessing: JIS gets a
+      track-and-field photo (`1461896836934-ffe607ba8211`) and Pacifico gets a plenary-hall
+      photo (`1511578314322-379afb476865`). Each is reused from a venue in a different region,
+      so no two cards in the same grid show the same image. Verified: all 12 database venues
+      and all 24 photo ids in the seed and fallback data return 200, and the homepage renders
+      6 images on `/en` and 3 on `/ja` with none hidden.
+      The card also paints the gradient behind the image and hides the `<img>` on error, so a
+      future dead URL degrades instead of showing broken-image chrome.
+      Guarded by `tests/unit/discovery/venue-images.test.ts`: the known-dead id must stay gone,
+      every seeded URL must be well formed, and the two repaired images must stay distinct.
+      Reachability is deliberately not asserted because it would need the network and would
+      make the suite flaky in CI.
 
 - [x] **5. Discovery copy is translatable** (`P2`)
       Status labels, section kickers and tab counts were hardcoded English, so `/id` and `/ja`

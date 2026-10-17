@@ -141,7 +141,7 @@ export const FALLBACK_VENUES: VenueSummary[] = [
     regionId: 'jp',
     region: { id: 'jp', code: 'JP', name: 'Japan', currency: 'JPY' },
     transitInfo: 'Minatomirai Line (Minatomirai Station, 5 mins walk). JR Sakuragicho Station (12 mins walk).',
-    imageUrl: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1200',
+    imageUrl: 'https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200',
     halls: [
       { id: 'pacifico-hall', name: 'National Convention Hall of Yokohama', capacity: 5000, floorAreaSqm: 5000, description: 'One of the largest international convention halls in Asia.' },
       { id: 'pacifico-expo', name: 'Exhibition Hall A-D', capacity: 20000, floorAreaSqm: 20000, description: 'Spacious ocean-view exhibition floor.' },

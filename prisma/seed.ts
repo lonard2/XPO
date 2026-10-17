@@ -209,7 +209,7 @@ async function main() {
       latitude: -6.1256,
       longitude: 106.8617,
       transitInfo: "TransJakarta Corridors 14 & 14A. KRL Commuter Line Stasiun Ancol / JIS. Concourse North and West Access.",
-      imageUrl: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1200",
+      imageUrl: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1200",
       halls: {
         create: [
           { name: "Main Arena Stadium (Retractable Roof)", capacity: 82000, floorAreaSqm: 55000, description: "Asia premier retractable-roof stadium for world tours." },
@@ -275,7 +275,7 @@ async function main() {
       latitude: 35.4593,
       longitude: 139.6366,
       transitInfo: "Minatomirai Line (Minatomirai Station, 5 mins walk). JR Sakuragicho Station (12 mins walk).",
-      imageUrl: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1200",
+      imageUrl: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200",
       halls: {
         create: [
           { name: "National Convention Hall of Yokohama", capacity: 5000, floorAreaSqm: 5000, description: "One of the largest international convention halls in Asia." },
