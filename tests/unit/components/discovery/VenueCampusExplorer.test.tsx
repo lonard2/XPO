@@ -25,6 +25,15 @@ const mockHalls: VenueHallSummary[] = [
     floorAreaSqm: 9000,
     description: 'Modular exhibition hall for developer showcases.',
   },
+  {
+    id: 'hall-verified',
+    name: 'Verified Test Hall',
+    capacity: 1000,
+    floorAreaSqm: 2000,
+    ceilingHeightM: 9,
+    floorLoadKnM2: 15,
+    description: 'Hall with surveyed figures.',
+  },
 ];
 
 describe('VenueCampusExplorer Component', () => {
@@ -54,6 +63,21 @@ describe('VenueCampusExplorer Component', () => {
     expect(screen.getAllByText(/Typical/i).length).toBeGreaterThan(0);
     expect(screen.queryByText(/5\.5m shutter gate/i)).toBeNull();
     expect(screen.getByText(/varies by hall/i)).toBeInTheDocument();
+  });
+
+  it('renders verified figures with a Verified tag instead of the heuristic', () => {
+    render(
+      <VenueCampusExplorer
+        venueName="JIExpo Kemayoran"
+        halls={mockHalls}
+      />
+    );
+
+    fireEvent.click(screen.getAllByText('Verified Test Hall')[0]);
+
+    expect(screen.getByText(/9m from floor to lighting trusses/i)).toBeInTheDocument();
+    expect(screen.getByText(/15 kN\/m² for heavy machinery/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Verified/i).length).toBeGreaterThan(0);
   });
 
   it('filters halls when selecting wing filter tabs', () => {

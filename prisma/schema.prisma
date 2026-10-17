@@ -59,6 +59,8 @@ model VenueHall {
   kind         String   @default("HALL") // "HALL" | "MEETING_ROOM": meeting rooms are listed deeper, never counted as halls
   capacity     Int?
   floorAreaSqm Float?
+  ceilingHeightM Float? // Verified clear height in metres; null means unknown (UI shows a Typical estimate)
+  floorLoadKnM2 Float? // Verified floor load in kN/m²; null means unknown (UI shows a Typical estimate)
   description  String?
   events       Event[]
 }

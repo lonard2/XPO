@@ -510,7 +510,8 @@
     "meetingRoomsShowAll": "显示全部（{count}个）",
     "meetingRoomsShowLess": "收起",
     "meetingRoomsNoMatch": "没有符合条件的会议室。",
-    "explorerIntro": "结构层高、地面承重、容量与建筑分区说明。"
+    "explorerIntro": "结构层高、地面承重、容量与建筑分区说明。",
+    "specsVerified": "已核实"
   },
   "calendar": {
     "title": "会展交互日历",

@@ -22,6 +22,8 @@ export interface VenueHallSummary {
   kind?: string | null; // "HALL" | "MEETING_ROOM": meeting rooms are listed deeper, never counted as halls
   capacity?: number | null;
   floorAreaSqm?: number | null;
+  ceilingHeightM?: number | null; // Verified clear height; null means unknown
+  floorLoadKnM2?: number | null; // Verified floor load; null means unknown
   description?: string | null;
 }
 

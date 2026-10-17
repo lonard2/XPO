@@ -75,6 +75,17 @@ export function VenueCampusExplorer({
 
   const selectedHall = halls.find((h) => h.id === selectedHallId) || displayedHalls[0] || halls[0];
 
+  // Verified figures render as-is; everything else falls back to the heuristic with a
+  // Typical qualifier so estimates are never presented as surveyed fact.
+  const ceilingFor = (hall: VenueHallSummary) =>
+    hall.ceilingHeightM != null
+      ? { value: `${hall.ceilingHeightM}m`, tag: tVen('specsVerified') }
+      : { value: getHallTechnicalSpecs(hall).ceilingHeight, tag: tVen('specsTypical') };
+  const loadFor = (hall: VenueHallSummary) =>
+    hall.floorLoadKnM2 != null
+      ? { value: `${hall.floorLoadKnM2} kN/m²`, tag: tVen('specsVerified') }
+      : { value: getHallTechnicalSpecs(hall).floorLoad, tag: tVen('specsTypical') };
+
   const handleSelectHall = (hallId: string) => {
     setSelectedHallId(hallId);
     // On mobile viewports (< 1024px), trigger smooth scrolling to the dossier panel for instant feedback
@@ -85,8 +96,9 @@ export function VenueCampusExplorer({
 
   // Synthesize typical MICE technical specifications for each hall.
   // These are heuristic estimates from the hall name, not surveyed figures: every value
-  // rendered from them must carry the Typical qualifier in the UI. Per-hall verified
-  // sourcing remains future work.
+  // rendered from them must carry the Typical qualifier in the UI. Halls carrying
+  // verified ceilingHeightM / floorLoadKnM2 render those instead with a Verified tag.
+  // Per-hall verified sourcing beyond the current backfill remains future work.
   const getHallTechnicalSpecs = (hall: VenueHallSummary) => {
     const nameLower = hall.name.toLowerCase();
     const isConvention =
@@ -263,8 +275,8 @@ export function VenueCampusExplorer({
                   {/* Technical Engineering Badges */}
                   <div className="pt-2 border-t border-border/60 space-y-1.5 text-[11px] w-full">
                     <div className="grid grid-cols-2 gap-2 text-muted-foreground">
-                      <span className="truncate">{tVen('ceilingLabel')} ({tVen('specsTypical')}): <strong className="text-foreground">{specs.ceilingHeight}</strong></span>
-                      <span className="truncate">{tVen('floorLoadLabel')} ({tVen('specsTypical')}): <strong className="text-foreground">{specs.floorLoad}</strong></span>
+                      <span className="truncate">{tVen('ceilingLabel')} ({ceilingFor(hall).tag}): <strong className="text-foreground">{ceilingFor(hall).value}</strong></span>
+                      <span className="truncate">{tVen('floorLoadLabel')} ({loadFor(hall).tag}): <strong className="text-foreground">{loadFor(hall).value}</strong></span>
                     </div>
                     <div className="flex items-center justify-between text-primary font-medium pt-0.5">
                       <span className="text-xs">{specs.columnSpan} ({tVen('specsTypical')})</span>
@@ -328,16 +340,16 @@ export function VenueCampusExplorer({
                   <div className="flex items-start gap-2 rounded-lg border border-border/60 p-2.5 bg-muted/20">
                     <Maximize2 className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                     <div>
-                      <strong className="text-foreground block">Ceiling Clearance ({tVen('specsTypical')})</strong>
-                      <span>{specs.ceilingHeight} from floor to lighting trusses.</span>
+                      <strong className="text-foreground block">{tVen('ceilingLabel')} ({ceilingFor(selectedHall).tag})</strong>
+                      <span>{ceilingFor(selectedHall).value} from floor to lighting trusses.</span>
                     </div>
                   </div>
 
                   <div className="flex items-start gap-2 rounded-lg border border-border/60 p-2.5 bg-muted/20">
                     <Shield className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                     <div>
-                      <strong className="text-foreground block">Floor Load Rating ({tVen('specsTypical')})</strong>
-                      <span>{specs.floorLoad} for heavy machinery and modular booths.</span>
+                      <strong className="text-foreground block">{tVen('floorLoadLabel')} ({loadFor(selectedHall).tag})</strong>
+                      <span>{loadFor(selectedHall).value} for heavy machinery and modular booths.</span>
                     </div>
                   </div>
 

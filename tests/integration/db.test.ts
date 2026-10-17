@@ -273,4 +273,22 @@ describe("Phase 2 Integration: Relational Data Models & Venue Ingestion", () => 
     expect(aiReport?.modelUsed).toBe("google/gemini-3.7-flash");
     expect(aiReport?.reportType).toBe("DAILY_DIGEST");
   });
+
+  it("carries verified ceiling and floor-load figures on researched halls", async () => {
+    const findVenueHall = async (slug: string, name: string) => {
+      const venue = await db.venue.findUnique({ where: { slug }, include: { halls: true } });
+      return venue?.halls.find((h) => h.name === name);
+    };
+
+    // JICC official room pages: Hall B is 97.5 x 60 x 9 m at 1,500 kg/sqm.
+    expect((await findVenueHall("jcc-senayan", "Exhibition Hall B"))?.ceilingHeightM).toBe(9);
+    expect((await findVenueHall("jcc-senayan", "Exhibition Hall B"))?.floorLoadKnM2).toBe(15);
+    // Makuhari official specs: conservative minimum clear heights, tonne-to-kN loads.
+    expect((await findVenueHall("makuhari-messe", "Exhibition Hall 1"))?.ceilingHeightM).toBe(15);
+    expect((await findVenueHall("makuhari-messe", "Exhibition Hall 1"))?.floorLoadKnM2).toBe(49);
+    // MBS expo halls share the published 9.45 m / 12 kN per sqm building spec.
+    expect((await findVenueHall("marina-bay-sands-expo", "Exhibition Hall A"))?.ceilingHeightM).toBe(9.45);
+    // Halls without research stay null so the UI renders Typical, never invented fact.
+    expect((await findVenueHall("tokyo-big-sight", "East Exhibition Hall 1"))?.ceilingHeightM).toBeNull();
+  });
 });

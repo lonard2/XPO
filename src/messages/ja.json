@@ -510,7 +510,8 @@
     "meetingRoomsShowAll": "すべて表示（{count}）",
     "meetingRoomsShowLess": "折りたたむ",
     "meetingRoomsNoMatch": "条件に合う会議室がありません。",
-    "explorerIntro": "構造天井高・床荷重・収容人数・建築ウイングのご案内。"
+    "explorerIntro": "構造天井高・床荷重・収容人数・建築ウイングのご案内。",
+    "specsVerified": "確認済み"
   },
   "calendar": {
     "title": "イベントカレンダー",

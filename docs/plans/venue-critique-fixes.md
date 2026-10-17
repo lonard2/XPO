@@ -12,7 +12,7 @@ One todo per commit, in order below. Each item states its acceptance check.
       Every synthesized figure now carries a Typical qualifier on cards and in the dossier,
       plus a dossier disclaimer, and the universal 5.5m shutter-gate freight sentence is
       replaced with an honest varies-by-hall note. Keys added in all 6 locales (parity test
-      guards them). Per-hall verified sourcing remains future work, recorded explicitly.
+      guards them).
       Accept: no unqualified fabricated figure renders.
 
 - [x] **2. Hydration mismatches on venue pages** (`P1`, `$impeccable harden`)
@@ -69,3 +69,10 @@ One todo per commit, in order below. Each item states its acceptance check.
 - Rinko Park and other non-inventory spaces stay excluded.
 - Organizer wizard hall selection untouched (booth allocation may use any space).
 - Screen-reader full pass and light-mode image-text contrast: not covered by the critique.
+
+- [x] **9. Verified per-hall specs where research supports them** (follow-up, approved)
+      Two nullable fields (`ceilingHeightM`, `floorLoadKnM2`) backfilled for 66 halls from
+      the Oct 2026 research (JICC room pages, Makuhari facility specs with conservative
+      minimum clear heights, MBS expo building spec, ICE typical hall, ExCeL 10 m halls,
+      Pacifico JNTO table). Dossier and cards render Verified values with a Verified tag;
+      everything else keeps the Typical qualifier. Guarded by component and DB tests.

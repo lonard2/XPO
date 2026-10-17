@@ -510,7 +510,8 @@
     "meetingRoomsShowAll": "Alle anzeigen ({count})",
     "meetingRoomsShowLess": "Weniger anzeigen",
     "meetingRoomsNoMatch": "Keine Tagungsräume für diese Suche.",
-    "explorerIntro": "Tragwerkshöhen, Bodenlasten, Kapazitäten und Architekturflügel."
+    "explorerIntro": "Tragwerkshöhen, Bodenlasten, Kapazitäten und Architekturflügel.",
+    "specsVerified": "Verifiziert"
   },
   "calendar": {
     "title": "Interaktiver Eventkalender",
