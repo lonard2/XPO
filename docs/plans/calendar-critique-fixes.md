@@ -3,7 +3,7 @@
 Source: Impeccable critique `2026-10-17T15-13-14Z` (19/40, Poor). Direction: export correctness first, all five issues, keep cards / declutter (no itinerary rebuild).
 
 - [x] **1. Harden export correctness** (`$impeccable harden`): locale-aware origin for Google/Outlook URLs (never timezone), inline failure states for iCal/CSV/copy, venue `?venue=` URL sync, pill counts from archetype-filtered set.
-- [ ] **2. Clarify export scope** (`$impeccable clarify`): labeled bulk-vs-single groups, N in primary label, format guidance, timezone shown.
+- [x] **2. Clarify export scope** (`$impeccable clarify`): labeled bulk-vs-single groups, N in primary label, format guidance, timezone shown.
 - [ ] **3. Distill filter workspace** (`$impeccable distill`): compact category selector behind disclosure, sticky result summary, single divider language.
 - [ ] **4. Audit i18n and a11y** (`$impeccable audit`): localize weekdays/aria-labels/export menu, 44px dismiss, menu arrow-key nav with focus return, grid roles.
 - [ ] **5. Polish final pass** (`$impeccable polish`): detector clean, screenshots, full suite green, re-critique note.

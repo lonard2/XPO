@@ -537,7 +537,10 @@
     "noEventsFoundDesc": "No confirmed trade shows match your active filters. Try selecting another category or resetting filters.",
     "confirmedScheduleDesc": "{count} confirmed MICE trade exhibitions and keynotes in {region}.",
     "exportFailed": "Export failed. No events to export or your browser blocked the download.",
-    "copyFailed": "Copy failed. Your browser blocked clipboard access."
+    "copyFailed": "Copy failed. Your browser blocked clipboard access.",
+    "exportBulkGroup": "Full filtered set",
+    "exportSingleGroup": "Single event",
+    "exportTimezoneNote": "All dates shown in"
   },
   "tickets": {
     "bookPass": "Book Ticket Pass",

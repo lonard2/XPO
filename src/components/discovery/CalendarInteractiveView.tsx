@@ -377,6 +377,9 @@ export function CalendarInteractiveView({
             <p className="text-xs sm:text-sm text-muted-foreground">
               {tCal('confirmedScheduleDesc', { count: filteredEvents.length, region: region.toUpperCase() }) || `${filteredEvents.length} confirmed MICE trade exhibitions & keynotes in ${region.toUpperCase()}.`}
             </p>
+            <p className="text-[11px] text-muted-foreground">
+              {tCal('exportTimezoneNote') || 'All dates shown in'} {timezone}
+            </p>
           </div>
 
           {/* Multi-Format Export Suite */}
@@ -389,7 +392,7 @@ export function CalendarInteractiveView({
               className="gap-1.5 text-xs font-semibold cursor-pointer min-h-[44px] sm:min-h-[36px]"
             >
               <Download className="h-3.5 w-3.5 text-primary" />
-              <span>{isExporting ? (tCal('generating') || 'Generating .ics...') : (tCal('exportICal') || 'Export iCal (.ics)')}</span>
+              <span>{isExporting ? (tCal('generating') || 'Generating .ics...') : `${tCal('exportICal') || 'Export iCal (.ics)'} · ${filteredEvents.length}`}</span>
             </Button>
 
             <Button
@@ -411,6 +414,10 @@ export function CalendarInteractiveView({
                 role="menu"
                 aria-orientation="vertical"
               >
+                {/* Group 1: whole filtered set */}
+                <p className="px-2 pt-1 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                  {tCal('exportBulkGroup') || 'Full filtered set'} ({filteredEvents.length})
+                </p>
                 {/* Option 1: .ics download */}
                 <button
                   type="button"
@@ -427,10 +434,17 @@ export function CalendarInteractiveView({
                       {isExporting ? 'Generating iCalendar...' : 'iCalendar File (.ics)'}
                     </div>
                     <p className="text-[11px] text-muted-foreground line-clamp-1">
-                      Apple Calendar, Outlook, Thunderbird
+                      Apple Calendar, Outlook, Thunderbird · {filteredEvents.length} events
                     </p>
                   </div>
                 </button>
+
+                {/* Group 2: one event only */}
+                {nextUpcomingEvent && (
+                  <p className="px-2 pt-1 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                    {tCal('exportSingleGroup') || 'Single event'}
+                  </p>
+                )}
 
                 {/* Option 2: Google Calendar */}
                 {nextUpcomingEvent && (
@@ -497,7 +511,7 @@ export function CalendarInteractiveView({
                       CSV Spreadsheet (.csv)
                     </div>
                     <p className="text-[11px] text-muted-foreground line-clamp-1">
-                      RFC 4180 format for Excel & Google Sheets
+                      RFC 4180 format for Excel and Sheets · {filteredEvents.length} events
                     </p>
                   </div>
                 </button>
@@ -521,7 +535,7 @@ export function CalendarInteractiveView({
                       {copiedText ? 'Schedule Copied!' : 'Copy Text Summary'}
                     </div>
                     <p className="text-[11px] text-muted-foreground line-clamp-1">
-                      {copiedText ? 'Ready to paste into chat or docs' : 'Plain-text agenda for email or Slack'}
+                      {copiedText ? 'Ready to paste into chat or docs' : `Plain-text agenda · ${filteredEvents.length} events`}
                     </p>
                   </div>
                 </button>

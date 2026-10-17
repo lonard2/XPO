@@ -29,6 +29,11 @@ const mockMessages: Record<string, Record<string, string>> = {
     activeFilter: 'Active Filter:',
     resetFilters: 'Reset Filters',
     resetAllFilters: 'Reset All Filters',
+    exportFailed: 'Export failed.',
+    copyFailed: 'Copy failed.',
+    exportBulkGroup: 'Full filtered set',
+    exportSingleGroup: 'Single event',
+    exportTimezoneNote: 'All dates shown in',
   },
   common: {
     back: 'Back',
@@ -239,5 +244,23 @@ describe('CalendarInteractiveView Component', () => {
     fireEvent.click(screen.getByRole('button', { name: /export ical/i }));
 
     expect(screen.getByRole('alert')).toBeInTheDocument();
+  });
+
+  it('labels bulk versus single-event export scope with the filtered count', () => {
+    render(
+      <CalendarInteractiveView
+        initialEvents={mockEvents}
+        locale="en"
+        region="id"
+      />
+    );
+
+    expect(screen.getByRole('button', { name: /export ical.*2/i })).toBeInTheDocument();
+    expect(screen.getByText(/all dates shown in/i)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /more export formats/i }));
+
+    expect(screen.getByText(/full filtered set \(2\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/single event/i)).toBeInTheDocument();
   });
 });
