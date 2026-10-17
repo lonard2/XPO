@@ -40,7 +40,8 @@
     "delete": "Löschen",
     "backToHome": "Zurück zur Übersicht",
     "skipToContent": "Zum Hauptinhalt springen",
-    "filters": "Filter"
+    "filters": "Filter",
+    "home": "Start"
   },
   "nav": {
     "brand": "XPO",

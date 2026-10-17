@@ -40,7 +40,8 @@
     "delete": "Hapus",
     "backToHome": "Kembali ke Beranda",
     "skipToContent": "Loncat ke konten utama",
-    "filters": "Filter"
+    "filters": "Filter",
+    "home": "Beranda"
   },
   "nav": {
     "brand": "XPO",

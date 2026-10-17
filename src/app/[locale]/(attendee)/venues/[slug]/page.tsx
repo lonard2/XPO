@@ -106,14 +106,14 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
       <nav aria-label="Breadcrumb" className="border-b border-border bg-muted/30 py-3">
         <ol className="container flex items-center gap-2 text-xs text-muted-foreground px-4">
           <li>
-            <Link href={`/${locale}`} className="hover:text-foreground flex items-center gap-1 transition-colors">
+            <Link href={`/${locale}`} className="hover:text-foreground flex items-center gap-1 transition-colors min-h-[44px]">
               <ArrowLeft className="h-3.5 w-3.5" />
-              <span>{tCom('explore') || 'Home'}</span>
+              <span>{tCom('home')}</span>
             </Link>
           </li>
           <li aria-hidden="true" className="text-muted-foreground/60">/</li>
           <li>
-            <Link href={`/${locale}/venues`} className="hover:text-foreground transition-colors">
+            <Link href={`/${locale}/venues`} className="hover:text-foreground transition-colors min-h-[44px] inline-flex items-center">
               <span>{tNav('venues') || 'Venues'}</span>
             </Link>
           </li>

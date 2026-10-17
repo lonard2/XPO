@@ -141,7 +141,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
         <div className="container flex h-16 items-center justify-between">
           {/* Brand Logo */}
           <div className="flex items-center gap-3 lg:gap-4 xl:gap-6 min-w-0">
-            <Link href={`/${locale}`} className="flex items-center gap-2.5 group shrink-0">
+            <Link href={`/${locale}`} className="flex items-center gap-2.5 group shrink-0 py-1">
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm group-hover:scale-105 transition-transform">
                 <Compass className="h-5 w-5 stroke-[2.2]" />
               </div>
@@ -193,7 +193,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
             <button
               type="button"
               onClick={() => setIsAuthModalOpen(true)}
-              className="flex items-center gap-1.5 px-2 lg:px-2.5 py-1.5 rounded-lg border border-border/80 hover:border-primary/40 bg-card hover:bg-accent/50 transition-all text-xs text-left cursor-pointer whitespace-nowrap"
+              className="flex items-center gap-1.5 px-2 lg:px-2.5 py-1.5 rounded-lg border border-border/80 hover:border-primary/40 bg-card hover:bg-accent/50 transition-all text-xs text-left cursor-pointer whitespace-nowrap min-h-[44px]"
               aria-label="Manage user authentication and role persona"
             >
               <div className="h-6 w-6 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
@@ -217,7 +217,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
               size="icon"
               onClick={toggleDarkMode}
               aria-label="Toggle dark mode"
-              className="h-9 w-9"
+              className="h-11 w-11 min-h-[44px] min-w-[44px]"
             >
               {isDarkMode ? <Sun className="h-4 w-4 text-amber-400" /> : <Moon className="h-4 w-4" />}
             </Button>
@@ -234,7 +234,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden h-9 w-9"
+              className="md:hidden h-11 w-11 min-h-[44px] min-w-[44px]"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle menu"
             >

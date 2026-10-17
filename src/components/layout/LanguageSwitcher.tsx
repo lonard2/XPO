@@ -130,7 +130,7 @@ export function LanguageSwitcher({
         aria-expanded={isOpen}
         aria-haspopup="listbox"
         aria-label={`Select language, current: ${activeLanguage.label}`}
-        className="h-9 px-2.5 gap-1.5 text-xs font-medium border border-border/60 hover:bg-accent hover:text-accent-foreground"
+        className="h-11 px-2.5 gap-1.5 text-xs font-medium border border-border/60 hover:bg-accent hover:text-accent-foreground min-h-[44px]"
       >
         <Globe className="h-3.5 w-3.5 text-muted-foreground" />
         <span className="font-semibold uppercase tracking-wider">{activeLanguage.code.toUpperCase()}</span>

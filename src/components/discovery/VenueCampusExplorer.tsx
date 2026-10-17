@@ -198,7 +198,7 @@ export function VenueCampusExplorer({
                 dossierRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }
             }}
-            className="text-primary hover:underline font-semibold shrink-0 ml-2 cursor-pointer flex items-center gap-1 min-h-[36px] px-2"
+            className="text-primary hover:underline font-semibold shrink-0 ml-2 cursor-pointer flex items-center gap-1 min-h-[44px] px-2"
           >
             <span>{tVen('viewSpecs')}</span>
             <ArrowUpRight className="h-3.5 w-3.5" />
@@ -309,13 +309,13 @@ export function VenueCampusExplorer({
               <div className="rounded-xl border border-border/70 bg-card p-2.5">
                 <span className="text-xs text-muted-foreground uppercase font-semibold block">{tVen('capacityLabel')}</span>
                 <span className="text-sm font-bold text-foreground mt-0.5 block">
-                  {selectedHall.capacity?.toLocaleString() || 'N/A'} Pax
+                  {selectedHall.capacity?.toLocaleString() ? `${selectedHall.capacity.toLocaleString()} Pax` : '—'}
                 </span>
               </div>
               <div className="rounded-xl border border-border/70 bg-card p-2.5">
                 <span className="text-xs text-muted-foreground uppercase font-semibold block">{tVen('floorAreaLabel')}</span>
                 <span className="text-sm font-bold text-foreground mt-0.5 block">
-                  {selectedHall.floorAreaSqm?.toLocaleString() || 'N/A'} m²
+                  {selectedHall.floorAreaSqm?.toLocaleString() ? `${selectedHall.floorAreaSqm.toLocaleString()} m²` : '—'}
                 </span>
               </div>
             </div>

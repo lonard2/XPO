@@ -15,7 +15,7 @@ import { Badge } from '@/components/ui/Badge';
 import { buttonVariants } from '@/components/ui/Button';
 import { formatDateRange, getTimeZoneForRegion } from '@/lib/i18n/formatters';
 import { useTranslations } from 'next-intl';
-import { getArchetypeTokens } from '@/lib/theming';
+import { getArchetypeTokens, getReadableBadgeColors } from '@/lib/theming';
 import { type DiscoveryEvent } from '@/types/discovery';
 import { cn } from '@/lib/utils';
 
@@ -80,6 +80,7 @@ export function VenueScheduleTable({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {events.map((evt) => {
             const tokens = getArchetypeTokens(evt.archetype);
+            const archetypeBadge = getReadableBadgeColors(tokens.primary);
             const dates = formatDateRange(evt.startDate, evt.endDate, locale, timezone);
             const hallName = evt.venueHall?.name || (evt as any).venueHallName || tVen('defaultHall');
 
@@ -94,9 +95,9 @@ export function VenueScheduleTable({
                       variant="outline"
                       className="text-xs font-bold uppercase"
                       style={{
-                        color: tokens.primary,
+                        backgroundColor: archetypeBadge.background,
+                        color: archetypeBadge.color,
                         borderColor: `${tokens.primary}55`,
-                        backgroundColor: `${tokens.primary}12`,
                       }}
                     >
                       {tokens.displayName}
@@ -111,7 +112,7 @@ export function VenueScheduleTable({
                     href={`/${locale}/events/${evt.slug}`}
                     className="after:absolute after:inset-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
                   >
-                    <h3 className="text-base font-bold text-foreground group-hover:text-primary transition-colors line-clamp-1">
+                    <h3 className="text-base font-bold text-foreground group-hover:text-primary transition-colors line-clamp-1" title={evt.title}>
                       {evt.title}
                     </h3>
                   </Link>

@@ -40,7 +40,8 @@
     "delete": "删除",
     "backToHome": "返回发现页",
     "skipToContent": "跳转至主要内容",
-    "filters": "筛选"
+    "filters": "筛选",
+    "home": "首页"
   },
   "nav": {
     "brand": "XPO",

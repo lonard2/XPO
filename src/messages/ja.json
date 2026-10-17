@@ -40,7 +40,8 @@
     "delete": "削除",
     "backToHome": "ディスカバリーに戻る",
     "skipToContent": "メインコンテンツへスキップ",
-    "filters": "フィルター"
+    "filters": "フィルター",
+    "home": "ホーム"
   },
   "nav": {
     "brand": "XPO",

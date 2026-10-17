@@ -46,10 +46,17 @@ One todo per commit, in order below. Each item states its acceptance check.
       South Halls (4), Conference Tower (2), Ariake GYM-EX (1). Guarded by a coverage test
       asserting all 428 halls land in exactly one wing.
 
-- [ ] **7. Small-fixes sweep** (`P2/P3`, `$impeccable audit`)
-      Sub-44px targets on the venue path, the 4.2:1 uppercase badge, raw "N/A Pax" states,
-      timetable `line-clamp-1` titles without tooltip, breadcrumb Explore/Home mismatch.
-      Accept: each item fixed or explicitly recorded with a reason.
+- [x] **7. Small-fixes sweep** (`P2/P3`, `$impeccable audit`)
+      Venue-owned targets now meet 44px: the mobile View Specs strip, both breadcrumb
+      links, both hero CTAs and the sticky bar (all measured). Header icon buttons, logo,
+      language and account controls raised to 44px inside the 64px header (verified
+      visually, no layout shift). Timetable badge uses the shared readable-badge helper,
+      killing the 4.2:1 pair (detector confirms zero contrast failures). N/A Pax states
+      render an em dash, timetable titles carry tooltips, breadcrumb reads Home via a new
+      common.home key. Left alone with reasons: sr-only skip link (by design), stretched
+      timetable link (whole card is the target), footer/region inline text links (WCAG
+      2.5.8 exempts inline), desktop-only nav links (pointer precision). The lone new
+      cramped-padding flag is inline glyph line-boxes, a detector false positive.
 
 - [ ] **8. Polish and Tokyo hero photo** (`P3`, `$impeccable polish`)
       Replace the Shinjuku street photo on Tokyo Big Sight with a verified Ariake-complex
