@@ -100,6 +100,51 @@ describe("Phase 2 Integration: Relational Data Models & Venue Ingestion", () => 
     expect(jis).toContain("Sky View Deck");
   });
 
+  it("carries the full up-to-date hall inventory for all three Japanese venues", async () => {
+    const venues = await db.venue.findMany({
+      where: { regionId: "jp" },
+      include: { halls: true },
+    });
+
+    const names = (slug: string) =>
+      venues.find((v) => v.slug === slug)?.halls.map((h) => h.name) ?? [];
+
+    // Tokyo Big Sight: East, West, South and rooftop halls plus the Conference Tower rooms.
+    const tokyo = names("tokyo-big-sight");
+    expect(tokyo.length).toBeGreaterThanOrEqual(44);
+    for (const hall of ["East Exhibition Hall 1", "East Exhibition Hall 7", "West Exhibition Hall 4", "South Exhibition Hall 2", "West Rooftop Exhibition Area", "Reception Hall A and B", "International Conference Room", "Ariake GYM-EX Exhibition Hall", "Conference Room 605", "VIP Room 805"]) {
+      expect({ hall, present: tokyo.includes(hall) }).toEqual({ hall, present: true });
+    }
+
+    // Makuhari Messe: eleven numbered halls (not eight), the Event Hall and the conference rooms.
+    const makuhari = names("makuhari-messe");
+    expect(makuhari.length).toBeGreaterThanOrEqual(36);
+    for (const hall of ["Exhibition Hall 9", "Exhibition Hall 11", "Makuhari Event Hall", "Convention Hall", "Conference Room 301", "VIP Reception Room 1"]) {
+      expect({ hall, present: makuhari.includes(hall) }).toEqual({ hall, present: true });
+    }
+
+    // Pacifico Yokohama: National hall, four exhibition units, Conference Center, Annex and North.
+    const pacifico = names("pacifico-yokohama");
+    expect(pacifico.length).toBeGreaterThanOrEqual(80);
+    for (const hall of ["National Convention Hall of Yokohama", "Exhibition Hall B", "Conference Center Main Hall", "Annex Hall F201-F206", "North G1-G8", "Conference Room 315", "North G303"]) {
+      expect({ hall, present: pacifico.includes(hall) }).toEqual({ hall, present: true });
+    }
+
+    // The hall count behind every "N Halls" badge excludes meeting rooms.
+    const counts: Record<string, { halls: number; meeting: number }> = {};
+    for (const v of venues) {
+      counts[v.slug] = {
+        halls: v.halls.filter((h) => h.kind !== "MEETING_ROOM").length,
+        meeting: v.halls.filter((h) => h.kind === "MEETING_ROOM").length,
+      };
+    }
+    expect(counts).toEqual({
+      "tokyo-big-sight": { halls: 23, meeting: 24 },
+      "makuhari-messe": { halls: 14, meeting: 25 },
+      "pacifico-yokohama": { halls: 9, meeting: 79 },
+    });
+  });
+
   it("marks meeting rooms with their kind and keeps them out of the hall count", async () => {
     const venues = await db.venue.findMany({
       where: { regionId: "id" },

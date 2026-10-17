@@ -137,6 +137,21 @@ is evidence-based rather than asserted.
         Serbaguna and GBK Arena; JIS gains its hospitality, press and training-field rooms.
       Indonesian total is now 161 halls (44/41/22/28/16/10). The fallback dataset mirrors
       the seed. Guarded by raised per-venue minimums in the integration test.
+- [x] **12. Japanese venue halls complete and current** (new request)
+      Same treatment as Indonesia: Tokyo Big Sight 47 rows (23 halls, 24 meeting rooms),
+      Makuhari Messe 39 (14 halls, 25 meeting), Pacifico Yokohama 88 (9 halls, 79 meeting).
+      Researched per venue against the official site plus an independent source, current
+      October 2026; unverifiable figures left null.
+      Corrections, not just additions: Makuhari actually has eleven numbered halls, not the
+      eight previously listed; Tokyo's East/West/South blocks are now individual halls with
+      official areas; Pacifico gains its Conference Center rooms, Annex Hall subdivisions
+      and the entire North building. National Convention Hall carries its announced
+      May 2027 to Mar 2028 renovation closure in its description. No venue has a
+      verifiable new build since 2024, and Rinko Park is excluded because it is a
+      city-managed park, not Pacifico inventory.
+      The fallback dataset is generated from the seed by script, so the two cannot drift;
+      all event venue references already use the slug lookup. Guarded by a Japan
+      integration test with per-venue minimums, key names and the exact hall/meeting split.
 
 - [x] **5. Discovery copy is translatable** (`P2`)
       Status labels, section kickers and tab counts were hardcoded English, so `/id` and `/ja`
