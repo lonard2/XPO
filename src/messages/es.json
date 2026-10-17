@@ -535,7 +535,9 @@
     "generating": "Generando .ics...",
     "noEventsFound": "No se encontraron eventos",
     "noEventsFoundDesc": "No hay ferias comerciales confirmadas que coincidan con sus filtros activos. Intente seleccionar otra categoría o restablecer los filtros.",
-    "confirmedScheduleDesc": "{count} ferias comerciales y ponencias magistrales MICE confirmadas en {region}."
+    "confirmedScheduleDesc": "{count} ferias comerciales y ponencias magistrales MICE confirmadas en {region}.",
+    "exportFailed": "Exportación fallida. No hay eventos o el navegador bloqueó la descarga.",
+    "copyFailed": "Copiado fallido. El navegador bloqueó el portapapeles."
   },
   "tickets": {
     "bookPass": "Reservar Pase de Entrada",

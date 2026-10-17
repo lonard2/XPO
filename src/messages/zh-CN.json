@@ -535,7 +535,9 @@
     "generating": "正在生成 .ics 文件...",
     "noEventsFound": "未找到相关展会",
     "noEventsFoundDesc": "没有符合您当前筛选条件的确定展会。请尝试选择其他类别或重置筛选。",
-    "confirmedScheduleDesc": "在 {region} 共有 {count} 场已确定的 MICE 行业展会与主题峰会。"
+    "confirmedScheduleDesc": "在 {region} 共有 {count} 场已确定的 MICE 行业展会与主题峰会。",
+    "exportFailed": "导出失败。没有可导出的活动或浏览器阻止了下载。",
+    "copyFailed": "复制失败。浏览器阻止了剪贴板访问。"
   },
   "tickets": {
     "bookPass": "预订入场通行证",

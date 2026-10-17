@@ -535,7 +535,9 @@
     "generating": "Generating .ics...",
     "noEventsFound": "No events found",
     "noEventsFoundDesc": "No confirmed trade shows match your active filters. Try selecting another category or resetting filters.",
-    "confirmedScheduleDesc": "{count} confirmed MICE trade exhibitions and keynotes in {region}."
+    "confirmedScheduleDesc": "{count} confirmed MICE trade exhibitions and keynotes in {region}.",
+    "exportFailed": "Export failed. No events to export or your browser blocked the download.",
+    "copyFailed": "Copy failed. Your browser blocked clipboard access."
   },
   "tickets": {
     "bookPass": "Book Ticket Pass",

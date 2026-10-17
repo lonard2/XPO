@@ -190,4 +190,54 @@ describe('CalendarInteractiveView Component', () => {
     expect(gcalLink).toHaveAttribute('href');
     expect(gcalLink.getAttribute('href')).toContain('calendar.google.com/calendar/render');
   });
+
+  it('builds single-event export links with a site origin, never the timezone', () => {
+    render(
+      <CalendarInteractiveView
+        initialEvents={mockEvents}
+        locale="en"
+        region="id"
+      />
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: /more export formats/i }));
+
+    const gcalHref = screen.getByRole('menuitem', { name: /google calendar/i }).getAttribute('href') || '';
+    // The details payload must point at /en/events/<slug>, not Asia/Jakarta/events/<slug>.
+    expect(gcalHref).toContain('%2Fevents%2F');
+    expect(gcalHref).not.toContain('Asia%2FJakarta%2Fevents');
+    expect(gcalHref).not.toContain('Asia/Jakarta/events');
+  });
+
+  it('syncs venue selection to the URL and counts pills from the active category', () => {
+    render(
+      <CalendarInteractiveView
+        initialEvents={mockEvents}
+        locale="en"
+        region="id"
+      />
+    );
+
+    fireEvent.click(screen.getByText('JIExpo Kemayoran'));
+
+    expect(mockReplace).toHaveBeenCalled();
+    const lastUrl = mockReplace.mock.calls[mockReplace.mock.calls.length - 1][0] as string;
+    expect(lastUrl).toContain('venue=');
+  });
+
+  it('surfaces an inline error when iCal export fails instead of closing silently', () => {
+    vi.spyOn(icalModule, 'downloadICalFile').mockReturnValue(false);
+
+    render(
+      <CalendarInteractiveView
+        initialEvents={mockEvents}
+        locale="en"
+        region="id"
+      />
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: /export ical/i }));
+
+    expect(screen.getByRole('alert')).toBeInTheDocument();
+  });
 });

@@ -535,7 +535,9 @@
     "generating": ".icsファイルを生成中...",
     "noEventsFound": "該当するイベントが見つかりません",
     "noEventsFoundDesc": "現在選択されている条件に一致する展示会はありません。他のカテゴリーを選択するかフィルターをリセットしてください。",
-    "confirmedScheduleDesc": "{region}で確定済みの{count}件のMICE展示会および基調講演。"
+    "confirmedScheduleDesc": "{region}で確定済みの{count}件のMICE展示会および基調講演。",
+    "exportFailed": "エクスポートに失敗しました。対象のイベントがないか、ブラウザがダウンロードをブロックしました。",
+    "copyFailed": "コピーに失敗しました。ブラウザがクリップボードをブロックしました。"
   },
   "tickets": {
     "bookPass": "入場パスを予約",

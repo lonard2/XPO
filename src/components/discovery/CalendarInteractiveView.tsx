@@ -41,6 +41,7 @@ export interface CalendarInteractiveViewProps {
   locale: string;
   region: string;
   initialArchetype?: string;
+  initialVenue?: string;
 }
 
 export function CalendarInteractiveView({
@@ -48,6 +49,7 @@ export function CalendarInteractiveView({
   locale,
   region,
   initialArchetype = 'all',
+  initialVenue = 'all',
 }: CalendarInteractiveViewProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -61,17 +63,22 @@ export function CalendarInteractiveView({
   const tEvents = useTranslations('events');
 
   const [selectedArchetype, setSelectedArchetype] = React.useState<string>(initialArchetype);
-  const [selectedVenue, setSelectedVenue] = React.useState<string>('all');
+  const [selectedVenue, setSelectedVenue] = React.useState<string>(initialVenue);
   const [exportOpen, setExportOpen] = React.useState(false);
   const [isExporting, setIsExporting] = React.useState(false);
   const [copiedText, setCopiedText] = React.useState(false);
+  const [exportError, setExportError] = React.useState<string | null>(null);
   const exportMenuRef = React.useRef<HTMLDivElement>(null);
 
-  // Sync state if URL search params change externally
+  // Sync state if URL search params change externally (archetype + venue shareable)
   React.useEffect(() => {
     const archParam = searchParams.get('archetype');
     if (archParam) {
       setSelectedArchetype(archParam);
+    }
+    const venueParam = searchParams.get('venue');
+    if (venueParam) {
+      setSelectedVenue(venueParam);
     }
   }, [searchParams]);
 
@@ -105,6 +112,18 @@ export function CalendarInteractiveView({
     return Array.from(venues);
   }, [initialEvents]);
 
+  // Events matching the category filter only: the basis for venue pill counts so
+  // counts never promise more than the active category can deliver.
+  const archetypeFilteredEvents = React.useMemo(() => {
+    return initialEvents.filter((evt) => {
+      return (
+        !selectedArchetype ||
+        selectedArchetype === 'all' ||
+        evt.archetype === selectedArchetype
+      );
+    });
+  }, [initialEvents, selectedArchetype]);
+
   // Filter events based on active category & venue
   const filteredEvents = React.useMemo(() => {
     return initialEvents.filter((evt) => {
@@ -136,11 +155,27 @@ export function CalendarInteractiveView({
     router.replace(newUrl, { scroll: false });
   };
 
+  const handleSelectVenue = (venueName: string) => {
+    setSelectedVenue(venueName);
+    setExportError(null);
+    const params = new URLSearchParams(searchParams.toString());
+    if (!venueName || venueName === 'all') {
+      params.delete('venue');
+    } else {
+      params.set('venue', venueName);
+    }
+    const newQuery = params.toString();
+    const newUrl = newQuery ? `${pathname}?${newQuery}` : pathname;
+    router.replace(newUrl, { scroll: false });
+  };
+
   const handleResetFilters = () => {
     setSelectedArchetype('all');
     setSelectedVenue('all');
+    setExportError(null);
     const params = new URLSearchParams(searchParams.toString());
     params.delete('archetype');
+    params.delete('venue');
     const newQuery = params.toString();
     const newUrl = newQuery ? `${pathname}?${newQuery}` : pathname;
     router.replace(newUrl, { scroll: false });
@@ -178,12 +213,23 @@ export function CalendarInteractiveView({
     return sorted.find((e) => new Date(e.endDate).getTime() >= now) || sorted[0];
   }, [filteredEvents]);
 
-  // Export handlers
+  // Export handlers: surface failures inline instead of closing silently. The
+  // single-event links need a real site origin for the details URL, never the
+  // region timezone (a past bug produced Asia/Jakarta/events/slug dead links).
+  const eventDetailsOrigin =
+    typeof window !== 'undefined' ? `${window.location.origin}/${locale}` : `https://xpo-mice.com/${locale}`;
+
   const handleExportICal = () => {
     setIsExporting(true);
+    setExportError(null);
     const filename = `xpo-${region}-schedule.ics`;
     const calendarTitle = `XPO MICE ${region.toUpperCase()} Master Timetable`;
-    downloadICalFile(filteredEvents, filename, calendarTitle);
+    const ok = downloadICalFile(filteredEvents, filename, calendarTitle);
+    if (!ok) {
+      setIsExporting(false);
+      setExportError(tCal('exportFailed') || 'Export failed. No events to export or your browser blocked the download.');
+      return;
+    }
     setTimeout(() => {
       setIsExporting(false);
       setExportOpen(false);
@@ -191,13 +237,19 @@ export function CalendarInteractiveView({
   };
 
   const handleExportCsv = () => {
+    setExportError(null);
     const filename = `xpo-${region}-schedule.csv`;
-    downloadCsvSchedule(filteredEvents, filename);
+    const ok = downloadCsvSchedule(filteredEvents, filename);
+    if (!ok) {
+      setExportError(tCal('exportFailed') || 'Export failed. No events to export or your browser blocked the download.');
+      return;
+    }
     setExportOpen(false);
   };
 
   const handleCopyPlainText = async () => {
     try {
+      setExportError(null);
       const text = generatePlainTextSchedule(filteredEvents, locale);
       await navigator.clipboard.writeText(text);
       setCopiedText(true);
@@ -207,6 +259,7 @@ export function CalendarInteractiveView({
       }, 1500);
     } catch (err) {
       console.error('Failed to copy itinerary to clipboard:', err);
+      setExportError(tCal('copyFailed') || 'Copy failed. Your browser blocked clipboard access.');
     }
   };
 
@@ -291,7 +344,7 @@ export function CalendarInteractiveView({
                 <span>{tCal('filterVenue') || 'Venue:'} {selectedVenue}</span>
                 <button
                   type="button"
-                  onClick={() => setSelectedVenue('all')}
+                  onClick={() => handleSelectVenue('all')}
                   className="h-6 w-6 inline-flex items-center justify-center rounded-full hover:bg-foreground/10 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                   aria-label="Remove venue filter"
                 >
@@ -382,7 +435,7 @@ export function CalendarInteractiveView({
                 {/* Option 2: Google Calendar */}
                 {nextUpcomingEvent && (
                   <a
-                    href={generateGoogleCalendarUrl(nextUpcomingEvent, timezone)}
+                    href={generateGoogleCalendarUrl(nextUpcomingEvent, eventDetailsOrigin)}
                     target="_blank"
                     rel="noopener noreferrer"
                     role="menuitem"
@@ -407,7 +460,7 @@ export function CalendarInteractiveView({
                 {/* Option 3: Outlook 365 Web */}
                 {nextUpcomingEvent && (
                   <a
-                    href={generateOutlookWebUrl(nextUpcomingEvent, timezone)}
+                    href={generateOutlookWebUrl(nextUpcomingEvent, eventDetailsOrigin)}
                     target="_blank"
                     rel="noopener noreferrer"
                     role="menuitem"
@@ -475,6 +528,11 @@ export function CalendarInteractiveView({
               </div>
             )}
           </div>
+          {exportError && (
+            <p role="alert" className="text-xs font-medium text-destructive pt-1">
+              {exportError}
+            </p>
+          )}
         </div>
 
         {/* Venue Filter Bar */}
@@ -487,7 +545,7 @@ export function CalendarInteractiveView({
 
             <button
               type="button"
-              onClick={() => setSelectedVenue('all')}
+              onClick={() => handleSelectVenue('all')}
               className={cn(
                 'min-h-[44px] sm:min-h-[36px] px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all whitespace-nowrap cursor-pointer flex items-center gap-1.5',
                 selectedVenue === 'all'
@@ -496,18 +554,18 @@ export function CalendarInteractiveView({
               )}
             >
               <span>{tCal('allVenues') || 'All Venues'}</span>
-              <span className="opacity-80 text-xs font-mono">({initialEvents.length})</span>
+              <span className="opacity-80 text-xs font-mono">({archetypeFilteredEvents.length})</span>
             </button>
 
             {availableVenues.map((venueName) => {
-              const count = initialEvents.filter((e) => e.venueName === venueName).length;
+              const count = archetypeFilteredEvents.filter((e) => e.venueName === venueName).length;
               const isSelected = selectedVenue.toLowerCase() === venueName.toLowerCase();
 
               return (
                 <button
                   key={venueName}
                   type="button"
-                  onClick={() => setSelectedVenue(venueName)}
+                  onClick={() => handleSelectVenue(venueName)}
                   className={cn(
                     'min-h-[44px] sm:min-h-[36px] px-3 py-1.5 rounded-lg text-xs font-medium border transition-all whitespace-nowrap cursor-pointer flex items-center gap-1.5',
                     isSelected

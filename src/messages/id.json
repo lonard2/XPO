@@ -535,7 +535,9 @@
     "generating": "Membuat file .ics...",
     "noEventsFound": "Tidak ada acara ditemukan",
     "noEventsFoundDesc": "Tidak ada pameran dagang yang cocok dengan filter aktif Anda. Coba pilih kategori lain atau reset filter.",
-    "confirmedScheduleDesc": "{count} pameran dagang dan konferensi MICE terkonfirmasi di {region}."
+    "confirmedScheduleDesc": "{count} pameran dagang dan konferensi MICE terkonfirmasi di {region}.",
+    "exportFailed": "Ekspor gagal. Tidak ada acara untuk diekspor atau peramban memblokir unduhan.",
+    "copyFailed": "Penyalinan gagal. Peramban memblokir akses papan klip."
   },
   "tickets": {
     "bookPass": "Pesan Pas Masuk",

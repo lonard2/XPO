@@ -12,7 +12,7 @@ import { type EventSummary } from '@/types/discovery';
 
 interface CalendarPageProps {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ region?: string; archetype?: string }>;
+  searchParams: Promise<{ region?: string; archetype?: string; venue?: string }>;
 }
 
 export async function generateMetadata({ params }: CalendarPageProps) {
@@ -41,6 +41,7 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
     geoRegion: headerList.get('x-xpo-region'),
   });
   const archetype = rawSearchParams.archetype || 'all';
+  const initialVenue = rawSearchParams.venue || 'all';
 
   let events: any[] = [];
   try {
@@ -122,6 +123,7 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
           locale={locale}
           region={region}
           initialArchetype={archetype}
+          initialVenue={initialVenue}
         />
       </div>
     </div>

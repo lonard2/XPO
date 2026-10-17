@@ -535,7 +535,9 @@
     "generating": ".ics wird erstellt...",
     "noEventsFound": "Keine Veranstaltungen gefunden",
     "noEventsFoundDesc": "Keine bestätigten Messen entsprechen Ihren aktiven Filtern. Wählen Sie eine andere Kategorie oder setzen Sie die Filter zurück.",
-    "confirmedScheduleDesc": "{count} bestätigte MICE-Messen und Keynotes in {region}."
+    "confirmedScheduleDesc": "{count} bestätigte MICE-Messen und Keynotes in {region}.",
+    "exportFailed": "Export fehlgeschlagen. Keine Events oder der Browser hat den Download blockiert.",
+    "copyFailed": "Kopieren fehlgeschlagen. Der Browser hat den Zwischenablage-Zugriff blockiert."
   },
   "tickets": {
     "bookPass": "Einlasspass buchen",
