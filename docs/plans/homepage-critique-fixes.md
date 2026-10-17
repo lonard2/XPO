@@ -117,27 +117,26 @@ is evidence-based rather than asserted.
       make the suite flaky in CI.
 
 - [x] **10. Indonesian venue halls complete and current** (`P1`, new request)
-      All six Indonesian venues now carry their full event-usable hall and sub-venue
-      inventory: 74 halls across the region, up from 23. Figures were researched per venue
-      against the official site plus at least one independent source (Wikipedia, Cvent,
-      GBK e-booking, company profiles, reputable press), current as of October 2026, and
-      anything unverifiable was left null rather than invented. The UI already renders null
-      capacity and area as N/A.
-      JIExpo 14 (seven numbered halls A/B/C/B3/C3/D1/D2 with official areas, Gambir Expo,
-      Open Space, two ballrooms, theatre, two meeting-room groups); ICE BSD 15 (ten
-      numbered halls, Nusantara Hall, three meeting-room groups, outdoor space); JICC 11
-      (plenary, assembly, Cendrawasih, two exhibition halls, Main Lobby, Merak, Kasuari,
-      Lower Lobby, meeting-room group, outdoor); NICE PIK 2 15 (eleven numbered halls,
-      Sriwijaya hall, 14 meeting rooms, courtyard, outdoor plaza); GBK 14 (stadium, arena,
-      Istora, Madya, aquatic, tennis in/out, basketball, baseball, softball, hockey,
-      archery, squash, festival grounds); JIS 5 (bowl, sky deck, training fields,
-      hospitality, plaza).
-      The fallback dataset mirrors the seed, including two venue blocks it never had (GBK,
-      JIS). Event hall-name strings follow the official naming.
-      Fixed alongside: fallback events referenced venues by array index, so inserting the
-      two new venue blocks silently repointed Tokyo events at GBK. All 16 references now
-      use a slug lookup that throws on a missing venue.
-      Guarded by a new integration test asserting per-venue minimums and key hall names.
+      Initial pass: 74 halls. Superseded by todo 11 below (161 total with the JIExpo New
+      Hall and individual meeting rooms; detail for the initial pass lives in git history).
+
+- [x] **11. Newer spaces and full meeting-room inventory** (new request)
+      Two additions on top of todo 10, researched the same way (official site plus an
+      independent source, current October 2026):
+      * JIExpo has a ~20,000 sqm New Hall across Levels 1A and 1B under construction
+        (foundation mid-2025, superstructure due mid-2026) that is already selling
+        December 2026 events. It is listed with its status stated, not presented as open.
+        No other venue has a verifiable new build: ICE BSD, JICC, GBK and JIS show none,
+        and the one NICE Phase 2 mention is a single uncorroborated press line, so Phase 2
+        is recorded as unverified rather than added.
+      * All meeting rooms are now individual rows instead of aggregates: JIExpo 31 rooms
+        (Levels 5 and 6 plus Semeru/Lawu/Bromo/Kerinci/Rinjani subdivisions), ICE 29
+        (Garuda/Cendana/Kalimaya with published areas and theatre capacities), JICC 12
+        (Merak/Nuri/Maleo/Murai/Kenari/Kakatua/Summit with official dimensions),
+        NICE 14 (Nakula/Sadewa with areas and classroom capacities). GBK gains Gedung
+        Serbaguna and GBK Arena; JIS gains its hospitality, press and training-field rooms.
+      Indonesian total is now 161 halls (44/41/22/28/16/10). The fallback dataset mirrors
+      the seed. Guarded by raised per-venue minimums in the integration test.
 
 - [x] **5. Discovery copy is translatable** (`P2`)
       Status labels, section kickers and tab counts were hardcoded English, so `/id` and `/ja`
