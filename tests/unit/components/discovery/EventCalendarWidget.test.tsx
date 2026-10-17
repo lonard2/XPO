@@ -36,4 +36,13 @@ describe('EventCalendarWidget', () => {
     expect(screen.getByText('JIExpo Kemayoran')).toBeDefined();
     expect(screen.getByText('Hall A1')).toBeDefined();
   });
+
+  it('uses localized weekday headers and toggle semantics for day buttons', () => {
+    const { container } = render(<EventCalendarWidget events={mockEvents} locale="en" regionCode="id" />);
+
+    expect(container.querySelectorAll('[role="columnheader"]').length).toBe(7);
+    // No aria-selected mismatch under the group role; day selection uses aria-pressed.
+    expect(container.querySelectorAll('[aria-selected]').length).toBe(0);
+    expect(container.querySelectorAll('[aria-pressed]').length).toBeGreaterThan(20);
+  });
 });

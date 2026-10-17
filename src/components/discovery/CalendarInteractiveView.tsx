@@ -72,6 +72,24 @@ export function CalendarInteractiveView({
   // timetable stays the workspace lead; it opens when a category is active.
   const [filtersExpanded, setFiltersExpanded] = React.useState(initialArchetype !== 'all');
   const exportMenuRef = React.useRef<HTMLDivElement>(null);
+  const exportTriggerRef = React.useRef<HTMLButtonElement>(null);
+
+  // Arrow-key navigation across export menu items (menu pattern).
+  const handleExportMenuKeyDown = (e: React.KeyboardEvent) => {
+    if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key)) return;
+    e.preventDefault();
+    const items = Array.from(
+      exportMenuRef.current?.querySelectorAll('[role="menuitem"]') || []
+    ) as HTMLElement[];
+    if (items.length === 0) return;
+    const active = document.activeElement as HTMLElement | null;
+    let idx = active ? items.indexOf(active) : -1;
+    if (e.key === 'ArrowDown') idx = (idx + 1) % items.length;
+    else if (e.key === 'ArrowUp') idx = (idx - 1 + items.length) % items.length;
+    else if (e.key === 'Home') idx = 0;
+    else idx = items.length - 1;
+    items[idx]?.focus();
+  };
 
   // Sync state if URL search params change externally (archetype + venue shareable)
   React.useEffect(() => {
@@ -96,6 +114,7 @@ export function CalendarInteractiveView({
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setExportOpen(false);
+        exportTriggerRef.current?.focus();
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -299,7 +318,7 @@ export function CalendarInteractiveView({
               {tArch('browseByCategory') || 'Filter Exhibitions by Industry Vertical'}
             </h2>
             <p className="text-xs text-muted-foreground">
-              Select a specialized MICE category to narrow your calendar view.
+              {tCal('filterIntro') || 'Select a specialized MICE category to narrow your calendar view.'}
             </p>
           </div>
           <div className="flex items-center gap-2 shrink-0">
@@ -349,8 +368,8 @@ export function CalendarInteractiveView({
                 <button
                   type="button"
                   onClick={() => handleSelectCategory('all')}
-                  className="h-6 w-6 inline-flex items-center justify-center rounded-full hover:bg-foreground/10 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                  aria-label="Remove category filter"
+                  className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-full hover:bg-foreground/10 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  aria-label={tCal('removeCategoryFilter') || 'Remove category filter'}
                 >
                   <X className="h-3 w-3" />
                 </button>
@@ -366,8 +385,8 @@ export function CalendarInteractiveView({
                 <button
                   type="button"
                   onClick={() => handleSelectVenue('all')}
-                  className="h-6 w-6 inline-flex items-center justify-center rounded-full hover:bg-foreground/10 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                  aria-label="Remove venue filter"
+                  className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-full hover:bg-foreground/10 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  aria-label={tCal('removeVenueFilter') || 'Remove venue filter'}
                 >
                   <X className="h-3 w-3" />
                 </button>
@@ -422,18 +441,22 @@ export function CalendarInteractiveView({
               onClick={() => setExportOpen(!exportOpen)}
               disabled={filteredEvents.length === 0}
               className="px-2 text-xs font-semibold cursor-pointer min-h-[44px] sm:min-h-[36px]"
-              aria-label="More export formats"
+              aria-label={tCal('moreExportFormats') || 'More export formats'}
               aria-haspopup="true"
               aria-expanded={exportOpen}
+              aria-controls="calendar-export-menu"
+              ref={exportTriggerRef}
             >
               <ChevronDown className={cn('h-3.5 w-3.5 transition-transform duration-200', exportOpen && 'rotate-180')} />
             </Button>
 
             {exportOpen && (
               <div
+                id="calendar-export-menu"
                 className="absolute right-0 top-full mt-2 w-72 sm:w-80 rounded-xl border border-border/80 bg-popover/95 backdrop-blur-md p-1.5 shadow-lg z-30 space-y-1 animate-in fade-in-50 zoom-in-95"
                 role="menu"
                 aria-orientation="vertical"
+                onKeyDown={handleExportMenuKeyDown}
               >
                 {/* Group 1: whole filtered set */}
                 <p className="px-2 pt-1 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
@@ -452,10 +475,10 @@ export function CalendarInteractiveView({
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="text-xs font-bold text-foreground">
-                      {isExporting ? 'Generating iCalendar...' : 'iCalendar File (.ics)'}
+                      {isExporting ? (tCal('generatingICal') || 'Generating iCalendar...') : (tCal('icalFile') || 'iCalendar File (.ics)')}
                     </div>
                     <p className="text-[11px] text-muted-foreground line-clamp-1">
-                      Apple Calendar, Outlook, Thunderbird · {filteredEvents.length} events
+                      {(tCal('icalApps') || 'Apple Calendar, Outlook, Thunderbird')} · {filteredEvents.length} events
                     </p>
                   </div>
                 </button>
@@ -482,11 +505,11 @@ export function CalendarInteractiveView({
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="text-xs font-bold text-foreground flex items-center gap-1">
-                        <span>Google Calendar</span>
+                        <span>{tCal('googleCalendar') || 'Google Calendar'}</span>
                         <ExternalLink className="h-3 w-3 opacity-60" />
                       </div>
                       <p className="text-[11px] text-muted-foreground line-clamp-1">
-                        Add next: {nextUpcomingEvent.title}
+                        {tCal('addNext', { title: nextUpcomingEvent.title }) || `Add next: ${nextUpcomingEvent.title}`}
                       </p>
                     </div>
                   </a>
@@ -507,11 +530,11 @@ export function CalendarInteractiveView({
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="text-xs font-bold text-foreground flex items-center gap-1">
-                        <span>Outlook 365 Web</span>
+                        <span>{tCal('outlookWeb') || 'Outlook 365 Web'}</span>
                         <ExternalLink className="h-3 w-3 opacity-60" />
                       </div>
                       <p className="text-[11px] text-muted-foreground line-clamp-1">
-                        Add next: {nextUpcomingEvent.title}
+                        {tCal('addNext', { title: nextUpcomingEvent.title }) || `Add next: ${nextUpcomingEvent.title}`}
                       </p>
                     </div>
                   </a>
@@ -529,10 +552,10 @@ export function CalendarInteractiveView({
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="text-xs font-bold text-foreground">
-                      CSV Spreadsheet (.csv)
+                      {tCal('csvFile') || 'CSV Spreadsheet (.csv)'}
                     </div>
                     <p className="text-[11px] text-muted-foreground line-clamp-1">
-                      RFC 4180 format for Excel and Sheets · {filteredEvents.length} events
+                      {(tCal('csvDesc') || 'RFC 4180 format for Excel and Sheets')} · {filteredEvents.length} events
                     </p>
                   </div>
                 </button>
@@ -553,10 +576,10 @@ export function CalendarInteractiveView({
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="text-xs font-bold text-foreground">
-                      {copiedText ? 'Schedule Copied!' : 'Copy Text Summary'}
+                      {copiedText ? (tCal('copiedTitle') || 'Schedule Copied!') : (tCal('copyTitle') || 'Copy Text Summary')}
                     </div>
                     <p className="text-[11px] text-muted-foreground line-clamp-1">
-                      {copiedText ? 'Ready to paste into chat or docs' : `Plain-text agenda · ${filteredEvents.length} events`}
+                      {copiedText ? (tCal('copiedDesc') || 'Ready to paste into chat or docs') : `${tCal('copyDesc') || 'Plain-text agenda'} · ${filteredEvents.length} events`}
                     </p>
                   </div>
                 </button>

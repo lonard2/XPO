@@ -37,6 +37,14 @@ const mockMessages: Record<string, Record<string, string>> = {
     resultSummary: 'Showing',
     hideVerticals: 'Hide verticals',
     browseVerticals: 'Browse all verticals',
+    removeCategoryFilter: 'Remove category filter',
+    removeVenueFilter: 'Remove venue filter',
+    moreExportFormats: 'More export formats',
+    icalFile: 'iCalendar File (.ics)',
+    csvFile: 'CSV Spreadsheet (.csv)',
+    copyTitle: 'Copy Text Summary',
+    googleCalendar: 'Google Calendar',
+    outlookWeb: 'Outlook 365 Web',
   },
   common: {
     back: 'Back',
@@ -282,5 +290,32 @@ describe('CalendarInteractiveView Component', () => {
 
     fireEvent.click(toggle);
     expect(toggle).toHaveAttribute('aria-expanded', 'true');
+  });
+
+  it('gives filter dismiss buttons a 44px touch target and localizes menu labels', () => {
+    render(
+      <CalendarInteractiveView
+        initialEvents={mockEvents}
+        locale="en"
+        region="id"
+      />
+    );
+
+    fireEvent.click(screen.getByText('JIExpo Kemayoran'));
+
+    const dismiss = screen.getByRole('button', { name: /remove venue filter/i });
+    expect(dismiss.className).toContain('min-h-[44px]');
+
+    fireEvent.click(screen.getByRole('button', { name: /more export formats/i }));
+    expect(screen.getByText(/full filtered set/i)).toBeInTheDocument();
+    const menu = screen.getByRole('menu');
+    expect(menu).toHaveAttribute('id', 'calendar-export-menu');
+
+    // Arrow-key nav moves focus across menu items.
+    const items = Array.from(menu.querySelectorAll('[role="menuitem"]'));
+    expect(items.length).toBeGreaterThan(2);
+    (items[0] as HTMLElement).focus();
+    fireEvent.keyDown(menu, { key: 'ArrowDown' });
+    expect(document.activeElement).toBe(items[1]);
   });
 });

@@ -58,6 +58,16 @@ export function EventCalendarWidget({
   const tEvents = useTranslations('events');
   const tTickets = useTranslations('tickets');
 
+  // Locale-aware narrow weekday labels (Sunday-first grid order); no hardcoded English.
+  const weekdayLabels = React.useMemo(() => {
+    const sunday = new Date(2026, 5, 7);
+    return Array.from({ length: 7 }, (_, i) => {
+      const d = new Date(sunday);
+      d.setDate(sunday.getDate() + i);
+      return d.toLocaleDateString(locale, { weekday: 'narrow' });
+    });
+  }, [locale]);
+
   const [selectedDate, setSelectedDate] = React.useState<Date>(() => new Date());
   const [viewMonth, setViewMonth] = React.useState<Date>(() => new Date());
 
@@ -189,24 +199,20 @@ export function EventCalendarWidget({
               {monthName}
             </h4>
             <div className="flex items-center gap-1">
-              <Button size="icon" variant="ghost" className="h-10 w-10 sm:h-9 sm:w-9 min-h-[44px] min-w-[44px] sm:min-h-[36px] sm:min-w-[36px] rounded-lg cursor-pointer flex items-center justify-center hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2" onClick={prevMonth} aria-label="Previous month">
+              <Button size="icon" variant="ghost" className="h-10 w-10 sm:h-9 sm:w-9 min-h-[44px] min-w-[44px] sm:min-h-[36px] sm:min-w-[36px] rounded-lg cursor-pointer flex items-center justify-center hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2" onClick={prevMonth} aria-label={tCal('prevMonth') || 'Previous month'}>
                 <ChevronLeft className="h-4 w-4 sm:h-3.5 sm:w-3.5" />
               </Button>
-              <Button size="icon" variant="ghost" className="h-10 w-10 sm:h-9 sm:w-9 min-h-[44px] min-w-[44px] sm:min-h-[36px] sm:min-w-[36px] rounded-lg cursor-pointer flex items-center justify-center hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2" onClick={nextMonth} aria-label="Next month">
+              <Button size="icon" variant="ghost" className="h-10 w-10 sm:h-9 sm:w-9 min-h-[44px] min-w-[44px] sm:min-h-[36px] sm:min-w-[36px] rounded-lg cursor-pointer flex items-center justify-center hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2" onClick={nextMonth} aria-label={tCal('nextMonth') || 'Next month'}>
                 <ChevronRight className="h-4 w-4 sm:h-3.5 sm:w-3.5" />
               </Button>
             </div>
           </div>
 
           {/* Weekday Labels */}
-          <div className="grid grid-cols-7 gap-1 text-center text-xs font-bold text-muted-foreground uppercase">
-            <span>Su</span>
-            <span>Mo</span>
-            <span>Tu</span>
-            <span>We</span>
-            <span>Th</span>
-            <span>Fr</span>
-            <span>Sa</span>
+          <div className="grid grid-cols-7 gap-1 text-center text-xs font-bold text-muted-foreground uppercase" role="row">
+            {weekdayLabels.map((label, i) => (
+              <span key={i} role="columnheader">{label}</span>
+            ))}
           </div>
 
           {/* Days Grid */}
@@ -231,8 +237,8 @@ export function EventCalendarWidget({
                     }
                   }}
                   type="button"
-                  aria-label={`${cellDateStr}${hasEvents ? ', events scheduled' : ''}`}
-                  aria-selected={active}
+                  aria-label={`${cellDateStr}${hasEvents ? `, ${tCal('eventsScheduled') || 'events scheduled'}` : ''}`}
+                  aria-pressed={active}
                   aria-current={today ? 'date' : undefined}
                   className={cn(
                     'relative flex h-10 w-full min-h-[44px] sm:h-9 sm:min-h-[36px] flex-col items-center justify-center rounded-lg text-xs font-semibold transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
@@ -247,6 +253,7 @@ export function EventCalendarWidget({
                   <span>{cell.dayNumber}</span>
                   {hasEvents && (
                     <span
+                      aria-hidden="true"
                       className={cn(
                         'absolute bottom-1 h-1 w-1 rounded-full',
                         active ? 'bg-primary-foreground' : 'bg-primary'
