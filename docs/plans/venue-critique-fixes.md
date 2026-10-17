@@ -29,11 +29,10 @@ One todo per commit, in order below. Each item states its acceptance check.
       anchors. Verified by screenshot on desktop and 390px, and by clicking the sticky bar.
       Keys added in all 6 locales.
 
-- [ ] **4. Localize the venue surface copy** (`P2`, `$impeccable clarify`)
-      Move VenueCampusExplorer, VenueTransitHub, VenueScheduleTable headers and the venue
-      metric labels into the `venues` namespace dictionaries (all 6 locales), replacing the
-      `split(' ')[1]` fallback. Includes any new strings introduced by todos 1, 3 and 5.
-      Accept: message parity test passes; `/ja` renders no English section strings.
+- [x] **4. Localize the venue surface copy** (`P2`, `$impeccable clarify`)
+      42 keys across explorer, transit, timetable and page metric labels, in all 6 locales.
+      Verified /ja and /id render zero English section strings. Units (Pax, m², N/A) and
+      proper nouns (Google Maps, Building A, Festhalle) stay untranslated by design.
 
 - [ ] **5. Meeting-rooms search and reveal** (`P2`, `$impeccable distill`)
       Text filter plus progressive reveal (~12 initial rows, "Show all N") in

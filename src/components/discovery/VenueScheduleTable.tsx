@@ -14,6 +14,7 @@ import {
 import { Badge } from '@/components/ui/Badge';
 import { buttonVariants } from '@/components/ui/Button';
 import { formatDateRange, getTimeZoneForRegion } from '@/lib/i18n/formatters';
+import { useTranslations } from 'next-intl';
 import { getArchetypeTokens } from '@/lib/theming';
 import { type DiscoveryEvent } from '@/types/discovery';
 import { cn } from '@/lib/utils';
@@ -33,6 +34,7 @@ export function VenueScheduleTable({
   venueName,
   className,
 }: VenueScheduleTableProps) {
+  const tVen = useTranslations('venues');
   const timezone = getTimeZoneForRegion(regionCode);
 
   return (
@@ -41,13 +43,13 @@ export function VenueScheduleTable({
         <div className="space-y-1">
           <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider">
             <CalendarIcon className="h-4 w-4" />
-            <span>Campus Schedule & Keynote Sessions</span>
+            <span>{tVen('scheduleKicker')}</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-            Scheduled Exhibitions at {venueName} ({events.length})
+            {tVen('scheduleTitle', { venue: venueName, count: events.length })}
           </h2>
           <p className="text-xs text-muted-foreground">
-            Confirmed trade shows, multi-track keynotes, and pavilion bookings.
+            {tVen('scheduleIntro')}
           </p>
         </div>
 
@@ -59,7 +61,7 @@ export function VenueScheduleTable({
             className: 'gap-1.5 text-xs font-semibold min-h-[44px] sm:min-h-[36px] px-3.5',
           })}
         >
-          <span>Full Regional Calendar</span>
+          <span>{tVen('fullCalendar')}</span>
           <ArrowRight className="h-3.5 w-3.5" />
         </Link>
       </div>
@@ -68,10 +70,10 @@ export function VenueScheduleTable({
         <div className="rounded-2xl border border-dashed border-border/80 p-8 text-center space-y-2 bg-muted/10">
           <CalendarIcon className="h-8 w-8 text-muted-foreground mx-auto" />
           <h3 className="text-sm font-bold text-foreground">
-            No upcoming exhibitions currently scheduled
+            {tVen('scheduleEmptyTitle')}
           </h3>
           <p className="text-xs text-muted-foreground max-w-md mx-auto">
-            Check back soon for new trade fair announcements and hall booking updates for {venueName}.
+            {tVen('scheduleEmptyDesc', { venue: venueName })}
           </p>
         </div>
       ) : (
@@ -79,7 +81,7 @@ export function VenueScheduleTable({
           {events.map((evt) => {
             const tokens = getArchetypeTokens(evt.archetype);
             const dates = formatDateRange(evt.startDate, evt.endDate, locale, timezone);
-            const hallName = evt.venueHall?.name || (evt as any).venueHallName || 'Main Exhibition Hall';
+            const hallName = evt.venueHall?.name || (evt as any).venueHallName || tVen('defaultHall');
 
             return (
               <div
@@ -138,7 +140,7 @@ export function VenueScheduleTable({
                     })}
                   >
                     <Ticket className="h-3.5 w-3.5" />
-                    <span>View Event & Passes</span>
+                    <span>{tVen('viewEventPasses')}</span>
                   </Link>
                 </div>
               </div>

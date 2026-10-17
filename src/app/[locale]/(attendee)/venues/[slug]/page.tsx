@@ -172,7 +172,7 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
               <div className="grid grid-cols-3 gap-3 pt-2">
                 <div className="rounded-xl border border-border/80 bg-muted/30 p-3 text-center">
                   <span className="text-xs uppercase font-semibold text-muted-foreground block">
-                    {tVen('totalHalls')?.split(' ')?.[1] || 'Halls'}
+                    {tVen('hallsMetric')}
                   </span>
                   <span className="text-base sm:text-lg font-bold text-foreground mt-0.5 block">
                     {countHalls(venue.halls) || 4}

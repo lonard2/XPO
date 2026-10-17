@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
+import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 
 export interface VenueTransitHubProps {
@@ -34,6 +35,7 @@ export function VenueTransitHub({
   regionCode = 'ID',
   className,
 }: VenueTransitHubProps) {
+  const tVen = useTranslations('venues');
   const [copied, setCopied] = React.useState(false);
 
   const handleCopyAddress = () => {
@@ -187,13 +189,13 @@ export function VenueTransitHub({
         <div className="space-y-1">
           <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider">
             <Compass className="h-4 w-4" />
-            <span>Transit & Spatial Accessibility</span>
+            <span>{tVen('transitKicker')}</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-foreground">
-            Getting to {venueName}
+            {tVen('gettingTo', { venue: venueName })}
           </h2>
           <p className="text-xs text-muted-foreground">
-            Verified rapid rail linkages, shuttle buses, airport connectivity, and parking gates.
+            {tVen('transitIntro')}
           </p>
         </div>
 
@@ -208,17 +210,17 @@ export function VenueTransitHub({
             {copied ? (
               <>
                 <Check className="h-3.5 w-3.5 text-primary" />
-                <span className="text-primary font-semibold">Address Copied</span>
+                <span className="text-primary font-semibold">{tVen('addressCopied')}</span>
               </>
             ) : (
               <>
                 <Copy className="h-3.5 w-3.5" />
-                <span>Copy Venue Address</span>
+                <span>{tVen('copyAddress')}</span>
               </>
             )}
           </Button>
           <div aria-live="polite" className="sr-only">
-            {copied ? `Address for ${venueName} copied to clipboard.` : ''}
+            {copied ? tVen('addressCopiedLive', { venue: venueName }) : ''}
           </div>
         </div>
       </div>
@@ -228,7 +230,7 @@ export function VenueTransitHub({
         <div className="rounded-xl border border-border/70 bg-muted/20 p-4 text-xs text-muted-foreground leading-relaxed flex items-start gap-2.5">
           <MapPin className="h-4 w-4 text-primary shrink-0 mt-0.5" />
           <div>
-            <span className="font-semibold text-foreground block mb-0.5">Campus Location & Access Notes:</span>
+            <span className="font-semibold text-foreground block mb-0.5">{tVen('locationNotes')}</span>
             <span>{transitInfo}</span>
           </div>
         </div>
@@ -243,10 +245,10 @@ export function VenueTransitHub({
               <Train className="h-4 w-4" />
             </div>
             <Badge variant="outline" className="text-xs uppercase font-semibold">
-              Rapid Rail
+              {tVen('modeRail')}
             </Badge>
           </div>
-          <h3 className="text-xs font-bold text-foreground">Subway & Train</h3>
+          <h3 className="text-xs font-bold text-foreground">{tVen('railTitle')}</h3>
           <p className="text-[11px] text-muted-foreground leading-relaxed">
             {railInfo}
           </p>
@@ -259,10 +261,10 @@ export function VenueTransitHub({
               <Bus className="h-4 w-4" />
             </div>
             <Badge variant="outline" className="text-xs uppercase font-semibold">
-              Bus / BRT
+              {tVen('modeBus')}
             </Badge>
           </div>
-          <h3 className="text-xs font-bold text-foreground">Express Shuttles</h3>
+          <h3 className="text-xs font-bold text-foreground">{tVen('busTitle')}</h3>
           <p className="text-[11px] text-muted-foreground leading-relaxed">
             {busInfo}
           </p>
@@ -275,10 +277,10 @@ export function VenueTransitHub({
               <Car className="h-4 w-4" />
             </div>
             <Badge variant="outline" className="text-xs uppercase font-semibold">
-              Parking
+              {tVen('modeParking')}
             </Badge>
           </div>
-          <h3 className="text-xs font-bold text-foreground">Vehicle & Gates</h3>
+          <h3 className="text-xs font-bold text-foreground">{tVen('parkingTitle')}</h3>
           <p className="text-[11px] text-muted-foreground leading-relaxed">
             {parkingInfo}
           </p>
@@ -291,10 +293,10 @@ export function VenueTransitHub({
               <Plane className="h-4 w-4" />
             </div>
             <Badge variant="outline" className="text-xs uppercase font-semibold">
-              Airport
+              {tVen('modeAirport')}
             </Badge>
           </div>
-          <h3 className="text-xs font-bold text-foreground">Airport Direct</h3>
+          <h3 className="text-xs font-bold text-foreground">{tVen('airportTitle')}</h3>
           <p className="text-[11px] text-muted-foreground leading-relaxed">
             {airportInfo}
           </p>
@@ -304,7 +306,7 @@ export function VenueTransitHub({
       {/* Direct Navigation Map Launchers */}
       <div className="pt-2 border-t border-border/60 flex flex-wrap items-center justify-between gap-3">
         <span className="text-xs font-semibold text-muted-foreground">
-          Launch Navigation App:
+          {tVen('launchNav')}
         </span>
 
         <div className="flex flex-wrap items-center gap-2">
@@ -317,7 +319,7 @@ export function VenueTransitHub({
             <Navigation className="h-3.5 w-3.5 text-primary" />
             <span>Google Maps</span>
             <ExternalLink className="h-3 w-3 opacity-60 ml-0.5" />
-            <span className="sr-only">(opens in new tab)</span>
+            <span className="sr-only">{tVen('opensNewTab')}</span>
           </a>
 
           <a
@@ -329,7 +331,7 @@ export function VenueTransitHub({
             <Navigation className="h-3.5 w-3.5 text-primary" />
             <span>Apple Maps</span>
             <ExternalLink className="h-3 w-3 opacity-60 ml-0.5" />
-            <span className="sr-only">(opens in new tab)</span>
+            <span className="sr-only">{tVen('opensNewTab')}</span>
           </a>
 
           <a
@@ -341,7 +343,7 @@ export function VenueTransitHub({
             <Navigation className="h-3.5 w-3.5 text-primary" />
             <span>Waze</span>
             <ExternalLink className="h-3 w-3 opacity-60 ml-0.5" />
-            <span className="sr-only">(opens in new tab)</span>
+            <span className="sr-only">{tVen('opensNewTab')}</span>
           </a>
         </div>
       </div>

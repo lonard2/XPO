@@ -116,10 +116,10 @@ export function VenueCampusExplorer({
       <div className={cn('rounded-3xl border border-dashed border-border/80 p-8 text-center space-y-2 bg-muted/10', className)}>
         <Layers className="h-8 w-8 text-muted-foreground mx-auto" />
         <h3 className="text-sm font-bold text-foreground">
-          Hall specifications in preparation
+          {tVen('hallsEmptyTitle')}
         </h3>
         <p className="text-xs text-muted-foreground max-w-md mx-auto">
-          Detailed hall layouts, floor loading limits, and ceiling heights for {venueName} are currently being verified with the venue operations authority.
+          {tVen('hallsEmptyDesc', { venue: venueName })}
         </p>
       </div>
     );
@@ -132,10 +132,10 @@ export function VenueCampusExplorer({
         <div className="space-y-1">
           <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider">
             <Layers className="h-4 w-4" />
-            <span>Campus Spatial Topology & Wayfinding</span>
+            <span>{tVen('campusKicker')}</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-            Hall & Pavilion Directory ({halls.length} Indexed)
+            {tVen('hallDirectory', { count: halls.length })}
           </h2>
           <p className="text-xs text-muted-foreground">
             Structural clear heights, floor loading ratings, pax capacities, and architectural wings.
@@ -185,7 +185,7 @@ export function VenueCampusExplorer({
       {selectedHall && (
         <div className="lg:hidden flex items-center justify-between p-3 rounded-2xl border border-primary/30 bg-primary/5 text-xs text-foreground shadow-xs">
           <div className="flex items-center gap-2 truncate">
-            <span className="font-semibold text-primary">Active Hall:</span>
+            <span className="font-semibold text-primary">{tVen('activeHallLabel')}</span>
             <span className="font-bold truncate">{selectedHall.name}</span>
             {selectedHall.floorAreaSqm && (
               <span className="text-muted-foreground font-mono">({selectedHall.floorAreaSqm.toLocaleString()} m²)</span>
@@ -200,7 +200,7 @@ export function VenueCampusExplorer({
             }}
             className="text-primary hover:underline font-semibold shrink-0 ml-2 cursor-pointer flex items-center gap-1 min-h-[36px] px-2"
           >
-            <span>View Specs</span>
+            <span>{tVen('viewSpecs')}</span>
             <ArrowUpRight className="h-3.5 w-3.5" />
           </button>
         </div>
@@ -232,7 +232,7 @@ export function VenueCampusExplorer({
                     <div className="flex items-start justify-between gap-2">
                       <div>
                         <span className="text-xs uppercase font-bold text-primary tracking-wider block">
-                          Exhibition Facility
+                          {tVen('facilityEyebrow')}
                         </span>
                         <span role="heading" aria-level={3} className="text-sm sm:text-base font-bold text-foreground mt-0.5 block">
                           {hall.name}
@@ -249,7 +249,7 @@ export function VenueCampusExplorer({
                     {hall.floorAreaSqm && (
                       <div className="flex items-center gap-2 text-xs font-semibold text-foreground">
                         <Maximize2 className="h-3.5 w-3.5 text-primary" />
-                        <span>{hall.floorAreaSqm.toLocaleString()} m² Gross Area</span>
+                        <span>{tVen('grossAreaValue', { area: hall.floorAreaSqm.toLocaleString() })}</span>
                       </div>
                     )}
 
@@ -263,13 +263,13 @@ export function VenueCampusExplorer({
                   {/* Technical Engineering Badges */}
                   <div className="pt-2 border-t border-border/60 space-y-1.5 text-[11px] w-full">
                     <div className="grid grid-cols-2 gap-2 text-muted-foreground">
-                      <span className="truncate">Ceiling ({tVen('specsTypical')}): <strong className="text-foreground">{specs.ceilingHeight}</strong></span>
-                      <span className="truncate">Floor Load ({tVen('specsTypical')}): <strong className="text-foreground">{specs.floorLoad}</strong></span>
+                      <span className="truncate">{tVen('ceilingLabel')} ({tVen('specsTypical')}): <strong className="text-foreground">{specs.ceilingHeight}</strong></span>
+                      <span className="truncate">{tVen('floorLoadLabel')} ({tVen('specsTypical')}): <strong className="text-foreground">{specs.floorLoad}</strong></span>
                     </div>
                     <div className="flex items-center justify-between text-primary font-medium pt-0.5">
                       <span className="text-xs">{specs.columnSpan} ({tVen('specsTypical')})</span>
                       <span className="text-xs font-semibold underline">
-                        {isSelected ? 'Active Selection' : 'Inspect Specs'}
+                        {isSelected ? tVen('activeSelection') : tVen('inspectSpecs')}
                       </span>
                     </div>
                   </div>
@@ -290,14 +290,14 @@ export function VenueCampusExplorer({
               <div className="flex items-center gap-1.5">
                 <CheckCircle2 className="h-4 w-4 text-primary" />
                 <span className="text-xs font-bold uppercase tracking-wider text-primary">
-                  Selected Specification
+                  {tVen('selectedSpecs')}
                 </span>
               </div>
               <h3 className="text-base font-extrabold text-foreground">
                 {selectedHall.name}
               </h3>
               <p className="text-xs text-muted-foreground">
-                Technical rigging, floor loads, and access points for booth builders and organizers.
+                {tVen('dossierIntro')}
               </p>
               <p className="text-[11px] text-muted-foreground/80">
                 {tVen('specsUnverifiedNote')}
@@ -307,13 +307,13 @@ export function VenueCampusExplorer({
             {/* Quick Metrics */}
             <div className="grid grid-cols-2 gap-2 text-center">
               <div className="rounded-xl border border-border/70 bg-card p-2.5">
-                <span className="text-xs text-muted-foreground uppercase font-semibold block">Capacity</span>
+                <span className="text-xs text-muted-foreground uppercase font-semibold block">{tVen('capacityLabel')}</span>
                 <span className="text-sm font-bold text-foreground mt-0.5 block">
                   {selectedHall.capacity?.toLocaleString() || 'N/A'} Pax
                 </span>
               </div>
               <div className="rounded-xl border border-border/70 bg-card p-2.5">
-                <span className="text-xs text-muted-foreground uppercase font-semibold block">Floor Area</span>
+                <span className="text-xs text-muted-foreground uppercase font-semibold block">{tVen('floorAreaLabel')}</span>
                 <span className="text-sm font-bold text-foreground mt-0.5 block">
                   {selectedHall.floorAreaSqm?.toLocaleString() || 'N/A'} m²
                 </span>
