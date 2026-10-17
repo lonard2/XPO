@@ -234,6 +234,7 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
       <section className="container px-4">
         <VenueCampusExplorer
           venueName={venue.name}
+          venueSlug={venue.slug}
           halls={venueHalls}
         />
       </section>

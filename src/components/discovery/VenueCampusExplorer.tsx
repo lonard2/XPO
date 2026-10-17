@@ -18,16 +18,19 @@ import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { useTranslations } from 'next-intl';
 import { type VenueHallSummary } from '@/types/discovery';
+import { VENUE_WINGS, FALLBACK_WINGS, ruleMatches, type VenueWingRule } from '@/lib/discovery/venueWings';
 import { cn } from '@/lib/utils';
 
 export interface VenueCampusExplorerProps {
   venueName: string;
+  venueSlug?: string;
   halls: VenueHallSummary[];
   className?: string;
 }
 
 export function VenueCampusExplorer({
   venueName,
+  venueSlug,
   halls,
   className,
 }: VenueCampusExplorerProps) {
@@ -39,23 +42,24 @@ export function VenueCampusExplorer({
 
   const dossierRef = React.useRef<HTMLDivElement>(null);
 
-  // Group halls into architectural campus wings
+  // Group halls into architectural campus wings using the venue's own vocabulary.
+  // Halls no rule claims fall back to the generic buckets.
   const wings = React.useMemo(() => {
+    const rules = venueSlug && VENUE_WINGS[venueSlug.toLowerCase()]
+      ? VENUE_WINGS[venueSlug.toLowerCase()]
+      : FALLBACK_WINGS;
     const wingMap: { [key: string]: VenueHallSummary[] } = {
       all: halls,
     };
 
-    for (const hall of halls) {
-      const name = hall.name.toLowerCase();
-      let wingName = 'Main Exhibition Halls';
+    const resolveLabel = (rule: VenueWingRule) =>
+      rule.labelKey ? tVen(rule.labelKey) : rule.literal || rule.id;
 
-      if (name.includes('east') || name.includes('hall a') || name.includes('hall 1') || name.includes('hall 2') || name.includes('hall 3')) {
-        wingName = 'East & Primary Wing';
-      } else if (name.includes('west') || name.includes('hall b') || name.includes('hall 5') || name.includes('hall 6') || name.includes('hall 7')) {
-        wingName = 'West & Heavy Industry Wing';
-      } else if (name.includes('plenary') || name.includes('nusantara') || name.includes('convention') || name.includes('ballroom') || name.includes('tower')) {
-        wingName = 'Convention & Plenary Center';
-      }
+    for (const hall of halls) {
+      const lower = hall.name.toLowerCase();
+      const rule = rules.find((r) => r.match.length > 0 && ruleMatches(r, lower))
+        || FALLBACK_WINGS.find((r) => r.match.length > 0 && ruleMatches(r, lower));
+      const wingName = rule ? resolveLabel(rule) : resolveLabel(FALLBACK_WINGS[0]);
 
       if (!wingMap[wingName]) {
         wingMap[wingName] = [];
@@ -64,7 +68,7 @@ export function VenueCampusExplorer({
     }
 
     return wingMap;
-  }, [halls]);
+  }, [halls, venueSlug, tVen]);
 
   const activeWingKeys = Object.keys(wings).filter((k) => k !== 'all');
   const displayedHalls = wings[selectedWing] || halls;

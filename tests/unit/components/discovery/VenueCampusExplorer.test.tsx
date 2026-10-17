@@ -64,7 +64,7 @@ describe('VenueCampusExplorer Component', () => {
       />
     );
 
-    const eastWingBtn = screen.getByRole('button', { name: /East & Primary Wing/i });
+    const eastWingBtn = screen.getByRole('button', { name: /East Halls/i });
     fireEvent.click(eastWingBtn);
 
     expect(screen.getAllByText('Hall A1-A3 Heavy Exhibition').length).toBeGreaterThan(0);

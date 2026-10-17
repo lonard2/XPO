@@ -40,11 +40,12 @@ One todo per commit, in order below. Each item states its acceptance check.
       `VenueMeetingRooms`, following the existing collapse pattern.
       Accept: typing filters the grid; count updates; component tests cover it.
 
-- [ ] **6. Real wing vocabularies** (`P2`, `$impeccable document`)
-      Replace the generic East/West keyword buckets with per-venue wing rules derived from
-      actual hall names (Tokyo East/West/South/Tower/GYM-EX, NICE Buildings A/B/C, Pacifico
-      Exhibition/Conference/Annex/North, etc.), keeping the heuristic as fallback.
-      Accept: Tokyo shows its real vocabulary; no venue shows "East & Primary Wing (16)".
+- [x] **6. Real wing vocabularies** (`P2`, `$impeccable document`)
+      New `venueWings.ts` maps each of the 12 venues to its own wing rules with exact-match
+      support for numbered halls; the component resolves labels through the dictionary
+      (proper designations stay literal). Verified Tokyo: East Halls (9), West Halls (7),
+      South Halls (4), Conference Tower (2), Ariake GYM-EX (1). Guarded by a coverage test
+      asserting all 428 halls land in exactly one wing.
 
 - [ ] **7. Small-fixes sweep** (`P2/P3`, `$impeccable audit`)
       Sub-44px targets on the venue path, the 4.2:1 uppercase badge, raw "N/A Pax" states,
