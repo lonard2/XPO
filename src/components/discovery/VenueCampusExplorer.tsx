@@ -16,6 +16,7 @@ import {
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { useTranslations } from 'next-intl';
 import { type VenueHallSummary } from '@/types/discovery';
 import { cn } from '@/lib/utils';
 
@@ -34,6 +35,7 @@ export function VenueCampusExplorer({
   const [selectedHallId, setSelectedHallId] = React.useState<string | null>(
     halls.length > 0 ? halls[0].id : null
   );
+  const tVen = useTranslations('venues');
 
   const dossierRef = React.useRef<HTMLDivElement>(null);
 
@@ -77,7 +79,10 @@ export function VenueCampusExplorer({
     }
   };
 
-  // Synthesize realistic MICE technical specifications for each hall
+  // Synthesize typical MICE technical specifications for each hall.
+  // These are heuristic estimates from the hall name, not surveyed figures: every value
+  // rendered from them must carry the Typical qualifier in the UI. Per-hall verified
+  // sourcing remains future work.
   const getHallTechnicalSpecs = (hall: VenueHallSummary) => {
     const nameLower = hall.name.toLowerCase();
     const isConvention =
@@ -254,11 +259,11 @@ export function VenueCampusExplorer({
                   {/* Technical Engineering Badges */}
                   <div className="pt-2 border-t border-border/60 space-y-1.5 text-[11px] w-full">
                     <div className="grid grid-cols-2 gap-2 text-muted-foreground">
-                      <span className="truncate">Ceiling: <strong className="text-foreground">{specs.ceilingHeight}</strong></span>
-                      <span className="truncate">Floor Load: <strong className="text-foreground">{specs.floorLoad}</strong></span>
+                      <span className="truncate">Ceiling ({tVen('specsTypical')}): <strong className="text-foreground">{specs.ceilingHeight}</strong></span>
+                      <span className="truncate">Floor Load ({tVen('specsTypical')}): <strong className="text-foreground">{specs.floorLoad}</strong></span>
                     </div>
                     <div className="flex items-center justify-between text-primary font-medium pt-0.5">
-                      <span className="text-xs">{specs.columnSpan}</span>
+                      <span className="text-xs">{specs.columnSpan} ({tVen('specsTypical')})</span>
                       <span className="text-xs font-semibold underline">
                         {isSelected ? 'Active Selection' : 'Inspect Specs'}
                       </span>
@@ -290,6 +295,9 @@ export function VenueCampusExplorer({
               <p className="text-xs text-muted-foreground">
                 Technical rigging, floor loads, and access points for booth builders and organizers.
               </p>
+              <p className="text-[11px] text-muted-foreground/80">
+                {tVen('specsUnverifiedNote')}
+              </p>
             </div>
 
             {/* Quick Metrics */}
@@ -316,7 +324,7 @@ export function VenueCampusExplorer({
                   <div className="flex items-start gap-2 rounded-lg border border-border/60 p-2.5 bg-muted/20">
                     <Maximize2 className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                     <div>
-                      <strong className="text-foreground block">Ceiling Clearance</strong>
+                      <strong className="text-foreground block">Ceiling Clearance ({tVen('specsTypical')})</strong>
                       <span>{specs.ceilingHeight} from floor to lighting trusses.</span>
                     </div>
                   </div>
@@ -324,7 +332,7 @@ export function VenueCampusExplorer({
                   <div className="flex items-start gap-2 rounded-lg border border-border/60 p-2.5 bg-muted/20">
                     <Shield className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                     <div>
-                      <strong className="text-foreground block">Floor Load Rating</strong>
+                      <strong className="text-foreground block">Floor Load Rating ({tVen('specsTypical')})</strong>
                       <span>{specs.floorLoad} for heavy machinery and modular booths.</span>
                     </div>
                   </div>
@@ -332,7 +340,7 @@ export function VenueCampusExplorer({
                   <div className="flex items-start gap-2 rounded-lg border border-border/60 p-2.5 bg-muted/20">
                     <Zap className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                     <div>
-                      <strong className="text-foreground block">Utility Trenches & Power</strong>
+                      <strong className="text-foreground block">Utility Trenches & Power ({tVen('specsTypical')})</strong>
                       <span>{specs.utilities}</span>
                     </div>
                   </div>
@@ -341,7 +349,7 @@ export function VenueCampusExplorer({
                     <Truck className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                     <div>
                       <strong className="text-foreground block">Freight & Loading Dock</strong>
-                      <span>Direct roll-up truck access with 5.5m shutter gate clearance.</span>
+                      <span>{tVen('specsFreightVaries')}</span>
                     </div>
                   </div>
                 </div>

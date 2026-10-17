@@ -43,6 +43,19 @@ describe('VenueCampusExplorer Component', () => {
     expect(screen.getByText(/Selected Specification/i)).toBeInTheDocument();
   });
 
+  it('marks synthesized specs as typical and never asserts universal freight access', () => {
+    render(
+      <VenueCampusExplorer
+        venueName="JIExpo Kemayoran"
+        halls={mockHalls}
+      />
+    );
+
+    expect(screen.getAllByText(/Typical/i).length).toBeGreaterThan(0);
+    expect(screen.queryByText(/5\.5m shutter gate/i)).toBeNull();
+    expect(screen.getByText(/varies by hall/i)).toBeInTheDocument();
+  });
+
   it('filters halls when selecting wing filter tabs', () => {
     render(
       <VenueCampusExplorer

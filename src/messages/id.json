@@ -433,7 +433,10 @@
     "noUpcomingDetail": "Lihat jadwal musim mendatang di direktori venue",
     "exploreFullCalendar": "Jelajahi kalender lengkap {venue}",
     "happeningAtMajorVenues": "Berlangsung di Venue Utama",
-    "meetingRooms": "Ruang Rapat"
+    "meetingRooms": "Ruang Rapat",
+    "specsTypical": "Tipikal",
+    "specsUnverifiedNote": "Estimasi tipikal. Konfirmasi dengan operator venue sebelum perencanaan logistik.",
+    "specsFreightVaries": "Akses berbeda per hall. Konfirmasi akses kendaraan dengan operator venue."
   },
   "calendar": {
     "title": "Kalender Acara Interaktif",

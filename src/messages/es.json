@@ -433,7 +433,10 @@
     "noUpcomingDetail": "Consulta las próximas fechas en el directorio de recintos",
     "exploreFullCalendar": "Ver el calendario completo de {venue}",
     "happeningAtMajorVenues": "En curso en los principales recintos",
-    "meetingRooms": "Salas de reuniones"
+    "meetingRooms": "Salas de reuniones",
+    "specsTypical": "Orientativo",
+    "specsUnverifiedNote": "Estimaciones orientativas. Confirme con el recinto antes de planificar la logística.",
+    "specsFreightVaries": "El acceso varía según el pabellón. Confirme la entrada de vehículos con el recinto."
   },
   "calendar": {
     "title": "Calendario Interactivo de Eventos",

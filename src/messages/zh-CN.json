@@ -433,7 +433,10 @@
     "noUpcomingDetail": "请查看场馆目录中的近期档期",
     "exploreFullCalendar": "查看 {venue} 完整日历",
     "happeningAtMajorVenues": "主要场馆活动",
-    "meetingRooms": "会议室"
+    "meetingRooms": "会议室",
+    "specsTypical": "参考值",
+    "specsUnverifiedNote": "以下为参考估值，货运规划前请与场馆运营方确认。",
+    "specsFreightVaries": "各展厅货运条件不同，请与场馆运营方确认车辆进出事宜。"
   },
   "calendar": {
     "title": "会展交互日历",

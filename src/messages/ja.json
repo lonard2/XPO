@@ -433,7 +433,10 @@
     "noUpcomingDetail": "会場ディレクトリで今後の開催時期をご確認ください",
     "exploreFullCalendar": "{venue} の全カレンダーを見る",
     "happeningAtMajorVenues": "主要会場で開催中",
-    "meetingRooms": "会議室"
+    "meetingRooms": "会議室",
+    "specsTypical": "目安",
+    "specsUnverifiedNote": "目安の数値です。貨物搬入計画の前に会場運営者にご確認ください。",
+    "specsFreightVaries": "搬入条件はホールにより異なります。車両搬入については会場運営者にご確認ください。"
   },
   "calendar": {
     "title": "イベントカレンダー",

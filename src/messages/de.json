@@ -433,7 +433,10 @@
     "noUpcomingDetail": "Kommende Saisontermine im Veranstaltungsortverzeichnis prüfen",
     "exploreFullCalendar": "Vollständigen Kalender von {venue} ansehen",
     "happeningAtMajorVenues": "Aktuelles an den wichtigsten Veranstaltungsorten",
-    "meetingRooms": "Tagungsräume"
+    "meetingRooms": "Tagungsräume",
+    "specsTypical": "Richtwert",
+    "specsUnverifiedNote": "Typische Schätzwerte, bitte vor der Logistikplanung mit dem Veranstaltungsort bestätigen.",
+    "specsFreightVaries": "Zufahrt variiert je nach Halle, bitte Fahrzeugzufahrt mit dem Veranstaltungsort bestätigen."
   },
   "calendar": {
     "title": "Interaktiver Eventkalender",

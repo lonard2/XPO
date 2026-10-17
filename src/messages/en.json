@@ -433,7 +433,10 @@
     "noUpcomingDetail": "Check upcoming season dates in the venue directory",
     "exploreFullCalendar": "Explore full {venue} calendar",
     "happeningAtMajorVenues": "Happening at Major Venues",
-    "meetingRooms": "Meeting Rooms"
+    "meetingRooms": "Meeting Rooms",
+    "specsTypical": "Typical",
+    "specsUnverifiedNote": "Typical estimates. Confirm with venue operations before freight planning.",
+    "specsFreightVaries": "Access varies by hall. Confirm vehicle entry with venue operations."
   },
   "calendar": {
     "title": "Interactive Event Calendar",
