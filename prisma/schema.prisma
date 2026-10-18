@@ -87,6 +87,7 @@ model Event {
   isFeatured         Boolean      @default(false)
   heroImageUrl       String?
   brandingConfigJson String?      // Custom primary color, accent, hero override JSON
+  showcaseJson     String?      // Nullable organizer-authored showcase content (stream, programs, alerts, channels); absent means sections stay hidden
   scale              String       @default("LARGE") // "GLOBAL_MEGA", "LARGE", "MEDIUM", "EXECUTIVE"
   format             String       @default("IN_PERSON") // "IN_PERSON", "HYBRID", "VIRTUAL"
   ticketTiers        TicketTier[]

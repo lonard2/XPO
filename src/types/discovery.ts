@@ -87,6 +87,8 @@ export interface DiscoveryEvent {
   venueHallId?: string | null;
   venueHall?: VenueHallSummary | null;
   ticketTiers?: TicketTierSummary[];
+  /** Parsed organizer-authored showcase; null means no showcase sections render. */
+  showcase?: import("@/lib/showcase").ShowcaseContent | null;
 }
 
 export interface BannerSlide {

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { validateShowcase } from "@/lib/showcase";
 
 export async function GET() {
   try {
@@ -57,6 +58,7 @@ export async function POST(request: Request) {
       isPlatformCurated,
       organizerName,
       organizerId,
+      showcaseJson,
     } = body;
 
     if (!title || !description || !venueId || !startDate || !endDate) {
@@ -138,6 +140,19 @@ export async function POST(request: Request) {
       accentColor: accentColor || undefined,
     };
 
+    // Optional showcase content at creation time; invalid content is dropped,
+    // never stored. Absent means showcase sections stay hidden.
+    let initialShowcase: string | null = null;
+    if (showcaseJson !== undefined && showcaseJson !== null) {
+      const checked = validateShowcase(showcaseJson);
+      if (checked.ok) {
+        initialShowcase = JSON.stringify({
+          ...checked.data,
+          updatedAt: new Date().toISOString(),
+        });
+      }
+    }
+
     const newEvent = await db.event.create({
       data: {
         title,
@@ -157,6 +172,7 @@ export async function POST(request: Request) {
         endDate: new Date(endDate),
         heroImageUrl: heroImageUrl || "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1600&q=80",
         brandingConfigJson: JSON.stringify(brandingConfig),
+        showcaseJson: initialShowcase,
         ticketTiers: {
           create: ticketTiers.length > 0
             ? ticketTiers.map((t: any) => ({

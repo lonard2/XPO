@@ -70,6 +70,8 @@ export interface EventPageShellProps {
   ticketTiers?: TicketTierItem[];
   agendaItems?: AgendaSessionItem[];
   booths?: BoothItem[];
+  /** Organizer announcements for the guidebook; empty means no banner. */
+  showcaseAlerts?: string[];
 }
 
 export function EventPageShell({
@@ -96,6 +98,7 @@ export function EventPageShell({
   ticketTiers = [],
   agendaItems = [],
   booths = [],
+  showcaseAlerts = [],
 }: EventPageShellProps) {
   const [isCopied, setIsCopied] = React.useState(false);
   const [checkoutDrawerOpen, setCheckoutDrawerOpen] = React.useState(false);
@@ -598,6 +601,7 @@ export function EventPageShell({
                 agendaItems={agendaItems}
                 eventTitle={title}
                 locale={locale}
+                alerts={showcaseAlerts}
               />
             ) : (
               <div className="p-8 sm:p-12 text-center rounded-2xl border border-dashed border-border max-w-lg mx-auto space-y-4">

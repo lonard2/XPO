@@ -3,6 +3,7 @@ import { setRequestLocale } from "next-intl/server";
 import { db } from "@/lib/db";
 import { type MiceArchetype, isValidArchetype } from "@/lib/theming";
 import { EventPageShell } from "@/components/themed/EventPageShell";
+import { parseShowcase } from "@/lib/showcase";
 import { EventOrganizerSection } from "@/components/discovery/EventOrganizerSection";
 
 
@@ -156,6 +157,9 @@ export default async function EventDetailPage({ params }: EventPageProps) {
 
   const defaultCurrency = event.ticketTiers[0]?.currency || event.venue?.region?.currency || "IDR";
 
+  // Organizer-authored showcase: absent data keeps showcase sections hidden.
+  const showcase = parseShowcase((event as any).showcaseJson);
+
   return (
     <EventPageShell
       id={event.id}
@@ -185,6 +189,7 @@ export default async function EventDetailPage({ params }: EventPageProps) {
       ticketTiers={event.ticketTiers || []}
       agendaItems={event.agendaItems || []}
       booths={event.booths || []}
+      showcaseAlerts={showcase.alerts}
     >
       <ArchetypeView event={event} locale={locale} />
       <EventOrganizerSection event={event} locale={locale} />
