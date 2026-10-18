@@ -44,7 +44,7 @@ import {
 } from '@/lib/theming';
 import { cn } from '@/lib/utils';
 
-const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+export const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   Factory,
   Cpu,
   Activity,

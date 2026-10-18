@@ -14,7 +14,8 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useTranslations } from 'next-intl';
-import { ALL_MICE_ARCHETYPES, ARCHETYPE_DEFAULTS, MICE_INDUSTRY_CLUSTERS, type MiceArchetype, type MiceIndustryCluster } from '@/lib/theming';
+import { ALL_MICE_ARCHETYPES, ARCHETYPE_DEFAULTS, ARCHETYPE_METAS, ARCHETYPE_SUBTITLES, MICE_INDUSTRY_CLUSTERS, type MiceArchetype, type MiceIndustryCluster } from '@/lib/theming';
+import { ICON_MAP } from '@/components/discovery/EventCategoryPills';
 import { type FilterState } from '@/types/discovery';
 import { cn } from '@/lib/utils';
 
@@ -47,8 +48,18 @@ export function FilterSidebar({
   const tArch = useTranslations('archetypes');
   const tCom = useTranslations('common');
 
-  // Progressive disclosure: default all clusters to expanded
-  const [collapsedClusters, setCollapsedClusters] = React.useState<Record<string, boolean>>({});
+  // Progressive disclosure: only clusters with an active selection start open
+  // (or the first cluster when nothing is selected yet).
+  const [collapsedClusters, setCollapsedClusters] = React.useState<Record<string, boolean>>(() => {
+    const raw = filters.archetype;
+    const sel = (!raw || raw === 'all') ? [] : raw.split(',').map((s) => s.trim().toUpperCase());
+    const init: Record<string, boolean> = {};
+    MICE_INDUSTRY_CLUSTERS.forEach((cluster, i) => {
+      const active = cluster.archetypes.some((a) => sel.includes(a));
+      init[cluster.id] = sel.length === 0 ? i !== 0 : !active;
+    });
+    return init;
+  });
 
   const toggleCluster = (clusterId: string) => {
     setCollapsedClusters((prev) => ({
@@ -277,11 +288,11 @@ export function FilterSidebar({
               >
                 {selectedArchetypes.length === 0 && <Check className="h-2.5 w-2.5 stroke-[3]" />}
               </div>
-              <span>{tDisc('allArchetypes') || 'All MICE Categories'}</span>
+              <span>{tDisc('allArchetypes') || 'All Event Categories'}</span>
             </div>
           </button>
 
-          {/* 4 Industry Clusters with Progressive Disclosure */}
+          {/* 6 Industry Clusters with Progressive Disclosure */}
           {MICE_INDUSTRY_CLUSTERS.map((cluster) => {
             const isCollapsed = !!collapsedClusters[cluster.id];
             const activeInClusterCount = cluster.archetypes.filter((a) =>
@@ -296,13 +307,11 @@ export function FilterSidebar({
                   aria-expanded={!isCollapsed}
                   className="w-full flex items-center justify-between px-2 py-1 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors cursor-pointer rounded-md focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary"
                 >
-                  <span className="uppercase tracking-wider truncate text-[11px]">{cluster.label}</span>
+                  <span className="uppercase tracking-wider truncate text-[11px]">{cluster.shortLabel}</span>
                   <div className="flex items-center gap-1.5 shrink-0 ml-2">
-                    {activeInClusterCount > 0 && (
-                      <span className="px-1.5 py-0.5 rounded-full bg-primary/10 text-primary text-[11px] font-mono font-bold">
-                        {activeInClusterCount}
-                      </span>
-                    )}
+                    <span className="text-[11px] font-mono text-muted-foreground">
+                      {activeInClusterCount > 0 ? `${activeInClusterCount}/` : ''}{cluster.archetypes.length}
+                    </span>
                     <ChevronDown
                       className={cn(
                         'h-3.5 w-3.5 transition-transform duration-200',
@@ -319,16 +328,20 @@ export function FilterSidebar({
                         primary: '#2563eb',
                         displayName: archKey.replace(/_/g, ' '),
                       };
+                      const meta = ARCHETYPE_METAS[archKey as MiceArchetype];
+                      const Icon = (meta && ICON_MAP[meta.accentIcon]) || Briefcase;
                       const isSelected = selectedArchetypes.includes(archKey);
                       const count = counts?.archetypes?.[archKey];
+                      const subtitle = ARCHETYPE_SUBTITLES[archKey as MiceArchetype];
 
                       return (
                         <button
                           key={archKey}
                           type="button"
                           onClick={() => handleToggleArchetype(archKey)}
+                          aria-pressed={isSelected}
                           className={cn(
-                            'w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left cursor-pointer',
+                            'w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left cursor-pointer min-h-[44px]',
                             isSelected
                               ? 'bg-primary/10 text-primary font-semibold'
                               : 'text-muted-foreground hover:bg-muted hover:text-foreground'
@@ -345,14 +358,20 @@ export function FilterSidebar({
                             >
                               {isSelected && <Check className="h-2.5 w-2.5 stroke-[3]" />}
                             </div>
-                            <span
-                              className="h-2 w-2 rounded-full shrink-0"
-                              style={{ backgroundColor: item.primary }}
-                            />
-                            <span className="truncate">
-                              {tArch(`${archKey}.title`) && tArch(`${archKey}.title`) !== `${archKey}.title`
-                                ? tArch(`${archKey}.title`)
-                                : item.displayName}
+                            <span className="shrink-0" style={{ color: item.primary }}>
+                              <Icon className="h-3.5 w-3.5" />
+                            </span>
+                            <span className="min-w-0">
+                              <span className="block truncate">
+                                {tArch(`${archKey}.title`) && tArch(`${archKey}.title`) !== `${archKey}.title`
+                                  ? tArch(`${archKey}.title`)
+                                  : item.displayName}
+                              </span>
+                              {subtitle && (
+                                <span className="block truncate text-[11px] font-normal opacity-80">
+                                  {subtitle}
+                                </span>
+                              )}
                             </span>
                           </div>
                           {count !== undefined && (

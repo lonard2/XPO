@@ -6,7 +6,7 @@ in place (no tile-engine transplant).
 
 - [x] **1. Audit tilt scope + guards** (`$impeccable audit`): remove `data-tilt`
   from EventCard; engine ignores coarse pointers; stagger capped at 6 cards.
-- [ ] **2. Layout category disclosure** (`$impeccable layout`): sidebar archetype
+- [x] **2. Layout category disclosure** (`$impeccable layout`): sidebar archetype
   rows gain icons, subtitles, counts under collapsible clusters (active-only
   open); user-facing labels renamed to "Event Category".
 - [ ] **3. Layout badge cap** (`$impeccable layout`): max 2 image-overlay badges

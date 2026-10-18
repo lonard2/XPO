@@ -31,8 +31,10 @@ describe('Discovery Component: FilterSidebar', () => {
     expect(screen.getByText(/timeline/i)).toBeInTheDocument();
 
     expect(screen.getByText(/indonesia/i)).toBeInTheDocument();
-    expect(screen.getByText(/industrial/i)).toBeInTheDocument();
-    expect(screen.getAllByText(/tech/i).length).toBeGreaterThan(0);
+    // Progressive disclosure: first cluster open, the rest collapsed with counts.
+    expect(screen.getAllByText(/industrial/i).length).toBeGreaterThan(0);
+    expect(screen.queryByText(/technology, ai/i)).toBeNull();
+    expect(screen.getByRole('button', { name: /digital & tech/i })).toBeInTheDocument();
   });
 
   it('T1.2: calls onChange with updated region when a regional hub is selected', () => {
@@ -62,6 +64,10 @@ describe('Discovery Component: FilterSidebar', () => {
         onReset={vi.fn()}
       />
     );
+
+    // Digital & Tech starts collapsed: disclose it first.
+    const clusterBtn = screen.getByRole('button', { name: /digital & tech/i });
+    fireEvent.click(clusterBtn);
 
     const techSummit = screen.getByRole('button', { name: /technology.*electronics|tech.*electronics/i });
     fireEvent.click(techSummit);
@@ -154,19 +160,20 @@ describe('Discovery Component: FilterSidebar', () => {
       />
     );
 
-    const clusterHeader = screen.getByRole('button', { name: /healthcare, travel & faith/i });
-    expect(clusterHeader).toHaveAttribute('aria-expanded', 'true');
-    expect(screen.getByText(/medical/i)).toBeInTheDocument();
-
-    // Click cluster to collapse
-    fireEvent.click(clusterHeader);
+    const clusterHeader = screen.getByRole('button', { name: /health & faith/i });
+    // Inactive clusters start collapsed; expand on demand.
     expect(clusterHeader).toHaveAttribute('aria-expanded', 'false');
     expect(screen.queryByText(/medical/i)).toBeNull();
 
-    // Click cluster to expand again
+    // Click cluster to expand
     fireEvent.click(clusterHeader);
     expect(clusterHeader).toHaveAttribute('aria-expanded', 'true');
     expect(screen.getByText(/medical/i)).toBeInTheDocument();
+
+    // Click cluster to collapse again
+    fireEvent.click(clusterHeader);
+    expect(clusterHeader).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByText(/medical/i)).toBeNull();
   });
 });
 
