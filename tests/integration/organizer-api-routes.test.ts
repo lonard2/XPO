@@ -8,6 +8,9 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
   let sampleVenue: any;
   let createdEventId: string;
 
+  // Mutations now enforce strict ownership: exercise them as platform admin.
+  const adminHeaders = { "Content-Type": "application/json", Cookie: "xpo_role=ADMIN" };
+
   beforeAll(async () => {
     await db.$connect();
     sampleVenue = await db.venue.findFirst({
@@ -100,6 +103,7 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
 
     const req = new Request(`http://localhost:3000/api/organizer/events/${createdEventId}/branding`, {
       method: "PUT",
+      headers: adminHeaders,
       body: JSON.stringify({
         brandingConfig,
         heroImageUrl: "https://images.unsplash.com/photo-custom.jpg",
@@ -123,6 +127,7 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
     // Create booth
     const createReq = new Request("http://localhost:3000/api/organizer/booths", {
       method: "POST",
+      headers: adminHeaders,
       body: JSON.stringify({
         eventId: createdEventId,
         companyName: "PT Global Tech Automation",
@@ -154,6 +159,7 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
     // 1. Create vacant lot
     const vacantReq = new Request("http://localhost:3000/api/organizer/booths", {
       method: "POST",
+      headers: adminHeaders,
       body: JSON.stringify({
         eventId: createdEventId,
         companyName: "",
@@ -170,6 +176,7 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
     // 2. Reject duplicate booth number
     const dupReq = new Request("http://localhost:3000/api/organizer/booths", {
       method: "POST",
+      headers: adminHeaders,
       body: JSON.stringify({
         eventId: createdEventId,
         companyName: "Another Company",
@@ -187,6 +194,7 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
   it("Organizer Booths: POST supports batch CSV bulk import with database persistence", async () => {
     const bulkReq = new Request("http://localhost:3000/api/organizer/booths", {
       method: "POST",
+      headers: adminHeaders,
       body: JSON.stringify({
         bulk: true,
         eventId: createdEventId,
@@ -218,6 +226,7 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
     // 1. Create a booth to modify and delete
     const createReq = new Request("http://localhost:3000/api/organizer/booths", {
       method: "POST",
+      headers: adminHeaders,
       body: JSON.stringify({
         eventId: createdEventId,
         companyName: "Temporary Tenant",
@@ -232,6 +241,7 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
     // 2. Update via PATCH (vacate tenant)
     const patchReq = new Request("http://localhost:3000/api/organizer/booths", {
       method: "PATCH",
+      headers: adminHeaders,
       body: JSON.stringify({
         id: booth.id,
         companyName: "",
@@ -247,6 +257,7 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
     // 3. Delete via DELETE
     const deleteReq = new Request(`http://localhost:3000/api/organizer/booths?id=${booth.id}`, {
       method: "DELETE",
+      headers: adminHeaders,
     });
     const deleteRes = await deleteBoothRoute(deleteReq);
     expect(deleteRes.status).toBe(200);
@@ -263,6 +274,7 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
     // 1. Create with physical space specs
     const createReq = new Request("http://localhost:3000/api/organizer/booths", {
       method: "POST",
+      headers: adminHeaders,
       body: JSON.stringify({
         eventId: createdEventId,
         companyName: "PT Heavy Automation",
@@ -283,6 +295,7 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
     // 2. Update physical specs via PATCH
     const patchReq = new Request("http://localhost:3000/api/organizer/booths", {
       method: "PATCH",
+      headers: adminHeaders,
       body: JSON.stringify({
         id: booth.id,
         dimensions: "18m x 6m",
@@ -335,6 +348,7 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
     // 2. Batch PATCH (bulk vacate)
     const bulkPatchReq = new Request("http://localhost:3000/api/organizer/booths", {
       method: "PATCH",
+      headers: adminHeaders,
       body: JSON.stringify({
         bulk: true,
         ids: [seededIds[0], seededIds[1]],
@@ -357,6 +371,7 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
     // 3. Batch DELETE (bulk decommission)
     const bulkDeleteReq = new Request("http://localhost:3000/api/organizer/booths", {
       method: "DELETE",
+      headers: adminHeaders,
       body: JSON.stringify({ ids: seededIds }),
     });
     const bulkDeleteRes = await deleteBoothRoute(bulkDeleteReq);

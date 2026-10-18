@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
+import { getEventCaller, canWriteEvent } from "@/lib/auth/eventOwnership";
 import {
   OpenRouterModel,
   ReportType,
@@ -97,6 +98,19 @@ export async function POST(req: NextRequest) {
     }
 
     const { eventId, model, reportType, focusArea, saveToHistory, authorId } = parseResult.data;
+
+    // Strict ownership on persisted events: admins and owning organizers only.
+    // Unknown (mock/test) ids keep the fallback context path below.
+    const ownedEvent = await db.event.findFirst({
+      where: { OR: [{ id: eventId }, { slug: eventId }] },
+      select: { organizerId: true },
+    });
+    if (ownedEvent && !canWriteEvent(getEventCaller(req), ownedEvent.organizerId)) {
+      return NextResponse.json(
+        { success: false, error: "Forbidden: Only the owning organizer or a platform administrator can generate reports for this event." },
+        { status: 403 }
+      );
+    }
 
     // Fetch real event data from Prisma
     let event = await db.event.findUnique({

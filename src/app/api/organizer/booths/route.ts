@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { requireEventWrites, requireBoothWrites } from "@/lib/auth/eventOwnership";
 
 export async function GET(request: Request) {
   try {
@@ -69,6 +70,14 @@ export async function POST(request: Request) {
         return NextResponse.json(
           { success: false, error: "Missing required eventId for bulk import" },
           { status: 400 }
+        );
+      }
+      // Strict ownership on the parent event before ingesting anything.
+      const bulkGate = await requireEventWrites(request, [eventId], db);
+      if (!bulkGate.ok) {
+        return NextResponse.json(
+          { success: false, error: bulkGate.error },
+          { status: bulkGate.status }
         );
       }
       if (incomingBooths.length === 0) {
@@ -173,6 +182,15 @@ export async function POST(request: Request) {
       );
     }
 
+    // Strict ownership on the parent event.
+    const singleGate = await requireEventWrites(request, [eventId], db);
+    if (!singleGate.ok) {
+      return NextResponse.json(
+        { success: false, error: singleGate.error },
+        { status: singleGate.status }
+      );
+    }
+
     // Collision check for single booth creation
     const existing = await db.boothTenant.findFirst({
       where: {
@@ -237,6 +255,14 @@ export async function PATCH(request: Request) {
           { status: 400 }
         );
       }
+      // Strict ownership on every parent event before touching any booth.
+      const bulkUpdateGate = await requireBoothWrites(request, ids, db);
+      if (!bulkUpdateGate.ok) {
+        return NextResponse.json(
+          { success: false, error: bulkUpdateGate.error },
+          { status: bulkUpdateGate.status }
+        );
+      }
       const updateData: Record<string, unknown> = {};
       if (body.companyName !== undefined) updateData.companyName = body.companyName !== null ? body.companyName.trim() : "";
       if (body.industry !== undefined) updateData.industry = body.industry ? body.industry.trim() : null;
@@ -269,6 +295,15 @@ export async function PATCH(request: Request) {
       return NextResponse.json(
         { success: false, error: "Missing booth ID for update" },
         { status: 400 }
+      );
+    }
+
+    // Strict ownership on the parent event.
+    const singleUpdateGate = await requireBoothWrites(request, [id], db);
+    if (!singleUpdateGate.ok) {
+      return NextResponse.json(
+        { success: false, error: singleUpdateGate.error },
+        { status: singleUpdateGate.status }
       );
     }
 
@@ -353,6 +388,14 @@ export async function DELETE(request: Request) {
 
     // 1. Bulk Decommission Path
     if (ids.length > 0) {
+      // Strict ownership on every parent event before deleting anything.
+      const bulkDeleteGate = await requireBoothWrites(request, ids, db);
+      if (!bulkDeleteGate.ok) {
+        return NextResponse.json(
+          { success: false, error: bulkDeleteGate.error },
+          { status: bulkDeleteGate.status }
+        );
+      }
       const result = await db.boothTenant.deleteMany({
         where: { id: { in: ids } },
       });
@@ -372,6 +415,15 @@ export async function DELETE(request: Request) {
       return NextResponse.json(
         { success: false, error: "Booth lot not found or already deleted" },
         { status: 404 }
+      );
+    }
+
+    // Strict ownership on the parent event.
+    const singleDeleteGate = await requireBoothWrites(request, [id], db);
+    if (!singleDeleteGate.ok) {
+      return NextResponse.json(
+        { success: false, error: singleDeleteGate.error },
+        { status: singleDeleteGate.status }
       );
     }
 

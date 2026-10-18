@@ -382,7 +382,7 @@ describe("Milestone 6 Adversarial Stress & Security Suite (Phases 8 & 9)", () =>
     it("ADV-4.4 (Gate Check-In Flow): first scan performs check-in transition", async () => {
       const req = new Request("http://localhost:3000/api/tickets/verify", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Cookie: "xpo_role=ADMIN" },
         body: JSON.stringify({
           qrCodeHash: testQrCodeHash,
           payloadString: testPayloadString,
@@ -407,7 +407,7 @@ describe("Milestone 6 Adversarial Stress & Security Suite (Phases 8 & 9)", () =>
     it("ADV-4.5 (Double-Scan Prevention): subsequent scan of already checked-in ticket is flagged as double scan", async () => {
       const req = new Request("http://localhost:3000/api/tickets/verify", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Cookie: "xpo_role=ADMIN" },
         body: JSON.stringify({
           qrCodeHash: testQrCodeHash,
           payloadString: testPayloadString,

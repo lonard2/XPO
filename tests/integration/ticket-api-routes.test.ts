@@ -91,9 +91,10 @@ describe("Phase 6 Integration: Ticket Checkout & Verification API Routes", () =>
     const signature = json.booking.signature;
     const payloadString = json.booking.payloadString;
 
-    // Verify Route POST
+    // Verify Route POST (door-staff check-in runs as platform admin here)
     const verifyReq = new Request("http://localhost:3000/api/tickets/verify", {
       method: "POST",
+      headers: { "Content-Type": "application/json", Cookie: "xpo_role=ADMIN" },
       body: JSON.stringify({
         qrCodeHash,
         payloadString,
@@ -112,6 +113,7 @@ describe("Phase 6 Integration: Ticket Checkout & Verification API Routes", () =>
     // Double Check-In detection
     const doubleScanReq = new Request("http://localhost:3000/api/tickets/verify", {
       method: "POST",
+      headers: { "Content-Type": "application/json", Cookie: "xpo_role=ADMIN" },
       body: JSON.stringify({
         qrCodeHash,
       }),

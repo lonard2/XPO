@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { verifyTicketHash } from "@/lib/tickets/qrPass";
+import { getEventCaller, canWriteEvent } from "@/lib/auth/eventOwnership";
 
 export async function POST(request: Request) {
   try {
@@ -127,9 +128,23 @@ export async function POST(request: Request) {
       );
     }
 
-    // 5. Check-In Transition
+    // 5. Check-In Transition (verification above stays open to all readers;
+    // only the owning organizer or an admin may mutate check-in state)
     let updatedBooking = booking;
     if (autoCheckIn) {
+      const owner = await db.event.findUnique({
+        where: { id: booking.eventId },
+        select: { organizerId: true },
+      });
+      if (!owner || !canWriteEvent(getEventCaller(request), owner.organizerId)) {
+        return NextResponse.json(
+          {
+            valid: false,
+            error: "FORBIDDEN: Only the owning organizer or a platform administrator can check in this pass.",
+          },
+          { status: 403 }
+        );
+      }
       updatedBooking = await db.booking.update({
         where: { id: booking.id },
         data: {

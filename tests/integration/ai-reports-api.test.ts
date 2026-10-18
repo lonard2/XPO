@@ -33,6 +33,7 @@ describe("Phase 10 Integration: AI Reports API Route (POST / GET / DELETE /api/a
 
     const req = new NextRequest("http://localhost:3000/api/ai/reports", {
       method: "POST",
+      headers: { "Content-Type": "application/json", Cookie: "xpo_role=ADMIN" },
       body: JSON.stringify({
         eventId: testEvent.id,
         model: "google/gemini-3.7-flash",
@@ -74,6 +75,7 @@ describe("Phase 10 Integration: AI Reports API Route (POST / GET / DELETE /api/a
   it("POST /api/ai/reports generates streaming Sentiment Feedback analysis", async () => {
     const req = new NextRequest("http://localhost:3000/api/ai/reports", {
       method: "POST",
+      headers: { "Content-Type": "application/json", Cookie: "xpo_role=ADMIN" },
       body: JSON.stringify({
         eventId: testEvent.id,
         model: "deepseek/deepseek-v4-pro-0813",
@@ -104,6 +106,7 @@ describe("Phase 10 Integration: AI Reports API Route (POST / GET / DELETE /api/a
   it("POST /api/ai/reports generates streaming Foot-Traffic and Booth optimization report", async () => {
     const req = new NextRequest("http://localhost:3000/api/ai/reports", {
       method: "POST",
+      headers: { "Content-Type": "application/json", Cookie: "xpo_role=ADMIN" },
       body: JSON.stringify({
         eventId: testEvent.id,
         model: "openai/gpt-5.6-luna",
@@ -166,6 +169,7 @@ describe("Phase 10 Integration: AI Reports API Route (POST / GET / DELETE /api/a
   it("POST /api/ai/reports returns 400 when invalid model is passed", async () => {
     const req = new NextRequest("http://localhost:3000/api/ai/reports", {
       method: "POST",
+      headers: { "Content-Type": "application/json", Cookie: "xpo_role=ADMIN" },
       body: JSON.stringify({
         eventId: testEvent.id,
         model: "invalid/non-existent-model",

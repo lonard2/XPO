@@ -85,3 +85,77 @@ export function partitionCurated<T extends { organizerId?: string | null }>(
     owned: events.filter((e) => e.organizerId),
   };
 }
+
+export interface OwnershipGate {
+  ok: boolean;
+  status: number;
+  error: string;
+}
+
+const WRITE_DENIED =
+  "Forbidden: Only the owning organizer or a platform administrator can modify this event.";
+
+/**
+ * Gate a mutation against a set of event ids. Loads each event's owner and
+ * denies unless the caller may write ALL of them. Missing events are 404.
+ */
+export async function requireEventWrites(
+  req: Request,
+  eventIds: Array<string | null | undefined>,
+  db: {
+    event: {
+      findMany(args: unknown): Promise<Array<{ id: string; organizerId: string | null }>>;
+    };
+  }
+): Promise<OwnershipGate> {
+  const ids = [...new Set(eventIds.filter(Boolean))] as string[];
+  if (ids.length === 0) {
+    return { ok: false, status: 400, error: "Missing required eventId." };
+  }
+  const caller = getEventCaller(req);
+  const events = await db.event.findMany({
+    where: { id: { in: ids } },
+    select: { id: true, organizerId: true },
+  });
+  if (events.length !== ids.length) {
+    return { ok: false, status: 404, error: "Event not found." };
+  }
+  if (!events.every((e) => canWriteEvent(caller, e.organizerId))) {
+    return { ok: false, status: 403, error: WRITE_DENIED };
+  }
+  return { ok: true, status: 200, error: "" };
+}
+
+/**
+ * Gate a mutation against booth ids by resolving their parent events first.
+ * Missing booths are 404.
+ */
+export async function requireBoothWrites(
+  req: Request,
+  boothIds: Array<string | null | undefined>,
+  db: {
+    boothTenant: {
+      findMany(args: unknown): Promise<Array<{ id: string; eventId: string }>>;
+    };
+    event: {
+      findMany(args: unknown): Promise<Array<{ id: string; organizerId: string | null }>>;
+    };
+  }
+): Promise<OwnershipGate> {
+  const ids = [...new Set(boothIds.filter(Boolean))] as string[];
+  if (ids.length === 0) {
+    return { ok: false, status: 400, error: "Missing booth ID." };
+  }
+  const booths = await db.boothTenant.findMany({
+    where: { id: { in: ids } },
+    select: { id: true, eventId: true },
+  });
+  if (booths.length !== ids.length) {
+    return { ok: false, status: 404, error: "Booth lot not found or already deleted." };
+  }
+  return requireEventWrites(
+    req,
+    booths.map((b) => b.eventId),
+    db
+  );
+}

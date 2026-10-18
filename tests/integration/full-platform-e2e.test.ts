@@ -449,6 +449,7 @@ describe("XPO Full-Platform End-to-End Integration Suite (Milestone 9 Hardening)
     it("E2E 5.2: Updates live visual branding and CSS variables via PUT /api/organizer/events/[id]/branding", async () => {
       const brandingReq = new NextRequest(`http://localhost:3000/api/organizer/events/${createdEventId}/branding`, {
         method: "PUT",
+        headers: { "Content-Type": "application/json", Cookie: "xpo_role=ADMIN" },
         body: JSON.stringify({
           title: "Asia-Pacific Clean Energy Forum 2026 (Branded)",
           heroImageUrl: "https://images.unsplash.com/photo-1497440001374-f26997328c1b?auto=format&fit=crop&w=1600&q=80",
@@ -477,6 +478,7 @@ describe("XPO Full-Platform End-to-End Integration Suite (Milestone 9 Hardening)
     it("E2E 5.3: Allocates exhibition booths via POST /api/organizer/booths", async () => {
       const boothReq = new NextRequest("http://localhost:3000/api/organizer/booths", {
         method: "POST",
+        headers: { "Content-Type": "application/json", Cookie: "xpo_role=ADMIN" },
         body: JSON.stringify({
           eventId: createdEventId,
           companyName: "Siemens Energy Global",
@@ -523,6 +525,7 @@ describe("XPO Full-Platform End-to-End Integration Suite (Milestone 9 Hardening)
       // 2. First Scan -> Door Entry Granted
       const scan1Req = new NextRequest("http://localhost:3000/api/tickets/verify", {
         method: "POST",
+        headers: { "Content-Type": "application/json", Cookie: "xpo_role=ADMIN" },
         body: JSON.stringify({ qrCodeHash: passQr, autoCheckIn: true }),
       });
       const scan1Res = await postVerify(scan1Req);
@@ -537,6 +540,7 @@ describe("XPO Full-Platform End-to-End Integration Suite (Milestone 9 Hardening)
       // 3. Second Scan -> Double Scan Detected
       const scan2Req = new NextRequest("http://localhost:3000/api/tickets/verify", {
         method: "POST",
+        headers: { "Content-Type": "application/json", Cookie: "xpo_role=ADMIN" },
         body: JSON.stringify({ qrCodeHash: passQr, autoCheckIn: true }),
       });
       const scan2Res = await postVerify(scan2Req);
@@ -676,6 +680,7 @@ describe("XPO Full-Platform End-to-End Integration Suite (Milestone 9 Hardening)
 
       const reportReq = new NextRequest("http://localhost:3000/api/ai/reports", {
         method: "POST",
+        headers: { "Content-Type": "application/json", Cookie: "xpo_role=ADMIN" },
         body: JSON.stringify({
           eventId: event!.id,
           reportType: "DAILY_DIGEST",
