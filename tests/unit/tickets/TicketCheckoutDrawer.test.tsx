@@ -3,6 +3,7 @@ import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { TicketCheckoutDrawer, type TicketCheckoutDrawerProps } from "@/components/tickets/TicketCheckoutDrawer";
 import type { TicketTierItem } from "@/components/tickets/TierSelector";
+import { SettingsProvider } from "@/components/settings/SettingsProvider";
 
 describe("Phase 6 Unit: TicketCheckoutDrawer Component", () => {
   const sampleTiers: TicketTierItem[] = [
@@ -261,5 +262,30 @@ describe("Phase 6 Unit: TicketCheckoutDrawer Component", () => {
     fireEvent.click(submitBtn);
 
     expect(await screen.findByText("Capacity exceeded. Only 1 ticket remaining.")).toBeDefined();
+  });
+
+  it("prefills blank attendee fields from the saved profile without overwriting input", () => {
+    localStorage.clear();
+    localStorage.setItem(
+      "xpo_attendee_profile_v1",
+      JSON.stringify({ fullName: "Airi Suzuki", email: "airi@yokohama-expo.jp", organization: "Yokohama Group", jobTitle: "Buyer", interests: [] })
+    );
+    render(
+      <SettingsProvider>
+        <TicketCheckoutDrawer
+          event={mockEvent}
+          isOpen={true}
+          onClose={vi.fn()}
+        />
+      </SettingsProvider>
+    );
+
+    expect((screen.getByLabelText(/Full Name/i) as HTMLInputElement).value).toBe("Airi Suzuki");
+    expect((screen.getByLabelText(/Email Address/i) as HTMLInputElement).value).toBe("airi@yokohama-expo.jp");
+
+    // Typed text wins over the profile on reopen.
+    fireEvent.change(screen.getByLabelText(/Full Name/i), { target: { value: "Typed Name" } });
+    expect((screen.getByLabelText(/Full Name/i) as HTMLInputElement).value).toBe("Typed Name");
+    localStorage.clear();
   });
 });

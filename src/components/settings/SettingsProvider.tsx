@@ -352,3 +352,11 @@ export function useSettings(): SettingsContextValue {
   }
   return context;
 }
+
+/**
+ * Non-throwing variant for components that render outside the provider
+ * (tests, isolated previews): returns null instead of throwing.
+ */
+export function useOptionalSettings(): SettingsContextValue | null {
+  return React.useContext(SettingsContext);
+}

@@ -42,12 +42,12 @@ export const EventTableView = React.memo(function EventTableView({
       <table className="w-full text-left border-collapse text-xs min-w-[720px]">
         <thead>
           <tr className="border-b border-border/80 bg-muted/40 text-muted-foreground uppercase tracking-wider font-bold">
-            <th scope="col" className="py-3.5 px-4 font-semibold">Exhibition & Vertical</th>
-            <th scope="col" className="py-3.5 px-4 font-semibold">Spatial Hall & City</th>
-            <th scope="col" className="py-3.5 px-4 font-semibold">Timeline & Dates</th>
-            <th scope="col" className="py-3.5 px-4 font-semibold">Format & Scale</th>
-            <th scope="col" className="py-3.5 px-4 font-semibold">Pass Entry</th>
-            <th scope="col" className="py-3.5 px-4 font-semibold text-right">Action</th>
+            <th scope="col" className="p-[var(--table-cell-padding,0.875rem_1rem)] font-semibold">Exhibition & Vertical</th>
+            <th scope="col" className="p-[var(--table-cell-padding,0.875rem_1rem)] font-semibold">Spatial Hall & City</th>
+            <th scope="col" className="p-[var(--table-cell-padding,0.875rem_1rem)] font-semibold">Timeline & Dates</th>
+            <th scope="col" className="p-[var(--table-cell-padding,0.875rem_1rem)] font-semibold">Format & Scale</th>
+            <th scope="col" className="p-[var(--table-cell-padding,0.875rem_1rem)] font-semibold">Pass Entry</th>
+            <th scope="col" className="p-[var(--table-cell-padding,0.875rem_1rem)] font-semibold text-right">Action</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-border/60">
@@ -74,7 +74,7 @@ export const EventTableView = React.memo(function EventTableView({
                 className="hover:bg-muted/30 transition-colors group"
               >
                 {/* 1. Exhibition Title & Archetype Badge */}
-                <td className="py-3.5 px-4 max-w-[280px]">
+                <td className="p-[var(--table-cell-padding,0.875rem_1rem)] max-w-[280px]">
                   <div className="space-y-1">
                     <div className="flex items-center gap-1.5 flex-wrap">
                       <span
@@ -113,7 +113,7 @@ export const EventTableView = React.memo(function EventTableView({
                 </td>
 
                 {/* 2. Venue, Hall & City */}
-                <td className="py-3.5 px-4 text-muted-foreground whitespace-nowrap">
+                <td className="p-[var(--table-cell-padding,0.875rem_1rem)] text-muted-foreground whitespace-nowrap">
                   <div className="space-y-0.5">
                     {event.venue && (
                       <Link
@@ -136,7 +136,7 @@ export const EventTableView = React.memo(function EventTableView({
                 </td>
 
                 {/* 3. Timeline & Dates */}
-                <td className="py-3.5 px-4 text-muted-foreground whitespace-nowrap">
+                <td className="p-[var(--table-cell-padding,0.875rem_1rem)] text-muted-foreground whitespace-nowrap">
                   <div className="flex items-center gap-1.5">
                     <Calendar className="h-3.5 w-3.5 text-primary/80 shrink-0" />
                     <span className="font-medium text-foreground">{formattedDates}</span>
@@ -144,7 +144,7 @@ export const EventTableView = React.memo(function EventTableView({
                 </td>
 
                 {/* 4. Format & Scale */}
-                <td className="py-3.5 px-4 whitespace-nowrap">
+                <td className="p-[var(--table-cell-padding,0.875rem_1rem)] whitespace-nowrap">
                   <div className="flex items-center gap-1.5 flex-wrap">
                     <Badge variant="outline" className="text-[11px] font-medium py-0 px-2">
                       {event.format.replace(/_/g, ' ')}
@@ -156,7 +156,7 @@ export const EventTableView = React.memo(function EventTableView({
                 </td>
 
                 {/* 5. Pass Pricing */}
-                <td className="py-3.5 px-4 whitespace-nowrap">
+                <td className="p-[var(--table-cell-padding,0.875rem_1rem)] whitespace-nowrap">
                   <div className="flex items-center gap-1 text-foreground font-semibold">
                     <Ticket className="h-3.5 w-3.5 text-primary shrink-0" />
                     <span className={cn(priceDisplay === 'Free Trade Pass' ? 'text-emerald-600 dark:text-emerald-400 font-bold' : '')}>
@@ -166,7 +166,7 @@ export const EventTableView = React.memo(function EventTableView({
                 </td>
 
                 {/* 6. Action Link */}
-                <td className="py-3.5 px-4 text-right whitespace-nowrap">
+                <td className="p-[var(--table-cell-padding,0.875rem_1rem)] text-right whitespace-nowrap">
                   <Link
                     href={`/${locale}/events/${event.slug}`}
                     className={cn(

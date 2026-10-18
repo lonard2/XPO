@@ -28,6 +28,7 @@ import { Badge } from "@/components/ui/Badge";
 import { useTranslations } from "next-intl";
 import { TierSelector, type TicketTierItem } from "@/components/tickets/TierSelector";
 import { formatCurrency, formatDateRange, type SupportedCurrency } from "@/lib/i18n/formatters";
+import { useOptionalSettings } from "@/components/settings/SettingsProvider";
 
 export interface TicketCheckoutDrawerProps {
   event: {
@@ -73,6 +74,22 @@ export function TicketCheckoutDrawer({
   const [isLoading, setIsLoading] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
   const [confirmedBooking, setConfirmedBooking] = React.useState<any | null>(null);
+
+  // One-click registration: prefill blank fields from the attendee profile
+  // whenever the drawer opens or the profile finishes loading. Never
+  // overwrites already-entered text.
+  const settings = useOptionalSettings();
+  const settingsReady = settings?.isMounted ?? false;
+  const savedProfile = settings?.profile;
+  React.useEffect(() => {
+    if (!isOpen || !settingsReady || !savedProfile) return;
+    const p = savedProfile;
+    setAttendeeName((v) => v || p.fullName || "");
+    setAttendeeEmail((v) => v || p.email || "");
+    setOrganization((v) => v || p.organization || "");
+    setJobTitle((v) => v || p.jobTitle || "");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, settingsReady, savedProfile]);
   const [copiedRef, setCopiedRef] = React.useState(false);
 
   // Sync initial tier ID when passed
