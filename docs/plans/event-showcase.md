@@ -10,7 +10,7 @@ stays hidden (gating from event-detail fixes already supports this).
   endpoint; parsed onto Discovery payloads; guide alerts wired from data.
 - [x] **Phase 2 — Authoring UI**: per-archetype "Showcase content" editors
   (program rows, alerts, channels, stream URL + go-live) with validation.
-- [ ] **Phase 3 — View wiring**: one gated block per view, rendered only with
+- [x] **Phase 3 — View wiring**: one gated block per view, rendered only with
   data; silent empties.
 - [ ] **Phase 4 — Trust rails**: organizer attestation, admin visibility, and
   content-age stamps.

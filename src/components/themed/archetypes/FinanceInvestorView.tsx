@@ -24,6 +24,8 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Drawer } from "@/components/ui/Drawer";
 import { formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
 import type { ArchetypeViewProps } from "./IndustrialB2BView";
+import { parseShowcase } from "@/lib/showcase";
+import { ShowcaseProgramGrid } from "@/components/themed/ShowcaseProgramGrid";
 
 export function FinanceInvestorView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
   const [dealRoomOpen, setDealRoomOpen] = React.useState(false);
@@ -36,6 +38,15 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier }: Arch
     setBookingConfirmed(false);
     setDealRoomOpen(true);
   };
+
+  // Organizer-authored showcase: sections render only with backing data.
+  const showcase = React.useMemo(
+    () => parseShowcase((event as any)?.showcaseJson),
+    [event]
+  );
+  const showcasePrograms = showcase.programs.filter(
+    (p) => p.kind === "pitch" || p.kind === "generic"
+  );
 
   return (
     <div className="space-y-12">
@@ -141,6 +152,15 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier }: Arch
             ))}
           </div>
         </section>
+      )}
+
+      {showcasePrograms.length > 0 && (
+        <ShowcaseProgramGrid
+          eyebrow="Deal Pipeline"
+          title="Curated Pitch Decks & Venture Pipeline"
+          description="Founder decks published by the organizer for accredited investors."
+          programs={showcasePrograms}
+        />
       )}
 
       {/* 4. Ticket Passes & Investor Credentials */}

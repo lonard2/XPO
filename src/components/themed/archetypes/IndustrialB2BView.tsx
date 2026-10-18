@@ -24,6 +24,8 @@ import { Badge } from "@/components/ui/Badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
 import { Drawer } from "@/components/ui/Drawer";
 import { formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
+import { parseShowcase } from "@/lib/showcase";
+import { ShowcaseProgramGrid } from "@/components/themed/ShowcaseProgramGrid";
 
 export interface ArchetypeViewProps {
   event: {
@@ -121,6 +123,15 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier }: Archet
     }, 2500);
   };
 
+  // Organizer-authored showcase: sections render only with backing data.
+  const showcase = React.useMemo(
+    () => parseShowcase((event as any)?.showcaseJson),
+    [event]
+  );
+  const showcasePrograms = showcase.programs.filter(
+    (p) => p.kind === "demo" || p.kind === "generic"
+  );
+
   return (
     <div className="space-y-12">
       {/* 1. Industrial Domain Header Overview */}
@@ -186,6 +197,15 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier }: Archet
           </CardContent>
         </Card>
       </section>
+
+      {showcasePrograms.length > 0 && (
+        <ShowcaseProgramGrid
+          eyebrow="Exhibitor Highlights"
+          title="Featured Exhibits & Demonstrations"
+          description="Demonstrations and highlights published by the organizer."
+          programs={showcasePrograms}
+        />
+      )}
 
       {/* 3. Exhibitor & Booth Directory with RFQ triggers */}
       <section id="exhibitor-directory" className="space-y-4">

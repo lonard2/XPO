@@ -22,8 +22,19 @@ import { Badge } from "@/components/ui/Badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
 import { Drawer } from "@/components/ui/Drawer";
 import { type ArchetypeViewProps } from "./IndustrialB2BView";
+import { parseShowcase } from "@/lib/showcase";
+import { ShowcaseProgramGrid } from "@/components/themed/ShowcaseProgramGrid";
 
 export function SportsOutdoorView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
+
+  // Organizer-authored showcase: sections render only with backing data.
+  const showcase = React.useMemo(
+    () => parseShowcase((event as any)?.showcaseJson),
+    [event]
+  );
+  const showcasePrograms = showcase.programs.filter(
+    (p) => p.kind === "demo" || p.kind === "generic"
+  );
 
   return (
     <div className="space-y-12">
@@ -46,17 +57,18 @@ export function SportsOutdoorView({ event, locale = "en", onSelectTier }: Archet
               Retrieve official marathon race packets, test high-performance trail equipment on indoor obstacle circuits, and measure athletic physiological metrics with certified sports medicine clinicians.
             </p>
           </div>
-
-          <div className="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0">
-            
-            <div className="text-xs text-muted-foreground text-center lg:text-right">
-              Valid registration ID required at Bib Desk
-            </div>
-          </div>
         </div>
       </section>
 
 
+      {showcasePrograms.length > 0 && (
+        <ShowcaseProgramGrid
+          eyebrow="Competition Program"
+          title="Featured Competitions & Trial Circuits"
+          description="Competitions and trial circuits published by the organizer."
+          programs={showcasePrograms}
+        />
+      )}
     </div>
   );
 }

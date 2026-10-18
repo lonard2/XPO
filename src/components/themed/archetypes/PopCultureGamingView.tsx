@@ -22,8 +22,19 @@ import { Badge } from "@/components/ui/Badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
 import { formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
 import type { ArchetypeViewProps } from "./IndustrialB2BView";
+import { parseShowcase } from "@/lib/showcase";
+import { ShowcaseProgramGrid } from "@/components/themed/ShowcaseProgramGrid";
 
 export function PopCultureGamingView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
+
+  // Organizer-authored showcase: sections render only with backing data.
+  const showcase = React.useMemo(
+    () => parseShowcase((event as any)?.showcaseJson),
+    [event]
+  );
+  const showcasePrograms = showcase.programs.filter(
+    (p) => p.kind === "lineup" || p.kind === "generic"
+  );
 
   return (
     <div className="space-y-12">
@@ -133,6 +144,15 @@ export function PopCultureGamingView({ event, locale = "en", onSelectTier }: Arc
       )}
 
       {/* 5. Ticket Tiers & Cosplay Passes */}
+      {showcasePrograms.length > 0 && (
+        <ShowcaseProgramGrid
+          eyebrow="Guest Lineup"
+          title="Creators, Guests & Lineup"
+          description="Appearances published by the organizer."
+          programs={showcasePrograms}
+        />
+      )}
+
       <section id="tickets-section" className="space-y-6 pt-4 border-t border-border">
         <div>
           <h3 className="text-xl font-bold text-foreground flex items-center gap-2">

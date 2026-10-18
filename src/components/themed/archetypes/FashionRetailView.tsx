@@ -20,11 +20,22 @@ import { Badge } from "@/components/ui/Badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
 import { Drawer } from "@/components/ui/Drawer";
 import { type ArchetypeViewProps } from "./IndustrialB2BView";
+import { parseShowcase } from "@/lib/showcase";
+import { ShowcaseProgramGrid } from "@/components/themed/ShowcaseProgramGrid";
 
 export function FashionRetailView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
   const [oemDrawerOpen, setOemDrawerOpen] = React.useState(false);
   const [selectedBrand, setSelectedBrand] = React.useState<string | null>(null);
   const [rfqSubmitted, setRfqSubmitted] = React.useState(false);
+
+  // Organizer-authored showcase: sections render only with backing data.
+  const showcase = React.useMemo(
+    () => parseShowcase((event as any)?.showcaseJson),
+    [event]
+  );
+  const showcasePrograms = showcase.programs.filter(
+    (p) => p.kind === "runway" || p.kind === "generic"
+  );
 
   return (
     <div className="space-y-12">
@@ -66,6 +77,15 @@ export function FashionRetailView({ event, locale = "en", onSelectTier }: Archet
           </div>
         </div>
       </section>
+
+      {showcasePrograms.length > 0 && (
+        <ShowcaseProgramGrid
+          eyebrow="Runway Program"
+          title="Featured Collections & Presentations"
+          description="Runway slots and showroom programs published by the organizer."
+          programs={showcasePrograms}
+        />
+      )}
 
       {/* 3. Cosmetics OEM & Buyer Drawer */}
       <Drawer

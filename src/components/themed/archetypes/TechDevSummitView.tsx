@@ -6,6 +6,7 @@ import {
   Terminal,
   Github,
   Twitter,
+  ExternalLink,
   CheckCircle2,
   MapPin,
   Trophy,
@@ -15,6 +16,8 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
+import { parseShowcase } from "@/lib/showcase";
+import { ShowcaseProgramGrid } from "@/components/themed/ShowcaseProgramGrid";
 import type { ArchetypeViewProps } from "./IndustrialB2BView";
 
 export function TechDevSummitView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
@@ -31,9 +34,14 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier }: Archet
     (item) => activeTrack === "ALL" || item.track === activeTrack
   );
 
-  // Hackathon program: no prize or sponsor amounts are shown unless the
-  // event provides them. Without backing data there is nothing to render.
-  const hackathonBounties: Array<{ title: string; reward: string; sponsor: string }> = [];
+  // Organizer-authored showcase: sections render only with backing data.
+  const showcase = React.useMemo(
+    () => parseShowcase((event as any)?.showcaseJson),
+    [event]
+  );
+  const bountyPrograms = showcase.programs.filter(
+    (p) => p.kind === "bounty" || p.kind === "generic"
+  );
 
   return (
     <div className="space-y-12">
@@ -66,6 +74,37 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier }: Archet
           </div>
         </div>
       </section>
+
+      {/* Livestream card: only when the organizer published a stream URL. */}
+      {showcase.livestreamUrl && (
+        <section className="rounded-xl border border-border bg-card p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center gap-4">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <span className="relative flex h-3 w-3 shrink-0">
+              {showcase.livestreamLive && (
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75" />
+              )}
+              <span className={`relative inline-flex rounded-full h-3 w-3 ${showcase.livestreamLive ? "bg-red-500" : "bg-muted-foreground"}`} />
+            </span>
+            <div className="min-w-0">
+              <p className="text-sm font-bold text-foreground">
+                {showcase.livestreamLive ? "Live Stream Active" : "Event Livestream"}
+              </p>
+              <p className="text-xs text-muted-foreground truncate">
+                {showcase.livestreamUrl.replace(/^https?:\/\//, "").split("/")[0]}
+              </p>
+            </div>
+          </div>
+          <a
+            href={showcase.livestreamUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="sm:ml-auto inline-flex items-center justify-center gap-1.5 rounded-lg bg-primary px-4 text-xs font-semibold text-primary-foreground hover:bg-primary/90 min-h-[44px] cursor-pointer"
+          >
+            <ExternalLink className="h-3.5 w-3.5" />
+            Open Stream
+          </a>
+        </section>
+      )}
 
       {/* 2. Multi-Track Engineering Agenda Schedule */}
       <section className="space-y-4">
@@ -172,21 +211,13 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier }: Archet
           </div>
         </div>
 
-        {hackathonBounties.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-            {hackathonBounties.map((bounty, i) => (
-              <div key={i} className="p-4 rounded-lg bg-muted/40 border border-border/60 space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-amber-400">{bounty.reward}</span>
-                  <Badge variant="outline" size="sm" className="text-xs font-semibold">
-                    Bounty {i + 1}
-                  </Badge>
-                </div>
-                <h4 className="text-sm font-semibold text-foreground font-sans">{bounty.title}</h4>
-                <p className="text-xs font-semibold text-muted-foreground">Supported by {bounty.sponsor}</p>
-              </div>
-            ))}
-          </div>
+        {bountyPrograms.length > 0 && (
+          <ShowcaseProgramGrid
+            eyebrow="Hackathon Bounties"
+            title="Bounty Tracks"
+            description="Prizes and challenges published by the organizer."
+            programs={bountyPrograms}
+          />
         )}
       </section>
 
