@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { getEventCaller, canWriteEvent } from "@/lib/auth/eventOwnership";
 
 interface RouteProps {
   params: Promise<{ id: string }>;
@@ -21,6 +22,16 @@ export async function PUT(request: Request, { params }: RouteProps) {
       return NextResponse.json(
         { success: false, error: `Event not found for ID: ${id}` },
         { status: 404 }
+      );
+    }
+
+    // Strict ownership: ADMIN may brand anything; organizers only their own
+    // events; platform-curated events are admin-only.
+    const caller = getEventCaller(request);
+    if (!canWriteEvent(caller, existing.organizerId)) {
+      return NextResponse.json(
+        { success: false, error: "Forbidden: Only the owning organizer or a platform administrator can update this event's branding." },
+        { status: 403 }
       );
     }
 
