@@ -209,4 +209,38 @@ describe("UI/UX Settings Suite Component Selectors", () => {
     expect((emailInput as HTMLInputElement).value).toBe("");
     expect(localStorage.getItem("xpo_attendee_profile_v1") ?? "").not.toContain("Airi Suzuki");
   });
+
+  it("Interest Matrix covers all 22 current categories in 6 clusters with select and clear", () => {
+    const { container } = render(
+      <SettingsProvider>
+        <ProfileSettingsForm />
+      </SettingsProvider>
+    );
+
+    // Six cluster headings from the current taxonomy.
+    for (const cluster of ["Heavy Industry", "Digital & Tech", "Enterprise & Trade", "Sovereign & Defense", "Health & Faith", "Culture & Sports"]) {
+      expect(screen.getByText(cluster)).toBeInTheDocument();
+    }
+
+    // All 22 toggles with pressed semantics, including the 7 previously missing.
+    const toggles = container.querySelectorAll('[aria-pressed]');
+    expect(toggles.length).toBe(22);
+    for (const name of [/PropTech Expo/i, /Aviation & Defense/i, /Packaging Tech/i, /Business Opportunity/i, /Pilgrimage & Community/i, /Outdoor Adventure/i, /Pro-AV Technology/i]) {
+      expect(screen.getByRole("button", { name })).toBeInTheDocument();
+    }
+
+    // Select-all on the first cluster selects its 4 archetypes.
+    const selectButtons = screen.getAllByRole("button", { name: /Select all/i });
+    expect(selectButtons.length).toBe(6);
+    act(() => {
+      fireEvent.click(selectButtons[0]);
+    });
+    expect(screen.getByText(/4 selected/i)).toBeInTheDocument();
+
+    // Clear-all resets the counter.
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: /Clear all/i }));
+    });
+    expect(screen.getByText(/0 selected/i)).toBeInTheDocument();
+  });
 });

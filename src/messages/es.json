@@ -769,7 +769,14 @@
     "activeSelection": "Activo",
     "defaultBadge": "Predeterminado",
     "viewingSummary": "Viendo: {language} · {region} · {currency} · {timezone} · {count} sedes",
-    "allHubs": "Todos los hubs"
+    "allHubs": "Todos los hubs",
+    "clearAll": "Borrar todo",
+    "selectCluster": "Seleccionar todo",
+    "fontScaleCompact": "Compacto",
+    "fontScaleStandard": "Estándar",
+    "fontScaleLarge": "Grande",
+    "fontScaleExtraLarge": "Muy grande",
+    "fontScaleLabel": "Ajuste de escala de fuente"
   },
   "organizer": {
     "dashboardTitle": "Portal del Organizador",

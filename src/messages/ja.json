@@ -769,7 +769,14 @@
     "activeSelection": "現在",
     "defaultBadge": "デフォルト",
     "viewingSummary": "表示: {language} · {region} · {currency} · {timezone} · {count}会場",
-    "allHubs": "全地域ハブ"
+    "allHubs": "全地域ハブ",
+    "clearAll": "すべてクリア",
+    "selectCluster": "すべて選択",
+    "fontScaleCompact": "コンパクト",
+    "fontScaleStandard": "標準",
+    "fontScaleLarge": "大",
+    "fontScaleExtraLarge": "特大",
+    "fontScaleLabel": "フォントスケール調整"
   },
   "organizer": {
     "dashboardTitle": "主催者ポータル",

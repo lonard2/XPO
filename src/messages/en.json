@@ -769,7 +769,14 @@
     "activeSelection": "Active",
     "defaultBadge": "Default",
     "viewingSummary": "Viewing: {language} · {region} · {currency} · {timezone} · {count} venues",
-    "allHubs": "All Regional Hubs"
+    "allHubs": "All Regional Hubs",
+    "clearAll": "Clear all",
+    "selectCluster": "Select all",
+    "fontScaleCompact": "Compact",
+    "fontScaleStandard": "Standard",
+    "fontScaleLarge": "Large",
+    "fontScaleExtraLarge": "Extra-large",
+    "fontScaleLabel": "Font scale adjustment"
   },
   "organizer": {
     "dashboardTitle": "Organizer Portal",

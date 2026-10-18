@@ -769,7 +769,14 @@
     "activeSelection": "Aktif",
     "defaultBadge": "Default",
     "viewingSummary": "Menampilkan: {language} · {region} · {currency} · {timezone} · {count} venue",
-    "allHubs": "Semua Hub Regional"
+    "allHubs": "Semua Hub Regional",
+    "clearAll": "Hapus semua",
+    "selectCluster": "Pilih semua",
+    "fontScaleCompact": "Ringkas",
+    "fontScaleStandard": "Standar",
+    "fontScaleLarge": "Besar",
+    "fontScaleExtraLarge": "Sangat besar",
+    "fontScaleLabel": "Penyesuaian skala font"
   },
   "organizer": {
     "dashboardTitle": "Portal Penyelenggara",

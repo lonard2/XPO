@@ -769,7 +769,14 @@
     "activeSelection": "当前",
     "defaultBadge": "默认",
     "viewingSummary": "当前查看:{language} · {region} · {currency} · {timezone} · {count}个场馆",
-    "allHubs": "所有区域中心"
+    "allHubs": "所有区域中心",
+    "clearAll": "全部清除",
+    "selectCluster": "全选",
+    "fontScaleCompact": "紧凑",
+    "fontScaleStandard": "标准",
+    "fontScaleLarge": "大",
+    "fontScaleExtraLarge": "特大",
+    "fontScaleLabel": "字体缩放调节"
   },
   "organizer": {
     "dashboardTitle": "主办方门户",

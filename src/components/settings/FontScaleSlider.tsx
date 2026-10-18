@@ -11,21 +11,18 @@ export function FontScaleSlider({ className }: { className?: string }) {
   const { fontScale, setFontScale, isMounted } = useSettings();
 
   let tSet: any = (k: string) => k;
-  let tCom: any = (k: string) => k;
   try {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     tSet = useTranslations("settings");
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    tCom = useTranslations("common");
   } catch {
     // Fallback
   }
 
   const PRESETS = [
-    { label: `${tSet("compact")?.split("(")?.[0]?.trim() || "Compact"} (90%)`, value: 0.9 },
-    { label: `${tCom("all") === "Semua" ? "Standar" : "Default"} (100%)`, value: 1.0 },
-    { label: `${tSet("comfortable")?.split("(")?.[0]?.trim() || "Enlarged"} (110%)`, value: 1.1 },
-    { label: `${tSet("atkinsonHyperlegible")?.split("(")?.[0]?.trim() || "Accessible"} (125%)`, value: 1.25 },
+    { label: `${tSet("fontScaleCompact") || "Compact"} (90%)`, value: 0.9 },
+    { label: `${tSet("fontScaleStandard") || "Standard"} (100%)`, value: 1.0 },
+    { label: `${tSet("fontScaleLarge") || "Large"} (110%)`, value: 1.1 },
+    { label: `${tSet("fontScaleExtraLarge") || "Extra-large"} (125%)`, value: 1.25 },
   ];
 
   const currentPercent = Math.round((fontScale || 1.0) * 100);
@@ -74,7 +71,7 @@ export function FontScaleSlider({ className }: { className?: string }) {
             step="0.05"
             value={isMounted ? fontScale : 1.0}
             onChange={(e) => setFontScale(parseFloat(e.target.value))}
-            aria-label="Font scale adjustment"
+            aria-label={tSet("fontScaleLabel") || "Font scale adjustment"}
             aria-valuemin={90}
             aria-valuemax={125}
             aria-valuenow={currentPercent}

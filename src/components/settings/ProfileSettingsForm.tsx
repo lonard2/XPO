@@ -1,31 +1,14 @@
 "use client";
 
 import * as React from "react";
-import { User, Building2, Briefcase, Mail, CheckCircle2, BookmarkCheck, Sparkles } from "lucide-react";
+import { User, Building2, Briefcase, Mail, CheckCircle2, BookmarkCheck, Sparkles, ChevronDown } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useSettings } from "./SettingsProvider";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { cn } from "@/lib/utils";
-
-const MICE_INTEREST_ARCHETYPES = [
-  { id: "INDUSTRIAL_B2B", label: "Industrial & Manufacturing B2B" },
-  { id: "TECH_DEV_SUMMIT", label: "Technology, AI & Consumer Electronics" },
-  { id: "MEDICAL_SYMPOSIUM", label: "Medical & Healthcare Congress" },
-  { id: "FINANCE_INVESTOR", label: "Finance, FinTech & VC Forum" },
-  { id: "POP_CULTURE_GAMING", label: "Pop Culture, Gaming & Comic Con" },
-  { id: "MUSIC_FESTIVAL", label: "Music, Stage & Performing Arts" },
-  { id: "MEGA_EXPO_PAVILION", label: "Mega Fair & Consumer Pavilion" },
-  { id: "AUTOMOTIVE_MOBILITY", label: "Automotive, EV & Mobility Expo" },
-  { id: "ENERGY_INFRASTRUCTURE", label: "Energy, Mining & Infrastructure" },
-  { id: "AGRITECH_FOOD", label: "Agriculture, Agritech & Food Expo" },
-  { id: "HOSPITALITY_TOURISM", label: "Hospitality, Tourism & Travel Mart" },
-  { id: "EDUCATION_EDTECH", label: "Education, EdTech & Academic Summit" },
-  { id: "FASHION_RETAIL", label: "Fashion, Beauty & Luxury Retail" },
-  { id: "GOVERNMENT_DIPLOMATIC", label: "Government & Diplomatic Summit" },
-  { id: "INCENTIVE_RETREAT", label: "Incentive & Corporate Retreat" },
-];
+import { MICE_INDUSTRY_CLUSTERS, ARCHETYPE_METAS, type MiceArchetype } from "@/lib/theming";
 
 export function ProfileSettingsForm({ className }: { className?: string }) {
   const { profile, setProfile, isMounted } = useSettings();
@@ -44,6 +27,38 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
   const [formData, setFormData] = React.useState(profile);
   const [isSaved, setIsSaved] = React.useState(false);
   const [errors, setErrors] = React.useState<{ fullName?: string; email?: string }>({});
+  const [collapsedClusters, setCollapsedClusters] = React.useState<Record<string, boolean>>({});
+
+  // Display title: localized dictionary first, current metadata second.
+  const interestTitle = (id: MiceArchetype) => {
+    try {
+      if (tArch && typeof tArch.raw === "function") {
+        const raw = tArch.raw(id);
+        if (raw?.title) return raw.title as string;
+      }
+    } catch {
+      // fallback
+    }
+    const meta = ARCHETYPE_METAS[id];
+    return meta?.shortName || meta?.label || id;
+  };
+
+  const toggleCluster = (id: string) => {
+    setCollapsedClusters((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const selectCluster = (ids: MiceArchetype[]) => {
+    setFormData((prev) => ({
+      ...prev,
+      interests: Array.from(new Set([...prev.interests, ...ids])),
+    }));
+    setIsSaved(false);
+  };
+
+  const clearInterests = () => {
+    setFormData((prev) => ({ ...prev, interests: [] }));
+    setIsSaved(false);
+  };
 
   React.useEffect(() => {
     if (isMounted) {
@@ -169,51 +184,88 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
         />
       </div>
 
-      {/* MICE Interest Matrix */}
+      {/* MICE Interest Matrix: all 22 current categories under 6 clusters */}
       <div className="space-y-3 pt-2 border-t border-border/60">
-        <div className="flex items-center justify-between">
+        <div className="sticky top-0 bg-card py-1 z-10 flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-primary" />
             <label className="text-sm font-semibold text-foreground">
               {tSet("interestedVerticals") || "MICE Interest Matrix"}
             </label>
           </div>
-          <span className="text-xs font-mono text-muted-foreground">
-            {formData.interests.length} selected
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-mono text-muted-foreground" aria-live="polite">
+              {formData.interests.length} selected
+            </span>
+            <button
+              type="button"
+              onClick={clearInterests}
+              className="text-xs font-semibold text-muted-foreground hover:text-foreground underline underline-offset-2 cursor-pointer min-h-[44px] px-1"
+            >
+              {tSet("clearAll") || "Clear all"}
+            </button>
+          </div>
         </div>
         <p className="text-xs text-muted-foreground leading-relaxed">
           {tSet("profileSubtitle") || "Select the exhibition categories you frequently attend for tailored discovery feeds."}
         </p>
 
-        <div className="flex flex-wrap gap-2 pt-1">
-          {MICE_INTEREST_ARCHETYPES.map((cat) => {
-            const isSelected = formData.interests.includes(cat.id);
-            let catTitle = cat.label;
-            try {
-              if (tArch && typeof tArch.raw === "function") {
-                const raw = tArch.raw(cat.id);
-                if (raw?.title) catTitle = raw.title;
-              }
-            } catch {
-              // fallback
-            }
-
+        <div className="space-y-4 pt-1">
+          {MICE_INDUSTRY_CLUSTERS.map((cluster) => {
+            const selectedInCluster = cluster.archetypes.filter((id) =>
+              formData.interests.includes(id)
+            ).length;
+            const collapsed = collapsedClusters[cluster.id] ?? false;
             return (
-              <button
-                key={cat.id}
-                type="button"
-                onClick={() => toggleInterest(cat.id)}
-                className={cn(
-                  "px-3 py-1.5 rounded-lg border text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer",
-                  isSelected
-                    ? "border-primary bg-primary text-primary-foreground font-semibold shadow-sm"
-                    : "border-border bg-background hover:bg-accent text-muted-foreground hover:text-foreground"
+              <div key={cluster.id} className="space-y-2">
+                <div className="flex items-center justify-between gap-2">
+                  <button
+                    type="button"
+                    onClick={() => toggleCluster(cluster.id)}
+                    aria-expanded={!collapsed}
+                    className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-foreground cursor-pointer rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 min-h-[44px]"
+                  >
+                    <span>{cluster.shortLabel}</span>
+                    <span className="font-mono font-medium text-muted-foreground normal-case">
+                      {selectedInCluster}/{cluster.archetypes.length}
+                    </span>
+                    <ChevronDown
+                      className={`h-3.5 w-3.5 text-muted-foreground transition-transform duration-200 ${collapsed ? "" : "rotate-180"}`}
+                    />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => selectCluster(cluster.archetypes)}
+                    className="text-[11px] font-semibold text-primary hover:underline underline-offset-2 cursor-pointer min-h-[44px] px-1"
+                  >
+                    {tSet("selectCluster") || "Select all"}
+                  </button>
+                </div>
+                {!collapsed && (
+                  <div className="flex flex-wrap gap-2">
+                    {cluster.archetypes.map((id) => {
+                      const isSelected = formData.interests.includes(id);
+                      return (
+                        <button
+                          key={id}
+                          type="button"
+                          onClick={() => toggleInterest(id)}
+                          aria-pressed={isSelected}
+                          className={cn(
+                            "px-3 py-1.5 rounded-lg border text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+                            isSelected
+                              ? "border-primary bg-primary text-primary-foreground font-semibold shadow-sm"
+                              : "border-border bg-background hover:bg-accent text-muted-foreground hover:text-foreground"
+                          )}
+                        >
+                          {isSelected && <BookmarkCheck className="h-3.5 w-3.5 stroke-[2.5]" />}
+                          <span>{interestTitle(id)}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
                 )}
-              >
-                {isSelected && <BookmarkCheck className="h-3.5 w-3.5 stroke-[2.5]" />}
-                <span>{catTitle}</span>
-              </button>
+              </div>
             );
           })}
         </div>

@@ -769,7 +769,14 @@
     "activeSelection": "Aktiv",
     "defaultBadge": "Standard",
     "viewingSummary": "Ansicht: {language} · {region} · {currency} · {timezone} · {count} Venues",
-    "allHubs": "Alle regionalen Hubs"
+    "allHubs": "Alle regionalen Hubs",
+    "clearAll": "Alle löschen",
+    "selectCluster": "Alle wählen",
+    "fontScaleCompact": "Kompakt",
+    "fontScaleStandard": "Standard",
+    "fontScaleLarge": "Groß",
+    "fontScaleExtraLarge": "Sehr groß",
+    "fontScaleLabel": "Schriftgrößenanpassung"
   },
   "organizer": {
     "dashboardTitle": "Veranstalter-Portal",
