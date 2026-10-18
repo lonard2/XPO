@@ -30,8 +30,11 @@ import { useTranslations } from "next-intl";
 export interface VenueHallItem {
   id?: string;
   name: string;
+  kind?: string;
   capacity?: number;
   floorAreaSqm?: number;
+  ceilingHeightM?: number | null;
+  floorLoadKnM2?: number | null;
   description?: string;
 }
 
@@ -101,7 +104,7 @@ export function VenueDirectoryManagerClient({
     longitude: string;
     transitInfo: string;
     imageUrl: string;
-    halls: { name: string; capacity: string; floorAreaSqm: string; description: string }[];
+    halls: { id?: string; name: string; kind: string; capacity: string; floorAreaSqm: string; ceilingHeightM: string; floorLoadKnM2: string; description: string }[];
   }>({
     name: "",
     regionId: "id",
@@ -111,7 +114,7 @@ export function VenueDirectoryManagerClient({
     longitude: "",
     transitInfo: "",
     imageUrl: "",
-    halls: [{ name: "Hall A1", capacity: "3000", floorAreaSqm: "5000", description: "Column-free exhibition hall" }],
+    halls: [{ name: "Hall A1", kind: "HALL", capacity: "3000", floorAreaSqm: "5000", ceilingHeightM: "", floorLoadKnM2: "", description: "Column-free exhibition hall" }],
   });
 
   const openCreateModal = () => {
@@ -125,7 +128,7 @@ export function VenueDirectoryManagerClient({
       longitude: "",
       transitInfo: "",
       imageUrl: "",
-      halls: [{ name: "Hall A1", capacity: "3000", floorAreaSqm: "5000", description: "Column-free exhibition hall" }],
+      halls: [{ name: "Hall A1", kind: "HALL", capacity: "3000", floorAreaSqm: "5000", ceilingHeightM: "", floorLoadKnM2: "", description: "Column-free exhibition hall" }],
     });
     setFeedbackMessage(null);
     setIsModalOpen(true);
@@ -144,12 +147,16 @@ export function VenueDirectoryManagerClient({
       imageUrl: venue.imageUrl || "",
       halls: venue.halls && venue.halls.length > 0
         ? venue.halls.map((h) => ({
+            id: h.id,
             name: h.name,
+            kind: h.kind || "HALL",
             capacity: h.capacity ? String(h.capacity) : "",
             floorAreaSqm: h.floorAreaSqm ? String(h.floorAreaSqm) : "",
+            ceilingHeightM: h.ceilingHeightM != null ? String(h.ceilingHeightM) : "",
+            floorLoadKnM2: h.floorLoadKnM2 != null ? String(h.floorLoadKnM2) : "",
             description: h.description || "",
           }))
-        : [{ name: "Main Hall", capacity: "2500", floorAreaSqm: "4000", description: "" }],
+        : [{ name: "Main Hall", kind: "HALL", capacity: "2500", floorAreaSqm: "4000", ceilingHeightM: "", floorLoadKnM2: "", description: "" }],
     });
     setFeedbackMessage(null);
     setIsModalOpen(true);
@@ -162,8 +169,11 @@ export function VenueDirectoryManagerClient({
         ...prev.halls,
         {
           name: `Hall ${prev.halls.length + 1}`,
+          kind: "HALL",
           capacity: "2500",
           floorAreaSqm: "4000",
+          ceilingHeightM: "",
+          floorLoadKnM2: "",
           description: "Flexible multi-purpose convention hall",
         },
       ],
@@ -205,9 +215,13 @@ export function VenueDirectoryManagerClient({
       transitInfo: formData.transitInfo.trim() || "Rapid rail transit and bus connection.",
       imageUrl: formData.imageUrl.trim() || "/images/venues/convention-center.jpg",
       halls: formData.halls.map((h) => ({
+        ...(h.id ? { id: h.id } : {}),
         name: h.name.trim(),
+        kind: h.kind,
         capacity: h.capacity ? parseInt(h.capacity, 10) : 2500,
         floorAreaSqm: h.floorAreaSqm ? parseFloat(h.floorAreaSqm) : 4000,
+        ceilingHeightM: h.ceilingHeightM !== "" ? parseFloat(h.ceilingHeightM) : null,
+        floorLoadKnM2: h.floorLoadKnM2 !== "" ? parseFloat(h.floorLoadKnM2) : null,
         description: h.description.trim() || null,
       })),
     };
@@ -637,10 +651,10 @@ export function VenueDirectoryManagerClient({
             <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
               {formData.halls.map((hall, idx) => (
                 <div
-                  key={idx}
+                  key={hall.id || idx}
                   className="p-2.5 rounded-lg border border-border/80 bg-muted/30 grid grid-cols-12 gap-2 items-center text-xs"
                 >
-                  <div className="col-span-4">
+                  <div className="col-span-5">
                     <label className="block text-xs text-muted-foreground font-semibold">Hall Name</label>
                     <Input
                       placeholder="e.g. Nusantara Hall 2"
@@ -651,7 +665,19 @@ export function VenueDirectoryManagerClient({
                     />
                   </div>
                   <div className="col-span-3">
-                    <label className="block text-xs text-muted-foreground font-semibold">Capacity (Seats)</label>
+                    <label className="block text-xs text-muted-foreground font-semibold">Kind</label>
+                    <select
+                      aria-label="Hall kind"
+                      value={hall.kind}
+                      onChange={(e) => handleHallChange(idx, "kind", e.target.value)}
+                      className="h-7 w-full rounded-md border border-input bg-background px-1.5 text-xs"
+                    >
+                      <option value="HALL">Hall</option>
+                      <option value="MEETING_ROOM">Meeting Room</option>
+                    </select>
+                  </div>
+                  <div className="col-span-2">
+                    <label className="block text-xs text-muted-foreground font-semibold">Seats</label>
                     <Input
                       type="number"
                       placeholder="3500"
@@ -660,8 +686,8 @@ export function VenueDirectoryManagerClient({
                       className="h-7 text-xs bg-background"
                     />
                   </div>
-                  <div className="col-span-3">
-                    <label className="block text-xs text-muted-foreground font-semibold">Area (Sqm)</label>
+                  <div className="col-span-1">
+                    <label className="block text-xs text-muted-foreground font-semibold">Sqm</label>
                     <Input
                       type="number"
                       placeholder="5000"
@@ -670,18 +696,41 @@ export function VenueDirectoryManagerClient({
                       className="h-7 text-xs bg-background"
                     />
                   </div>
-                  <div className="col-span-2 flex justify-end pt-3">
+                  <div className="col-span-1 flex justify-end pt-3">
                     {formData.halls.length > 1 && (
                       <Button
                         type="button"
                         variant="ghost"
                         size="icon"
+                        aria-label={`Remove ${hall.name || "hall"}`}
                         className="h-7 w-7 text-destructive hover:bg-destructive/10"
                         onClick={() => handleRemoveHallRow(idx)}
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                       </Button>
                     )}
+                  </div>
+                  <div className="col-span-6">
+                    <label className="block text-xs text-muted-foreground font-semibold">Ceiling (m, verified)</label>
+                    <Input
+                      type="number"
+                      step="0.1"
+                      placeholder="e.g. 9"
+                      value={hall.ceilingHeightM}
+                      onChange={(e) => handleHallChange(idx, "ceilingHeightM", e.target.value)}
+                      className="h-7 text-xs bg-background"
+                    />
+                  </div>
+                  <div className="col-span-6">
+                    <label className="block text-xs text-muted-foreground font-semibold">Floor load (kN/m², verified)</label>
+                    <Input
+                      type="number"
+                      step="0.5"
+                      placeholder="e.g. 12"
+                      value={hall.floorLoadKnM2}
+                      onChange={(e) => handleHallChange(idx, "floorLoadKnM2", e.target.value)}
+                      className="h-7 text-xs bg-background"
+                    />
                   </div>
                 </div>
               ))}

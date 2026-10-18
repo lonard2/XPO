@@ -3,6 +3,13 @@ import { db } from "@/lib/db";
 import { normalizeEventSlug } from "@/lib/crawler/venueScraper";
 import { FALLBACK_VENUES } from "@/lib/discovery/fallbackData";
 
+/** Parse an optional numeric hall spec; garbage becomes null, never NaN. */
+function numOrNull(v: unknown): number | null {
+  if (v === undefined || v === null || v === "") return null;
+  const n = typeof v === "number" ? v : parseFloat(String(v));
+  return Number.isFinite(n) ? n : null;
+}
+
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
@@ -123,8 +130,11 @@ export async function POST(req: NextRequest) {
           create: Array.isArray(halls) && halls.length > 0
             ? halls.map((h: any) => ({
                 name: h.name || "Exhibition Hall 1",
+                kind: h.kind === "MEETING_ROOM" ? "MEETING_ROOM" : "HALL",
                 capacity: h.capacity ? parseInt(h.capacity, 10) : 2500,
                 floorAreaSqm: h.floorAreaSqm ? parseFloat(h.floorAreaSqm) : 5000,
+                ceilingHeightM: numOrNull(h.ceilingHeightM),
+                floorLoadKnM2: numOrNull(h.floorLoadKnM2),
                 description: h.description || null,
               }))
             : [

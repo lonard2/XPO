@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 
+/** Parse an optional numeric hall spec; garbage becomes null, never NaN. */
+function numOrNull(v: unknown): number | null {
+  if (v === undefined || v === null || v === "") return null;
+  const n = typeof v === "number" ? v : parseFloat(String(v));
+  return Number.isFinite(n) ? n : null;
+}
+
 interface RouteParams {
   params: Promise<{ id: string }>;
 }
@@ -91,24 +98,35 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
       },
     });
 
-    // Update halls if provided
+    // Update halls if provided: match by id so surviving halls keep their
+    // identity (event.venueHallId links stay valid); create new rows; delete
+    // only halls absent from the payload.
     if (Array.isArray(halls)) {
-      // Delete old halls
-      await db.venueHall.deleteMany({
-        where: { venueId: existingVenue.id },
-      });
+      const existingIds = new Set(existingVenue.halls.map((h) => h.id));
+      const payloadIds = new Set(
+        halls.filter((h: any) => h.id && existingIds.has(h.id)).map((h: any) => h.id)
+      );
 
-      // Insert updated halls
-      if (halls.length > 0) {
-        await db.venueHall.createMany({
-          data: halls.map((h: any) => ({
-            venueId: existingVenue.id,
-            name: h.name || "Main Hall",
-            capacity: h.capacity ? parseInt(h.capacity, 10) : 2000,
-            floorAreaSqm: h.floorAreaSqm ? parseFloat(h.floorAreaSqm) : 4000,
-            description: h.description || null,
-          })),
-        });
+      for (const h of halls) {
+        const data = {
+          name: h.name || "Main Hall",
+          kind: h.kind === "MEETING_ROOM" ? "MEETING_ROOM" : "HALL",
+          capacity: h.capacity ? parseInt(h.capacity, 10) : 2000,
+          floorAreaSqm: h.floorAreaSqm ? parseFloat(h.floorAreaSqm) : 4000,
+          ceilingHeightM: numOrNull(h.ceilingHeightM),
+          floorLoadKnM2: numOrNull(h.floorLoadKnM2),
+          description: h.description || null,
+        };
+        if (h.id && existingIds.has(h.id)) {
+          await db.venueHall.update({ where: { id: h.id }, data });
+        } else {
+          await db.venueHall.create({ data: { ...data, venueId: existingVenue.id } });
+        }
+      }
+
+      const removedIds = [...existingIds].filter((id) => !payloadIds.has(id));
+      if (removedIds.length > 0) {
+        await db.venueHall.deleteMany({ where: { id: { in: removedIds } } });
       }
     }
 
