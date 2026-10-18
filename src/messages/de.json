@@ -405,7 +405,14 @@
     "mainVenue": "Hauptvenue",
     "sortPriceAsc": "Preis aufsteigend",
     "sortPriceDesc": "Preis absteigend",
-    "sortEndingSoon": "Endet bald"
+    "sortEndingSoon": "Endet bald",
+    "formatInPerson": "Vor Ort",
+    "formatHybrid": "Hybrid",
+    "formatVirtual": "Virtuell",
+    "scaleGlobalMega": "Global Mega",
+    "scaleLarge": "Groß",
+    "scaleMedium": "Mittel",
+    "scaleExecutive": "Exklusiv"
   },
   "venues": {
     "title": "Kongresszentren & Hallenverzeichnis",

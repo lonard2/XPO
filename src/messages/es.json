@@ -405,7 +405,14 @@
     "mainVenue": "Sede principal",
     "sortPriceAsc": "Precio: menor primero",
     "sortPriceDesc": "Precio: mayor primero",
-    "sortEndingSoon": "Termina pronto"
+    "sortEndingSoon": "Termina pronto",
+    "formatInPerson": "Presencial",
+    "formatHybrid": "Híbrido",
+    "formatVirtual": "Virtual",
+    "scaleGlobalMega": "Mega global",
+    "scaleLarge": "Grande",
+    "scaleMedium": "Mediano",
+    "scaleExecutive": "Ejecutivo"
   },
   "venues": {
     "title": "Recintos Feriales y Directorio de Pabellones",

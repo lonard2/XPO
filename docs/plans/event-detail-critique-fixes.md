@@ -10,7 +10,7 @@ backed by event data — no sample labels).
 - [x] **2. Harden tier + tabs + booths** (`$impeccable harden`): tier buttons
   preselect via `initialTierId`; guidebook dead-end reset; tab bar un-stuck;
   booth cap disclosed.
-- [ ] **3. Layout hero badges** (`$impeccable layout`): overlay cap at 2;
+- [x] **3. Layout hero badges** (`$impeccable layout`): overlay cap at 2;
   scale/format as translated body labels.
 - [ ] **4. Clarify conversion copy** (`$impeccable clarify`): drawer,
   guidebook, floor-map strings into dictionaries.

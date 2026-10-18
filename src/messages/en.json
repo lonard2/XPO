@@ -405,7 +405,14 @@
     "mainVenue": "Main Venue",
     "sortPriceAsc": "Price: Lowest First",
     "sortPriceDesc": "Price: Highest First",
-    "sortEndingSoon": "Ending Soon"
+    "sortEndingSoon": "Ending Soon",
+    "formatInPerson": "In Person",
+    "formatHybrid": "Hybrid",
+    "formatVirtual": "Virtual",
+    "scaleGlobalMega": "Global Mega",
+    "scaleLarge": "Large",
+    "scaleMedium": "Medium",
+    "scaleExecutive": "Executive"
   },
   "venues": {
     "title": "Convention Centers & Hall Directory",

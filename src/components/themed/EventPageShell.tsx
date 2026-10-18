@@ -11,7 +11,6 @@ import {
   Share2,
   Check,
   ChevronRight,
-  Globe,
   Layers,
   Building2,
   Clock,
@@ -176,6 +175,20 @@ export function EventPageShell({
     // fallback
   }
 
+  const FORMAT_LABELS: Record<string, string> = {
+    IN_PERSON: tEvents("formatInPerson") || "In Person",
+    HYBRID: tEvents("formatHybrid") || "Hybrid",
+    VIRTUAL: tEvents("formatVirtual") || "Virtual",
+  };
+  const SCALE_LABELS: Record<string, string> = {
+    GLOBAL_MEGA: tEvents("scaleGlobalMega") || "Global Mega",
+    LARGE: tEvents("scaleLarge") || "Large",
+    MEDIUM: tEvents("scaleMedium") || "Medium",
+    EXECUTIVE: tEvents("scaleExecutive") || "Executive",
+  };
+  const formatLabel = FORMAT_LABELS[format] || format.replace("_", " ");
+  const scaleLabel = SCALE_LABELS[scale] || scale.replace("_", " ");
+
   const renderPassTiersGrid = () => {
     if (!ticketTiers || ticketTiers.length === 0) {
       return (
@@ -334,7 +347,8 @@ export function EventPageShell({
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-10 sm:pb-14 lg:pt-12">
-          {/* Top Badges & Archetype Indicator */}
+          {/* Top Badges: capped at two — category plus one status. Scale and
+              format move to the metadata line under the title. */}
           <div className="flex flex-wrap items-center gap-2 mb-4">
             <span
               className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold tracking-wide uppercase border shadow-xs"
@@ -348,25 +362,9 @@ export function EventPageShell({
               {archetypeDisplayTitle}
             </span>
 
-            {isFeatured && (
+            {(resolvedBranding.heroBadge || isFeatured) && (
               <Badge variant="warning" size="sm" className="font-semibold shadow-xs">
-                {tEvents("featured") || "Featured Event"}
-              </Badge>
-            )}
-
-            <Badge variant="outline" size="sm" className="border-white/20 text-white/90 bg-white/5 font-semibold">
-              <Layers className="h-3 w-3 mr-1 text-white/70" />
-              {scale.replace("_", " ")}
-            </Badge>
-
-            <Badge variant="outline" size="sm" className="border-white/20 text-white/90 bg-white/5 font-semibold">
-              <Globe className="h-3 w-3 mr-1 text-white/70" />
-              {format.replace("_", " ")}
-            </Badge>
-
-            {resolvedBranding.heroBadge && (
-              <Badge variant="archetype" size="sm" className="font-semibold">
-                {resolvedBranding.heroBadge}
+                {resolvedBranding.heroBadge || tEvents("featured") || "Featured Event"}
               </Badge>
             )}
           </div>
@@ -376,6 +374,9 @@ export function EventPageShell({
             <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white drop-shadow-xs">
               {title}
             </h1>
+            <p className="text-xs sm:text-sm font-semibold tracking-wide text-slate-300 uppercase">
+              {formatLabel} · {scaleLabel}
+            </p>
             {tagline && (
               <p className="text-sm sm:text-lg text-slate-300 font-normal leading-relaxed max-w-3xl">
                 {tagline}

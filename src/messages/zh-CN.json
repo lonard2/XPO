@@ -405,7 +405,14 @@
     "mainVenue": "主会场",
     "sortPriceAsc": "价格从低到高",
     "sortPriceDesc": "价格从高到低",
-    "sortEndingSoon": "即将结束"
+    "sortEndingSoon": "即将结束",
+    "formatInPerson": "现场",
+    "formatHybrid": "混合",
+    "formatVirtual": "线上",
+    "scaleGlobalMega": "全球盛会",
+    "scaleLarge": "大型",
+    "scaleMedium": "中型",
+    "scaleExecutive": "高管级"
   },
   "venues": {
     "title": "会展中心与展厅名录",

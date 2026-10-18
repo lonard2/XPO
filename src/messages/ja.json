@@ -405,7 +405,14 @@
     "mainVenue": "メイン会場",
     "sortPriceAsc": "料金が安い順",
     "sortPriceDesc": "料金が高い順",
-    "sortEndingSoon": "まもなく終了"
+    "sortEndingSoon": "まもなく終了",
+    "formatInPerson": "対面",
+    "formatHybrid": "ハイブリッド",
+    "formatVirtual": "オンライン",
+    "scaleGlobalMega": "グローバルメガ",
+    "scaleLarge": "大規模",
+    "scaleMedium": "中規模",
+    "scaleExecutive": "エグゼクティブ"
   },
   "venues": {
     "title": "コンベンションセンター＆ホール一覧",

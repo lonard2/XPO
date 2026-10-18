@@ -405,7 +405,14 @@
     "mainVenue": "Venue Utama",
     "sortPriceAsc": "Harga: Termurah",
     "sortPriceDesc": "Harga: Termahal",
-    "sortEndingSoon": "Segera Berakhir"
+    "sortEndingSoon": "Segera Berakhir",
+    "formatInPerson": "Langsung",
+    "formatHybrid": "Hibrida",
+    "formatVirtual": "Virtual",
+    "scaleGlobalMega": "Mega Global",
+    "scaleLarge": "Besar",
+    "scaleMedium": "Sedang",
+    "scaleExecutive": "Eksekutif"
   },
   "venues": {
     "title": "Pusat Konvensi & Direktori Hall",
