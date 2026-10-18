@@ -776,7 +776,8 @@
     "fontScaleStandard": "Estándar",
     "fontScaleLarge": "Grande",
     "fontScaleExtraLarge": "Muy grande",
-    "fontScaleLabel": "Ajuste de escala de fuente"
+    "fontScaleLabel": "Ajuste de escala de fuente",
+    "matrixHint": "Elija las categorías a las que más asiste. Su feed seguirá estos intereses."
   },
   "organizer": {
     "dashboardTitle": "Portal del Organizador",

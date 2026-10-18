@@ -776,7 +776,8 @@
     "fontScaleStandard": "標準",
     "fontScaleLarge": "大",
     "fontScaleExtraLarge": "特大",
-    "fontScaleLabel": "フォントスケール調整"
+    "fontScaleLabel": "フォントスケール調整",
+    "matrixHint": "よく参加するカテゴリーを選んでください。発見フィードがこれに連動します。"
   },
   "organizer": {
     "dashboardTitle": "主催者ポータル",

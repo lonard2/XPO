@@ -207,7 +207,7 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
           </div>
         </div>
         <p className="text-xs text-muted-foreground leading-relaxed">
-          {tSet("profileSubtitle") || "Select the exhibition categories you frequently attend for tailored discovery feeds."}
+          {tSet("matrixHint") || "Pick the categories you attend most. Your discovery feed and suggestions follow these interests."}
         </p>
 
         <div className="space-y-4 pt-1">

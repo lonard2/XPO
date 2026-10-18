@@ -7,6 +7,8 @@ Source: Impeccable critique `2026-10-18T02-45-59Z` (23/40, Acceptable). Directio
 - [x] **3. Distill Appearance tab** (`$impeccable distill`): accordion disclosure (Theme + Font Scale open), active-value summaries, default badges, `?tab=` deep links.
 - [x] **4. Clarify localization** (`$impeccable clarify`): live consequence line, timezone hints in options, cards variant of RegionSwitcher.
 - [x] **5. Layout interest matrix from current data** (`$impeccable layout`): all 22 archetypes from `ARCHETYPE_LIST` grouped under 6 `MICE_INDUSTRY_CLUSTERS` with counts + clear-all; neutral font-scale preset labels with dedicated keys.
-- [ ] **6. Polish final pass** (`$impeccable polish`): detector clean, screenshots of all tabs, full suite green.
+- [x] **6. Polish final pass** (`$impeccable polish`): detector clean, screenshots of all tabs, full suite green.
 
 Each ships as its own commit pushed to `origin/main`. No overengineering, no regressions: tsc + vitest + live SSR check per todo.
+
+Verified: detector exit 0 with [] on 7 settings targets; tsc clean; 672 tests pass; screenshots of Appearance (disclosure + badges) and Profile (clustered matrix) verified live; dev server stopped, browser closed.

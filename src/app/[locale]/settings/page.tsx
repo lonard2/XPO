@@ -209,7 +209,7 @@ export default function SettingsPage({ params }: SettingsPageProps) {
                       {tSet("activeSelection") || "Active"}: {section.active}
                     </span>
                     {section.isDefault && (
-                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-muted text-muted-foreground">
+                      <span className="px-1.5 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider bg-muted text-muted-foreground">
                         {tSet("defaultBadge") || "Default"}
                       </span>
                     )}

@@ -776,7 +776,8 @@
     "fontScaleStandard": "Standard",
     "fontScaleLarge": "Groß",
     "fontScaleExtraLarge": "Sehr groß",
-    "fontScaleLabel": "Schriftgrößenanpassung"
+    "fontScaleLabel": "Schriftgrößenanpassung",
+    "matrixHint": "Wählen Sie Ihre häufigsten Kategorien. Ihr Discovery-Feed folgt diesen Interessen."
   },
   "organizer": {
     "dashboardTitle": "Veranstalter-Portal",

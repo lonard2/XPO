@@ -776,7 +776,8 @@
     "fontScaleStandard": "Standard",
     "fontScaleLarge": "Large",
     "fontScaleExtraLarge": "Extra-large",
-    "fontScaleLabel": "Font scale adjustment"
+    "fontScaleLabel": "Font scale adjustment",
+    "matrixHint": "Pick the categories you attend most. Your discovery feed and suggestions follow these interests."
   },
   "organizer": {
     "dashboardTitle": "Organizer Portal",

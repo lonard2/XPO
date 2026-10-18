@@ -776,7 +776,8 @@
     "fontScaleStandard": "Standar",
     "fontScaleLarge": "Besar",
     "fontScaleExtraLarge": "Sangat besar",
-    "fontScaleLabel": "Penyesuaian skala font"
+    "fontScaleLabel": "Penyesuaian skala font",
+    "matrixHint": "Pilih kategori yang paling sering Anda hadiri. Feed discovery mengikuti minat ini."
   },
   "organizer": {
     "dashboardTitle": "Portal Penyelenggara",
