@@ -760,7 +760,12 @@
     "atkinsonHyperlegibleDesc": "高辨识度无障碍字体，辅助视力阅读。",
     "motionOffDesc": "无动画，瞬间切换视图。",
     "motionSubtleDesc": "平滑细腻的150-200毫秒微动效过渡。",
-    "motionExpressiveDesc": "3D倾斜透视与光效交互动态。"
+    "motionExpressiveDesc": "3D倾斜透视与光效交互动态。",
+    "nameRequired": "请输入您的全名。",
+    "emailRequired": "请输入您的电子邮箱。",
+    "emailInvalid": "请输入有效的电子邮箱。",
+    "profileLocalOnly": "仅存储在此浏览器中。在您注册通行证之前不会发送到任何地方。",
+    "clearProfile": "清除档案"
   },
   "organizer": {
     "dashboardTitle": "主办方门户",

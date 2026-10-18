@@ -133,10 +133,12 @@ describe("UI/UX Settings Suite Component Selectors", () => {
     );
 
     const nameInput = screen.getByPlaceholderText(/Budi Santoso/i);
+    const emailInput = screen.getByPlaceholderText(/attendee@company.com/i);
     const orgInput = screen.getByPlaceholderText(/Global Robotics/i);
 
     act(() => {
       fireEvent.change(nameInput, { target: { value: "Airi Suzuki" } });
+      fireEvent.change(emailInput, { target: { value: "airi@yokohama-expo.jp" } });
       fireEvent.change(orgInput, { target: { value: "Yokohama Exhibition Group" } });
     });
 
@@ -152,5 +154,59 @@ describe("UI/UX Settings Suite Component Selectors", () => {
     });
 
     expect(screen.getByText(/successfully saved|saved successfully/i)).toBeInTheDocument();
+  });
+
+  it("ProfileSettingsForm blocks save on missing or invalid email with announced errors", () => {
+    const { container } = render(
+      <SettingsProvider>
+        <ProfileSettingsForm />
+      </SettingsProvider>
+    );
+    const form = container.querySelector("form")!;
+
+    // Empty submit: name + email errors announced, nothing saved.
+    act(() => {
+      fireEvent.submit(form);
+    });
+    expect(screen.getAllByRole("alert").length).toBeGreaterThanOrEqual(2);
+    expect(screen.queryByText(/successfully saved|saved successfully/i)).toBeNull();
+
+    // Invalid email blocked.
+    const emailInput = screen.getByPlaceholderText(/attendee@company.com/i);
+    const nameInput = screen.getByPlaceholderText(/Budi Santoso/i);
+    act(() => {
+      fireEvent.change(nameInput, { target: { value: "Airi Suzuki" } });
+      fireEvent.change(emailInput, { target: { value: "not-an-email" } });
+    });
+    act(() => {
+      fireEvent.submit(form);
+    });
+    expect(screen.getAllByRole("alert").length).toBeGreaterThanOrEqual(1);
+    expect(emailInput).toHaveAttribute("aria-invalid", "true");
+    expect(screen.queryByText(/successfully saved|saved successfully/i)).toBeNull();
+  });
+
+  it("ProfileSettingsForm clears profile per-section without touching appearance", () => {
+    render(
+      <SettingsProvider>
+        <ProfileSettingsForm />
+      </SettingsProvider>
+    );
+
+    const nameInput = screen.getByPlaceholderText(/Budi Santoso/i);
+    const emailInput = screen.getByPlaceholderText(/attendee@company.com/i);
+    act(() => {
+      fireEvent.change(nameInput, { target: { value: "Airi Suzuki" } });
+      fireEvent.change(emailInput, { target: { value: "airi@yokohama-expo.jp" } });
+      fireEvent.click(screen.getByRole("button", { name: /Save/i }));
+    });
+    expect(screen.getByText(/successfully saved|saved successfully/i)).toBeInTheDocument();
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: /Clear profile/i }));
+    });
+    expect((nameInput as HTMLInputElement).value).toBe("");
+    expect((emailInput as HTMLInputElement).value).toBe("");
+    expect(localStorage.getItem("xpo_attendee_profile_v1") ?? "").not.toContain("Airi Suzuki");
   });
 });

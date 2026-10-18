@@ -760,7 +760,12 @@
     "atkinsonHyperlegibleDesc": "Distinction-optimized letterforms for visual accessibility.",
     "motionOffDesc": "Zero transform animations. Instant state transitions.",
     "motionSubtleDesc": "Gentle 150-200ms opacity and micro-transitions.",
-    "motionExpressiveDesc": "Perspective cards, interactive ambient glow, and hover dynamics."
+    "motionExpressiveDesc": "Perspective cards, interactive ambient glow, and hover dynamics.",
+    "nameRequired": "Enter your full name.",
+    "emailRequired": "Enter your email address.",
+    "emailInvalid": "Enter a valid email address.",
+    "profileLocalOnly": "Stored only in this browser. Never sent anywhere until you register for a pass.",
+    "clearProfile": "Clear profile"
   },
   "organizer": {
     "dashboardTitle": "Organizer Portal",

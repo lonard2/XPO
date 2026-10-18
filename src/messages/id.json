@@ -760,7 +760,12 @@
     "atkinsonHyperlegibleDesc": "Desain huruf beraksen tinggi untuk aksesibilitas pembaca.",
     "motionOffDesc": "Tanpa animasi. Transisi antar halaman instan.",
     "motionSubtleDesc": "Transisi halus dan transparan 150-200 milidetik.",
-    "motionExpressiveDesc": "Efek kemiringan perspektif 3D dan kilauan interaktif."
+    "motionExpressiveDesc": "Efek kemiringan perspektif 3D dan kilauan interaktif.",
+    "nameRequired": "Masukkan nama lengkap Anda.",
+    "emailRequired": "Masukkan alamat email Anda.",
+    "emailInvalid": "Masukkan alamat email yang valid.",
+    "profileLocalOnly": "Hanya tersimpan di peramban ini. Tidak dikirim ke mana pun hingga Anda mendaftar pass.",
+    "clearProfile": "Hapus profil"
   },
   "organizer": {
     "dashboardTitle": "Portal Penyelenggara",

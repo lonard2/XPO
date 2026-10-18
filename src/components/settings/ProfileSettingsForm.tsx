@@ -43,12 +43,26 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
 
   const [formData, setFormData] = React.useState(profile);
   const [isSaved, setIsSaved] = React.useState(false);
+  const [errors, setErrors] = React.useState<{ fullName?: string; email?: string }>({});
 
   React.useEffect(() => {
     if (isMounted) {
       setFormData(profile);
     }
   }, [profile, isMounted]);
+
+  const validate = (data: typeof formData) => {
+    const next: { fullName?: string; email?: string } = {};
+    if (!data.fullName.trim()) {
+      next.fullName = tSet("nameRequired") || "Enter your full name.";
+    }
+    if (!data.email.trim()) {
+      next.email = tSet("emailRequired") || "Enter your email address.";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email.trim())) {
+      next.email = tSet("emailInvalid") || "Enter a valid email address.";
+    }
+    return next;
+  };
 
   const toggleInterest = (id: string) => {
     setFormData((prev) => {
@@ -63,9 +77,20 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const nextErrors = validate(formData);
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length > 0) return;
     setProfile(formData);
     setIsSaved(true);
     setTimeout(() => setIsSaved(false), 4000);
+  };
+
+  const handleClearProfile = () => {
+    const cleared = { fullName: "", email: "", organization: "", jobTitle: "", interests: [] as string[] };
+    setFormData(cleared);
+    setProfile(cleared);
+    setErrors({});
+    setIsSaved(false);
   };
 
   return (
@@ -83,6 +108,9 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
         <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
           {tSet("profileSubtitle") || "Your profile information is used for one-click pass registration and personalized MICE event suggestions."}
         </p>
+        <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">
+          {tSet("profileLocalOnly") || "Stored only in this browser. Never sent anywhere until you register for a pass."}
+        </p>
       </div>
 
       {/* Profile Form Fields */}
@@ -91,6 +119,9 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
           label={tSet("fullName") || "Full Name"}
           placeholder="e.g. Budi Santoso / Kenji Takahashi"
           value={formData.fullName}
+          autoComplete="name"
+          required
+          error={errors.fullName}
           onChange={(e) => {
             setFormData({ ...formData, fullName: e.target.value });
             setIsSaved(false);
@@ -103,6 +134,9 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
           type="email"
           placeholder="e.g. attendee@company.com"
           value={formData.email}
+          autoComplete="email"
+          required
+          error={errors.email}
           onChange={(e) => {
             setFormData({ ...formData, email: e.target.value });
             setIsSaved(false);
@@ -114,6 +148,7 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
           label={tSet("organization") || "Organization / Company"}
           placeholder="e.g. Global Robotics Corp"
           value={formData.organization}
+          autoComplete="organization"
           onChange={(e) => {
             setFormData({ ...formData, organization: e.target.value });
             setIsSaved(false);
@@ -125,6 +160,7 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
           label={tSet("jobTitle") || "Job Title / Delegate Role"}
           placeholder="e.g. Chief Technology Officer / Buyer"
           value={formData.jobTitle}
+          autoComplete="organization-title"
           onChange={(e) => {
             setFormData({ ...formData, jobTitle: e.target.value });
             setIsSaved(false);
@@ -187,16 +223,27 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
       <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-border/60">
         <div className="flex items-center gap-2">
           {isSaved && (
-            <div className="flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-medium animate-fade-in">
+            <div role="status" className="flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-medium animate-fade-in">
               <CheckCircle2 className="h-4 w-4" />
               <span>{tSet("preferencesSaved") || "Profile preferences successfully saved!"}</span>
             </div>
           )}
         </div>
 
-        <Button type="submit" size="sm" className="w-full sm:w-auto px-5 font-semibold">
-          {tSet("savePreferences") || "Save Profile Changes"}
-        </Button>
+        <div className="flex w-full sm:w-auto items-center gap-2">
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={handleClearProfile}
+            className="px-3 font-semibold text-xs text-muted-foreground hover:text-destructive cursor-pointer min-h-[44px] sm:min-h-[36px]"
+          >
+            {tSet("clearProfile") || "Clear profile"}
+          </Button>
+          <Button type="submit" size="sm" className="flex-1 sm:flex-none px-5 font-semibold">
+            {tSet("savePreferences") || "Save Profile Changes"}
+          </Button>
+        </div>
       </div>
     </form>
   );

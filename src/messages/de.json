@@ -760,7 +760,12 @@
     "atkinsonHyperlegibleDesc": "Optimierte Schriftzeichen für beste Barrierefreiheit.",
     "motionOffDesc": "Keine Animationen. Direkte Ansichtswechsel.",
     "motionSubtleDesc": "Sanfte 150-200ms Übergänge und Einblendungen.",
-    "motionExpressiveDesc": "3D-Perspektive und interaktive Lichteffekte."
+    "motionExpressiveDesc": "3D-Perspektive und interaktive Lichteffekte.",
+    "nameRequired": "Geben Sie Ihren vollständigen Namen ein.",
+    "emailRequired": "Geben Sie Ihre E-Mail-Adresse ein.",
+    "emailInvalid": "Geben Sie eine gültige E-Mail-Adresse ein.",
+    "profileLocalOnly": "Nur in diesem Browser gespeichert. Wird erst bei der Pass-Registrierung übertragen.",
+    "clearProfile": "Profil löschen"
   },
   "organizer": {
     "dashboardTitle": "Veranstalter-Portal",

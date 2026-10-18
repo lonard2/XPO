@@ -760,7 +760,12 @@
     "atkinsonHyperlegibleDesc": "文字の識別性を極限まで高めたユニバーサルフォント。",
     "motionOffDesc": "アニメーションなし。即座に画面を切り替えます。",
     "motionSubtleDesc": "控えめで滑らかな150〜200msのフェード効果。",
-    "motionExpressiveDesc": "3Dパースペクティブと光彩によるリッチな視覚演出。"
+    "motionExpressiveDesc": "3Dパースペクティブと光彩によるリッチな視覚演出。",
+    "nameRequired": "氏名を入力してください。",
+    "emailRequired": "メールアドレスを入力してください。",
+    "emailInvalid": "有効なメールアドレスを入力してください。",
+    "profileLocalOnly": "このブラウザにのみ保存されます。パス登録まで外部送信されません。",
+    "clearProfile": "プロフィールをクリア"
   },
   "organizer": {
     "dashboardTitle": "主催者ポータル",

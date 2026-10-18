@@ -760,7 +760,12 @@
     "atkinsonHyperlegibleDesc": "Tipografía de alta distinción para accesibilidad.",
     "motionOffDesc": "Sin animaciones. Transiciones instantáneas.",
     "motionSubtleDesc": "Transiciones suaves y sutiles de 150-200 ms.",
-    "motionExpressiveDesc": "Efectos de perspectiva 3D y brillo interactivo."
+    "motionExpressiveDesc": "Efectos de perspectiva 3D y brillo interactivo.",
+    "nameRequired": "Ingrese su nombre completo.",
+    "emailRequired": "Ingrese su correo electrónico.",
+    "emailInvalid": "Ingrese un correo electrónico válido.",
+    "profileLocalOnly": "Se almacena solo en este navegador. No se envía hasta que registre un pase.",
+    "clearProfile": "Borrar perfil"
   },
   "organizer": {
     "dashboardTitle": "Portal del Organizador",
