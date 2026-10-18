@@ -1,6 +1,6 @@
 import React from 'react';
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import {
   getArchetypeTokens,
   getArchetypeCssVariables,
@@ -192,6 +192,37 @@ describe('Empirical Challenge: Theming Engine & CSS Variable Injection Stress Su
       );
 
       expect(screen.getAllByText('Free Admission')).toHaveLength(2); // One in hero strip, one in mobile drawer
+    });
+
+    it('renders the tab bar outside the header so sticky positioning works', () => {
+      const { container } = render(
+        <EventPageShell {...defaultProps}>
+          <div>Tab Content</div>
+        </EventPageShell>
+      );
+
+      const tabBar = container.querySelector('nav[aria-label="Event Sections"]') as HTMLElement;
+      expect(tabBar).toBeInTheDocument();
+      expect(tabBar.closest('header')).toBeNull();
+      expect(tabBar.closest('div.sticky')).not.toBeNull();
+    });
+
+    it('preselects the tapped tier when opening checkout from a tier card', () => {
+      const tiers = [
+        { id: 'tier-std', name: 'Standard Pass', price: 100000, currency: 'IDR', capacity: 500, soldCount: 0, benefitsJson: JSON.stringify(['Floor']) },
+        { id: 'tier-vip', name: 'VIP Delegate Pass', price: 500000, currency: 'IDR', capacity: 50, soldCount: 0, benefitsJson: JSON.stringify(['Lounge']) },
+      ];
+      render(
+        <EventPageShell {...defaultProps} ticketTiers={tiers}>
+          <div>Shell Content</div>
+        </EventPageShell>
+      );
+
+      const vipButtons = screen.getAllByRole('button', { name: /book pass/i });
+      fireEvent.click(vipButtons[vipButtons.length - 1]);
+
+      // Drawer opens on the VIP tier, not the default first tier.
+      expect(screen.getByText('VIP Delegate Pass', { selector: 'span' })).toBeInTheDocument();
     });
   });
 

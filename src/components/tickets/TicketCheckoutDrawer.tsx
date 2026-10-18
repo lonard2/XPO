@@ -66,6 +66,11 @@ export function TicketCheckoutDrawer({
   const [selectedTierId, setSelectedTierId] = React.useState<string | null>(
     initialTierId || event.ticketTiers[0]?.id || null
   );
+
+  // The tapped tier preselects the drawer even across reopens.
+  React.useEffect(() => {
+    if (isOpen && initialTierId) setSelectedTierId(initialTierId);
+  }, [isOpen, initialTierId]);
   const [quantity, setQuantity] = React.useState<number>(1);
   const [attendeeName, setAttendeeName] = React.useState("");
   const [attendeeEmail, setAttendeeEmail] = React.useState("");

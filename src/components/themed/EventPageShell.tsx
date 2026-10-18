@@ -100,6 +100,7 @@ export function EventPageShell({
 }: EventPageShellProps) {
   const [isCopied, setIsCopied] = React.useState(false);
   const [checkoutDrawerOpen, setCheckoutDrawerOpen] = React.useState(false);
+  const [preselectedTierId, setPreselectedTierId] = React.useState<string | null>(null);
   const [activeTab, setActiveTab] = React.useState<"overview" | "agenda" | "floorMap" | "tickets">("overview");
 
   const tEvents = useTranslations("events");
@@ -143,12 +144,13 @@ export function EventPageShell({
     }
   };
 
-  const handleOpenCheckout = () => {
+  const handleOpenCheckout = (tierId?: string) => {
     if (onBookPassClick) {
       onBookPassClick();
       return;
     }
     if (ticketTiers && ticketTiers.length > 0) {
+      setPreselectedTierId(tierId || null);
       setCheckoutDrawerOpen(true);
       return;
     }
@@ -268,7 +270,7 @@ export function EventPageShell({
                   variant={(tier as any).tier === "VIP" || tier.name?.toLowerCase().includes("vip") ? "default" : "outline"}
                   className="w-full font-semibold gap-2 min-h-[44px] cursor-pointer"
                   disabled={isSoldOut}
-                  onClick={handleOpenCheckout}
+                  onClick={() => handleOpenCheckout(tier.id)}
                 >
                   <Ticket className="h-4 w-4" />
                   <span>{isSoldOut ? "Sold Out" : tTickets("bookPass") || "Book Pass"}</span>
@@ -425,7 +427,7 @@ export function EventPageShell({
             <Button
               size="lg"
               variant="archetype"
-              onClick={handleOpenCheckout}
+              onClick={() => handleOpenCheckout()}
               className="gap-2 font-semibold shadow-lg text-white cursor-pointer min-h-[44px]"
             >
               <Ticket className="h-4 w-4" aria-hidden="true" />
@@ -453,88 +455,90 @@ export function EventPageShell({
           </div>
         </div>
 
-        {/* 3. Sub-Navigation Tabs Bar */}
-        <div className="border-t border-white/10 bg-black/40 backdrop-blur-md sticky top-0 z-30">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <nav className="flex items-center gap-1 sm:gap-2 overflow-x-auto py-2.5 scrollbar-none" aria-label="Event Sections">
-              <button
-                type="button"
-                onClick={() => setActiveTab("overview")}
-                className={cn(
-                  "flex items-center gap-2 px-3.5 py-2.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[44px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
-                  activeTab === "overview"
-                    ? "bg-white/20 text-white shadow-xs border border-white/30"
-                    : "text-slate-300 hover:text-white hover:bg-white/10"
-                )}
-                aria-current={activeTab === "overview" ? "page" : undefined}
-              >
-                <Layers className="h-4 w-4" />
-                <span>{tEvents("overview") || "Overview"}</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setActiveTab("agenda")}
-                className={cn(
-                  "flex items-center gap-2 px-3.5 py-2.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[44px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
-                  activeTab === "agenda"
-                    ? "bg-white/20 text-white shadow-xs border border-white/30"
-                    : "text-slate-300 hover:text-white hover:bg-white/10"
-                )}
-                aria-current={activeTab === "agenda" ? "page" : undefined}
-              >
-                <Clock className="h-4 w-4" />
-                <span>{tEvents("agenda") || "Agenda & Timetable"}</span>
-                {agendaItems.length > 0 && (
-                  <span className="flex h-5 px-1.5 items-center justify-center rounded-full bg-white/20 text-xs font-mono">
-                    {agendaItems.length}
-                  </span>
-                )}
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setActiveTab("floorMap")}
-                className={cn(
-                  "flex items-center gap-2 px-3.5 py-2.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[44px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
-                  activeTab === "floorMap"
-                    ? "bg-white/20 text-white shadow-xs border border-white/30"
-                    : "text-slate-300 hover:text-white hover:bg-white/10"
-                )}
-                aria-current={activeTab === "floorMap" ? "page" : undefined}
-              >
-                <MapIcon className="h-4 w-4" />
-                <span>{tEvents("floorMap") || "Floor Map & Halls"}</span>
-                {booths.length > 0 && (
-                  <span className="flex h-5 px-1.5 items-center justify-center rounded-full bg-white/20 text-xs font-mono">
-                    {booths.length}
-                  </span>
-                )}
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setActiveTab("tickets")}
-                className={cn(
-                  "flex items-center gap-2 px-3.5 py-2.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[44px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
-                  activeTab === "tickets"
-                    ? "bg-white/20 text-white shadow-xs border border-white/30"
-                    : "text-slate-300 hover:text-white hover:bg-white/10"
-                )}
-                aria-current={activeTab === "tickets" ? "page" : undefined}
-              >
-                <Ticket className="h-4 w-4" />
-                <span>{tEvents("tickets") || "Ticket Passes"}</span>
-                {ticketTiers.length > 0 && (
-                  <span className="flex h-5 px-1.5 items-center justify-center rounded-full bg-white/20 text-xs font-mono">
-                    {ticketTiers.length}
-                  </span>
-                )}
-              </button>
-            </nav>
-          </div>
-        </div>
       </header>
+
+      {/* 3. Sub-Navigation Tabs Bar (outside the header: sticky works) */}
+      <div className="border-t border-white/10 bg-black/40 backdrop-blur-md sticky top-0 z-30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <nav className="flex items-center gap-1 sm:gap-2 overflow-x-auto py-2.5 scrollbar-none" aria-label="Event Sections">
+            <button
+              type="button"
+              onClick={() => setActiveTab("overview")}
+              className={cn(
+                "flex items-center gap-2 px-3.5 py-2.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[44px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
+                activeTab === "overview"
+                  ? "bg-white/20 text-white shadow-xs border border-white/30"
+                  : "text-slate-300 hover:text-white hover:bg-white/10"
+              )}
+              aria-current={activeTab === "overview" ? "page" : undefined}
+            >
+              <Layers className="h-4 w-4" />
+              <span>{tEvents("overview") || "Overview"}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab("agenda")}
+              className={cn(
+                "flex items-center gap-2 px-3.5 py-2.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[44px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
+                activeTab === "agenda"
+                  ? "bg-white/20 text-white shadow-xs border border-white/30"
+                  : "text-slate-300 hover:text-white hover:bg-white/10"
+              )}
+              aria-current={activeTab === "agenda" ? "page" : undefined}
+            >
+              <Clock className="h-4 w-4" />
+              <span>{tEvents("agenda") || "Agenda & Timetable"}</span>
+              {agendaItems.length > 0 && (
+                <span className="flex h-5 px-1.5 items-center justify-center rounded-full bg-white/20 text-xs font-mono">
+                  {agendaItems.length}
+                </span>
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab("floorMap")}
+              className={cn(
+                "flex items-center gap-2 px-3.5 py-2.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[44px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
+                activeTab === "floorMap"
+                  ? "bg-white/20 text-white shadow-xs border border-white/30"
+                  : "text-slate-300 hover:text-white hover:bg-white/10"
+              )}
+              aria-current={activeTab === "floorMap" ? "page" : undefined}
+            >
+              <MapIcon className="h-4 w-4" />
+              <span>{tEvents("floorMap") || "Floor Map & Halls"}</span>
+              {booths.length > 0 && (
+                <span className="flex h-5 px-1.5 items-center justify-center rounded-full bg-white/20 text-xs font-mono">
+                  {booths.length}
+                </span>
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab("tickets")}
+              className={cn(
+                "flex items-center gap-2 px-3.5 py-2.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[44px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
+                activeTab === "tickets"
+                  ? "bg-white/20 text-white shadow-xs border border-white/30"
+                  : "text-slate-300 hover:text-white hover:bg-white/10"
+              )}
+              aria-current={activeTab === "tickets" ? "page" : undefined}
+            >
+              <Ticket className="h-4 w-4" />
+              <span>{tEvents("tickets") || "Ticket Passes"}</span>
+              {ticketTiers.length > 0 && (
+                <span className="flex h-5 px-1.5 items-center justify-center rounded-full bg-white/20 text-xs font-mono">
+                  {ticketTiers.length}
+                </span>
+              )}
+            </button>
+          </nav>
+        </div>
+      </div>
+
 
       {/* 4. Main Content Container */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 pb-36 md:pb-16 space-y-12">
@@ -572,7 +576,7 @@ export function EventPageShell({
                     <Button
                       size="lg"
                       variant="outline"
-                      onClick={handleOpenCheckout}
+                      onClick={() => handleOpenCheckout()}
                       className="font-semibold gap-2 min-h-[44px] cursor-pointer"
                     >
                       <span>{tEvents("reservePasses") || "Reserve Passes"}</span>
@@ -698,7 +702,7 @@ export function EventPageShell({
           <Button
             size="default"
             variant="archetype"
-            onClick={handleOpenCheckout}
+            onClick={() => handleOpenCheckout()}
             className="shrink-0 font-semibold gap-1.5 shadow-md min-h-[44px] cursor-pointer"
           >
             <Ticket className="h-4 w-4" />
@@ -713,6 +717,7 @@ export function EventPageShell({
           isOpen={checkoutDrawerOpen}
           onClose={() => setCheckoutDrawerOpen(false)}
           locale={locale}
+          initialTierId={preselectedTierId}
           event={{
             id,
             title,

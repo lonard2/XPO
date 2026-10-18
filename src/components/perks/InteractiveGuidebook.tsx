@@ -202,12 +202,16 @@ export function InteractiveGuidebook({
           <div className="p-8 text-center rounded-xl border border-dashed border-border text-muted-foreground space-y-2">
             <Calendar className="h-8 w-8 mx-auto text-muted-foreground/50" />
             <p className="text-sm font-medium">No sessions match your filter criteria.</p>
-            {filterBookmarkedOnly && (
+            {(filterBookmarkedOnly || selectedTrack !== "ALL" || searchQuery) && (
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => setFilterBookmarkedOnly(false)}
-                className="text-xs text-primary cursor-pointer"
+                onClick={() => {
+                  setFilterBookmarkedOnly(false);
+                  setSelectedTrack("ALL");
+                  setSearchQuery("");
+                }}
+                className="text-xs text-primary cursor-pointer min-h-[44px]"
               >
                 View all scheduled sessions
               </Button>

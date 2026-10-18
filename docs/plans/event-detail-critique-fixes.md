@@ -7,7 +7,7 @@ backed by event data — no sample labels).
 - [x] **1. Clarify trust** (`$impeccable clarify`): gate livestream card,
   bounties/sponsors, machinery catalog, universal alerts, seating/translation
   lines, booth directions on event data; schematic-label + count the floor map.
-- [ ] **2. Harden tier + tabs + booths** (`$impeccable harden`): tier buttons
+- [x] **2. Harden tier + tabs + booths** (`$impeccable harden`): tier buttons
   preselect via `initialTierId`; guidebook dead-end reset; tab bar un-stuck;
   booth cap disclosed.
 - [ ] **3. Layout hero badges** (`$impeccable layout`): overlay cap at 2;
