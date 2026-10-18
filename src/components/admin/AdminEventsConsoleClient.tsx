@@ -44,6 +44,20 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
   const [searchQuery, setSearchQuery] = React.useState("");
   const [busyId, setBusyId] = React.useState<string | null>(null);
   const [feedback, setFeedback] = React.useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [organizers, setOrganizers] = React.useState<Array<{ id: string; name: string; organization?: string | null }>>([]);
+  const [assignFor, setAssignFor] = React.useState<string | null>(null);
+  const [assignTo, setAssignTo] = React.useState<string>("");
+
+  // Organizer directory for the assign picker (admin console only).
+  React.useEffect(() => {
+    if (!isLive) return;
+    fetch("/api/admin/users?role=ORGANIZER")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) setOrganizers(data.users);
+      })
+      .catch(() => {});
+  }, [isLive]);
 
   const filtered = events.filter((e) => {
     if (!searchQuery.trim()) return true;
@@ -82,6 +96,32 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
     }
   };
 
+  const runAssign = async (id: string) => {
+    if (!assignTo) {
+      setFeedback({ type: "error", text: "Select an organizer first." });
+      return;
+    }
+    setBusyId(id);
+    setFeedback(null);
+    try {
+      const res = await fetch(`/api/admin/events/${id}/assign`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ organizerId: assignTo }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.error || "Assign failed");
+      setEvents((prev) => prev.map((e) => (e.id === id ? data.event : e)));
+      setAssignFor(null);
+      setAssignTo("");
+      setFeedback({ type: "success", text: data.message });
+    } catch (err) {
+      setFeedback({ type: "error", text: (err as Error).message });
+    } finally {
+      setBusyId(null);
+    }
+  };
+
   const renderRow = (e: AdminEventItem) => (
     <Card key={e.id} className="border-border/80 bg-card shadow-xs rounded-2xl">
       <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center gap-3">
@@ -104,8 +144,57 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
             {e._count ? ` · ${e._count.bookings} passes · ${e._count.booths} booths` : ""}
           </p>
         </div>
-        <div className="flex items-center gap-2 shrink-0">
-          {!isCurated(e) && (
+        <div className="flex items-center gap-2 shrink-0 flex-wrap">
+          {isCurated(e) ? (
+            assignFor === e.id ? (
+              <span className="flex items-center gap-1.5">
+                <select
+                  aria-label={`Assign organizer for ${e.title}`}
+                  value={assignTo}
+                  onChange={(ev) => setAssignTo(ev.target.value)}
+                  className="h-9 rounded-lg border border-input bg-background px-2 text-xs min-h-[44px] sm:min-h-[36px] max-w-[180px]"
+                >
+                  <option value="">Select organizer…</option>
+                  {organizers.map((o) => (
+                    <option key={o.id} value={o.id}>
+                      {o.organization || o.name}
+                    </option>
+                  ))}
+                </select>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  disabled={busyId === e.id || !assignTo}
+                  onClick={() => runAssign(e.id)}
+                  className="h-9 gap-1.5 text-xs cursor-pointer"
+                >
+                  <span>Confirm</span>
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => { setAssignFor(null); setAssignTo(""); }}
+                  className="h-9 px-2 text-xs cursor-pointer"
+                >
+                  <span>Cancel</span>
+                </Button>
+              </span>
+            ) : (
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={busyId === e.id || !isLive}
+                onClick={() => { setAssignFor(e.id); setAssignTo(""); setFeedback(null); }}
+                className="h-9 gap-1.5 text-xs cursor-pointer"
+              >
+                <PlusCircle className="h-3.5 w-3.5" />
+                <span>Assign</span>
+              </Button>
+            )
+          ) : (
             <Button
               type="button"
               variant="outline"

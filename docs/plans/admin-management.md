@@ -16,3 +16,6 @@ console (create covered by wizard, edit by customizer).
 
 Each ships as its own commit pushed to `origin/main`. Verify by execution:
 unit/integration tests, live API probes, tsc.
+
+- [x] **4. Organizer picker endpoint plus console assign**
+  ADMIN-only `GET /api/admin/users?role=` directory plus inline assign picker on curated console rows. Verified live end to end with a real admin session (curated becomes owned); anon 403.
