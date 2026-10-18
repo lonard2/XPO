@@ -765,7 +765,9 @@
     "emailRequired": "请输入您的电子邮箱。",
     "emailInvalid": "请输入有效的电子邮箱。",
     "profileLocalOnly": "仅存储在此浏览器中。在您注册通行证之前不会发送到任何地方。",
-    "clearProfile": "清除档案"
+    "clearProfile": "清除档案",
+    "activeSelection": "当前",
+    "defaultBadge": "默认"
   },
   "organizer": {
     "dashboardTitle": "主办方门户",

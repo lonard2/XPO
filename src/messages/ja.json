@@ -765,7 +765,9 @@
     "emailRequired": "メールアドレスを入力してください。",
     "emailInvalid": "有効なメールアドレスを入力してください。",
     "profileLocalOnly": "このブラウザにのみ保存されます。パス登録まで外部送信されません。",
-    "clearProfile": "プロフィールをクリア"
+    "clearProfile": "プロフィールをクリア",
+    "activeSelection": "現在",
+    "defaultBadge": "デフォルト"
   },
   "organizer": {
     "dashboardTitle": "主催者ポータル",

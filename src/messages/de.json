@@ -765,7 +765,9 @@
     "emailRequired": "Geben Sie Ihre E-Mail-Adresse ein.",
     "emailInvalid": "Geben Sie eine gültige E-Mail-Adresse ein.",
     "profileLocalOnly": "Nur in diesem Browser gespeichert. Wird erst bei der Pass-Registrierung übertragen.",
-    "clearProfile": "Profil löschen"
+    "clearProfile": "Profil löschen",
+    "activeSelection": "Aktiv",
+    "defaultBadge": "Standard"
   },
   "organizer": {
     "dashboardTitle": "Veranstalter-Portal",

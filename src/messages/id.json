@@ -765,7 +765,9 @@
     "emailRequired": "Masukkan alamat email Anda.",
     "emailInvalid": "Masukkan alamat email yang valid.",
     "profileLocalOnly": "Hanya tersimpan di peramban ini. Tidak dikirim ke mana pun hingga Anda mendaftar pass.",
-    "clearProfile": "Hapus profil"
+    "clearProfile": "Hapus profil",
+    "activeSelection": "Aktif",
+    "defaultBadge": "Default"
   },
   "organizer": {
     "dashboardTitle": "Portal Penyelenggara",

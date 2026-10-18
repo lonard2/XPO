@@ -11,11 +11,12 @@ import {
   RotateCcw,
   Sparkles,
   ChevronRight,
+  ChevronDown,
   ShieldCheck,
   Building,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useSettings } from "@/components/settings/SettingsProvider";
+import { useSettings, DEFAULT_SETTINGS } from "@/components/settings/SettingsProvider";
 import { ThemeModeSelector } from "@/components/settings/ThemeModeSelector";
 import { UIDensitySelector } from "@/components/settings/UIDensitySelector";
 import { TypographySelector } from "@/components/settings/TypographySelector";
@@ -35,9 +36,34 @@ interface SettingsPageProps {
 export default function SettingsPage({ params }: SettingsPageProps) {
   const resolvedParams = React.use(params);
   const locale = resolvedParams.locale || "en";
-  const { resetToDefaults } = useSettings();
+  const { resetToDefaults, theme, density, typography, fontScale, motionMode } = useSettings();
   const [activeTab, setActiveTab] = React.useState("appearance");
   const [showResetConfirm, setShowResetConfirm] = React.useState(false);
+  // Theme + Font Scale stay open: highest-frequency controls. The rest disclose.
+  const [openSections, setOpenSections] = React.useState<Record<string, boolean>>({
+    theme: true,
+    fontScale: true,
+  });
+
+  // Deep-linkable tabs via hash (#appearance, #ai, #profile, #localization).
+  React.useEffect(() => {
+    const hash = window.location.hash.replace("#", "");
+    if (["appearance", "ai", "profile", "localization"].includes(hash)) {
+      setActiveTab(hash);
+    }
+  }, []);
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    window.history.replaceState(null, "", `#${value}`);
+  };
+
+  const toggleSection = (id: string) => {
+    setOpenSections((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const prettyValue = (value: string | number) =>
+    String(value).replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
   let tSet: any = (k: string) => k;
   let tCom: any = (k: string) => k;
@@ -121,7 +147,7 @@ export default function SettingsPage({ params }: SettingsPageProps) {
       </div>
 
       {/* Categorized Settings Tabs */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+      <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-6">
         <TabsList className="w-full sm:w-auto grid grid-cols-2 sm:grid-cols-4 p-1 gap-1">
           <TabsTrigger value="appearance" className="gap-2">
             <Palette className="h-4 w-4" />
@@ -142,31 +168,49 @@ export default function SettingsPage({ params }: SettingsPageProps) {
         </TabsList>
 
         {/* Tab 1: Appearance & Display */}
-        <TabsContent value="appearance" className="space-y-8 animate-fade-in">
-          {/* Theme Mode Selector */}
-          <section className="space-y-3">
-            <ThemeModeSelector />
-          </section>
-
-          {/* UI Density Selector */}
-          <section className="space-y-3 pt-6 border-t border-border/60">
-            <UIDensitySelector />
-          </section>
-
-          {/* Typography Engine Selector */}
-          <section className="space-y-3 pt-6 border-t border-border/60">
-            <TypographySelector />
-          </section>
-
-          {/* Font Scaling Slider */}
-          <section className="space-y-3 pt-6 border-t border-border/60">
-            <FontScaleSlider />
-          </section>
-
-          {/* Motion Mode Controller */}
-          <section className="space-y-3 pt-6 border-t border-border/60">
-            <MotionController />
-          </section>
+        <TabsContent value="appearance" className="space-y-4 animate-fade-in">
+          {[
+            { id: "theme", active: prettyValue(theme), isDefault: theme === DEFAULT_SETTINGS.theme, content: <ThemeModeSelector /> },
+            { id: "density", title: tSet("density") || "UI Density", active: prettyValue(density), isDefault: density === DEFAULT_SETTINGS.density, content: <UIDensitySelector /> },
+            { id: "typography", title: tSet("typography") || "Typography Engine", active: prettyValue(typography), isDefault: typography === DEFAULT_SETTINGS.typography, content: <TypographySelector /> },
+            { id: "fontScale", title: tSet("fontScaling") || "Font Scale", active: `${Math.round(fontScale * 100)}%`, isDefault: fontScale === DEFAULT_SETTINGS.fontScale, content: <FontScaleSlider /> },
+            { id: "motion", title: tSet("motionMode") || "Motion Dynamics", active: prettyValue(motionMode), isDefault: motionMode === DEFAULT_SETTINGS.motionMode, content: <MotionController /> },
+          ].map((section, index) => {
+            const open = openSections[section.id] ?? false;
+            const title = section.id === "theme"
+              ? (tSet("themeMode") || "Theme Mode")
+              : section.title;
+            return (
+              <section
+                key={section.id}
+                className={index > 0 ? "pt-4 border-t border-border/60 space-y-3" : "space-y-3"}
+              >
+                <button
+                  type="button"
+                  onClick={() => toggleSection(section.id)}
+                  aria-expanded={open}
+                  aria-controls={`appearance-section-${section.id}`}
+                  className="w-full flex items-center justify-between gap-2 rounded-lg py-1 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 min-h-[44px]"
+                >
+                  <span className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                    <span>{title}</span>
+                    <span className="text-xs font-normal text-muted-foreground">
+                      {tSet("activeSelection") || "Active"}: {section.active}
+                    </span>
+                    {section.isDefault && (
+                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-muted text-muted-foreground">
+                        {tSet("defaultBadge") || "Default"}
+                      </span>
+                    )}
+                  </span>
+                  <ChevronDown
+                    className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+                  />
+                </button>
+                {open && <div id={`appearance-section-${section.id}`}>{section.content}</div>}
+              </section>
+            );
+          })}
         </TabsContent>
 
         {/* Tab 2: AI Concierge & Assistant */}

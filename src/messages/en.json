@@ -765,7 +765,9 @@
     "emailRequired": "Enter your email address.",
     "emailInvalid": "Enter a valid email address.",
     "profileLocalOnly": "Stored only in this browser. Never sent anywhere until you register for a pass.",
-    "clearProfile": "Clear profile"
+    "clearProfile": "Clear profile",
+    "activeSelection": "Active",
+    "defaultBadge": "Default"
   },
   "organizer": {
     "dashboardTitle": "Organizer Portal",
