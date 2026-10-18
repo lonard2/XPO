@@ -757,6 +757,7 @@ async function main() {
       venueHallId: hallA1.id,
       title: "Manufacturing Indonesia & Industrial Automation Expo 2026",
       slug: "manufacturing-indonesia-2026",
+      showcaseJson: JSON.stringify({"livestreamUrl": "", "livestreamLive": false, "programs": [{"kind": "demo", "title": "CNC Live Cutting Demonstrations", "detail": "Daily live machining demos at the exhibitor booths listed in the directory.", "sponsor": ""}, {"kind": "demo", "title": "Robotics Handling Showcase", "detail": "Pick-and-place automation running throughout show hours.", "sponsor": ""}], "alerts": [], "channels": [], "attested": true, "attestedBy": "seed", "attestedAt": "2026-10-01T00:00:00Z"}),
       tagline: "The 36th International Manufacturing, Machinery, Equipment & Materials Exhibition",
       description: "Southeast Asia most prominent industrial gathering. Experience live demonstrations of CNC robotics, metallurgy, smart factory automation, and heavy machine tools with over 1,500 global exhibitors.",
       archetype: "INDUSTRIAL_B2B",
@@ -812,6 +813,7 @@ async function main() {
       venueHallId: nusantaraHall.id,
       title: "Asia AI & Cloud Developer Summit 2026",
       slug: "asia-ai-summit-2026",
+      showcaseJson: JSON.stringify({"livestreamUrl": "https://stream.xpo-mice.example/live/asia-ai-summit-2026", "livestreamLive": false, "programs": [{"kind": "bounty", "title": "Summit Build Challenge", "detail": "Overnight hackathon. Winners announced at closing plenary.", "sponsor": "Organizing Committee"}], "alerts": ["Badge pickup opens one hour before the opening keynote."], "channels": [], "attested": true, "attestedBy": "seed", "attestedAt": "2026-10-01T00:00:00Z"}),
       tagline: "Building Autonomous Multi-Agent Systems, LLMs & Next-Gen Cloud Infrastructure",
       description: "Asia premier technical gathering for software engineers, AI researchers, and cloud architects. Featuring deep-dive keynotes, live code teardowns, multi-model LLM workshops, and an overnight 24-hour hackathon.",
       archetype: "TECH_DEV_SUMMIT",
@@ -955,6 +957,7 @@ async function main() {
       venueHallId: makuhariHalls[0]?.id,
       title: "Tokyo Comic & Gaming Championship 2026",
       slug: "tokyo-gaming-championship-2026",
+      showcaseJson: JSON.stringify({"livestreamUrl": "", "livestreamLive": false, "programs": [{"kind": "lineup", "title": "Championship Finals", "detail": "Top brackets on the main stage, Sunday afternoon.", "sponsor": ""}, {"kind": "lineup", "title": "Creator Meet & Greet", "detail": "Scheduled signing sessions. Slots released daily at 10:00.", "sponsor": ""}], "alerts": [], "channels": [], "attested": true, "attestedBy": "seed", "attestedAt": "2026-10-01T00:00:00Z"}),
       tagline: "Esports Championship Arena, Indie Creator Alley & Anime Premieres",
       description: "Japan premier digital entertainment festival at Makuhari Messe with world championship esports finals, voice actor panels, and massive merchandise booths.",
       archetype: "POP_CULTURE_GAMING",
@@ -1003,6 +1006,7 @@ async function main() {
       venueHallId: mbsHalls[0]?.id,
       title: "Global FinTech & Institutional Investment Summit 2026",
       slug: "singapore-fintech-summit-2026",
+      showcaseJson: JSON.stringify({"livestreamUrl": "", "livestreamLive": false, "programs": [{"kind": "pitch", "title": "Startup Pitch Hour", "detail": "Five early-stage teams, ten minutes each, investor Q&A follows.", "sponsor": "Organizing Committee"}], "alerts": [], "channels": [], "attested": true, "attestedBy": "seed", "attestedAt": "2026-10-01T00:00:00Z"}),
       tagline: "Cross-Border Capital, Sovereign Wealth & AI-Driven Asset Management",
       description: "High-level financial assembly bringing together central bank governors, institutional investors, sovereign wealth funds, and leading fintech innovators at Marina Bay Sands.",
       archetype: "FINANCE_INVESTOR",
@@ -1083,6 +1087,80 @@ async function main() {
       perks: {
         create: [
           { title: "VIP Executive Buyer Lounge & Fast-Track Entry", description: "Priority check-in and complimentary refreshments in the Messe Club.", tierRequired: "VIP", iconName: "ShieldCheck" },
+        ],
+      },
+    },
+  });
+
+
+  // 6.3b Showcase verification events (one per remaining wired view)
+  await prisma.event.create({
+    data: {
+      organizerId: organizerUser.id,
+      regionId: regionId.id,
+      venueId: venueJCC.id,
+      title: "Jakarta Fashion & Beauty Trade Expo 2026",
+      slug: "jakarta-fashion-beauty-2026",
+      tagline: "Runway premieres, cosmetics OEM and wholesale showrooms",
+      description: "Indonesian fashion labels, beauty manufacturers, and wholesale buyers across three JCC halls.",
+      archetype: "FASHION_RETAIL",
+      startDate: new Date("2026-11-05T09:00:00Z"),
+      endDate: new Date("2026-11-08T18:00:00Z"),
+      scale: "MEDIUM",
+      format: "IN_PERSON",
+      heroImageUrl: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1200",
+      showcaseJson: JSON.stringify({"livestreamUrl": "", "livestreamLive": false, "programs": [{"kind": "runway", "title": "Opening Runway Premiere", "detail": "Designer collections open the expo on day one.", "sponsor": ""}, {"kind": "runway", "title": "Beauty OEM Sourcing Hour", "detail": "Private-label manufacturers meet wholesale buyers.", "sponsor": ""}], "alerts": [], "channels": [], "attested": true, "attestedBy": "seed", "attestedAt": "2026-10-01T00:00:00Z"}),
+      ticketTiers: {
+        create: [
+          { name: "Trade Visitor Pass", price: 0, currency: "IDR", capacity: 8000, benefitsJson: JSON.stringify(["Exhibition Floor Access"]) },
+        ],
+      },
+    },
+  });
+
+  await prisma.event.create({
+    data: {
+      organizerId: organizerUser.id,
+      regionId: regionId.id,
+      venueId: venueGBK.id,
+      title: "Jakarta Sports & Outdoor Adventure Expo 2026",
+      slug: "jakarta-sports-outdoor-2026",
+      tagline: "Marathon race expo, trail gear trials and sports clinics",
+      description: "Running race packet pickup, outdoor gear testing zones, and sports medicine consultations at GBK.",
+      archetype: "SPORTS_OUTDOOR",
+      startDate: new Date("2026-11-12T09:00:00Z"),
+      endDate: new Date("2026-11-15T18:00:00Z"),
+      scale: "MEDIUM",
+      format: "IN_PERSON",
+      heroImageUrl: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1200",
+      showcaseJson: JSON.stringify({"livestreamUrl": "", "livestreamLive": false, "programs": [{"kind": "demo", "title": "Trail Gear Trial Zone", "detail": "Test footwear and packs on the indoor obstacle circuit.", "sponsor": ""}], "alerts": [], "channels": [], "attested": true, "attestedBy": "seed", "attestedAt": "2026-10-01T00:00:00Z"}),
+      ticketTiers: {
+        create: [
+          { name: "Visitor Pass", price: 0, currency: "IDR", capacity: 12000, benefitsJson: JSON.stringify(["Exhibition Floor Access"]) },
+        ],
+      },
+    },
+  });
+
+  await prisma.event.create({
+    data: {
+      organizerId: organizerUser.id,
+      regionId: regionId.id,
+      venueId: venueJCC.id,
+      title: "Nusantara Faith & Community Congress 2026",
+      slug: "nusantara-faith-congress-2026",
+      tagline: "Pilgrimage services, halal standards and community assemblies",
+      description: "Travel operators, halal certification bodies, and community organizations at JCC Senayan.",
+      archetype: "FAITH_PILGRIMAGE_CONGRESS",
+      startDate: new Date("2026-12-02T09:00:00Z"),
+      endDate: new Date("2026-12-04T18:00:00Z"),
+      scale: "MEDIUM",
+      format: "IN_PERSON",
+      heroImageUrl: "https://images.unsplash.com/photo-1519817650390-64a93db51149?w=1200",
+      showcaseJson: JSON.stringify({"livestreamUrl": "", "livestreamLive": false, "programs": [], "alerts": [], "channels": [{"code": "CH 1", "lang": "Arabic", "note": "Original keynote audio"}, {"code": "CH 2", "lang": "Indonesian", "note": ""}], "attested": true, "attestedBy": "seed", "attestedAt": "2026-10-01T00:00:00Z"}),
+      ticketTiers: {
+        create: [
+          { name: "Community Pass", price: 0, currency: "IDR", capacity: 5000, benefitsJson: JSON.stringify(["Plenary Access"]) },
         ],
       },
     },

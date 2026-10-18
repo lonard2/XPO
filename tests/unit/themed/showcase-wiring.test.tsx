@@ -4,6 +4,10 @@ import { render, screen } from "@testing-library/react";
 import { TechDevSummitView } from "@/components/themed/archetypes/TechDevSummitView";
 import { FaithPilgrimageCongressView } from "@/components/themed/archetypes/FaithPilgrimageCongressView";
 import { IndustrialB2BView } from "@/components/themed/archetypes/IndustrialB2BView";
+import { FinanceInvestorView } from "@/components/themed/archetypes/FinanceInvestorView";
+import { FashionRetailView } from "@/components/themed/archetypes/FashionRetailView";
+import { PopCultureGamingView } from "@/components/themed/archetypes/PopCultureGamingView";
+import { SportsOutdoorView } from "@/components/themed/archetypes/SportsOutdoorView";
 
 const baseEvent: any = {
   id: "evt-showcase",
@@ -67,5 +71,25 @@ describe("showcase view wiring: render with data, silent without", () => {
     );
     expect(screen.getByText("Featured Exhibits & Demonstrations")).toBeInTheDocument();
     expect(screen.getByText("Probe Demo")).toBeInTheDocument();
+  });
+
+  it.each([
+    ["FinanceInvestorView", FinanceInvestorView, "pitch", "Curated Pitch Decks & Venture Pipeline", "Probe Pitch"],
+    ["FashionRetailView", FashionRetailView, "runway", "Featured Collections & Presentations", "Probe Runway"],
+    ["PopCultureGamingView", PopCultureGamingView, "lineup", "Creators, Guests & Lineup", "Probe Lineup"],
+    ["SportsOutdoorView", SportsOutdoorView, "demo", "Featured Competitions & Trial Circuits", "Probe Arena"],
+  ])("%s shows its program grid only with data", (_name, View, kind, heading, title) => {
+    const { unmount } = render(<View event={baseEvent} locale="en" />);
+    expect(screen.queryByText(heading)).toBeNull();
+    unmount();
+
+    render(
+      <View
+        event={{ ...withShowcase, showcaseJson: JSON.stringify({ programs: [{ kind, title, detail: "", sponsor: "" }] }) }}
+        locale="en"
+      />
+    );
+    expect(screen.getByText(heading)).toBeInTheDocument();
+    expect(screen.getByText(title)).toBeInTheDocument();
   });
 });

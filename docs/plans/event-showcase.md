@@ -14,7 +14,9 @@ stays hidden (gating from event-detail fixes already supports this).
   data; silent empties.
 - [x] **Phase 4 — Trust rails**: organizer attestation, admin visibility, and
   content-age stamps.
-- [ ] **Phase 5 — Verification**: seeded content per type, render/hide tests,
+- [x] **Phase 5 — Verification**: seeded content per type, render/hide tests,
   live pass.
 
 Each phase ships as its own commit pushed to `origin/main`. Verify by execution.
+
+Verified: 7 types seeded with attested showcase rows; render/hide tests per view; live pass shows every block from data and silence without it; 707 tests green.
