@@ -675,7 +675,9 @@
     "voucherCode": "Voucher Code",
     "unlockedBadge": "Unlocked",
     "claimedBadge": "Claimed",
-    "lockedBadge": "Locked (Upgrade Tier)"
+    "lockedBadge": "Locked (Upgrade Tier)",
+    "schematicNote": "Schematic layout, not to scale.",
+    "showingBooths": "Showing {shown} of {total} booths"
   },
   "auth": {
     "modalTitle": "Authentication & Role Governance",

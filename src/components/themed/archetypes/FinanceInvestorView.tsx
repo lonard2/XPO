@@ -31,34 +31,6 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier }: Arch
   const [bookingConfirmed, setBookingConfirmed] = React.useState(false);
   const [kycVerified, setKycVerified] = React.useState(false);
 
-  // Curated pitch decks & investment opportunities
-  const pitchDecks = [
-    {
-      company: "NexusPay Sovereign Gateway",
-      sector: "Cross-Border Liquidity",
-      seeking: "$15M Series B",
-      valuation: "$90M Pre-Money",
-      metrics: "ARR: $6.2M | YoY Growth: 180% | EBITDA Positive",
-      pitchSummary: "Next-generation multi-currency settlement rails for Southeast Asia & Middle East trade corridors.",
-    },
-    {
-      company: "Aether AI Quantitative Alpha",
-      sector: "Asset Management AI",
-      seeking: "$25M Venture Debt / Growth",
-      valuation: "$140M Post-Money",
-      metrics: "AUM: $320M | Sharpe Ratio: 2.84 | 0% Drawdown in Q1 2026",
-      pitchSummary: "Ultra-low latency deep reinforcement learning model for automated FX hedging and macro arbitrage.",
-    },
-    {
-      company: "Verde Carbon Registry ESG",
-      sector: "Climate FinTech & Tokenized Credits",
-      seeking: "$8M Series A",
-      valuation: "$40M Pre-Money",
-      metrics: "Registered Credits: 4.2M Tons | 14 Sovereign Partners",
-      pitchSummary: "High-integrity carbon credit issuance platform with real-time satellite sensor verification.",
-    },
-  ];
-
   const handleBookDealRoom = (dealName: string) => {
     setSelectedDeal(dealName);
     setBookingConfirmed(false);
@@ -82,17 +54,7 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier }: Arch
           </p>
 
           <div className="pt-2 flex flex-wrap items-center gap-3">
-            <Button
-              variant="archetype"
-              onClick={() => {
-                const el = document.getElementById("pitch-decks");
-                el?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="gap-2 text-xs font-semibold shadow-md"
-            >
-              <Briefcase className="h-4 w-4" />
-              Review Curated Pitch Decks ({pitchDecks.length})
-            </Button>
+            
 
             <Button
               variant="outline"
@@ -140,59 +102,6 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier }: Arch
             )}
           </CardContent>
         </Card>
-      </section>
-
-      {/* 2. Curated Pitch Decks & Venture Pipeline */}
-      <section id="pitch-decks" className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
-              <FileSpreadsheet className="h-5 w-5 text-[var(--archetype-accent)]" />
-              Curated Pitch Decks & Deal Pipeline
-            </h3>
-            <p className="text-xs sm:text-sm text-muted-foreground">
-              Vetted growth-stage founders presenting to accredited investors.
-            </p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {pitchDecks.map((deck, idx) => (
-            <Card key={idx} className="border-border hover:border-emerald-500/50 transition-all flex flex-col">
-              <CardHeader className="pb-2">
-                <div className="flex items-center justify-between text-xs mb-1">
-                  <Badge variant="outline" size="sm" className="font-mono text-xs font-semibold">
-                    {deck.sector}
-                  </Badge>
-                  <span className="font-bold text-emerald-400">{deck.seeking}</span>
-                </div>
-                <CardTitle className="text-base">{deck.company}</CardTitle>
-                <CardDescription className="text-xs font-mono text-muted-foreground">
-                  Valuation: {deck.valuation}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex-1 space-y-3 text-xs flex flex-col justify-between">
-                <div className="space-y-2">
-                  <p className="text-muted-foreground leading-relaxed">{deck.pitchSummary}</p>
-                  <div className="p-2 rounded bg-muted/40 font-mono text-xs text-muted-foreground">
-                    {deck.metrics}
-                  </div>
-                </div>
-                <div className="pt-3 border-t border-border/60 flex items-center justify-between">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleBookDealRoom(deck.company)}
-                    className="w-full gap-1.5 text-xs font-semibold min-h-[40px] cursor-pointer"
-                  >
-                    <Lock className="h-3.5 w-3.5 text-amber-400" />
-                    Request Deal-Room Slot
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
       </section>
 
       {/* 3. Plenary & Macroeconomic Roundtables */}

@@ -675,7 +675,9 @@
     "voucherCode": "Código de Cupón",
     "unlockedBadge": "Desbloqueado",
     "claimedBadge": "Reclamado",
-    "lockedBadge": "Bloqueado (Requiere Mejora de Pase)"
+    "lockedBadge": "Bloqueado (Requiere Mejora de Pase)",
+    "schematicNote": "Plano esquemático, no a escala.",
+    "showingBooths": "Mostrando {shown} de {total} estands"
   },
   "auth": {
     "modalTitle": "Autenticación y Control de Roles",

@@ -26,37 +26,6 @@ export function FashionRetailView({ event, locale = "en", onSelectTier }: Archet
   const [selectedBrand, setSelectedBrand] = React.useState<string | null>(null);
   const [rfqSubmitted, setRfqSubmitted] = React.useState(false);
 
-  // Runway Premieres & Luxury Showroom Roster
-  const runwaySchedule = [
-    {
-      id: "run-01",
-      designer: "Atelier Nusantara Couture SS26",
-      origin: "Jakarta, Indonesia",
-      category: "Sustainable Heritage Silk & Modern Batik",
-      slot: "Catwalk Stage 1: Today @ 15:30",
-      seats: "Front Row VIP Reserved",
-      booth: "Hall 1 - VIP Catwalk Pavilion",
-    },
-    {
-      id: "run-02",
-      designer: "Ginza Minimalist Outerwear Lab",
-      origin: "Tokyo, Japan",
-      category: "Technical Waterproof Fabrics & Tailored Coats",
-      slot: "Catwalk Stage 2: Tomorrow @ 13:00",
-      seats: "Buyer Seating Available",
-      booth: "Hall 2 - Designer Row 204",
-    },
-    {
-      id: "run-03",
-      designer: "Bio-Clean Cosmetics & Skincare OEM",
-      origin: "Seoul & Paris Laboratories",
-      category: "Fermented Peptides, SPF50+ & Vegan Lip Care",
-      slot: "Showroom Live Formulation: 11:00 & 16:00",
-      seats: "OEM Buyer Consultation Active",
-      booth: "Hall 3 - Cosmetics Pavilion 312",
-    },
-  ];
-
   return (
     <div className="space-y-12">
       {/* 1. Category Mission Statement */}
@@ -98,61 +67,6 @@ export function FashionRetailView({ event, locale = "en", onSelectTier }: Archet
         </div>
       </section>
 
-      {/* 2. Runway Timetable & Luxury Showrooms */}
-      <section className="space-y-6">
-        <div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-pink-500 uppercase tracking-wider mb-1">
-            <Eye className="h-4 w-4" />
-            <span>Runway Catwalks</span>
-          </div>
-          <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-            Featured Collections & Live Presentations
-          </h3>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {runwaySchedule.map((run) => (
-            <Card key={run.id} className="border-border/80 bg-card hover:border-pink-500/40 transition-all shadow-xs flex flex-col justify-between">
-              <CardHeader className="space-y-2 pb-3">
-                <div className="flex items-center justify-between">
-                  <Badge variant="outline" className="border-pink-500/30 text-pink-500 bg-pink-500/10 text-xs font-semibold">
-                    {run.origin}
-                  </Badge>
-                  <span className="text-xs font-mono font-bold text-muted-foreground">{run.seats}</span>
-                </div>
-                <CardTitle className="text-lg font-bold text-foreground leading-snug">{run.designer}</CardTitle>
-                <CardDescription className="text-xs text-muted-foreground">{run.category}</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4 pt-0">
-                <div className="text-xs text-muted-foreground space-y-1">
-                  <div className="flex items-center gap-1.5">
-                    <MapPin className="h-3.5 w-3.5 text-muted-foreground/80 shrink-0" />
-                    <span>{run.booth}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 font-medium text-foreground">
-                    <Clock className="h-3.5 w-3.5 text-pink-500 shrink-0" />
-                    <span>{run.slot}</span>
-                  </div>
-                </div>
-
-                <Button
-                  onClick={() => {
-                    setSelectedBrand(run.designer);
-                    setOemDrawerOpen(true);
-                  }}
-                  variant="outline"
-                  size="sm"
-                  className="w-full border-pink-500/30 hover:bg-pink-500/10 text-foreground font-semibold min-h-[40px]"
-                >
-                  <ShoppingBag className="h-3.5 w-3.5 mr-1.5 text-pink-500" />
-                  Access Wholesale Lookbook
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
-
       {/* 3. Cosmetics OEM & Buyer Drawer */}
       <Drawer
         open={oemDrawerOpen}
@@ -172,7 +86,7 @@ export function FashionRetailView({ event, locale = "en", onSelectTier }: Archet
               <div className="space-y-1">
                 <h4 className="text-lg font-bold text-foreground">OEM Inquiry Dispatched</h4>
                 <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-                  Your manufacturing brief for <span className="font-semibold text-foreground">{selectedBrand}</span> has been securely transmitted. Sample formulation kits will be prepared for collection at VIP Showroom A.
+                  Your manufacturing brief for <span className="font-semibold text-foreground">{selectedBrand}</span> has been securely transmitted. The organizer will follow up with next steps.
                 </p>
               </div>
               <Button

@@ -56,7 +56,7 @@ const PERK_ICONS: Record<string, React.ComponentType<{ className?: string }>> = 
 const DEFAULT_LOCATIONS: Record<string, string> = {
   Coffee: 'Main Concourse • Specialty Barista Hub',
   Wifi: 'All Exhibition Halls • High-Density SSID',
-  Gift: 'Hall A1 • VIP Delegate Welcome Counter',
+  Gift: 'VIP Delegate Welcome Counter',
   Download: 'Digital Cloud • Instant PDF Download',
   FileText: 'Plenary Foyer • Proceedings Desk',
   Award: 'Executive Lounge • Concierge Suite',

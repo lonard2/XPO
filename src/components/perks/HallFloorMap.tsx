@@ -10,7 +10,6 @@ import {
   Layers,
   Search,
   ExternalLink,
-  Navigation,
   Sparkles,
   Info,
   CheckCircle2,
@@ -129,6 +128,10 @@ export function HallFloorMap({
           </h3>
           <p className="text-xs sm:text-sm text-muted-foreground">
             {venueName}{hallName ? ` (${hallName})` : ""} - {tPerks("navigateFloorPlan") || "Navigate exhibitor booths, VIP lounges, and amenities."}
+          </p>
+          <p className="text-[11px] text-muted-foreground mt-1">
+            {tPerks("schematicNote") || "Schematic layout, not to scale."}{" "}
+            {tPerks("showingBooths", { shown: Math.min(filteredBooths.length, 12), total: filteredBooths.length }) || `Showing ${Math.min(filteredBooths.length, 12)} of ${filteredBooths.length} booths`}
           </p>
         </div>
 
@@ -413,10 +416,6 @@ export function HallFloorMap({
               <p className="text-muted-foreground">{selectedBooth.description}</p>
             )}
             <div className="flex items-center gap-3 pt-2 border-t border-border/50">
-              <div className="flex items-center gap-1 text-emerald-500 font-medium">
-                <Navigation className="h-3.5 w-3.5" />
-                <span>Directions: 2 min walk from Main Entrance</span>
-              </div>
               {selectedBooth.websiteUrl && (
                 <a
                   href={selectedBooth.websiteUrl}

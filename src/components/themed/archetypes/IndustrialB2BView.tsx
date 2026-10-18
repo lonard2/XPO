@@ -11,7 +11,6 @@ import {
   CheckCircle2,
   Calendar,
   Layers,
-  Wrench,
   Search,
   DollarSign,
   Ticket,
@@ -94,34 +93,6 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier }: Archet
   const [boothSearch, setBoothSearch] = React.useState("");
   const [selectedIndustry, setSelectedIndustry] = React.useState("ALL");
   const [b2bMeetingSuccess, setB2bMeetingSuccess] = React.useState(false);
-
-  // Machine specs demonstration catalog
-  const machineryCatalog = [
-    {
-      name: "CNC 5-Axis Milling Center X-9000",
-      manufacturer: "PT Heavy Engineering Nusantara",
-      specs: "Spindle: 24,000 RPM | Table: 1,200 x 800mm | Accuracy: ±0.002mm",
-      booth: "Hall A1 - Booth 104",
-      certification: "ISO 9001:2015 & CE Certified",
-      status: "Live Demo Daily @ 11:00 & 15:00",
-    },
-    {
-      name: "Autonomous High-Payload AGV Transporter",
-      manufacturer: "Apex Robotics Systems",
-      specs: "Payload: 2,500 kg | LiDAR SLAM Navigation | Battery: 12h Continuous",
-      booth: "Hall A2 - Booth 218",
-      certification: "TUV Rheinland Industrial Safety",
-      status: "Interactive Fleet Testing Zone",
-    },
-    {
-      name: "Fiber Laser Cutting System Ultra 30kW",
-      manufacturer: "Global MetalTech Solutions",
-      specs: "Max Sheet: 6,000 x 2,500mm | Cutting Speed: 120 m/min | Carbon Steel: up to 50mm",
-      booth: "Hall B1 - Booth 305",
-      certification: "IEC 60825-1 Laser Safety Class 1",
-      status: "Precision Cutting Showcase",
-    },
-  ];
 
   // Unique industries
   const industries = ["ALL", ...Array.from(new Set(event.booths.map((b) => b.industry || "General Industry")))];
@@ -214,59 +185,6 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier }: Archet
             </div>
           </CardContent>
         </Card>
-      </section>
-
-      {/* 2. Heavy Machinery & Live Demonstrations Showcase */}
-      <section className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
-              <Wrench className="h-5 w-5 text-[var(--archetype-accent)]" />
-              High-Precision Machinery Showcase
-            </h3>
-            <p className="text-xs sm:text-sm text-muted-foreground">
-              Live automated demonstrations and machine specifications on display.
-            </p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {machineryCatalog.map((item, idx) => (
-            <Card key={idx} className="border-border hover:border-[var(--archetype-primary)] transition-all bg-card/60">
-              <CardHeader className="pb-2">
-                <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
-                  <span className="font-mono text-[var(--archetype-accent)]">{item.booth}</span>
-                  <Badge variant="outline" size="sm">
-                    {item.certification}
-                  </Badge>
-                </div>
-                <CardTitle className="text-base font-bold text-foreground">{item.name}</CardTitle>
-                <CardDescription className="text-xs font-medium text-[var(--archetype-primary)]">
-                  {item.manufacturer}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3 text-xs">
-                <div className="p-2.5 rounded-md bg-muted/40 font-mono text-xs text-muted-foreground">
-                  {item.specs}
-                </div>
-                <div className="flex items-center justify-between pt-1">
-                  <span className="text-muted-foreground flex items-center gap-1">
-                    <Clock className="h-3.5 w-3.5 text-amber-500" />
-                    {item.status}
-                  </span>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleOpenRfq(item.manufacturer)}
-                    className="text-xs text-[var(--archetype-primary)] hover:underline h-7 px-2 cursor-pointer"
-                  >
-                    Request Quote
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
       </section>
 
       {/* 3. Exhibitor & Booth Directory with RFQ triggers */}

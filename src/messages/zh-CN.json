@@ -675,7 +675,9 @@
     "voucherCode": "礼券代码",
     "unlockedBadge": "已解锁",
     "claimedBadge": "已领取",
-    "lockedBadge": "未解锁 (需升级票种)"
+    "lockedBadge": "未解锁 (需升级票种)",
+    "schematicNote": "示意图，不按比例。",
+    "showingBooths": "共{total}个展位，显示{shown}个"
   },
   "auth": {
     "modalTitle": "身份认证与角色管理",

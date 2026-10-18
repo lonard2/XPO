@@ -675,7 +675,9 @@
     "voucherCode": "バウチャーコード",
     "unlockedBadge": "利用可能",
     "claimedBadge": "受取済み",
-    "lockedBadge": "ロック中 (アップグレードが必要)"
+    "lockedBadge": "ロック中 (アップグレードが必要)",
+    "schematicNote": "概略図であり、縮尺通りではありません。",
+    "showingBooths": "{total}件中{shown}件のブースを表示"
   },
   "auth": {
     "modalTitle": "認証・権限ロール管理",

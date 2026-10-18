@@ -107,27 +107,15 @@ export function FaithPilgrimageCongressView({ event, locale = "en", onSelectTier
             <Headphones className="h-5 w-5 text-emerald-500" />
             <div>
               <h3 className="text-base font-bold text-foreground">Congress Simultaneous Interpretation Channels</h3>
-              <p className="text-xs text-muted-foreground">Plug in headphones or connect to venue audio broadcast</p>
+              <p className="text-xs text-muted-foreground">Channel lineup published by the organizer before the congress</p>
             </div>
           </div>
-          <Badge variant="outline" className="border-emerald-500/30 text-emerald-500 bg-emerald-500/10 text-xs self-start sm:self-auto font-mono">
-            Arena Wi-Fi Audio Active
-          </Badge>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {[
-            { ch: "CH 1", lang: "العربية (Arabic)", voice: "Original Keynote" },
-            { ch: "CH 2", lang: "Bahasa Indonesia", voice: "Live Interpretation" },
-            { ch: "CH 3", lang: "English", voice: "Live Interpretation" },
-            { ch: "CH 4", lang: "اردو (Urdu)", voice: "Live Interpretation" },
-          ].map((item) => (
-            <div key={item.ch} className="p-3 rounded-lg border border-border/60 bg-muted/30 text-xs space-y-1">
-              <span className="font-mono font-bold text-emerald-500 block">{item.ch}</span>
-              <span className="font-semibold text-foreground block">{item.lang}</span>
-              <span className="text-muted-foreground text-[11px] block">{item.voice}</span>
-            </div>
-          ))}
+        <div className="rounded-lg border border-dashed border-border/80 p-4 text-center">
+          <p className="text-xs text-muted-foreground">
+            Interpretation channel assignments appear here once published by the organizer.
+          </p>
         </div>
       </section>
 

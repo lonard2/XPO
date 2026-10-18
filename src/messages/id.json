@@ -675,7 +675,9 @@
     "voucherCode": "Kode Voucher",
     "unlockedBadge": "Terbuka",
     "claimedBadge": "Sudah Diklaim",
-    "lockedBadge": "Terkunci (Tingkatkan Pas)"
+    "lockedBadge": "Terkunci (Tingkatkan Pas)",
+    "schematicNote": "Denah skematis, bukan skala sebenarnya.",
+    "showingBooths": "Menampilkan {shown} dari {total} booth"
   },
   "auth": {
     "modalTitle": "Autentikasi & Tata Kelola Peran",

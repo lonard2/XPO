@@ -121,12 +121,13 @@ describe("Phase 5: 9 Archetype Specialized Views & EventPageShell", () => {
     expect(screen.getByTestId("archetype-child")).toBeInTheDocument();
   });
 
-  it("renders IndustrialB2BView with machinery catalog, RFQ modal trigger, and exhibitor booths", () => {
+  it("renders IndustrialB2BView with RFQ modal trigger and exhibitor booths, and no invented catalog", () => {
     render(<IndustrialB2BView event={mockBaseEvent} locale="en" />);
 
     expect(screen.getByText(/Procurement, Heavy Machinery & B2B Matchmaking/i)).toBeInTheDocument();
-    expect(screen.getByText("CNC 5-Axis Milling Center X-9000")).toBeInTheDocument();
-    expect(screen.getByText("DMG MORI Precision Tools")).toBeInTheDocument();
+    expect(screen.queryByText("CNC 5-Axis Milling Center X-9000")).toBeNull();
+    expect(screen.queryByText(/24,000 RPM/)).toBeNull();
+    expect(screen.queryByText(/TUV Rheinland/)).toBeNull();
 
     const rfqBtn = screen.getByRole("button", { name: /Submit RFQ \/ Procurement Tender/i });
     expect(rfqBtn).toBeInTheDocument();
@@ -134,11 +135,12 @@ describe("Phase 5: 9 Archetype Specialized Views & EventPageShell", () => {
     expect(screen.getByText("Target Exhibitor / Machine")).toBeInTheDocument();
   });
 
-  it("renders TechDevSummitView with multi-track agenda, livestream widget, and hackathon RSVP", () => {
+  it("renders TechDevSummitView with multi-track agenda and hackathon RSVP, and no invented stream or bounties", () => {
     render(<TechDevSummitView event={mockBaseEvent} locale="en" />);
 
     expect(screen.getByText(/Building Next-Generation Distributed Systems/i)).toBeInTheDocument();
-    expect(screen.getByText("Live Stream Active")).toBeInTheDocument();
+    expect(screen.queryByText("Live Stream Active")).toBeNull();
+    expect(screen.queryByText(/\$10,000/)).toBeNull();
     expect(screen.getByText(/48-Hour Autonomous Systems Hackathon/i)).toBeInTheDocument();
 
     const rsvpBtn = screen.getByRole("button", { name: /RSVP for Hackathon/i });
@@ -158,25 +160,26 @@ describe("Phase 5: 9 Archetype Specialized Views & EventPageShell", () => {
     expect(screen.getByText(/CME Verification registered/i)).toBeInTheDocument();
   });
 
-  it("renders FinanceInvestorView with pitch decks, deal-room booking, and KYC accreditation", () => {
+  it("renders FinanceInvestorView with deal-room booking and KYC accreditation, and no invented pitch decks", () => {
     render(<FinanceInvestorView event={mockBaseEvent} locale="en" />);
 
     expect(screen.getByText(/Capital Allocation, Deal Structuring & Liquidity Horizons/i)).toBeInTheDocument();
     expect(screen.getByText("Chatham House Rule")).toBeInTheDocument();
-    expect(screen.getByText("NexusPay Sovereign Gateway")).toBeInTheDocument();
+    expect(screen.queryByText("NexusPay Sovereign Gateway")).toBeNull();
+    expect(screen.queryByText(/\$15M/)).toBeNull();
 
     const verifyKycBtn = screen.getByRole("button", { name: /Verify Institutional Accreditation/i });
     fireEvent.click(verifyKycBtn);
     expect(screen.getByText("SEC-VERIFIED-PASS")).toBeInTheDocument();
   });
 
-  it("renders PopCultureGamingView with cosplay security rules, creator alley, and autograph scheduler", () => {
+  it("renders PopCultureGamingView with cosplay security rules and agenda, and no invented guests", () => {
     render(<PopCultureGamingView event={mockBaseEvent} locale="en" />);
 
     expect(screen.getByText(/Esports Arena, Celebrity Meet & Greets & Merch Drops/i)).toBeInTheDocument();
     expect(screen.getByText("Cosplay Security Guidelines")).toBeInTheDocument();
-    expect(screen.getByText("Kenji Takahashi")).toBeInTheDocument();
-    expect(screen.getByText("Sakura Artworks")).toBeInTheDocument();
+    expect(screen.queryByText("Kenji Takahashi")).toBeNull();
+    expect(screen.queryByText("Sakura Artworks")).toBeNull();
   });
 
   it("renders MusicFestivalView with crowd density telemetry, stage timetable, and cashless guide", () => {

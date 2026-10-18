@@ -9,7 +9,6 @@ import {
   Filter,
   Search,
   AlertTriangle,
-  CheckCircle2,
   Bell,
   Calendar,
   Layers,
@@ -38,12 +37,15 @@ export interface InteractiveGuidebookProps {
   agendaItems: AgendaSessionItem[];
   eventTitle: string;
   locale?: string;
+  /** Organizer announcements. Absent means none: no invented alerts. */
+  alerts?: string[];
 }
 
 export function InteractiveGuidebook({
   agendaItems,
   eventTitle,
   locale = "en",
+  alerts = [],
 }: InteractiveGuidebookProps) {
   const tPerks = useTranslations("perks");
   const tEvents = useTranslations("events");
@@ -138,16 +140,19 @@ export function InteractiveGuidebook({
         </div>
       </div>
 
-      {/* 2. Room Change / Live Alert Banner */}
-      {showAlertBanner && (
+      {/* 2. Room Change / Live Alert Banner (organizer announcements only;
+          nothing renders without backing data) */}
+      {showAlertBanner && alerts.length > 0 && (
         <div className="rounded-xl bg-amber-500/10 border border-amber-500/30 p-3.5 flex items-start justify-between gap-3 text-xs animate-fade-in">
           <div className="flex items-start gap-2.5">
             <Bell className="h-4 w-4 shrink-0 mt-0.5 text-amber-600 dark:text-amber-400" />
             <div>
               <span className="font-bold text-amber-900 dark:text-amber-300">Live Stage Alert:</span>
-              <p className="text-amber-950 dark:text-amber-200/90 mt-0.5 leading-relaxed">
-                Plenary Keynotes and Opening Ceremonies commence in Main Exhibition Hall A1. VIP delegate seating opens 30 minutes prior.
-              </p>
+              {alerts.map((alert, i) => (
+                <p key={i} className="text-amber-950 dark:text-amber-200/90 mt-0.5 leading-relaxed">
+                  {alert}
+                </p>
+              ))}
             </div>
           </div>
           <button
@@ -309,14 +314,6 @@ export function InteractiveGuidebook({
                       Join industry leaders and peer delegates for an interactive session at {session.location}.
                       Q&A discussion and networking will follow the presentation.
                     </p>
-                    <div className="flex items-center gap-4 text-xs text-muted-foreground pt-1">
-                      <span className="flex items-center gap-1 text-emerald-500 font-semibold">
-                        <CheckCircle2 className="h-3.5 w-3.5" />
-                        Seating Available
-                      </span>
-                      <span>•</span>
-                      <span>Simultaneous translation available in Audio Channel 2</span>
-                    </div>
                   </div>
                 )}
               </div>
