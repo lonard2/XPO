@@ -108,15 +108,15 @@ describe('Discovery Component: EventCard', () => {
     expect(screen.getByText('Free')).toBeInTheDocument();
   });
 
-  it('T3.1: ensures archetype badge uses readable contrast text for light vs dark archetype colors', () => {
+  it('T3.1: renders the archetype label in body metadata with the category color', () => {
     const energyEvent: DiscoveryEvent = {
       ...mockEvent,
       archetype: 'ENERGY_INFRASTRUCTURE',
     };
 
     render(<EventCard event={energyEvent} locale="en" />);
-    const energyBadge = screen.getByText(/energy/i);
-    expect(energyBadge).toHaveStyle({ color: '#0f172a' });
+    const energyLabel = screen.getByText(/energy/i);
+    expect(energyLabel).toHaveStyle({ color: '#d97706' });
   });
 });
 

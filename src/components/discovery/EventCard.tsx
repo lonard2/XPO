@@ -16,7 +16,7 @@ import { buttonVariants } from '@/components/ui/Button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/Card';
 import { useTranslations } from 'next-intl';
 import { formatCurrency, formatDateRange, getTimeZoneForRegion, getEventTemporalStatus, type SupportedCurrency } from '@/lib/i18n/formatters';
-import { getArchetypeTokens, getReadableBadgeColors } from '@/lib/theming';
+import { getArchetypeTokens } from '@/lib/theming';
 import { type DiscoveryEvent } from '@/types/discovery';
 import { cn } from '@/lib/utils';
 
@@ -44,10 +44,6 @@ export const EventCard = React.memo(function EventCard({
   const archetypeTokens = React.useMemo(
     () => getArchetypeTokens(event.archetype),
     [event.archetype]
-  );
-  const archetypeBadge = React.useMemo(
-    () => getReadableBadgeColors(archetypeTokens.primary),
-    [archetypeTokens.primary]
   );
   const regionCode = (event.region?.code || event.regionId || 'id').toLowerCase();
   const timezone = React.useMemo(() => getTimeZoneForRegion(regionCode), [regionCode]);
@@ -146,19 +142,9 @@ export const EventCard = React.memo(function EventCard({
           </div>
         )}
 
-        {/* Floating Top Badges */}
+        {/* Floating Top Badges: capped at two — live status, then curation.
+            Category and format live in the body metadata row instead. */}
         <div className="absolute top-2.5 left-2.5 flex flex-wrap items-center gap-1.5 z-10">
-          <Badge
-            variant="default"
-            className="text-xs uppercase font-bold tracking-wider shadow-sm"
-            style={{
-              backgroundColor: archetypeBadge.background,
-              color: archetypeBadge.color,
-            }}
-          >
-            {archetypeBadgeLabel}
-          </Badge>
-
           {temporal.isLive && (
             <Badge className="bg-emerald-600 text-white text-xs font-bold gap-1 shadow-sm">
               <span className="h-1.5 w-1.5 rounded-full bg-white inline-block animate-ping" />
@@ -172,25 +158,12 @@ export const EventCard = React.memo(function EventCard({
             </Badge>
           )}
 
-          {temporal.isUpcoming && event.isFeatured && (
-            <Badge variant="warning" className="text-xs font-semibold gap-1 shadow-sm">
-              <Layers className="h-2.5 w-2.5" />
-              <span>{tEvents('featuredBadge')}</span>
-            </Badge>
-          )}
-
           {isCurated && (
             <Badge variant="outline" className="text-xs font-semibold gap-1 shadow-sm bg-background/90 backdrop-blur-sm text-foreground border-border">
               <ShieldCheck className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
               <span>{curatedBadgeLabel}</span>
             </Badge>
           )}
-        </div>
-
-        <div className="absolute top-2.5 right-2.5 z-10">
-          <Badge variant="outline" className="text-xs uppercase font-mono bg-background/90 backdrop-blur-sm font-semibold">
-            {formatLabel}
-          </Badge>
         </div>
       </div>
 
@@ -202,11 +175,33 @@ export const EventCard = React.memo(function EventCard({
             <span className="font-medium text-foreground tabular-nums">{dateRangeDisplay}</span>
           </div>
 
-          <h3 className="text-base font-bold text-foreground leading-snug line-clamp-2 text-balance group-hover:text-primary transition-colors">
-            <Link href={`/${locale}/events/${event.slug}`} className="hover:underline after:absolute after:inset-0">
-              {event.title}
-            </Link>
-          </h3>
+          <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+            <span className="font-bold uppercase tracking-wider truncate" style={{ color: archetypeTokens.primary }}>
+              {archetypeBadgeLabel}
+            </span>
+            <span aria-hidden="true" className="shrink-0">·</span>
+            <span className="whitespace-nowrap">{formatLabel}</span>
+            {event.scale && (
+              <>
+                <span aria-hidden="true" className="shrink-0">·</span>
+                <span className="capitalize whitespace-nowrap">{event.scale.replace(/_/g, ' ').toLowerCase()}</span>
+              </>
+            )}
+          </div>
+
+          <div className="flex items-start gap-2">
+            <h3 className="text-base font-bold text-foreground leading-snug line-clamp-2 text-balance group-hover:text-primary transition-colors flex-1">
+              <Link href={`/${locale}/events/${event.slug}`} className="hover:underline after:absolute after:inset-0">
+                {event.title}
+              </Link>
+            </h3>
+            {temporal.isUpcoming && event.isFeatured && (
+              <Badge variant="warning" className="text-[11px] font-semibold gap-1 shadow-sm shrink-0 mt-0.5">
+                <Layers className="h-2.5 w-2.5" />
+                <span>{tEvents('featuredBadge')}</span>
+              </Badge>
+            )}
+          </div>
 
           {event.tagline && (
             <p className="text-xs text-muted-foreground line-clamp-2 text-pretty leading-relaxed">

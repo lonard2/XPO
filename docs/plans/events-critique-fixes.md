@@ -9,7 +9,7 @@ in place (no tile-engine transplant).
 - [x] **2. Layout category disclosure** (`$impeccable layout`): sidebar archetype
   rows gain icons, subtitles, counts under collapsible clusters (active-only
   open); user-facing labels renamed to "Event Category".
-- [ ] **3. Layout badge cap** (`$impeccable layout`): max 2 image-overlay badges
+- [x] **3. Layout badge cap** (`$impeccable layout`): max 2 image-overlay badges
   (status, then curation); archetype + format move to body metadata.
 - [ ] **4. Harden table view** (`$impeccable harden`): full i18n, focus-visible
   states, 44px targets, real toolbar role.
