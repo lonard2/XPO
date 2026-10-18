@@ -22,6 +22,7 @@ import { Input } from "@/components/ui/Input";
 import { Card } from "@/components/ui/Card";
 import { Modal } from "@/components/ui/Modal";
 import { LivePreviewFrame } from "@/components/organizer/LivePreviewFrame";
+import { ShowcaseEditor } from "@/components/organizer/ShowcaseEditor";
 import { useTranslations } from "next-intl";
 import {
   ARCHETYPE_DEFAULTS,
@@ -617,6 +618,14 @@ export default function EventCustomizerPage() {
               })}
             </div>
           </Card>
+
+          {/* Card 5: Showcase Content (organizer-authored rows) */}
+          {eventData?.id && (
+            <ShowcaseEditor
+              eventId={eventData.id}
+              initialJson={eventData.showcaseJson || null}
+            />
+          )}
         </div>
 
         {/* RIGHT COLUMN: REAL-TIME LIVE PREVIEW FRAME (7 cols on lg) */}

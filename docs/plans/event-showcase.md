@@ -8,7 +8,7 @@ stays hidden (gating from event-detail fixes already supports this).
   a validated `ShowcaseContent` schema (stream URL + live flag, program rows,
   alerts, channels) with URL checks and row caps; organizer-scoped PATCH
   endpoint; parsed onto Discovery payloads; guide alerts wired from data.
-- [ ] **Phase 2 — Authoring UI**: per-archetype "Showcase content" editors
+- [x] **Phase 2 — Authoring UI**: per-archetype "Showcase content" editors
   (program rows, alerts, channels, stream URL + go-live) with validation.
 - [ ] **Phase 3 — View wiring**: one gated block per view, rendered only with
   data; silent empties.
