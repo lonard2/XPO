@@ -335,7 +335,11 @@
     "clusterFilterLabel": "按行业板块筛选 MICE 类别",
     "showAllCount": "显示全部（{count}）",
     "verticalCount": "{count} 个细分领域",
-    "clusterSubtitle": "显示该板块的专业 MICE 类别。"
+    "clusterSubtitle": "显示该板块的专业 MICE 类别。",
+    "freeAdmission": "免费",
+    "shortlistCompare": "比较此活动",
+    "shortlistCompareTitle": "比较活动",
+    "shortlistRemove": "从比较中移除"
   },
   "events": {
     "title": "展会名录与日程",
@@ -398,7 +402,10 @@
     "regOpen": "报名开放",
     "freePass": "免费贸易通行证",
     "fromPrice": "起",
-    "mainVenue": "主会场"
+    "mainVenue": "主会场",
+    "sortPriceAsc": "价格从低到高",
+    "sortPriceDesc": "价格从高到低",
+    "sortEndingSoon": "即将结束"
   },
   "venues": {
     "title": "会展中心与展厅名录",

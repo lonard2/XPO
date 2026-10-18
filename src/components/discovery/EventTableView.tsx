@@ -8,7 +8,7 @@ import {
   MapPin,
   Ticket,
   ArrowRight,
-  Layers,
+  Scale,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
 import { buttonVariants } from '@/components/ui/Button';
@@ -27,12 +27,18 @@ export interface EventTableViewProps {
   events: DiscoveryEvent[];
   locale: string;
   className?: string;
+  shortlistedIds?: string[];
+  onToggleShortlist?: (id: string) => void;
+  shortlistLabel?: string;
 }
 
 export const EventTableView = React.memo(function EventTableView({
   events,
   locale,
   className,
+  shortlistedIds = [],
+  onToggleShortlist,
+  shortlistLabel,
 }: EventTableViewProps) {
   const tEvents = useTranslations('events');
   const tTick = useTranslations('tickets');
@@ -174,7 +180,25 @@ export const EventTableView = React.memo(function EventTableView({
 
                 {/* 6. Action Link */}
                 <td className="p-[var(--table-cell-padding,0.875rem_1rem)] text-right whitespace-nowrap">
-                  <Link
+                  <span className="inline-flex items-center gap-1.5">
+                    {onToggleShortlist && (
+                      <button
+                        type="button"
+                        onClick={() => onToggleShortlist(event.id)}
+                        aria-pressed={shortlistedIds.includes(event.id)}
+                        aria-label={shortlistLabel || 'Compare this event'}
+                        title={shortlistLabel || 'Compare this event'}
+                        className={cn(
+                          'inline-flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-lg border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+                          shortlistedIds.includes(event.id)
+                            ? 'border-primary bg-primary text-primary-foreground'
+                            : 'border-border text-muted-foreground hover:text-foreground hover:bg-muted'
+                        )}
+                      >
+                        <Scale className="h-4 w-4" />
+                      </button>
+                    )}
+                    <Link
                     href={`/${locale}/events/${event.slug}`}
                     className={cn(
                       buttonVariants({ variant: 'outline', size: 'sm' }),
@@ -184,6 +208,7 @@ export const EventTableView = React.memo(function EventTableView({
                     <span>{tTick('viewPass') || 'View Pass'}</span>
                     <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
                   </Link>
+                  </span>
                 </td>
               </tr>
             );

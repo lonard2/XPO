@@ -181,6 +181,9 @@ export function FacetedFilterBar({
               <option value="date_desc">{tEvents('sortLatest') || 'Date: Latest First'}</option>
               <option value="featured">{tEvents('sortFeatured') || 'Featured Priority'}</option>
               <option value="title_asc">{tEvents('sortTitleAsc') || 'Name: A to Z'}</option>
+              <option value="price_asc">{tEvents('sortPriceAsc') || 'Price: Lowest First'}</option>
+              <option value="price_desc">{tEvents('sortPriceDesc') || 'Price: Highest First'}</option>
+              <option value="ending_soon">{tEvents('sortEndingSoon') || 'Ending Soon'}</option>
             </select>
             <ArrowUpDown className="absolute right-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground pointer-events-none" />
           </div>

@@ -46,6 +46,7 @@ describe('Discovery Component: EventsExplorer Integration', () => {
   it('T1.3: filters events by MICE archetype', () => {
     render(<EventsExplorer initialEvents={FALLBACK_EVENTS} locale="en" />);
 
+    fireEvent.click(screen.getByRole('button', { name: /digital & tech/i }));
     const techSummitBtn = screen.getByRole('button', { name: /technology.*electronics|tech.*electronics/i });
     fireEvent.click(techSummitBtn);
 
@@ -193,6 +194,33 @@ describe('Discovery Component: EventsExplorer Integration', () => {
     expect(screen.getByText('Numbered Exhibition 15')).toBeInTheDocument();
     // Load More button should disappear since all 15 are visible
     expect(screen.queryByRole('button', { name: /load more exhibitions/i })).toBeNull();
+  });
+
+  it('T3.1: offers price and ending-soon sorts in the sort control', () => {
+    render(<EventsExplorer initialEvents={FALLBACK_EVENTS} locale="en" />);
+
+    const sortSelect = screen.getByLabelText(/sort events/i);
+    const options = [...sortSelect.querySelectorAll('option')].map((o) => o.value);
+    expect(options).toContain('price_asc');
+    expect(options).toContain('price_desc');
+    expect(options).toContain('ending_soon');
+  });
+
+  it('T3.2: pins events to a compare tray and removes them', () => {
+    render(<EventsExplorer initialEvents={FALLBACK_EVENTS} locale="en" />);
+
+    expect(screen.queryByRole('region', { name: /compare events/i })).toBeNull();
+
+    const pins = screen.getAllByRole('button', { name: /compare this event/i });
+    expect(pins.length).toBeGreaterThan(1);
+    fireEvent.click(pins[0]);
+
+    const tray = screen.getByRole('region', { name: /compare events/i });
+    expect(tray).toBeInTheDocument();
+    expect(tray.textContent).toContain('1/4');
+
+    fireEvent.click(screen.getByRole('button', { name: /remove from comparison/i }));
+    expect(screen.queryByRole('region', { name: /compare events/i })).toBeNull();
   });
 });
 

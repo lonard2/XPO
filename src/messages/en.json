@@ -335,7 +335,11 @@
     "clusterFilterLabel": "Filter MICE categories by industry cluster",
     "showAllCount": "Show All ({count})",
     "verticalCount": "{count} Verticals",
-    "clusterSubtitle": "Displaying specialized MICE categories in this sector."
+    "clusterSubtitle": "Displaying specialized MICE categories in this sector.",
+    "freeAdmission": "Free admission",
+    "shortlistCompare": "Compare this event",
+    "shortlistCompareTitle": "Compare Events",
+    "shortlistRemove": "Remove from comparison"
   },
   "events": {
     "title": "Event Directory & Timetable",
@@ -398,7 +402,10 @@
     "regOpen": "Registration Open",
     "freePass": "Free Trade Pass",
     "fromPrice": "From",
-    "mainVenue": "Main Venue"
+    "mainVenue": "Main Venue",
+    "sortPriceAsc": "Price: Lowest First",
+    "sortPriceDesc": "Price: Highest First",
+    "sortEndingSoon": "Ending Soon"
   },
   "venues": {
     "title": "Convention Centers & Hall Directory",

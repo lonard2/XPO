@@ -335,7 +335,11 @@
     "clusterFilterLabel": "業界クラスターでMICEカテゴリを絞り込む",
     "showAllCount": "すべて表示（{count}）",
     "verticalCount": "{count} 分野",
-    "clusterSubtitle": "このセクターの専門MICEカテゴリを表示しています。"
+    "clusterSubtitle": "このセクターの専門MICEカテゴリを表示しています。",
+    "freeAdmission": "無料",
+    "shortlistCompare": "このイベントを比較",
+    "shortlistCompareTitle": "イベントを比較",
+    "shortlistRemove": "比較から削除"
   },
   "events": {
     "title": "イベント一覧＆スケジュール",
@@ -398,7 +402,10 @@
     "regOpen": "受付中",
     "freePass": "無料トレードパス",
     "fromPrice": "最低",
-    "mainVenue": "メイン会場"
+    "mainVenue": "メイン会場",
+    "sortPriceAsc": "料金が安い順",
+    "sortPriceDesc": "料金が高い順",
+    "sortEndingSoon": "まもなく終了"
   },
   "venues": {
     "title": "コンベンションセンター＆ホール一覧",

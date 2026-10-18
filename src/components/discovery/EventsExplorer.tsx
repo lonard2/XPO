@@ -8,8 +8,11 @@ import {
   RotateCcw,
   SlidersHorizontal,
   Search,
+  Scale,
+  X,
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { formatCurrency, formatDateRange, type SupportedCurrency } from '@/lib/i18n/formatters';
 import { Drawer } from '@/components/ui/Drawer';
 import { EventCard } from '@/components/discovery/EventCard';
 import { EventTableView } from '@/components/discovery/EventTableView';
@@ -57,6 +60,30 @@ export function EventsExplorer({
   const [viewMode, setViewMode] = React.useState<'grid' | 'table'>('grid');
   const [visibleCount, setVisibleCount] = React.useState(INITIAL_PAGE_SIZE);
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = React.useState(false);
+  // Shortlist compare tray: event ids pinned for side-by-side comparison.
+  const [shortlist, setShortlist] = React.useState<string[]>(() => {
+    const raw = searchParams.get('compare') || '';
+    return raw.split(',').map((s) => s.trim()).filter(Boolean);
+  });
+
+  const lowestPriceOf = (e: { ticketTiers?: Array<{ price: number }>; lowestPrice?: number }) => {
+    if (typeof e.lowestPrice === 'number') return e.lowestPrice;
+    if (e.ticketTiers && e.ticketTiers.length > 0) {
+      return Math.min(...e.ticketTiers.map((t) => t.price));
+    }
+    return 0;
+  };
+
+  const toggleShortlist = (id: string) => {
+    setShortlist((prev) => {
+      const next = prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id].slice(0, 4);
+      const params = new URLSearchParams(window.location.search);
+      if (next.length > 0) params.set('compare', next.join(','));
+      else params.delete('compare');
+      window.history.replaceState(null, '', `${window.location.pathname}?${params.toString()}`);
+      return next;
+    });
+  };
 
   // Reset pagination when filters or sort change
   React.useEffect(() => {
@@ -217,6 +244,14 @@ export function EventsExplorer({
       if (sortBy === 'title_asc') {
         return a.title.localeCompare(b.title);
       }
+      if (sortBy === 'price_asc' || sortBy === 'price_desc') {
+        const pa = lowestPriceOf(a);
+        const pb = lowestPriceOf(b);
+        return sortBy === 'price_asc' ? pa - pb : pb - pa;
+      }
+      if (sortBy === 'ending_soon') {
+        return new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
+      }
       return 0;
     });
   }, [initialEvents, filters, sortBy]);
@@ -325,6 +360,9 @@ export function EventsExplorer({
                 <EventTableView
                   events={displayedEvents}
                   locale={locale}
+                  shortlistedIds={shortlist}
+                  onToggleShortlist={toggleShortlist}
+                  shortlistLabel={tDisc('shortlistCompare') || 'Compare this event'}
                 />
                 {visibleCount < filteredAndSortedEvents.length && (
                   <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-border/60">
@@ -354,6 +392,9 @@ export function EventsExplorer({
                       event={event}
                       locale={locale}
                       priority={idx < 3}
+                      shortlisted={shortlist.includes(event.id)}
+                      onToggleShortlist={toggleShortlist}
+                      shortlistLabel={tDisc('shortlistCompare') || 'Compare this event'}
                     />
                   ))}
                 </div>
@@ -380,6 +421,63 @@ export function EventsExplorer({
           </main>
         </div>
       </section>
+
+      {/* Shortlist compare tray */}
+      {shortlist.length > 0 && (
+        <div
+          role="region"
+          aria-label={tDisc('shortlistCompareTitle') || 'Event shortlist comparison'}
+          className="fixed bottom-4 inset-x-4 sm:inset-x-auto sm:right-6 sm:w-[420px] z-40 rounded-2xl border border-border/80 bg-background/95 backdrop-blur-md shadow-2xl p-4 space-y-3 animate-fade-in"
+        >
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-1.5 text-xs font-bold text-foreground">
+              <Scale className="h-3.5 w-3.5 text-primary" />
+              <span>{tDisc('shortlistCompareTitle') || 'Compare Events'} ({shortlist.length}/4)</span>
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                const params = new URLSearchParams(window.location.search);
+                params.delete('compare');
+                window.history.replaceState(null, '', `${window.location.pathname}?${params.toString()}`);
+                setShortlist([]);
+              }}
+              className="h-8 px-2 text-xs text-muted-foreground hover:text-foreground cursor-pointer"
+            >
+              {tDisc('clearAll') || 'Clear all'}
+            </Button>
+          </div>
+          <ul className="space-y-2 max-h-56 overflow-y-auto pr-1">
+            {shortlist.map((id) => {
+              const evt = initialEvents.find((e) => e.id === id);
+              if (!evt) return null;
+              const price = lowestPriceOf(evt);
+              return (
+                <li key={id} className="flex items-start justify-between gap-2 rounded-xl border border-border/60 bg-card p-2.5 text-xs">
+                  <div className="min-w-0 space-y-0.5">
+                    <p className="font-bold text-foreground line-clamp-1">{evt.title}</p>
+                    <p className="text-muted-foreground truncate">
+                      {(evt as any).venue?.name || ''}{(evt as any).venueHall ? ` • ${(evt as any).venueHall.name}` : ''} · {formatDateRange(evt.startDate, evt.endDate, locale)}
+                    </p>
+                    <p className="font-semibold text-foreground tabular-nums">
+                      {price > 0 ? formatCurrency(price, (((evt as any).ticketTiers?.[0]?.currency || (evt as any).region?.currency || 'IDR')) as SupportedCurrency, locale) : (tDisc('freeAdmission') || 'Free admission')}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => toggleShortlist(id)}
+                    aria-label={`${tDisc('shortlistRemove') || 'Remove from comparison'}: ${evt.title}`}
+                    className="flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
 
       {/* Mobile / Tablet Filter Drawer */}
       <Drawer

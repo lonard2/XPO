@@ -335,7 +335,11 @@
     "clusterFilterLabel": "Filtrar categorías MICE por clúster industrial",
     "showAllCount": "Mostrar todo ({count})",
     "verticalCount": "{count} verticales",
-    "clusterSubtitle": "Mostrando categorías MICE especializadas de este sector."
+    "clusterSubtitle": "Mostrando categorías MICE especializadas de este sector.",
+    "freeAdmission": "Entrada gratuita",
+    "shortlistCompare": "Comparar este evento",
+    "shortlistCompareTitle": "Comparar eventos",
+    "shortlistRemove": "Quitar de la comparación"
   },
   "events": {
     "title": "Directorio de Eventos y Calendario",
@@ -398,7 +402,10 @@
     "regOpen": "Registro abierto",
     "freePass": "Pase comercial gratis",
     "fromPrice": "Desde",
-    "mainVenue": "Sede principal"
+    "mainVenue": "Sede principal",
+    "sortPriceAsc": "Precio: menor primero",
+    "sortPriceDesc": "Precio: mayor primero",
+    "sortEndingSoon": "Termina pronto"
   },
   "venues": {
     "title": "Recintos Feriales y Directorio de Pabellones",

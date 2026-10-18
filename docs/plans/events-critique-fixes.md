@@ -13,7 +13,7 @@ in place (no tile-engine transplant).
   (status, then curation); archetype + format move to body metadata.
 - [x] **4. Harden table view** (`$impeccable harden`): full i18n, focus-visible
   states, 44px targets, real toolbar role.
-- [ ] **5. Shape comparison** (`$impeccable shape`): price + ending-soon sorts,
+- [x] **5. Shape comparison** (`$impeccable shape`): price + ending-soon sorts,
   shortlist compare tray.
 - [ ] **6. Polish final pass** (`$impeccable polish`): detector, screenshots,
   full suite green.

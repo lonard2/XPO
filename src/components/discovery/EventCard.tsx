@@ -10,6 +10,7 @@ import {
   ArrowRight,
   Layers,
   ShieldCheck,
+  Scale,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
 import { buttonVariants } from '@/components/ui/Button';
@@ -26,6 +27,9 @@ export interface EventCardProps {
   className?: string;
   variant?: 'grid' | 'compact' | 'horizontal';
   priority?: boolean;
+  shortlisted?: boolean;
+  onToggleShortlist?: (id: string) => void;
+  shortlistLabel?: string;
 }
 
 export const EventCard = React.memo(function EventCard({
@@ -34,6 +38,9 @@ export const EventCard = React.memo(function EventCard({
   className,
   variant = 'grid',
   priority = false,
+  shortlisted = false,
+  onToggleShortlist,
+  shortlistLabel,
 }: EventCardProps) {
   const tArch = useTranslations('archetypes');
   const tCom = useTranslations('common');
@@ -165,6 +172,24 @@ export const EventCard = React.memo(function EventCard({
             </Badge>
           )}
         </div>
+
+        {onToggleShortlist && (
+          <button
+            type="button"
+            onClick={() => onToggleShortlist(event.id)}
+            aria-pressed={shortlisted}
+            aria-label={shortlistLabel || 'Compare this event'}
+            title={shortlistLabel || 'Compare this event'}
+            className={cn(
+              'absolute top-2.5 right-2.5 z-10 flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full border shadow-sm backdrop-blur-sm transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+              shortlisted
+                ? 'border-primary bg-primary text-primary-foreground'
+                : 'border-border bg-background/90 text-muted-foreground hover:text-foreground'
+            )}
+          >
+            <Scale className="h-4 w-4" />
+          </button>
+        )}
       </div>
 
       {/* Main Content Details */}

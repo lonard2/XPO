@@ -335,7 +335,11 @@
     "clusterFilterLabel": "Filter kategori MICE berdasarkan klaster industri",
     "showAllCount": "Tampilkan Semua ({count})",
     "verticalCount": "{count} Vertikal",
-    "clusterSubtitle": "Menampilkan kategori MICE khusus di sektor ini."
+    "clusterSubtitle": "Menampilkan kategori MICE khusus di sektor ini.",
+    "freeAdmission": "Gratis",
+    "shortlistCompare": "Bandingkan acara ini",
+    "shortlistCompareTitle": "Bandingkan Acara",
+    "shortlistRemove": "Hapus dari perbandingan"
   },
   "events": {
     "title": "Direktori Acara & Jadwal",
@@ -398,7 +402,10 @@
     "regOpen": "Pendaftaran Dibuka",
     "freePass": "Pass Dagang Gratis",
     "fromPrice": "Mulai",
-    "mainVenue": "Venue Utama"
+    "mainVenue": "Venue Utama",
+    "sortPriceAsc": "Harga: Termurah",
+    "sortPriceDesc": "Harga: Termahal",
+    "sortEndingSoon": "Segera Berakhir"
   },
   "venues": {
     "title": "Pusat Konvensi & Direktori Hall",

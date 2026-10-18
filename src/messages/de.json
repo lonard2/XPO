@@ -335,7 +335,11 @@
     "clusterFilterLabel": "MICE-Kategorien nach Branchencluster filtern",
     "showAllCount": "Alle anzeigen ({count})",
     "verticalCount": "{count} Bereiche",
-    "clusterSubtitle": "Spezialisierte MICE-Kategorien in diesem Sektor."
+    "clusterSubtitle": "Spezialisierte MICE-Kategorien in diesem Sektor.",
+    "freeAdmission": "Freier Eintritt",
+    "shortlistCompare": "Dieses Event vergleichen",
+    "shortlistCompareTitle": "Events vergleichen",
+    "shortlistRemove": "Aus Vergleich entfernen"
   },
   "events": {
     "title": "Messeverzeichnis & Kalender",
@@ -398,7 +402,10 @@
     "regOpen": "Registrierung offen",
     "freePass": "Gratis-Messepass",
     "fromPrice": "Ab",
-    "mainVenue": "Hauptvenue"
+    "mainVenue": "Hauptvenue",
+    "sortPriceAsc": "Preis aufsteigend",
+    "sortPriceDesc": "Preis absteigend",
+    "sortEndingSoon": "Endet bald"
   },
   "venues": {
     "title": "Kongresszentren & Hallenverzeichnis",
