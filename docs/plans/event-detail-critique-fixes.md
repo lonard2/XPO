@@ -16,7 +16,9 @@ backed by event data — no sample labels).
   guidebook, floor-map strings into dictionaries.
 - [x] **5. Audit detail a11y** (`$impeccable audit`): 44px controls,
   nested-interactive and booth-keyboard pass.
-- [ ] **6. Polish final pass** (`$impeccable polish`): detector, screenshots,
+- [x] **6. Polish final pass** (`$impeccable polish`): detector, screenshots,
   full suite green.
 
 Each ships as its own commit pushed to `origin/main`. Verify by execution.
+
+Verified: detector exit 0 with [] on five targets; tsc clean; 691 tests pass; desktop + mobile screenshots reviewed; dev server stopped, browser closed.
