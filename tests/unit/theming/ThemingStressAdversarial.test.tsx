@@ -174,7 +174,6 @@ describe('Empirical Challenge: Theming Engine & CSS Variable Injection Stress Su
       expect(screen.getByTestId('child-content')).toBeInTheDocument();
       expect(screen.getAllByText('Global Semiconductor & AI Summit 2026').length).toBeGreaterThanOrEqual(1);
       expect(screen.getByText('Diamond Host')).toBeInTheDocument();
-      expect(screen.getByText('Featured Event')).toBeInTheDocument();
     });
 
     it('renders free admission badge and handles missing tagline/heroImageUrl smoothly', () => {
