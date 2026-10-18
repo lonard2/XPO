@@ -20,6 +20,7 @@ import {
   Activity,
   CheckCircle2,
   Sliders,
+  CalendarDays,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth/session";
 import { getRoleBadgeVariant } from "@/lib/auth/rbac";
@@ -52,6 +53,12 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       description: "Relational venues, exact halls & GPS visualizer",
     },
     {
+      href: `/${locale}/admin/events`,
+      label: "Event Governance",
+      icon: CalendarDays,
+      description: "Platform & organizer events, ownership & removal",
+    },
+    {
       href: `/${locale}/admin/crawler`,
       label: "Ingestion Crawler Engine",
       icon: RefreshCw,
@@ -73,6 +80,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       crumbs.push({ label: "Dashboard", href: `/${locale}/admin/dashboard` });
     } else if (pathname.includes("/admin/venues")) {
       crumbs.push({ label: "Venue Directory", href: `/${locale}/admin/venues` });
+    } else if (pathname.includes("/admin/events")) {
+      crumbs.push({ label: "Event Governance", href: `/${locale}/admin/events` });
     } else if (pathname.includes("/admin/crawler")) {
       crumbs.push({ label: "Crawler Ingestion", href: `/${locale}/admin/crawler` });
     } else if (pathname.includes("/admin/audit")) {
