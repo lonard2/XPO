@@ -25,6 +25,7 @@ describe("ShowcaseEditor authoring", () => {
     fireEvent.change(screen.getByLabelText("Alert 1"), {
       target: { value: "Doors open at 08:00" },
     });
+    fireEvent.click(screen.getByLabelText(/confirm this content is accurate/i));
 
     await act(async () => {
       fireEvent.click(screen.getByRole("button", { name: /save showcase/i }));
@@ -47,8 +48,23 @@ describe("ShowcaseEditor authoring", () => {
     vi.stubGlobal("fetch", fetchMock);
 
     render(<ShowcaseEditor eventId="evt-1" initialJson={null} />);
+    fireEvent.click(screen.getByLabelText(/confirm this content is accurate/i));
     fireEvent.change(screen.getByLabelText("Stream URL"), {
       target: { value: "not a url" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /save showcase/i }));
+
+    expect(await screen.findByRole("alert")).toBeInTheDocument();
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("requires attestation before saving", async () => {
+    const fetchMock = vi.fn();
+    vi.stubGlobal("fetch", fetchMock);
+
+    render(<ShowcaseEditor eventId="evt-1" initialJson={null} />);
+    fireEvent.change(screen.getByLabelText("Stream URL"), {
+      target: { value: "https://stream.example.com/live" },
     });
     fireEvent.click(screen.getByRole("button", { name: /save showcase/i }));
 

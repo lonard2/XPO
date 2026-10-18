@@ -41,6 +41,17 @@ export async function PATCH(request: Request, { params }: RouteProps) {
       );
     }
 
+    // Attestation is mandatory on every save: the publisher confirms accuracy.
+    if (body.attested !== true) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Attestation required: confirm the content is accurate before saving.",
+        },
+        { status: 400 }
+      );
+    }
+
     const parsed = validateShowcase(body.showcase ?? body);
     if (!parsed.ok) {
       return NextResponse.json(
@@ -49,10 +60,17 @@ export async function PATCH(request: Request, { params }: RouteProps) {
       );
     }
 
+    const nowIso = new Date().toISOString();
     const updated = await db.event.update({
       where: { id: existing.id },
       data: {
-        showcaseJson: JSON.stringify({ ...parsed.data, updatedAt: new Date().toISOString() }),
+        showcaseJson: JSON.stringify({
+          ...parsed.data,
+          attested: true,
+          attestedBy: caller.userId || caller.email || caller.role || "unknown",
+          attestedAt: nowIso,
+          updatedAt: nowIso,
+        }),
       },
       select: { id: true, slug: true, showcaseJson: true, updatedAt: true },
     });

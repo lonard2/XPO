@@ -49,13 +49,31 @@ describe("showcase PATCH ownership and validation", () => {
           "x-xpo-user-role": "ORGANIZER",
           "x-xpo-user-id": seed!.organizerId || "nobody",
         },
-        body: JSON.stringify({ alerts: ["Probe alert"] }),
+        body: JSON.stringify({ attested: true, alerts: ["Probe alert"] }),
       }
     );
     const stored = await patchShowcase(ownerReq, { params: Promise.resolve({ id: seed!.id }) });
     expect(stored.status).toBe(200);
     const storedJson = await stored.json();
     expect(JSON.parse(storedJson.event.showcaseJson).alerts).toEqual(["Probe alert"]);
+    expect(JSON.parse(storedJson.event.showcaseJson).attested).toBe(true);
+    expect(JSON.parse(storedJson.event.showcaseJson).attestedBy).toBe(seed!.organizerId);
+
+    // Unattested saves are rejected even for the owner.
+    const unattestedReq = new NextRequest(
+      `http://localhost:3000/api/organizer/events/${seed!.id}/showcase`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "x-xpo-user-role": "ORGANIZER",
+          "x-xpo-user-id": seed!.organizerId || "nobody",
+        },
+        body: JSON.stringify({ alerts: ["No attestation"] }),
+      }
+    );
+    const unattested = await patchShowcase(unattestedReq, { params: Promise.resolve({ id: seed!.id }) });
+    expect(unattested.status).toBe(400);
 
     await db.event.update({
       where: { id: seed!.id },

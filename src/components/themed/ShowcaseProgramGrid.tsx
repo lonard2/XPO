@@ -4,6 +4,7 @@ import * as React from "react";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import type { ShowcaseProgram } from "@/lib/showcase";
+import { showcaseAgeDays, showcaseDateLabel, SHOWCASE_STALE_DAYS } from "@/lib/showcase";
 import { cn } from "@/lib/utils";
 
 interface ShowcaseProgramGridProps {
@@ -13,6 +14,9 @@ interface ShowcaseProgramGridProps {
   programs: ShowcaseProgram[];
   accentClass?: string;
   className?: string;
+  locale?: string;
+  /** ISO timestamp of last attestation; renders the content-age stamp. */
+  stampedAt?: string | null;
 }
 
 /**
@@ -26,8 +30,14 @@ export function ShowcaseProgramGrid({
   programs,
   accentClass,
   className,
+  locale = "en",
+  stampedAt,
 }: ShowcaseProgramGridProps) {
   if (!programs || programs.length === 0) return null;
+
+  const ageDays = stampedAt ? showcaseAgeDays({ attestedAt: stampedAt }) : null;
+  const dateLabel = stampedAt ? showcaseDateLabel({ attestedAt: stampedAt }, locale) : null;
+  const stale = ageDays !== null && ageDays > SHOWCASE_STALE_DAYS;
 
   return (
     <section className={cn("space-y-4", className)}>
@@ -38,6 +48,12 @@ export function ShowcaseProgramGrid({
         <h3 className="text-xl font-bold text-foreground">{title}</h3>
         {description && (
           <p className="text-xs sm:text-sm text-muted-foreground mt-1">{description}</p>
+        )}
+        {dateLabel && (
+          <p className="text-[11px] text-muted-foreground mt-1">
+            Organizer content · updated {dateLabel}
+            {stale && " · may be outdated — verify with the organizer"}
+          </p>
         )}
       </div>
 

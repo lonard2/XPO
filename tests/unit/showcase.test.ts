@@ -3,7 +3,10 @@ import {
   parseShowcase,
   validateShowcase,
   isEmptyShowcase,
+  showcaseAgeDays,
+  showcaseDateLabel,
   SHOWCASE_LIMITS,
+  SHOWCASE_STALE_DAYS,
 } from "@/lib/showcase";
 
 describe("showcase content model", () => {
@@ -38,5 +41,16 @@ describe("showcase content model", () => {
       })),
     });
     expect(tooMany.ok).toBe(false);
+  });
+
+  it("defaults attestation off and measures content age", () => {
+    const parsed = parseShowcase({});
+    expect(parsed.attested).toBe(false);
+    expect(showcaseAgeDays(parsed)).toBeNull();
+    expect(showcaseDateLabel(parsed)).toBeNull();
+
+    const old = { attestedAt: new Date(Date.now() - 200 * 86400000).toISOString() };
+    expect((showcaseAgeDays(old) || 0) > SHOWCASE_STALE_DAYS).toBe(true);
+    expect(showcaseDateLabel(old, "en")).toMatch(/\d{4}/);
   });
 });

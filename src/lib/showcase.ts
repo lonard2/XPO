@@ -38,6 +38,11 @@ export const ShowcaseContentSchema = z.object({
     .default([]),
   channels: z.array(ChannelRowSchema).max(SHOWCASE_LIMITS.channels).default([]),
   updatedAt: z.string().optional(),
+  // Organizer attestation: the publisher confirms accuracy. Set server-side
+  // from the caller on every save; client values are never trusted.
+  attested: z.boolean().optional().default(false),
+  attestedBy: z.string().optional().default(""),
+  attestedAt: z.string().optional(),
 });
 
 export type ShowcaseContent = z.infer<typeof ShowcaseContentSchema>;
@@ -78,4 +83,37 @@ export function isEmptyShowcase(s: ShowcaseContent): boolean {
     s.alerts.length === 0 &&
     s.channels.length === 0
   );
+}
+
+/** Minimal stamp shape for age helpers (subset of ShowcaseContent). */
+export interface ShowcaseStamp {
+  attestedAt?: string | null;
+  updatedAt?: string | null;
+}
+
+/** Days since the showcase was last attested, or null when never. */
+export function showcaseAgeDays(s: ShowcaseStamp, now = Date.now()): number | null {
+  const stamp = s.attestedAt || s.updatedAt;
+  if (!stamp) return null;
+  const t = new Date(stamp).getTime();
+  if (Number.isNaN(t)) return null;
+  return Math.max(0, Math.floor((now - t) / 86400000));
+}
+
+/** Content older than this reads as stale in views. */
+export const SHOWCASE_STALE_DAYS = 180;
+
+/** Short date for age stamps (locale-aware, never throws). */
+export function showcaseDateLabel(s: ShowcaseStamp, locale = "en"): string | null {
+  const stamp = s.attestedAt || s.updatedAt;
+  if (!stamp) return null;
+  try {
+    return new Date(stamp).toLocaleDateString(locale, {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  } catch {
+    return null;
+  }
 }

@@ -19,6 +19,7 @@ export interface AdminEventItem {
   organizerId?: string | null;
   organizerName?: string | null;
   isPlatformCurated?: boolean;
+  showcaseJson?: string | null;
   venue?: { name: string; city?: string } | null;
   organizer?: { name: string; organization?: string | null } | null;
   _count?: { ticketTiers: number; booths: number; bookings: number };
@@ -37,6 +38,25 @@ function isCurated(e: AdminEventItem) {
 function ownerLabel(e: AdminEventItem) {
   if (isCurated(e)) return "XPO Platform Administration";
   return e.organizer?.organization || e.organizer?.name || e.organizerName || "External organizer";
+}
+
+/** Admin visibility: who published showcase content and when, if any. */
+function showcaseLine(e: AdminEventItem): string | null {
+  if (!e.showcaseJson) return null;
+  try {
+    const s = JSON.parse(e.showcaseJson);
+    const rows =
+      (Array.isArray(s.programs) ? s.programs.length : 0) +
+      (Array.isArray(s.alerts) ? s.alerts.length : 0) +
+      (Array.isArray(s.channels) ? s.channels.length : 0) +
+      (s.livestreamUrl ? 1 : 0);
+    if (rows === 0) return null;
+    const who = s.attestedBy || "unattested";
+    const when = s.attestedAt ? ` · ${String(s.attestedAt).slice(0, 10)}` : "";
+    return `Showcase: ${rows} row${rows === 1 ? "" : "s"} · by ${who}${when}`;
+  } catch {
+    return null;
+  }
 }
 
 export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: AdminEventsConsoleClientProps) {
@@ -143,6 +163,9 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
             {e.startDate ? ` · ${new Date(e.startDate).toLocaleDateString(locale)}` : ""}
             {e._count ? ` · ${e._count.bookings} passes · ${e._count.booths} booths` : ""}
           </p>
+          {showcaseLine(e) && (
+            <p className="text-[11px] text-muted-foreground truncate">{showcaseLine(e)}</p>
+          )}
         </div>
         <div className="flex items-center gap-2 shrink-0 flex-wrap">
           {isCurated(e) ? (

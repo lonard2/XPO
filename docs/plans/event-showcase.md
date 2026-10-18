@@ -12,7 +12,7 @@ stays hidden (gating from event-detail fixes already supports this).
   (program rows, alerts, channels, stream URL + go-live) with validation.
 - [x] **Phase 3 — View wiring**: one gated block per view, rendered only with
   data; silent empties.
-- [ ] **Phase 4 — Trust rails**: organizer attestation, admin visibility, and
+- [x] **Phase 4 — Trust rails**: organizer attestation, admin visibility, and
   content-age stamps.
 - [ ] **Phase 5 — Verification**: seeded content per type, render/hide tests,
   live pass.

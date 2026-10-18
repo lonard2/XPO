@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
 import { type ArchetypeViewProps } from "./IndustrialB2BView";
-import { parseShowcase } from "@/lib/showcase";
+import { parseShowcase, showcaseAgeDays, showcaseDateLabel, SHOWCASE_STALE_DAYS } from "@/lib/showcase";
 
 export function FaithPilgrimageCongressView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
 
@@ -84,6 +84,17 @@ export function FaithPilgrimageCongressView({ event, locale = "en", onSelectTier
             </div>
           ))}
         </div>
+        {(() => {
+          const dateLabel = showcaseDateLabel(showcase, locale);
+          if (!dateLabel) return null;
+          const stale = (showcaseAgeDays(showcase) || 0) > SHOWCASE_STALE_DAYS;
+          return (
+            <p className="text-[11px] text-muted-foreground mt-3">
+              Organizer content · updated {dateLabel}
+              {stale && " · may be outdated — verify with the organizer"}
+            </p>
+          );
+        })()}
       </section>
       )}
 

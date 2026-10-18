@@ -30,8 +30,12 @@ export function ShowcaseEditor({ eventId, initialJson, className }: ShowcaseEdit
   const [programs, setPrograms] = React.useState<ShowcaseProgram[]>(initial.programs);
   const [alerts, setAlerts] = React.useState<string[]>(initial.alerts);
   const [channels, setChannels] = React.useState(initial.channels);
+  const [attested, setAttested] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
   const [feedback, setFeedback] = React.useState<{ type: "success" | "error"; text: string } | null>(null);
+  const lastAttestation = initial.attestedBy
+    ? `${initial.attestedBy}${initial.attestedAt ? ` · ${initial.attestedAt.slice(0, 10)}` : ""}`
+    : null;
 
   const updateProgram = (i: number, patch: Partial<ShowcaseProgram>) =>
     setPrograms((prev) => prev.map((p, idx) => (idx === i ? { ...p, ...patch } : p)));
@@ -39,6 +43,11 @@ export function ShowcaseEditor({ eventId, initialJson, className }: ShowcaseEdit
   const save = async () => {
     setSaving(true);
     setFeedback(null);
+    if (!attested) {
+      setFeedback({ type: "error", text: "Confirm accuracy first: check the attestation box." });
+      setSaving(false);
+      return;
+    }
     const payload = {
       livestreamUrl: livestreamUrl.trim(),
       livestreamLive,
@@ -57,7 +66,7 @@ export function ShowcaseEditor({ eventId, initialJson, className }: ShowcaseEdit
       const res = await fetch(`/api/organizer/events/${eventId}/showcase`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(checked.data),
+        body: JSON.stringify({ ...checked.data, attested: true }),
       });
       const data = await res.json();
       if (!res.ok || !data.success) throw new Error(data.error || "Save failed.");
@@ -287,6 +296,22 @@ export function ShowcaseEditor({ eventId, initialJson, className }: ShowcaseEdit
           {saving ? "Saving…" : "Save Showcase"}
         </Button>
       </div>
+
+      <label className="flex items-start gap-2 rounded-lg border border-border/60 bg-muted/30 p-3 text-xs cursor-pointer min-h-[44px]">
+        <input
+          type="checkbox"
+          checked={attested}
+          onChange={(e) => setAttested(e.target.checked)}
+          className="mt-0.5 h-4 w-4 accent-primary shrink-0"
+        />
+        <span className="text-muted-foreground">
+          <span className="font-semibold text-foreground">I confirm this content is accurate</span> for
+          publication on the event page.
+          {lastAttestation && (
+            <span className="block mt-0.5">Last attested by {lastAttestation}.</span>
+          )}
+        </span>
+      </label>
     </div>
   );
 }
