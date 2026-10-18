@@ -368,6 +368,16 @@ export function OrganizerEventsRoster({ events, locale, title, description, hide
                   </div>
 
                   <div>
+                    {/* Ownership Identity */}
+                    {event.isPlatformCurated || !event.organizerId ? (
+                      <Badge variant="outline" className="text-[11px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 border-amber-500/40 bg-amber-500/10 px-2 py-0.5 mb-1.5">
+                        Platform Curated
+                      </Badge>
+                    ) : event.organizerName ? (
+                      <span className="block text-[11px] font-medium text-muted-foreground mb-1.5 truncate">
+                        {event.organizerName}
+                      </span>
+                    ) : null}
                     {/* Stretched Link on Card Title */}
                     <Link
                       href={`/${locale}/events/${event.id}/ai-reports`}

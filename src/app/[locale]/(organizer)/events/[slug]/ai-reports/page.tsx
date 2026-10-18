@@ -137,6 +137,9 @@ export default async function EventAIReportsPage({ params }: AIReportsPageProps)
           0
         ),
         currency: event.ticketTiers[0]?.currency || "IDR",
+        organizerId: event.organizerId,
+        organizerName: event.organizerName,
+        isPlatformCurated: event.isPlatformCurated,
         ticketTiers: event.ticketTiers.map((t: any) => ({
           id: t.id,
           name: t.name,

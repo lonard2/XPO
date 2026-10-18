@@ -187,6 +187,9 @@ export interface EventMetricsContext {
   totalCheckedIn: number;
   checkInRatePercent: number;
   grossRevenue: number;
+  organizerId?: string | null;
+  organizerName?: string | null;
+  isPlatformCurated?: boolean;
   currency: string;
   ticketTiers: Array<{
     id: string;

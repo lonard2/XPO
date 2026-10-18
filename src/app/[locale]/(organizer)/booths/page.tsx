@@ -1074,7 +1074,7 @@ export default function BoothManagerPage() {
               <option value="ALL">{tOrg("allEvents") || "All Registered Events"}</option>
               {events.map((ev) => (
                 <option key={ev.id} value={ev.id}>
-                  {ev.title}
+                  {ev.title}{ev.isPlatformCurated || !ev.organizerId ? " (Curated)" : ""}
                 </option>
               ))}
             </select>

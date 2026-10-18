@@ -298,6 +298,12 @@ export default function EventCustomizerPage() {
               <span>Back to Dashboard</span>
             </Link>
             <Badge variant="secondary" size="sm" className="font-semibold">Live Customizer</Badge>
+            {eventData && (eventData.isPlatformCurated || !eventData.organizerId) && (
+              <Badge variant="outline" size="sm" className="font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 border-amber-500/40 bg-amber-500/10">Platform Curated</Badge>
+            )}
+            {eventData && eventData.organizerId && eventData.organizerName && (
+              <span className="text-[11px] font-medium text-muted-foreground truncate max-w-[220px]">{eventData.organizerName}</span>
+            )}
           </div>
           <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground mt-1">
             {eventData?.title || "Visual Branding Customizer"}

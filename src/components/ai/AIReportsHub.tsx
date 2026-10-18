@@ -342,6 +342,11 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
             <Badge variant="archetype" size="sm">
               OpenRouter Multi-Model Gateway
             </Badge>
+            {(event.isPlatformCurated || !event.organizerId) && (
+              <Badge variant="outline" size="sm" className="font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 border-amber-500/40 bg-amber-500/10">
+                Platform Curated
+              </Badge>
+            )}
             <Badge variant="success" size="sm">
               6 Enterprise Models Online
             </Badge>
