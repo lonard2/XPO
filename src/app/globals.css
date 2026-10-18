@@ -214,6 +214,16 @@
     transition-duration: 0.001ms !important;
   }
 
+  /* OS-level vestibular safety: honor prefers-reduced-motion even before the
+     visitor finds the Motion Dynamics setting. */
+  @media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+
   .pb-safe {
     padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
   }

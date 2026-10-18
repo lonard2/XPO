@@ -119,7 +119,6 @@ export function MotionController({ className }: { className?: string }) {
             "p-4 rounded-lg border border-border bg-gradient-to-br from-card to-muted/40 cursor-pointer select-none",
             motionMode === "expressive" && "card-interactive-3d ambient-glow",
             motionMode === "subtle" && "transition-transform hover:-translate-y-1 hover:shadow-sm",
-            motionMode === "off" && "hover:none"
           )}
         >
           <div className="flex items-center justify-between">
