@@ -69,6 +69,7 @@ export default async function MyTicketsPage({ params }: MyTicketsPageProps) {
           {
             id: 'bk-mfg-2026-001',
             status: 'CONFIRMED',
+            isDemoPreview: true,
             qrCodeHash: 'XPO-PASS-BK-MFG-2026-001-A1B2C3D4E5F67890',
             attendeeName: 'Alex Pratama',
             attendeeEmail: 'alex@xpo.com',

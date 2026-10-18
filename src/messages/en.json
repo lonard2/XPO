@@ -715,7 +715,9 @@
     "passHolder": "Pass Holder",
     "tier": "Pass Tier",
     "venue": "Venue & Hall",
-    "showPass": "View Digital Pass"
+    "showPass": "View Digital Pass",
+    "demoPreview": "Demo Preview",
+    "demoPreviewNote": "Demo preview: sample pass for illustration, not a real credential."
   },
   "perks": {
     "treatsTitle": "Interactive Perks & Guidebook",

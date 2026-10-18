@@ -123,4 +123,15 @@ describe('PassWalletExplorer Component', () => {
     expect(screen.getByText('Manufacturing Indonesia 2026')).toBeInTheDocument();
     expect(screen.queryByText('Tokyo AI Summit 2025')).not.toBeInTheDocument();
   });
+
+  it('badges demo-preview bookings as demos, never real credentials', () => {
+    render(
+      <PassWalletExplorer
+        bookings={[{ ...mockBookings[0], isDemoPreview: true }]}
+        locale="en"
+      />
+    );
+
+    expect(screen.getAllByText(/demo preview/i).length).toBeGreaterThan(0);
+  });
 });

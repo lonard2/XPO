@@ -715,7 +715,9 @@
     "passHolder": "Pemegang Pas",
     "tier": "Kategori Pas",
     "venue": "Venue & Hall",
-    "showPass": "Lihat Pas Digital"
+    "showPass": "Lihat Pas Digital",
+    "demoPreview": "Pratinjau Demo",
+    "demoPreviewNote": "Pratinjau demo: pass contoh untuk ilustrasi, bukan kredensial asli."
   },
   "perks": {
     "treatsTitle": "Fasilitas & Buku Panduan Interaktif",

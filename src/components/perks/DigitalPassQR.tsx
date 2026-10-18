@@ -66,9 +66,11 @@ export interface DigitalPassQRProps {
     };
   };
   locale?: string;
+  /** Fallback sample data: bannered as demo, never a real credential. */
+  isDemoPreview?: boolean;
 }
 
-export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
+export function DigitalPassQR({ booking, locale = 'en', isDemoPreview = false }: DigitalPassQRProps) {
   const tTickets = useTranslations('tickets');
   const tCommon = useTranslations('common');
   const tMyTickets = useTranslations('myTickets');
@@ -170,6 +172,11 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
 
   return (
     <div className="space-y-6">
+      {isDemoPreview && (
+        <p role="status" className="text-xs font-semibold rounded-xl border border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-400 px-3 py-2">
+          {tMyTickets('demoPreviewNote') || 'Demo preview — sample pass for illustration, not a real credential.'}
+        </p>
+      )}
       {/* 1. Main Pass Container */}
       <div className="relative overflow-hidden rounded-3xl border border-border/80 bg-gradient-to-b from-card via-card/95 to-muted/30 shadow-xl print:shadow-none print:border-black">
         {/* Animated Security Watermark Banner */}
@@ -343,7 +350,6 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
                 <span>{tTickets('eventDates') || tCommon('date') || 'Event Dates'}</span>
               </div>
               <p className="font-semibold text-foreground text-sm">{formattedDate}</p>
-              <p className="text-xs text-muted-foreground">Standard Exhibition Hours</p>
             </div>
 
             <div className="p-4 rounded-2xl bg-muted/40 border border-border/50 space-y-1 sm:col-span-2 lg:col-span-1">

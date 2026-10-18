@@ -715,7 +715,9 @@
     "passHolder": "パス保持者",
     "tier": "パス種別",
     "venue": "会場＆ホール",
-    "showPass": "デジタルパスを表示"
+    "showPass": "デジタルパスを表示",
+    "demoPreview": "デモプレビュー",
+    "demoPreviewNote": "デモプレビュー:説明用のサンプルパスであり、正式な証明ではありません。"
   },
   "perks": {
     "treatsTitle": "来場特典＆デジタルガイドブック",

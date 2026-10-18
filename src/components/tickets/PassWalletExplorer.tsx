@@ -32,6 +32,8 @@ export interface BookingSummary {
   attendeeName: string;
   attendeeEmail: string;
   createdAt: Date | string;
+  /** Fallback sample data: labeled as demo everywhere it renders. */
+  isDemoPreview?: boolean;
   ticketTier: {
     id: string;
     name: string;
@@ -279,10 +281,17 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
 
         {/* Dynamic Summary Bar */}
         <div className="flex items-center justify-between border-t border-border/60 pt-3 text-xs text-muted-foreground">
-          <span>
-            {tMy('showing') || 'Showing'} <strong className="text-foreground">{filteredBookings.length}</strong>{' '}
-            {tMy('of') || 'of'} <strong className="text-foreground">{bookings.length}</strong>{' '}
-            {tMy('registeredPasses') || 'registered passes'}
+          <span className="flex items-center gap-2 flex-wrap">
+            <span>
+              {tMy('showing') || 'Showing'} <strong className="text-foreground">{filteredBookings.length}</strong>{' '}
+              {tMy('of') || 'of'} <strong className="text-foreground">{bookings.length}</strong>{' '}
+              {tMy('registeredPasses') || 'registered passes'}
+            </span>
+            {bookings.some((b) => b.isDemoPreview) && (
+              <Badge variant="outline" size="sm" className="text-[11px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 border-amber-500/40 bg-amber-500/10">
+                {tMy('demoPreview') || 'Demo Preview'}
+              </Badge>
+            )}
           </span>
 
           {(searchQuery || selectedRegion !== 'all' || activeTab !== 'upcoming') && (
@@ -332,9 +341,16 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
                 {/* Card Header Strip */}
                 <div className="p-5 space-y-3.5">
                   <div className="flex items-start justify-between gap-2">
-                    <Badge variant="secondary" size="sm" className="font-semibold uppercase tracking-wider text-xs">
-                      {booking.ticketTier.name}
-                    </Badge>
+                    <span className="flex items-center gap-1.5 flex-wrap">
+                      <Badge variant="secondary" size="sm" className="font-semibold uppercase tracking-wider text-xs">
+                        {booking.ticketTier.name}
+                      </Badge>
+                      {booking.isDemoPreview && (
+                        <Badge variant="outline" size="sm" className="text-[11px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 border-amber-500/40 bg-amber-500/10">
+                          {tMy('demoPreview') || 'Demo Preview'}
+                        </Badge>
+                      )}
+                    </span>
 
                     {isCheckedIn ? (
                       <Badge variant="success" size="sm" className="gap-1 font-semibold text-xs">

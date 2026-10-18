@@ -715,7 +715,9 @@
     "passHolder": "Titular del Pase",
     "tier": "Categoría de Pase",
     "venue": "Recinto y Pabellón",
-    "showPass": "Ver Pase Digital"
+    "showPass": "Ver Pase Digital",
+    "demoPreview": "Vista demo",
+    "demoPreviewNote": "Vista demo: pase de muestra ilustrativo, no una credencial real."
   },
   "perks": {
     "treatsTitle": "Ventajas Interactivas y Guía",

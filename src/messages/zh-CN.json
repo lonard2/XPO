@@ -715,7 +715,9 @@
     "passHolder": "持证人",
     "tier": "票种类型",
     "venue": "场馆与展厅",
-    "showPass": "查看电子通行证"
+    "showPass": "查看电子通行证",
+    "demoPreview": "演示预览",
+    "demoPreviewNote": "演示预览:仅用于说明的示例通行证，非真实凭证。"
   },
   "perks": {
     "treatsTitle": "参会专属权益与数字指南",

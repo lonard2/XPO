@@ -53,15 +53,16 @@ const PERK_ICONS: Record<string, React.ComponentType<{ className?: string }>> = 
 };
 
 // Default fallback redemption counters for standard MICE perks
+// Neutral fallback counters: never invent venue-specific locations.
 const DEFAULT_LOCATIONS: Record<string, string> = {
-  Coffee: 'Main Concourse • Specialty Barista Hub',
-  Wifi: 'All Exhibition Halls • High-Density SSID',
-  Gift: 'VIP Delegate Welcome Counter',
-  Download: 'Digital Cloud • Instant PDF Download',
-  FileText: 'Plenary Foyer • Proceedings Desk',
-  Award: 'Executive Lounge • Concierge Suite',
-  ShieldCheck: 'Gate Turnstile • Priority Fast-Track',
-  Sparkles: 'East Wing • Networking Zone',
+  Coffee: 'Location TBC (see event map)',
+  Wifi: 'Location TBC (see event map)',
+  Gift: 'Location TBC (see event map)',
+  Download: 'Location TBC (see event map)',
+  FileText: 'Location TBC (see event map)',
+  Award: 'Location TBC (see event map)',
+  ShieldCheck: 'Location TBC (see event map)',
+  Sparkles: 'Location TBC (see event map)',
 };
 
 export function TierPerksGating({
@@ -160,7 +161,7 @@ export function TierPerksGating({
           const isClaimed = claimedPerkIds.has(perk.id);
           const IconComponent = PERK_ICONS[perk.iconName] || Gift;
           const isShowingVoucher = activeVoucherId === perk.id;
-          const redemptionLocation = perk.location || DEFAULT_LOCATIONS[perk.iconName] || 'Exhibition Hall Concourse';
+          const redemptionLocation = perk.location || DEFAULT_LOCATIONS[perk.iconName] || 'Location TBC (see event map)';
 
           const voucherCode = `XPO-${bookingId.substring(3, 8).toUpperCase()}-${perk.id.substring(0, 4).toUpperCase()}`;
 

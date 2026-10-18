@@ -715,7 +715,9 @@
     "passHolder": "Passinhaber",
     "tier": "Pass-Kategorie",
     "venue": "Messezentrum & Halle",
-    "showPass": "Digitalen Pass ansehen"
+    "showPass": "Digitalen Pass ansehen",
+    "demoPreview": "Demo-Vorschau",
+    "demoPreviewNote": "Demo-Vorschau: Beispielpass zur Veranschaulichung, keine echte Berechtigung."
   },
   "perks": {
     "treatsTitle": "Interaktive Vorteile & Leitfaden",

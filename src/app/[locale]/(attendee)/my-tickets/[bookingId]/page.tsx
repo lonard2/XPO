@@ -115,6 +115,7 @@ export default async function DigitalPassDetailPage({ params }: DigitalPassPageP
       booking = {
         id: bookingId || 'bk-demo-001',
         status: 'CONFIRMED',
+        isDemoPreview: true,
         qrCodeHash: `XPO-PASS-${bookingId || 'DEMO'}-A1B2C3D4E5F67890`,
         attendeeName: 'Alex Pratama',
         attendeeEmail: 'alex@xpo.com',
@@ -166,7 +167,7 @@ export default async function DigitalPassDetailPage({ params }: DigitalPassPageP
 
         {/* 3. Cryptographic Digital Pass QR Section */}
         <section id="digital-pass-section" className="space-y-4">
-          <DigitalPassQR booking={booking} locale={locale} />
+          <DigitalPassQR booking={booking} locale={locale} isDemoPreview={(booking as any).isDemoPreview === true} />
         </section>
 
         {/* 4. Tier-Gated Event Day Treats & Vouchers */}
