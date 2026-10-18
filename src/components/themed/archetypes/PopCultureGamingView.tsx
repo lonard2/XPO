@@ -150,6 +150,8 @@ export function PopCultureGamingView({ event, locale = "en", onSelectTier }: Arc
           title="Creators, Guests & Lineup"
           description="Appearances published by the organizer."
           programs={showcasePrograms}
+          locale={locale}
+          stampedAt={showcase.attestedAt}
         />
       )}
 

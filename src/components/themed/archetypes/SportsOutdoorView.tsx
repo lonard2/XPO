@@ -67,6 +67,8 @@ export function SportsOutdoorView({ event, locale = "en", onSelectTier }: Archet
           title="Featured Competitions & Trial Circuits"
           description="Competitions and trial circuits published by the organizer."
           programs={showcasePrograms}
+          locale={locale}
+          stampedAt={showcase.attestedAt}
         />
       )}
     </div>

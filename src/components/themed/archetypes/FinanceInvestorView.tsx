@@ -160,6 +160,8 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier }: Arch
           title="Curated Pitch Decks & Venture Pipeline"
           description="Founder decks published by the organizer for accredited investors."
           programs={showcasePrograms}
+          locale={locale}
+          stampedAt={showcase.attestedAt}
         />
       )}
 

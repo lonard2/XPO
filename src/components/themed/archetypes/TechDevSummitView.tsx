@@ -217,6 +217,8 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier }: Archet
             title="Bounty Tracks"
             description="Prizes and challenges published by the organizer."
             programs={bountyPrograms}
+            locale={locale}
+            stampedAt={showcase.attestedAt}
           />
         )}
       </section>

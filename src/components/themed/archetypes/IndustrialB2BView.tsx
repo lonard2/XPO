@@ -204,6 +204,8 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier }: Archet
           title="Featured Exhibits & Demonstrations"
           description="Demonstrations and highlights published by the organizer."
           programs={showcasePrograms}
+          locale={locale}
+          stampedAt={showcase.attestedAt}
         />
       )}
 

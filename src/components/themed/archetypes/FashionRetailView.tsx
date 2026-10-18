@@ -84,6 +84,8 @@ export function FashionRetailView({ event, locale = "en", onSelectTier }: Archet
           title="Featured Collections & Presentations"
           description="Runway slots and showroom programs published by the organizer."
           programs={showcasePrograms}
+          locale={locale}
+          stampedAt={showcase.attestedAt}
         />
       )}
 
