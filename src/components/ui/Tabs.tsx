@@ -42,9 +42,27 @@ export function Tabs({
 }
 
 export function TabsList({ children, className }: { children: React.ReactNode; className?: string }) {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (!["ArrowRight", "ArrowLeft", "Home", "End"].includes(e.key)) return;
+    e.preventDefault();
+    const tabs = Array.from(
+      (e.currentTarget as HTMLElement).querySelectorAll('[role="tab"]:not([disabled])')
+    ) as HTMLElement[];
+    if (tabs.length === 0) return;
+    const active = document.activeElement as HTMLElement | null;
+    let idx = active ? tabs.indexOf(active) : -1;
+    if (e.key === "ArrowRight") idx = (idx + 1) % tabs.length;
+    else if (e.key === "ArrowLeft") idx = (idx - 1 + tabs.length) % tabs.length;
+    else if (e.key === "Home") idx = 0;
+    else idx = tabs.length - 1;
+    tabs[idx]?.focus();
+    tabs[idx]?.click();
+  };
+
   return (
     <div
       role="tablist"
+      onKeyDown={handleKeyDown}
       className={cn(
         "inline-flex h-10 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground",
         className
@@ -73,12 +91,15 @@ export function TabsTrigger({
   return (
     <button
       role="tab"
+      id={`tab-${value}`}
+      aria-controls={`panel-${value}`}
       type="button"
       disabled={disabled}
       aria-selected={isSelected}
+      tabIndex={isSelected ? 0 : -1}
       onClick={() => ctx.onSelectTab(value)}
       className={cn(
-        "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5 text-xs sm:text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+        "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5 min-h-[44px] sm:min-h-[36px] text-xs sm:text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
         isSelected
           ? "bg-background text-foreground shadow-sm font-semibold"
           : "hover:bg-background/50 hover:text-foreground",
@@ -106,6 +127,8 @@ export function TabsContent({
   return (
     <div
       role="tabpanel"
+      id={`panel-${value}`}
+      aria-labelledby={`tab-${value}`}
       tabIndex={0}
       className={cn("ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 animate-fade-in", className)}
     >

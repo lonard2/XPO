@@ -38,6 +38,7 @@ export function LanguageSwitcher({
   const router = useRouter();
   const [isOpen, setIsOpen] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const triggerRef = React.useRef<HTMLButtonElement>(null);
 
   // Derive target path when switching locale while preserving the route path
   const handleLocaleChange = (newLocale: SupportedLocale) => {
@@ -75,6 +76,7 @@ export function LanguageSwitcher({
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setIsOpen(false);
+        triggerRef.current?.focus();
       }
     };
 
@@ -126,6 +128,7 @@ export function LanguageSwitcher({
         variant="ghost"
         size="sm"
         type="button"
+        ref={triggerRef}
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-haspopup="listbox"

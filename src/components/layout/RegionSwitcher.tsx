@@ -92,6 +92,7 @@ export function RegionSwitcher({
   const pathname = usePathname();
   const [isOpen, setIsOpen] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const triggerRef = React.useRef<HTMLButtonElement>(null);
 
   // Derive initial region: explicit prop, then ?region=, then cookie, then the URL locale
   const [currentRegion, setCurrentRegion] = React.useState<string>(() => {
@@ -160,6 +161,7 @@ export function RegionSwitcher({
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setIsOpen(false);
+        triggerRef.current?.focus();
       }
     };
 
@@ -273,11 +275,12 @@ export function RegionSwitcher({
         variant="ghost"
         size="sm"
         type="button"
+        ref={triggerRef}
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
         aria-label={`Select Country, active: ${selectedRegion.editionTitle}`}
-        className="h-9 px-2.5 gap-1.5 text-xs font-medium border border-border/60 hover:bg-accent hover:text-accent-foreground"
+        className="h-9 px-2.5 gap-1.5 text-xs font-medium border border-border/60 hover:bg-accent hover:text-accent-foreground min-h-[44px]"
       >
         <Globe className="h-3.5 w-3.5 text-primary" />
         <span className="font-semibold">{selectedRegion.editionTitle}</span>

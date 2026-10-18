@@ -88,7 +88,7 @@ export function TypographySelector({ className }: { className?: string }) {
               aria-checked={isSelected}
               onClick={() => setTypography(opt.id)}
               className={cn(
-                "flex flex-col p-4 rounded-xl border text-left transition-all relative group cursor-pointer",
+                "flex flex-col p-4 rounded-xl border text-left transition-all relative group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
                 isSelected
                   ? "border-primary bg-primary/5 ring-2 ring-primary/20 shadow-sm"
                   : "border-border bg-card hover:border-border/80 hover:bg-accent/40"
