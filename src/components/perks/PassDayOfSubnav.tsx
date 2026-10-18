@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { QrCode, Gift, Calendar, MapPin } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 
 export interface PassDayOfSubnavProps {
@@ -22,6 +23,7 @@ export function PassDayOfSubnav({
   className,
 }: PassDayOfSubnavProps) {
   const [activeSection, setActiveSection] = React.useState<string>('digital-pass-section');
+  const tPerks = useTranslations('perks');
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -77,7 +79,7 @@ export function PassDayOfSubnav({
             )}
           >
             <QrCode className="h-3.5 w-3.5" />
-            <span>Digital Pass</span>
+            <span>{tPerks('subnavPass') || 'Digital Pass'}</span>
           </button>
 
           {/* VIP Treats & Perks Button */}
@@ -94,7 +96,7 @@ export function PassDayOfSubnav({
               )}
             >
               <Gift className="h-3.5 w-3.5" />
-              <span>VIP Treats</span>
+              <span>{tPerks('subnavTreats') || 'VIP Treats'}</span>
               {perksCount > 0 && (
                 <span className="text-xs font-mono px-1.5 py-0.5 rounded bg-muted/80 text-foreground">
                   {perksCount}
@@ -117,7 +119,7 @@ export function PassDayOfSubnav({
               )}
             >
               <Calendar className="h-3.5 w-3.5" />
-              <span>Timetable</span>
+              <span>{tPerks('subnavTimetable') || 'Timetable'}</span>
               {agendaCount > 0 && (
                 <span className="text-xs font-mono px-1.5 py-0.5 rounded bg-muted/80 text-foreground">
                   {agendaCount}
@@ -140,7 +142,7 @@ export function PassDayOfSubnav({
               )}
             >
               <MapPin className="h-3.5 w-3.5" />
-              <span>Floor Map</span>
+              <span>{tPerks('subnavMap') || 'Floor Map'}</span>
             </button>
           )}
         </div>

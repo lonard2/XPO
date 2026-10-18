@@ -252,28 +252,28 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
             let protocolText: string | null = null;
             switch (arch) {
               case 'AEROSPACE_DEFENSE':
-                protocolText = 'Security Protocol: Present photographic ID and clearance pass at Flight Line Gate C.';
+                protocolText = tTickets('gateAerospace') || 'Security Protocol: Present photographic ID at the gate.';
                 break;
               case 'AUTOMOTIVE_MOBILITY':
-                protocolText = 'Paddock Access: Driver license required at Pit Lane Gate 2 for closed-circuit track entry.';
+                protocolText = tTickets('gateAutomotive') || 'Paddock Access: A driver license is required for track entry.';
                 break;
               case 'BUILDING_PROPTECH':
-                protocolText = 'Architect Accreditation: Collect CPD credit stamp at Hall 1 Registration Concierge.';
+                protocolText = tTickets('gateBuilding') || 'Accreditation: Collect your credit stamp at registration.';
                 break;
               case 'SUPPLY_CHAIN_LOGISTICS':
-                protocolText = 'Logistics Turnstile: Express RFID badge barcode scan at Freight Terminal Gate A.';
+                protocolText = tTickets('gateSupply') || 'Logistics Turnstile: Express badge scan at the freight gate.';
                 break;
               case 'FRANCHISE_LICENSING':
-                protocolText = 'Investor Lounge: Valid for 1-on-1 discovery room entry at Hall 1 Franchise Row.';
+                protocolText = tTickets('gateFranchise') || 'Investor Lounge: Valid for 1-on-1 discovery room entry.';
                 break;
               case 'FAITH_PILGRIMAGE_CONGRESS':
-                protocolText = 'Simultaneous Interpretation: Collect multi-language FM receiver headset at Plenary Gate.';
+                protocolText = tTickets('gateFaith') || 'Interpretation: Collect a multi-language receiver headset at the plenary gate.';
                 break;
               case 'SPORTS_OUTDOOR':
-                protocolText = 'Athlete Bib Collection: Present QR code at Hall 1 Timing Tag Express Dispenser.';
+                protocolText = tTickets('gateSports') || 'Bib Collection: Present your QR code at the timing desk.';
                 break;
               case 'MEDIA_BROADCAST':
-                protocolText = 'Broadcast Press / Crew: Equipment clearance pass at Virtual Production Stage A.';
+                protocolText = tTickets('gateMedia') || 'Press & Crew: Equipment clearance at the production stage.';
                 break;
               default:
                 protocolText = null;
@@ -293,7 +293,7 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
               {/* Render Vector SVG QR */}
               <div
                 role="img"
-                aria-label={`Cryptographic Admission Pass QR Code for ${booking.attendeeName}`}
+                aria-label={tTickets("qrAriaMain", { name: booking.attendeeName }) || `QR pass code for ${booking.attendeeName}`}
                 className="w-56 h-56 sm:w-64 sm:h-64 select-none"
                 dangerouslySetInnerHTML={{ __html: svgQrString }}
               />
@@ -321,7 +321,7 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
                 className="inline-flex items-center gap-1.5 px-3.5 py-2 min-h-[44px] sm:min-h-[36px] rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-xs font-semibold shadow-xs transition-all cursor-pointer"
               >
                 <Maximize2 className="h-3.5 w-3.5" />
-                <span>Enlarge Turnstile Scanner Mode</span>
+                <span>{tTickets("enlargeMode") || "Enlarge Turnstile Scanner Mode"}</span>
               </button>
             </div>
           </div>
@@ -384,12 +384,12 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
               {copiedHash ? (
                 <>
                   <Check className="h-3.5 w-3.5 text-emerald-500" />
-                  Hash Copied
+                  {tTickets("hashCopied") || "Hash Copied"}
                 </>
               ) : (
                 <>
                   <Copy className="h-3.5 w-3.5" />
-                  Copy Pass Hash
+                  {tTickets("copyHash") || "Copy Pass Hash"}
                 </>
               )}
             </Button>
@@ -401,7 +401,7 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
               className="min-h-[44px] sm:min-h-[36px] h-10 sm:h-9 text-xs gap-1.5 cursor-pointer"
             >
               <Download className="h-3.5 w-3.5" />
-              Save SVG Pass
+              {tTickets("saveSvg") || "Save SVG Pass"}
             </Button>
           </div>
 
@@ -413,7 +413,7 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
               className="min-h-[44px] sm:min-h-[36px] h-10 sm:h-9 text-xs gap-1.5 cursor-pointer"
             >
               <ShieldCheck className="h-3.5 w-3.5 text-primary" />
-              Security Specs
+              {tTickets("securitySpecs") || "Security Specs"}
             </Button>
 
             <Button
@@ -423,7 +423,7 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
               className="min-h-[44px] sm:min-h-[36px] h-10 sm:h-9 text-xs gap-1.5 font-semibold cursor-pointer"
             >
               <Printer className="h-3.5 w-3.5" />
-              Print / Save PDF
+              {tTickets("printPdf") || "Print / Save PDF"}
             </Button>
           </div>
         </div>
@@ -434,14 +434,14 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
             <div className="flex items-center justify-between">
               <span className="font-bold text-slate-100 flex items-center gap-1.5">
                 <ShieldCheck className="h-4 w-4 text-emerald-400" />
-                HMAC-SHA256 Cryptographic Authentication Ledger
+                {tTickets("ledgerTitle") || "HMAC-SHA256 Cryptographic Authentication Ledger"}
               </span>
               <button
                 type="button"
                 onClick={() => setShowSecurityModal(false)}
-                className="min-h-[36px] px-2.5 py-1 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 text-xs cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+                className="min-h-[44px] px-2.5 py-1 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 text-xs cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
               >
-                Close
+                {tCommon("cancel") || "Close"}
               </button>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-400">
@@ -471,7 +471,7 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
         <div
           role="dialog"
           aria-modal="true"
-          aria-label="High-Contrast Turnstile Scanner Pass"
+          aria-label={tTickets("turnstileAria") || "High-Contrast Turnstile Scanner Pass"}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 animate-fade-in backdrop-blur-sm"
         >
           <div className="relative w-full max-w-md rounded-3xl bg-white text-black p-6 sm:p-8 space-y-6 shadow-2xl text-center">
@@ -479,7 +479,7 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
             <button
               type="button"
               onClick={() => setShowTurnstileModal(false)}
-              aria-label="Close turnstile mode"
+              aria-label={tTickets("closeTurnstile") || "Close turnstile mode"}
               className="absolute top-4 right-4 h-10 w-10 min-h-[44px] min-w-[44px] sm:min-h-[36px] sm:min-w-[36px] inline-flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black"
             >
               <X className="h-5 w-5" />
@@ -489,7 +489,7 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
             <div className="space-y-1">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 text-white text-xs font-bold uppercase tracking-wider">
                 <SunMedium className="h-3.5 w-3.5" />
-                <span>Max Contrast Turnstile Mode</span>
+                <span>{tTickets("maxContrast") || "Max Contrast Turnstile Mode"}</span>
               </div>
               <h3 className="text-xl font-extrabold text-black pt-1">
                 {booking.attendeeName}
@@ -503,7 +503,7 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
             <div className="p-4 rounded-2xl bg-white border-2 border-black inline-block shadow-sm">
               <div
                 role="img"
-                aria-label={`High-Contrast Turnstile QR Pass Code for ${booking.attendeeName}`}
+                aria-label={tTickets("qrAriaTurnstile", { name: booking.attendeeName }) || `Turnstile QR pass code for ${booking.attendeeName}`}
                 className="w-64 h-64 sm:w-72 sm:h-72 select-none mx-auto"
                 dangerouslySetInnerHTML={{ __html: turnstileQrString }}
               />
@@ -511,7 +511,7 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
 
             {/* Instructions */}
             <div className="space-y-1 text-xs text-slate-700 font-medium">
-              <p>Hold screen flat under the optical gate or turnstile camera.</p>
+              <p>{tTickets("holdFlat") || "Hold screen flat under the optical gate or turnstile camera."}</p>
               <p className="font-mono text-xs text-slate-500">Ref: {booking.id}</p>
             </div>
 
@@ -521,7 +521,7 @@ export function DigitalPassQR({ booking, locale = 'en' }: DigitalPassQRProps) {
               onClick={() => setShowTurnstileModal(false)}
               className="w-full bg-black text-white hover:bg-slate-800 text-xs font-semibold cursor-pointer min-h-[44px] sm:min-h-[36px]"
             >
-              Done Scanning
+              {tTickets("doneScanning") || "Done Scanning"}
             </Button>
           </div>
         </div>

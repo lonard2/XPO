@@ -243,7 +243,7 @@ export function TierPerksGating({
                       </div>
                       <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1">
                         <CheckCircle2 className="h-3 w-3 shrink-0" />
-                        <span>Present to on-site staff at counter</span>
+                        {tPerks("presentCounter") || <span>Present to on-site staff at counter</span>}
                       </p>
 
                       <Button
@@ -253,7 +253,7 @@ export function TierPerksGating({
                         className="w-full min-h-[44px] sm:min-h-[36px] text-xs font-semibold gap-1 text-muted-foreground hover:text-foreground cursor-pointer"
                       >
                         <Compass className="h-3 w-3" />
-                        <span>Locate Redemption Hub on Map</span>
+                        {tPerks("locateMap") || <span>Locate Redemption Hub on Map</span>}
                       </Button>
                     </div>
                   ) : (
@@ -264,7 +264,7 @@ export function TierPerksGating({
                       className="w-full min-h-[44px] sm:min-h-[36px] text-xs font-semibold cursor-pointer"
                     >
                       <QrCode className="h-3.5 w-3.5 mr-1.5" />
-                      <span>{isClaimed ? 'View Voucher Code' : (tPerks('claimPerk') || 'Claim Voucher')}</span>
+                      <span>{isClaimed ? (tPerks('viewVoucher') || 'View Voucher Code') : (tPerks('claimPerk') || 'Claim Voucher')}</span>
                     </Button>
                   )
                 ) : (
