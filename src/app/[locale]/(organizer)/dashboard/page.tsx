@@ -2,6 +2,8 @@ import * as React from "react";
 import Link from "next/link";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
+import { cookies } from "next/headers";
+import { getEventCallerFromCookies, partitionCurated } from "@/lib/auth/eventOwnership";
 import {
   Users,
   CreditCard,
@@ -33,13 +35,23 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
   const tOrg = await getTranslations({ locale, namespace: "organizer" });
   const tCom = await getTranslations({ locale, namespace: "common" });
 
+  // Strict ownership: organizers see only their own events; admins see all.
+  // Callers without identity keep the historical unfiltered view.
+  const cookieStore = await cookies();
+  const caller = getEventCallerFromCookies(cookieStore);
+  const isAdminView = caller.role === "ADMIN";
+  const eventWhere: any =
+    !isAdminView && caller.userId ? { organizerId: caller.userId } : {};
+
   // Query events from Prisma with related bookings, tiers, booths, and venue
   let events: any[] = [];
+  let curatedEvents: any[] = [];
   let allBooths: any[] = [];
   let dbError = false;
 
   try {
     events = await db.event.findMany({
+      where: eventWhere,
       include: {
         ticketTiers: true,
         booths: true,
@@ -58,6 +70,14 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
   } catch (error) {
     console.error("Dashboard DB query error:", error);
     dbError = true;
+  }
+
+  if (isAdminView) {
+    // Admins keep the full picture: owned events in the roster, platform-curated
+    // events in their own group below. Organizer fetches are already scoped.
+    const { curated, owned } = partitionCurated(events);
+    curatedEvents = curated;
+    events = owned;
   }
 
   // P0-1: Diagnostic error state recovery if database is unreachable
@@ -324,6 +344,17 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
 
       {/* ACTIVE EVENTS ROSTER WITH TABS & STRETCHED LINK CARDS */}
       <OrganizerEventsRoster events={events} locale={locale} />
+
+      {/* PLATFORM-CURATED GROUP (admin view only) */}
+      {isAdminView && curatedEvents.length > 0 && (
+        <OrganizerEventsRoster
+          events={curatedEvents}
+          locale={locale}
+          title="Platform-Curated Events"
+          description="Owned by XPO Platform Administration. Assign an organizer to move one into their portal."
+          hideAddButton
+        />
+      )}
     </div>
   );
 }

@@ -39,6 +39,9 @@ export interface OrganizerEventItem {
   endDate: Date | string;
   venue?: { id: string; name: string } | null;
   venueHall?: { id: string; name: string } | null;
+  organizerId?: string | null;
+  organizerName?: string | null;
+  isPlatformCurated?: boolean;
   bookings?: Array<{ status: string }> | null;
   booths?: Array<any> | null;
 }
@@ -46,9 +49,12 @@ export interface OrganizerEventItem {
 interface OrganizerEventsRosterProps {
   events: OrganizerEventItem[];
   locale: string;
+  title?: string;
+  description?: string;
+  hideAddButton?: boolean;
 }
 
-export function OrganizerEventsRoster({ events, locale }: OrganizerEventsRosterProps) {
+export function OrganizerEventsRoster({ events, locale, title, description, hideAddButton }: OrganizerEventsRosterProps) {
   const [activeTab, setActiveTab] = React.useState<EventOperationalStatus>("ALL");
   const [searchQuery, setSearchQuery] = React.useState("");
 
@@ -144,11 +150,12 @@ export function OrganizerEventsRoster({ events, locale }: OrganizerEventsRosterP
       {/* Header and Add Action */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-lg font-bold text-foreground">Active Exhibitions & Conventions</h2>
+          <h2 className="text-lg font-bold text-foreground">{title || "Active Exhibitions & Conventions"}</h2>
           <p className="text-xs text-muted-foreground">
-            Manage live branding, hall booth rosters, and door scanners for your registered events.
+            {description || "Manage live branding, hall booth rosters, and door scanners for your registered events."}
           </p>
         </div>
+        {!hideAddButton && (
         <Link
           href={`/${locale}/events/new`}
           className={cn(
@@ -159,6 +166,7 @@ export function OrganizerEventsRoster({ events, locale }: OrganizerEventsRosterP
           <PlusCircle className="h-4 w-4" />
           <span>Add Exhibition</span>
         </Link>
+        )}
       </div>
 
       {/* Filter Tabs and Search Bar */}
