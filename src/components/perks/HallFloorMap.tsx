@@ -142,8 +142,8 @@ export function HallFloorMap({
             size="sm"
             onClick={handleZoomIn}
             className="h-9 w-9 min-h-[36px] min-w-[36px] p-0 cursor-pointer"
-            title="Zoom In"
-            aria-label="Zoom In"
+            title={tPerks("zoomIn") || "Zoom In"}
+            aria-label={tPerks("zoomIn") || "Zoom In"}
           >
             <ZoomIn className="h-4 w-4" />
           </Button>
@@ -152,8 +152,8 @@ export function HallFloorMap({
             size="sm"
             onClick={handleZoomOut}
             className="h-9 w-9 min-h-[36px] min-w-[36px] p-0 cursor-pointer"
-            title="Zoom Out"
-            aria-label="Zoom Out"
+            title={tPerks("zoomOut") || "Zoom Out"}
+            aria-label={tPerks("zoomOut") || "Zoom Out"}
           >
             <ZoomOut className="h-4 w-4" />
           </Button>
@@ -162,8 +162,8 @@ export function HallFloorMap({
             size="sm"
             onClick={handleResetZoom}
             className="h-9 w-9 min-h-[36px] min-w-[36px] p-0 cursor-pointer"
-            title="Reset Zoom"
-            aria-label="Reset Zoom"
+            title={tPerks("zoomReset") || "Reset Zoom"}
+            aria-label={tPerks("zoomReset") || "Reset Zoom"}
           >
             <RotateCcw className="h-3.5 w-3.5" />
           </Button>

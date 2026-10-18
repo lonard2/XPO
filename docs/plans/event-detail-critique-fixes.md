@@ -12,7 +12,7 @@ backed by event data — no sample labels).
   booth cap disclosed.
 - [x] **3. Layout hero badges** (`$impeccable layout`): overlay cap at 2;
   scale/format as translated body labels.
-- [ ] **4. Clarify conversion copy** (`$impeccable clarify`): drawer,
+- [x] **4. Clarify conversion copy** (`$impeccable clarify`): drawer,
   guidebook, floor-map strings into dictionaries.
 - [ ] **5. Audit detail a11y** (`$impeccable audit`): 44px controls,
   nested-interactive and booth-keyboard pass.

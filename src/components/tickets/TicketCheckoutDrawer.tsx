@@ -126,19 +126,19 @@ export function TicketCheckoutDrawer({
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedTier) {
-      setErrorMessage("Please select a ticket tier to proceed.");
+      setErrorMessage(tTickets("errTierRequired") || "Please select a ticket tier to proceed.");
       return;
     }
     if (remainingSlots <= 0) {
-      setErrorMessage("The selected pass tier is sold out. Please select another tier.");
+      setErrorMessage(tTickets("errTierSoldOut") || "The selected pass tier is sold out. Please select another tier.");
       return;
     }
     if (!attendeeName.trim()) {
-      setErrorMessage("Please enter your full attendee name.");
+      setErrorMessage(tTickets("errNameRequired") || "Please enter your full attendee name.");
       return;
     }
     if (!attendeeEmail.trim() || !attendeeEmail.includes("@")) {
-      setErrorMessage("Please enter a valid email address for digital pass delivery.");
+      setErrorMessage(tTickets("errEmailInvalid") || "Please enter a valid email address for digital pass delivery.");
       return;
     }
 
@@ -187,10 +187,10 @@ export function TicketCheckoutDrawer({
     <Drawer
       isOpen={isOpen}
       onClose={handleResetAndClose}
-      title={confirmedBooking ? "Reservation Confirmed" : (tTickets("checkoutTitle") || "Book Your Event Pass")}
+      title={confirmedBooking ? (tTickets("successTitle") || "Reservation Confirmed") : (tTickets("checkoutTitle") || "Book Your Event Pass")}
       description={
         confirmedBooking
-          ? "Your cryptographic event pass has been generated."
+          ? (tTickets("successDesc") || "Your cryptographic event pass has been generated.")
           : `Reserve credentials for ${event.title}`
       }
     >
@@ -203,10 +203,10 @@ export function TicketCheckoutDrawer({
               <CheckCircle2 className="h-6 w-6" />
             </div>
             <h3 className="text-base font-bold text-foreground">
-              Pass Issued & Cryptographically Signed
+              {tTickets("passIssued") || "Pass Issued & Cryptographically Signed"}
             </h3>
             <div className="flex items-center justify-center gap-2 pt-0.5">
-              <span className="text-xs text-muted-foreground">Booking Ref:</span>
+              <span className="text-xs text-muted-foreground">{tTickets("bookingRef") || "Booking Ref:"}</span>
               <span className="font-mono text-xs font-bold text-foreground bg-background px-2 py-0.5 rounded-md border border-border">
                 {confirmedBooking.id}
               </span>
@@ -214,8 +214,8 @@ export function TicketCheckoutDrawer({
                 type="button"
                 onClick={handleCopyBookingId}
                 className="p-1 rounded text-muted-foreground hover:text-foreground cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
-                title="Copy Booking ID"
-                aria-label="Copy booking reference"
+                title={tTickets("copyBookingId") || "Copy Booking ID"}
+                aria-label={tTickets("copyBookingRef") || "Copy booking reference"}
               >
                 {copiedRef ? <Check className="h-3.5 w-3.5 text-emerald-500" /> : <Copy className="h-3.5 w-3.5" />}
               </button>
@@ -236,7 +236,7 @@ export function TicketCheckoutDrawer({
               </div>
               <div className="text-right">
                 <Badge variant="success" size="sm">
-                  CONFIRMED
+                  {tTickets("confirmedBadge") || "CONFIRMED"}
                 </Badge>
               </div>
             </div>
@@ -252,18 +252,18 @@ export function TicketCheckoutDrawer({
                   {confirmedBooking.qrCodeHash}
                 </span>
                 <span className="text-[11px] text-slate-500 mt-0.5 text-center">
-                  Scan at door turnstile reader for admission
+                  {tTickets("scanHint") || "Scan at door turnstile reader for admission"}
                 </span>
               </div>
             )}
 
             <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground pt-1 border-t border-border/60">
               <div>
-                <span className="text-[11px] uppercase font-semibold text-muted-foreground">Attendee</span>
+                <span className="text-[11px] uppercase font-semibold text-muted-foreground">{tTickets("attendeeLbl") || "Attendee"}</span>
                 <p className="font-semibold text-foreground truncate">{confirmedBooking.attendeeName}</p>
               </div>
               <div>
-                <span className="text-[11px] uppercase font-semibold text-muted-foreground">Pass Delivery</span>
+                <span className="text-[11px] uppercase font-semibold text-muted-foreground">{tTickets("passDeliveryLbl") || "Pass Delivery"}</span>
                 <p className="font-semibold text-foreground truncate font-mono">{confirmedBooking.attendeeEmail}</p>
               </div>
             </div>
@@ -277,7 +277,7 @@ export function TicketCheckoutDrawer({
               className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-sm min-h-[44px]"
             >
               <QrCode className="h-4 w-4" />
-              <span>Open Digital Pass & Event Treats</span>
+              <span>{tTickets("openPass") || "Open Digital Pass & Event Treats"}</span>
               <ArrowRight className="h-4 w-4" />
             </Link>
 
@@ -287,7 +287,7 @@ export function TicketCheckoutDrawer({
                 onClick={handleResetAndClose}
                 className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-muted/40 border border-border/80 transition-colors min-h-[44px]"
               >
-                View All My Passes
+                {tTickets("viewAllPasses") || "View All My Passes"}
               </Link>
               <Button
                 type="button"
@@ -296,7 +296,7 @@ export function TicketCheckoutDrawer({
                 onClick={handleResetAndClose}
                 className="min-h-[44px] px-4 text-xs cursor-pointer"
               >
-                Done
+                {tTickets("doneBtn") || "Done"}
               </Button>
             </div>
           </div>
@@ -326,7 +326,7 @@ export function TicketCheckoutDrawer({
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
                 <Ticket className="h-3.5 w-3.5 text-primary" />
-                1. Select Pass Tier
+                {tTickets("stepTier") || "1. Select Pass Tier"}
               </span>
             </div>
             <TierSelector
@@ -344,10 +344,10 @@ export function TicketCheckoutDrawer({
             <div className="flex items-center justify-between">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">
-                  2. Pass Quantity
+                  {tTickets("stepQty") || "2. Pass Quantity"}
                 </span>
                 <span className="text-[11px] text-muted-foreground">
-                  Up to {maxAllowedQuantity} passes per reservation
+                  {tTickets("qtyHint", { count: maxAllowedQuantity }) || `Up to ${maxAllowedQuantity} passes per reservation`}
                 </span>
               </div>
 
@@ -358,7 +358,7 @@ export function TicketCheckoutDrawer({
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                   disabled={quantity <= 1}
                   className="h-9 w-9 rounded-lg flex items-center justify-center text-foreground hover:bg-card disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
-                  aria-label="Decrease quantity"
+                  aria-label={tTickets("decreaseQty") || "Decrease quantity"}
                 >
                   <Minus className="h-3.5 w-3.5" />
                 </button>
@@ -372,7 +372,7 @@ export function TicketCheckoutDrawer({
                   onClick={() => setQuantity((q) => Math.min(maxAllowedQuantity, q + 1))}
                   disabled={quantity >= maxAllowedQuantity}
                   className="h-9 w-9 rounded-lg flex items-center justify-center text-foreground hover:bg-card disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
-                  aria-label="Increase quantity"
+                  aria-label={tTickets("increaseQty") || "Increase quantity"}
                 >
                   <Plus className="h-3.5 w-3.5" />
                 </button>
@@ -397,7 +397,7 @@ export function TicketCheckoutDrawer({
                         : "bg-card border-border/80 text-foreground hover:bg-muted/40"
                     }`}
                   >
-                    {q} {q === 1 ? "Pass" : "Passes"}
+                    {q} {tTickets(q === 1 ? "passUnit" : "passUnitPlural") || (q === 1 ? "Pass" : "Passes")}
                   </button>
                 );
               })}
@@ -409,16 +409,16 @@ export function TicketCheckoutDrawer({
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
                 <User className="h-3.5 w-3.5 text-primary" />
-                3. Attendee Details
+                {tTickets("stepAttendee") || "3. Attendee Details"}
               </span>
               <p className="text-[11px] text-muted-foreground mt-0.5">
-                Passes and verification barcodes will be dispatched to this email address.
+                {tTickets("stepAttendeeDesc") || "Passes and verification barcodes will be dispatched to this email address."}
               </p>
             </div>
 
             <div className="space-y-1">
               <label htmlFor="checkout-attendee-name" className="text-xs font-semibold text-foreground block">
-                Full Name <span className="text-destructive">*</span>
+                {tTickets("fieldName") || "Full Name"} <span className="text-destructive">*</span>
               </label>
               <input
                 id="checkout-attendee-name"
@@ -435,7 +435,7 @@ export function TicketCheckoutDrawer({
 
             <div className="space-y-1">
               <label htmlFor="checkout-attendee-email" className="text-xs font-semibold text-foreground block">
-                Email Address (Pass Delivery) <span className="text-destructive">*</span>
+                {tTickets("fieldEmail") || "Email Address (Pass Delivery)"} <span className="text-destructive">*</span>
               </label>
               <input
                 id="checkout-attendee-email"
@@ -453,7 +453,7 @@ export function TicketCheckoutDrawer({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-0.5">
               <div className="space-y-1">
                 <label htmlFor="checkout-organization" className="text-xs font-semibold text-foreground block">
-                  Organization / Company
+                  {tTickets("fieldOrg") || "Organization / Company"}
                 </label>
                 <input
                   id="checkout-organization"
@@ -468,7 +468,7 @@ export function TicketCheckoutDrawer({
               </div>
               <div className="space-y-1">
                 <label htmlFor="checkout-job-title" className="text-xs font-semibold text-foreground block">
-                  Professional Role / Job Title
+                  {tTickets("fieldRole") || "Professional Role / Job Title"}
                 </label>
                 <input
                   id="checkout-job-title"
@@ -499,28 +499,28 @@ export function TicketCheckoutDrawer({
           <div className="pt-3 border-t border-border/80 space-y-3">
             <div className="space-y-1.5 p-3 bg-muted/30 rounded-xl border border-border/60 text-xs">
               <div className="flex items-center justify-between text-muted-foreground">
-                <span>Pass Allocation</span>
+                <span>{tTickets("sumAllocation") || "Pass Allocation"}</span>
                 <span className="font-semibold text-foreground">
                   {selectedTier?.name} × {quantity}
                 </span>
               </div>
               <div className="flex items-center justify-between text-muted-foreground">
-                <span>Issuance & Platform Fee</span>
-                <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Waived (0%)</span>
+                <span>{tTickets("sumFee") || "Issuance & Platform Fee"}</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-semibold">{tTickets("sumFeeWaived") || "Waived (0%)"}</span>
               </div>
               <div className="flex items-center justify-between pt-1 border-t border-border/50 text-sm font-bold">
-                <span className="text-foreground">Total Amount</span>
+                <span className="text-foreground">{tTickets("sumTotal") || "Total Amount"}</span>
                 <span className="text-base text-foreground font-bold">
                   {totalPrice > 0
                     ? formatCurrency(totalPrice, currency, locale)
-                    : "Free Admission"}
+                    : (tTickets("freeAdmission") || "Free Admission")}
                 </span>
               </div>
             </div>
 
             <div className="flex items-center gap-2 text-xs text-muted-foreground bg-muted/40 p-2.5 rounded-xl border border-border/60">
               <ShieldCheck className="h-4 w-4 text-emerald-500 shrink-0" />
-              <span>Instant Turnstile Pass: Cryptographically signed HMAC-SHA256 barcode generated upon reservation.</span>
+              <span>{tTickets("hmacNotice") || "Instant Turnstile Pass: Cryptographically signed HMAC-SHA256 barcode generated upon reservation."}</span>
             </div>
 
             <Button
@@ -532,15 +532,19 @@ export function TicketCheckoutDrawer({
               {isLoading ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  <span>Issuing Cryptographic Pass...</span>
+                  <span>{tTickets("submitting") || "Issuing Cryptographic Pass..."}</span>
                 </>
               ) : remainingSlots <= 0 ? (
-                <span>Sold Out</span>
+                <span>{tTickets("soldOutBtn") || "Sold Out"}</span>
               ) : (
                 <>
                   <Ticket className="h-4 w-4" />
                   <span>
-                    Confirm & Reserve {quantity > 1 ? `${quantity} Passes` : "Pass"} ({totalPrice > 0 ? formatCurrency(totalPrice, currency, locale) : "Free"})
+                    {tTickets("confirmReserve") || "Confirm & Reserve"}{" "}
+                    {quantity > 1
+                      ? `${quantity} ${tTickets("passUnitPlural") || "Passes"}`
+                      : (tTickets("passUnit") || "Pass")}{" "}
+                    ({totalPrice > 0 ? formatCurrency(totalPrice, currency, locale) : (tTickets("freeWord") || "Free")})
                   </span>
                 </>
               )}

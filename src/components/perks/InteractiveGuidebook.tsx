@@ -201,7 +201,7 @@ export function InteractiveGuidebook({
         {filteredSessions.length === 0 ? (
           <div className="p-8 text-center rounded-xl border border-dashed border-border text-muted-foreground space-y-2">
             <Calendar className="h-8 w-8 mx-auto text-muted-foreground/50" />
-            <p className="text-sm font-medium">No sessions match your filter criteria.</p>
+            <p className="text-sm font-medium">{tPerks("noSessionsMatch") || "No sessions match your filter criteria."}</p>
             {(filterBookmarkedOnly || selectedTrack !== "ALL" || searchQuery) && (
               <Button
                 variant="ghost"
@@ -213,7 +213,7 @@ export function InteractiveGuidebook({
                 }}
                 className="text-xs text-primary cursor-pointer min-h-[44px]"
               >
-                View all scheduled sessions
+                {tPerks("viewAllSessions") || "View all scheduled sessions"}
               </Button>
             )}
           </div>
