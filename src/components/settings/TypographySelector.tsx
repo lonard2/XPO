@@ -62,15 +62,6 @@ export function TypographySelector({ className }: { className?: string }) {
 
   return (
     <div className={cn("space-y-3", className)}>
-      <div className="flex items-center justify-between">
-        <label className="text-sm font-semibold text-foreground">
-          {tSet("typography") || "Typography Engine"}
-        </label>
-        <span className="text-xs text-muted-foreground">
-          {isMounted ? `Active: ${typography}` : "Loading..."}
-        </span>
-      </div>
-
       <div
         role="radiogroup"
         aria-label="Typography engine selection"

@@ -38,15 +38,6 @@ export function UIDensitySelector({ className }: { className?: string }) {
 
   return (
     <div className={cn("space-y-3", className)}>
-      <div className="flex items-center justify-between">
-        <label className="text-sm font-semibold text-foreground">
-          {tSet("density") || "UI Density"}
-        </label>
-        <span className="text-xs text-muted-foreground capitalize">
-          {isMounted ? `Active: ${density}` : "Loading..."}
-        </span>
-      </div>
-
       <div
         role="radiogroup"
         aria-label="UI density selection"

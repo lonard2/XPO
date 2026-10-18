@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ZoomIn, RotateCcw } from "lucide-react";
+import { RotateCcw } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useSettings } from "./SettingsProvider";
 import { Button } from "@/components/ui/Button";
@@ -29,19 +29,7 @@ export function FontScaleSlider({ className }: { className?: string }) {
 
   return (
     <div className={cn("space-y-4 rounded-xl border border-border bg-card p-4 sm:p-5", className)}>
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-        <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
-            <ZoomIn className="h-4 w-4" />
-          </div>
-          <div>
-            <h4 className="text-sm font-semibold text-foreground">{tSet("fontScaling") || "Font Scaling"}</h4>
-            <p className="text-xs text-muted-foreground">
-              {tSet("subtitle") || "Adjust global typography scale across all MICE pages and timetables"}
-            </p>
-          </div>
-        </div>
-
+      <div className="flex items-center justify-end gap-2">
         <div className="flex items-center gap-2 self-start sm:self-auto">
           <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-mono font-bold bg-primary/10 text-primary">
             {isMounted ? `${currentPercent}%` : "100%"}

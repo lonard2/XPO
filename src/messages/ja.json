@@ -777,7 +777,8 @@
     "fontScaleLarge": "大",
     "fontScaleExtraLarge": "特大",
     "fontScaleLabel": "フォントスケール調整",
-    "matrixHint": "よく参加するカテゴリーを選んでください。発見フィードがこれに連動します。"
+    "matrixHint": "よく参加するカテゴリーを選んでください。発見フィードがこれに連動します。",
+    "localizationDesc": "言語と地域ハブを切り替えます。通貨、タイムゾーン、会場リストはハブに連動します。"
   },
   "organizer": {
     "dashboardTitle": "主催者ポータル",

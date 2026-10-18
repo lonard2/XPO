@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Bot, Sparkles, Navigation, Clock, ShieldCheck, CheckCircle2, XCircle } from "lucide-react";
+import { Bot, Sparkles, Navigation, Clock, ShieldCheck } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useSettings } from "./SettingsProvider";
 import { Badge } from "@/components/ui/Badge";

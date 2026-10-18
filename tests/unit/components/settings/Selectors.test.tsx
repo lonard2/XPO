@@ -81,7 +81,7 @@ describe("UI/UX Settings Suite Component Selectors", () => {
       </SettingsProvider>
     );
 
-    expect(screen.getByText(/Font Scale/i)).toBeInTheDocument();
+    expect(screen.getByRole("slider")).toBeInTheDocument();
     const preset125 = screen.getByRole("button", { name: /125%/i });
 
     act(() => {

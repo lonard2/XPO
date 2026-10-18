@@ -777,7 +777,8 @@
     "fontScaleLarge": "Grande",
     "fontScaleExtraLarge": "Muy grande",
     "fontScaleLabel": "Ajuste de escala de fuente",
-    "matrixHint": "Elija las categorías a las que más asiste. Su feed seguirá estos intereses."
+    "matrixHint": "Elija las categorías a las que más asiste. Su feed seguirá estos intereses.",
+    "localizationDesc": "Cambie de idioma y hub regional. La moneda, las zonas horarias y las sedes siguen a su hub."
   },
   "organizer": {
     "dashboardTitle": "Portal del Organizador",

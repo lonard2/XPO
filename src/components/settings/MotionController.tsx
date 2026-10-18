@@ -43,20 +43,6 @@ export function MotionController({ className }: { className?: string }) {
 
   return (
     <div className={cn("space-y-4", className)}>
-      <div className="flex items-center justify-between">
-        <div>
-          <h4 className="text-sm font-semibold text-foreground">
-            {tSet("motionMode") || "Motion & Animation Dynamics"}
-          </h4>
-          <p className="text-xs text-muted-foreground">
-            {tSet("subtitle") || "Control spatial depth, transitions, and micro-interactions"}
-          </p>
-        </div>
-        <span className="text-xs font-mono font-medium text-muted-foreground capitalize">
-          {isMounted ? `Mode: ${motionMode}` : "Loading..."}
-        </span>
-      </div>
-
       <div
         role="radiogroup"
         aria-label="Motion dynamics selection"

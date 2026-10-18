@@ -777,7 +777,8 @@
     "fontScaleLarge": "Groß",
     "fontScaleExtraLarge": "Sehr groß",
     "fontScaleLabel": "Schriftgrößenanpassung",
-    "matrixHint": "Wählen Sie Ihre häufigsten Kategorien. Ihr Discovery-Feed folgt diesen Interessen."
+    "matrixHint": "Wählen Sie Ihre häufigsten Kategorien. Ihr Discovery-Feed folgt diesen Interessen.",
+    "localizationDesc": "Wechseln Sie Sprache und regionalen Hub. Währung, Zeitzonen und Venue-Listen folgen Ihrem Hub."
   },
   "organizer": {
     "dashboardTitle": "Veranstalter-Portal",

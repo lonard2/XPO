@@ -777,7 +777,8 @@
     "fontScaleLarge": "大",
     "fontScaleExtraLarge": "特大",
     "fontScaleLabel": "字体缩放调节",
-    "matrixHint": "选择您最常参加的类别。发现源将跟随这些兴趣。"
+    "matrixHint": "选择您最常参加的类别。发现源将跟随这些兴趣。",
+    "localizationDesc": "切换语言和区域中心。货币、时区和场馆列表将跟随您的中心。"
   },
   "organizer": {
     "dashboardTitle": "主办方门户",

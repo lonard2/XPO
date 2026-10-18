@@ -46,15 +46,6 @@ export function ThemeModeSelector({ className }: { className?: string }) {
 
   return (
     <div className={cn("space-y-3", className)}>
-      <div className="flex items-center justify-between">
-        <label className="text-sm font-semibold text-foreground">
-          {tSet("themeMode") || "Theme Mode"}
-        </label>
-        <span className="text-xs text-muted-foreground">
-          {isMounted ? `Active: ${theme.toUpperCase()}` : "Loading..."}
-        </span>
-      </div>
-
       <div
         role="radiogroup"
         aria-label="Theme mode selection"

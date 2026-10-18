@@ -12,8 +12,10 @@ import {
   Sparkles,
   ChevronRight,
   ChevronDown,
-  ShieldCheck,
-  Building,
+  Rows3,
+  Type,
+  ZoomIn,
+  Activity,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useSettings, DEFAULT_SETTINGS } from "@/components/settings/SettingsProvider";
@@ -47,11 +49,17 @@ export default function SettingsPage({ params }: SettingsPageProps) {
   });
 
   // Deep-linkable tabs via hash (#appearance, #ai, #profile, #localization).
+  // Listens for hash changes so SPA navigations to a hashed URL also apply.
   React.useEffect(() => {
-    const hash = window.location.hash.replace("#", "");
-    if (["appearance", "ai", "profile", "localization"].includes(hash)) {
-      setActiveTab(hash);
-    }
+    const applyHash = () => {
+      const hash = window.location.hash.replace("#", "");
+      if (["appearance", "ai", "profile", "localization"].includes(hash)) {
+        setActiveTab(hash);
+      }
+    };
+    applyHash();
+    window.addEventListener("hashchange", applyHash);
+    return () => window.removeEventListener("hashchange", applyHash);
   }, []);
 
   const handleTabChange = (value: string) => {
@@ -159,7 +167,7 @@ export default function SettingsPage({ params }: SettingsPageProps) {
 
       {/* Categorized Settings Tabs */}
       <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-6">
-        <TabsList className="w-full sm:w-auto grid grid-cols-2 sm:grid-cols-4 p-1 gap-1">
+        <TabsList className="w-full sm:w-auto h-auto sm:h-10 grid grid-cols-2 sm:grid-cols-4 p-1 gap-1">
           <TabsTrigger value="appearance" className="gap-2">
             <Palette className="h-4 w-4" />
             <span>{tSet("appearanceTab") || "Appearance"}</span>
@@ -181,16 +189,17 @@ export default function SettingsPage({ params }: SettingsPageProps) {
         {/* Tab 1: Appearance & Display */}
         <TabsContent value="appearance" className="space-y-4 animate-fade-in">
           {[
-            { id: "theme", active: prettyValue(theme), isDefault: theme === DEFAULT_SETTINGS.theme, content: <ThemeModeSelector /> },
-            { id: "density", title: tSet("density") || "UI Density", active: prettyValue(density), isDefault: density === DEFAULT_SETTINGS.density, content: <UIDensitySelector /> },
-            { id: "typography", title: tSet("typography") || "Typography Engine", active: prettyValue(typography), isDefault: typography === DEFAULT_SETTINGS.typography, content: <TypographySelector /> },
-            { id: "fontScale", title: tSet("fontScaling") || "Font Scale", active: `${Math.round(fontScale * 100)}%`, isDefault: fontScale === DEFAULT_SETTINGS.fontScale, content: <FontScaleSlider /> },
-            { id: "motion", title: tSet("motionMode") || "Motion Dynamics", active: prettyValue(motionMode), isDefault: motionMode === DEFAULT_SETTINGS.motionMode, content: <MotionController /> },
+            { id: "theme", icon: Palette, active: prettyValue(theme), isDefault: theme === DEFAULT_SETTINGS.theme, content: <ThemeModeSelector /> },
+            { id: "density", icon: Rows3, title: tSet("density") || "UI Density", active: prettyValue(density), isDefault: density === DEFAULT_SETTINGS.density, content: <UIDensitySelector /> },
+            { id: "typography", icon: Type, title: tSet("typography") || "Typography Engine", active: prettyValue(typography), isDefault: typography === DEFAULT_SETTINGS.typography, content: <TypographySelector /> },
+            { id: "fontScale", icon: ZoomIn, title: tSet("fontScaling") || "Font Scale", active: `${Math.round(fontScale * 100)}%`, isDefault: fontScale === DEFAULT_SETTINGS.fontScale, content: <FontScaleSlider /> },
+            { id: "motion", icon: Activity, title: tSet("motionMode") || "Motion Dynamics", active: prettyValue(motionMode), isDefault: motionMode === DEFAULT_SETTINGS.motionMode, content: <MotionController /> },
           ].map((section, index) => {
             const open = openSections[section.id] ?? false;
             const title = section.id === "theme"
               ? (tSet("themeMode") || "Theme Mode")
               : section.title;
+            const SectionIcon = section.icon;
             return (
               <section
                 key={section.id}
@@ -204,6 +213,9 @@ export default function SettingsPage({ params }: SettingsPageProps) {
                   className="w-full flex items-center justify-between gap-2 rounded-lg py-1 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 min-h-[44px]"
                 >
                   <span className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                    <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                      <SectionIcon className="h-3.5 w-3.5" />
+                    </span>
                     <span>{title}</span>
                     <span className="text-xs font-normal text-muted-foreground">
                       {tSet("activeSelection") || "Active"}: {section.active}
@@ -292,7 +304,7 @@ export default function SettingsPage({ params }: SettingsPageProps) {
                 </h4>
               </div>
               <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
-                {tSet("subtitle") || "Choose your display language and primary MICE region for localized venue schedules and currency."}
+                {tSet("localizationDesc") || "Switch languages and regional hubs. Currency, timezones, and venue lists follow your hub."}
               </p>
               <p aria-live="polite" className="text-xs font-semibold text-foreground mt-2 rounded-lg bg-muted/50 px-2.5 py-1.5">
                 {tSet("viewingSummary", {

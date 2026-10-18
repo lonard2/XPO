@@ -777,7 +777,8 @@
     "fontScaleLarge": "Besar",
     "fontScaleExtraLarge": "Sangat besar",
     "fontScaleLabel": "Penyesuaian skala font",
-    "matrixHint": "Pilih kategori yang paling sering Anda hadiri. Feed discovery mengikuti minat ini."
+    "matrixHint": "Pilih kategori yang paling sering Anda hadiri. Feed discovery mengikuti minat ini.",
+    "localizationDesc": "Ganti bahasa dan hub regional. Mata uang, zona waktu, dan daftar venue mengikuti hub Anda."
   },
   "organizer": {
     "dashboardTitle": "Portal Penyelenggara",

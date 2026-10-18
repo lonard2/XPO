@@ -777,7 +777,8 @@
     "fontScaleLarge": "Large",
     "fontScaleExtraLarge": "Extra-large",
     "fontScaleLabel": "Font scale adjustment",
-    "matrixHint": "Pick the categories you attend most. Your discovery feed and suggestions follow these interests."
+    "matrixHint": "Pick the categories you attend most. Your discovery feed and suggestions follow these interests.",
+    "localizationDesc": "Switch languages and regional hubs. Currency, timezones, and venue lists follow your hub."
   },
   "organizer": {
     "dashboardTitle": "Organizer Portal",
