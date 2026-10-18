@@ -11,6 +11,7 @@ import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 import { SettingsProvider } from "@/components/settings/SettingsProvider";
 import { AuthProvider } from "@/lib/auth/session";
 import { AttendeeAIConcierge } from "@/components/ai/AttendeeAIConcierge";
+import { MotionTilt } from "@/components/settings/MotionTilt";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -102,6 +103,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
               <Footer locale={locale} />
               <MobileBottomNav locale={locale} />
               <AttendeeAIConcierge locale={locale} />
+              <MotionTilt />
             </SettingsProvider>
           </AuthProvider>
         </NextIntlClientProvider>

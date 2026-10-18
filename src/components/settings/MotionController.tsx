@@ -115,6 +115,7 @@ export function MotionController({ className }: { className?: string }) {
         </div>
 
         <div
+          data-tilt
           className={cn(
             "p-4 rounded-lg border border-border bg-gradient-to-br from-card to-muted/40 cursor-pointer select-none",
             motionMode === "expressive" && "card-interactive-3d ambient-glow",
