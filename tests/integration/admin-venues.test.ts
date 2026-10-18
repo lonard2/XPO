@@ -1,10 +1,11 @@
 import { describe, it, expect } from "vitest";
+import { NextRequest } from "next/server";
 import { db } from "@/lib/db";
 import { POST as createVenue } from "@/app/api/admin/venues/route";
 import { PUT as updateVenue } from "@/app/api/admin/venues/[id]/route";
 
 function req(url: string, method: string, body: unknown) {
-  return new Request(url, {
+  return new NextRequest(url, {
     method,
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
