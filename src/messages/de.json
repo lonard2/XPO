@@ -767,7 +767,9 @@
     "profileLocalOnly": "Nur in diesem Browser gespeichert. Wird erst bei der Pass-Registrierung übertragen.",
     "clearProfile": "Profil löschen",
     "activeSelection": "Aktiv",
-    "defaultBadge": "Standard"
+    "defaultBadge": "Standard",
+    "viewingSummary": "Ansicht: {language} · {region} · {currency} · {timezone} · {count} Venues",
+    "allHubs": "Alle regionalen Hubs"
   },
   "organizer": {
     "dashboardTitle": "Veranstalter-Portal",

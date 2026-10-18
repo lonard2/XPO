@@ -52,4 +52,17 @@ describe("SettingsPage appearance disclosure and deep links", () => {
 
     expect(screen.getByRole("tab", { name: /Profile/i })).toHaveAttribute("aria-selected", "true");
   });
+
+  it("shows a live localization consequence summary with all hub cards", () => {
+    window.location.hash = "#localization";
+    render(
+      <SettingsProvider>
+        <SettingsPage params={Promise.resolve({ locale: "en" })} />
+      </SettingsProvider>
+    );
+
+    expect(screen.getByText(/^Viewing:/i)).toBeInTheDocument();
+    expect(screen.getByText(/^Viewing:.*IDR.*WIB/i)).toBeInTheDocument();
+    expect(screen.getByText(/All Regional Hubs/i)).toBeInTheDocument();
+  });
 });

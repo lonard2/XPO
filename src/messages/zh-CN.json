@@ -767,7 +767,9 @@
     "profileLocalOnly": "仅存储在此浏览器中。在您注册通行证之前不会发送到任何地方。",
     "clearProfile": "清除档案",
     "activeSelection": "当前",
-    "defaultBadge": "默认"
+    "defaultBadge": "默认",
+    "viewingSummary": "当前查看:{language} · {region} · {currency} · {timezone} · {count}个场馆",
+    "allHubs": "所有区域中心"
   },
   "organizer": {
     "dashboardTitle": "主办方门户",

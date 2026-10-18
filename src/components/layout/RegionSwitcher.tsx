@@ -72,6 +72,7 @@ export interface RegionSwitcherProps {
   activeRegionCode?: string;
   variant?: "dropdown" | "pills" | "cards";
   className?: string;
+  onActiveRegionChange?: (code: "id" | "jp" | "global") => void;
 }
 
 export function RegionSwitcher({
@@ -79,6 +80,7 @@ export function RegionSwitcher({
   activeRegionCode,
   variant = "dropdown",
   className,
+  onActiveRegionChange,
 }: RegionSwitcherProps) {
   let tReg: any = (k: string) => k;
   try {
@@ -112,19 +114,23 @@ export function RegionSwitcher({
     const explicit = normalizeRegion(activeRegionCode);
     if (explicit) {
       setCurrentRegion(explicit);
+      onActiveRegionChange?.(explicit);
       return;
     }
     if (typeof window !== "undefined") {
       const queryRegion = normalizeRegion(new URLSearchParams(window.location.search).get("region"));
       if (queryRegion) {
         setCurrentRegion(queryRegion);
+        onActiveRegionChange?.(queryRegion);
         return;
       }
       const cookieRegion = normalizeRegion(document.cookie.match(/xpo_region=([^;]+)/)?.[1]);
       if (cookieRegion) {
         setCurrentRegion(cookieRegion);
+        onActiveRegionChange?.(cookieRegion);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeRegionCode, pathname]);
 
   const selectedRegion =
@@ -133,6 +139,7 @@ export function RegionSwitcher({
   const handleRegionChange = (regionCode: "id" | "jp" | "global") => {
     setIsOpen(false);
     setCurrentRegion(regionCode);
+    onActiveRegionChange?.(regionCode);
     if (typeof document !== "undefined") {
       document.cookie = `xpo_region=${regionCode}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
     }

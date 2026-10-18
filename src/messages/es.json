@@ -767,7 +767,9 @@
     "profileLocalOnly": "Se almacena solo en este navegador. No se envía hasta que registre un pase.",
     "clearProfile": "Borrar perfil",
     "activeSelection": "Activo",
-    "defaultBadge": "Predeterminado"
+    "defaultBadge": "Predeterminado",
+    "viewingSummary": "Viendo: {language} · {region} · {currency} · {timezone} · {count} sedes",
+    "allHubs": "Todos los hubs"
   },
   "organizer": {
     "dashboardTitle": "Portal del Organizador",

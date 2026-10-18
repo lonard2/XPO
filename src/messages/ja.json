@@ -767,7 +767,9 @@
     "profileLocalOnly": "このブラウザにのみ保存されます。パス登録まで外部送信されません。",
     "clearProfile": "プロフィールをクリア",
     "activeSelection": "現在",
-    "defaultBadge": "デフォルト"
+    "defaultBadge": "デフォルト",
+    "viewingSummary": "表示: {language} · {region} · {currency} · {timezone} · {count}会場",
+    "allHubs": "全地域ハブ"
   },
   "organizer": {
     "dashboardTitle": "主催者ポータル",

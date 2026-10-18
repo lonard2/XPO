@@ -26,8 +26,9 @@ import { AIConciergeToggle } from "@/components/settings/AIConciergeToggle";
 import { ProfileSettingsForm } from "@/components/settings/ProfileSettingsForm";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/Tabs";
 import { Button } from "@/components/ui/Button";
-import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
-import { RegionSwitcher } from "@/components/layout/RegionSwitcher";
+import { LanguageSwitcher, LANGUAGE_OPTIONS } from "@/components/layout/LanguageSwitcher";
+import { RegionSwitcher, REGION_OPTIONS } from "@/components/layout/RegionSwitcher";
+import { regionForLocale } from "@/lib/i18n/regions";
 
 interface SettingsPageProps {
   params: Promise<{ locale: string }>;
@@ -64,6 +65,16 @@ export default function SettingsPage({ params }: SettingsPageProps) {
 
   const prettyValue = (value: string | number) =>
     String(value).replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+
+  // Live consequence summary for the Localization tab. Initialized from the
+  // URL locale; the switcher reports the resolved region (query, cookie, prop).
+  const [summaryRegion, setSummaryRegion] = React.useState<string>(
+    () => regionForLocale(locale) || "id"
+  );
+  const summaryLanguage =
+    LANGUAGE_OPTIONS.find((l) => l.code === locale) || LANGUAGE_OPTIONS[0];
+  const summaryRegionOption =
+    REGION_OPTIONS.find((r) => r.code === summaryRegion) || REGION_OPTIONS[0];
 
   let tSet: any = (k: string) => k;
   let tCom: any = (k: string) => k;
@@ -283,6 +294,15 @@ export default function SettingsPage({ params }: SettingsPageProps) {
               <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
                 {tSet("subtitle") || "Choose your display language and primary MICE region for localized venue schedules and currency."}
               </p>
+              <p aria-live="polite" className="text-xs font-semibold text-foreground mt-2 rounded-lg bg-muted/50 px-2.5 py-1.5">
+                {tSet("viewingSummary", {
+                  language: summaryLanguage.nativeLabel,
+                  region: summaryRegionOption.editionTitle,
+                  currency: summaryRegionOption.currency,
+                  timezone: summaryRegionOption.timezoneName,
+                  count: summaryRegionOption.venueCount,
+                }) || `Viewing: ${summaryLanguage.nativeLabel} · ${summaryRegionOption.editionTitle} · ${summaryRegionOption.currency} · ${summaryRegionOption.timezoneName} · ${summaryRegionOption.venueCount} venues`}
+              </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2 border-t border-border/60">
@@ -305,6 +325,17 @@ export default function SettingsPage({ params }: SettingsPageProps) {
                   {tSet("regionalHubDesc") || "Toggle between Indonesia (JIExpo, ICE BSD), Japan (Big Sight, Makuhari), and Global Hubs."}
                 </p>
               </div>
+            </div>
+
+            <div className="space-y-2.5 pt-2 border-t border-border/60">
+              <span className="text-xs font-semibold text-foreground uppercase tracking-wider font-mono block">
+                {tSet("allHubs") || "All Regional Hubs"}
+              </span>
+              <RegionSwitcher
+                currentLocale={locale}
+                variant="cards"
+                onActiveRegionChange={setSummaryRegion}
+              />
             </div>
           </div>
         </TabsContent>

@@ -174,7 +174,7 @@ export function LanguageSwitcher({
                 >
                   <div className="flex flex-col">
                     <span className="font-medium text-foreground">{lang.nativeLabel}</span>
-                    <span className="text-xs text-muted-foreground">{lang.label}</span>
+                    <span className="text-xs text-muted-foreground">{lang.label} · {lang.regionHint}</span>
                   </div>
                   {isSelected && <Check className="h-3.5 w-3.5 text-primary stroke-[2.5]" />}
                 </button>
