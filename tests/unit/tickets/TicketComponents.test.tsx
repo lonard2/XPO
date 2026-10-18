@@ -318,6 +318,43 @@ describe("Phase 6 Unit: Ticket & Event Treats Component System", () => {
       expect(screen.queryByText("Keynote: Smart Manufacturing 5.0")).toBeNull();
       expect(screen.getByText("Industrial Robotics Teardown")).toBeDefined();
     });
+
+    it("expands session details from the title button without nested interactives", () => {
+      const { container } = render(
+        <InteractiveGuidebook
+          agendaItems={sampleAgenda}
+          eventTitle="Manufacturing Indonesia 2026"
+          locale="en"
+        />
+      );
+
+      // No row-level button role remains; titles are the expand controls.
+      expect(container.querySelectorAll('[role="button"]').length).toBe(0);
+      const titleBtn = container.querySelector('button[aria-expanded]') as HTMLElement;
+      expect(titleBtn.textContent).toMatch(/Keynote: Smart Manufacturing/i);
+      expect(titleBtn).toHaveAttribute("aria-expanded", "false");
+      fireEvent.click(titleBtn);
+      expect(titleBtn).toHaveAttribute("aria-expanded", "true");
+    });
+
+    it("resets search, track, and bookmark filters from the dead end", () => {
+      render(
+        <InteractiveGuidebook
+          agendaItems={sampleAgenda}
+          eventTitle="Manufacturing Indonesia 2026"
+          locale="en"
+        />
+      );
+
+      const searchInput = screen.getByPlaceholderText(/search/i);
+      fireEvent.change(searchInput, { target: { value: "NoSuchSessionXYZ" } });
+
+      const resetBtn = screen.getByRole("button", { name: /view all scheduled sessions/i });
+      fireEvent.click(resetBtn);
+
+      expect(screen.getByText("Keynote: Smart Manufacturing 5.0")).toBeDefined();
+      expect(screen.getByText("Industrial Robotics Teardown")).toBeDefined();
+    });
   });
 
   // ==========================================================================
@@ -383,6 +420,24 @@ describe("Phase 6 Unit: Ticket & Event Treats Component System", () => {
       fireEvent.click(zoomInBtn);
       fireEvent.click(zoomOutBtn);
       expect(zoomInBtn).toBeDefined();
+    });
+
+    it("labels the schematic honestly with booth counts and keyboard booths", () => {
+      const { container } = render(
+        <HallFloorMap
+          booths={sampleBooths}
+          venueName="JIExpo Kemayoran"
+          locale="en"
+        />
+      );
+
+      expect(screen.getByText(/not to scale/i)).toBeInTheDocument();
+      expect(screen.getByText(/2 of 2 booths/i)).toBeInTheDocument();
+
+      const boothNodes = container.querySelectorAll('g[role="button"]');
+      expect(boothNodes.length).toBe(2);
+      fireEvent.keyDown(boothNodes[0], { key: "Enter" });
+      expect(screen.getByText("PT Nusantara Heavy Industries")).toBeDefined();
     });
   });
 

@@ -141,7 +141,7 @@ export function HallFloorMap({
             variant="ghost"
             size="sm"
             onClick={handleZoomIn}
-            className="h-9 w-9 min-h-[36px] min-w-[36px] p-0 cursor-pointer"
+            className="h-11 w-11 min-h-[44px] min-w-[44px] p-0 cursor-pointer"
             title={tPerks("zoomIn") || "Zoom In"}
             aria-label={tPerks("zoomIn") || "Zoom In"}
           >
@@ -151,7 +151,7 @@ export function HallFloorMap({
             variant="ghost"
             size="sm"
             onClick={handleZoomOut}
-            className="h-9 w-9 min-h-[36px] min-w-[36px] p-0 cursor-pointer"
+            className="h-11 w-11 min-h-[44px] min-w-[44px] p-0 cursor-pointer"
             title={tPerks("zoomOut") || "Zoom Out"}
             aria-label={tPerks("zoomOut") || "Zoom Out"}
           >
@@ -161,7 +161,7 @@ export function HallFloorMap({
             variant="ghost"
             size="sm"
             onClick={handleResetZoom}
-            className="h-9 w-9 min-h-[36px] min-w-[36px] p-0 cursor-pointer"
+            className="h-11 w-11 min-h-[44px] min-w-[44px] p-0 cursor-pointer"
             title={tPerks("zoomReset") || "Reset Zoom"}
             aria-label={tPerks("zoomReset") || "Reset Zoom"}
           >
@@ -302,7 +302,17 @@ export function HallFloorMap({
                 <g
                   key={booth.id}
                   onClick={() => setSelectedBooth(booth)}
-                  className="cursor-pointer group"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setSelectedBooth(booth);
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
+                  aria-pressed={isSelected}
+                  aria-label={`${booth.companyName}, ${booth.boothNumber}`}
+                  className="cursor-pointer group focus-visible:outline-none"
                 >
                   {/* Booth Box */}
                   <rect

@@ -234,19 +234,8 @@ export function InteractiveGuidebook({
             return (
               <div
                 key={session.id}
-                role="button"
-                tabIndex={0}
-                aria-expanded={isExpanded}
-                aria-controls={`session-detail-${session.id}`}
-                onClick={() => setSelectedSessionId(isExpanded ? null : session.id)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    setSelectedSessionId(isExpanded ? null : session.id);
-                  }
-                }}
                 className={cn(
-                  "rounded-xl border p-4 transition-all duration-200 cursor-pointer bg-card hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                  "rounded-xl border p-4 transition-all duration-200 bg-card hover:border-primary/50 focus-within:border-primary/50",
                   isBookmarked ? "border-primary/40 bg-primary/2" : "border-border"
                 )}
               >
@@ -271,9 +260,15 @@ export function InteractiveGuidebook({
                       </span>
                     </div>
 
-                    <h4 className="text-sm sm:text-base font-bold text-foreground hover:text-primary transition-colors">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedSessionId(isExpanded ? null : session.id)}
+                      aria-expanded={isExpanded}
+                      aria-controls={`session-detail-${session.id}`}
+                      className="text-sm sm:text-base font-bold text-foreground hover:text-primary transition-colors text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm"
+                    >
                       {session.title}
-                    </h4>
+                    </button>
 
                     {session.speakerName && (
                       <div className="flex items-center gap-1.5 text-xs text-muted-foreground">

@@ -213,7 +213,7 @@ export function TicketCheckoutDrawer({
               <button
                 type="button"
                 onClick={handleCopyBookingId}
-                className="p-1 rounded text-muted-foreground hover:text-foreground cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+                className="relative p-1 rounded text-muted-foreground hover:text-foreground cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary after:absolute after:-inset-2.5 after:content-['']"
                 title={tTickets("copyBookingId") || "Copy Booking ID"}
                 aria-label={tTickets("copyBookingRef") || "Copy booking reference"}
               >
@@ -357,7 +357,7 @@ export function TicketCheckoutDrawer({
                   type="button"
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                   disabled={quantity <= 1}
-                  className="h-9 w-9 rounded-lg flex items-center justify-center text-foreground hover:bg-card disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+                  className="h-11 w-11 min-h-[44px] min-w-[44px] rounded-lg flex items-center justify-center text-foreground hover:bg-card disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
                   aria-label={tTickets("decreaseQty") || "Decrease quantity"}
                 >
                   <Minus className="h-3.5 w-3.5" />
@@ -389,7 +389,7 @@ export function TicketCheckoutDrawer({
                     type="button"
                     disabled={isOverLimit}
                     onClick={() => setQuantity(q)}
-                    className={`flex-1 py-1.5 text-xs rounded-lg border font-semibold transition-colors min-h-[38px] cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary ${
+                    className={`flex-1 py-1.5 text-xs rounded-lg border font-semibold transition-colors min-h-[44px] cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary ${
                       quantity === q
                         ? "bg-primary text-primary-foreground border-primary shadow-xs"
                         : isOverLimit

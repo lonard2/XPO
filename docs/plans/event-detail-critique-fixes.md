@@ -14,7 +14,7 @@ backed by event data — no sample labels).
   scale/format as translated body labels.
 - [x] **4. Clarify conversion copy** (`$impeccable clarify`): drawer,
   guidebook, floor-map strings into dictionaries.
-- [ ] **5. Audit detail a11y** (`$impeccable audit`): 44px controls,
+- [x] **5. Audit detail a11y** (`$impeccable audit`): 44px controls,
   nested-interactive and booth-keyboard pass.
 - [ ] **6. Polish final pass** (`$impeccable polish`): detector, screenshots,
   full suite green.

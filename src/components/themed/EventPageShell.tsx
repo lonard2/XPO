@@ -206,7 +206,7 @@ export function EventPageShell({
           </div>
           <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
             <Link href={`/${locale}/venues/${venue.slug}`}>
-              <Button variant="outline" size="sm" className="text-xs font-semibold gap-1.5 min-h-[40px]">
+              <Button variant="outline" size="sm" className="text-xs font-semibold gap-1.5 min-h-[44px]">
                 <Building2 className="h-3.5 w-3.5" />
                 <span>{tEvents("exploreVenueDetails") || "Explore Venue Details"}</span>
               </Button>
@@ -618,7 +618,7 @@ export function EventPageShell({
                       variant="outline"
                       size="sm"
                       onClick={() => setActiveTab("tickets")}
-                      className="text-xs font-semibold gap-1.5 min-h-[40px] cursor-pointer"
+                      className="text-xs font-semibold gap-1.5 min-h-[44px] cursor-pointer"
                     >
                       <Ticket className="h-3.5 w-3.5" />
                       <span>{tEvents("checkPassTiers") || "View Pass Tiers"}</span>
