@@ -316,7 +316,7 @@ export function OrganizerEventsRoster({ events, locale, title, description, hide
           )}
         </Card>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 stagger-children">
           {filteredEvents.map((event) => {
             const tokens = getArchetypeTokens(event.archetype);
             const registrationsCount = event.bookings?.length || 0;
@@ -330,6 +330,7 @@ export function OrganizerEventsRoster({ events, locale, title, description, hide
             return (
               <Card
                 key={event.id}
+                data-tilt
                 className="group relative border-border/80 bg-card flex flex-col justify-between hover:border-primary/60 hover:shadow-md transition-all shadow-xs rounded-2xl"
               >
                 <CardHeader className="p-5 pb-3 space-y-2.5">

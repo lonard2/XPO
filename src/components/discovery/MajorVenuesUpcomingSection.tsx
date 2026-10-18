@@ -95,7 +95,7 @@ export function MajorVenuesUpcomingSection({
       </div>
 
       {/* Major Venues Responsive Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 stagger-children">
         {orderedVenues.map((venue) => {
           // Max 3 attendable events per venue
           const upcomingEvents = attendableEventsFor(venue).slice(0, 3);
@@ -104,6 +104,7 @@ export function MajorVenuesUpcomingSection({
           return (
             <Card
               key={venue.id}
+              data-tilt
               className="flex flex-col justify-between overflow-hidden border-border/80 bg-card hover:border-primary/60 transition-all duration-300 shadow-xs hover:shadow-md"
             >
               {/* Venue Header Banner */}

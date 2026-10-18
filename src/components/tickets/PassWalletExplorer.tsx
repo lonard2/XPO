@@ -303,7 +303,7 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
 
       {/* Bookings Card Grid */}
       {filteredBookings.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 stagger-children">
           {filteredBookings.map((booking) => {
             const formattedDate = formatDateRange(
               booking.event.startDate,
@@ -326,6 +326,7 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
             return (
               <div
                 key={booking.id}
+                data-tilt
                 className="group relative rounded-3xl border border-border/80 bg-card hover:border-primary/60 transition-all duration-200 overflow-hidden shadow-xs hover:shadow-md flex flex-col justify-between"
               >
                 {/* Card Header Strip */}
