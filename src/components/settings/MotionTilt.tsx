@@ -17,6 +17,8 @@ export function MotionTilt() {
     if (typeof window === "undefined") return;
     if (!window.matchMedia("(pointer: fine)").matches) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // Coarse pointers (touch) never get tilt: text must not shift under thumbs.
+    if (window.matchMedia("(pointer: coarse)").matches) return;
 
     let current: HTMLElement | null = null;
     let raf = 0;

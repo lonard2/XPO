@@ -114,7 +114,6 @@ export const EventCard = React.memo(function EventCard({
   return (
     <Card
       interactive
-      data-tilt
       className={cn(
         'group relative flex flex-col justify-between overflow-hidden border-border/80 bg-card transition-all duration-300 hover:border-primary/60 hover:shadow-md hover:-translate-y-0.5',
         variant === 'horizontal' && 'md:flex-row md:items-center',

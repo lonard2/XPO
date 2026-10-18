@@ -237,8 +237,9 @@
   .motion-expressive .stagger-children > *:nth-child(4) { animation-delay: 0.12s; }
   .motion-expressive .stagger-children > *:nth-child(5) { animation-delay: 0.16s; }
   .motion-expressive .stagger-children > *:nth-child(6) { animation-delay: 0.2s; }
-  .motion-expressive .stagger-children > *:nth-child(7) { animation-delay: 0.24s; }
-  .motion-expressive .stagger-children > *:nth-child(n + 8) { animation-delay: 0.28s; }
+  /* Choreography ends at six cards: later siblings appear instantly so long
+     grids never feel gated by animation. */
+  .motion-expressive .stagger-children > *:nth-child(n + 7) { animation: none; }
 
   .motion-off * {
     animation-duration: 0.001ms !important;
