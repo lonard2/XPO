@@ -15,7 +15,9 @@ in place (no tile-engine transplant).
   states, 44px targets, real toolbar role.
 - [x] **5. Shape comparison** (`$impeccable shape`): price + ending-soon sorts,
   shortlist compare tray.
-- [ ] **6. Polish final pass** (`$impeccable polish`): detector, screenshots,
+- [x] **6. Polish final pass** (`$impeccable polish`): detector, screenshots,
   full suite green.
 
 Each ships as its own commit pushed to `origin/main`. Verify by execution.
+
+Verified: detector exit 0 with [] on six targets; tsc clean; 686 tests pass; desktop + mobile screenshots reviewed; dev server stopped, browser closed.
