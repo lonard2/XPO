@@ -11,7 +11,7 @@ in place (no tile-engine transplant).
   open); user-facing labels renamed to "Event Category".
 - [x] **3. Layout badge cap** (`$impeccable layout`): max 2 image-overlay badges
   (status, then curation); archetype + format move to body metadata.
-- [ ] **4. Harden table view** (`$impeccable harden`): full i18n, focus-visible
+- [x] **4. Harden table view** (`$impeccable harden`): full i18n, focus-visible
   states, 44px targets, real toolbar role.
 - [ ] **5. Shape comparison** (`$impeccable shape`): price + ending-soon sorts,
   shortlist compare tray.

@@ -388,7 +388,17 @@
     "officialListing": "Offizieller Eintrag des Veranstaltungsorts",
     "officialListingFallback": "Offizieller Eintrag",
     "curatedBy": "Kuratiert von",
-    "organizedBy": "Organisiert von"
+    "organizedBy": "Organisiert von",
+    "colExhibition": "Messe & Vertikale",
+    "colVenue": "Halle & Stadt",
+    "colTimeline": "Zeitplan",
+    "colFormat": "Format & Größe",
+    "colPass": "Pass",
+    "colAction": "Aktion",
+    "regOpen": "Registrierung offen",
+    "freePass": "Gratis-Messepass",
+    "fromPrice": "Ab",
+    "mainVenue": "Hauptvenue"
   },
   "venues": {
     "title": "Kongresszentren & Hallenverzeichnis",

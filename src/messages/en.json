@@ -388,7 +388,17 @@
     "officialListing": "Official Venue Listing",
     "officialListingFallback": "Official Listing",
     "curatedBy": "Curated by",
-    "organizedBy": "Organized by"
+    "organizedBy": "Organized by",
+    "colExhibition": "Exhibition & Vertical",
+    "colVenue": "Spatial Hall & City",
+    "colTimeline": "Timeline & Dates",
+    "colFormat": "Format & Scale",
+    "colPass": "Pass Entry",
+    "colAction": "Action",
+    "regOpen": "Registration Open",
+    "freePass": "Free Trade Pass",
+    "fromPrice": "From",
+    "mainVenue": "Main Venue"
   },
   "venues": {
     "title": "Convention Centers & Hall Directory",

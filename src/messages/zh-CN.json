@@ -388,7 +388,17 @@
     "officialListing": "场馆官方收录",
     "officialListingFallback": "官方收录",
     "curatedBy": "精选方",
-    "organizedBy": "主办方"
+    "organizedBy": "主办方",
+    "colExhibition": "展会与领域",
+    "colVenue": "展厅与城市",
+    "colTimeline": "时间安排",
+    "colFormat": "形式与规模",
+    "colPass": "通行证",
+    "colAction": "操作",
+    "regOpen": "报名开放",
+    "freePass": "免费贸易通行证",
+    "fromPrice": "起",
+    "mainVenue": "主会场"
   },
   "venues": {
     "title": "会展中心与展厅名录",

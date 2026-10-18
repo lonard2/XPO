@@ -135,7 +135,7 @@ export function FacetedFilterBar({
     (filters.dateRange !== 'all' ? 1 : 0);
 
   return (
-    <div className={cn('space-y-3', className)} aria-label="Search and filter toolbar">
+    <div role="toolbar" className={cn('space-y-3', className)} aria-label="Search and filter toolbar">
       {/* Top Search and Sort Bar */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
         {/* Search Input with Keyboard Shortcut */}
@@ -154,7 +154,7 @@ export function FacetedFilterBar({
             <button
               type="button"
               onClick={handleClearSearch}
-              className="absolute right-2 top-1/2 -translate-y-1/2 flex h-7 w-7 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors cursor-pointer"
+              className="absolute right-2 top-1/2 -translate-y-1/2 flex h-7 w-7 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors cursor-pointer after:absolute after:-inset-2 after:content-['']"
               aria-label="Clear search query"
             >
               <X className="h-3.5 w-3.5" />
@@ -196,7 +196,7 @@ export function FacetedFilterBar({
                 type="button"
                 onClick={() => onViewModeChange('grid')}
                 className={cn(
-                  'flex h-8.5 w-8.5 items-center justify-center rounded-lg transition-colors cursor-pointer',
+                  'flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-lg transition-colors cursor-pointer',
                   viewMode === 'grid'
                     ? 'bg-primary text-primary-foreground shadow-xs font-bold'
                     : 'text-muted-foreground hover:bg-muted hover:text-foreground'
@@ -211,7 +211,7 @@ export function FacetedFilterBar({
                 type="button"
                 onClick={() => onViewModeChange('table')}
                 className={cn(
-                  'flex h-8.5 w-8.5 items-center justify-center rounded-lg transition-colors cursor-pointer',
+                  'flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-lg transition-colors cursor-pointer',
                   viewMode === 'table'
                     ? 'bg-primary text-primary-foreground shadow-xs font-bold'
                     : 'text-muted-foreground hover:bg-muted hover:text-foreground'

@@ -388,7 +388,17 @@
     "officialListing": "会場公式掲載",
     "officialListingFallback": "公式掲載",
     "curatedBy": "キュレーション:",
-    "organizedBy": "主催:"
+    "organizedBy": "主催:",
+    "colExhibition": "展示会・分野",
+    "colVenue": "ホール・都市",
+    "colTimeline": "日程",
+    "colFormat": "形式・規模",
+    "colPass": "パス",
+    "colAction": "操作",
+    "regOpen": "受付中",
+    "freePass": "無料トレードパス",
+    "fromPrice": "最低",
+    "mainVenue": "メイン会場"
   },
   "venues": {
     "title": "コンベンションセンター＆ホール一覧",

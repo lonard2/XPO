@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
 import { buttonVariants } from '@/components/ui/Button';
+import { useTranslations } from 'next-intl';
 import { getArchetypeTokens } from '@/lib/theming';
 import {
   formatDateRange,
@@ -33,6 +34,9 @@ export const EventTableView = React.memo(function EventTableView({
   locale,
   className,
 }: EventTableViewProps) {
+  const tEvents = useTranslations('events');
+  const tTick = useTranslations('tickets');
+
   if (events.length === 0) {
     return null;
   }
@@ -42,12 +46,12 @@ export const EventTableView = React.memo(function EventTableView({
       <table className="w-full text-left border-collapse text-xs min-w-[720px]">
         <thead>
           <tr className="border-b border-border/80 bg-muted/40 text-muted-foreground uppercase tracking-wider font-bold">
-            <th scope="col" className="p-[var(--table-cell-padding,0.875rem_1rem)] font-semibold">Exhibition & Vertical</th>
-            <th scope="col" className="p-[var(--table-cell-padding,0.875rem_1rem)] font-semibold">Spatial Hall & City</th>
-            <th scope="col" className="p-[var(--table-cell-padding,0.875rem_1rem)] font-semibold">Timeline & Dates</th>
-            <th scope="col" className="p-[var(--table-cell-padding,0.875rem_1rem)] font-semibold">Format & Scale</th>
-            <th scope="col" className="p-[var(--table-cell-padding,0.875rem_1rem)] font-semibold">Pass Entry</th>
-            <th scope="col" className="p-[var(--table-cell-padding,0.875rem_1rem)] font-semibold text-right">Action</th>
+            <th scope="col" className="p-[var(--table-cell-padding,0.875rem_1rem)] font-semibold">{tEvents('colExhibition') || 'Exhibition & Vertical'}</th>
+            <th scope="col" className="p-[var(--table-cell-padding,0.875rem_1rem)] font-semibold">{tEvents('colVenue') || 'Spatial Hall & City'}</th>
+            <th scope="col" className="p-[var(--table-cell-padding,0.875rem_1rem)] font-semibold">{tEvents('colTimeline') || 'Timeline & Dates'}</th>
+            <th scope="col" className="p-[var(--table-cell-padding,0.875rem_1rem)] font-semibold">{tEvents('colFormat') || 'Format & Scale'}</th>
+            <th scope="col" className="p-[var(--table-cell-padding,0.875rem_1rem)] font-semibold">{tEvents('colPass') || 'Pass Entry'}</th>
+            <th scope="col" className="p-[var(--table-cell-padding,0.875rem_1rem)] font-semibold text-right">{tEvents('colAction') || 'Action'}</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-border/60">
@@ -56,15 +60,18 @@ export const EventTableView = React.memo(function EventTableView({
             const temporal = getEventTemporalStatus(event.startDate, event.endDate);
             const formattedDates = formatDateRange(event.startDate, event.endDate, locale);
 
-            // Compute lowest price tier
-            let priceDisplay = 'Registration Open';
+            // Compute lowest price tier (currency falls back region-first like cards)
+            let priceDisplay = tEvents('regOpen') || 'Registration Open';
+            let isFreePass = false;
             if (event.ticketTiers && event.ticketTiers.length > 0) {
               const minPrice = Math.min(...event.ticketTiers.map((t) => t.price));
-              const currency = (event.ticketTiers[0].currency || 'USD') as SupportedCurrency;
+              const regionAny = (event as any).region;
+              const currency = (event.ticketTiers[0].currency || regionAny?.currency || 'IDR') as SupportedCurrency;
               if (minPrice === 0) {
-                priceDisplay = 'Free Trade Pass';
+                priceDisplay = tEvents('freePass') || 'Free Trade Pass';
+                isFreePass = true;
               } else {
-                priceDisplay = `From ${formatCurrency(minPrice, currency, locale)}`;
+                priceDisplay = `${tEvents('fromPrice') || 'From'} ${formatCurrency(minPrice, currency, locale)}`;
               }
             }
 
@@ -92,14 +99,14 @@ export const EventTableView = React.memo(function EventTableView({
                       {temporal.isLive && (
                         <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[11px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
                           <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 inline-block animate-ping" />
-                          Live
+                          {tEvents('live') || 'Live'}
                         </span>
                       )}
                     </div>
 
                     <Link
                       href={`/${locale}/events/${event.slug}`}
-                      className="font-bold text-foreground hover:text-primary transition-colors hover:underline line-clamp-2 block text-xs sm:text-sm"
+                      className="font-bold text-foreground hover:text-primary transition-colors hover:underline line-clamp-2 block text-xs sm:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 rounded-sm"
                     >
                       {event.title}
                     </Link>
@@ -118,14 +125,14 @@ export const EventTableView = React.memo(function EventTableView({
                     {event.venue && (
                       <Link
                         href={`/${locale}/venues/${event.venue.slug}`}
-                        className="font-medium text-foreground hover:text-primary hover:underline transition-colors block"
+                        className="font-medium text-foreground hover:text-primary hover:underline transition-colors block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 rounded-sm"
                       >
                         {event.venue.name}
                       </Link>
                     )}
                     <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
                       <MapPin className="h-3 w-3 shrink-0 text-muted-foreground" />
-                      <span>{event.venue?.city || 'Main Venue'}</span>
+                      <span>{event.venue?.city || (tEvents('mainVenue') || 'Main Venue')}</span>
                       {event.venueHall && (
                         <span className="text-foreground font-medium">
                           • {event.venueHall.name}
@@ -159,7 +166,7 @@ export const EventTableView = React.memo(function EventTableView({
                 <td className="p-[var(--table-cell-padding,0.875rem_1rem)] whitespace-nowrap">
                   <div className="flex items-center gap-1 text-foreground font-semibold">
                     <Ticket className="h-3.5 w-3.5 text-primary shrink-0" />
-                    <span className={cn(priceDisplay === 'Free Trade Pass' ? 'text-emerald-600 dark:text-emerald-400 font-bold' : '')}>
+                    <span className={cn(isFreePass ? 'text-emerald-600 dark:text-emerald-400 font-bold' : '')}>
                       {priceDisplay}
                     </span>
                   </div>
@@ -171,10 +178,10 @@ export const EventTableView = React.memo(function EventTableView({
                     href={`/${locale}/events/${event.slug}`}
                     className={cn(
                       buttonVariants({ variant: 'outline', size: 'sm' }),
-                      'gap-1 text-xs font-semibold hover:border-primary hover:text-primary transition-all min-h-[36px] cursor-pointer'
+                      'gap-1 text-xs font-semibold hover:border-primary hover:text-primary transition-all min-h-[44px] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2'
                     )}
                   >
-                    <span>View Pass</span>
+                    <span>{tTick('viewPass') || 'View Pass'}</span>
                     <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
                   </Link>
                 </td>

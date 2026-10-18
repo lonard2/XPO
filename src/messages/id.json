@@ -388,7 +388,17 @@
     "officialListing": "Daftar Resmi Venue",
     "officialListingFallback": "Daftar Resmi",
     "curatedBy": "Dikurasi oleh",
-    "organizedBy": "Diselenggarakan oleh"
+    "organizedBy": "Diselenggarakan oleh",
+    "colExhibition": "Pameran & Vertikal",
+    "colVenue": "Aula & Kota",
+    "colTimeline": "Linimasa & Tanggal",
+    "colFormat": "Format & Skala",
+    "colPass": "Tiket Masuk",
+    "colAction": "Aksi",
+    "regOpen": "Pendaftaran Dibuka",
+    "freePass": "Pass Dagang Gratis",
+    "fromPrice": "Mulai",
+    "mainVenue": "Venue Utama"
   },
   "venues": {
     "title": "Pusat Konvensi & Direktori Hall",

@@ -158,4 +158,27 @@ describe('Discovery Component: FacetedFilterBar', () => {
 
     expect(handleViewModeChange).toHaveBeenCalledWith('grid');
   });
+
+  it('T1.6: exposes a toolbar role with 44px view toggle targets', () => {
+    render(
+      <FacetedFilterBar
+        filters={initialFilters}
+        onChange={vi.fn()}
+        onReset={vi.fn()}
+        totalResults={3}
+        sortBy="date_asc"
+        onSortChange={vi.fn()}
+        onOpenMobileFilters={vi.fn()}
+        viewMode="grid"
+        onViewModeChange={vi.fn()}
+      />
+    );
+
+    expect(screen.getByRole('toolbar')).toBeInTheDocument();
+    for (const name of [/grid view/i, /dense table view/i]) {
+      const btn = screen.getByRole('button', { name });
+      expect(btn.className).toContain('min-h-[44px]');
+      expect(btn.className).toContain('min-w-[44px]');
+    }
+  });
 });

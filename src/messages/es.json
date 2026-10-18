@@ -388,7 +388,17 @@
     "officialListing": "Ficha oficial del recinto",
     "officialListingFallback": "Ficha oficial",
     "curatedBy": "Curado por",
-    "organizedBy": "Organizado por"
+    "organizedBy": "Organizado por",
+    "colExhibition": "Exposición y vertical",
+    "colVenue": "Pabellón y ciudad",
+    "colTimeline": "Cronograma",
+    "colFormat": "Formato y escala",
+    "colPass": "Pase",
+    "colAction": "Acción",
+    "regOpen": "Registro abierto",
+    "freePass": "Pase comercial gratis",
+    "fromPrice": "Desde",
+    "mainVenue": "Sede principal"
   },
   "venues": {
     "title": "Recintos Feriales y Directorio de Pabellones",
