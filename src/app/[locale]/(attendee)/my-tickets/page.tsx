@@ -3,10 +3,8 @@ import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { db } from '@/lib/db';
 import {
   Ticket,
-  ShieldCheck,
   ArrowLeft,
 } from 'lucide-react';
-import { Badge } from '@/components/ui/Badge';
 import { buttonVariants } from '@/components/ui/Button';
 import { PassWalletExplorer, type BookingSummary } from '@/components/tickets/PassWalletExplorer';
 import { cn } from '@/lib/utils';
@@ -97,7 +95,7 @@ export default async function MyTicketsPage({ params }: MyTicketsPageProps) {
           </li>
           <li aria-hidden="true">/</li>
           <li aria-current="page" className="font-semibold text-foreground">
-            {tMy('title')?.split('&')?.[0]?.trim() || 'Pass Wallet'}
+            {tMy('breadcrumbWallet') || 'Pass Wallet'}
           </li>
         </ol>
       </nav>
@@ -106,12 +104,6 @@ export default async function MyTicketsPage({ params }: MyTicketsPageProps) {
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/80 pb-6">
           <div className="space-y-1.5">
-            <div className="flex items-center gap-2">
-              <Badge variant="secondary" size="sm" className="gap-1.5 font-semibold">
-                <ShieldCheck className="h-3.5 w-3.5 text-emerald-500" />
-                <span>{tMy('title') || 'Attendee Credential Wallet'}</span>
-              </Badge>
-            </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
               {tMy('title') || 'My Passes & Event Treat Vouchers'}
             </h1>

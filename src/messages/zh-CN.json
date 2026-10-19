@@ -719,7 +719,8 @@
     "demoPreview": "演示预览",
     "demoPreviewNote": "演示预览:仅用于说明的示例通行证，非真实凭证。",
     "offlineFailed": "离线保存失败:存储不可用。",
-    "offlineCachedAt": "已于{time}离线保存"
+    "offlineCachedAt": "已于{time}离线保存",
+    "breadcrumbWallet": "通行证钱包"
   },
   "perks": {
     "treatsTitle": "参会专属权益与数字指南",
@@ -735,7 +736,7 @@
     "addToMyAgenda": "加入我的日程",
     "unlockedPerk": "已解锁",
     "tierRequired": "特定门票专属",
-    "tierTreatsTitle": "等级特权与现场数字礼券",
+    "tierTreatsTitle": "等级礼遇与代金券",
     "tierTreatsSubtitle": "根据您购买的入场券等级解锁专属会务特权。",
     "interactiveFloorPlan": "交互式SVG展厅平面分布图",
     "navigateFloorPlan": "导航参展商展位、VIP休息室及现场服务设施。",
@@ -760,7 +761,7 @@
     "locateMap": "在地图上查找兑换处",
     "viewVoucher": "查看代金券代码",
     "subnavPass": "数字通行证",
-    "subnavTreats": "VIP礼遇",
+    "subnavTreats": "礼遇",
     "subnavTimetable": "时间表",
     "subnavMap": "楼层图"
   },

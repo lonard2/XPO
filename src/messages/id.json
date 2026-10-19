@@ -719,7 +719,8 @@
     "demoPreview": "Pratinjau Demo",
     "demoPreviewNote": "Pratinjau demo: pass contoh untuk ilustrasi, bukan kredensial asli.",
     "offlineFailed": "Gagal simpan offline: penyimpanan tidak tersedia.",
-    "offlineCachedAt": "Tersimpan offline pukul {time}"
+    "offlineCachedAt": "Tersimpan offline pukul {time}",
+    "breadcrumbWallet": "Dompet Pass"
   },
   "perks": {
     "treatsTitle": "Fasilitas & Buku Panduan Interaktif",
@@ -735,7 +736,7 @@
     "addToMyAgenda": "Simpan ke Agenda Saya",
     "unlockedPerk": "Fasilitas Terbuka",
     "tierRequired": "Butuh Kategori Tertentu",
-    "tierTreatsTitle": "Fasilitas Tingkat & Voucher Digital Lokasi",
+    "tierTreatsTitle": "Treats & Voucher Tier",
     "tierTreatsSubtitle": "Keuntungan eksklusif sesuai tingkat pas masuk Anda.",
     "interactiveFloorPlan": "Denah Lantai Aula SVG Interaktif",
     "navigateFloorPlan": "Navigasi stan pameran, ruang tunggu VIP, dan fasilitas.",
@@ -760,7 +761,7 @@
     "locateMap": "Temukan Hub di Peta",
     "viewVoucher": "Lihat Kode Voucher",
     "subnavPass": "Pass Digital",
-    "subnavTreats": "Treats VIP",
+    "subnavTreats": "Treats",
     "subnavTimetable": "Jadwal",
     "subnavMap": "Peta Lantai"
   },

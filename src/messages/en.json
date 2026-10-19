@@ -638,7 +638,7 @@
     "scanHint": "Scan at door turnstile reader for admission",
     "attendeeLbl": "Attendee",
     "passDeliveryLbl": "Pass Delivery",
-    "openPass": "Open Digital Pass & Event Treats",
+    "openPass": "Open Digital Pass & Treats",
     "viewAllPasses": "View All My Passes",
     "doneBtn": "Done",
     "stepTier": "1. Select Pass Tier",
@@ -719,7 +719,8 @@
     "demoPreview": "Demo Preview",
     "demoPreviewNote": "Demo preview: sample pass for illustration, not a real credential.",
     "offlineFailed": "Offline save failed: storage unavailable.",
-    "offlineCachedAt": "Saved offline at {time}"
+    "offlineCachedAt": "Saved offline at {time}",
+    "breadcrumbWallet": "Pass Wallet"
   },
   "perks": {
     "treatsTitle": "Interactive Perks & Guidebook",
@@ -735,7 +736,7 @@
     "addToMyAgenda": "Add to My Agenda",
     "unlockedPerk": "Perk Unlocked",
     "tierRequired": "Tier Required",
-    "tierTreatsTitle": "Tier Treats & On-Site Digital Vouchers",
+    "tierTreatsTitle": "Tier Treats & Vouchers",
     "tierTreatsSubtitle": "Exclusive perks unlocked by your pass tier.",
     "interactiveFloorPlan": "Interactive SVG Hall Floor Plan",
     "navigateFloorPlan": "Navigate exhibitor booths, VIP lounges, and amenities.",
@@ -760,7 +761,7 @@
     "locateMap": "Locate Redemption Hub on Map",
     "viewVoucher": "View Voucher Code",
     "subnavPass": "Digital Pass",
-    "subnavTreats": "VIP Treats",
+    "subnavTreats": "Treats",
     "subnavTimetable": "Timetable",
     "subnavMap": "Floor Map"
   },

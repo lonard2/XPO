@@ -719,7 +719,8 @@
     "demoPreview": "Vista demo",
     "demoPreviewNote": "Vista demo: pase de muestra ilustrativo, no una credencial real.",
     "offlineFailed": "Error al guardar sin conexión.",
-    "offlineCachedAt": "Guardado sin conexión a las {time}"
+    "offlineCachedAt": "Guardado sin conexión a las {time}",
+    "breadcrumbWallet": "Billetera de pases"
   },
   "perks": {
     "treatsTitle": "Ventajas Interactivas y Guía",
@@ -735,7 +736,7 @@
     "addToMyAgenda": "Añadir a mi Agenda",
     "unlockedPerk": "Ventaja Desbloqueada",
     "tierRequired": "Requiere Pase Específico",
-    "tierTreatsTitle": "Beneficios de Entrada y Cupones Digitales",
+    "tierTreatsTitle": "Beneficios y vales de nivel",
     "tierTreatsSubtitle": "Ventajas exclusivas desbloqueadas según su tipo de pase.",
     "interactiveFloorPlan": "Plano Interactivo SVG del Pabellón",
     "navigateFloorPlan": "Ubique estands de expositores, salas VIP y zonas de servicios.",
@@ -760,7 +761,7 @@
     "locateMap": "Ubicar centro en el mapa",
     "viewVoucher": "Ver código",
     "subnavPass": "Pase digital",
-    "subnavTreats": "Beneficios VIP",
+    "subnavTreats": "Beneficios",
     "subnavTimetable": "Horario",
     "subnavMap": "Mapa"
   },

@@ -719,7 +719,8 @@
     "demoPreview": "デモプレビュー",
     "demoPreviewNote": "デモプレビュー:説明用のサンプルパスであり、正式な証明ではありません。",
     "offlineFailed": "オフライン保存に失敗しました。",
-    "offlineCachedAt": "オフライン保存済み {time}"
+    "offlineCachedAt": "オフライン保存済み {time}",
+    "breadcrumbWallet": "パスウォレット"
   },
   "perks": {
     "treatsTitle": "来場特典＆デジタルガイドブック",
@@ -735,7 +736,7 @@
     "addToMyAgenda": "マイスケジュールに追加",
     "unlockedPerk": "利用可能特典",
     "tierRequired": "特定パス限定",
-    "tierTreatsTitle": "券種別特典＆会場デジタルバウチャー",
+    "tierTreatsTitle": "ティア特典&バウチャー",
     "tierTreatsSubtitle": "お持ちの入場パス券種に応じた限定特典をご利用いただけます。",
     "interactiveFloorPlan": "インタラクティブSVGホールフロアマップ",
     "navigateFloorPlan": "出展社ブース、VIPラウンジ、施設設備をスムーズに案内。",
@@ -760,7 +761,7 @@
     "locateMap": "マップで引き換え所を探す",
     "viewVoucher": "バウチャーコードを見る",
     "subnavPass": "デジタルパス",
-    "subnavTreats": "VIP特典",
+    "subnavTreats": "特典",
     "subnavTimetable": "時刻表",
     "subnavMap": "フロアマップ"
   },

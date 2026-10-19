@@ -30,7 +30,7 @@ interface DigitalPassPageProps {
 export async function generateMetadata({ params }: DigitalPassPageProps) {
   const { bookingId } = await params;
   return {
-    title: `Digital Pass & Event Treats (${bookingId}) | XPO MICE Ecosystem`,
+    title: `Digital Pass & Tier Treats (${bookingId}) | XPO MICE Ecosystem`,
     description: 'Access your cryptographic vector QR pass, interactive schedule guidebook, hall map, and tier treat vouchers.',
   };
 }
@@ -170,7 +170,7 @@ export default async function DigitalPassDetailPage({ params }: DigitalPassPageP
           <DigitalPassQR booking={booking} locale={locale} isDemoPreview={(booking as any).isDemoPreview === true} />
         </section>
 
-        {/* 4. Tier-Gated Event Day Treats & Vouchers */}
+        {/* 4. Tier-Gated Tier Treats & Vouchers */}
         {booking.event.perks && booking.event.perks.length > 0 && (
           <section id="event-perks-section" className="pt-6 border-t border-border/80">
             <TierPerksGating

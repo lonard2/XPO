@@ -207,7 +207,7 @@ describe("Phase 6 Unit: Ticket & Event Treats Component System", () => {
       );
 
       expect(screen.getByRole("button", { name: /digital pass/i })).toBeDefined();
-      expect(screen.getByRole("button", { name: /vip treats/i })).toBeDefined();
+      expect(screen.getByRole("button", { name: /treats/i })).toBeDefined();
       expect(screen.getByRole("button", { name: /timetable/i })).toBeDefined();
       expect(screen.getByRole("button", { name: /floor map/i })).toBeDefined();
       expect(screen.getByText("3")).toBeDefined();
