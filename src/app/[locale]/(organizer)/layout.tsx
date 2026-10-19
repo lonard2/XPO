@@ -52,18 +52,14 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isMobileSidebarOpen]);
 
+  // Frame carries a single canonical create action (crumb-bar Launch).
+  // The wizard stays reachable from every organizer page through it.
   const navItems = [
     {
       href: `/${locale}/dashboard`,
       label: tOrg("dashboardNav") || "Dashboard & Metrics",
       icon: LayoutDashboard,
       description: tOrg("dashboardNavDesc") || "Overview, revenue & check-in velocity",
-    },
-    {
-      href: `/${locale}/events/new`,
-      label: tOrg("createEventNav") || "Create Event Wizard",
-      icon: PlusCircle,
-      description: tOrg("createEventNavDesc") || "4-step MICE event launch pipeline",
     },
     {
       href: `/${locale}/booths`,
