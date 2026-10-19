@@ -1156,7 +1156,15 @@
     "clusterFilterAria": "Kategorien nach Branchencluster filtern",
     "wizardArchetypeAria": "Event-Kategorie wählen",
     "templateBarTitle": "Schnellstart: Mit spezialisierter Vorlage starten",
-    "templateBarDesc": "Richtet Metadaten, Kategorie-Token und Beispielpässe automatisch ein"
+    "templateBarDesc": "Richtet Metadaten, Kategorie-Token und Beispielpässe automatisch ein",
+    "regionModalTitle": "Regionale Edition wechseln?",
+    "regionModalDesc": "Der Wechsel setzt Venue, Hallenzuordnung und Tier-Währungen zurück. Eigene Preise werden durch regionale Defaults ersetzt, sofern nicht behalten.",
+    "keepPrices": "Meine Preise behalten",
+    "convertDefaults": "In regionale Defaults umrechnen",
+    "templateModalTitle": "Messe-Vorlage anwenden?",
+    "templateModalDesc": "Dies ersetzt Titel, Beschreibung, Kategorie, Stufen und Markenfarben. Direkt danach widerrufbar.",
+    "applyTemplate": "Vorlage anwenden",
+    "templateUndo": "Vorlage rückgängig"
   },
   "admin": {
     "dashboardTitle": "Admin-Governance & Aggregator",

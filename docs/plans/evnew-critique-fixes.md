@@ -10,7 +10,7 @@ Direction: multi-hall P0 first, all four issues, persist full array.
   Archetype strings become Category; internal type names stay.
 - [x] **3. Layout entry points** (`$impeccable layout`): working `?step=`
   deep-links plus fix of the draft-suppresses-template race.
-- [ ] **4. Clarify overwrite guards** (`$impeccable clarify`): confirm guards
+- [x] **4. Clarify overwrite guards** (`$impeccable clarify`): confirm guards
   on region-switch price rewrites and template overwrites, with undo.
 - [ ] **5. Polish final pass** (`$impeccable polish`): detector, screenshots,
   full suite green.

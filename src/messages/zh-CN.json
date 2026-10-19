@@ -1156,7 +1156,15 @@
     "clusterFilterAria": "按行业集群筛选分类",
     "wizardArchetypeAria": "选择活动分类",
     "templateBarTitle": "快速上手: 使用专业展会模板创建",
-    "templateBarDesc": "自动配置元数据、分类标识与示例通行证"
+    "templateBarDesc": "自动配置元数据、分类标识与示例通行证",
+    "regionModalTitle": "切换区域版本?",
+    "regionModalDesc": "切换区域将重置场馆、展厅分配和等级货币。除非保留, 自定义价格将被替换为区域默认值。",
+    "keepPrices": "保留我的价格",
+    "convertDefaults": "转换为区域默认值",
+    "templateModalTitle": "应用展会模板?",
+    "templateModalDesc": "这将替换已输入的标题、描述、分类、等级和品牌颜色。应用后可立即撤销。",
+    "applyTemplate": "应用模板",
+    "templateUndo": "撤销模板"
   },
   "admin": {
     "dashboardTitle": "管理统括中心",

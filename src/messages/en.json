@@ -1156,7 +1156,15 @@
     "clusterFilterAria": "Filter event categories by industry cluster",
     "wizardArchetypeAria": "Select Event Category",
     "templateBarTitle": "Fast-Track Onboarding: Launch with a Specialized Exhibition Template",
-    "templateBarDesc": "Auto-configures metadata, category tokens, and sample passes"
+    "templateBarDesc": "Auto-configures metadata, category tokens, and sample passes",
+    "regionModalTitle": "Switch Regional Edition?",
+    "regionModalDesc": "Switching region resets the venue, hall allocation, and tier currencies. Custom tier prices are replaced with regional defaults unless you keep them.",
+    "keepPrices": "Keep my prices",
+    "convertDefaults": "Convert to regional defaults",
+    "templateModalTitle": "Apply Exhibition Template?",
+    "templateModalDesc": "This replaces the title, description, category, tiers, and brand colors already entered. You can undo immediately after applying.",
+    "applyTemplate": "Apply template",
+    "templateUndo": "Undo template"
   },
   "admin": {
     "dashboardTitle": "Governance & Admin Agregator",

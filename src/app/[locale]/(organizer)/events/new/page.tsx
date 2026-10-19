@@ -299,6 +299,15 @@ export default function NewEventWizardPage() {
   const [format, setFormat] = React.useState("IN_PERSON");
   const [scale, setScale] = React.useState("MEDIUM");
 
+  // Confirm + undo rails for destructive overwrites (region switch, templates)
+  const tierBaselineRef = React.useRef<string>("");
+  const templateSnapshotRef = React.useRef<Record<string, any> | null>(null);
+  const [pendingRegion, setPendingRegion] = React.useState<string | null>(null);
+  const [showRegionModal, setShowRegionModal] = React.useState(false);
+  const [pendingTemplate, setPendingTemplate] = React.useState<string | null>(null);
+  const [showTemplateModal, setShowTemplateModal] = React.useState(false);
+  const [templateUndoAvailable, setTemplateUndoAvailable] = React.useState(false);
+
   const handleApplyTemplate = React.useCallback((templateKey: string) => {
     const tmpl = TEMPLATES[templateKey];
     if (!tmpl) return;
@@ -312,9 +321,52 @@ export default function NewEventWizardPage() {
     setPrimaryColor(tmpl.primaryColor);
     setAccentColor(tmpl.accentColor);
     setTicketTiers(tmpl.ticketTiers);
+    tierBaselineRef.current = JSON.stringify(tmpl.ticketTiers);
     setIsSlugDirty(true);
     setErrorMessage("");
   }, []);
+
+  const handleTemplateRequest = (templateKey: string) => {
+    // Pristine canvas applies instantly; typed identity asks first.
+    if (title.trim()) {
+      templateSnapshotRef.current = {
+        title, slug, tagline, description, archetype, format, scale,
+        primaryColor, accentColor, heroImageUrl, ticketTiers,
+      };
+      setPendingTemplate(templateKey);
+      setShowTemplateModal(true);
+      return;
+    }
+    handleApplyTemplate(templateKey);
+  };
+
+  const handleConfirmTemplate = () => {
+    if (pendingTemplate) {
+      handleApplyTemplate(pendingTemplate);
+      setTemplateUndoAvailable(true);
+    }
+    setPendingTemplate(null);
+    setShowTemplateModal(false);
+  };
+
+  const handleUndoTemplate = () => {
+    const snap = templateSnapshotRef.current;
+    if (!snap) return;
+    setTitle(snap.title);
+    setSlug(snap.slug);
+    setTagline(snap.tagline);
+    setDescription(snap.description);
+    setArchetype(snap.archetype);
+    setFormat(snap.format);
+    setScale(snap.scale);
+    setPrimaryColor(snap.primaryColor);
+    setAccentColor(snap.accentColor);
+    setHeroImageUrl(snap.heroImageUrl);
+    setTicketTiers(snap.ticketTiers);
+    tierBaselineRef.current = JSON.stringify(snap.ticketTiers);
+    templateSnapshotRef.current = null;
+    setTemplateUndoAvailable(false);
+  };
 
   // Step 2: Venue & Hall (Regional defaults derived from route locale)
   const initialRegion = React.useMemo(() => {
@@ -471,6 +523,8 @@ export default function NewEventWizardPage() {
       }
 
       isInitializedRef.current = true;
+      // Tier baseline starts at factory defaults; programmatic resets refresh it.
+      if (!tierBaselineRef.current) tierBaselineRef.current = JSON.stringify(ticketTiers);
     });
   }, [handleApplyTemplate]);
 
@@ -570,7 +624,10 @@ export default function NewEventWizardPage() {
       }
       if (d.startDate) setStartDate(d.startDate);
       if (d.endDate) setEndDate(d.endDate);
-      if (d.ticketTiers && Array.isArray(d.ticketTiers)) setTicketTiers(d.ticketTiers);
+      if (d.ticketTiers && Array.isArray(d.ticketTiers)) {
+        setTicketTiers(d.ticketTiers);
+        tierBaselineRef.current = JSON.stringify(d.ticketTiers);
+      }
       if (d.primaryColor) setPrimaryColor(d.primaryColor);
       if (d.accentColor) setAccentColor(d.accentColor);
       if (d.heroImageUrl) setHeroImageUrl(d.heroImageUrl);
@@ -653,6 +710,17 @@ export default function NewEventWizardPage() {
   }, [totalHallsCapacity, selectedHall, totalTicketCapacity]);
 
   const handleRegionChange = (newReg: string) => {
+    if (newReg === regionId) return;
+    // Custom-priced tiers ask before the switch rewrites them.
+    if (tierBaselineRef.current && JSON.stringify(ticketTiers) !== tierBaselineRef.current) {
+      setPendingRegion(newReg);
+      setShowRegionModal(true);
+      return;
+    }
+    applyRegionChange(newReg, false);
+  };
+
+  const applyRegionChange = (newReg: string, keepPrices: boolean) => {
     setRegionId(newReg);
     clearFieldError("venueId");
     const matching = venuesList.filter((v) => !v.regionId || v.regionId.toLowerCase() === newReg.toLowerCase());
@@ -669,22 +737,23 @@ export default function NewEventWizardPage() {
 
     // Adapt ticket tier currencies dynamically to match selected country edition
     const targetCurrency = newReg === "jp" ? "JPY" : newReg === "global" ? "USD" : "IDR";
-    setTicketTiers((prev) =>
-      prev.map((t) => {
-        if (t.currency === targetCurrency) return t;
-        let newPrice = t.price;
-        if (t.price > 0) {
-          if (targetCurrency === "JPY") {
-            newPrice = 10000;
-          } else if (targetCurrency === "USD") {
-            newPrice = 99;
-          } else {
-            newPrice = 750000;
-          }
+    const nextTiers = ticketTiers.map((t) => {
+      if (t.currency === targetCurrency) return t;
+      if (keepPrices) return { ...t, currency: targetCurrency };
+      let newPrice = t.price;
+      if (t.price > 0) {
+        if (targetCurrency === "JPY") {
+          newPrice = 10000;
+        } else if (targetCurrency === "USD") {
+          newPrice = 99;
+        } else {
+          newPrice = 750000;
         }
-        return { ...t, currency: targetCurrency, price: newPrice };
-      })
-    );
+      }
+      return { ...t, currency: targetCurrency, price: newPrice };
+    });
+    setTicketTiers(nextTiers);
+    tierBaselineRef.current = JSON.stringify(nextTiers);
   };
 
   const handleToggleHall = (hallId: string) => {
@@ -1037,6 +1106,83 @@ export default function NewEventWizardPage() {
         </div>
       </Modal>
 
+      {/* REGION SWITCH CONFIRMATION MODAL */}
+      <Modal
+        isOpen={showRegionModal}
+        onClose={() => { setShowRegionModal(false); setPendingRegion(null); }}
+        title={tOrg("regionModalTitle")}
+        size="md"
+      >
+        <div className="space-y-4 pt-2">
+          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+            {tOrg("regionModalDesc")}
+          </p>
+          <div className="flex flex-wrap items-center justify-end gap-2.5 pt-3 border-t border-border/60">
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => { setShowRegionModal(false); setPendingRegion(null); }}
+              className="min-h-[44px] px-4 text-xs font-semibold cursor-pointer"
+            >
+              {tCom("cancel")}
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => { if (pendingRegion) applyRegionChange(pendingRegion, true); setShowRegionModal(false); setPendingRegion(null); }}
+              className="min-h-[44px] px-4 text-xs font-semibold cursor-pointer"
+            >
+              {tOrg("keepPrices")}
+            </Button>
+            <Button
+              type="button"
+              variant="primary"
+              size="sm"
+              onClick={() => { if (pendingRegion) applyRegionChange(pendingRegion, false); setShowRegionModal(false); setPendingRegion(null); }}
+              className="min-h-[44px] px-4 text-xs font-semibold cursor-pointer"
+            >
+              {tOrg("convertDefaults")}
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* TEMPLATE APPLY CONFIRMATION MODAL */}
+      <Modal
+        isOpen={showTemplateModal}
+        onClose={() => { setShowTemplateModal(false); setPendingTemplate(null); }}
+        title={tOrg("templateModalTitle")}
+        size="md"
+      >
+        <div className="space-y-4 pt-2">
+          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+            {tOrg("templateModalDesc")}
+          </p>
+          <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-border/60">
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => { setShowTemplateModal(false); setPendingTemplate(null); }}
+              className="min-h-[44px] px-4 text-xs font-semibold cursor-pointer"
+            >
+              {tCom("cancel")}
+            </Button>
+            <Button
+              type="button"
+              variant="primary"
+              size="sm"
+              onClick={handleConfirmTemplate}
+              className="min-h-[44px] px-4 text-xs font-semibold cursor-pointer"
+            >
+              {tOrg("applyTemplate")}
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
       {/* STEP PROGRESS TRACKER BAR */}
       <nav aria-label="Wizard Steps" className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3 border-b border-border/80 pb-5">
         {WIZARD_STEPS.map((s) => {
@@ -1116,6 +1262,16 @@ export default function NewEventWizardPage() {
               <span className="text-xs text-muted-foreground font-medium">
                 {tOrg("templateBarDesc")}
               </span>
+              {templateUndoAvailable && (
+                <button
+                  type="button"
+                  onClick={handleUndoTemplate}
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline min-h-[44px] px-2 cursor-pointer"
+                >
+                  <RotateCcw className="h-3.5 w-3.5" />
+                  <span>{tOrg("templateUndo")}</span>
+                </button>
+              )}
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
@@ -1123,7 +1279,7 @@ export default function NewEventWizardPage() {
                 <button
                   key={tmpl.id}
                   type="button"
-                  onClick={() => handleApplyTemplate(tmpl.id)}
+                  onClick={() => handleTemplateRequest(tmpl.id)}
                   className="min-h-[44px] p-3.5 rounded-xl border border-border/80 bg-background hover:border-primary/60 hover:bg-primary/5 text-left transition-all cursor-pointer group shadow-xs hover:shadow-sm"
                 >
                   <div className="flex items-center justify-between">

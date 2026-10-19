@@ -1156,7 +1156,15 @@
     "clusterFilterAria": "Filtrar categorías por clúster industrial",
     "wizardArchetypeAria": "Seleccionar categoría",
     "templateBarTitle": "Inicio rápido: use una plantilla especializada",
-    "templateBarDesc": "Configura metadatos, tokens de categoría y pases de ejemplo"
+    "templateBarDesc": "Configura metadatos, tokens de categoría y pases de ejemplo",
+    "regionModalTitle": "¿Cambiar de edición regional?",
+    "regionModalDesc": "Cambiar de región restablece sede, pabellones y monedas. Los precios personalizados se reemplazan salvo que los conserve.",
+    "keepPrices": "Conservar mis precios",
+    "convertDefaults": "Convertir a valores regionales",
+    "templateModalTitle": "¿Aplicar plantilla?",
+    "templateModalDesc": "Reemplaza título, descripción, categoría, niveles y colores. Se puede deshacer justo después.",
+    "applyTemplate": "Aplicar plantilla",
+    "templateUndo": "Deshacer plantilla"
   },
   "admin": {
     "dashboardTitle": "Gobernanza y Agregador de Administración",

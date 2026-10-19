@@ -358,6 +358,93 @@ describe("Admin Platform-Curated Event Launch Wizard", () => {
     }
   });
 
+  it("region switch with pristine tiers applies directly without a modal", async () => {
+    mockRole = "ORGANIZER";
+    mockUser.role = "ORGANIZER";
+    window.history.replaceState({}, "", "/en/events/new?step=2");
+    try {
+      render(React.createElement(NewEventWizardPage));
+      await waitFor(() => {
+        expect(screen.getByText("Step 2 of 4")).toBeInTheDocument();
+      });
+      fireEvent.click(screen.getByRole("radio", { name: /japan/i }));
+      await waitFor(() => {
+        expect(screen.getByRole("radio", { name: /japan/i })).toHaveAttribute("aria-checked", "true");
+      });
+      expect(screen.queryByText("Switch Regional Edition?")).toBeNull();
+    } finally {
+      window.history.replaceState({}, "", "/");
+    }
+  });
+
+  it("region switch with edited tiers asks Keep or Convert (keep path)", async () => {
+    mockRole = "ORGANIZER";
+    mockUser.role = "ORGANIZER";
+    window.history.replaceState({}, "", "/en/events/new?step=3");
+    try {
+      const { container } = render(React.createElement(NewEventWizardPage));
+      await waitFor(() => {
+        expect(screen.getByText("Step 3 of 4")).toBeInTheDocument();
+      });
+
+      const priceInput = container.querySelector("#wizard-tier-price-0") as HTMLInputElement;
+      fireEvent.change(priceInput, { target: { value: "123456" } });
+
+      fireEvent.click(screen.getByRole("button", { name: /step 2:/i }));
+      await waitFor(() => {
+        expect(screen.getByText("Step 2 of 4")).toBeInTheDocument();
+      });
+
+      fireEvent.click(screen.getByRole("radio", { name: /japan/i }));
+      await waitFor(() => {
+        expect(screen.getByText("Switch Regional Edition?")).toBeInTheDocument();
+      });
+
+      fireEvent.click(screen.getByRole("button", { name: /keep my prices/i }));
+      await waitFor(() => {
+        const draft = JSON.parse(localStorage.getItem("xpo_wizard_draft_v1") || "{}");
+        expect(draft.ticketTiers?.[0]?.price).toBe(123456);
+        expect(draft.ticketTiers?.[0]?.currency).toBe("JPY");
+      });
+    } finally {
+      window.history.replaceState({}, "", "/");
+    }
+  });
+
+  it("region switch convert path resets tiers to regional defaults", async () => {
+    mockRole = "ORGANIZER";
+    mockUser.role = "ORGANIZER";
+    window.history.replaceState({}, "", "/en/events/new?step=3");
+    try {
+      const { container } = render(React.createElement(NewEventWizardPage));
+      await waitFor(() => {
+        expect(screen.getByText("Step 3 of 4")).toBeInTheDocument();
+      });
+
+      const priceInput = container.querySelector("#wizard-tier-price-0") as HTMLInputElement;
+      fireEvent.change(priceInput, { target: { value: "123456" } });
+
+      fireEvent.click(screen.getByRole("button", { name: /step 2:/i }));
+      await waitFor(() => {
+        expect(screen.getByText("Step 2 of 4")).toBeInTheDocument();
+      });
+
+      fireEvent.click(screen.getByRole("radio", { name: /japan/i }));
+      await waitFor(() => {
+        expect(screen.getByText("Switch Regional Edition?")).toBeInTheDocument();
+      });
+
+      fireEvent.click(screen.getByRole("button", { name: /convert to regional defaults/i }));
+      await waitFor(() => {
+        const draft = JSON.parse(localStorage.getItem("xpo_wizard_draft_v1") || "{}");
+        expect(draft.ticketTiers?.[1]?.price).toBe(10000);
+        expect(draft.ticketTiers?.[1]?.currency).toBe("JPY");
+      });
+    } finally {
+      window.history.replaceState({}, "", "/");
+    }
+  });
+
   it("shows the draft banner for a titled draft and skips ?template=", async () => {
     window.history.replaceState({}, "", "/en/events/new?template=tech");
     localStorage.setItem(
@@ -368,6 +455,36 @@ describe("Admin Platform-Curated Event Launch Wizard", () => {
       render(React.createElement(NewEventWizardPage));
       await waitFor(() => {
         expect(screen.getByText(/Unsaved Event Draft Detected/)).toBeInTheDocument();
+      });
+    } finally {
+      window.history.replaceState({}, "", "/");
+    }
+  });
+
+  it("template apply over typed identity confirms and offers undo", async () => {
+    mockRole = "ORGANIZER";
+    mockUser.role = "ORGANIZER";
+    try {
+      const { container } = render(React.createElement(NewEventWizardPage));
+      const titleInput = container.querySelector("#wizard-event-title") as HTMLInputElement;
+      await waitFor(() => {
+        expect(titleInput).toBeInTheDocument();
+      });
+      fireEvent.change(titleInput, { target: { value: "My Custom Expo" } });
+
+      fireEvent.click(screen.getByRole("button", { name: /industrial b2b machinery expo/i }));
+      await waitFor(() => {
+        expect(screen.getByText("Apply Exhibition Template?")).toBeInTheDocument();
+      });
+
+      fireEvent.click(screen.getByRole("button", { name: /^apply template$/i }));
+      await waitFor(() => {
+        expect((container.querySelector("#wizard-event-title") as HTMLInputElement)?.value).not.toBe("My Custom Expo");
+      });
+
+      fireEvent.click(screen.getByRole("button", { name: /undo template/i }));
+      await waitFor(() => {
+        expect((container.querySelector("#wizard-event-title") as HTMLInputElement)?.value).toBe("My Custom Expo");
       });
     } finally {
       window.history.replaceState({}, "", "/");

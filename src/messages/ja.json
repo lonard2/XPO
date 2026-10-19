@@ -1156,7 +1156,15 @@
     "clusterFilterAria": "業種クラスターでカテゴリを絞り込む",
     "wizardArchetypeAria": "イベントカテゴリを選択",
     "templateBarTitle": "高速オンボーディング: 専用テンプレートで開始",
-    "templateBarDesc": "メタデータ・カテゴリトークン・サンプルパスを自動設定"
+    "templateBarDesc": "メタデータ・カテゴリトークン・サンプルパスを自動設定",
+    "regionModalTitle": "地域エディションを切替えますか?",
+    "regionModalDesc": "地域を切り替えると会場・ホール割当・Tier通貨がリセットされます。価格を維持しない限り、カスタム価格は地域デフォルトに置換されます。",
+    "keepPrices": "価格を維持する",
+    "convertDefaults": "地域デフォルトに変換",
+    "templateModalTitle": "展示会テンプレートを適用しますか?",
+    "templateModalDesc": "入力済みのタイトル・説明・カテゴリ・Tier・ブランド色を置換します。適用直後に元に戻せます。",
+    "applyTemplate": "テンプレートを適用",
+    "templateUndo": "テンプレートを元に戻す"
   },
   "admin": {
     "dashboardTitle": "管理統括・アグリゲーター",

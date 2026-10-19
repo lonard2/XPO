@@ -1156,7 +1156,15 @@
     "clusterFilterAria": "Filter kategori acara menurut klaster industri",
     "wizardArchetypeAria": "Pilih Kategori Acara",
     "templateBarTitle": "Onboarding Cepat: Mulai dengan Template Pameran Khusus",
-    "templateBarDesc": "Otomatis mengatur metadata, token kategori, dan contoh pass"
+    "templateBarDesc": "Otomatis mengatur metadata, token kategori, dan contoh pass",
+    "regionModalTitle": "Ganti Edisi Regional?",
+    "regionModalDesc": "Ganti region akan mengatur ulang venue, alokasi aula, dan mata uang tier. Harga custom diganti default regional kecuali dipertahankan.",
+    "keepPrices": "Pertahankan harga saya",
+    "convertDefaults": "Konversi ke default regional",
+    "templateModalTitle": "Terapkan Template Pameran?",
+    "templateModalDesc": "Ini mengganti judul, deskripsi, kategori, tier, dan warna brand yang sudah diisi. Dapat dibatalkan segera setelahnya.",
+    "applyTemplate": "Terapkan template",
+    "templateUndo": "Batalkan template"
   },
   "admin": {
     "dashboardTitle": "Tata Kelola & Agregator Admin",
