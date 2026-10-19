@@ -763,7 +763,8 @@
     "subnavPass": "Digitaler Pass",
     "subnavTreats": "Treats",
     "subnavTimetable": "Zeitplan",
-    "subnavMap": "Hallenplan"
+    "subnavMap": "Hallenplan",
+    "undoClaim": "Gutschein freigeben"
   },
   "auth": {
     "modalTitle": "Authentifizierung & Rollenverwaltung",

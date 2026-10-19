@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { TierSelector, type TicketTierItem } from "@/components/tickets/TierSelector";
 import { DigitalPassQR } from "@/components/perks/DigitalPassQR";
 import { InteractiveGuidebook, type AgendaSessionItem } from "@/components/perks/InteractiveGuidebook";
@@ -464,7 +464,18 @@ describe("Phase 6 Unit: Ticket & Event Treats Component System", () => {
       },
     ];
 
-    it("unlocks VIP perks for VIP attendee, shows location, and generates claimable voucher", () => {
+    it("unlocks VIP perks for VIP attendee, shows location, and generates claimable voucher", async () => {
+      const fetchMock = vi.fn(async (url: string) => {
+        if (typeof url === "string" && url.startsWith("/api/perks/claim?")) {
+          return { ok: true, json: async () => ({ success: true, claims: [] }) };
+        }
+        return {
+          ok: true,
+          json: async () => ({ success: true, claim: { code: "XPO-9F2K-Q7XD" } }),
+        };
+      });
+      vi.stubGlobal("fetch", fetchMock);
+
       render(
         <TierPerksGating
           perks={samplePerks}
@@ -483,11 +494,12 @@ describe("Phase 6 Unit: Ticket & Event Treats Component System", () => {
       const redeemButtons = screen.getAllByRole("button", { name: /voucher|claim/i });
       expect(redeemButtons.length).toBe(2);
 
-      // Claim VIP Lounge voucher
+      // Claim VIP Lounge voucher through the server
       fireEvent.click(redeemButtons[1]);
 
-      expect(screen.getByText(/XPO-MFG-1-PERK/i)).toBeDefined();
+      expect(await screen.findByText(/XPO-9F2K-Q7XD/i)).toBeDefined();
       expect(screen.getByText(/Locate Redemption Hub on Map/i)).toBeDefined();
+      vi.unstubAllGlobals();
     });
 
     it("locks VIP perks when attendee has Standard Pass", () => {
@@ -508,9 +520,20 @@ describe("Phase 6 Unit: Ticket & Event Treats Component System", () => {
       expect(redeemButtons.length).toBe(1);
     });
 
-    it("restores claimed perks from localStorage", () => {
-      const storageKey = "xpo_perks_claimed_bk-mfg-99999";
-      localStorage.setItem(storageKey, JSON.stringify(["perk-01"]));
+    it("hydrates claimed perks from the server record", async () => {
+      const fetchMock = vi.fn(async (url: string) => {
+        if (typeof url === "string" && url.startsWith("/api/perks/claim?")) {
+          return {
+            ok: true,
+            json: async () => ({
+              success: true,
+              claims: [{ perkId: "perk-01", code: "XPO-AAAA-BBBB" }],
+            }),
+          };
+        }
+        throw new Error(`unexpected fetch ${url}`);
+      });
+      vi.stubGlobal("fetch", fetchMock);
 
       render(
         <TierPerksGating
@@ -521,9 +544,44 @@ describe("Phase 6 Unit: Ticket & Event Treats Component System", () => {
         />
       );
 
-      // perk-01 should be Claimed
-      expect(screen.getByText("Claimed")).toBeDefined();
-      localStorage.removeItem(storageKey);
+      // perk-01 shows Claimed from the server record (not localStorage).
+      expect(await screen.findByText("Claimed")).toBeDefined();
+      vi.unstubAllGlobals();
+    });
+
+    it("claims and releases a voucher through the server", async () => {
+      const calls: string[] = [];
+      const fetchMock = vi.fn(async (url: string, init?: RequestInit) => {
+        calls.push(`${init?.method || "GET"} ${url}`);
+        if (typeof url === "string" && url.startsWith("/api/perks/claim?")) {
+          return { ok: true, json: async () => ({ success: true, claims: [] }) };
+        }
+        return {
+          ok: true,
+          json: async () => ({ success: true, claim: { code: "XPO-CCCC-DDDD" } }),
+        };
+      });
+      vi.stubGlobal("fetch", fetchMock);
+
+      render(
+        <TierPerksGating
+          perks={samplePerks}
+          attendeeTierName="VIP Delegate Pass"
+          bookingId="bk-mfg-99999"
+          locale="en"
+        />
+      );
+
+      const claimBtns = await screen.findAllByRole("button", { name: /claim voucher/i });
+      fireEvent.click(claimBtns[0]);
+      expect(await screen.findByText("XPO-CCCC-DDDD")).toBeDefined();
+      expect(calls.some((c) => c.startsWith("POST /api/perks/claim"))).toBe(true);
+
+      fireEvent.click(screen.getByRole("button", { name: /release voucher/i }));
+      await waitFor(() => {
+        expect(calls.some((c) => c.startsWith("DELETE /api/perks/claim"))).toBe(true);
+      });
+      vi.unstubAllGlobals();
     });
   });
 });

@@ -14,6 +14,7 @@ import {
   FileText,
   ShieldCheck,
   QrCode,
+  RotateCcw,
   Check,
   MapPin,
   Compass,
@@ -74,23 +75,29 @@ export function TierPerksGating({
   const tPerks = useTranslations('perks');
   const tCommon = useTranslations('common');
 
-  const [claimedPerkIds, setClaimedPerkIds] = React.useState<Set<string>>(new Set());
+  const [claimed, setClaimed] = React.useState<Record<string, { code: string }>>({});
   const [activeVoucherId, setActiveVoucherId] = React.useState<string | null>(null);
+  const [claimBusy, setClaimBusy] = React.useState(false);
+  const [claimError, setClaimError] = React.useState<string | null>(null);
+  // A claim/undo mutation is newer than any in-flight mount hydration:
+  // hydration must never clobber it, whichever response lands last.
+  const mutatedRef = React.useRef(false);
 
-  // Restore claimed perks from localStorage
+  // Server is the source of truth for claims; hydrate on mount.
   React.useEffect(() => {
-    if (typeof window === 'undefined') return;
-    try {
-      const saved = localStorage.getItem(`xpo_perks_claimed_${bookingId}`);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) {
-          setClaimedPerkIds(new Set(parsed));
-        }
-      }
-    } catch {
-      // Ignore
-    }
+    let cancelled = false;
+    fetch(`/api/perks/claim?bookingId=${encodeURIComponent(bookingId)}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (cancelled || mutatedRef.current || !data.success) return;
+        const map: Record<string, { code: string }> = {};
+        for (const c of data.claims || []) map[c.perkId] = { code: c.code };
+        setClaimed(map);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
   }, [bookingId]);
 
   const isTierEligible = (tierRequired?: string | null): boolean => {
@@ -109,20 +116,50 @@ export function TierPerksGating({
     return userTier.includes(req);
   };
 
-  const handleClaim = (perkId: string) => {
-    setClaimedPerkIds((prev) => {
-      const next = new Set([...prev, perkId]);
-      try {
-        localStorage.setItem(
-          `xpo_perks_claimed_${bookingId}`,
-          JSON.stringify(Array.from(next))
-        );
-      } catch {
-        // Ignore
-      }
-      return next;
-    });
-    setActiveVoucherId(perkId);
+  const handleClaim = async (perkId: string) => {
+    setClaimBusy(true);
+    setClaimError(null);
+    try {
+      const res = await fetch("/api/perks/claim", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ bookingId, perkId }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.error || "Claim failed.");
+      mutatedRef.current = true;
+      setClaimed((prev) => ({ ...prev, [perkId]: { code: data.claim.code } }));
+      setActiveVoucherId(perkId);
+    } catch (err) {
+      setClaimError((err as Error).message);
+    } finally {
+      setClaimBusy(false);
+    }
+  };
+
+  const handleUndoClaim = async (perkId: string) => {
+    setClaimBusy(true);
+    setClaimError(null);
+    try {
+      const res = await fetch("/api/perks/claim", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ bookingId, perkId }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.error || "Release failed.");
+      mutatedRef.current = true;
+      setClaimed((prev) => {
+        const next = { ...prev };
+        delete next[perkId];
+        return next;
+      });
+      setActiveVoucherId((cur) => (cur === perkId ? null : cur));
+    } catch (err) {
+      setClaimError((err as Error).message);
+    } finally {
+      setClaimBusy(false);
+    }
   };
 
   const scrollToMap = () => {
@@ -156,14 +193,20 @@ export function TierPerksGating({
 
       {/* 2. Perks Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {claimError && (
+          <p role="alert" className="md:col-span-2 lg:col-span-3 text-xs font-medium text-destructive rounded-xl border border-destructive/40 bg-destructive/5 px-3 py-2">
+            {claimError}
+          </p>
+        )}
         {perks.map((perk) => {
           const unlocked = isTierEligible(perk.tierRequired);
-          const isClaimed = claimedPerkIds.has(perk.id);
+          const claim = claimed[perk.id];
+          const isClaimed = Boolean(claim);
           const IconComponent = PERK_ICONS[perk.iconName] || Gift;
           const isShowingVoucher = activeVoucherId === perk.id;
           const redemptionLocation = perk.location || DEFAULT_LOCATIONS[perk.iconName] || 'Location TBC (see event map)';
 
-          const voucherCode = `XPO-${bookingId.substring(3, 8).toUpperCase()}-${perk.id.substring(0, 4).toUpperCase()}`;
+          const voucherCode = claim?.code || "";
 
           return (
             <Card
@@ -256,11 +299,23 @@ export function TierPerksGating({
                         <Compass className="h-3 w-3" />
                         {tPerks("locateMap") || <span>Locate Redemption Hub on Map</span>}
                       </Button>
+
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        disabled={claimBusy}
+                        onClick={() => handleUndoClaim(perk.id)}
+                        className="w-full min-h-[44px] sm:min-h-[36px] text-xs font-semibold gap-1 text-muted-foreground hover:text-destructive cursor-pointer"
+                      >
+                        <RotateCcw className="h-3 w-3" />
+                        <span>{tPerks("undoClaim") || "Release voucher"}</span>
+                      </Button>
                     </div>
                   ) : (
                     <Button
                       size="sm"
                       variant={isClaimed ? 'outline' : 'default'}
+                      disabled={claimBusy}
                       onClick={() => handleClaim(perk.id)}
                       className="w-full min-h-[44px] sm:min-h-[36px] text-xs font-semibold cursor-pointer"
                     >

@@ -127,6 +127,7 @@ model Booking {
   attendeeEmail String
   checkedInAt   DateTime?
   createdAt     DateTime  @default(now())
+  claims        VoucherClaim[]
 }
 
 model AgendaItem {
@@ -164,8 +165,22 @@ model EventPerk {
   event        Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
   title        String   // "VIP Lounge Access & Barista Coffee"
   description  String
-  tierRequired String?  // "VIP" or null for all tiers
+  tierRequired String?  // Legacy name label ("VIP") or null for all tiers
+  tierId       String?  // Exact ticket tier gate; compared by id when set
   iconName     String   @default("Coffee")
+  claims       VoucherClaim[]
+}
+
+model VoucherClaim {
+  id        String   @id @default(cuid())
+  bookingId String
+  booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  perkId    String
+  perk      EventPerk @relation(fields: [perkId], references: [id], onDelete: Cascade)
+  code      String   @unique // Deterministic hash code staff can verify
+  createdAt DateTime @default(now())
+
+  @@unique([bookingId, perkId])
 }
 
 model AIReport {

@@ -763,7 +763,8 @@
     "subnavPass": "Pase digital",
     "subnavTreats": "Beneficios",
     "subnavTimetable": "Horario",
-    "subnavMap": "Mapa"
+    "subnavMap": "Mapa",
+    "undoClaim": "Liberar vale"
   },
   "auth": {
     "modalTitle": "Autenticación y Control de Roles",

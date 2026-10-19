@@ -763,7 +763,8 @@
     "subnavPass": "Pass Digital",
     "subnavTreats": "Treats",
     "subnavTimetable": "Jadwal",
-    "subnavMap": "Peta Lantai"
+    "subnavMap": "Peta Lantai",
+    "undoClaim": "Lepaskan voucher"
   },
   "auth": {
     "modalTitle": "Autentikasi & Tata Kelola Peran",

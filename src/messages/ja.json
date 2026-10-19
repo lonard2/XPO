@@ -763,7 +763,8 @@
     "subnavPass": "デジタルパス",
     "subnavTreats": "特典",
     "subnavTimetable": "時刻表",
-    "subnavMap": "フロアマップ"
+    "subnavMap": "フロアマップ",
+    "undoClaim": "バウチャーを解除"
   },
   "auth": {
     "modalTitle": "認証・権限ロール管理",

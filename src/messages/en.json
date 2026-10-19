@@ -763,7 +763,8 @@
     "subnavPass": "Digital Pass",
     "subnavTreats": "Treats",
     "subnavTimetable": "Timetable",
-    "subnavMap": "Floor Map"
+    "subnavMap": "Floor Map",
+    "undoClaim": "Release voucher"
   },
   "auth": {
     "modalTitle": "Authentication & Role Governance",

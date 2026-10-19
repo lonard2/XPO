@@ -763,7 +763,8 @@
     "subnavPass": "数字通行证",
     "subnavTreats": "礼遇",
     "subnavTimetable": "时间表",
-    "subnavMap": "楼层图"
+    "subnavMap": "楼层图",
+    "undoClaim": "释放代金券"
   },
   "auth": {
     "modalTitle": "身份认证与角色管理",
