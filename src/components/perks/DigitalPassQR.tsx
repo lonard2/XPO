@@ -93,10 +93,18 @@ export function DigitalPassQR({ booking, locale = 'en', isDemoPreview = false }:
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [showTurnstileModal, showSecurityModal]);
 
-  // Cache pass offline on client mount
+  // Cache pass offline on client mount, with timestamp and quota failure.
+  // tMyTickets is read via ref: the translation function identity is not
+  // stable across renders, so it must not sit in the effect deps.
+  const [cacheWarning, setCacheWarning] = React.useState<string | null>(null);
+  const [cachedAt, setCachedAt] = React.useState<string | null>(null);
+  const tMyTicketsRef = React.useRef(tMyTickets);
+  tMyTicketsRef.current = tMyTickets;
+
   React.useEffect(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
       try {
+        const stamped = new Date().toISOString();
         const cachePayload = {
           id: booking.id,
           attendeeName: booking.attendeeName,
@@ -104,15 +112,18 @@ export function DigitalPassQR({ booking, locale = 'en', isDemoPreview = false }:
           eventTitle: booking.event.title,
           venueName: booking.event.venue.name,
           tierName: booking.ticketTier.name,
-          cachedAt: new Date().toISOString(),
+          cachedAt: stamped,
         };
         localStorage.setItem(`xpo_pass_${booking.id}`, JSON.stringify(cachePayload));
+        setCachedAt(stamped);
         setIsCachedOffline(true);
       } catch {
-        // Storage full or private mode
+        // Storage full or private mode: say so instead of failing silently.
+        setCacheWarning(tMyTicketsRef.current('offlineFailed') || 'Offline save failed: storage unavailable.');
       }
     }
-  }, [booking]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [booking.id]);
 
   // Standard SVG QR Code for In-App View (Navy on White)
   const svgQrString = React.useMemo(() => {
@@ -194,9 +205,20 @@ export function DigitalPassQR({ booking, locale = 'en', isDemoPreview = false }:
 
           <div className="flex items-center gap-2">
             {isCachedOffline && (
-              <Badge variant="outline" size="sm" className="hidden sm:inline-flex border-emerald-500/40 text-emerald-400 text-xs font-mono gap-1">
+              <Badge
+                variant="outline"
+                size="sm"
+                title={cachedAt ? (tMyTickets('offlineCachedAt', { time: cachedAt.slice(11, 16) }) || `Cached ${cachedAt.slice(11, 16)}`) : undefined}
+                className="inline-flex border-emerald-500/40 text-emerald-400 text-xs font-mono gap-1"
+              >
                 <Check className="h-2.5 w-2.5" />
-                {tMyTickets('offlineReady') || 'Offline Ready'}
+                <span className="hidden xs:inline">{tMyTickets('offlineReady') || 'Offline Ready'}</span>
+                <span className="xs:hidden">Offline</span>
+              </Badge>
+            )}
+            {cacheWarning && (
+              <Badge variant="outline" size="sm" className="inline-flex border-amber-500/40 text-amber-500 text-xs font-mono gap-1">
+                {cacheWarning}
               </Badge>
             )}
 

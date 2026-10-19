@@ -717,7 +717,9 @@
     "venue": "会場＆ホール",
     "showPass": "デジタルパスを表示",
     "demoPreview": "デモプレビュー",
-    "demoPreviewNote": "デモプレビュー:説明用のサンプルパスであり、正式な証明ではありません。"
+    "demoPreviewNote": "デモプレビュー:説明用のサンプルパスであり、正式な証明ではありません。",
+    "offlineFailed": "オフライン保存に失敗しました。",
+    "offlineCachedAt": "オフライン保存済み {time}"
   },
   "perks": {
     "treatsTitle": "来場特典＆デジタルガイドブック",

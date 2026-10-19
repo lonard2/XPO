@@ -717,7 +717,9 @@
     "venue": "Recinto y Pabellón",
     "showPass": "Ver Pase Digital",
     "demoPreview": "Vista demo",
-    "demoPreviewNote": "Vista demo: pase de muestra ilustrativo, no una credencial real."
+    "demoPreviewNote": "Vista demo: pase de muestra ilustrativo, no una credencial real.",
+    "offlineFailed": "Error al guardar sin conexión.",
+    "offlineCachedAt": "Guardado sin conexión a las {time}"
   },
   "perks": {
     "treatsTitle": "Ventajas Interactivas y Guía",

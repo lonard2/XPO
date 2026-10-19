@@ -717,7 +717,9 @@
     "venue": "Venue & Hall",
     "showPass": "Lihat Pas Digital",
     "demoPreview": "Pratinjau Demo",
-    "demoPreviewNote": "Pratinjau demo: pass contoh untuk ilustrasi, bukan kredensial asli."
+    "demoPreviewNote": "Pratinjau demo: pass contoh untuk ilustrasi, bukan kredensial asli.",
+    "offlineFailed": "Gagal simpan offline: penyimpanan tidak tersedia.",
+    "offlineCachedAt": "Tersimpan offline pukul {time}"
   },
   "perks": {
     "treatsTitle": "Fasilitas & Buku Panduan Interaktif",

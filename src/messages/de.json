@@ -717,7 +717,9 @@
     "venue": "Messezentrum & Halle",
     "showPass": "Digitalen Pass ansehen",
     "demoPreview": "Demo-Vorschau",
-    "demoPreviewNote": "Demo-Vorschau: Beispielpass zur Veranschaulichung, keine echte Berechtigung."
+    "demoPreviewNote": "Demo-Vorschau: Beispielpass zur Veranschaulichung, keine echte Berechtigung.",
+    "offlineFailed": "Offline-Speichern fehlgeschlagen.",
+    "offlineCachedAt": "Offline gespeichert um {time}"
   },
   "perks": {
     "treatsTitle": "Interaktive Vorteile & Leitfaden",

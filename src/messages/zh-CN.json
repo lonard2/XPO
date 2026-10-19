@@ -717,7 +717,9 @@
     "venue": "场馆与展厅",
     "showPass": "查看电子通行证",
     "demoPreview": "演示预览",
-    "demoPreviewNote": "演示预览:仅用于说明的示例通行证，非真实凭证。"
+    "demoPreviewNote": "演示预览:仅用于说明的示例通行证，非真实凭证。",
+    "offlineFailed": "离线保存失败:存储不可用。",
+    "offlineCachedAt": "已于{time}离线保存"
   },
   "perks": {
     "treatsTitle": "参会专属权益与数字指南",

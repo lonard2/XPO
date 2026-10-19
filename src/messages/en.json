@@ -717,7 +717,9 @@
     "venue": "Venue & Hall",
     "showPass": "View Digital Pass",
     "demoPreview": "Demo Preview",
-    "demoPreviewNote": "Demo preview: sample pass for illustration, not a real credential."
+    "demoPreviewNote": "Demo preview: sample pass for illustration, not a real credential.",
+    "offlineFailed": "Offline save failed: storage unavailable.",
+    "offlineCachedAt": "Saved offline at {time}"
   },
   "perks": {
     "treatsTitle": "Interactive Perks & Guidebook",
