@@ -78,7 +78,19 @@
     "regionTriggerAria": "Elegir país, activo: {label}",
     "regionListAria": "Países disponibles",
     "regionHeading": "Elegir país / región",
-    "activeBadge": "Activo"
+    "activeBadge": "Activo",
+    "language_en": "inglés",
+    "languageHint_en": "Global / internacional",
+    "language_ja": "japonés",
+    "languageHint_ja": "Japón (JST)",
+    "language_zh-CN": "chino (simplificado)",
+    "languageHint_zh-CN": "China / Asia",
+    "language_id": "indonesio",
+    "languageHint_id": "Indonesia (WIB)",
+    "language_de": "alemán",
+    "languageHint_de": "Europa central (CET)",
+    "language_es": "español",
+    "languageHint_es": "España / Latinoamérica"
   },
   "hero": {
     "badge": "Ecosistema Digital MICE XPO",
@@ -196,7 +208,8 @@
     "allHalls": "Todas las Salas y Pabellones",
     "all": "Todas las Regiones",
     "bookNow": "Reservar Pase",
-    "viewVenue": "Ver Recinto"
+    "viewVenue": "Ver Recinto",
+    "venueCountN": "{count} sedes"
   },
   "archetypes": {
     "INDUSTRIAL_B2B": {

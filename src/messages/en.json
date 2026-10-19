@@ -78,7 +78,19 @@
     "regionTriggerAria": "Select Country, active: {label}",
     "regionListAria": "Supported Countries",
     "regionHeading": "Select Country / Region",
-    "activeBadge": "Active"
+    "activeBadge": "Active",
+    "language_en": "English",
+    "languageHint_en": "Global / International",
+    "language_ja": "Japanese",
+    "languageHint_ja": "Japan (JST)",
+    "language_zh-CN": "Chinese (Simplified)",
+    "languageHint_zh-CN": "Greater China / Asia",
+    "language_id": "Indonesian",
+    "languageHint_id": "Indonesia (WIB)",
+    "language_de": "German",
+    "languageHint_de": "Central Europe (CET)",
+    "language_es": "Spanish",
+    "languageHint_es": "Spain / Latin America"
   },
   "hero": {
     "badge": "XPO Digital MICE Ecosystem",
@@ -196,7 +208,8 @@
     "allHalls": "All Halls & Wings",
     "all": "All Regional Hubs",
     "bookNow": "Book Pass",
-    "viewVenue": "Explore Venue"
+    "viewVenue": "Explore Venue",
+    "venueCountN": "{count} Venues"
   },
   "archetypes": {
     "INDUSTRIAL_B2B": {

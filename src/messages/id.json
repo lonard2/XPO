@@ -78,7 +78,19 @@
     "regionTriggerAria": "Pilih Negara, aktif: {label}",
     "regionListAria": "Negara yang didukung",
     "regionHeading": "Pilih Negara / Region",
-    "activeBadge": "Aktif"
+    "activeBadge": "Aktif",
+    "language_en": "Inggris",
+    "languageHint_en": "Global / Internasional",
+    "language_ja": "Jepang",
+    "languageHint_ja": "Jepang (JST)",
+    "language_zh-CN": "Mandarin (Sederhana)",
+    "languageHint_zh-CN": "Tiongkok Raya / Asia",
+    "language_id": "Indonesia",
+    "languageHint_id": "Indonesia (WIB)",
+    "language_de": "Jerman",
+    "languageHint_de": "Eropa Tengah (CET)",
+    "language_es": "Spanyol",
+    "languageHint_es": "Spanyol / Amerika Latin"
   },
   "hero": {
     "badge": "Ekosistem Digital MICE XPO",
@@ -196,7 +208,8 @@
     "allHalls": "Semua Hall & Sayap",
     "all": "Semua Wilayah",
     "bookNow": "Pesan Tiket",
-    "viewVenue": "Jelajahi Lokasi"
+    "viewVenue": "Jelajahi Lokasi",
+    "venueCountN": "{count} Venue"
   },
   "archetypes": {
     "INDUSTRIAL_B2B": {

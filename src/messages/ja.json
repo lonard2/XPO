@@ -78,7 +78,19 @@
     "regionTriggerAria": "国を選択, 現在: {label}",
     "regionListAria": "対応国",
     "regionHeading": "国/地域を選択",
-    "activeBadge": "選択中"
+    "activeBadge": "選択中",
+    "language_en": "英語",
+    "languageHint_en": "グローバル/国際",
+    "language_ja": "日本語",
+    "languageHint_ja": "日本 (JST)",
+    "language_zh-CN": "中国語（簡体字）",
+    "languageHint_zh-CN": "中華圏/アジア",
+    "language_id": "インドネシア語",
+    "languageHint_id": "インドネシア (WIB)",
+    "language_de": "ドイツ語",
+    "languageHint_de": "中央ヨーロッパ (CET)",
+    "language_es": "スペイン語",
+    "languageHint_es": "スペイン/ラテンアメリカ"
   },
   "hero": {
     "badge": "XPO デジタルMICEプラットフォーム",
@@ -196,7 +208,8 @@
     "allHalls": "全ホール・展示棟",
     "all": "全地域",
     "bookNow": "パスを予約",
-    "viewVenue": "会場詳細を見る"
+    "viewVenue": "会場詳細を見る",
+    "venueCountN": "{count}会場"
   },
   "archetypes": {
     "INDUSTRIAL_B2B": {

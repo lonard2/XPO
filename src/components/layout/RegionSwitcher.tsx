@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
 import { useTranslations } from "next-intl";
 import { handleListboxKeyDown } from "@/lib/a11y/listboxKeyboard";
+import { regionName, regionDescription, regionKeyVenues } from "@/lib/i18n/registry";
 import { cn } from "@/lib/utils";
 import { useActiveRegion } from "@/lib/i18n/useActiveRegion";
 import { SupportedCurrency } from "@/lib/i18n/formatters";
@@ -200,7 +201,7 @@ export function RegionSwitcher({
                     </div>
                     <div>
                       <CardTitle className="text-base font-bold text-foreground">
-                        {region.editionTitle}
+                        {regionName(tReg, region.code, region.editionTitle)}
                       </CardTitle>
                       <span className="text-[11px] text-muted-foreground font-mono">
                         {region.flagCode} • {region.nativeName}
@@ -214,7 +215,7 @@ export function RegionSwitcher({
                   )}
                 </div>
                 <CardDescription className="text-xs pt-1 line-clamp-2">
-                  {region.description}
+                  {regionDescription(tReg, region.code, region.description)}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-1.5 pt-0 text-xs text-muted-foreground">
@@ -228,7 +229,7 @@ export function RegionSwitcher({
                 </div>
                 <div className="flex items-center gap-2 text-[11px]">
                   <Building2 className="h-3 w-3 text-primary/70" />
-                  <span>{region.highlightVenues}</span>
+                  <span>{regionKeyVenues(tReg, region.code, region.highlightVenues)}</span>
                 </div>
               </CardContent>
             </Card>
@@ -262,7 +263,7 @@ export function RegionSwitcher({
               )}
             >
               <Globe className="h-3 w-3" />
-              <span>{region.editionTitle}</span>
+              <span>{regionName(tReg, region.code, region.editionTitle)}</span>
               <span className="text-xs opacity-75 uppercase">({region.currency})</span>
             </button>
           );
@@ -281,11 +282,11 @@ export function RegionSwitcher({
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
-        aria-label={tNav("regionTriggerAria", { label: selectedRegion.editionTitle })}
+        aria-label={tNav("regionTriggerAria", { label: regionName(tReg, selectedRegion.code, selectedRegion.editionTitle) })}
         className="h-9 px-2.5 gap-1.5 text-xs font-medium border border-border/60 hover:bg-accent hover:text-accent-foreground min-h-[44px]"
       >
         <Globe className="h-3.5 w-3.5 text-primary" />
-        <span className="font-semibold">{selectedRegion.editionTitle}</span>
+        <span className="font-semibold">{regionName(tReg, selectedRegion.code, selectedRegion.editionTitle)}</span>
         <ChevronDown
           className={cn("h-3 w-3 text-muted-foreground transition-transform duration-200", {
             "rotate-180": isOpen,
@@ -324,13 +325,13 @@ export function RegionSwitcher({
                 >
                   <div className="flex flex-col space-y-0.5">
                     <div className="flex items-center gap-1.5">
-                      <span className="font-semibold text-foreground">{region.editionTitle}</span>
+                      <span className="font-semibold text-foreground">{regionName(tReg, region.code, region.editionTitle)}</span>
                       <span className="text-xs font-mono text-muted-foreground">
                         ({region.currency})
                       </span>
                     </div>
                     <span className="text-xs text-muted-foreground line-clamp-1">
-                      {region.timezoneName} • {region.venueCount} Venues
+                      {region.timezoneName} • {tReg("venueCountN", { count: region.venueCount })}
                     </span>
                   </div>
                   {isSelected && (

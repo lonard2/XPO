@@ -78,7 +78,19 @@
     "regionTriggerAria": "Land wählen, aktiv: {label}",
     "regionListAria": "Verfügbare Länder",
     "regionHeading": "Land / Region wählen",
-    "activeBadge": "Aktiv"
+    "activeBadge": "Aktiv",
+    "language_en": "Englisch",
+    "languageHint_en": "Global / International",
+    "language_ja": "Japanisch",
+    "languageHint_ja": "Japan (JST)",
+    "language_zh-CN": "Chinesisch (vereinfacht)",
+    "languageHint_zh-CN": "China / Asien",
+    "language_id": "Indonesisch",
+    "languageHint_id": "Indonesien (WIB)",
+    "language_de": "Deutsch",
+    "languageHint_de": "Mitteleuropa (MEZ)",
+    "language_es": "Spanisch",
+    "languageHint_es": "Spanien / Lateinamerika"
   },
   "hero": {
     "badge": "XPO Digitales MICE-Ökosystem",
@@ -196,7 +208,8 @@
     "allHalls": "Alle Hallen & Flügel",
     "all": "Alle Regionen",
     "bookNow": "Pass Buchen",
-    "viewVenue": "Zentrum Anzeigen"
+    "viewVenue": "Zentrum Anzeigen",
+    "venueCountN": "{count} Venues"
   },
   "archetypes": {
     "INDUSTRIAL_B2B": {

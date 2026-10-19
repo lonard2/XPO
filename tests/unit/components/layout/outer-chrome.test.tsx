@@ -42,7 +42,7 @@ describe("outer chrome audit fixes", () => {
   it("activates region cards with Enter", () => {
     const onChange = vi.fn();
     render(<RegionSwitcher currentLocale="en" variant="cards" onActiveRegionChange={onChange} />);
-    const cards = screen.getAllByRole("button", { name: /indonesia|japan|global hubs/i });
+    const cards = screen.getAllByRole("button", { name: /indonesia|japan|global/i });
     expect(cards.length).toBe(3);
     fireEvent.keyDown(cards[1], { key: "Enter" });
     expect(onChange).toHaveBeenCalledWith("jp");
@@ -66,5 +66,15 @@ describe("outer chrome tone fixes", () => {
     );
     expect(container.textContent).toMatch(/Event Organizer/);
     expect(container.textContent).not.toMatch(/ORGANIZER/);
+  });
+});
+
+describe("registry-sourced switcher copy", () => {
+  it("renders region descriptions from dictionaries, not static constants", () => {
+    render(<RegionSwitcher currentLocale="en" variant="cards" />);
+    expect(
+      screen.getByText(/powerhouse for industrial manufacturing expos/i)
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/mega fair gateway/i)).toBeNull();
   });
 });

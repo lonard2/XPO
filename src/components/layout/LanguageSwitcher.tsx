@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Globe, Check, ChevronDown, Languages } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { handleListboxKeyDown } from "@/lib/a11y/listboxKeyboard";
+import { languageLabel, languageHint } from "@/lib/i18n/registry";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 import { SupportedLocale, SUPPORTED_LOCALES } from "@/lib/i18n/formatters";
@@ -141,7 +142,7 @@ export function LanguageSwitcher({
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
-        aria-label={tNav("langTriggerAria", { label: activeLanguage.label })}
+        aria-label={tNav("langTriggerAria", { label: languageLabel(tNav, activeLanguage.code, activeLanguage.label) })}
         className="h-11 px-2.5 gap-1.5 text-xs font-medium border border-border/60 hover:bg-accent hover:text-accent-foreground min-h-[44px]"
       >
         <Globe className="h-3.5 w-3.5 text-muted-foreground" />
@@ -184,7 +185,7 @@ export function LanguageSwitcher({
                 >
                   <div className="flex flex-col">
                     <span className="font-medium text-foreground">{lang.nativeLabel}</span>
-                    <span className="text-xs text-muted-foreground">{lang.label} · {lang.regionHint}</span>
+                    <span className="text-xs text-muted-foreground">{languageLabel(tNav, lang.code, lang.label)} · {languageHint(tNav, lang.code, lang.regionHint)}</span>
                   </div>
                   {isSelected && <Check className="h-3.5 w-3.5 text-primary stroke-[2.5]" />}
                 </button>
