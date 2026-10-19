@@ -46,6 +46,8 @@ export interface ScanResult {
   attendee?: {
     name: string;
     email: string;
+    company?: string | null;
+    photo?: string | null;
   };
   ticketTier?: {
     id: string;
@@ -1354,8 +1356,26 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                 <div className="p-3 bg-card rounded-xl border border-border/80 space-y-2 text-xs">
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground">{tOrg("scannerAttendee")}</span>
-                    <span className="font-bold text-foreground">{lastResult.attendee.name}</span>
+                    <span className="font-bold text-foreground flex items-center gap-2 min-w-0">
+                      {lastResult.attendee.photo ? (
+                        <img
+                          src={lastResult.attendee.photo}
+                          alt={tOrg("scannerPhotoAlt", { name: lastResult.attendee.name })}
+                          className="h-7 w-7 rounded-full object-cover border border-border/60 shrink-0"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).style.display = "none";
+                          }}
+                        />
+                      ) : null}
+                      <span className="truncate">{lastResult.attendee.name}</span>
+                    </span>
                   </div>
+                  {lastResult.attendee.company ? (
+                    <div className="flex items-center justify-between">
+                      <span className="text-muted-foreground">{tOrg("scannerCompany")}</span>
+                      <span className="font-semibold text-foreground truncate">{lastResult.attendee.company}</span>
+                    </div>
+                  ) : null}
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground">{tOrg("scannerEmail")}</span>
                     <span className="font-mono text-foreground">{lastResult.attendee.email}</span>
@@ -1393,7 +1413,12 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                         className="p-2 bg-muted/30 rounded-lg border border-border/60 flex items-center gap-2 text-xs"
                       >
                         <Sparkles className="h-3.5 w-3.5 text-amber-500 shrink-0" />
-                        <span className="font-medium text-foreground">{p.title}</span>
+                        <span className="min-w-0">
+                          <span className="font-medium text-foreground block truncate">{p.title}</span>
+                          {p.description ? (
+                            <span className="text-muted-foreground block truncate">{p.description}</span>
+                          ) : null}
+                        </span>
                       </div>
                     ))}
                   </div>

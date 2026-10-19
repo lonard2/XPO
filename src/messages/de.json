@@ -1393,7 +1393,9 @@
     "netCount": "{count} net",
     "hudPerks": "{count} Perks",
     "manualSearchBtn": "Manuelle Suche",
-    "initScanner": "Gate-Scanner wird initialisiert..."
+    "initScanner": "Gate-Scanner wird initialisiert...",
+    "scannerPhotoAlt": "Foto von {name}",
+    "scannerCompany": "Firma / Zugehörigkeit:"
   },
   "admin": {
     "dashboardTitle": "Admin-Governance & Aggregator",

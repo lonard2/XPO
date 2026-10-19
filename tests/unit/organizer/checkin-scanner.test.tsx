@@ -164,3 +164,40 @@ describe("CheckInScanner event scope", () => {
     });
   });
 });
+
+describe("CheckInScanner recognition", () => {
+  beforeEach(() => {
+    localStorage.clear();
+    vi.restoreAllMocks();
+  });
+
+  it("renders affiliation, photo, and perk descriptions when provided", async () => {
+    global.fetch = vi.fn().mockImplementation(() =>
+      Promise.resolve({
+        ok: true,
+        json: () =>
+          Promise.resolve({
+            valid: true,
+            alreadyCheckedIn: false,
+            status: "CHECKED_IN",
+            checkedInAt: new Date().toISOString(),
+            attendee: { name: "Amelia Hartono", email: "amelia@xpo.com", company: "Nusantara Labs", photo: "https://xpo.test/amelia.png" },
+            ticketTier: { id: "t1", name: "Standard Pass" },
+            event: { id: "ev-9", title: "Expo Nine" },
+            perks: [{ id: "p1", title: "Welcome Kit", description: "Collect at Counter 3" }],
+          }),
+      })
+    ) as any;
+    render(<CheckInScanner />);
+    fireEvent.click(screen.getByRole("button", { name: /manual code entry/i }));
+    fireEvent.change(document.querySelector("#scanner-manual-input") as HTMLInputElement, {
+      target: { value: "HASH-AFFIL-1" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /validate & check-in pass/i }));
+    await waitFor(() => {
+      expect(screen.getAllByText("Nusantara Labs").length).toBeGreaterThan(0);
+    });
+    expect(screen.getByAltText(/amelia hartono/i)).toBeInTheDocument();
+    expect(screen.getByText("Collect at Counter 3")).toBeInTheDocument();
+  });
+});

@@ -1393,7 +1393,9 @@
     "netCount": "{count}件net",
     "hudPerks": "特典{count}件",
     "manualSearchBtn": "手動検索",
-    "initScanner": "ゲートスキャナーを初期化中..."
+    "initScanner": "ゲートスキャナーを初期化中...",
+    "scannerPhotoAlt": "{name}の写真",
+    "scannerCompany": "所属:"
   },
   "admin": {
     "dashboardTitle": "管理統括・アグリゲーター",

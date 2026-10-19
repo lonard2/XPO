@@ -160,8 +160,7 @@ describe("Phase 9 Integration: Organizer Door QR Scanner & Verification Lifecycl
     expect(res.status).toBe(403);
   });
 
-  it("T3.7 (Event Scope): rejects passes scanned for the wrong event", async () => {
-    const req = new Request("http://localhost:3000/api/tickets/verify", {
+  it("T3.7 (Event Scope): rejects passes scanned for the wrong event", async () => {    const req = new Request("http://localhost:3000/api/tickets/verify", {
       method: "POST",
       headers: { "Content-Type": "application/json", Cookie: "xpo_role=ADMIN" },
       body: JSON.stringify({ qrCodeHash: testQrCodeHash, autoCheckIn: false, eventId: "some-other-event" }),
@@ -171,5 +170,30 @@ describe("Phase 9 Integration: Organizer Door QR Scanner & Verification Lifecycl
     const json = await res.json();
     expect(json.valid).toBe(false);
     expect(json.error).toContain("EVENT_MISMATCH");
+  });
+
+  it("T3.8 (Recognition): verify exposes affiliation, photo, and perk descriptions", async () => {
+    const owner = await db.user.findUnique({ where: { email: "alex@xpo.com" } });
+    await db.user.update({
+      where: { email: "alex@xpo.com" },
+      data: { organization: "Scanner Test Labs", avatarUrl: "https://xpo.test/avatar.png" },
+    });
+    const req = new Request("http://localhost:3000/api/tickets/verify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Cookie: "xpo_role=ADMIN" },
+      body: JSON.stringify({ qrCodeHash: testQrCodeHash, autoCheckIn: false }),
+    });
+    const res = await verifyRoute(req);
+    expect(res.status).toBe(200);
+    const json = await res.json();
+    expect(json.valid).toBe(true);
+    expect(json.attendee.company).toBe("Scanner Test Labs");
+    expect(json.attendee.photo).toBe("https://xpo.test/avatar.png");
+    expect(json.perks.length).toBeGreaterThan(0);
+    expect(json.perks[0].description).toBeDefined();
+    await db.user.update({
+      where: { email: "alex@xpo.com" },
+      data: { organization: owner?.organization ?? null, avatarUrl: owner?.avatarUrl ?? null },
+    });
   });
 });

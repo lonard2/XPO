@@ -12,7 +12,7 @@ Direction: honest record first, all five issues, server re-admit.
   selector defaulting from `?eventId=`, triage dictionary pass.
 - [x] **4. Layout single triage** (`$impeccable layout`): one authoritative
   triage card on `<lg`, 44px audit buttons.
-- [ ] **5. Clarify recognition** (`$impeccable clarify`): affiliation/photo
+- [x] **5. Clarify recognition** (`$impeccable clarify`): affiliation/photo
   and perk descriptions when provided.
 - [ ] **6. Polish final pass** (`$impeccable polish`): detector, screenshots,
   full suite green.

@@ -36,6 +36,7 @@ export async function POST(request: Request) {
         where: { qrCodeHash },
         include: {
           ticketTier: true,
+          user: { select: { organization: true, avatarUrl: true } },
           event: {
             include: {
               venue: true,
@@ -55,6 +56,7 @@ export async function POST(request: Request) {
             where: { id: parsed.bookingId },
             include: {
               ticketTier: true,
+              user: { select: { organization: true, avatarUrl: true } },
               event: {
                 include: {
                   venue: true,
@@ -127,6 +129,7 @@ export async function POST(request: Request) {
           data: { checkedInAt: new Date() },
           include: {
             ticketTier: true,
+            user: { select: { organization: true, avatarUrl: true } },
             event: { include: { venue: true, venueHall: true, perks: true } },
           },
         });
@@ -144,7 +147,12 @@ export async function POST(request: Request) {
             status: restamped.status,
             checkedInAt: restamped.checkedInAt,
             message: "SUPERVISOR_OVERRIDE: Supervisor re-entry recorded and admission re-stamped",
-            attendee: { name: restamped.attendeeName, email: restamped.attendeeEmail },
+            attendee: {
+              name: restamped.attendeeName,
+              email: restamped.attendeeEmail,
+              company: restamped.user?.organization || null,
+              photo: restamped.user?.avatarUrl || null,
+            },
             ticketTier: { id: restamped.ticketTier.id, name: restamped.ticketTier.name },
             event: {
               id: restamped.event.id,
@@ -174,6 +182,8 @@ export async function POST(request: Request) {
           attendee: {
             name: booking.attendeeName,
             email: booking.attendeeEmail,
+            company: booking.user?.organization || null,
+            photo: booking.user?.avatarUrl || null,
           },
           ticketTier: {
             id: booking.ticketTier.id,
@@ -216,6 +226,7 @@ export async function POST(request: Request) {
         },
         include: {
           ticketTier: true,
+          user: { select: { organization: true, avatarUrl: true } },
           event: {
             include: {
               venue: true,
@@ -244,6 +255,8 @@ export async function POST(request: Request) {
         attendee: {
           name: updatedBooking.attendeeName,
           email: updatedBooking.attendeeEmail,
+          company: updatedBooking.user?.organization || null,
+          photo: updatedBooking.user?.avatarUrl || null,
         },
         ticketTier: {
           id: updatedBooking.ticketTier.id,

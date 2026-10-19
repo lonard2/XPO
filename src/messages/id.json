@@ -1393,7 +1393,9 @@
     "netCount": "{count} net",
     "hudPerks": "{count} Perk",
     "manualSearchBtn": "Pencarian Manual",
-    "initScanner": "Menginisialisasi Scanner Gerbang..."
+    "initScanner": "Menginisialisasi Scanner Gerbang...",
+    "scannerPhotoAlt": "Foto {name}",
+    "scannerCompany": "Perusahaan / Afiliasi:"
   },
   "admin": {
     "dashboardTitle": "Tata Kelola & Agregator Admin",

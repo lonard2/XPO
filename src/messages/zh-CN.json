@@ -1393,7 +1393,9 @@
     "netCount": "{count}个net",
     "hudPerks": "{count}项权益",
     "manualSearchBtn": "手动搜索",
-    "initScanner": "正在初始化闸机..."
+    "initScanner": "正在初始化闸机...",
+    "scannerPhotoAlt": "{name}的照片",
+    "scannerCompany": "单位:"
   },
   "admin": {
     "dashboardTitle": "管理统括中心",

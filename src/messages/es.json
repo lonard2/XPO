@@ -1393,7 +1393,9 @@
     "netCount": "{count} red",
     "hudPerks": "{count} perks",
     "manualSearchBtn": "Búsqueda manual",
-    "initScanner": "Iniciando escáner..."
+    "initScanner": "Iniciando escáner...",
+    "scannerPhotoAlt": "Foto de {name}",
+    "scannerCompany": "Empresa / afiliación:"
   },
   "admin": {
     "dashboardTitle": "Gobernanza y Agregador de Administración",
