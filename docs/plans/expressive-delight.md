@@ -11,7 +11,7 @@ calendar heat dots; hover sheen as an Expressive-only feature.
   KPI/telemetry numbers with reduced-motion and motion-off bypass.
 - [x] **3. Calendar heat dots** (`delight 3`): event-density dots on month
   cells (dedicated calendar + homepage quick calendar).
-- [ ] **4. Expressive hover sheen** (`delight 5`): light-sweep hover effect
+- [x] **4. Expressive hover sheen** (`delight 5`): light-sweep hover effect
   gated to the Expressive motion setting.
 
 Each ships as its own commit pushed to `origin/main`. Verify by execution;

@@ -51,7 +51,7 @@ export function VenueSpotlightCard({
       )}
     >
       {/* Venue Photo / Visual Banner */}
-      <div className="relative aspect-video w-full overflow-hidden bg-muted border-b border-border/60">
+      <div className="relative aspect-video w-full overflow-hidden bg-muted border-b border-border/60 sheen">
         {venue.imageUrl ? (
           <img
             src={venue.imageUrl}

@@ -126,7 +126,7 @@ export const EventCard = React.memo(function EventCard({
     >
       {/* Visual Header / Hero Background Image */}
       <div className={cn(
-        'relative w-full overflow-hidden bg-muted aspect-video max-h-48 border-b border-border/60',
+        'relative w-full overflow-hidden bg-muted aspect-video max-h-48 border-b border-border/60 sheen',
         variant === 'horizontal' && 'md:w-64 md:aspect-auto md:h-full md:max-h-none md:border-b-0 md:border-r'
       )}>
         {event.heroImageUrl ? (

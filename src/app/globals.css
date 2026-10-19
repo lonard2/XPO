@@ -212,6 +212,27 @@
 
   /* Pointer-tracked tilt targets: compositor hints only; the MotionTilt
      engine writes the transform. Hover-lift rules above stay as fallback. */
+  /* Expressive-only hover sheen for imagery cards. Compositor-cheap
+     transform/opacity sweep; motion-off and reduced-motion kill it. */
+  .motion-expressive .sheen {
+    position: relative;
+    overflow: hidden;
+  }
+  .motion-expressive .sheen::after {
+    content: "";
+    position: absolute;
+    top: -10%;
+    bottom: -10%;
+    width: 45%;
+    left: -60%;
+    background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+    transform: skewX(-12deg);
+    transition: left 0.65s ease;
+    pointer-events: none;
+  }
+  .motion-expressive .sheen:hover::after {
+    left: 130%;
+  }
   .motion-expressive [data-tilt] {
     transform-style: preserve-3d;
     will-change: transform;
