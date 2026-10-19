@@ -1664,7 +1664,7 @@ export default function NewEventWizardPage() {
                       <span className="block text-xs sm:text-sm font-bold text-foreground leading-snug line-clamp-1">
                         {displayName}
                       </span>
-                      <p className="text-[11px] text-muted-foreground mt-1 line-clamp-2 leading-relaxed">
+                      <p className="text-[11px] text-muted-foreground mt-1 line-clamp-3 leading-relaxed">
                         {subtitle}
                       </p>
                     </div>

@@ -290,7 +290,8 @@
       "title": "影视广播工程与专业音视频技术展",
       "tag": "广播影视与专业AV",
       "description": "虚拟拍摄LED立面影棚、SMPTE ST 2110无压缩IP视频分发、大型演唱会线性阵列试听。"
-    }
+    },
+    "browseByCategory": "按行业筛选展会"
   },
   "discovery": {
     "searchPlaceholder": "按展会名称、关键词或场馆搜索...",

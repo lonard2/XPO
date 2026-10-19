@@ -290,7 +290,8 @@
       "title": "Medien-, Broadcast- & Pro-AV-Technologiemesse",
       "tag": "Broadcast & Pro-AV",
       "description": "Virtuelle LED-Filmstudios, unkomprimierte SMPTE ST 2110 IP-Übertragung und Konzert-Line-Arrays."
-    }
+    },
+    "browseByCategory": "Messen nach Branche filtern"
   },
   "discovery": {
     "searchPlaceholder": "Events nach Titel, Stichwort oder Zentrum suchen...",

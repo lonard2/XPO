@@ -290,7 +290,8 @@
       "title": "Media, Broadcast & Pro-AV Technology Mart",
       "tag": "Media & Broadcast",
       "description": "Virtual production LED walls, SMPTE ST 2110 IP broadcast routing, line-array pro-audio listening, and cinema camera optics."
-    }
+    },
+    "browseByCategory": "Filter Exhibitions by Industry Vertical"
   },
   "discovery": {
     "searchPlaceholder": "Search exhibitions by title, keyword, or venue...",

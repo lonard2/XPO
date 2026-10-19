@@ -290,7 +290,8 @@
       "title": "Teknologi Media, Penyiaran & Pro-AV",
       "tag": "Penyiaran & Media",
       "description": "Panggung volume produksi virtual LED, perutean siaran IP SMPTE ST 2110, tata suara konser line-array, dan optik kamera sinema."
-    }
+    },
+    "browseByCategory": "Filter Pameran berdasarkan Vertikal Industri"
   },
   "discovery": {
     "searchPlaceholder": "Cari pameran berdasarkan judul, kata kunci, atau venue...",

@@ -290,7 +290,8 @@
       "title": "放送映像・プロAV技術展",
       "tag": "放送＆プロAV",
       "description": "インカメラVFXバーチャルプロダクションLED、SMPTE ST 2110非圧縮IP伝送、大型コンサート音響試聴。"
-    }
+    },
+    "browseByCategory": "業種別に展示会を絞り込む"
   },
   "discovery": {
     "searchPlaceholder": "イベント名、キーワード、会場で検索...",

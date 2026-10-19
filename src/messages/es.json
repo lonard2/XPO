@@ -290,7 +290,8 @@
       "title": "Tecnología de Medios, Transmisión y Pro-AV",
       "tag": "Transmisión y Pro-AV",
       "description": "Estudios virtuales con pantallas LED, enrutamiento IP SMPTE ST 2110 y audición de line-array para conciertos."
-    }
+    },
+    "browseByCategory": "Filtrar exposiciones por industria"
   },
   "discovery": {
     "searchPlaceholder": "Buscar eventos por título, palabra clave o recinto...",

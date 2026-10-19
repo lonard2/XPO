@@ -316,7 +316,7 @@ export function CalendarInteractiveView({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <h2 className="text-sm sm:text-base font-bold text-foreground">
-              {tArch('browseByCategory') || 'Filter Exhibitions by Industry Vertical'}
+              {tArch('browseByCategory')}
             </h2>
             <p className="text-xs text-muted-foreground">
               {tCal('filterIntro') || 'Select a specialized MICE category to narrow your calendar view.'}
