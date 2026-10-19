@@ -1320,7 +1320,10 @@
     "simConfirmDesc": "Shift sudah berjalan. Baris latihan diberi badge dan dikecualikan dari total dan CSV, tetapi tetap masuk log terlihat. Lanjutkan?",
     "simConfirmBtn": "Suntikkan Pindaian Latihan",
     "trainingBadge": "Latihan",
-    "trainingHint": "Baris latihan diberi badge dan dikecualikan dari total shift dan CSV."
+    "trainingHint": "Baris latihan diberi badge dan dikecualikan dari total shift dan CSV.",
+    "scanForPrefix": "Memindai untuk:",
+    "scanAllEvents": "Semua acara milik",
+    "scanEventChange": "Ganti acara yang dipindai"
   },
   "admin": {
     "dashboardTitle": "Tata Kelola & Agregator Admin",

@@ -159,4 +159,17 @@ describe("Phase 9 Integration: Organizer Door QR Scanner & Verification Lifecycl
     const res = await verifyRoute(req);
     expect(res.status).toBe(403);
   });
+
+  it("T3.7 (Event Scope): rejects passes scanned for the wrong event", async () => {
+    const req = new Request("http://localhost:3000/api/tickets/verify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Cookie: "xpo_role=ADMIN" },
+      body: JSON.stringify({ qrCodeHash: testQrCodeHash, autoCheckIn: false, eventId: "some-other-event" }),
+    });
+    const res = await verifyRoute(req);
+    expect(res.status).toBe(400);
+    const json = await res.json();
+    expect(json.valid).toBe(false);
+    expect(json.error).toContain("EVENT_MISMATCH");
+  });
 });

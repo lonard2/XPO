@@ -6,7 +6,7 @@ Direction: honest record first, all five issues, server re-admit.
 - [x] **1. Harden honest record** (`$impeccable harden`): server-routed
   override re-admit; training-partitioned simulator rows with mid-shift
   confirm.
-- [ ] **2. Harden event scope** (`$impeccable harden`): eventId in verify
+- [x] **2. Harden event scope** (`$impeccable harden`): eventId in verify
   body, event banner with change control, fix hardcoded ev-1 case.
 - [ ] **3. Clarify ownership UI + i18n** (`$impeccable clarify`): owned-event
   selector defaulting from `?eventId=`, triage dictionary pass.

@@ -8,6 +8,7 @@ import {
   XCircle,
   Camera,
   Search,
+  Building2,
   Sparkles,
   Volume2,
   VolumeX,
@@ -32,13 +33,14 @@ import { Badge } from "@/components/ui/Badge";
 import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
 import { useTranslations } from "next-intl";
+import { useAuth } from "@/lib/auth/session";
 import { generateTicketHash } from "@/lib/tickets/qrPass";
 import { cn } from "@/lib/utils";
 
 export interface ScanResult {
   valid: boolean;
   alreadyCheckedIn?: boolean;
-  status: "CHECKED_IN" | "DOUBLE_SCAN" | "INVALID" | "CANCELLED" | "NETWORK_ERROR";
+  status: "CHECKED_IN" | "DOUBLE_SCAN" | "INVALID" | "CANCELLED" | "NETWORK_ERROR" | "WRONG_EVENT";
   message: string;
   checkedInAt?: string | null;
   attendee?: {
@@ -115,11 +117,58 @@ const SCAN_STATUS_MAP: Record<
     badgeText: "Network Error",
     icon: WifiOff,
   },
+  WRONG_EVENT: {
+    label: "Wrong Event Gate",
+    variant: "warning",
+    badgeText: "Wrong Event",
+    icon: AlertTriangle,
+  },
 };
 
 export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
   const tOrg = useTranslations("organizer");
   const tCom = useTranslations("common");
+  const { user, role } = useAuth();
+  const [gateEvents, setGateEvents] = React.useState<any[]>([]);
+  const [selectedEventId, setSelectedEventId] = React.useState<string>(defaultEventId || "ALL");
+
+  // Gate context: owned events for organizers, everything for admins.
+  const ownedEvents = React.useMemo(() => {
+    if (role === "ADMIN") return gateEvents;
+    return gateEvents.filter(
+      (e: any) => e.organizerId === user?.id || e.isPlatformCurated
+    );
+  }, [gateEvents, role, user?.id]);
+
+  React.useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/organizer/events");
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!cancelled && Array.isArray(data.events)) setGateEvents(data.events);
+      } catch {
+        // Scanner stays usable without gate context
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Validate the deep-linked event once the roster loads; fall back to ALL.
+  React.useEffect(() => {
+    if (!defaultEventId || defaultEventId === "ALL") return;
+    if (gateEvents.length === 0) return;
+    const visible =
+      role === "ADMIN"
+        ? gateEvents
+        : gateEvents.filter((e: any) => e.organizerId === user?.id || e.isPlatformCurated);
+    setSelectedEventId(visible.some((e: any) => e.id === defaultEventId) ? defaultEventId : "ALL");
+  }, [defaultEventId, gateEvents, role, user?.id]);
+
+  const scanningEvent = ownedEvents.find((e: any) => e.id === selectedEventId) || null;
 
   const [inputMode, setInputMode] = React.useState<"camera" | "manual">("camera");
   const [manualHash, setManualHash] = React.useState("");
@@ -326,12 +375,14 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
       const targetIdentifier = payload.qrCodeHash || payload.payloadString || "PASS";
 
       try {
+        const gateEventId = selectedEventId !== "ALL" ? selectedEventId : payload.eventId;
         const res = await fetch("/api/tickets/verify", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             ...payload,
             autoCheckIn: true,
+            ...(gateEventId ? { eventId: gateEventId } : {}),
           }),
         });
 
@@ -404,6 +455,10 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
           } else if (rawErr.includes("TICKET_NOT_FOUND") || rawErr.toLowerCase().includes("does not match")) {
             errorCode = "TICKET_NOT_FOUND";
             humanMessage = "Pass code not found in event database. Verify booking reference or check attendee registration email.";
+          } else if (rawErr.includes("EVENT_MISMATCH")) {
+            status = "WRONG_EVENT";
+            errorCode = "EVENT_MISMATCH";
+            humanMessage = "Pass belongs to a different event than this gate. Direct the attendee to the correct gate.";
           } else if (rawErr.includes("INVALID_SIGNATURE") || rawErr.toLowerCase().includes("verification failed")) {
             errorCode = "INVALID_SIGNATURE";
             humanMessage = "Cryptographic signature unverified. Pass may belong to a different event, hall, or date.";
@@ -446,7 +501,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
         setIsVerifying(false);
       }
     },
-    [playSound, triggerHaptic]
+    [playSound, triggerHaptic, selectedEventId]
   );
 
   // Optical continuous QR barcode scanning loop (native BarcodeDetector)
@@ -673,7 +728,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
   const simulateValidStandardPass = () => {
     const payload = {
       bookingId: `BK-TEST-${Date.now().toString().slice(-4)}`,
-      eventId: defaultEventId || "ev-1",
+      eventId: selectedEventId !== "ALL" ? selectedEventId : (defaultEventId || "TRAINING"),
       tierId: "tier-std",
       attendeeEmail: "alex@xpo.com",
       issuedAt: Date.now(),
@@ -693,7 +748,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
   const simulateValidVipPass = () => {
     const payload = {
       bookingId: `BK-VIP-${Date.now().toString().slice(-4)}`,
-      eventId: defaultEventId || "ev-1",
+      eventId: selectedEventId !== "ALL" ? selectedEventId : (defaultEventId || "TRAINING"),
       tierId: "tier-vip",
       attendeeEmail: "sari.dewi@nusantara.co.id",
       issuedAt: Date.now(),
@@ -734,7 +789,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
   const simulateTamperedSignature = () => {
     const payload = {
       bookingId: "BK-TAMPERED-FRAUD",
-      eventId: "ev-1",
+      eventId: selectedEventId !== "ALL" ? selectedEventId : (defaultEventId || "TRAINING"),
       tierId: "tier-vip",
       attendeeEmail: "fraudster@fake.com",
       issuedAt: Date.now(),
@@ -759,6 +814,34 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
 
   return (
     <div className="space-y-6 w-full animate-fade-in">
+      {/* GATE CONTEXT BANNER + EVENT CHANGE CONTROL */}
+      <Card className="p-3.5 border-border bg-card shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+        <div className="flex items-center gap-2 text-xs min-w-0">
+          <Building2 className="h-4 w-4 text-primary shrink-0" />
+          <span className="text-muted-foreground font-medium shrink-0">{tOrg("scanForPrefix")}</span>
+          <span className="font-bold text-foreground truncate">
+            {scanningEvent
+              ? `${scanningEvent.title}${scanningEvent.venueHall?.name ? ` · ${scanningEvent.venueHall.name}` : ""}`
+              : tOrg("scanAllEvents")}
+          </span>
+        </div>
+        {ownedEvents.length > 0 && (
+          <select
+            aria-label={tOrg("scanEventChange")}
+            value={selectedEventId}
+            onChange={(e) => setSelectedEventId(e.target.value)}
+            className="h-11 min-h-[44px] px-3 bg-background border border-input rounded-md text-xs shrink-0 cursor-pointer"
+          >
+            <option value="ALL">{tOrg("scanAllEvents")}</option>
+            {ownedEvents.map((e: any) => (
+              <option key={e.id} value={e.id}>
+                {e.title}
+              </option>
+            ))}
+          </select>
+        )}
+      </Card>
+
       {/* SHIFT TELEMETRY BAR */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <Card className="p-3.5 border-border bg-card text-center shadow-xs">

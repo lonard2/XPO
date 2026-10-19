@@ -1320,7 +1320,10 @@
     "simConfirmDesc": "シフトは既に進行中です。トレーニング行はバッジ付きで集計・CSVから除外されますが、表示ログには残ります。挿入しますか?",
     "simConfirmBtn": "トレーニングスキャンを挿入",
     "trainingBadge": "訓練",
-    "trainingHint": "トレーニング行はバッジ付きで集計・CSVから除外されます。"
+    "trainingHint": "トレーニング行はバッジ付きで集計・CSVから除外されます。",
+    "scanForPrefix": "スキャン対象:",
+    "scanAllEvents": "担当全イベント",
+    "scanEventChange": "スキャン対象を変更"
   },
   "admin": {
     "dashboardTitle": "管理統括・アグリゲーター",

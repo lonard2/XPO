@@ -6,7 +6,7 @@ import { getEventCaller, canWriteEvent } from "@/lib/auth/eventOwnership";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { qrCodeHash, payloadString, signature, autoCheckIn = true, supervisorOverride = false } = body;
+    const { qrCodeHash, payloadString, signature, autoCheckIn = true, supervisorOverride = false, eventId: scannedEventId } = body;
 
     // 1. Cryptographic Validation if signature & payload string provided
     if (payloadString && signature) {
@@ -77,6 +77,18 @@ export async function POST(request: Request) {
           error: "TICKET_NOT_FOUND: Pass does not match any registered booking in database",
         },
         { status: 404 }
+      );
+    }
+
+    // 2b. Gate scope guard: a scanner locked to one event must not admit
+    // passes from another event's allocation.
+    if (scannedEventId && scannedEventId !== booking.eventId) {
+      return NextResponse.json(
+        {
+          valid: false,
+          error: "EVENT_MISMATCH: Pass belongs to a different event than the scanning gate",
+        },
+        { status: 400 }
       );
     }
 

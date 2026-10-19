@@ -76,8 +76,7 @@ describe("CheckInScanner honest record", () => {
     expect(processed?.textContent).toBe("0");
   });
 
-  it("confirms simulator injection once a real shift is underway", async () => {
-    mockVerifySequence([admittedResponse]);
+  it("confirms simulator injection once a real shift is underway", async () => {    mockVerifySequence([admittedResponse]);
     render(<CheckInScanner />);
     await submitManualHash("HASH-REAL-1");
     await waitFor(() => {
@@ -88,6 +87,80 @@ describe("CheckInScanner honest record", () => {
     fireEvent.click(screen.getByRole("button", { name: /^valid pass$/i }));
     await waitFor(() => {
       expect(screen.getByText(/inject a training scan/i)).toBeInTheDocument();
+    });
+  });
+});
+
+describe("CheckInScanner event scope", () => {
+  const ownedEvents = [
+    { id: "ev-9", title: "Expo Nine", organizerId: "cmt2sfr7n0000laeaurwdwe44", venueHall: { name: "Hall A" } },
+    { id: "ev-10", title: "Expo Ten", organizerId: "cmt2sfr7n0000laeaurwdwe44", venueHall: { name: "Hall B" } },
+  ];
+
+  function mockScannerApis(verifyImpl: (body: any) => any) {
+    const calls: any[] = [];
+    global.fetch = vi.fn().mockImplementation((url: string, init?: any) => {
+      if (url.includes("/api/organizer/events")) {
+        return Promise.resolve({ ok: true, json: () => Promise.resolve({ events: ownedEvents }) });
+      }
+      const body = JSON.parse(init.body);
+      calls.push(body);
+      return Promise.resolve({ ok: true, json: () => Promise.resolve(verifyImpl(body)) });
+    }) as any;
+    return calls;
+  }
+
+  beforeEach(() => {
+    localStorage.clear();
+    vi.restoreAllMocks();
+  });
+
+  it("banners the deep-linked event and sends its id on verify", async () => {
+    const calls = mockScannerApis(() => ({ ...admittedResponse }));
+    render(<CheckInScanner defaultEventId="ev-9" />);
+    await waitFor(() => {
+      expect(screen.getByText('Scanning for:')).toBeInTheDocument();
+      expect(screen.getByText('Expo Nine · Hall A')).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getByRole("button", { name: /manual code entry/i }));
+    fireEvent.change(document.querySelector("#scanner-manual-input") as HTMLInputElement, {
+      target: { value: "HASH-EV-1" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /validate & check-in pass/i }));
+    await waitFor(() => {
+      expect(calls.length).toBe(1);
+    });
+    expect(calls[0].eventId).toBe("ev-9");
+  });
+
+  it("switches scanning context through the event selector", async () => {
+    mockScannerApis(() => ({ ...admittedResponse }));
+    render(<CheckInScanner defaultEventId="ev-9" />);
+    await waitFor(() => {
+      expect(screen.getByText('Scanning for:')).toBeInTheDocument();
+      expect(screen.getByText('Expo Nine · Hall A')).toBeInTheDocument();
+    });
+    const select = screen.getByLabelText(/scanning event/i) as HTMLSelectElement;
+    fireEvent.change(select, { target: { value: "ev-10" } });
+    await waitFor(() => {
+      expect(screen.getByText('Expo Ten · Hall B')).toBeInTheDocument();
+    });
+  });
+
+  it("shows a wrong-event verdict when the server reports a mismatch", async () => {
+    mockScannerApis(() => ({ valid: false, error: "EVENT_MISMATCH: Pass belongs to a different event" }));
+    render(<CheckInScanner defaultEventId="ev-9" />);
+    await waitFor(() => {
+      expect(screen.getByText('Scanning for:')).toBeInTheDocument();
+      expect(screen.getByText('Expo Nine · Hall A')).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getByRole("button", { name: /manual code entry/i }));
+    fireEvent.change(document.querySelector("#scanner-manual-input") as HTMLInputElement, {
+      target: { value: "HASH-WRONG-EV" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /validate & check-in pass/i }));
+    await waitFor(() => {
+      expect(screen.getAllByText(/wrong event/i).length).toBeGreaterThan(0);
     });
   });
 });

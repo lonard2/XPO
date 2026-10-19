@@ -1320,7 +1320,10 @@
     "simConfirmDesc": "Eine Schicht läuft bereits. Trainingszeilen sind markiert und von Zählung/CSV ausgeschlossen, erscheinen aber im sichtbaren Protokoll. Einfügen?",
     "simConfirmBtn": "Trainings-Scan einfügen",
     "trainingBadge": "Training",
-    "trainingHint": "Trainingszeilen sind markiert und von Schichtsummen/CSV ausgeschlossen."
+    "trainingHint": "Trainingszeilen sind markiert und von Schichtsummen/CSV ausgeschlossen.",
+    "scanForPrefix": "Scan für:",
+    "scanAllEvents": "Alle eigenen Events",
+    "scanEventChange": "Scan-Event wechseln"
   },
   "admin": {
     "dashboardTitle": "Admin-Governance & Aggregator",

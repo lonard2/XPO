@@ -1320,7 +1320,10 @@
     "simConfirmDesc": "A shift is already underway. Training rows are badged and excluded from counts and CSV, but they still land in the visible log. Inject a training scan?",
     "simConfirmBtn": "Inject Training Scan",
     "trainingBadge": "Training",
-    "trainingHint": "Training rows are badged and excluded from shift totals and CSV."
+    "trainingHint": "Training rows are badged and excluded from shift totals and CSV.",
+    "scanForPrefix": "Scanning for:",
+    "scanAllEvents": "All owned events",
+    "scanEventChange": "Change scanning event"
   },
   "admin": {
     "dashboardTitle": "Governance & Admin Agregator",

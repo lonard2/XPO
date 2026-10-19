@@ -1320,7 +1320,10 @@
     "simConfirmDesc": "Un turno ya está en curso. Las filas de práctica llevan insignia y se excluyen de totales/CSV, pero aparecen en el registro. ¿Insertar?",
     "simConfirmBtn": "Insertar escaneo",
     "trainingBadge": "Práctica",
-    "trainingHint": "Las filas de práctica llevan insignia y se excluyen de totales/CSV."
+    "trainingHint": "Las filas de práctica llevan insignia y se excluyen de totales/CSV.",
+    "scanForPrefix": "Escaneando para:",
+    "scanAllEvents": "Todos mis eventos",
+    "scanEventChange": "Cambiar evento"
   },
   "admin": {
     "dashboardTitle": "Gobernanza y Agregador de Administración",
