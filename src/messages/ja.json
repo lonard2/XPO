@@ -60,7 +60,25 @@
     "toggleDarkMode": "ダークモード切替",
     "toggleMenu": "メニュー切替",
     "signIn": "ログイン",
-    "signOut": "ログアウト"
+    "signOut": "ログアウト",
+    "guestUser": "ゲストユーザー",
+    "activePersona": "現在のペルソナ: {role}",
+    "switchRole": "ロール切替",
+    "selectRegionalHub": "地域ハブを選択",
+    "accountSettings": "UI・アカウント設定",
+    "authAria": "認証とロールペルソナを管理",
+    "themeAria": "ダークモード切替",
+    "menuAria": "メニューを開閉",
+    "bottomNavAria": "モバイル下部ナビゲーション",
+    "langGroupAria": "言語選択",
+    "langTriggerAria": "言語を選択, 現在: {label}",
+    "langListAria": "対応言語",
+    "langHeading": "言語を選択",
+    "countryGroupAria": "国を選択",
+    "regionTriggerAria": "国を選択, 現在: {label}",
+    "regionListAria": "対応国",
+    "regionHeading": "国/地域を選択",
+    "activeBadge": "選択中"
   },
   "hero": {
     "badge": "XPO デジタルMICEプラットフォーム",
@@ -1397,7 +1415,11 @@
     "initScanner": "ゲートスキャナーを初期化中...",
     "scannerPhotoAlt": "{name}の写真",
     "scannerCompany": "所属:",
-    "admittedSub": "({total}件中{checked}件入場)"
+    "admittedSub": "({total}件中{checked}件入場)",
+    "mobileNavToggle": "ナビゲーションメニューを開閉",
+    "organizerNavAria": "オーガナイザーナビゲーション",
+    "mobileNavAria": "モバイルナビゲーション",
+    "crumbAria": "パンくずリスト"
   },
   "admin": {
     "dashboardTitle": "管理統括・アグリゲーター",

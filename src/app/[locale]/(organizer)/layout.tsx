@@ -57,38 +57,38 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
   const navItems = [
     {
       href: `/${locale}/dashboard`,
-      label: tOrg("dashboardNav") || "Dashboard & Metrics",
+      label: tOrg("dashboardNav"),
       icon: LayoutDashboard,
-      description: tOrg("dashboardNavDesc") || "Overview, revenue & check-in velocity",
+      description: tOrg("dashboardNavDesc"),
     },
     {
       href: `/${locale}/booths`,
-      label: tOrg("boothManagerNav") || "Booth & Tenant Manager",
+      label: tOrg("boothManagerNav"),
       icon: Store,
-      description: tOrg("boothManagerNavDesc") || "Floor allocations & exhibitor roster",
+      description: tOrg("boothManagerNavDesc"),
     },
     {
       href: `/${locale}/scanner`,
-      label: tOrg("qrScannerNav") || "Door Staff QR Scanner",
+      label: tOrg("qrScannerNav"),
       icon: QrCode,
-      description: tOrg("qrScannerNavDesc") || "Cryptographic HMAC pass verification",
+      description: tOrg("qrScannerNavDesc"),
     },
   ];
 
   // Breadcrumbs derivation
   const getBreadcrumbs = () => {
-    const crumbs = [{ label: tOrg("crumbOrganizerHub") || "Organizer Hub", href: `/${locale}/dashboard` }];
+    const crumbs = [{ label: tOrg("crumbOrganizerHub"), href: `/${locale}/dashboard` }];
 
     if (pathname.includes("/events/new")) {
-      crumbs.push({ label: tOrg("crumbNewEvent") || "New Event Wizard", href: `/${locale}/events/new` });
+      crumbs.push({ label: tOrg("crumbNewEvent"), href: `/${locale}/events/new` });
     } else if (pathname.includes("/customizer")) {
-      crumbs.push({ label: tOrg("crumbCustomizer") || "Live Visual Customizer", href: pathname });
+      crumbs.push({ label: tOrg("crumbCustomizer"), href: pathname });
     } else if (pathname.includes("/ai-reports")) {
-      crumbs.push({ label: tOrg("crumbAiReports") || "AI Multi-Model Reports", href: pathname });
+      crumbs.push({ label: tOrg("crumbAiReports"), href: pathname });
     } else if (pathname.includes("/booths")) {
-      crumbs.push({ label: tOrg("crumbBooths") || "Booth Roster", href: `/${locale}/booths` });
+      crumbs.push({ label: tOrg("crumbBooths"), href: `/${locale}/booths` });
     } else if (pathname.includes("/scanner")) {
-      crumbs.push({ label: tOrg("crumbScanner") || "QR Check-In Scanner", href: `/${locale}/scanner` });
+      crumbs.push({ label: tOrg("crumbScanner"), href: `/${locale}/scanner` });
     }
 
     return crumbs;
@@ -109,12 +109,12 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
             <ShieldCheck className="h-8 w-8" />
           </div>
           <div className="space-y-2">
-            <Badge variant="warning" size="sm">{tOrg("rbacRequiredTitle") || "Organizer Access Restricted"}</Badge>
+            <Badge variant="warning" size="sm">{tOrg("rbacRequiredTitle")}</Badge>
             <h2 id="rbac-barrier-title" className="text-xl font-bold text-foreground">
-              {tOrg("managementHub") || "Organizer Management Portal"}
+              {tOrg("managementHub")}
             </h2>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              {tOrg("attendeeModeNotice") || "Confidential event operations, door staff QR validation, booth assignments, and analytics are restricted to verified event organizers and staff accounts."}
+              {tOrg("attendeeModeNotice")}
             </p>
           </div>
           <div className="flex flex-col gap-2.5 pt-4 border-t border-border">
@@ -124,13 +124,13 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
               className="w-full gap-2 bg-amber-600 hover:bg-amber-700 text-white cursor-pointer min-h-[44px]"
             >
               <UserCheck className="h-4 w-4" />
-              <span>{tOrg("switchToOrganizer") || "Switch to Organizer Persona"}</span>
+              <span>{tOrg("switchToOrganizer")}</span>
             </Button>
             <Link
               href={`/${locale}`}
               className={cn(buttonVariants({ variant: "outline" }), "w-full cursor-pointer min-h-[44px]")}
             >
-              {tCom("backToHome") || "Back to Discovery"}
+              {tCom("backToHome")}
             </Link>
           </div>
         </div>
@@ -156,7 +156,7 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
                   </Badge>
                 </div>
                 <h4 className="text-xs font-bold text-foreground truncate mt-1">
-                  {user ? user.name : (tOrg("managementHub") || "Organizer Hub")}
+                  {user ? user.name : (tOrg("managementHub"))}
                 </h4>
                 <p className="text-xs text-muted-foreground truncate">
                   {user?.organization || "XPO Ecosystem"}
@@ -168,7 +168,7 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
           {/* Navigation Links */}
           <nav aria-label="Organizer Sidebar Navigation" className="space-y-1">
             <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground px-2 mb-2">
-              {tOrg("suiteTitle") || "Organizer Suite"}
+              {tOrg("suiteTitle")}
             </div>
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -204,7 +204,7 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
               className="flex items-center gap-2.5 p-2.5 rounded-xl text-xs text-muted-foreground hover:text-foreground hover:bg-accent/50 transition-colors min-h-[44px]"
             >
               <Compass className="h-4 w-4 text-emerald-500" />
-              <span>{tOrg("switchToAttendee") || "Attendee Event Discovery"}</span>
+              <span>{tOrg("switchToAttendee")}</span>
             </Link>
           </div>
         </aside>
@@ -216,7 +216,7 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
               variant="ghost"
               size="icon"
               className="h-10 w-10 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
-              aria-label="Toggle navigation menu"
+              aria-label={tOrg("mobileNavToggle")}
               aria-expanded={isMobileSidebarOpen}
               aria-controls="mobile-organizer-nav"
               onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
@@ -224,7 +224,7 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
               {isMobileSidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
             <span className="text-xs font-bold text-foreground">
-              {tOrg("portalBadge") || "Organizer Portal"}
+              {tOrg("portalBadge")}
             </span>
           </div>
           <Badge variant={getRoleBadgeVariant(role)} size="sm">
@@ -247,10 +247,10 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
             id="mobile-organizer-nav"
             role="dialog"
             aria-modal="true"
-            aria-label="Organizer Navigation"
+            aria-label={tOrg("organizerNavAria")}
             className="fixed inset-x-0 top-[57px] bg-card border-b border-border p-4 space-y-3 z-50 lg:hidden shadow-xl animate-fade-in"
           >
-            <nav aria-label="Mobile Navigation" className="space-y-1">
+            <nav aria-label={tOrg("mobileNavAria")} className="space-y-1">
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = pathname === item.href;
@@ -278,7 +278,7 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
                 className="flex items-center gap-3 p-2.5 min-h-[44px] rounded-xl text-xs font-medium text-muted-foreground hover:text-foreground pt-2 border-t border-border"
               >
                 <Compass className="h-4 w-4 text-emerald-500" />
-                <span>{tOrg("switchToAttendee") || "Return to Attendee Portal"}</span>
+                <span>{tOrg("switchToAttendee")}</span>
               </Link>
             </nav>
           </div>
@@ -288,7 +288,7 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
         <div className="flex-1 flex flex-col min-w-0">
           {/* Breadcrumb Header Bar */}
           <div className="border-b border-border/70 bg-card/40 px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4">
-            <nav aria-label="Breadcrumb" className="flex items-center text-xs text-muted-foreground">
+            <nav aria-label={tOrg("crumbAria")} className="flex items-center text-xs text-muted-foreground">
               <ol className="flex items-center gap-1.5 list-none p-0 m-0">
                 {breadcrumbs.map((crumb, idx) => {
                   const isLast = idx === breadcrumbs.length - 1;
@@ -319,7 +319,7 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
                 )}
               >
                 <PlusCircle className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">{tOrg("launchNewEvent") || "Launch Event"}</span>
+                <span className="hidden sm:inline">{tOrg("launchNewEvent")}</span>
               </Link>
             </div>
           </div>

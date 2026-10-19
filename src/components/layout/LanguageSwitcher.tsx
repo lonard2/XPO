@@ -3,6 +3,7 @@
 import * as React from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Globe, Check, ChevronDown, Languages } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 import { SupportedLocale, SUPPORTED_LOCALES } from "@/lib/i18n/formatters";
@@ -36,6 +37,13 @@ export function LanguageSwitcher({
 }: LanguageSwitcherProps) {
   const pathname = usePathname();
   const router = useRouter();
+  let tNav: any = (k: string) => k;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tNav = useTranslations("nav");
+  } catch {
+    // Fallback
+  }
   const [isOpen, setIsOpen] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const triggerRef = React.useRef<HTMLButtonElement>(null);
@@ -96,7 +104,7 @@ export function LanguageSwitcher({
       <div
         className={cn("flex flex-wrap items-center gap-1.5", className)}
         role="radiogroup"
-        aria-label="Language selection"
+        aria-label={tNav("langGroupAria")}
       >
         {LANGUAGE_OPTIONS.map((lang) => {
           const isSelected = lang.code === currentLocale;
@@ -132,7 +140,7 @@ export function LanguageSwitcher({
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
-        aria-label={`Select language, current: ${activeLanguage.label}`}
+        aria-label={tNav("langTriggerAria", { label: activeLanguage.label })}
         className="h-11 px-2.5 gap-1.5 text-xs font-medium border border-border/60 hover:bg-accent hover:text-accent-foreground min-h-[44px]"
       >
         <Globe className="h-3.5 w-3.5 text-muted-foreground" />
@@ -147,12 +155,12 @@ export function LanguageSwitcher({
       {isOpen && (
         <div
           role="listbox"
-          aria-label="Supported languages"
+          aria-label={tNav("langListAria")}
           className="absolute right-0 mt-1.5 w-56 origin-top-right rounded-xl border border-border bg-card p-1.5 shadow-xl z-50 animate-in fade-in-0 zoom-in-95 duration-100"
         >
           <div className="px-2.5 py-1.5 border-b border-border/50 text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
             <Languages className="h-3 w-3 text-primary" />
-            <span>Select Language</span>
+            <span>{tNav("langHeading")}</span>
           </div>
 
           <div className="py-1 space-y-0.5 max-h-64 overflow-y-auto">

@@ -60,7 +60,25 @@
     "toggleDarkMode": "暗色模式",
     "toggleMenu": "打开菜单",
     "signIn": "登录",
-    "signOut": "登出"
+    "signOut": "登出",
+    "guestUser": "访客",
+    "activePersona": "当前角色:{role}",
+    "switchRole": "切换角色",
+    "selectRegionalHub": "选择区域中心",
+    "accountSettings": "界面与账户设置",
+    "authAria": "管理用户认证与角色",
+    "themeAria": "切换深色模式",
+    "menuAria": "打开/关闭菜单",
+    "bottomNavAria": "移动端底部导航",
+    "langGroupAria": "语言选择",
+    "langTriggerAria": "选择语言, 当前:{label}",
+    "langListAria": "支持的语言",
+    "langHeading": "选择语言",
+    "countryGroupAria": "国家选择",
+    "regionTriggerAria": "选择国家, 当前:{label}",
+    "regionListAria": "支持的国家",
+    "regionHeading": "选择国家/地区",
+    "activeBadge": "当前"
   },
   "hero": {
     "badge": "XPO 会展数字生态平台",
@@ -1397,7 +1415,11 @@
     "initScanner": "正在初始化闸机...",
     "scannerPhotoAlt": "{name}的照片",
     "scannerCompany": "单位:",
-    "admittedSub": "(共{total}人, 已入场{checked}人)"
+    "admittedSub": "(共{total}人, 已入场{checked}人)",
+    "mobileNavToggle": "打开/关闭导航菜单",
+    "organizerNavAria": "主办方导航",
+    "mobileNavAria": "移动端导航",
+    "crumbAria": "面包屑导航"
   },
   "admin": {
     "dashboardTitle": "管理统括中心",

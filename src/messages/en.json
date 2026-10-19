@@ -60,7 +60,25 @@
     "toggleDarkMode": "Toggle Dark Mode",
     "toggleMenu": "Toggle Menu",
     "signIn": "Sign In",
-    "signOut": "Sign Out"
+    "signOut": "Sign Out",
+    "guestUser": "Guest User",
+    "activePersona": "Active Persona: {role}",
+    "switchRole": "Switch Role",
+    "selectRegionalHub": "Select Regional Hub",
+    "accountSettings": "UI & Account Settings",
+    "authAria": "Manage user authentication and role persona",
+    "themeAria": "Toggle dark mode",
+    "menuAria": "Toggle menu",
+    "bottomNavAria": "Mobile Bottom Navigation",
+    "langGroupAria": "Language selection",
+    "langTriggerAria": "Select language, current: {label}",
+    "langListAria": "Supported languages",
+    "langHeading": "Select Language",
+    "countryGroupAria": "Country selection",
+    "regionTriggerAria": "Select Country, active: {label}",
+    "regionListAria": "Supported Countries",
+    "regionHeading": "Select Country / Region",
+    "activeBadge": "Active"
   },
   "hero": {
     "badge": "XPO Digital MICE Ecosystem",
@@ -1397,7 +1415,11 @@
     "initScanner": "Initializing Gate Scanner...",
     "scannerPhotoAlt": "Photo of {name}",
     "scannerCompany": "Company / Affiliation:",
-    "admittedSub": "({checked} of {total} admitted)"
+    "admittedSub": "({checked} of {total} admitted)",
+    "mobileNavToggle": "Toggle navigation menu",
+    "organizerNavAria": "Organizer Navigation",
+    "mobileNavAria": "Mobile Navigation",
+    "crumbAria": "Breadcrumb"
   },
   "admin": {
     "dashboardTitle": "Governance & Admin Agregator",

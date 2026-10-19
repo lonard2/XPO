@@ -60,7 +60,25 @@
     "toggleDarkMode": "Mode Gelap",
     "toggleMenu": "Buka Menu",
     "signIn": "Masuk",
-    "signOut": "Keluar"
+    "signOut": "Keluar",
+    "guestUser": "Pengguna Tamu",
+    "activePersona": "Persona Aktif: {role}",
+    "switchRole": "Ganti Peran",
+    "selectRegionalHub": "Pilih Hub Regional",
+    "accountSettings": "Pengaturan UI & Akun",
+    "authAria": "Kelola autentikasi dan persona peran",
+    "themeAria": "Aktif/nonaktifkan mode gelap",
+    "menuAria": "Buka/tutup menu",
+    "bottomNavAria": "Navigasi Bawah Seluler",
+    "langGroupAria": "Pemilihan bahasa",
+    "langTriggerAria": "Pilih bahasa, saat ini: {label}",
+    "langListAria": "Bahasa yang didukung",
+    "langHeading": "Pilih Bahasa",
+    "countryGroupAria": "Pemilihan negara",
+    "regionTriggerAria": "Pilih Negara, aktif: {label}",
+    "regionListAria": "Negara yang didukung",
+    "regionHeading": "Pilih Negara / Region",
+    "activeBadge": "Aktif"
   },
   "hero": {
     "badge": "Ekosistem Digital MICE XPO",
@@ -1397,7 +1415,11 @@
     "initScanner": "Menginisialisasi Scanner Gerbang...",
     "scannerPhotoAlt": "Foto {name}",
     "scannerCompany": "Perusahaan / Afiliasi:",
-    "admittedSub": "({checked} dari {total} masuk)"
+    "admittedSub": "({checked} dari {total} masuk)",
+    "mobileNavToggle": "Buka/tutup menu navigasi",
+    "organizerNavAria": "Navigasi Organizer",
+    "mobileNavAria": "Navigasi Seluler",
+    "crumbAria": "Navigasi remah roti"
   },
   "admin": {
     "dashboardTitle": "Tata Kelola & Agregator Admin",

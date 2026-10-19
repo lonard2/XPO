@@ -60,7 +60,25 @@
     "toggleDarkMode": "Dunkelmodus",
     "toggleMenu": "Menü öffnen",
     "signIn": "Anmelden",
-    "signOut": "Abmelden"
+    "signOut": "Abmelden",
+    "guestUser": "Gast",
+    "activePersona": "Aktive Persona: {role}",
+    "switchRole": "Rolle wechseln",
+    "selectRegionalHub": "Regional-Hub wählen",
+    "accountSettings": "UI- & Kontoeinstellungen",
+    "authAria": "Authentifizierung und Rolle verwalten",
+    "themeAria": "Dark Mode umschalten",
+    "menuAria": "Menü umschalten",
+    "bottomNavAria": "Mobile Fußnavigation",
+    "langGroupAria": "Sprachauswahl",
+    "langTriggerAria": "Sprache wählen, aktuell: {label}",
+    "langListAria": "Verfügbare Sprachen",
+    "langHeading": "Sprache wählen",
+    "countryGroupAria": "Länderauswahl",
+    "regionTriggerAria": "Land wählen, aktiv: {label}",
+    "regionListAria": "Verfügbare Länder",
+    "regionHeading": "Land / Region wählen",
+    "activeBadge": "Aktiv"
   },
   "hero": {
     "badge": "XPO Digitales MICE-Ökosystem",
@@ -1397,7 +1415,11 @@
     "initScanner": "Gate-Scanner wird initialisiert...",
     "scannerPhotoAlt": "Foto von {name}",
     "scannerCompany": "Firma / Zugehörigkeit:",
-    "admittedSub": "({checked} von {total} eingelassen)"
+    "admittedSub": "({checked} von {total} eingelassen)",
+    "mobileNavToggle": "Navigationsmenü umschalten",
+    "organizerNavAria": "Veranstalter-Navigation",
+    "mobileNavAria": "Mobile Navigation",
+    "crumbAria": "Brotkrumen"
   },
   "admin": {
     "dashboardTitle": "Admin-Governance & Aggregator",

@@ -5,7 +5,7 @@ Direction: distill CTAs first, all five issues, crumb-bar wins.
 
 - [x] **1. Distill frame CTAs** (`$impeccable distill`): crumb-bar Launch is
   the single canonical frame CTA; sidebar Create demoted to section link.
-- [ ] **2. Clarify frame i18n** (`$impeccable clarify`): sidebar, crumbs,
+- [x] **2. Clarify frame i18n** (`$impeccable clarify`): sidebar, crumbs,
   barrier, nav, switchers, footer strings into dictionaries.
 - [ ] **3. Structure region unity** (`$impeccable structure`): single
   `useActiveRegion()` hook, subpath-preserving switch, one URL form.

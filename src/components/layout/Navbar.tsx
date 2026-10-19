@@ -127,12 +127,12 @@ export function Navbar({ locale = "en" }: NavbarProps) {
   const RoleIcon = getRoleIcon();
 
   const navLinks = [
-    { href: `/${locale}`, label: tNav("explore") || "Explore", icon: Compass },
-    { href: `/${locale}/events`, label: tNav("events") || "Events", icon: Layers },
-    { href: `/${locale}/calendar`, label: tNav("calendar") || "Calendar", icon: Calendar },
-    { href: `/${locale}/venues`, label: tNav("venues") || "Venues", icon: Building2 },
-    { href: `/${locale}/my-tickets`, label: tNav("myTickets") || "My Passes", icon: Ticket },
-    { href: `/${locale}/dashboard`, label: tNav("dashboard") || "Organizer", icon: LayoutDashboard },
+    { href: `/${locale}`, label: tNav("explore"), icon: Compass },
+    { href: `/${locale}/events`, label: tNav("events"), icon: Layers },
+    { href: `/${locale}/calendar`, label: tNav("calendar"), icon: Calendar },
+    { href: `/${locale}/venues`, label: tNav("venues"), icon: Building2 },
+    { href: `/${locale}/my-tickets`, label: tNav("myTickets"), icon: Ticket },
+    { href: `/${locale}/dashboard`, label: tNav("dashboard"), icon: LayoutDashboard },
   ];
 
   return (
@@ -194,7 +194,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
               type="button"
               onClick={() => setIsAuthModalOpen(true)}
               className="flex items-center gap-1.5 px-2 lg:px-2.5 py-1.5 rounded-lg border border-border/80 hover:border-primary/40 bg-card hover:bg-accent/50 transition-all text-xs text-left cursor-pointer whitespace-nowrap min-h-[44px]"
-              aria-label="Manage user authentication and role persona"
+              aria-label={tNav("authAria")}
             >
               <div className="h-6 w-6 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
                 <RoleIcon className="h-3.5 w-3.5" />
@@ -202,7 +202,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
               <div className="hidden sm:flex flex-col">
                 <div className="flex items-center gap-1">
                   <span className="font-semibold text-foreground max-w-[85px] lg:max-w-[100px] truncate text-xs">
-                    {user ? user.name.split(" ")[0] : (tNav("signIn") || "Sign In")}
+                    {user ? user.name.split(" ")[0] : (tNav("signIn"))}
                   </span>
                   <Badge variant={getRoleBadgeVariant(role)} size="sm" className="text-xs py-0 px-1 font-semibold">
                     {role}
@@ -216,7 +216,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
               variant="ghost"
               size="icon"
               onClick={toggleDarkMode}
-              aria-label="Toggle dark mode"
+              aria-label={tNav("themeAria")}
               className="h-11 w-11 min-h-[44px] min-w-[44px]"
             >
               {isDarkMode ? <Sun className="h-4 w-4 text-amber-400" /> : <Moon className="h-4 w-4" />}
@@ -226,7 +226,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
             <Link href={`/${locale}/settings`}>
               <Button variant="outline" size="sm" className="hidden lg:inline-flex gap-2 text-xs whitespace-nowrap">
                 <SettingsIcon className="h-3.5 w-3.5" />
-                <span>{tNav("settings") || "Settings"}</span>
+                <span>{tNav("settings")}</span>
               </Button>
             </Link>
 
@@ -236,7 +236,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
               size="icon"
               className="md:hidden h-11 w-11 min-h-[44px] min-w-[44px]"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="Toggle menu"
+              aria-label={tNav("menuAria")}
             >
               {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
@@ -260,15 +260,15 @@ export function Navbar({ locale = "en" }: NavbarProps) {
                 </div>
                 <div>
                   <div className="text-xs font-semibold text-foreground">
-                    {user ? user.name : "Guest User"}
+                    {user ? user.name : tNav("guestUser")}
                   </div>
                   <div className="text-xs text-muted-foreground">
-                    Active Persona: {getRoleLabel(role)}
+                    {tNav("activePersona", { role: getRoleLabel(role) })}
                   </div>
                 </div>
               </div>
               <Badge variant={getRoleBadgeVariant(role)} size="sm">
-                Switch Role
+                {tNav("switchRole")}
               </Badge>
             </div>
 
@@ -299,7 +299,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
             {/* Regional Hub Selector in Mobile */}
             <div className="pt-2 border-t border-border space-y-2">
               <span className="text-xs font-semibold uppercase text-muted-foreground tracking-wider block px-1">
-                Select Regional Hub
+                {tNav("selectRegionalHub")}
               </span>
               <RegionSwitcher
                 currentLocale={locale}
@@ -316,7 +316,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
                 className="flex items-center gap-2 text-xs font-medium text-muted-foreground hover:text-foreground py-1.5"
               >
                 <SettingsIcon className="h-4 w-4" />
-                <span>UI & Account Settings</span>
+                <span>{tNav("accountSettings")}</span>
               </Link>
             </div>
           </div>

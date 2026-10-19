@@ -19,16 +19,16 @@ export function MobileBottomNav({ locale = "en" }: { locale?: string }) {
   }
 
   const items = [
-    { href: `/${locale}`, label: tNav("explore") || "Explore", icon: Compass },
-    { href: `/${locale}/events`, label: tNav("events") || "Events", icon: Layers },
-    { href: `/${locale}/venues`, label: tNav("venues") || "Venues", icon: Building2 },
-    { href: `/${locale}/my-tickets`, label: tNav("myTickets") || "Passes", icon: Ticket },
-    { href: `/${locale}/settings`, label: tNav("settings") || "Settings", icon: SettingsIcon },
+    { href: `/${locale}`, label: tNav("explore"), icon: Compass },
+    { href: `/${locale}/events`, label: tNav("events"), icon: Layers },
+    { href: `/${locale}/venues`, label: tNav("venues"), icon: Building2 },
+    { href: `/${locale}/my-tickets`, label: tNav("myTickets"), icon: Ticket },
+    { href: `/${locale}/settings`, label: tNav("settings"), icon: SettingsIcon },
   ];
 
   return (
     <nav
-      aria-label="Mobile Bottom Navigation"
+      aria-label={tNav("bottomNavAria")}
       className="md:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-border/80 bg-background/95 backdrop-blur-lg pb-safe"
     >
       <div className="flex items-center justify-around h-16 px-2">

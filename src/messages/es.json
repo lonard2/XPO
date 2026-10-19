@@ -60,7 +60,25 @@
     "toggleDarkMode": "Modo Oscuro",
     "toggleMenu": "Menú",
     "signIn": "Iniciar Sesión",
-    "signOut": "Cerrar Sesión"
+    "signOut": "Cerrar Sesión",
+    "guestUser": "Invitado",
+    "activePersona": "Persona activa: {role}",
+    "switchRole": "Cambiar rol",
+    "selectRegionalHub": "Elegir sede regional",
+    "accountSettings": "Ajustes de UI y cuenta",
+    "authAria": "Gestionar autenticación y rol",
+    "themeAria": "Cambiar modo oscuro",
+    "menuAria": "Abrir o cerrar el menú",
+    "bottomNavAria": "Navegación inferior móvil",
+    "langGroupAria": "Selección de idioma",
+    "langTriggerAria": "Elegir idioma, actual: {label}",
+    "langListAria": "Idiomas disponibles",
+    "langHeading": "Elegir idioma",
+    "countryGroupAria": "Selección de país",
+    "regionTriggerAria": "Elegir país, activo: {label}",
+    "regionListAria": "Países disponibles",
+    "regionHeading": "Elegir país / región",
+    "activeBadge": "Activo"
   },
   "hero": {
     "badge": "Ecosistema Digital MICE XPO",
@@ -1397,7 +1415,11 @@
     "initScanner": "Iniciando escáner...",
     "scannerPhotoAlt": "Foto de {name}",
     "scannerCompany": "Empresa / afiliación:",
-    "admittedSub": "({checked} de {total} admitidos)"
+    "admittedSub": "({checked} de {total} admitidos)",
+    "mobileNavToggle": "Abrir o cerrar el menú",
+    "organizerNavAria": "Navegación de organizador",
+    "mobileNavAria": "Navegación móvil",
+    "crumbAria": "Migas de pan"
   },
   "admin": {
     "dashboardTitle": "Gobernanza y Agregador de Administración",
