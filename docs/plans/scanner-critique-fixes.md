@@ -14,7 +14,7 @@ Direction: honest record first, all five issues, server re-admit.
   triage card on `<lg`, 44px audit buttons.
 - [x] **5. Clarify recognition** (`$impeccable clarify`): affiliation/photo
   and perk descriptions when provided.
-- [ ] **6. Polish final pass** (`$impeccable polish`): detector, screenshots,
+- [x] **6. Polish final pass** (`$impeccable polish`): detector, screenshots,
   full suite green.
 
 Each ships as its own commit pushed to `origin/main`. Verify by execution;

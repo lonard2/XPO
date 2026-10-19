@@ -52,7 +52,13 @@ describe("Phase 9 Component: CheckInScanner Door QR Console", () => {
   });
 
   it("submits manual pass code form with fetch invocation and renders mobile sticky triage HUD", async () => {
-    const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValueOnce({
+    const fetchSpy = vi.spyOn(globalThis, "fetch")
+      // Mount-time gate roster fetch resolves first; verify call follows.
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ events: [] }),
+      } as any)
+      .mockResolvedValueOnce({
       ok: true,
       json: async () => ({
         valid: true,
@@ -95,7 +101,13 @@ describe("Phase 9 Component: CheckInScanner Door QR Console", () => {
       configurable: true,
     });
 
-    const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValueOnce({
+    const fetchSpy = vi.spyOn(globalThis, "fetch")
+      // Mount-time gate roster fetch resolves first; verify call follows.
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ events: [] }),
+      } as any)
+      .mockResolvedValueOnce({
       ok: true,
       json: async () => ({
         valid: true,
@@ -130,7 +142,13 @@ describe("Phase 9 Component: CheckInScanner Door QR Console", () => {
   });
 
   it("intercepts hardware USB/Bluetooth HID wedge barcode scanner keystrokes and submits pass on Enter", async () => {
-    const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValueOnce({
+    const fetchSpy = vi.spyOn(globalThis, "fetch")
+      // Mount-time gate roster fetch resolves first; verify call follows.
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ events: [] }),
+      } as any)
+      .mockResolvedValueOnce({
       ok: true,
       json: async () => ({
         valid: true,
@@ -156,6 +174,7 @@ describe("Phase 9 Component: CheckInScanner Door QR Console", () => {
       body: JSON.stringify({
         qrCodeHash: barcodeSequence,
         autoCheckIn: true,
+        eventId: "ev-1",
       }),
     }));
 
