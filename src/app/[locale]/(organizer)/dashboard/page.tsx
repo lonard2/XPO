@@ -12,9 +12,9 @@ import {
   PlusCircle,
   QrCode,
   TrendingUp,
-  Activity,
   AlertCircle,
   RotateCw,
+  Clock,
 } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
@@ -23,6 +23,7 @@ import { cn } from "@/lib/utils";
 import { formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
 import { OrganizerOnboardingGuide } from "@/components/organizer/OrganizerOnboardingGuide";
 import { OrganizerEventsRoster } from "@/components/organizer/OrganizerEventsRoster";
+import { DashboardRefreshButton } from "@/components/organizer/DashboardRefreshButton";
 
 interface DashboardPageProps {
   params: Promise<{ locale: string }>;
@@ -173,8 +174,8 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
               {tOrg("portalBadge")}
             </span>
             <Badge variant="secondary" size="sm" className="font-semibold">
-              <Activity className="h-3 w-3 mr-1 text-emerald-500 animate-pulse" />
-              {tOrg("tabLive")}
+              <Clock className="h-3 w-3 mr-1 text-muted-foreground" />
+              {tOrg("snapshotBadge")} · <span className="tabular-nums">{currentFreshnessTime}</span>
             </Badge>
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mt-1 text-balance">
@@ -214,18 +215,12 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
         <div className="flex items-center justify-between px-1">
           <div className="flex items-center gap-2">
             <span className="text-xs font-medium text-muted-foreground">
-              Live Metrics • Data as of <span className="tabular-nums">{currentFreshnessTime}</span>
+              {tOrg("kpiSnapshot", { time: currentFreshnessTime })}
             </span>
-            <Link
-              href={`/${locale}/dashboard`}
-              aria-label="Refresh dashboard metrics"
-              className="inline-flex items-center justify-center text-muted-foreground hover:text-foreground min-h-[44px] min-w-[44px] sm:min-h-[28px] sm:min-w-[28px] p-1 rounded-md transition-colors cursor-pointer"
-            >
-              <RotateCw className="h-3 w-3" />
-            </Link>
+            <DashboardRefreshButton />
           </div>
           <span className="text-xs text-muted-foreground font-mono tabular-nums">
-            {events.length} active {events.length === 1 ? "exhibition" : "exhibitions"}
+            {events.length === 1 ? tOrg("countOne", { count: events.length }) : tOrg("countMany", { count: events.length })}
           </span>
         </div>
 
@@ -244,7 +239,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
               </div>
               <div className="flex items-center gap-1 mt-1 text-xs text-emerald-600 dark:text-emerald-400 font-medium">
                 <TrendingUp className="h-3 w-3" />
-                <span>{totalRegistrations > 0 ? "Active ticket sales" : "Ready for registration"}</span>
+                <span>{totalRegistrations > 0 ? tOrg("salesActive") : tOrg("salesReady")}</span>
               </div>
             </div>
           </Card>
@@ -290,7 +285,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
               <div
                 className="w-full bg-muted rounded-full h-1.5 mt-2 overflow-hidden"
                 role="progressbar"
-                aria-label="Overall Gate Check-In Rate"
+                aria-label={tOrg("checkinAria")}
                 aria-valuenow={checkInRate}
                 aria-valuemin={0}
                 aria-valuemax={100}

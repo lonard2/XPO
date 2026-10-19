@@ -1142,7 +1142,15 @@
     "obTemplatesDesc": "Assistenten mit Presets testen.",
     "obTplIndustrial": "Industrial B2B",
     "obTplTech": "Tech Summit",
-    "obTplPop": "Pop Culture"
+    "obTplPop": "Pop Culture",
+    "snapshotBadge": "Snapshot",
+    "kpiSnapshot": "Snapshot • Stand {time}",
+    "refreshMetrics": "Kennzahlen aktualisieren",
+    "countOne": "{count} aktive Messe",
+    "countMany": "{count} aktive Messen",
+    "salesActive": "Aktiver Ticketverkauf",
+    "salesReady": "Bereit für Registrierung",
+    "checkinAria": "Gesamt-Check-in-Rate"
   },
   "admin": {
     "dashboardTitle": "Admin-Governance & Aggregator",

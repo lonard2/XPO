@@ -1142,7 +1142,15 @@
     "obTemplatesDesc": "Industrial B2B等でウィザードを試せます。",
     "obTplIndustrial": "Industrial B2B",
     "obTplTech": "Tech Summit",
-    "obTplPop": "Pop Culture"
+    "obTplPop": "Pop Culture",
+    "snapshotBadge": "スナップショット",
+    "kpiSnapshot": "スナップショット・{time}時点",
+    "refreshMetrics": "ダッシュボード指標を更新",
+    "countOne": "開催中{count}件",
+    "countMany": "開催中{count}件",
+    "salesActive": "チケット販売中",
+    "salesReady": "登録受付準備完了",
+    "checkinAria": "全体チェックイン率"
   },
   "admin": {
     "dashboardTitle": "管理統括・アグリゲーター",

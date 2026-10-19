@@ -1142,7 +1142,15 @@
     "obTemplatesDesc": "用预设规格试用向导。",
     "obTplIndustrial": "工业B2B",
     "obTplTech": "科技峰会",
-    "obTplPop": "流行文化"
+    "obTplPop": "流行文化",
+    "snapshotBadge": "快照",
+    "kpiSnapshot": "快照 • 数据截至 {time}",
+    "refreshMetrics": "刷新仪表盘指标",
+    "countOne": "{count} 个进行中展会",
+    "countMany": "{count} 个进行中展会",
+    "salesActive": "售票进行中",
+    "salesReady": "就绪待报名",
+    "checkinAria": "总入场率"
   },
   "admin": {
     "dashboardTitle": "管理统括中心",

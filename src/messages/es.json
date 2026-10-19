@@ -1142,7 +1142,15 @@
     "obTemplatesDesc": "Pruebe el asistente con presets.",
     "obTplIndustrial": "Industrial B2B",
     "obTplTech": "Tech Summit",
-    "obTplPop": "Pop Culture"
+    "obTplPop": "Pop Culture",
+    "snapshotBadge": "Instantánea",
+    "kpiSnapshot": "Instantánea • Datos de {time}",
+    "refreshMetrics": "Actualizar métricas",
+    "countOne": "{count} exposición activa",
+    "countMany": "{count} exposiciones activas",
+    "salesActive": "Venta activa",
+    "salesReady": "Listo para registro",
+    "checkinAria": "Tasa general de acceso"
   },
   "admin": {
     "dashboardTitle": "Gobernanza y Agregador de Administración",

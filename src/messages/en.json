@@ -1142,7 +1142,15 @@
     "obTemplatesDesc": "Test the wizard with pre-configured specs for Industrial B2B, Tech Summit, or Pop Culture Expo.",
     "obTplIndustrial": "Industrial B2B",
     "obTplTech": "Tech Summit",
-    "obTplPop": "Pop Culture"
+    "obTplPop": "Pop Culture",
+    "snapshotBadge": "Snapshot",
+    "kpiSnapshot": "Snapshot • Data as of {time}",
+    "refreshMetrics": "Refresh dashboard metrics",
+    "countOne": "{count} active exhibition",
+    "countMany": "{count} active exhibitions",
+    "salesActive": "Active ticket sales",
+    "salesReady": "Ready for registration",
+    "checkinAria": "Overall Gate Check-In Rate"
   },
   "admin": {
     "dashboardTitle": "Governance & Admin Agregator",

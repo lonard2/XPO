@@ -11,7 +11,7 @@ Direction: booth scope first, all five issues, whole-card tap to scanner.
   stretched link retargeted to the scanner with event context.
 - [x] **4. Distill header actions** (`$impeccable distill`): one canonical create
   action; single H1 with the live badge as eyebrow.
-- [ ] **5. Clarify liveness claim** (`$impeccable clarify`): snapshot labeling
+- [x] **5. Clarify liveness claim** (`$impeccable clarify`): snapshot labeling
   with state-preserving refresh instead of the Live pulse.
 - [ ] **6. Polish final pass** (`$impeccable polish`): detector, screenshots,
   full suite green.

@@ -1142,7 +1142,15 @@
     "obTemplatesDesc": "Uji wizard dengan spesifikasi Industrial B2B, Tech Summit, atau Pop Culture.",
     "obTplIndustrial": "Industrial B2B",
     "obTplTech": "Tech Summit",
-    "obTplPop": "Pop Culture"
+    "obTplPop": "Pop Culture",
+    "snapshotBadge": "Snapshot",
+    "kpiSnapshot": "Snapshot • Data per {time}",
+    "refreshMetrics": "Muat ulang metrik dasbor",
+    "countOne": "{count} pameran aktif",
+    "countMany": "{count} pameran aktif",
+    "salesActive": "Penjualan tiket aktif",
+    "salesReady": "Siap untuk registrasi",
+    "checkinAria": "Tingkat Check-In Gerbang Keseluruhan"
   },
   "admin": {
     "dashboardTitle": "Tata Kelola & Agregator Admin",
