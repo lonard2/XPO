@@ -9,7 +9,7 @@ Direction: booth scope first, all five issues, whole-card tap to scanner.
   roster, and onboarding strings into dictionaries with English as values.
 - [x] **3. Layout roster cards** (`$impeccable layout`): two-badge identity cap;
   stretched link retargeted to the scanner with event context.
-- [ ] **4. Distill header actions** (`$impeccable distill`): one canonical create
+- [x] **4. Distill header actions** (`$impeccable distill`): one canonical create
   action; single H1 with the live badge as eyebrow.
 - [ ] **5. Clarify liveness claim** (`$impeccable clarify`): snapshot labeling
   with state-preserving refresh instead of the Live pulse.

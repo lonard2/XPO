@@ -887,7 +887,7 @@
     "localizationDesc": "言語と地域ハブを切り替えます。通貨、タイムゾーン、会場リストはハブに連動します。"
   },
   "organizer": {
-    "dashboardTitle": "主催者ポータル",
+    "dashboardTitle": "運用ダッシュボード",
     "dashboardNav": "ダッシュボード＆指標",
     "dashboardNavDesc": "売上・入場速度・統計の概要",
     "createEvent": "新規イベント作成",

@@ -887,7 +887,7 @@
     "localizationDesc": "Switch languages and regional hubs. Currency, timezones, and venue lists follow your hub."
   },
   "organizer": {
-    "dashboardTitle": "Organizer Portal",
+    "dashboardTitle": "Operations Dashboard",
     "dashboardNav": "Dashboard & Metrics",
     "dashboardNavDesc": "Overview, revenue & check-in velocity",
     "createEvent": "Create New Event",

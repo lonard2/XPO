@@ -887,7 +887,7 @@
     "localizationDesc": "Ganti bahasa dan hub regional. Mata uang, zona waktu, dan daftar venue mengikuti hub Anda."
   },
   "organizer": {
-    "dashboardTitle": "Portal Penyelenggara",
+    "dashboardTitle": "Dasbor Operasional",
     "dashboardNav": "Dasbor & Metrik",
     "dashboardNavDesc": "Ringkasan, pendapatan & arus masuk",
     "createEvent": "Buat Acara Baru",

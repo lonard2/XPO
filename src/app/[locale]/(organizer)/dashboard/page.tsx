@@ -174,7 +174,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
             </span>
             <Badge variant="secondary" size="sm" className="font-semibold">
               <Activity className="h-3 w-3 mr-1 text-emerald-500 animate-pulse" />
-              {tOrg("dashboardTitle")}
+              {tOrg("tabLive")}
             </Badge>
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mt-1 text-balance">
@@ -351,7 +351,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
       />
 
       {/* ACTIVE EVENTS ROSTER WITH TABS & STRETCHED LINK CARDS */}
-      <OrganizerEventsRoster events={events} locale={locale} />
+      <OrganizerEventsRoster events={events} locale={locale} hideAddButton />
 
       {/* PLATFORM-CURATED GROUP (admin view only) */}
       {isAdminView && curatedEvents.length > 0 && (

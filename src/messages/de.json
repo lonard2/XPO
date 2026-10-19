@@ -887,7 +887,7 @@
     "localizationDesc": "Wechseln Sie Sprache und regionalen Hub. Währung, Zeitzonen und Venue-Listen folgen Ihrem Hub."
   },
   "organizer": {
-    "dashboardTitle": "Veranstalter-Portal",
+    "dashboardTitle": "Betriebs-Dashboard",
     "dashboardNav": "Dashboard & Metriken",
     "dashboardNavDesc": "Übersicht, Erlöse & Einlassdaten",
     "createEvent": "Neues Event erstellen",

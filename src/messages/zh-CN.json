@@ -887,7 +887,7 @@
     "localizationDesc": "切换语言和区域中心。货币、时区和场馆列表将跟随您的中心。"
   },
   "organizer": {
-    "dashboardTitle": "主办方门户",
+    "dashboardTitle": "运营仪表盘",
     "dashboardNav": "控制台与数据指标",
     "dashboardNavDesc": "总览、收入与签到入场流速",
     "createEvent": "创建新展会",

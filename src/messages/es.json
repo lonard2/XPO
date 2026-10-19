@@ -887,7 +887,7 @@
     "localizationDesc": "Cambie de idioma y hub regional. La moneda, las zonas horarias y las sedes siguen a su hub."
   },
   "organizer": {
-    "dashboardTitle": "Portal del Organizador",
+    "dashboardTitle": "Panel de operaciones",
     "dashboardNav": "Panel y Métricas",
     "dashboardNavDesc": "Resumen, ingresos y flujo de acceso",
     "createEvent": "Crear Nuevo Evento",
