@@ -19,6 +19,7 @@ import {
 import { Card } from "@/components/ui/Card";
 import { Button, buttonVariants } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
+import { useTranslations } from 'next-intl';
 import { cn } from "@/lib/utils";
 
 interface OrganizerOnboardingGuideProps {
@@ -79,6 +80,8 @@ export function OrganizerOnboardingGuide({
     }
   };
 
+  const tOrg = useTranslations('organizer');
+
   if (!isMounted || isDismissed) {
     return null;
   }
@@ -87,38 +90,38 @@ export function OrganizerOnboardingGuide({
   const milestones = [
     {
       id: "step-1",
-      title: "1. Create Exhibition & Select Archetype",
-      desc: "Configure venue hall indexing and choose from 15 specialized MICE category engines.",
+      title: tOrg("obM1Title"),
+      desc: tOrg("obM1Desc"),
       completed: hasEvents,
       href: `/${locale}/events/new`,
-      actionLabel: hasEvents ? "View Events" : "Launch Event",
+      actionLabel: hasEvents ? (tOrg("obM1Done")) : (tOrg("obM1Action")),
       icon: Building2,
     },
     {
       id: "step-2",
-      title: "2. Define Ticket Passes & Tiers",
-      desc: "Set pass capacities, pricing, and cryptographic HMAC-SHA256 digital entry badges.",
+      title: tOrg("obM2Title"),
+      desc: tOrg("obM2Desc"),
       completed: hasTickets,
       href: hasEvents ? `/${locale}/events/new` : `/${locale}/events/new?step=3`,
-      actionLabel: hasTickets ? "Configured" : "Add Tiers",
+      actionLabel: hasTickets ? (tOrg("obM2Done")) : (tOrg("obM2Action")),
       icon: Ticket,
     },
     {
       id: "step-3",
-      title: "3. Assign Floor Booths & Tenants",
-      desc: "Map commercial exhibitors to exact hall lots with CSV bulk import and occupancy tracking.",
+      title: tOrg("obM3Title"),
+      desc: tOrg("obM3Desc"),
       completed: hasBooths,
       href: `/${locale}/booths`,
-      actionLabel: hasBooths ? "Manage Booths" : "Allocate Lots",
+      actionLabel: hasBooths ? (tOrg("obM3Done")) : (tOrg("obM3Action")),
       icon: Store,
     },
     {
       id: "step-4",
-      title: "4. Deploy QR Check-In Scanner",
-      desc: "Turn gate tablets into high-speed turnstiles with double-scan alerts and perk unlocks.",
+      title: tOrg("obM4Title"),
+      desc: tOrg("obM4Desc"),
       completed: false, // Day-of operation
       href: `/${locale}/scanner`,
-      actionLabel: "Open Scanner",
+      actionLabel: tOrg("obM4Action"),
       icon: QrCode,
     },
   ];
@@ -136,14 +139,14 @@ export function OrganizerOnboardingGuide({
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-base font-bold text-foreground">
-                Organizer Onboarding & Operational Roadmap
+                {tOrg("obTitle")}
               </h2>
               <Badge variant="outline" size="sm" className="font-semibold text-primary">
-                {completedCount} of 4 Complete
+                {tOrg("obCount", { done: completedCount })}
               </Badge>
             </div>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Follow this 4-step pipeline to take your exhibition from initial concept to live turnstile operations.
+              {tOrg("obDesc")}
             </p>
           </div>
         </div>
@@ -153,19 +156,19 @@ export function OrganizerOnboardingGuide({
             variant="ghost"
             size="sm"
             onClick={handleToggleCollapse}
-            aria-label={isCollapsed ? "Expand onboarding guide" : "Collapse onboarding guide"}
+            aria-label={isCollapsed ? (tOrg("obExpand")) : (tOrg("obCollapse"))}
             aria-expanded={!isCollapsed}
             aria-controls="onboarding-guide-milestones"
             className="h-9 sm:h-8 min-h-[44px] sm:min-h-[36px] px-3 text-xs text-muted-foreground hover:text-foreground cursor-pointer gap-1"
           >
             {isCollapsed ? (
               <>
-                <span>Expand</span>
+                <span>{tOrg("obExpand")}</span>
                 <ChevronDown className="h-3.5 w-3.5" />
               </>
             ) : (
               <>
-                <span>Minimize</span>
+                <span>{tOrg("obCollapse")}</span>
                 <ChevronUp className="h-3.5 w-3.5" />
               </>
             )}
@@ -175,7 +178,7 @@ export function OrganizerOnboardingGuide({
             variant="ghost"
             size="sm"
             onClick={handleDismiss}
-            aria-label="Dismiss onboarding guide"
+            aria-label={tOrg("obDismiss")}
             className="h-9 w-9 sm:h-8 sm:w-8 min-h-[44px] min-w-[44px] sm:min-h-[36px] sm:min-w-[36px] p-0 text-muted-foreground hover:text-foreground cursor-pointer flex items-center justify-center"
           >
             <X className="h-4 w-4" />
@@ -188,17 +191,17 @@ export function OrganizerOnboardingGuide({
           {/* Progress bar */}
           <div className="space-y-1.5">
             <div className="flex items-center justify-between text-xs">
-              <span className="text-muted-foreground font-medium">Roadmap Readiness</span>
+              <span className="text-muted-foreground font-medium">{tOrg("obRoadmap")}</span>
               <span className="font-semibold text-foreground tabular-nums">{progressPercent}%</span>
             </div>
             <div
               className="w-full bg-muted rounded-full h-1.5 overflow-hidden"
               role="progressbar"
-              aria-label="Onboarding Progress"
+              aria-label={tOrg("obProgress")}
               aria-valuenow={progressPercent}
               aria-valuemin={0}
               aria-valuemax={100}
-              aria-valuetext={`${progressPercent}% (${completedCount} of 4 setup milestones completed)`}
+              aria-valuetext={tOrg("obProgressValue", { percent: progressPercent, done: completedCount })}
             >
               <div
                 className="bg-primary h-full rounded-full transition-all duration-300"
@@ -236,7 +239,7 @@ export function OrganizerOnboardingGuide({
                       {milestone.completed ? (
                         <span className="flex items-center gap-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
                           <CheckCircle2 className="h-3.5 w-3.5" />
-                          <span>Done</span>
+                          <span>{tOrg("obDone")}</span>
                         </span>
                       ) : (
                         <Circle className="h-3.5 w-3.5 text-muted-foreground/60" />
@@ -276,7 +279,7 @@ export function OrganizerOnboardingGuide({
             <div className="flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-primary shrink-0" />
               <span className="text-muted-foreground">
-                <strong className="text-foreground">Explore 1-Click Templates:</strong> Test the wizard with pre-configured specs for Industrial B2B, Tech Summit, or Pop Culture Expo.
+                <strong className="text-foreground">{tOrg("obTemplatesTitle")}</strong> {tOrg("obTemplatesDesc")}
               </span>
             </div>
 
@@ -288,7 +291,7 @@ export function OrganizerOnboardingGuide({
                   "text-xs min-h-[44px] sm:min-h-[36px] px-3 cursor-pointer flex items-center"
                 )}
               >
-                Industrial B2B
+                {tOrg("obTplIndustrial")}
               </Link>
               <Link
                 href={`/${locale}/events/new?template=tech`}
@@ -297,7 +300,7 @@ export function OrganizerOnboardingGuide({
                   "text-xs min-h-[44px] sm:min-h-[36px] px-3 cursor-pointer flex items-center"
                 )}
               >
-                Tech Summit
+                {tOrg("obTplTech")}
               </Link>
               <Link
                 href={`/${locale}/events/new?template=gaming`}
@@ -306,7 +309,7 @@ export function OrganizerOnboardingGuide({
                   "text-xs min-h-[44px] sm:min-h-[36px] px-3 cursor-pointer flex items-center"
                 )}
               >
-                Pop Culture
+                {tOrg("obTplPop")}
               </Link>
             </div>
           </div>

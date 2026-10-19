@@ -170,18 +170,18 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
         <div>
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold uppercase tracking-wider text-primary">
-              {tOrg("portalBadge") || "Organizer Portal"}
+              {tOrg("portalBadge")}
             </span>
             <Badge variant="secondary" size="sm" className="font-semibold">
               <Activity className="h-3 w-3 mr-1 text-emerald-500 animate-pulse" />
-              {tOrg("dashboardTitle") || "Live Operations"}
+              {tOrg("dashboardTitle")}
             </Badge>
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mt-1 text-balance">
-            {tOrg("dashboardTitle") || "Organizer Operations Dashboard"}
+            {tOrg("dashboardTitle")}
           </h1>
           <p className="text-xs sm:text-sm text-muted-foreground mt-1 text-pretty">
-            {tOrg("dashboardSubtitle") || "Monitor real-time attendee registrations, gross ticket volume, gate check-in rate, and exhibitor booths."}
+            {tOrg("dashboardSubtitle")}
           </p>
         </div>
 
@@ -194,7 +194,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
             )}
           >
             <QrCode className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-            <span>{tOrg("doorScanner") || "Door Scanner"}</span>
+            <span>{tOrg("doorScanner")}</span>
           </Link>
           <Link
             href={`/${locale}/events/new`}
@@ -204,7 +204,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
             )}
           >
             <PlusCircle className="h-4 w-4" />
-            <span>{tOrg("launchNewEvent") || "Launch New Event"}</span>
+            <span>{tOrg("launchNewEvent")}</span>
           </Link>
         </div>
       </div>
@@ -233,14 +233,14 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
           {/* Card 1: Total Registrations */}
           <Card className="p-5 border-border/80 bg-card hover:border-primary/60 transition-all shadow-xs rounded-2xl">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-muted-foreground">{tOrg("kpiTickets") || "Total Registrations"}</span>
+              <span className="text-xs font-medium text-muted-foreground">{tOrg("kpiTickets")}</span>
               <div className="h-8 w-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
                 <Users className="h-4 w-4" />
               </div>
             </div>
             <div className="mt-3">
               <div className="text-2xl font-bold text-foreground tabular-nums">
-                {totalRegistrations.toLocaleString()} <span className="text-xs font-normal text-muted-foreground">{tCom("attendees") || "delegates"}</span>
+                {totalRegistrations.toLocaleString()} <span className="text-xs font-normal text-muted-foreground">{tCom("attendees")}</span>
               </div>
               <div className="flex items-center gap-1 mt-1 text-xs text-emerald-600 dark:text-emerald-400 font-medium">
                 <TrendingUp className="h-3 w-3" />
@@ -252,7 +252,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
           {/* Card 2: Gross Ticket Revenue */}
           <Card className="p-5 border-border/80 bg-card hover:border-primary/60 transition-all shadow-xs rounded-2xl">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-muted-foreground">{tOrg("kpiRevenue") || "Gross Ticket Revenue"}</span>
+              <span className="text-xs font-medium text-muted-foreground">{tOrg("kpiRevenue")}</span>
               <div className="h-8 w-8 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
                 <CreditCard className="h-4 w-4" />
               </div>
@@ -267,7 +267,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
                     + {formatCurrency(revenueByCurrency[c], c as SupportedCurrency, locale)}
                   </span>
                 ))}
-                <span>{tOrg("acrossExhibitions", { count: events.length }) || `Across ${events.length} active exhibitions`}</span>
+                <span>{tOrg("acrossExhibitions", { count: events.length })}</span>
               </div>
             </div>
           </Card>
@@ -308,8 +308,8 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
           <Card className="p-5 border-border/80 bg-card hover:border-primary/60 transition-all shadow-xs rounded-2xl">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-muted-foreground">
-                {tOrg("kpiOccupancy") || "Booth Occupancy Rate"}
-                {isAdminView ? ` · ${tOrg("platformWide") || "platform-wide"}` : ""}
+                {tOrg("kpiOccupancy")}
+                {isAdminView ? ` · ${tOrg("platformWide")}` : ""}
               </span>
               <div className="h-8 w-8 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center">
                 <Store className="h-4 w-4" />
@@ -319,13 +319,13 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
               <div className="text-2xl font-bold text-foreground tabular-nums">
                 {totalBooths > 0 ? `${boothOccupancy}%` : "0%"}{" "}
                 <span className="text-xs font-normal text-muted-foreground">
-                  {tOrg("boothsUnitsCount", { occupied: occupiedBooths, total: totalBooths }) || `(${occupiedBooths}/${totalBooths} units)`}
+                  {tOrg("boothsUnitsCount", { occupied: occupiedBooths, total: totalBooths })}
                 </span>
               </div>
               <div
                 className="w-full bg-muted rounded-full h-1.5 mt-2 overflow-hidden"
                 role="progressbar"
-                aria-label={tOrg("kpiOccupancy") || "Booth Occupancy Rate"}
+                aria-label={tOrg("kpiOccupancy")}
                 aria-valuenow={boothOccupancy}
                 aria-valuemin={0}
                 aria-valuemax={100}
@@ -358,8 +358,8 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
         <OrganizerEventsRoster
           events={curatedEvents}
           locale={locale}
-          title="Platform-Curated Events"
-          description="Owned by XPO Platform Administration. Assign an organizer to move one into their portal."
+          title={tOrg("curatedTitle")}
+          description={tOrg("curatedDesc")}
           hideAddButton
         />
       )}

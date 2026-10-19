@@ -21,6 +21,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Input } from "@/components/ui/Input";
 import { buttonVariants } from "@/components/ui/Button";
+import { useTranslations } from 'next-intl';
 import { cn } from "@/lib/utils";
 import { formatDateRange } from "@/lib/i18n/formatters";
 import { getArchetypeTokens } from "@/lib/theming";
@@ -55,6 +56,7 @@ interface OrganizerEventsRosterProps {
 }
 
 export function OrganizerEventsRoster({ events, locale, title, description, hideAddButton }: OrganizerEventsRosterProps) {
+  const tOrg = useTranslations('organizer');
   const [activeTab, setActiveTab] = React.useState<EventOperationalStatus>("ALL");
   const [searchQuery, setSearchQuery] = React.useState("");
 
@@ -150,9 +152,9 @@ export function OrganizerEventsRoster({ events, locale, title, description, hide
       {/* Header and Add Action */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-lg font-bold text-foreground">{title || "Active Exhibitions & Conventions"}</h2>
+          <h2 className="text-lg font-bold text-foreground">{title || tOrg("rosterTitle")}</h2>
           <p className="text-xs text-muted-foreground">
-            {description || "Manage live branding, hall booth rosters, and door scanners for your registered events."}
+            {description || tOrg("rosterDesc")}
           </p>
         </div>
         {!hideAddButton && (
@@ -164,7 +166,7 @@ export function OrganizerEventsRoster({ events, locale, title, description, hide
           )}
         >
           <PlusCircle className="h-4 w-4" />
-          <span>Add Exhibition</span>
+          <span>{tOrg("addExhibition")}</span>
         </Link>
         )}
       </div>
@@ -174,7 +176,7 @@ export function OrganizerEventsRoster({ events, locale, title, description, hide
         {/* Status Segmented Tabs */}
         <div
           role="tablist"
-          aria-label="Exhibition Operational Status"
+          aria-label={tOrg("tablistLabel")}
           className="flex flex-wrap items-center gap-1.5 p-1 rounded-xl bg-muted/60 border border-border/60"
         >
           <button
@@ -192,7 +194,7 @@ export function OrganizerEventsRoster({ events, locale, title, description, hide
             )}
           >
             <Layers className="h-3.5 w-3.5" />
-            <span>All</span>
+            <span>{tOrg("tabAll")}</span>
             <span className="text-[11px] px-1.5 py-0.2 rounded-full bg-muted font-mono">
               {statusCounts.ALL}
             </span>
@@ -213,7 +215,7 @@ export function OrganizerEventsRoster({ events, locale, title, description, hide
             )}
           >
             <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Live Now</span>
+            <span>{tOrg("tabLive")}</span>
             <span className="text-[11px] px-1.5 py-0.2 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 font-mono font-bold">
               {statusCounts.LIVE}
             </span>
@@ -234,7 +236,7 @@ export function OrganizerEventsRoster({ events, locale, title, description, hide
             )}
           >
             <Clock className="h-3.5 w-3.5" />
-            <span>Upcoming</span>
+            <span>{tOrg("tabUpcoming")}</span>
             <span className="text-[11px] px-1.5 py-0.2 rounded-full bg-muted font-mono">
               {statusCounts.UPCOMING}
             </span>
@@ -255,7 +257,7 @@ export function OrganizerEventsRoster({ events, locale, title, description, hide
             )}
           >
             <CheckCircle2 className="h-3.5 w-3.5" />
-            <span>Concluded</span>
+            <span>{tOrg("tabConcluded")}</span>
             <span className="text-[11px] px-1.5 py-0.2 rounded-full bg-muted font-mono">
               {statusCounts.CONCLUDED}
             </span>
@@ -268,15 +270,15 @@ export function OrganizerEventsRoster({ events, locale, title, description, hide
           <Input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Filter by title, hall, or venue..."
-            aria-label="Filter exhibitions by title, hall, or venue"
+            placeholder={tOrg("searchPlaceholder")}
+            aria-label={tOrg("searchAria")}
             className="pl-8 pr-10 h-9 min-h-[44px] sm:min-h-[36px] text-xs"
           />
           {searchQuery && (
             <button
               type="button"
               onClick={() => setSearchQuery("")}
-              aria-label="Clear search query"
+              aria-label={tOrg("clearSearch")}
               className="absolute right-1 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer min-h-[44px] min-w-[44px] sm:min-h-[32px] sm:min-w-[32px] flex items-center justify-center rounded-md"
             >
               <X className="h-3.5 w-3.5" />
@@ -292,11 +294,11 @@ export function OrganizerEventsRoster({ events, locale, title, description, hide
             <Search className="h-5 w-5" />
           </div>
           <div className="space-y-1 max-w-sm mx-auto">
-            <h3 className="text-sm font-bold text-foreground">No Exhibitions Match Criteria</h3>
+            <h3 className="text-sm font-bold text-foreground">{tOrg("emptyTitle")}</h3>
             <p className="text-xs text-muted-foreground">
               {searchQuery
-                ? `No exhibitions match "${searchQuery}" in this view. Try adjusting keywords or clear the filter.`
-                : "There are no exhibitions currently categorized under this operational status."}
+                ? tOrg("emptySearchQuery", { query: searchQuery })
+                : (tOrg("emptyStatus"))}
             </p>
           </div>
           {(searchQuery || activeTab !== "ALL") && (
@@ -311,7 +313,7 @@ export function OrganizerEventsRoster({ events, locale, title, description, hide
                 "text-xs cursor-pointer min-h-[44px] sm:min-h-[36px]"
               )}
             >
-              Reset Filters
+              {tOrg("resetFilters")}
             </button>
           )}
         </Card>
@@ -372,7 +374,7 @@ export function OrganizerEventsRoster({ events, locale, title, description, hide
                     {/* Ownership Identity */}
                     {event.isPlatformCurated || !event.organizerId ? (
                       <Badge variant="outline" className="text-[11px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 border-amber-500/40 bg-amber-500/10 px-2 py-0.5 mb-1.5">
-                        Platform Curated
+                        {tOrg("curatedBadge")}
                       </Badge>
                     ) : event.organizerName ? (
                       <span className="block text-[11px] font-medium text-muted-foreground mb-1.5 truncate">
@@ -409,7 +411,7 @@ export function OrganizerEventsRoster({ events, locale, title, description, hide
                             {event.venue.name} {event.venueHall ? `- ${event.venueHall.name}` : ""}
                           </>
                         ) : (
-                          "Venue Unassigned"
+                          (tOrg("venueUnassigned"))
                         )}
                       </span>
                     </div>
@@ -418,17 +420,17 @@ export function OrganizerEventsRoster({ events, locale, title, description, hide
                   {/* Operational Telemetry Grid */}
                   <div className="grid grid-cols-3 gap-2 bg-muted/40 p-2.5 rounded-xl text-center text-xs">
                     <div>
-                      <div className="text-[11px] uppercase font-semibold text-muted-foreground">Bookings</div>
+                      <div className="text-[11px] uppercase font-semibold text-muted-foreground">{tOrg("metricBookings")}</div>
                       <div className="text-sm font-bold text-foreground tabular-nums">{registrationsCount}</div>
                     </div>
                     <div>
-                      <div className="text-[11px] uppercase font-semibold text-muted-foreground">Admitted</div>
+                      <div className="text-[11px] uppercase font-semibold text-muted-foreground">{tOrg("metricAdmitted")}</div>
                       <div className="text-sm font-bold text-emerald-600 dark:text-emerald-400 tabular-nums">
                         {checkedInCount} <span className="text-[11px] font-normal text-muted-foreground">({eventCheckInRate}%)</span>
                       </div>
                     </div>
                     <div>
-                      <div className="text-[11px] uppercase font-semibold text-muted-foreground">Booths</div>
+                      <div className="text-[11px] uppercase font-semibold text-muted-foreground">{tOrg("metricBooths")}</div>
                       <div className="text-sm font-bold text-foreground tabular-nums">{boothsCount}</div>
                     </div>
                   </div>
@@ -437,50 +439,50 @@ export function OrganizerEventsRoster({ events, locale, title, description, hide
                   <div className="pt-1 grid grid-cols-2 gap-2 relative z-10">
                     <Link
                       href={`/${locale}/events/${event.id}/ai-reports`}
-                      aria-label={`View AI analytics reports for ${event.title}`}
+                      aria-label={tOrg("ariaReports", { title: event.title })}
                       className={cn(
                         buttonVariants({ variant: "outline", size: "sm" }),
                         "w-full text-xs gap-1.5 min-h-[44px] sm:min-h-[36px] border-indigo-500/30 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-500/10 cursor-pointer"
                       )}
                     >
                       <Sparkles className="h-3.5 w-3.5 text-indigo-500" />
-                      <span>AI Reports</span>
+                      <span>{tOrg("viewReports")}</span>
                     </Link>
 
                     <Link
                       href={`/${locale}/events/${event.id}/customizer`}
-                      aria-label={`Open visual branding customizer for ${event.title}`}
+                      aria-label={tOrg("ariaCustomizer", { title: event.title })}
                       className={cn(
                         buttonVariants({ variant: "outline", size: "sm" }),
                         "w-full text-xs gap-1.5 min-h-[44px] sm:min-h-[36px] cursor-pointer"
                       )}
                     >
                       <Palette className="h-3.5 w-3.5 text-primary" />
-                      <span>Customizer</span>
+                      <span>{tOrg("openCustomizer")}</span>
                     </Link>
 
                     <Link
                       href={`/${locale}/booths?eventId=${event.id}`}
-                      aria-label={`Manage floor booths and tenant roster for ${event.title}`}
+                      aria-label={tOrg("ariaBooths", { title: event.title })}
                       className={cn(
                         buttonVariants({ variant: "outline", size: "sm" }),
                         "w-full text-xs gap-1.5 min-h-[44px] sm:min-h-[36px] cursor-pointer"
                       )}
                     >
                       <Store className="h-3.5 w-3.5 text-purple-500" />
-                      <span>Booths</span>
+                      <span>{tOrg("manageBooths")}</span>
                     </Link>
 
                     <Link
                       href={`/${locale}/scanner?eventId=${event.id}`}
-                      aria-label={`Launch turnstile QR scanner for ${event.title}`}
+                      aria-label={tOrg("ariaScanner", { title: event.title })}
                       className={cn(
                         buttonVariants({ variant: "outline", size: "sm" }),
                         "w-full text-xs gap-1.5 min-h-[44px] sm:min-h-[36px] border-emerald-500/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/10 cursor-pointer"
                       )}
                     >
                       <QrCode className="h-3.5 w-3.5 text-emerald-500" />
-                      <span>Scanner</span>
+                      <span>{tOrg("launchScanner")}</span>
                     </Link>
                   </div>
                 </CardContent>
