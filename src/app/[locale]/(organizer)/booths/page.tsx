@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import {
   Store,
   Plus,
@@ -119,6 +119,8 @@ function sanitizeUrl(rawUrl: string | null | undefined): string | null {
 export default function BoothManagerPage() {
   const tOrg = useTranslations("organizer");
   const tCom = useTranslations("common");
+  const router = useRouter();
+  const urlAppliedRef = React.useRef(false);
 
   const [booths, setBooths] = React.useState<BoothItem[]>([]);
   const [events, setEvents] = React.useState<any[]>([]);
@@ -308,6 +310,48 @@ export default function BoothManagerPage() {
     });
     return Array.from(set);
   }, [booths]);
+
+  // Deep-link entry: apply validated eventId/hall/status/q once data loads.
+  // Unknown values fall back to ALL so links never strand the operator.
+  React.useEffect(() => {
+    if (urlAppliedRef.current || isLoading) return;
+    urlAppliedRef.current = true;
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const eventId = params.get("eventId");
+      if (eventId && eventId !== "ALL" && events.some((e: any) => e.id === eventId)) {
+        setSelectedEventId(eventId);
+      }
+      const hall = params.get("hall");
+      if (hall && hall !== "ALL" && hallsList.includes(hall)) {
+        setSelectedHall(hall);
+      }
+      const status = params.get("status");
+      if (status && ["OCCUPIED", "AVAILABLE"].includes(status)) {
+        setStatusFilter(status);
+      }
+      const q = params.get("q");
+      if (q) setSearchQuery(q.slice(0, 200));
+    } catch {
+      // Ignore URL parsing errors
+    }
+  }, [isLoading, events, hallsList]);
+
+  // Keep views shareable: sync active filters back to the URL.
+  React.useEffect(() => {
+    if (!urlAppliedRef.current || isLoading) return;
+    try {
+      const params = new URLSearchParams();
+      if (selectedEventId !== "ALL") params.set("eventId", selectedEventId);
+      if (selectedHall !== "ALL") params.set("hall", selectedHall);
+      if (statusFilter !== "ALL") params.set("status", statusFilter);
+      if (searchQuery.trim()) params.set("q", searchQuery.trim().slice(0, 200));
+      const query = params.toString();
+      router.replace(`${window.location.pathname}${query ? `?${query}` : ""}`, { scroll: false });
+    } catch {
+      // Ignore router errors in restricted environments
+    }
+  }, [selectedEventId, selectedHall, statusFilter, searchQuery, isLoading, router]);
 
   // Filtered Booths
   const filteredBooths = React.useMemo(() => {

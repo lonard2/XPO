@@ -5,7 +5,7 @@ Direction: trust data first, all five issues, badge and keep seeds.
 
 - [x] **1. Harden data truth** (`$impeccable harden`): Sample badge + banner on
   seeded rows, real fetch-error state, branched CSV toast.
-- [ ] **2. Layout entry points** (`$impeccable layout`): read
+- [x] **2. Layout entry points** (`$impeccable layout`): read
   eventId/hall/status/q on mount with validation, sync back to URL.
 - [ ] **3. Structure hall dossiers** (`$impeccable structure`): hall combobox
   from the selected event's venue halls, event-scoped pills, duplicate guard.

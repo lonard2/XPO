@@ -74,8 +74,7 @@ describe("Booth manager data truth", () => {
     expect(screen.queryByText(/sample floor data/i)).toBeNull();
   });
 
-  it("branches the CSV toast to staged-local when the database write is absent", async () => {
-    mockFetch((url: string, init?: any) => {
+  it("branches the CSV toast to staged-local when the database write is absent", async () => {    mockFetch((url: string, init?: any) => {
       if (url === eventsUrl) return emptyOk(url);
       if (url === boothsUrl && init?.method === "POST") {
         return Promise.resolve({ ok: true, json: () => Promise.resolve({ success: true }) });
@@ -101,5 +100,66 @@ describe("Booth manager data truth", () => {
     await waitFor(() => {
       expect(screen.getByText(/kept on this device only/i)).toBeInTheDocument();
     });
+  });
+
+  it("applies validated eventId/hall/status/q deep links on mount", async () => {
+    const evId = "ev-9";
+    mockFetch((url: string) =>
+      Promise.resolve({
+        ok: true,
+        json: () =>
+          Promise.resolve(
+            url === eventsUrl
+              ? { events: [{ id: evId, title: "Expo Nine" }] }
+              : {
+                  booths: [
+                    { id: "b1", eventId: evId, companyName: "Tenant One", boothNumber: "H9-A", hallName: "Hall 9" },
+                    { id: "b2", eventId: evId, companyName: "", boothNumber: "H9-B", hallName: "Hall 9" },
+                    { id: "b3", eventId: "ev-other", companyName: "Other Co", boothNumber: "H1-A", hallName: "Hall 1" },
+                  ],
+                }
+          ),
+      })
+    );
+    window.history.replaceState(
+      {}, "", `/en/booths?eventId=${evId}&hall=Hall%209&status=AVAILABLE&q=Tenant`
+    );
+    try {
+      const { container } = render(<BoothManagerPage />);
+      await waitFor(() => {
+        expect((screen.getByLabelText(/registered event/i) as HTMLSelectElement).value).toBe(evId);
+      });
+      expect((screen.getByLabelText(/exhibition hall/i) as HTMLSelectElement).value).toBe("Hall 9");
+      expect((screen.getByLabelText(/all statuses/i) as HTMLSelectElement).value).toBe("AVAILABLE");
+      expect((container.querySelector("#booth-search-input") as HTMLInputElement)?.value).toBe("Tenant");
+    } finally {
+      window.history.replaceState({}, "", "/");
+    }
+  });
+
+  it("ignores unknown eventId and hall deep links", async () => {
+    mockFetch((url: string) =>
+      Promise.resolve({
+        ok: true,
+        json: () =>
+          Promise.resolve(
+            url === eventsUrl
+              ? { events: [{ id: "ev-9", title: "Expo Nine" }] }
+              : { booths: [{ id: "b1", eventId: "ev-9", companyName: "C", boothNumber: "N", hallName: "Hall 9" }] }
+          ),
+      })
+    );
+    window.history.replaceState({}, "", "/en/booths?eventId=nope&hall=Nowhere&status=BOGUS");
+    try {
+      render(<BoothManagerPage />);
+      await waitFor(() => {
+        expect(screen.getByText("C")).toBeInTheDocument();
+      });
+      expect((screen.getByLabelText(/registered event/i) as HTMLSelectElement).value).toBe("ALL");
+      expect((screen.getByLabelText(/exhibition hall/i) as HTMLSelectElement).value).toBe("ALL");
+      expect((screen.getByLabelText(/all statuses/i) as HTMLSelectElement).value).toBe("ALL");
+    } finally {
+      window.history.replaceState({}, "", "/");
+    }
   });
 });
