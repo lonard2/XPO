@@ -6,7 +6,7 @@ import { getEventCaller, canWriteEvent } from "@/lib/auth/eventOwnership";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { qrCodeHash, payloadString, signature, autoCheckIn = true } = body;
+    const { qrCodeHash, payloadString, signature, autoCheckIn = true, supervisorOverride = false } = body;
 
     // 1. Cryptographic Validation if signature & payload string provided
     if (payloadString && signature) {
@@ -92,8 +92,59 @@ export async function POST(request: Request) {
       );
     }
 
-    // 4. Double Scan Prevention
+    // 4. Double Scan Prevention (+ supervisor override re-admit).
+    // An override re-stamps the admission timestamp through the same
+    // ownership gate as check-in, so the server record matches the message.
     if (booking.status === "CHECKED_IN") {
+      if (supervisorOverride) {
+        const owner = await db.event.findUnique({
+          where: { id: booking.eventId },
+          select: { organizerId: true },
+        });
+        if (!owner || !canWriteEvent(getEventCaller(request), owner.organizerId)) {
+          return NextResponse.json(
+            {
+              valid: false,
+              error: "FORBIDDEN: Only the owning organizer or a platform administrator can check in this pass.",
+            },
+            { status: 403 }
+          );
+        }
+        const restamped = await db.booking.update({
+          where: { id: booking.id },
+          data: { checkedInAt: new Date() },
+          include: {
+            ticketTier: true,
+            event: { include: { venue: true, venueHall: true, perks: true } },
+          },
+        });
+        const restampTier = restamped.ticketTier.name;
+        const restampPerks = restamped.event.perks.filter(
+          (p) =>
+            !p.tierRequired ||
+            restampTier.toLowerCase().includes(p.tierRequired.toLowerCase())
+        );
+        return NextResponse.json(
+          {
+            valid: true,
+            alreadyCheckedIn: false,
+            reEntryOverridden: true,
+            status: restamped.status,
+            checkedInAt: restamped.checkedInAt,
+            message: "SUPERVISOR_OVERRIDE: Supervisor re-entry recorded and admission re-stamped",
+            attendee: { name: restamped.attendeeName, email: restamped.attendeeEmail },
+            ticketTier: { id: restamped.ticketTier.id, name: restamped.ticketTier.name },
+            event: {
+              id: restamped.event.id,
+              title: restamped.event.title,
+              venue: restamped.event.venue?.name,
+              hall: restamped.event.venueHall?.name,
+            },
+            perks: restampPerks,
+          },
+          { status: 200 }
+        );
+      }
       const tierName = booking.ticketTier.name;
       const eligiblePerks = booking.event.perks.filter(
         (p) =>

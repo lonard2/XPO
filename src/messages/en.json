@@ -1314,7 +1314,13 @@
     "invalidBadge": "Invalid",
     "importLots": "Import {count} Lots",
     "unassignedRow": "Unassigned",
-    "generalIndustry": "General Industry"
+    "generalIndustry": "General Industry",
+    "overrideRecorded": "Supervisor override recorded server-side. Delegate re-entry admitted.",
+    "simConfirmTitle": "Inject Training Scan?",
+    "simConfirmDesc": "A shift is already underway. Training rows are badged and excluded from counts and CSV, but they still land in the visible log. Inject a training scan?",
+    "simConfirmBtn": "Inject Training Scan",
+    "trainingBadge": "Training",
+    "trainingHint": "Training rows are badged and excluded from shift totals and CSV."
   },
   "admin": {
     "dashboardTitle": "Governance & Admin Agregator",

@@ -1314,7 +1314,13 @@
     "invalidBadge": "无效",
     "importLots": "导入{count}个展位",
     "unassignedRow": "未分配",
-    "generalIndustry": "通用行业"
+    "generalIndustry": "通用行业",
+    "overrideRecorded": "主管 override 已记录到服务器, 允许重新入场。",
+    "simConfirmTitle": "插入培训扫描?",
+    "simConfirmDesc": "班次已开始。培训行会被标记并排除在统计和CSV之外, 但仍会出现在可见日志中。是否插入?",
+    "simConfirmBtn": "插入培训扫描",
+    "trainingBadge": "培训",
+    "trainingHint": "培训行会被标记并排除在班次统计和CSV之外。"
   },
   "admin": {
     "dashboardTitle": "管理统括中心",

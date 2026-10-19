@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import { db } from "@/lib/db";
+import { POST as verifyRoute } from "@/app/api/tickets/verify/route";
 import {
   generateTicketHash,
   verifyTicketHash,
@@ -116,5 +117,46 @@ describe("Phase 9 Integration: Organizer Door QR Scanner & Verification Lifecycl
 
     expect(cryptoCheck.valid).toBe(false);
     expect(cryptoCheck.error).toContain("INVALID_SIGNATURE");
+  });
+
+  it("T3.4 (Route Double-Scan): verify reports alreadyCheckedIn for an admitted pass", async () => {
+    const req = new Request("http://localhost:3000/api/tickets/verify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Cookie: "xpo_role=ADMIN" },
+      body: JSON.stringify({ qrCodeHash: testQrCodeHash, autoCheckIn: true }),
+    });
+    const res = await verifyRoute(req);
+    expect(res.status).toBe(200);
+    const json = await res.json();
+    expect(json.valid).toBe(true);
+    expect(json.alreadyCheckedIn).toBe(true);
+  });
+
+  it("T3.5 (Supervisor Override): re-stamps admission server-side for owners", async () => {
+    const before = await db.booking.findUnique({ where: { qrCodeHash: testQrCodeHash } });
+    const req = new Request("http://localhost:3000/api/tickets/verify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Cookie: "xpo_role=ADMIN" },
+      body: JSON.stringify({ qrCodeHash: testQrCodeHash, autoCheckIn: true, supervisorOverride: true }),
+    });
+    const res = await verifyRoute(req);
+    expect(res.status).toBe(200);
+    const json = await res.json();
+    expect(json.valid).toBe(true);
+    expect(json.alreadyCheckedIn).toBe(false);
+    expect(json.reEntryOverridden).toBe(true);
+    expect(new Date(json.checkedInAt).getTime()).toBeGreaterThanOrEqual(
+      new Date(before!.checkedInAt!).getTime()
+    );
+  });
+
+  it("T3.6 (Supervisor Override): refuses non-owners with 403", async () => {
+    const req = new Request("http://localhost:3000/api/tickets/verify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Cookie: "xpo_role=ATTENDEE" },
+      body: JSON.stringify({ qrCodeHash: testQrCodeHash, autoCheckIn: true, supervisorOverride: true }),
+    });
+    const res = await verifyRoute(req);
+    expect(res.status).toBe(403);
   });
 });

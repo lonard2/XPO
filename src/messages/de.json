@@ -1314,7 +1314,13 @@
     "invalidBadge": "Ungültig",
     "importLots": "{count} Stände importieren",
     "unassignedRow": "Nicht zugewiesen",
-    "generalIndustry": "Allgemeine Branche"
+    "generalIndustry": "Allgemeine Branche",
+    "overrideRecorded": "Supervisor-Freigabe serverseitig erfasst. Wiedereinlass gewährt.",
+    "simConfirmTitle": "Trainings-Scan einfügen?",
+    "simConfirmDesc": "Eine Schicht läuft bereits. Trainingszeilen sind markiert und von Zählung/CSV ausgeschlossen, erscheinen aber im sichtbaren Protokoll. Einfügen?",
+    "simConfirmBtn": "Trainings-Scan einfügen",
+    "trainingBadge": "Training",
+    "trainingHint": "Trainingszeilen sind markiert und von Schichtsummen/CSV ausgeschlossen."
   },
   "admin": {
     "dashboardTitle": "Admin-Governance & Aggregator",

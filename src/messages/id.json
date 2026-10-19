@@ -1314,7 +1314,13 @@
     "invalidBadge": "Tidak Valid",
     "importLots": "Impor {count} Lot",
     "unassignedRow": "Belum Ditetapkan",
-    "generalIndustry": "Industri Umum"
+    "generalIndustry": "Industri Umum",
+    "overrideRecorded": "Override supervisor tercatat di server. Izin masuk ulang diberikan.",
+    "simConfirmTitle": "Suntikkan Pindaian Latihan?",
+    "simConfirmDesc": "Shift sudah berjalan. Baris latihan diberi badge dan dikecualikan dari total dan CSV, tetapi tetap masuk log terlihat. Lanjutkan?",
+    "simConfirmBtn": "Suntikkan Pindaian Latihan",
+    "trainingBadge": "Latihan",
+    "trainingHint": "Baris latihan diberi badge dan dikecualikan dari total shift dan CSV."
   },
   "admin": {
     "dashboardTitle": "Tata Kelola & Agregator Admin",

@@ -30,6 +30,7 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Input } from "@/components/ui/Input";
+import { Modal } from "@/components/ui/Modal";
 import { useTranslations } from "next-intl";
 import { generateTicketHash } from "@/lib/tickets/qrPass";
 import { cn } from "@/lib/utils";
@@ -68,6 +69,7 @@ export interface ScanResult {
   timestamp: string;
   errorCode?: "TICKET_NOT_FOUND" | "TICKET_CANCELLED" | "INVALID_SIGNATURE" | "NETWORK_TIMEOUT" | string;
   reEntryOverridden?: boolean;
+  training?: boolean;
 }
 
 interface CheckInScannerProps {
@@ -117,6 +119,7 @@ const SCAN_STATUS_MAP: Record<
 
 export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
   const tOrg = useTranslations("organizer");
+  const tCom = useTranslations("common");
 
   const [inputMode, setInputMode] = React.useState<"camera" | "manual">("camera");
   const [manualHash, setManualHash] = React.useState("");
@@ -126,6 +129,8 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
   const [lastResult, setLastResult] = React.useState<ScanResult | null>(null);
   const [scanHistory, setScanHistory] = React.useState<ScanResult[]>([]);
   const [showSimulator, setShowSimulator] = React.useState(false);
+  const [showSimConfirm, setShowSimConfirm] = React.useState(false);
+  const pendingSimRef = React.useRef<null | (() => void)>(null);
 
   // Camera Hardware State & Stream Ref
   const videoRef = React.useRef<HTMLVideoElement | null>(null);
@@ -303,11 +308,17 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
   );
 
   const verifyPassData = React.useCallback(
-    async (payload: {
-      qrCodeHash?: string;
-      payloadString?: string;
-      signature?: string;
-    }) => {
+    async (
+      payload: {
+        qrCodeHash?: string;
+        payloadString?: string;
+        signature?: string;
+        supervisorOverride?: boolean;
+        eventId?: string;
+      },
+      opts?: { training?: boolean }
+    ) => {
+      const isTraining = opts?.training === true;
       if (isVerifyingRef.current) return;
       isVerifyingRef.current = true;
       setIsVerifying(true);
@@ -336,6 +347,8 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
               valid: true,
               alreadyCheckedIn: true,
               status: "DOUBLE_SCAN",
+              training: isTraining,
+              payloadToRetry: payload,
               message: `Ticket was already admitted at ${prevTime}. Confirm attendee ID before authorizing re-entry.`,
               checkedInAt: data.checkedInAt,
               attendee: data.attendee,
@@ -350,11 +363,16 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
             playSound("warning");
             triggerHaptic("warning");
           } else {
+            const reAdmitted = (data as any).reEntryOverridden === true;
             const result: ScanResult = {
               valid: true,
               alreadyCheckedIn: false,
               status: "CHECKED_IN",
-              message: "Pass verified successfully. Delegate admission granted.",
+              training: isTraining,
+              reEntryOverridden: reAdmitted || undefined,
+              message: reAdmitted
+                ? tOrg("overrideRecorded")
+                : "Pass verified successfully. Delegate admission granted.",
               checkedInAt: data.checkedInAt || new Date().toISOString(),
               attendee: data.attendee,
               ticketTier: data.ticketTier,
@@ -396,6 +414,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
           const result: ScanResult = {
             valid: false,
             status,
+            training: isTraining,
             errorCode,
             message: humanMessage,
             rawHash: targetIdentifier,
@@ -411,6 +430,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
         const result: ScanResult = {
           valid: false,
           status: "NETWORK_ERROR",
+          training: isTraining,
           errorCode: "NETWORK_TIMEOUT",
           message: "Connection timeout. Venue Wi-Fi or mobile data may be offline. Check connection and tap Retry Verification.",
           rawHash: targetIdentifier,
@@ -572,18 +592,14 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
 
   const handleOverrideReEntry = () => {
     if (!lastResult) return;
-    const nowIso = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-    const updated: ScanResult = {
-      ...lastResult,
-      status: "CHECKED_IN",
-      reEntryOverridden: true,
-      message: "Supervisor override authorized. Delegate re-entry permitted.",
-      timestamp: nowIso,
-    };
-    setLastResult(updated);
-    setScanHistory((prev) => [updated, ...prev.slice(0, 19)]);
-    playSound("success");
-    triggerHaptic("success");
+    // Re-admit through the verify API so the server record matches the
+    // message. lastResult.payloadToRetry carries the original scan payload.
+    const base = lastResult.payloadToRetry || {};
+    const retryPayload =
+      lastResult.rawHash && !base.qrCodeHash && !base.payloadString
+        ? { ...base, qrCodeHash: lastResult.rawHash }
+        : base;
+    verifyPassData({ ...retryPayload, supervisorOverride: true });
   };
 
   const handleSendResolutionDesk = () => {
@@ -630,7 +646,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
       return str;
     };
 
-    const rows = scanHistory.map((scan) => [
+    const rows = shiftRows.map((scan) => [
       escapeCsv(scan.timestamp),
       escapeCsv(scan.status),
       escapeCsv(scan.attendee?.name),
@@ -664,11 +680,14 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
       nonce: "valid-nonce-01",
     };
     const signed = generateTicketHash(payload);
-    verifyPassData({
-      payloadString: signed.payloadString,
-      signature: signed.signature,
-      qrCodeHash: signed.qrCodeHash,
-    });
+    verifyPassData(
+      {
+        payloadString: signed.payloadString,
+        signature: signed.signature,
+        qrCodeHash: signed.qrCodeHash,
+      },
+      { training: true }
+    );
   };
 
   const simulateValidVipPass = () => {
@@ -681,16 +700,29 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
       nonce: "vip-nonce-02",
     };
     const signed = generateTicketHash(payload);
-    verifyPassData({
-      payloadString: signed.payloadString,
-      signature: signed.signature,
-      qrCodeHash: signed.qrCodeHash,
-    });
+    verifyPassData(
+      {
+        payloadString: signed.payloadString,
+        signature: signed.signature,
+        qrCodeHash: signed.qrCodeHash,
+      },
+      { training: true }
+    );
+  };
+
+  const requestSimulation = (fn: () => void) => {
+    // Training rows share the shift log: confirm once a shift is underway.
+    if (scanHistory.length > 0) {
+      pendingSimRef.current = fn;
+      setShowSimConfirm(true);
+      return;
+    }
+    fn();
   };
 
   const simulateDoubleScan = () => {
     if (lastResult?.rawHash) {
-      verifyPassData({ qrCodeHash: lastResult.rawHash });
+      verifyPassData({ qrCodeHash: lastResult.rawHash }, { training: true });
     } else {
       simulateValidStandardPass();
       setTimeout(() => {
@@ -709,17 +741,21 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
       nonce: "tampered-nonce",
     };
     const signed = generateTicketHash(payload);
-    verifyPassData({
-      payloadString: signed.payloadString,
-      signature: "0000000000000000000000000000000000000000000000000000000000000000",
-      qrCodeHash: signed.qrCodeHash,
-    });
+    verifyPassData(
+      {
+        payloadString: signed.payloadString,
+        signature: "0000000000000000000000000000000000000000000000000000000000000000",
+        qrCodeHash: signed.qrCodeHash,
+      },
+      { training: true }
+    );
   };
 
-  const validScansCount = scanHistory.filter((s) => s.valid && !s.alreadyCheckedIn).length;
-  const doubleScansCount = scanHistory.filter((s) => s.alreadyCheckedIn).length;
-  const invalidScansCount = scanHistory.filter((s) => !s.valid && s.status !== "NETWORK_ERROR").length;
-  const networkErrorsCount = scanHistory.filter((s) => s.status === "NETWORK_ERROR").length;
+  const shiftRows = scanHistory.filter((s) => !s.training);
+  const validScansCount = shiftRows.filter((s) => s.valid && !s.alreadyCheckedIn).length;
+  const doubleScansCount = shiftRows.filter((s) => s.alreadyCheckedIn).length;
+  const invalidScansCount = shiftRows.filter((s) => !s.valid && s.status !== "NETWORK_ERROR").length;
+  const networkErrorsCount = shiftRows.filter((s) => s.status === "NETWORK_ERROR").length;
 
   return (
     <div className="space-y-6 w-full animate-fade-in">
@@ -729,7 +765,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
           <div className="text-xs uppercase font-semibold text-muted-foreground">
             {tOrg("scannerScansProcessed") || "Scans Processed"}
           </div>
-          <div className="text-xl font-bold text-foreground mt-0.5">{scanHistory.length}</div>
+          <div className="text-xl font-bold text-foreground mt-0.5" data-testid="telemetry-processed">{shiftRows.length}</div>
         </Card>
         <Card className="p-3.5 border-border bg-card text-center shadow-xs">
           <div className="text-xs uppercase font-semibold text-muted-foreground">
@@ -1093,14 +1129,14 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
               {showSimulator && (
                 <div className="space-y-2">
                   <p className="text-xs text-muted-foreground">
-                    Practice with test scenarios before gates open. Verifies green, double-scan, and counterfeit handling.
+                    Practice with test scenarios before gates open. Verifies green, double-scan, and counterfeit handling. {tOrg("trainingHint")}
                   </p>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                     <Button
                       type="button"
                       variant="outline"
                       size="sm"
-                      onClick={simulateValidStandardPass}
+                      onClick={() => requestSimulation(simulateValidStandardPass)}
                       disabled={isVerifying}
                       className="text-xs min-h-[44px] py-2 px-2.5 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10 cursor-pointer"
                     >
@@ -1111,7 +1147,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                       type="button"
                       variant="outline"
                       size="sm"
-                      onClick={simulateValidVipPass}
+                      onClick={() => requestSimulation(simulateValidVipPass)}
                       disabled={isVerifying}
                       className="text-xs min-h-[44px] py-2 px-2.5 border-primary/30 text-primary hover:bg-primary/10 cursor-pointer"
                     >
@@ -1122,7 +1158,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                       type="button"
                       variant="outline"
                       size="sm"
-                      onClick={simulateDoubleScan}
+                      onClick={() => requestSimulation(simulateDoubleScan)}
                       disabled={isVerifying}
                       className="text-xs min-h-[44px] py-2 px-2.5 border-amber-500/30 text-amber-700 dark:text-amber-400 hover:bg-amber-500/10 cursor-pointer"
                     >
@@ -1133,7 +1169,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                       type="button"
                       variant="outline"
                       size="sm"
-                      onClick={simulateTamperedSignature}
+                      onClick={() => requestSimulation(simulateTamperedSignature)}
                       disabled={isVerifying}
                       className="text-xs min-h-[44px] py-2 px-2.5 border-rose-500/30 text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 cursor-pointer"
                     >
@@ -1429,13 +1465,20 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                       {scan.timestamp} • {scan.ticketTier?.name || "General Pass"}
                     </div>
                   </div>
-                  <Badge
-                    variant={SCAN_STATUS_MAP[scan.status]?.variant || "outline"}
-                    size="sm"
-                    className="text-xs font-semibold px-2 py-0.5 shrink-0"
-                  >
-                    {SCAN_STATUS_MAP[scan.status]?.badgeText || scan.status}
-                  </Badge>
+                  <span className="flex flex-col items-end gap-1 shrink-0">
+                    <Badge
+                      variant={SCAN_STATUS_MAP[scan.status]?.variant || "outline"}
+                      size="sm"
+                      className="text-xs font-semibold px-2 py-0.5"
+                    >
+                      {SCAN_STATUS_MAP[scan.status]?.badgeText || scan.status}
+                    </Badge>
+                    {scan.training && (
+                      <Badge variant="outline" size="sm" className="text-[11px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 border-amber-500/40">
+                        {tOrg("trainingBadge")}
+                      </Badge>
+                    )}
+                  </span>
                 </div>
               ))}
 
@@ -1448,6 +1491,40 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
           </Card>
         </div>
       </div>
+
+      {/* SIMULATOR MID-SHIFT CONFIRM */}
+      <Modal
+        isOpen={showSimConfirm}
+        onClose={() => { setShowSimConfirm(false); pendingSimRef.current = null; }}
+        title={tOrg("simConfirmTitle")}
+        size="sm"
+      >
+        <div className="space-y-4 pt-2">
+          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+            {tOrg("simConfirmDesc")}
+          </p>
+          <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-border/60">
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => { setShowSimConfirm(false); pendingSimRef.current = null; }}
+              className="min-h-[44px] px-4 text-xs font-semibold cursor-pointer"
+            >
+              {tCom("cancel")}
+            </Button>
+            <Button
+              type="button"
+              variant="primary"
+              size="sm"
+              onClick={() => { const fn = pendingSimRef.current; pendingSimRef.current = null; setShowSimConfirm(false); fn?.(); }}
+              className="min-h-[44px] px-4 text-xs font-semibold cursor-pointer"
+            >
+              {tOrg("simConfirmBtn")}
+            </Button>
+          </div>
+        </div>
+      </Modal>
 
       {/* MOBILE PORTRAIT STICKY TRIAGE HUD (ACTIVE ON < lg VIEWPORTS) */}
       {lastResult && (

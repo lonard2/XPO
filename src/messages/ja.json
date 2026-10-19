@@ -1314,7 +1314,13 @@
     "invalidBadge": "無効",
     "importLots": "{count}区画を取込",
     "unassignedRow": "未割当",
-    "generalIndustry": "一般産業"
+    "generalIndustry": "一般産業",
+    "overrideRecorded": "スーパーバイザー承認をサーバーに記録し、再入場を許可しました。",
+    "simConfirmTitle": "トレーニングスキャンを挿入しますか?",
+    "simConfirmDesc": "シフトは既に進行中です。トレーニング行はバッジ付きで集計・CSVから除外されますが、表示ログには残ります。挿入しますか?",
+    "simConfirmBtn": "トレーニングスキャンを挿入",
+    "trainingBadge": "訓練",
+    "trainingHint": "トレーニング行はバッジ付きで集計・CSVから除外されます。"
   },
   "admin": {
     "dashboardTitle": "管理統括・アグリゲーター",
