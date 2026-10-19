@@ -30,7 +30,7 @@ export function HeroSection({
   return (
     <div
       className={cn(
-        'w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-border/80 bg-card shadow-lg flex flex-col',
+        'w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-border/80 bg-card shadow-lg flex flex-col ambient-glow',
         className
       )}
     >
