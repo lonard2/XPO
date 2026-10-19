@@ -228,7 +228,7 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
             </span>
           </div>
           <Badge variant={getRoleBadgeVariant(role)} size="sm">
-            {role}
+            {getRoleLabel(role)}
           </Badge>
         </div>
 
@@ -248,8 +248,20 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
             role="dialog"
             aria-modal="true"
             aria-label={tOrg("organizerNavAria")}
-            className="fixed inset-x-0 top-[57px] bg-card border-b border-border p-4 space-y-3 z-50 lg:hidden shadow-xl animate-fade-in"
+            className="fixed inset-0 z-50 lg:hidden bg-card p-4 space-y-3 shadow-xl animate-fade-in overflow-y-auto"
           >
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-foreground">{tOrg("portalBadge")}</span>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-10 w-10 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
+                aria-label={tOrg("mobileNavToggle")}
+                onClick={() => setIsMobileSidebarOpen(false)}
+              >
+                <X className="h-5 w-5" />
+              </Button>
+            </div>
             <nav aria-label={tOrg("mobileNavAria")} className="space-y-1">
               {navItems.map((item) => {
                 const Icon = item.icon;

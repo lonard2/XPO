@@ -918,7 +918,7 @@
     "boothManagerNavDesc": "展位划分与参展商名录",
     "qrScanner": "入场核销扫码器",
     "qrScannerNav": "现场闸机扫码核销",
-    "qrScannerNavDesc": "HMAC加密防伪门票核销",
+    "qrScannerNavDesc": "闸机QR通行证扫描",
     "aiReports": "展会数据与分析报告",
     "suiteTitle": "主办方管理套件",
     "attendeeModeNotice": "您当前正以【参会者】身份查看。创建展会或修改品牌外观需要【主办方】或【管理员】权限。",

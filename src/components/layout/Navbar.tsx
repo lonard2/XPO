@@ -21,7 +21,7 @@ import {
   LogIn,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Button } from "@/components/ui/Button";
+import { Button, buttonVariants } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { cn } from "@/lib/utils";
 import { useActiveRegion } from "@/lib/i18n/useActiveRegion";
@@ -200,11 +200,15 @@ export function Navbar({ locale = "en" }: NavbarProps) {
             </Button>
 
             {/* Settings Link */}
-            <Link href={`/${locale}/settings`}>
-              <Button variant="outline" size="sm" className="hidden lg:inline-flex gap-2 text-xs whitespace-nowrap">
-                <SettingsIcon className="h-3.5 w-3.5" />
-                <span>{tNav("settings")}</span>
-              </Button>
+            <Link
+              href={`/${locale}/settings`}
+              className={cn(
+                buttonVariants({ variant: "outline", size: "sm" }),
+                "hidden lg:inline-flex gap-2 text-xs whitespace-nowrap"
+              )}
+            >
+              <SettingsIcon className="h-3.5 w-3.5" />
+              <span>{tNav("settings")}</span>
             </Link>
 
             {/* Mobile Menu Toggle */}

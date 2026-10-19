@@ -11,7 +11,7 @@ Direction: distill CTAs first, all five issues, crumb-bar wins.
   `useActiveRegion()` hook, subpath-preserving switch, one URL form.
 - [x] **4. Audit footer + listboxes** (`$impeccable audit`): link footer
   categories, arrow-key listboxes, real buttons for cards variant.
-- [ ] **5. Clarify tone + micro-fixes** (`$impeccable clarify`): jargon pass,
+- [x] **5. Clarify tone + micro-fixes** (`$impeccable clarify`): jargon pass,
   role-label helper, nav-set reconciliation, Settings link fix.
 - [ ] **6. Polish final pass** (`$impeccable polish`): detector, screenshots,
   full suite green.
