@@ -1150,7 +1150,8 @@
     "countMany": "{count} active exhibitions",
     "salesActive": "Active ticket sales",
     "salesReady": "Ready for registration",
-    "checkinAria": "Overall Gate Check-In Rate"
+    "checkinAria": "Overall Gate Check-In Rate",
+    "moreHalls": "+{count} more"
   },
   "admin": {
     "dashboardTitle": "Governance & Admin Agregator",

@@ -49,6 +49,7 @@ export async function POST(request: Request) {
       regionId = "id",
       venueId,
       venueHallId,
+      venueHallIds,
       startDate,
       endDate,
       ticketTiers = [],
@@ -153,6 +154,23 @@ export async function POST(request: Request) {
       }
     }
 
+    // Multi-hall allocation: persist every allocated hall, never just the
+    // first. IDs outside this venue are dropped; the primary relation stays
+    // the first valid hall so existing single-hall reads keep working.
+    const requestedHallIds = Array.isArray(venueHallIds)
+      ? [...new Set(venueHallIds.filter((h: any) => typeof h === "string" && h.length > 0))]
+      : [];
+    let allocatedHallIds: string[] = [];
+    if (requestedHallIds.length > 0 && venueId) {
+      const venueHalls = await db.venueHall.findMany({
+        where: { id: { in: requestedHallIds }, venueId },
+        select: { id: true },
+      });
+      const validSet = new Set(venueHalls.map((h) => h.id));
+      allocatedHallIds = requestedHallIds.filter((id) => validSet.has(id));
+    }
+    const primaryHallId = allocatedHallIds[0] || venueHallId || null;
+
     const newEvent = await db.event.create({
       data: {
         title,
@@ -164,7 +182,8 @@ export async function POST(request: Request) {
         scale,
         regionId,
         venueId,
-        venueHallId: venueHallId || null,
+        venueHallId: primaryHallId,
+        venueHallIds: allocatedHallIds.length > 0 ? JSON.stringify(allocatedHallIds) : null,
         organizerId: finalOrganizerId,
         organizerName: finalOrganizerName,
         isPlatformCurated: finalIsPlatformCurated,

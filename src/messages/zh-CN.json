@@ -1150,7 +1150,8 @@
     "countMany": "{count} 个进行中展会",
     "salesActive": "售票进行中",
     "salesReady": "就绪待报名",
-    "checkinAria": "总入场率"
+    "checkinAria": "总入场率",
+    "moreHalls": "+{count}个"
   },
   "admin": {
     "dashboardTitle": "管理统括中心",

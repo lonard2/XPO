@@ -1150,7 +1150,8 @@
     "countMany": "開催中{count}件",
     "salesActive": "チケット販売中",
     "salesReady": "登録受付準備完了",
-    "checkinAria": "全体チェックイン率"
+    "checkinAria": "全体チェックイン率",
+    "moreHalls": "+{count}"
   },
   "admin": {
     "dashboardTitle": "管理統括・アグリゲーター",

@@ -40,6 +40,7 @@ export interface OrganizerEventItem {
   endDate: Date | string;
   venue?: { id: string; name: string } | null;
   venueHall?: { id: string; name: string } | null;
+  venueHallIds?: string | null;
   organizerId?: string | null;
   organizerName?: string | null;
   isPlatformCurated?: boolean;
@@ -328,6 +329,13 @@ export function OrganizerEventsRoster({ events, locale, title, description, hide
               registrationsCount > 0 ? Math.round((checkedInCount / registrationsCount) * 100) : 0;
             const boothsCount = event.booths?.length || 0;
             const dates = formatDateRange(event.startDate, event.endDate, locale);
+            let extraHallCount = 0;
+            try {
+              const allHallIds = event.venueHallIds ? JSON.parse(event.venueHallIds) : [];
+              if (Array.isArray(allHallIds)) extraHallCount = Math.max(allHallIds.length - 1, 0);
+            } catch {
+              extraHallCount = 0;
+            }
 
             return (
               <Card
@@ -409,6 +417,7 @@ export function OrganizerEventsRoster({ events, locale, title, description, hide
                         {event.venue?.name ? (
                           <>
                             {event.venue.name} {event.venueHall ? `- ${event.venueHall.name}` : ""}
+                            {extraHallCount > 0 ? ` ${tOrg("moreHalls", { count: extraHallCount })}` : ""}
                           </>
                         ) : (
                           (tOrg("venueUnassigned"))

@@ -91,6 +91,66 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
     createdEventId = json.event.id;
   });
 
+  it("Organizer Events: POST persists the full multi-hall allocation (P0)", async () => {
+    const hallIds = (sampleVenue.halls || []).slice(0, 3).map((h: any) => h.id);
+    expect(hallIds.length).toBeGreaterThan(1);
+    const req = new Request("http://localhost:3000/api/organizer/events", {
+      method: "POST",
+      headers: adminHeaders,
+      body: JSON.stringify({
+        title: "Test Multi-Hall Persistence 2027",
+        slug: "test-multi-hall-persistence-2027",
+        description: "Verifies every allocated hall is stored, not just the first.",
+        regionId: "id",
+        venueId: sampleVenue.id,
+        venueHallId: hallIds[0],
+        venueHallIds: hallIds,
+        startDate: "2027-09-10T09:00:00.000Z",
+        endDate: "2027-09-12T18:00:00.000Z",
+        ticketTiers: [],
+      }),
+    });
+
+    const res = await createEventRoute(req);
+    expect(res.status).toBe(201);
+    const json = await res.json();
+    expect(json.success).toBe(true);
+    const stored: string[] = JSON.parse(json.event.venueHallIds || "[]");
+    expect(stored).toEqual(hallIds);
+    expect(json.event.venueHallId).toBe(hallIds[0]);
+
+    await db.event.delete({ where: { id: json.event.id } }).catch(() => {});
+  });
+
+  it("Organizer Events: POST ignores hall IDs outside the venue (P0)", async () => {
+    const validId = sampleVenue.halls?.[0]?.id;
+    const req = new Request("http://localhost:3000/api/organizer/events", {
+      method: "POST",
+      headers: adminHeaders,
+      body: JSON.stringify({
+        title: "Test Foreign Hall Rejection 2027",
+        slug: "test-foreign-hall-rejection-2027",
+        description: "Hall IDs from another venue must not persist.",
+        regionId: "id",
+        venueId: sampleVenue.id,
+        venueHallId: validId,
+        venueHallIds: [validId, "hall-does-not-exist"],
+        startDate: "2027-09-10T09:00:00.000Z",
+        endDate: "2027-09-12T18:00:00.000Z",
+        ticketTiers: [],
+      }),
+    });
+
+    const res = await createEventRoute(req);
+    expect(res.status).toBe(201);
+    const json = await res.json();
+    expect(json.success).toBe(true);
+    const stored: string[] = JSON.parse(json.event.venueHallIds || "[]");
+    expect(stored).toEqual([validId]);
+
+    await db.event.delete({ where: { id: json.event.id } }).catch(() => {});
+  });
+
   it("Organizer Branding: PUT updates event theme tokens and hero media", async () => {
     expect(createdEventId).toBeDefined();
 

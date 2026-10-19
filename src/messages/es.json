@@ -1150,7 +1150,8 @@
     "countMany": "{count} exposiciones activas",
     "salesActive": "Venta activa",
     "salesReady": "Listo para registro",
-    "checkinAria": "Tasa general de acceso"
+    "checkinAria": "Tasa general de acceso",
+    "moreHalls": "+{count} más"
   },
   "admin": {
     "dashboardTitle": "Gobernanza y Agregador de Administración",

@@ -821,6 +821,7 @@ export default function NewEventWizardPage() {
       regionId,
       venueId,
       venueHallId: venueHallIds[0] || venueHallId,
+      venueHallIds,
       startDate: new Date(startDate).toISOString(),
       endDate: new Date(endDate).toISOString(),
       primaryColor,

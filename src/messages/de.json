@@ -1150,7 +1150,8 @@
     "countMany": "{count} aktive Messen",
     "salesActive": "Aktiver Ticketverkauf",
     "salesReady": "Bereit für Registrierung",
-    "checkinAria": "Gesamt-Check-in-Rate"
+    "checkinAria": "Gesamt-Check-in-Rate",
+    "moreHalls": "+{count} weitere"
   },
   "admin": {
     "dashboardTitle": "Admin-Governance & Aggregator",

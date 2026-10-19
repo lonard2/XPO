@@ -1150,7 +1150,8 @@
     "countMany": "{count} pameran aktif",
     "salesActive": "Penjualan tiket aktif",
     "salesReady": "Siap untuk registrasi",
-    "checkinAria": "Tingkat Check-In Gerbang Keseluruhan"
+    "checkinAria": "Tingkat Check-In Gerbang Keseluruhan",
+    "moreHalls": "+{count} lagi"
   },
   "admin": {
     "dashboardTitle": "Tata Kelola & Agregator Admin",
