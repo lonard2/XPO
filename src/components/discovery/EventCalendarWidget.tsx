@@ -125,13 +125,18 @@ export function EventCalendarWidget({
 
   // Check if a calendar day has events
   const hasEventOnDay = (date: Date | null) => {
-    if (!date) return false;
+    return countEventsOnDay(date) > 0;
+  };
+
+  // Event density level for heat dots: 0 none, 1 quiet (1-2), 2 busy (3-4), 3 peak (5+).
+  const countEventsOnDay = (date: Date | null) => {
+    if (!date) return 0;
     const dayStr = toISODateInTimezone(date, timezone);
-    return events.some((evt) => {
+    return events.filter((evt) => {
       const startStr = toISODateInTimezone(evt.startDate, timezone);
       const endStr = toISODateInTimezone(evt.endDate, timezone);
       return dayStr >= startStr && dayStr <= endStr;
-    });
+    }).length;
   };
 
   const isSelected = (date: Date | null) => {
@@ -223,6 +228,8 @@ export function EventCalendarWidget({
               }
 
               const hasEvents = hasEventOnDay(cell.date);
+              const dayCount = countEventsOnDay(cell.date);
+              const heatDots = dayCount <= 0 ? 0 : dayCount <= 2 ? 1 : dayCount <= 4 ? 2 : 3;
               const active = isSelected(cell.date);
               const today = isToday(cell.date);
               const cellDateStr = cell.date.toLocaleDateString(locale, { month: 'short', day: 'numeric', year: 'numeric' });
@@ -237,7 +244,7 @@ export function EventCalendarWidget({
                     }
                   }}
                   type="button"
-                  aria-label={`${cellDateStr}${hasEvents ? `, ${tCal('eventsScheduled') || 'events scheduled'}` : ''}`}
+                  aria-label={`${cellDateStr}${hasEvents ? `, ${dayCount} ${tCal('eventsScheduled') || 'events scheduled'}` : ''}`}
                   aria-pressed={active}
                   aria-current={today ? 'date' : undefined}
                   className={cn(
@@ -251,14 +258,23 @@ export function EventCalendarWidget({
                   )}
                 >
                   <span>{cell.dayNumber}</span>
-                  {hasEvents && (
+                  {heatDots > 0 && (
                     <span
                       aria-hidden="true"
-                      className={cn(
-                        'absolute bottom-1 h-1 w-1 rounded-full',
-                        active ? 'bg-primary-foreground' : 'bg-primary'
-                      )}
-                    />
+                      className="absolute bottom-1 flex items-center gap-[2px]"
+                    >
+                      {Array.from({ length: heatDots }).map((_, i) => (
+                        <span
+                          key={i}
+                          data-testid="heat-dot"
+                          className={cn(
+                            'h-1 w-1 rounded-full',
+                            active ? 'bg-primary-foreground' : 'bg-primary',
+                            heatDots >= 3 && i === 2 && !active && 'ring-1 ring-primary/50 h-1.5 w-1.5'
+                          )}
+                        />
+                      ))}
+                    </span>
                   )}
                 </button>
               );

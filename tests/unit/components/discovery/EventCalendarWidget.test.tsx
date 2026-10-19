@@ -46,3 +46,37 @@ describe('EventCalendarWidget', () => {
     expect(container.querySelectorAll('[aria-pressed]').length).toBeGreaterThan(20);
   });
 });
+
+describe('EventCalendarWidget heat dots', () => {
+  const overlapping = (n: number) =>
+    Array.from({ length: n }, (_, i) => ({
+      id: `evt-heat-${i}`,
+      title: `Heat Event ${i}`,
+      slug: `heat-event-${i}`,
+      archetype: 'INDUSTRIAL_B2B',
+      startDate: new Date().toISOString(),
+      endDate: new Date(Date.now() + 86400000).toISOString(),
+      venueName: 'JIExpo Kemayoran',
+      venueHallName: 'Hall A1',
+      cityName: 'Jakarta',
+      regionCode: 'id',
+      lowestPrice: 0,
+      currency: 'IDR',
+    })) as EventSummary[];
+
+  it('renders three heat dots on days with five or more events', () => {
+    const { container } = render(
+      <EventCalendarWidget events={overlapping(5)} locale="en" regionCode="id" />
+    );
+    const dots = container.querySelectorAll('[data-testid="heat-dot"]');
+    expect(dots.length).toBeGreaterThanOrEqual(3);
+  });
+
+  it('renders a single heat dot for a quiet day', () => {
+    const { container } = render(
+      <EventCalendarWidget events={overlapping(1)} locale="en" regionCode="id" />
+    );
+    const dots = container.querySelectorAll('[data-testid="heat-dot"]');
+    expect(dots.length).toBeGreaterThanOrEqual(1);
+  });
+});

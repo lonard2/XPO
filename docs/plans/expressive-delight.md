@@ -9,7 +9,7 @@ calendar heat dots; hover sheen as an Expressive-only feature.
   and coarse pointers stay tilt-free.
 - [x] **2. Count-up telemetry** (`delight 1`): animated count-up hook for
   KPI/telemetry numbers with reduced-motion and motion-off bypass.
-- [ ] **3. Calendar heat dots** (`delight 3`): event-density dots on month
+- [x] **3. Calendar heat dots** (`delight 3`): event-density dots on month
   cells (dedicated calendar + homepage quick calendar).
 - [ ] **4. Expressive hover sheen** (`delight 5`): light-sweep hover effect
   gated to the Expressive motion setting.
