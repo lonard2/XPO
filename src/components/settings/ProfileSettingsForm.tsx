@@ -9,17 +9,21 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { cn } from "@/lib/utils";
 import { MICE_INDUSTRY_CLUSTERS, ARCHETYPE_METAS, type MiceArchetype } from "@/lib/theming";
+import { clusterLabel } from "@/lib/i18n/categories";
 
 export function ProfileSettingsForm({ className }: { className?: string }) {
   const { profile, setProfile, isMounted } = useSettings();
 
   let tSet: any = (k: string) => k;
   let tArch: any = (k: string) => k;
+  let tOrg: any = (k: string) => k;
   try {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     tSet = useTranslations("settings");
     // eslint-disable-next-line react-hooks/rules-of-hooks
     tArch = useTranslations("archetypes");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tOrg = useTranslations("organizer");
   } catch {
     // Fallback
   }
@@ -225,7 +229,7 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
                     aria-expanded={!collapsed}
                     className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-foreground cursor-pointer rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 min-h-[44px]"
                   >
-                    <span>{cluster.shortLabel}</span>
+                    <span>{clusterLabel(tOrg, cluster.id, cluster.shortLabel)}</span>
                     <span className="font-mono font-medium text-muted-foreground normal-case">
                       {selectedInCluster}/{cluster.archetypes.length}
                     </span>

@@ -65,9 +65,9 @@ describe('EventCategoryPills', () => {
   it('renders descriptive subtitles below category titles', () => {
     render(<EventCategoryPills locale="en" />);
 
-    expect(screen.getByText('Factory machinery, robotics, and industrial tools')).toBeInTheDocument();
-    expect(screen.getByText('Software, cloud platforms, and consumer electronics')).toBeInTheDocument();
-    expect(screen.getByText('Video games, comics, animation, and cosplay')).toBeInTheDocument();
+    expect(screen.getByText('Heavy machinery engineering, precision CNC automation, robotics tooling, and global B2B procurement tenders.')).toBeInTheDocument();
+    expect(screen.getByText('Autonomous AI engineering, distributed cloud systems, developer keynotes, and consumer electronics showcases.')).toBeInTheDocument();
+    expect(screen.getByText('Esports championship tournament arenas, international cosplay catwalks, creator alley showcases, and premiere fandom stages.')).toBeInTheDocument();
   });
 
   it('filters displayed categories when a specific cluster tab is clicked', () => {

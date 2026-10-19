@@ -163,17 +163,17 @@ describe('Discovery Component: FilterSidebar', () => {
     const clusterHeader = screen.getByRole('button', { name: /health & faith/i });
     // Inactive clusters start collapsed; expand on demand.
     expect(clusterHeader).toHaveAttribute('aria-expanded', 'false');
-    expect(screen.queryByText(/medical/i)).toBeNull();
+    expect(screen.queryByText('Medical & Healthcare Congress')).toBeNull();
 
     // Click cluster to expand
     fireEvent.click(clusterHeader);
     expect(clusterHeader).toHaveAttribute('aria-expanded', 'true');
-    expect(screen.getByText(/medical/i)).toBeInTheDocument();
+    expect(screen.getByText('Medical & Healthcare Congress')).toBeInTheDocument();
 
     // Click cluster to collapse again
     fireEvent.click(clusterHeader);
     expect(clusterHeader).toHaveAttribute('aria-expanded', 'false');
-    expect(screen.queryByText(/medical/i)).toBeNull();
+    expect(screen.queryByText('Medical & Healthcare Congress')).toBeNull();
   });
 });
 

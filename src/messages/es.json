@@ -1164,7 +1164,14 @@
     "templateModalTitle": "¿Aplicar plantilla?",
     "templateModalDesc": "Reemplaza título, descripción, categoría, niveles y colores. Se puede deshacer justo después.",
     "applyTemplate": "Aplicar plantilla",
-    "templateUndo": "Deshacer plantilla"
+    "templateUndo": "Deshacer plantilla",
+    "clusterAll": "Todas las categorías",
+    "clusterHeavy": "Industria pesada",
+    "clusterDigital": "Digital y tecnología",
+    "clusterEnterprise": "Negocios y comercio",
+    "clusterSovereign": "Gobierno y defensa",
+    "clusterHealth": "Salud y fe",
+    "clusterCulture": "Cultura y deporte"
   },
   "admin": {
     "dashboardTitle": "Gobernanza y Agregador de Administración",

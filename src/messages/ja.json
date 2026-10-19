@@ -1164,7 +1164,14 @@
     "templateModalTitle": "展示会テンプレートを適用しますか?",
     "templateModalDesc": "入力済みのタイトル・説明・カテゴリ・Tier・ブランド色を置換します。適用直後に元に戻せます。",
     "applyTemplate": "テンプレートを適用",
-    "templateUndo": "テンプレートを元に戻す"
+    "templateUndo": "テンプレートを元に戻す",
+    "clusterAll": "すべてのカテゴリ",
+    "clusterHeavy": "重工業・インフラ",
+    "clusterDigital": "デジタル・テック",
+    "clusterEnterprise": "ビジネス・貿易",
+    "clusterSovereign": "政府・防衛",
+    "clusterHealth": "医療・信仰",
+    "clusterCulture": "文化・スポーツ"
   },
   "admin": {
     "dashboardTitle": "管理統括・アグリゲーター",

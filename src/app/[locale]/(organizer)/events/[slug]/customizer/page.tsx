@@ -32,6 +32,7 @@ import {
   parseBrandingConfig,
   type BrandingConfig,
 } from "@/lib/theming";
+import { archTitle, archTag, clusterLabel } from "@/lib/i18n/categories";
 import { cn } from "@/lib/utils";
 
 const COLOR_PRESETS = [
@@ -199,7 +200,7 @@ export default function EventCustomizerPage() {
     setPrimaryColor(defaults.primary);
     setAccentColor(defaults.accent);
     setFontFamily(defaults.fontFamily);
-    setHeroBadge(defaults.displayName);
+    setHeroBadge(archTitle(tArch, newArch, defaults.displayName));
   };
 
   const handleSelectArchetype = (newArch: MiceArchetype) => {
@@ -394,13 +395,13 @@ export default function EventCustomizerPage() {
                 className="w-full h-11 rounded-lg border border-border bg-background px-3 text-xs font-medium text-foreground cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
               >
                 {MICE_INDUSTRY_CLUSTERS.map((cluster) => (
-                  <optgroup key={cluster.id} label={cluster.label}>
+                  <optgroup key={cluster.id} label={clusterLabel(tOrg, cluster.id, cluster.label)}>
                     {cluster.archetypes.map((archKey) => {
                       const opt = ALL_ARCHETYPE_OPTIONS.find((o) => o.id === archKey);
                       if (!opt) return null;
                       return (
                         <option key={opt.id} value={opt.id}>
-                          {opt.name} ({opt.tag})
+                          {archTitle(tArch, opt.id, opt.name)} ({archTag(tArch, opt.id, opt.tag)})
                         </option>
                       );
                     })}

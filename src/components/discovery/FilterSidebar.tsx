@@ -15,6 +15,7 @@ import {
 import { Button } from '@/components/ui/Button';
 import { useTranslations } from 'next-intl';
 import { ALL_MICE_ARCHETYPES, ARCHETYPE_DEFAULTS, ARCHETYPE_METAS, ARCHETYPE_SUBTITLES, MICE_INDUSTRY_CLUSTERS, type MiceArchetype, type MiceIndustryCluster } from '@/lib/theming';
+import { archDescription, clusterLabel } from '@/lib/i18n/categories';
 import { ICON_MAP } from '@/components/discovery/EventCategoryPills';
 import { type FilterState } from '@/types/discovery';
 import { cn } from '@/lib/utils';
@@ -47,6 +48,7 @@ export function FilterSidebar({
   const tReg = useTranslations('regions');
   const tArch = useTranslations('archetypes');
   const tCom = useTranslations('common');
+  const tOrg = useTranslations('organizer');
 
   // Progressive disclosure: only clusters with an active selection start open
   // (or the first cluster when nothing is selected yet).
@@ -307,7 +309,7 @@ export function FilterSidebar({
                   aria-expanded={!isCollapsed}
                   className="w-full flex items-center justify-between px-2 py-1 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors cursor-pointer rounded-md focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary"
                 >
-                  <span className="uppercase tracking-wider truncate text-[11px]">{cluster.shortLabel}</span>
+                  <span className="uppercase tracking-wider truncate text-[11px]">{clusterLabel(tOrg, cluster.id, cluster.shortLabel)}</span>
                   <div className="flex items-center gap-1.5 shrink-0 ml-2">
                     <span className="text-[11px] font-mono text-muted-foreground">
                       {activeInClusterCount > 0 ? `${activeInClusterCount}/` : ''}{cluster.archetypes.length}
@@ -332,7 +334,7 @@ export function FilterSidebar({
                       const Icon = (meta && ICON_MAP[meta.accentIcon]) || Briefcase;
                       const isSelected = selectedArchetypes.includes(archKey);
                       const count = counts?.archetypes?.[archKey];
-                      const subtitle = ARCHETYPE_SUBTITLES[archKey as MiceArchetype];
+                      const subtitle = archDescription(tArch, archKey as string, ARCHETYPE_SUBTITLES[archKey as MiceArchetype]);
 
                       return (
                         <button

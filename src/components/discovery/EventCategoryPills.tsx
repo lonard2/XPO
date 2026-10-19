@@ -42,6 +42,7 @@ import {
   type MiceArchetype,
   type MiceIndustryCluster,
 } from '@/lib/theming';
+import { clusterLabel } from '@/lib/i18n/categories';
 import { cn } from '@/lib/utils';
 
 export const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -125,6 +126,7 @@ export function EventCategoryPills({
 }: EventCategoryPillsProps) {
   const tArch = useTranslations('archetypes');
   const tDisc = useTranslations('discovery');
+  const tOrg = useTranslations('organizer');
 
   const [selectedCluster, setSelectedCluster] = React.useState<string>('all');
   const tabRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
@@ -165,7 +167,7 @@ export function EventCategoryPills({
       if (tArch && typeof tArch.raw === 'function') {
         const obj = tArch.raw(category.id);
         if (obj?.title) translatedTitle = obj.title;
-        if (obj?.subtitle) translatedSubtitle = obj.subtitle;
+        if (obj?.description) translatedSubtitle = obj.description;
       }
     } catch {
       // fallback
@@ -338,7 +340,7 @@ export function EventCategoryPills({
                   : 'bg-card border border-border/80 text-muted-foreground hover:text-foreground hover:bg-muted/60'
               )}
             >
-              <span>{cluster.shortLabel}</span>
+              <span>{clusterLabel(tOrg, cluster.id, cluster.shortLabel)}</span>
               <span
                 className={cn(
                   'ml-2 inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full text-[11px] font-bold transition-colors',

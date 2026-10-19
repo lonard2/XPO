@@ -64,6 +64,7 @@ import {
   type MiceArchetype,
   getArchetypeTokens,
 } from "@/lib/theming";
+import { archTitle, archDescription, clusterLabel } from "@/lib/i18n/categories";
 import { LivePreviewFrame } from "@/components/organizer/LivePreviewFrame";
 import { cn } from "@/lib/utils";
 
@@ -229,10 +230,9 @@ const TEMPLATES: Record<string, TemplatePreset> = {
 };
 
 const CLUSTER_FILTERS = [
-  { id: "ALL", label: `All Categories (${ARCHETYPE_LIST.length})` },
+  { id: "ALL", archetypes: ARCHETYPE_LIST },
   ...MICE_INDUSTRY_CLUSTERS.map((c) => ({
     id: c.id,
-    label: `${c.shortLabel} (${c.archetypes.length})`,
     archetypes: c.archetypes,
   })),
 ];
@@ -1557,7 +1557,7 @@ export default function NewEventWizardPage() {
               </div>
 
               <span className="text-xs font-semibold text-primary">
-                {tOrg("wizardSelected", { name: ARCHETYPE_DEFAULTS[archetype]?.name || archetype })}
+                {tOrg("wizardSelected", { name: archTitle(tArch, archetype, ARCHETYPE_DEFAULTS[archetype]?.name || archetype) })}
               </span>
             </div>
 
@@ -1583,7 +1583,7 @@ export default function NewEventWizardPage() {
                         : "bg-card border border-border/80 text-muted-foreground hover:text-foreground hover:bg-muted/60"
                     )}
                   >
-                    <span>{cluster.label}</span>
+                    <span>{clusterLabel(tOrg, cluster.id, cluster.id === "ALL" ? "All Categories" : cluster.id)} ({cluster.archetypes.length})</span>
                   </button>
                 );
               })}
@@ -1601,8 +1601,8 @@ export default function NewEventWizardPage() {
                 const isSelected = archetype === arch;
                 const IconComponent = meta?.accentIcon ? ICON_MAP[meta.accentIcon] || Layers : Layers;
 
-                const displayName = tArch(`${arch}.title`) || tokens?.name || arch;
-                const subtitle = ARCHETYPE_SUBTITLES[arch] || meta?.tagline || tokens?.tagline;
+                const displayName = archTitle(tArch, arch, tokens?.name || arch);
+                const subtitle = archDescription(tArch, arch, ARCHETYPE_SUBTITLES[arch as MiceArchetype] || meta?.tagline || tokens?.tagline || arch);
 
                 return (
                   <button

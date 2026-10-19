@@ -1164,7 +1164,14 @@
     "templateModalTitle": "Apply Exhibition Template?",
     "templateModalDesc": "This replaces the title, description, category, tiers, and brand colors already entered. You can undo immediately after applying.",
     "applyTemplate": "Apply template",
-    "templateUndo": "Undo template"
+    "templateUndo": "Undo template",
+    "clusterAll": "All Categories",
+    "clusterHeavy": "Heavy Industry",
+    "clusterDigital": "Digital & Tech",
+    "clusterEnterprise": "Enterprise & Trade",
+    "clusterSovereign": "Sovereign & Defense",
+    "clusterHealth": "Health & Faith",
+    "clusterCulture": "Culture & Sports"
   },
   "admin": {
     "dashboardTitle": "Governance & Admin Agregator",

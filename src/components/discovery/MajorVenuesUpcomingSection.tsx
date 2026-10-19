@@ -16,6 +16,7 @@ import { Card } from '@/components/ui/Card';
 import { useTranslations } from 'next-intl';
 import { formatDateRange, getTimeZoneForRegion, getEventTemporalStatus } from '@/lib/i18n/formatters';
 import { getArchetypeTokens, getReadableBadgeColors } from '@/lib/theming';
+import { archTitle } from '@/lib/i18n/categories';
 import { countHalls } from '@/lib/discovery/venueSpaces';
 import { type VenueWithEvents } from '@/types/discovery';
 import { cn } from '@/lib/utils';
@@ -191,7 +192,7 @@ export function MajorVenuesUpcomingSection({
                                   color: archetypeBadge.color,
                                 }}
                               >
-                                {tokens.displayName}
+                                {archTitle(tArch, evt.archetype, tokens.displayName)}
                               </Badge>
 
                               {evt.venueHallName && (

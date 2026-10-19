@@ -26,6 +26,7 @@ import { EventCalendarWidget } from '@/components/discovery/EventCalendarWidget'
 import { EventCategoryPills } from '@/components/discovery/EventCategoryPills';
 import { formatDateRange, getTimeZoneForRegion } from '@/lib/i18n/formatters';
 import { getArchetypeTokens, type MiceArchetype } from '@/lib/theming';
+import { archTitle } from '@/lib/i18n/categories';
 import { type EventSummary } from '@/types/discovery';
 import {
   downloadICalFile,
@@ -364,7 +365,7 @@ export function CalendarInteractiveView({
                   backgroundColor: `${activeCategoryTokens.primary}10`,
                 }}
               >
-                <span>{tCom('category') || 'Category'}: {activeCategoryTokens.displayName}</span>
+                <span>{tCom('category') || 'Category'}: {archTitle(tArch, selectedArchetype as string, activeCategoryTokens.displayName)}</span>
                 <button
                   type="button"
                   onClick={() => handleSelectCategory('all')}

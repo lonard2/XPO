@@ -1164,7 +1164,14 @@
     "templateModalTitle": "应用展会模板?",
     "templateModalDesc": "这将替换已输入的标题、描述、分类、等级和品牌颜色。应用后可立即撤销。",
     "applyTemplate": "应用模板",
-    "templateUndo": "撤销模板"
+    "templateUndo": "撤销模板",
+    "clusterAll": "全部分类",
+    "clusterHeavy": "重工业",
+    "clusterDigital": "数字科技",
+    "clusterEnterprise": "企业贸易",
+    "clusterSovereign": "政务防务",
+    "clusterHealth": "医疗信仰",
+    "clusterCulture": "文化体育"
   },
   "admin": {
     "dashboardTitle": "管理统括中心",

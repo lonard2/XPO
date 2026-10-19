@@ -1164,7 +1164,14 @@
     "templateModalTitle": "Messe-Vorlage anwenden?",
     "templateModalDesc": "Dies ersetzt Titel, Beschreibung, Kategorie, Stufen und Markenfarben. Direkt danach widerrufbar.",
     "applyTemplate": "Vorlage anwenden",
-    "templateUndo": "Vorlage rückgängig"
+    "templateUndo": "Vorlage rückgängig",
+    "clusterAll": "Alle Kategorien",
+    "clusterHeavy": "Schwerindustrie",
+    "clusterDigital": "Digital & Tech",
+    "clusterEnterprise": "Handel & Gewerbe",
+    "clusterSovereign": "Staat & Verteidigung",
+    "clusterHealth": "Gesundheit & Glaube",
+    "clusterCulture": "Kultur & Sport"
   },
   "admin": {
     "dashboardTitle": "Admin-Governance & Aggregator",

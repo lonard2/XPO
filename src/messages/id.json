@@ -1164,7 +1164,14 @@
     "templateModalTitle": "Terapkan Template Pameran?",
     "templateModalDesc": "Ini mengganti judul, deskripsi, kategori, tier, dan warna brand yang sudah diisi. Dapat dibatalkan segera setelahnya.",
     "applyTemplate": "Terapkan template",
-    "templateUndo": "Batalkan template"
+    "templateUndo": "Batalkan template",
+    "clusterAll": "Semua Kategori",
+    "clusterHeavy": "Industri Berat",
+    "clusterDigital": "Digital & Teknologi",
+    "clusterEnterprise": "Bisnis & Perdagangan",
+    "clusterSovereign": "Pemerintahan & Pertahanan",
+    "clusterHealth": "Kesehatan & Keyakinan",
+    "clusterCulture": "Budaya & Olahraga"
   },
   "admin": {
     "dashboardTitle": "Tata Kelola & Agregator Admin",
