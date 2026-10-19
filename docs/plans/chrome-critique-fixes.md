@@ -13,7 +13,7 @@ Direction: distill CTAs first, all five issues, crumb-bar wins.
   categories, arrow-key listboxes, real buttons for cards variant.
 - [x] **5. Clarify tone + micro-fixes** (`$impeccable clarify`): jargon pass,
   role-label helper, nav-set reconciliation, Settings link fix.
-- [ ] **6. Polish final pass** (`$impeccable polish`): detector, screenshots,
+- [x] **6. Polish final pass** (`$impeccable polish`): detector, screenshots,
   full suite green.
 
 Each ships as its own commit pushed to `origin/main`. Verify by execution;
