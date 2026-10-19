@@ -988,7 +988,7 @@
     "wizardFormatHybrid": "Híbrido (Presencial + Streaming en Directo)",
     "wizardFormatVirtual": "Convención Virtual",
     "wizardScale": "Escala del Evento",
-    "wizardArchetypeSelect": "15 Categorías Especializadas MICE",
+    "wizardArchetypeSelect": "22 Categorías Especializadas MICE",
     "wizardArchetypeSubtitle": "Seleccione la categoría que mejor se adapte a esta feria. Cada categoría incluye paletas de colores y diseños optimizados.",
     "wizardVenueHalls": "Recinto y Asignación de Pabellones",
     "wizardDatesTitle": "Fechas de Celebración",
@@ -1151,7 +1151,12 @@
     "salesActive": "Venta activa",
     "salesReady": "Listo para registro",
     "checkinAria": "Tasa general de acceso",
-    "moreHalls": "+{count} más"
+    "moreHalls": "+{count} más",
+    "wizardSelected": "Seleccionada: {name}",
+    "clusterFilterAria": "Filtrar categorías por clúster industrial",
+    "wizardArchetypeAria": "Seleccionar categoría",
+    "templateBarTitle": "Inicio rápido: use una plantilla especializada",
+    "templateBarDesc": "Configura metadatos, tokens de categoría y pases de ejemplo"
   },
   "admin": {
     "dashboardTitle": "Gobernanza y Agregador de Administración",

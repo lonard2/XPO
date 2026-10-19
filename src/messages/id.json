@@ -988,7 +988,7 @@
     "wizardFormatHybrid": "Hibrida (Tatap Muka + Siaran Langsung)",
     "wizardFormatVirtual": "Konvensi Virtual",
     "wizardScale": "Skala Acara",
-    "wizardArchetypeSelect": "15 Kategori Acara MICE",
+    "wizardArchetypeSelect": "22 Kategori Acara MICE",
     "wizardArchetypeSubtitle": "Pilih kategori yang paling sesuai dengan pameran ini. Setiap kategori dilengkapi palet warna dan tata letak khusus.",
     "wizardVenueHalls": "Lokasi & Alokasi Aula Pameran",
     "wizardDatesTitle": "Jadwal Tanggal Pelaksanaan",
@@ -1151,7 +1151,12 @@
     "salesActive": "Penjualan tiket aktif",
     "salesReady": "Siap untuk registrasi",
     "checkinAria": "Tingkat Check-In Gerbang Keseluruhan",
-    "moreHalls": "+{count} lagi"
+    "moreHalls": "+{count} lagi",
+    "wizardSelected": "Dipilih: {name}",
+    "clusterFilterAria": "Filter kategori acara menurut klaster industri",
+    "wizardArchetypeAria": "Pilih Kategori Acara",
+    "templateBarTitle": "Onboarding Cepat: Mulai dengan Template Pameran Khusus",
+    "templateBarDesc": "Otomatis mengatur metadata, token kategori, dan contoh pass"
   },
   "admin": {
     "dashboardTitle": "Tata Kelola & Agregator Admin",

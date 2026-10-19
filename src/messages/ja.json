@@ -988,7 +988,7 @@
     "wizardFormatHybrid": "ハイブリッド（現地＋ライブ配信）",
     "wizardFormatVirtual": "バーチャル開催（オンライン）",
     "wizardScale": "開催規模",
-    "wizardArchetypeSelect": "15のMICE専門分野カテゴリ",
+    "wizardArchetypeSelect": "22のMICE専門分野カテゴリ",
     "wizardArchetypeSubtitle": "イベントの分野に最も適したカテゴリを選択してください。最適な配色とレイアウトが自動適用されます。",
     "wizardVenueHalls": "開催会場＆展示ホール割り当て",
     "wizardDatesTitle": "開催日程",
@@ -1151,7 +1151,12 @@
     "salesActive": "チケット販売中",
     "salesReady": "登録受付準備完了",
     "checkinAria": "全体チェックイン率",
-    "moreHalls": "+{count}"
+    "moreHalls": "+{count}",
+    "wizardSelected": "選択中: {name}",
+    "clusterFilterAria": "業種クラスターでカテゴリを絞り込む",
+    "wizardArchetypeAria": "イベントカテゴリを選択",
+    "templateBarTitle": "高速オンボーディング: 専用テンプレートで開始",
+    "templateBarDesc": "メタデータ・カテゴリトークン・サンプルパスを自動設定"
   },
   "admin": {
     "dashboardTitle": "管理統括・アグリゲーター",

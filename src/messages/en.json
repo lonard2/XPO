@@ -971,7 +971,7 @@
     "wizardStepOf": "Step {current} of {total}",
     "wizardTitle": "Create & Launch MICE Exhibition",
     "wizardSubtitle": "Follow the 4-step pipeline to configure event category archetypes, hall allocations, ticket passes, and visual branding.",
-    "wizardStep1": "General & Archetype",
+    "wizardStep1": "General & Category",
     "wizardStep2": "Venue & Halls",
     "wizardStep3": "Ticket Passes",
     "wizardStep4": "Branding & Review",
@@ -988,7 +988,7 @@
     "wizardFormatHybrid": "Hybrid (In-Person + Live Stream)",
     "wizardFormatVirtual": "Virtual Convention",
     "wizardScale": "Event Scale",
-    "wizardArchetypeSelect": "15 MICE Domain Categories",
+    "wizardArchetypeSelect": "22 Event Categories",
     "wizardArchetypeSubtitle": "Select the archetype that aligns best with this event. Each category comes with pre-configured color palettes and layout engines.",
     "wizardVenueHalls": "Hosting Venue & Hall Allocation",
     "wizardDatesTitle": "Event Schedule Dates",
@@ -1151,7 +1151,12 @@
     "salesActive": "Active ticket sales",
     "salesReady": "Ready for registration",
     "checkinAria": "Overall Gate Check-In Rate",
-    "moreHalls": "+{count} more"
+    "moreHalls": "+{count} more",
+    "wizardSelected": "Selected: {name}",
+    "clusterFilterAria": "Filter event categories by industry cluster",
+    "wizardArchetypeAria": "Select Event Category",
+    "templateBarTitle": "Fast-Track Onboarding: Launch with a Specialized Exhibition Template",
+    "templateBarDesc": "Auto-configures metadata, category tokens, and sample passes"
   },
   "admin": {
     "dashboardTitle": "Governance & Admin Agregator",

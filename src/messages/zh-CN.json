@@ -988,7 +988,7 @@
     "wizardFormatHybrid": "混合展会（现场 + 线上直播）",
     "wizardFormatVirtual": "线上虚拟大会",
     "wizardScale": "展会规模",
-    "wizardArchetypeSelect": "15个MICE专业领域分类",
+    "wizardArchetypeSelect": "22个MICE专业领域分类",
     "wizardArchetypeSubtitle": "选择最符合本展会的分类原型，系统将自动应用专属配色与布局模板。",
     "wizardVenueHalls": "主办场馆与展厅分配",
     "wizardDatesTitle": "举办日期与日程",
@@ -1151,7 +1151,12 @@
     "salesActive": "售票进行中",
     "salesReady": "就绪待报名",
     "checkinAria": "总入场率",
-    "moreHalls": "+{count}个"
+    "moreHalls": "+{count}个",
+    "wizardSelected": "已选: {name}",
+    "clusterFilterAria": "按行业集群筛选分类",
+    "wizardArchetypeAria": "选择活动分类",
+    "templateBarTitle": "快速上手: 使用专业展会模板创建",
+    "templateBarDesc": "自动配置元数据、分类标识与示例通行证"
   },
   "admin": {
     "dashboardTitle": "管理统括中心",

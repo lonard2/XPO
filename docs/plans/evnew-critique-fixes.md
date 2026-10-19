@@ -6,7 +6,7 @@ Direction: multi-hall P0 first, all four issues, persist full array.
 - [x] **1. Harden multi-hall persistence** (`$impeccable harden`): persist the
   full `venueHallIds` array through the API/Prisma write; no single-hall
   collapse.
-- [ ] **2. Clarify Category vocabulary** (`$impeccable clarify`): user-visible
+- [x] **2. Clarify Category vocabulary** (`$impeccable clarify`): user-visible
   Archetype strings become Category; internal type names stay.
 - [ ] **3. Layout entry points** (`$impeccable layout`): working `?step=`
   deep-links plus fix of the draft-suppresses-template race.

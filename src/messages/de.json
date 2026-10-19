@@ -988,7 +988,7 @@
     "wizardFormatHybrid": "Hybrid (Präsenz + Livestream)",
     "wizardFormatVirtual": "Virtuelle Konferenz",
     "wizardScale": "Veranstaltungsgröße",
-    "wizardArchetypeSelect": "15 MICE-Fachkategorien",
+    "wizardArchetypeSelect": "22 MICE-Fachkategorien",
     "wizardArchetypeSubtitle": "Wählen Sie die am besten passende Kategorie. Jede Kategorie enthält abgestimmte Farbschemata und Layouts.",
     "wizardVenueHalls": "Messezentrum & Hallenbelegung",
     "wizardDatesTitle": "Veranstaltungstermine",
@@ -1151,7 +1151,12 @@
     "salesActive": "Aktiver Ticketverkauf",
     "salesReady": "Bereit für Registrierung",
     "checkinAria": "Gesamt-Check-in-Rate",
-    "moreHalls": "+{count} weitere"
+    "moreHalls": "+{count} weitere",
+    "wizardSelected": "Ausgewählt: {name}",
+    "clusterFilterAria": "Kategorien nach Branchencluster filtern",
+    "wizardArchetypeAria": "Event-Kategorie wählen",
+    "templateBarTitle": "Schnellstart: Mit spezialisierter Vorlage starten",
+    "templateBarDesc": "Richtet Metadaten, Kategorie-Token und Beispielpässe automatisch ein"
   },
   "admin": {
     "dashboardTitle": "Admin-Governance & Aggregator",

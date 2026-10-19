@@ -290,7 +290,7 @@ export default function NewEventWizardPage() {
     });
   }, []);
 
-  // Step 1: General Info & Archetype (Clean initial canvas with template accelerators)
+  // Step 1: General Info & Category (Clean initial canvas with template accelerators)
   const [title, setTitle] = React.useState("");
   const [slug, setSlug] = React.useState("");
   const [tagline, setTagline] = React.useState("");
@@ -580,7 +580,7 @@ export default function NewEventWizardPage() {
     setShowDiscardModal(false);
   };
 
-  // Update Archetype default colors when archetype changes
+  // Update category default colors when the category changes
   const handleArchetypeSelect = (arch: MiceArchetype) => {
     setArchetype(arch);
     const defaults = getArchetypeTokens(arch);
@@ -911,7 +911,7 @@ export default function NewEventWizardPage() {
     );
   }
 
-  // Active cluster archetypes filter
+  // Active cluster category filter
   const displayedArchetypes = React.useMemo(() => {
     if (selectedCluster === "ALL") return ARCHETYPE_LIST;
     const cluster = MICE_INDUSTRY_CLUSTERS.find((c) => c.id === selectedCluster);
@@ -919,7 +919,7 @@ export default function NewEventWizardPage() {
   }, [selectedCluster]);
 
   const WIZARD_STEPS = [
-    { step: 1, label: tOrg("wizardStep1") || "Identity & Archetype", sub: "22 MICE Categories", icon: Info },
+    { step: 1, label: tOrg("wizardStep1"), sub: "22 MICE Categories", icon: Info },
     { step: 2, label: tOrg("wizardStep2") || "Venue & Dates", sub: "Hall Allocation", icon: Building2 },
     { step: 3, label: tOrg("wizardStep3") || "Pass Tiers", sub: "Capacities & Perks", icon: Ticket },
     { step: 4, label: tOrg("wizardStep4") || "Branding & Launch", sub: "Live Simulation", icon: Palette },
@@ -1083,7 +1083,7 @@ export default function NewEventWizardPage() {
         </div>
       )}
 
-      {/* STEP 1: General Info & 22 Category Archetypes */}
+      {/* STEP 1: General Info & 22 Event Categories */}
       {currentStep === 1 && (
         <div className="space-y-8">
           {/* Fast-Track Templates Onboarding Bar */}
@@ -1092,11 +1092,11 @@ export default function NewEventWizardPage() {
               <div className="flex items-center gap-2">
                 <Sparkles className="h-4 w-4 text-primary shrink-0" />
                 <span className="text-xs sm:text-sm font-bold text-foreground">
-                  Fast-Track Onboarding: Launch with a Specialized Exhibition Template
+                  {tOrg("templateBarTitle")}
                 </span>
               </div>
               <span className="text-xs text-muted-foreground font-medium">
-                Auto-configures metadata, archetype tokens, and sample passes
+                {tOrg("templateBarDesc")}
               </span>
             </div>
 
@@ -1369,28 +1369,28 @@ export default function NewEventWizardPage() {
             </div>
           </Card>
 
-          {/* 22 Specialized Archetype Categories Matrix */}
+          {/* 22 Specialized Event Categories Matrix */}
           <div className="space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-border/80 pb-3">
               <div>
                 <h2 className="text-base sm:text-lg font-bold text-foreground flex items-center gap-2">
                   <Layers className="h-4 w-4 text-primary" />
-                  <span>{tOrg("wizardArchetypeSelect") || "Select MICE Category Archetype (22 Verticals)"}</span>
+                  <span>{tOrg("wizardArchetypeSelect")}</span>
                 </h2>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  {tOrg("wizardArchetypeSubtitle") || "Each archetype automatically configures design tokens, specialized widgets, and category branding."}
+                  {tOrg("wizardArchetypeSubtitle")}
                 </p>
               </div>
 
               <span className="text-xs font-semibold text-primary">
-                Selected: {ARCHETYPE_DEFAULTS[archetype]?.name || archetype}
+                {tOrg("wizardSelected", { name: ARCHETYPE_DEFAULTS[archetype]?.name || archetype })}
               </span>
             </div>
 
-            {/* Archetype Domain Cluster Filter Tabs */}
+            {/* Category Domain Cluster Filter Tabs */}
             <div
               role="tablist"
-              aria-label="Filter category archetypes by industry cluster"
+              aria-label={tOrg("clusterFilterAria")}
               className="flex items-center gap-2 overflow-x-auto no-scrollbar py-2 px-0.5"
             >
               {CLUSTER_FILTERS.map((cluster) => {
@@ -1418,7 +1418,7 @@ export default function NewEventWizardPage() {
             {/* 22 Cards Grid */}
             <div
               role="radiogroup"
-              aria-label="Select MICE Category Archetype"
+              aria-label={tOrg("wizardArchetypeAria")}
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 pt-1"
             >
               {displayedArchetypes.map((arch) => {
