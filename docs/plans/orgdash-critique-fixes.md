@@ -13,7 +13,7 @@ Direction: booth scope first, all five issues, whole-card tap to scanner.
   action; single H1 with the live badge as eyebrow.
 - [x] **5. Clarify liveness claim** (`$impeccable clarify`): snapshot labeling
   with state-preserving refresh instead of the Live pulse.
-- [ ] **6. Polish final pass** (`$impeccable polish`): detector, screenshots,
+- [x] **6. Polish final pass** (`$impeccable polish`): detector, screenshots,
   full suite green.
 
 Each ships as its own commit pushed to `origin/main`. Verify by execution;

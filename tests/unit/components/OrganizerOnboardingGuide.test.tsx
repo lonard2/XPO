@@ -21,7 +21,7 @@ describe("Component: OrganizerOnboardingGuide", () => {
 
     expect(screen.getByText("Organizer Onboarding & Operational Roadmap")).toBeDefined();
     expect(screen.getByText("0 of 4 Complete")).toBeDefined();
-    expect(screen.getByText("1. Create Exhibition & Select Archetype")).toBeDefined();
+    expect(screen.getByText("1. Create Exhibition & Select Category")).toBeDefined();
     expect(screen.getByText("2. Define Ticket Passes & Tiers")).toBeDefined();
     expect(screen.getByText("3. Assign Floor Booths & Tenants")).toBeDefined();
     expect(screen.getByText("4. Deploy QR Check-In Scanner")).toBeDefined();
