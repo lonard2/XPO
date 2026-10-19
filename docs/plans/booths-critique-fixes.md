@@ -9,7 +9,7 @@ Direction: trust data first, all five issues, badge and keep seeds.
   eventId/hall/status/q on mount with validation, sync back to URL.
 - [x] **3. Structure hall dossiers** (`$impeccable structure`): hall combobox
   from the selected event's venue halls, event-scoped pills, duplicate guard.
-- [ ] **4. Clarify ownership + i18n** (`$impeccable clarify`): curated lock in
+- [x] **4. Clarify ownership + i18n** (`$impeccable clarify`): curated lock in
   filter, dictionary pass, localized industry select.
 - [ ] **5. Layout touch targets** (`$impeccable layout`): 44px minimums on the
   on-site path (toolbar, checkboxes, toggle, modal select).

@@ -32,6 +32,9 @@ import { Badge } from "@/components/ui/Badge";
 import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
 import { useTranslations } from "next-intl";
+import { useAuth } from "@/lib/auth/session";
+import { archTag } from "@/lib/i18n/categories";
+import { ARCHETYPE_LIST } from "@/lib/theming";
 import { cn } from "@/lib/utils";
 
 interface BoothItem {
@@ -68,11 +71,11 @@ interface CsvParsedRow {
   error?: string;
 }
 
-const BOOTH_TYPES: Record<string, { label: string; badgeVariant: "secondary" | "outline" | "success" }> = {
-  SHELL_SCHEME: { label: "Shell Scheme", badgeVariant: "secondary" },
-  RAW_SPACE: { label: "Raw Space", badgeVariant: "outline" },
-  ISLAND: { label: "Island Pavilion", badgeVariant: "success" },
-  CORNER: { label: "Corner Lot", badgeVariant: "outline" },
+const BOOTH_TYPES: Record<string, { labelKey: string; label: string; badgeVariant: "secondary" | "outline" | "success" }> = {
+  SHELL_SCHEME: { labelKey: "btShell", label: "Shell Scheme", badgeVariant: "secondary" },
+  RAW_SPACE: { labelKey: "btRaw", label: "Raw Space", badgeVariant: "outline" },
+  ISLAND: { labelKey: "btIsland", label: "Island Pavilion", badgeVariant: "success" },
+  CORNER: { labelKey: "btCorner", label: "Corner Lot", badgeVariant: "outline" },
 };
 
 // RFC 4180 quote-aware CSV line parser
@@ -119,8 +122,11 @@ function sanitizeUrl(rawUrl: string | null | undefined): string | null {
 export default function BoothManagerPage() {
   const tOrg = useTranslations("organizer");
   const tCom = useTranslations("common");
+  const tArch = useTranslations("archetypes");
   const router = useRouter();
   const urlAppliedRef = React.useRef(false);
+  const { role } = useAuth();
+  const isAdminView = role === "ADMIN";
 
   const [booths, setBooths] = React.useState<BoothItem[]>([]);
   const [events, setEvents] = React.useState<any[]>([]);
@@ -507,7 +513,7 @@ export default function BoothManagerPage() {
     setFormError("");
 
     if (!formBoothNumber.trim() || !formHallName.trim()) {
-      setFormError("Booth number and hall name are mandatory.");
+      setFormError(tOrg("mandatoryErr"));
       return;
     }
 
@@ -524,7 +530,7 @@ export default function BoothManagerPage() {
         b.id !== editingBooth?.id
     );
     if (duplicate) {
-      setFormError(`Booth lot "${formBoothNumber.trim()}" is already allocated for this event.`);
+      setFormError(tOrg("dupErr", { num: formBoothNumber.trim() }));
       return;
     }
 
@@ -554,10 +560,10 @@ export default function BoothManagerPage() {
 
         const data = await res.json();
         if (!res.ok) {
-          throw new Error(data.error || "Failed to update booth lot.");
+          throw new Error(data.error || tOrg("errUpdate"));
         }
         setBooths(booths.map((b) => (b.id === editingBooth.id ? data.booth : b)));
-        setToastMessage(`Booth lot ${formBoothNumber} updated successfully.`);
+        setToastMessage(tOrg("toastUpdated", { num: formBoothNumber }));
       } else {
         // Create new
         const targetEventId = formEventId || (selectedEventId !== "ALL" ? selectedEventId : (events[0]?.id || "ev-1"));
@@ -580,10 +586,10 @@ export default function BoothManagerPage() {
 
         const data = await res.json();
         if (!res.ok) {
-          throw new Error(data.error || "Failed to allocate booth lot.");
+          throw new Error(data.error || tOrg("errAllocate"));
         }
         setBooths([...booths, data.booth]);
-        setToastMessage(`New booth lot ${formBoothNumber} allocated successfully.`);
+        setToastMessage(tOrg("toastCreated", { num: formBoothNumber }));
       }
 
       setIsModalOpen(false);
@@ -605,14 +611,14 @@ export default function BoothManagerPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.error || "Failed to decommission booth.");
+        throw new Error(data.error || tOrg("errDecommission"));
       }
       setBooths(booths.filter((b) => b.id !== deletingBooth.id));
-      setToastMessage(`Booth lot "${deletingBooth.boothNumber}" decommissioned successfully.`);
+      setToastMessage(tOrg("toastDecommed", { num: deletingBooth.boothNumber }));
       setDeletingBooth(null);
       setTimeout(() => setToastMessage(""), 3500);
     } catch (err) {
-      setToastMessage(`Decommission failed: ${(err as Error).message}`);
+      setToastMessage(tOrg("errDecommFailed", { error: (err as Error).message }));
       setTimeout(() => setToastMessage(""), 3500);
     } finally {
       setIsDeleting(false);
@@ -635,13 +641,13 @@ export default function BoothManagerPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.error || "Failed to release tenant.");
+        throw new Error(data.error || tOrg("errRelease"));
       }
       setBooths(booths.map((b) => (b.id === booth.id ? data.booth : b)));
-      setToastMessage(`Tenant released from lot "${booth.boothNumber}". Space is now available.`);
+      setToastMessage(tOrg("toastReleased", { lot: booth.boothNumber }));
       setTimeout(() => setToastMessage(""), 3500);
     } catch (err) {
-      setToastMessage(`Failed to release tenant: ${(err as Error).message}`);
+      setToastMessage(tOrg("errReleaseFailed", { error: (err as Error).message }));
       setTimeout(() => setToastMessage(""), 3500);
     }
   };
@@ -666,7 +672,7 @@ export default function BoothManagerPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.error || "Failed to vacate selected booth tenants.");
+        throw new Error(data.error || tOrg("errBulkVacateOp"));
       }
       setBooths((prev) =>
         prev.map((b) =>
@@ -681,11 +687,11 @@ export default function BoothManagerPage() {
             : b
         )
       );
-      setToastMessage(`Released tenants from ${ids.length} selected booth lots.`);
+      setToastMessage(tOrg("toastBulkVacated", { count: ids.length }));
       clearSelection();
       setTimeout(() => setToastMessage(""), 3500);
     } catch (err) {
-      setToastMessage(`Batch vacate failed: ${(err as Error).message}`);
+      setToastMessage(tOrg("errBulkVacateFailed", { error: (err as Error).message }));
       setTimeout(() => setToastMessage(""), 3500);
     } finally {
       setIsBulkVacating(false);
@@ -705,7 +711,7 @@ export default function BoothManagerPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.error || "Failed to decommission selected booth lots.");
+        throw new Error(data.error || tOrg("errBulkDecommOp"));
       }
       setBooths((prev) => prev.filter((b) => !selectedBoothIds.has(b.id)));
       setToastMessage(`Decommissioned ${ids.length} booth lots permanently.`);
@@ -713,7 +719,7 @@ export default function BoothManagerPage() {
       setIsBulkDeleteModalOpen(false);
       setTimeout(() => setToastMessage(""), 3500);
     } catch (err) {
-      setToastMessage(`Batch decommission failed: ${(err as Error).message}`);
+      setToastMessage(tOrg("errBulkDecommFailed", { error: (err as Error).message }));
       setTimeout(() => setToastMessage(""), 3500);
     } finally {
       setIsBulkDeleting(false);
@@ -770,7 +776,7 @@ export default function BoothManagerPage() {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
-    setToastMessage(`Exported ${filteredBooths.length} booth records to CSV.`);
+    setToastMessage(tOrg("toastExported", { count: filteredBooths.length }));
     setTimeout(() => setToastMessage(""), 3500);
   };
 
@@ -872,7 +878,7 @@ export default function BoothManagerPage() {
 
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.error || "Failed to commit bulk CSV import to database.");
+        throw new Error(data.error || tOrg("errCommitCsv"));
       }
 
       if (data.booths) {
@@ -898,9 +904,9 @@ export default function BoothManagerPage() {
       setCsvRawText("");
       setParsedCsvRows([]);
       if (data.booths) {
-        setToastMessage(tOrg("csvPersisted", { count: validRows.length }) || `Successfully persisted ${validRows.length} booth lots to database.`);
+        setToastMessage(tOrg("csvPersisted", { count: validRows.length }));
       } else {
-        setToastMessage(tOrg("csvStaged", { count: validRows.length }) || `${validRows.length} booth lots kept on this device only — database write did not confirm.`);
+        setToastMessage(tOrg("csvStaged", { count: validRows.length }));
       }
       setTimeout(() => setToastMessage(""), 3500);
     } catch (err) {
@@ -917,14 +923,14 @@ export default function BoothManagerPage() {
         <div>
           <div className="flex items-center gap-2.5">
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-              {tOrg("boothsTitle") || "Booth & Tenant Management Roster"}
+              {tOrg("boothsTitle")}
             </h1>
             <Badge variant="secondary" size="sm" className="font-semibold">
-              {tOrg("managementHub") || "Exhibitor Operations"}
+              {tOrg("managementHub")}
             </Badge>
           </div>
           <p className="text-xs text-muted-foreground mt-1">
-            {tOrg("boothsSubtitle") || "Assign exhibitors to specific hall grids, track booth occupancy, and manage floor contracts."}
+            {tOrg("boothsSubtitle")}
           </p>
         </div>
 
@@ -935,10 +941,10 @@ export default function BoothManagerPage() {
             onClick={handleExportCsv}
             disabled={filteredBooths.length === 0}
             className="text-xs gap-1.5 min-h-[44px] px-4 cursor-pointer"
-            aria-label="Export booth roster to CSV"
+            aria-label={tOrg("exportCsvAria")}
           >
             <Download className="h-4 w-4 text-primary" />
-            <span>Export CSV</span>
+            <span>{tOrg("exportCsv")}</span>
           </Button>
 
           <Button
@@ -948,7 +954,7 @@ export default function BoothManagerPage() {
             className="text-xs gap-1.5 min-h-[44px] px-4 cursor-pointer"
           >
             <Upload className="h-4 w-4 text-primary" />
-            <span>Import CSV</span>
+            <span>{tOrg("importCsv")}</span>
           </Button>
 
           <Button
@@ -958,7 +964,7 @@ export default function BoothManagerPage() {
             className="text-xs gap-1.5 min-h-[44px] px-4 cursor-pointer shadow-xs"
           >
             <Plus className="h-4 w-4" />
-            <span>{tOrg("addBooth") || "Add Booth Lot"}</span>
+            <span>{tOrg("addBooth")}</span>
           </Button>
         </div>
       </div>
@@ -993,12 +999,12 @@ export default function BoothManagerPage() {
         >
           <div className="flex items-center gap-2.5">
             <Badge variant="outline" size="sm" className="font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 border-amber-500/40 shrink-0">
-              {tOrg("sampleBadge") || "Sample"}
+              {tOrg("sampleBadge")}
             </Badge>
             <span className="font-medium text-amber-800 dark:text-amber-300">
               {fetchError
-                ? tOrg("sampleErrorBanner") || "Could not reach the database — showing sample floor data."
-                : tOrg("sampleBanner") || "Showing sample floor data — connect the database to manage real lots."}
+                ? tOrg("sampleErrorBanner")
+                : tOrg("sampleBanner")}
             </span>
           </div>
           {fetchError && (
@@ -1017,25 +1023,25 @@ export default function BoothManagerPage() {
       {/* KPI METRIC CARDS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="p-4 border-border bg-card shadow-xs">
-          <div className="text-xs text-muted-foreground font-medium">{tOrg("boothsIndexed") || "Total Booths Indexed"}</div>
+          <div className="text-xs text-muted-foreground font-medium">{tOrg("boothsIndexed")}</div>
           <div className="text-2xl font-bold text-foreground mt-1">{totalCount}</div>
-          <div className="text-xs text-muted-foreground mt-0.5">{tOrg("acrossExhibitions", { count: hallsList.length }) || `Across ${hallsList.length} exhibition halls`}</div>
+          <div className="text-xs text-muted-foreground mt-0.5">{tOrg("acrossExhibitions", { count: hallsList.length })}</div>
         </Card>
 
         <Card className="p-4 border-border bg-card shadow-xs">
-          <div className="text-xs text-muted-foreground font-medium">{tOrg("occupiedLots") || "Occupied Lots"}</div>
+          <div className="text-xs text-muted-foreground font-medium">{tOrg("occupiedLots")}</div>
           <div className="text-2xl font-bold text-primary mt-1">{occupiedCount}</div>
-          <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5 font-medium">{tOrg("occupiedOnly") || "Active commercial tenants"}</div>
+          <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5 font-medium">{tOrg("occupiedOnly")}</div>
         </Card>
 
         <Card className="p-4 border-border bg-card shadow-xs">
-          <div className="text-xs text-muted-foreground font-medium">{tOrg("availableUnits") || "Available Units"}</div>
+          <div className="text-xs text-muted-foreground font-medium">{tOrg("availableUnits")}</div>
           <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">{availableCount}</div>
-          <div className="text-xs text-muted-foreground mt-0.5">{tOrg("availableOnly") || "Ready for immediate allocation"}</div>
+          <div className="text-xs text-muted-foreground mt-0.5">{tOrg("availableOnly")}</div>
         </Card>
 
         <Card className="p-4 border-border bg-card shadow-xs">
-          <div className="text-xs text-muted-foreground font-medium">{tOrg("occupancyRate") || "Floor Occupancy Rate"}</div>
+          <div className="text-xs text-muted-foreground font-medium">{tOrg("occupancyRate")}</div>
           <div className="text-2xl font-bold text-foreground mt-1">{occupancyPct}%</div>
           <div
             className="w-full bg-muted rounded-full h-1.5 mt-2 overflow-hidden"
@@ -1043,7 +1049,7 @@ export default function BoothManagerPage() {
             aria-valuenow={occupancyPct}
             aria-valuemin={0}
             aria-valuemax={100}
-            aria-label={tOrg("occupancyRate") || "Floor Occupancy Rate"}
+            aria-label={tOrg("occupancyRate")}
           >
             <div
               className="bg-primary h-full rounded-full transition-all"
@@ -1060,17 +1066,17 @@ export default function BoothManagerPage() {
             <div className="flex items-center gap-2">
               <Layers className="h-4 w-4 text-primary" />
               <h2 className="text-xs font-bold uppercase tracking-wider text-foreground">
-                Exhibition Hall Saturation & Capacity
+                {tOrg("saturationTitle")}
               </h2>
             </div>
             <span className="text-[11px] text-muted-foreground">
-              Select any hall to isolate inventory and inspect real-time allocation telemetry
+              {tOrg("saturationHint")}
             </span>
           </div>
 
           <div
             role="group"
-            aria-label="Hall saturation filters"
+            aria-label={tOrg("hallFilterGroup")}
             className="flex flex-wrap items-center gap-2"
           >
             {/* All Halls Pill */}
@@ -1078,7 +1084,7 @@ export default function BoothManagerPage() {
               type="button"
               onClick={() => setSelectedHall("ALL")}
               aria-pressed={selectedHall === "ALL"}
-              aria-label={`All Halls: ${occupiedCount} of ${totalCount} lots occupied (${occupancyPct}%)`}
+              aria-label={tOrg("allHallsAria", { occupied: occupiedCount, total: totalCount, pct: occupancyPct })}
               className={cn(
                 "min-h-[44px] px-3.5 py-2 rounded-xl border text-xs flex items-center gap-2.5 transition-all cursor-pointer",
                 selectedHall === "ALL"
@@ -1086,14 +1092,14 @@ export default function BoothManagerPage() {
                   : "bg-muted/40 border-border/80 text-muted-foreground hover:text-foreground hover:bg-muted/70"
               )}
             >
-              <span>All Halls</span>
+              <span>{tOrg("allHallsPill")}</span>
               <div
                 className="w-12 h-1.5 bg-black/20 dark:bg-white/20 rounded-full overflow-hidden inline-block"
                 role="progressbar"
                 aria-valuenow={occupancyPct}
                 aria-valuemin={0}
                 aria-valuemax={100}
-                aria-label="All halls occupancy rate"
+                aria-label={tOrg("allHallsRateAria")}
               >
                 <div
                   className="bg-current h-full rounded-full transition-all"
@@ -1114,7 +1120,7 @@ export default function BoothManagerPage() {
                   type="button"
                   onClick={() => setSelectedHall(isSelected ? "ALL" : item.hall)}
                   aria-pressed={isSelected}
-                  aria-label={`${item.hall}: ${item.occupied} of ${item.total} lots occupied (${item.saturation}%)`}
+                  aria-label={tOrg("hallPillAria", { hall: item.hall, occupied: item.occupied, total: item.total, pct: item.saturation })}
                   className={cn(
                     "min-h-[44px] px-3.5 py-2 rounded-xl border text-xs flex items-center gap-2.5 transition-all cursor-pointer",
                     isSelected
@@ -1129,7 +1135,7 @@ export default function BoothManagerPage() {
                     aria-valuenow={item.saturation}
                     aria-valuemin={0}
                     aria-valuemax={100}
-                    aria-label={`${item.hall} occupancy rate`}
+                    aria-label={tOrg("hallRateAria", { hall: item.hall })}
                   >
                     <div
                       className={cn(
@@ -1163,9 +1169,9 @@ export default function BoothManagerPage() {
             <Search className="h-4 w-4 absolute left-3 top-3.5 text-muted-foreground pointer-events-none" />
             <input
               id="booth-search-input"
-              aria-label={tOrg("searchBooths") || "Search exhibitor or booth #"}
+              aria-label={tOrg("searchBooths")}
               type="text"
-              placeholder={tOrg("searchBooths") || "Search exhibitor or booth #..."}
+              placeholder={tOrg("searchBooths")}
               className="w-full pl-9 pr-3 h-11 min-h-[44px] bg-background border border-input rounded-md text-xs focus:outline-none focus:ring-2 focus:ring-ring"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -1176,12 +1182,12 @@ export default function BoothManagerPage() {
           <div>
             <select
               id="booth-hall-filter"
-              aria-label={tOrg("allHalls") || "Filter by Exhibition Hall"}
+              aria-label={tOrg("allHalls")}
               className="w-full h-11 min-h-[44px] px-3 bg-background border border-input rounded-md text-xs"
               value={selectedHall}
               onChange={(e) => setSelectedHall(e.target.value)}
             >
-              <option value="ALL">{tOrg("allHalls") || "All Exhibition Halls"}</option>
+              <option value="ALL">{tOrg("allHalls")}</option>
               {hallsList.map((h) => (
                 <option key={h} value={h}>
                   {h}
@@ -1194,14 +1200,14 @@ export default function BoothManagerPage() {
           <div>
             <select
               id="booth-status-filter"
-              aria-label={tOrg("allStatuses") || "Filter by Occupancy Status"}
+              aria-label={tOrg("allStatuses")}
               className="w-full h-11 min-h-[44px] px-3 bg-background border border-input rounded-md text-xs"
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
             >
-              <option value="ALL">{tOrg("allStatuses") || "All Statuses (Available & Occupied)"}</option>
-              <option value="OCCUPIED">{tOrg("occupiedOnly") || "Occupied / Assigned Only"}</option>
-              <option value="AVAILABLE">{tOrg("availableOnly") || "Available / Unassigned Only"}</option>
+              <option value="ALL">{tOrg("allStatuses")}</option>
+              <option value="OCCUPIED">{tOrg("occupiedOnly")}</option>
+              <option value="AVAILABLE">{tOrg("availableOnly")}</option>
             </select>
           </div>
 
@@ -1209,7 +1215,7 @@ export default function BoothManagerPage() {
           <div>
             <select
               id="booth-event-filter"
-              aria-label={tOrg("allEvents") || "Filter by Registered Event"}
+              aria-label={tOrg("allEvents")}
               className="w-full h-11 min-h-[44px] px-3 bg-background border border-input rounded-md text-xs"
               value={selectedEventId}
               onChange={(e) => {
@@ -1217,12 +1223,16 @@ export default function BoothManagerPage() {
                 setSelectedHall("ALL");
               }}
             >
-              <option value="ALL">{tOrg("allEvents") || "All Registered Events"}</option>
-              {events.map((ev) => (
-                <option key={ev.id} value={ev.id}>
-                  {ev.title}{ev.isPlatformCurated || !ev.organizerId ? " (Curated)" : ""}
-                </option>
-              ))}
+              <option value="ALL">{tOrg("allEvents")}</option>
+              {events.map((ev) => {
+                const isCurated = ev.isPlatformCurated || !ev.organizerId;
+                const locked = isCurated && !isAdminView;
+                return (
+                  <option key={ev.id} value={ev.id} disabled={locked} title={locked ? tOrg("curatedLocked") : undefined}>
+                    {ev.title}{isCurated ? tOrg("curatedSuffix") : ""}
+                  </option>
+                );
+              })}
             </select>
           </div>
         </div>
@@ -1230,11 +1240,7 @@ export default function BoothManagerPage() {
         {/* Filtered Tally Summary Strip */}
         <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-border/60 text-xs text-muted-foreground">
           <div>
-            Showing <span className="font-semibold text-foreground">{filteredBooths.length}</span> of{" "}
-            <span className="font-semibold text-foreground">{totalCount}</span> floor lots{" "}
-            <span className="text-muted-foreground">
-              ({filteredBooths.filter((b) => !b.companyName || b.companyName.trim() === "").length} vacant)
-            </span>
+            {tOrg("tallyText", { shown: filteredBooths.length, total: totalCount, vacant: filteredBooths.filter((b) => !b.companyName || b.companyName.trim() === "").length })}
           </div>
           {(searchQuery || selectedHall !== "ALL" || statusFilter !== "ALL" || selectedEventId !== "ALL") && (
             <button
@@ -1247,7 +1253,7 @@ export default function BoothManagerPage() {
               }}
               className="text-xs text-primary hover:underline font-medium cursor-pointer"
             >
-              Reset filters
+              {tOrg("resetFilters")}
             </button>
           )}
         </div>
@@ -1258,15 +1264,15 @@ export default function BoothManagerPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h2 id="booths-roster-heading" className="text-base font-bold text-foreground">
-              Exhibitor Floor Lot Roster
+              {tOrg("rosterTitle")}
             </h2>
             <span className="text-xs text-muted-foreground">
-              {filteredBooths.length} {filteredBooths.length === 1 ? "lot displayed" : "lots displayed"}
+              {filteredBooths.length === 1 ? tOrg("lotsOne", { count: filteredBooths.length }) : tOrg("lotsMany", { count: filteredBooths.length })}
             </span>
           </div>
 
           {/* Dual View Mode Toggle */}
-          <div className="flex items-center gap-1 bg-muted/60 p-1 rounded-lg border border-border shrink-0" role="group" aria-label="Roster view layout">
+          <div className="flex items-center gap-1 bg-muted/60 p-1 rounded-lg border border-border shrink-0" role="group" aria-label={tOrg("viewLayoutAria")}>
             <button
               type="button"
               onClick={() => setViewMode("grid")}
@@ -1277,10 +1283,10 @@ export default function BoothManagerPage() {
                   : "text-muted-foreground hover:text-foreground"
               )}
               aria-pressed={viewMode === "grid"}
-              aria-label="Grid view"
+              aria-label={tOrg("gridViewAria")}
             >
               <LayoutGrid className="h-3.5 w-3.5" />
-              <span>Grid</span>
+              <span>{tOrg("gridView")}</span>
             </button>
             <button
               type="button"
@@ -1292,10 +1298,10 @@ export default function BoothManagerPage() {
                   : "text-muted-foreground hover:text-foreground"
               )}
               aria-pressed={viewMode === "table"}
-              aria-label="Table view"
+              aria-label={tOrg("tableViewAria")}
             >
               <Table className="h-3.5 w-3.5" />
-              <span>Table</span>
+              <span>{tOrg("tableView")}</span>
             </button>
           </div>
         </div>
@@ -1326,7 +1332,7 @@ export default function BoothManagerPage() {
                             aria-checked={selectedBoothIds.has(booth.id)}
                             onClick={() => toggleSelectBooth(booth.id)}
                             className="mt-0.5 min-w-[36px] min-h-[36px] inline-flex items-center justify-center p-1.5 rounded-lg hover:bg-muted text-foreground cursor-pointer shrink-0 transition-colors"
-                            aria-label={selectedBoothIds.has(booth.id) ? `Deselect booth ${booth.boothNumber}` : `Select booth ${booth.boothNumber}`}
+                            aria-label={selectedBoothIds.has(booth.id) ? tOrg("deselectBooth", { num: booth.boothNumber }) : tOrg("selectBooth", { num: booth.boothNumber })}
                           >
                             {selectedBoothIds.has(booth.id) ? (
                               <CheckSquare className="h-4 w-4 text-primary" />
@@ -1342,23 +1348,23 @@ export default function BoothManagerPage() {
                               <Badge variant="outline" size="sm">{booth.hallName}</Badge>
                             </div>
                             <h3 className="text-base font-bold text-foreground mt-1 truncate">
-                              {isOccupied ? booth.companyName : "Available Lot"}
+                              {isOccupied ? booth.companyName : tOrg("availableLot")}
                             </h3>
                           </div>
                         </div>
 
                         <div className="flex flex-col items-end gap-1">
                           <Badge variant={isOccupied ? "secondary" : "success"} size="sm">
-                            {isOccupied ? "Occupied" : "Available"}
+                            {isOccupied ? tOrg("statusOccupied") : tOrg("statusAvailable")}
                           </Badge>
                           {booth.isSample && (
                             <Badge variant="outline" size="sm" className="text-[11px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 border-amber-500/40">
-                              {tOrg("sampleBadge") || "Sample"}
+                              {tOrg("sampleBadge")}
                             </Badge>
                           )}
                           {booth.boothType && (
                             <Badge variant="outline" size="sm" className="text-[11px] py-0 px-1.5 font-normal">
-                              {BOOTH_TYPES[booth.boothType]?.label || booth.boothType}
+                              {BOOTH_TYPES[booth.boothType] ? tOrg(BOOTH_TYPES[booth.boothType].labelKey) : booth.boothType}
                             </Badge>
                           )}
                         </div>
@@ -1369,7 +1375,7 @@ export default function BoothManagerPage() {
                         <div className="flex items-center gap-2 text-[11px] text-muted-foreground bg-muted/40 px-2 py-1 rounded border border-border/40">
                           <Maximize2 className="h-3 w-3 text-primary shrink-0" />
                           <span className="font-medium text-foreground">
-                            {booth.dimensions || "Standard Lot"}
+                            {booth.dimensions || tOrg("standardLot")}
                           </span>
                           {booth.areaSqm ? <span>({booth.areaSqm} m²)</span> : null}
                         </div>
@@ -1405,7 +1411,7 @@ export default function BoothManagerPage() {
                           </a>
                         ) : (
                           <span className="text-xs text-muted-foreground truncate block">
-                            {isOccupied ? "No website linked" : "Available lot"}
+                            {isOccupied ? tOrg("noWebsite") : tOrg("availableLot")}
                           </span>
                         )}
                       </div>
@@ -1417,11 +1423,11 @@ export default function BoothManagerPage() {
                             variant="outline"
                             className="text-xs min-h-[36px] px-2.5 gap-1 text-muted-foreground hover:text-amber-600 dark:hover:text-amber-400 cursor-pointer"
                             onClick={() => handleVacateBooth(booth)}
-                            title="Vacate / Release Tenant"
-                            aria-label={`Vacate tenant from booth ${booth.boothNumber}`}
+                            title={tOrg("vacateTitle")}
+                            aria-label={tOrg("vacateAria", { num: booth.boothNumber })}
                           >
                             <UserMinus className="h-3.5 w-3.5" />
-                            <span className="hidden sm:inline">Vacate</span>
+                            <span className="hidden sm:inline">{tOrg("vacateBtn")}</span>
                           </Button>
                         )}
 
@@ -1430,10 +1436,10 @@ export default function BoothManagerPage() {
                           variant="outline"
                           className="text-xs min-h-[36px] px-2.5 gap-1 cursor-pointer"
                           onClick={() => handleOpenEditModal(booth)}
-                          aria-label={isOccupied ? `Edit booth ${booth.boothNumber}` : `Assign booth ${booth.boothNumber}`}
+                          aria-label={isOccupied ? tOrg("editAria", { num: booth.boothNumber }) : tOrg("assignAria", { num: booth.boothNumber })}
                         >
                           <Edit2 className="h-3.5 w-3.5" />
-                          <span>{isOccupied ? "Edit" : "Assign"}</span>
+                          <span>{isOccupied ? tOrg("editBtn") : tOrg("assignBtn")}</span>
                         </Button>
 
                         <Button
@@ -1441,8 +1447,8 @@ export default function BoothManagerPage() {
                           variant="outline"
                           className="text-xs min-h-[36px] px-2 text-destructive/80 hover:text-destructive hover:border-destructive/40 cursor-pointer"
                           onClick={() => setDeletingBooth(booth)}
-                          title="Decommission Lot"
-                          aria-label={`Decommission booth ${booth.boothNumber}`}
+                          title={tOrg("decommTitleAttr")}
+                          aria-label={tOrg("decommAria", { num: booth.boothNumber })}
                         >
                           <Trash2 className="h-3.5 w-3.5" />
                         </Button>
@@ -1469,7 +1475,7 @@ export default function BoothManagerPage() {
                         aria-checked={allDisplayedSelected ? true : someDisplayedSelected ? "mixed" : false}
                         onClick={toggleSelectAll}
                         className="min-w-[36px] min-h-[36px] inline-flex items-center justify-center p-1.5 rounded-lg hover:bg-muted text-foreground cursor-pointer transition-colors"
-                        aria-label={allDisplayedSelected ? "Deselect all displayed lots" : "Select all displayed lots"}
+                        aria-label={allDisplayedSelected ? tOrg("deselectAllLots") : tOrg("selectAllLots")}
                       >
                         {allDisplayedSelected ? (
                           <CheckSquare className="h-4 w-4 text-primary" />
@@ -1480,14 +1486,14 @@ export default function BoothManagerPage() {
                         )}
                       </button>
                     </th>
-                    <th className="p-3 font-medium">Booth Lot #</th>
-                    <th className="p-3 font-medium">Hall</th>
-                    <th className="p-3 font-medium">Status</th>
-                    <th className="p-3 font-medium">Tenant / Exhibitor</th>
-                    <th className="p-3 font-medium">Industry</th>
-                    <th className="p-3 font-medium">Dimensions & Space</th>
-                    <th className="p-3 font-medium">Type</th>
-                    <th className="p-3 font-medium text-right">Actions</th>
+                    <th className="p-3 font-medium">{tOrg("thLot")}</th>
+                    <th className="p-3 font-medium">{tOrg("thHall")}</th>
+                    <th className="p-3 font-medium">{tOrg("thStatus")}</th>
+                    <th className="p-3 font-medium">{tOrg("thTenant")}</th>
+                    <th className="p-3 font-medium">{tOrg("thIndustry")}</th>
+                    <th className="p-3 font-medium">{tOrg("thDims")}</th>
+                    <th className="p-3 font-medium">{tOrg("thType")}</th>
+                    <th className="p-3 font-medium">{tOrg("thActions")}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -1511,7 +1517,7 @@ export default function BoothManagerPage() {
                             aria-checked={isSelected}
                             onClick={() => toggleSelectBooth(booth.id)}
                             className="min-w-[36px] min-h-[36px] inline-flex items-center justify-center p-1.5 rounded-lg hover:bg-muted text-foreground cursor-pointer transition-colors"
-                            aria-label={isSelected ? `Deselect booth ${booth.boothNumber}` : `Select booth ${booth.boothNumber}`}
+                            aria-label={isSelected ? tOrg("deselectBooth", { num: booth.boothNumber }) : tOrg("selectBooth", { num: booth.boothNumber })}
                           >
                             {isSelected ? (
                               <CheckSquare className="h-4 w-4 text-primary" />
@@ -1524,7 +1530,7 @@ export default function BoothManagerPage() {
                           {booth.boothNumber}
                           {booth.isSample && (
                             <Badge variant="outline" size="sm" className="ml-2 text-[11px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 border-amber-500/40">
-                              {tOrg("sampleBadge") || "Sample"}
+                              {tOrg("sampleBadge")}
                             </Badge>
                           )}
                         </td>
@@ -1538,7 +1544,7 @@ export default function BoothManagerPage() {
                         </td>
                         <td className="p-3">
                           <div className="font-semibold text-foreground truncate max-w-[200px]">
-                            {isOccupied ? booth.companyName : <span className="text-muted-foreground italic font-normal">Unassigned Lot</span>}
+                            {isOccupied ? booth.companyName : <span className="text-muted-foreground italic font-normal">{tOrg("unassignedLot")}</span>}
                           </div>
                           {booth.websiteUrl && sanitizeUrl(booth.websiteUrl) && (
                             <a
@@ -1566,7 +1572,7 @@ export default function BoothManagerPage() {
                         <td className="p-3">
                           {booth.boothType ? (
                             <Badge variant="outline" size="sm">
-                              {BOOTH_TYPES[booth.boothType]?.label || booth.boothType}
+                              {BOOTH_TYPES[booth.boothType] ? tOrg(BOOTH_TYPES[booth.boothType].labelKey) : booth.boothType}
                             </Badge>
                           ) : (
                             <span className="text-muted-foreground">-</span>
@@ -1580,7 +1586,7 @@ export default function BoothManagerPage() {
                                 variant="outline"
                                 className="text-xs min-h-[36px] h-9 px-2 text-muted-foreground hover:text-amber-600 dark:hover:text-amber-400 cursor-pointer"
                                 onClick={() => handleVacateBooth(booth)}
-                                title="Vacate Tenant"
+                                title={tOrg("vacateTitle")}
                                 aria-label={`Vacate tenant from booth ${booth.boothNumber}`}
                               >
                                 <UserMinus className="h-3.5 w-3.5" />
@@ -1624,10 +1630,10 @@ export default function BoothManagerPage() {
             </div>
             <div className="space-y-1.5 max-w-md mx-auto">
               <h3 className="text-base font-bold text-foreground">
-                No Exhibitor Booths Allocated Yet
+                {tOrg("emptyTitle")}
               </h3>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Exhibition booths map commercial exhibitors and sponsors to specific venue hall lots. You can create lots individually or bulk-import an entire floor roster via CSV.
+                {tOrg("emptyDesc")}
               </p>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-2.5 pt-2">
@@ -1638,7 +1644,7 @@ export default function BoothManagerPage() {
                 className="text-xs gap-1.5 min-h-[44px] px-4 cursor-pointer"
               >
                 <Plus className="h-3.5 w-3.5" />
-                <span>Create First Booth Lot</span>
+                <span>{tOrg("createFirst")}</span>
               </Button>
               <Button
                 size="sm"
@@ -1647,16 +1653,16 @@ export default function BoothManagerPage() {
                 className="text-xs gap-1.5 min-h-[44px] px-4 cursor-pointer"
               >
                 <Upload className="h-3.5 w-3.5" />
-                <span>Bulk Import via CSV</span>
+                <span>{tOrg("bulkImportBtn")}</span>
               </Button>
             </div>
           </Card>
         ) : filteredBooths.length === 0 ? (
           <div className="p-12 text-center bg-card rounded-xl border border-border space-y-3">
             <Store className="h-10 w-10 text-muted-foreground mx-auto" />
-            <h3 className="text-sm font-bold text-foreground">No Booths Found</h3>
+            <h3 className="text-sm font-bold text-foreground">{tOrg("noMatchTitle")}</h3>
             <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-              No exhibitor booths match your active search keyword or hall filters.
+              {tOrg("noMatchDesc")}
             </p>
             <Button
               size="sm"
@@ -1669,7 +1675,7 @@ export default function BoothManagerPage() {
               }}
               className="text-xs min-h-[44px] px-4 cursor-pointer"
             >
-              Clear Filters
+              {tOrg("clearFilters")}
             </Button>
           </div>
         ) : null}
@@ -1679,8 +1685,8 @@ export default function BoothManagerPage() {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={editingBooth ? "Assign Exhibitor Tenant" : "Create Exhibition Booth Lot"}
-        description="Configure floor hall number, company tenant, industry classification, and public web metadata."
+        title={editingBooth ? tOrg("modalAssignTitle") : tOrg("modalCreateTitle")}
+        description={tOrg("modalDesc")}
         size="md"
       >
         <form onSubmit={handleSaveBooth} className="space-y-4 pt-2">
@@ -1698,16 +1704,16 @@ export default function BoothManagerPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Input
               id="modal-booth-number"
-              label="Booth Number / ID"
-              placeholder="e.g. Hall A1 - B04"
+              label={tOrg("fBoothNumber")}
+              placeholder={tOrg("fBoothNumberPh")}
               value={formBoothNumber}
               onChange={(e) => setFormBoothNumber(e.target.value)}
               required
             />
             <Input
               id="modal-hall-name"
-              label="Hall Name"
-              placeholder="e.g. Hall A1"
+              label={tOrg("fHallName")}
+              placeholder={tOrg("fHallNamePh")}
               value={formHallName}
               onChange={(e) => setFormHallName(e.target.value)}
               required
@@ -1722,8 +1728,8 @@ export default function BoothManagerPage() {
 
           <Input
             id="modal-company-name"
-            label="Exhibitor Company Name"
-            placeholder="e.g. PT Nusantara Robotics (Leave blank if unassigned)"
+            label={tOrg("fCompany")}
+            placeholder={tOrg("fCompanyPh")}
             value={formCompanyName}
             onChange={(e) => setFormCompanyName(e.target.value)}
           />
@@ -1732,22 +1738,22 @@ export default function BoothManagerPage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <Input
               id="modal-dimensions"
-              label="Dimensions"
-              placeholder="e.g. 3m x 3m, 6m x 3m"
+              label={tOrg("fDims")}
+              placeholder={tOrg("fDimsPh")}
               value={formDimensions}
               onChange={(e) => setFormDimensions(e.target.value)}
             />
             <Input
               id="modal-area"
-              label="Floor Area (m²)"
+              label={tOrg("fArea")}
               type="number"
-              placeholder="e.g. 9"
+              placeholder={tOrg("fAreaPh")}
               value={formAreaSqm}
               onChange={(e) => setFormAreaSqm(e.target.value)}
             />
             <div>
               <label htmlFor="modal-booth-type" className="block text-xs font-semibold text-foreground mb-1.5">
-                Structure Type
+                {tOrg("fType")}
               </label>
               <select
                 id="modal-booth-type"
@@ -1755,10 +1761,10 @@ export default function BoothManagerPage() {
                 value={formBoothType}
                 onChange={(e) => setFormBoothType(e.target.value)}
               >
-                <option value="SHELL_SCHEME">Shell Scheme (Standard)</option>
-                <option value="RAW_SPACE">Raw Space (Custom Build)</option>
-                <option value="ISLAND">Island Pavilion (4-Side Open)</option>
-                <option value="CORNER">Corner Lot (2-Side Open)</option>
+                <option value="SHELL_SCHEME">{tOrg("btShellOpt")}</option>
+                <option value="RAW_SPACE">{tOrg("btRawOpt")}</option>
+                <option value="ISLAND">{tOrg("btIslandOpt")}</option>
+                <option value="CORNER">{tOrg("btCornerOpt")}</option>
               </select>
             </div>
           </div>
@@ -1766,14 +1772,20 @@ export default function BoothManagerPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Input
               id="modal-industry"
-              label="Industry Classification"
-              placeholder="e.g. Industrial Automation"
+              label={tOrg("fIndustry")}
+              placeholder={tOrg("fIndustryPh")}
               value={formIndustry}
               onChange={(e) => setFormIndustry(e.target.value)}
+              list="industry-taxonomy-list"
             />
+            <datalist id="industry-taxonomy-list">
+              {ARCHETYPE_LIST.map((arch) => (
+                <option key={arch} value={archTag(tArch, arch, arch)} />
+              ))}
+            </datalist>
             <Input
               id="modal-website-url"
-              label="Website URL"
+              label={tOrg("fWebsite")}
               placeholder="https://company.com"
               value={formWebsiteUrl}
               onChange={(e) => setFormWebsiteUrl(e.target.value)}
@@ -1782,13 +1794,13 @@ export default function BoothManagerPage() {
 
           <div>
             <label htmlFor="modal-description" className="block text-xs font-semibold text-foreground mb-1.5">
-              Booth & Product Description
+              {tOrg("fDesc")}
             </label>
             <textarea
               id="modal-description"
               rows={3}
               className="w-full rounded-md border border-input bg-background px-3 py-2 text-xs ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              placeholder="Exhibitor product lineup, live demos, or booth location notes..."
+              placeholder={tOrg("fDescPh")}
               value={formDescription}
               onChange={(e) => setFormDescription(e.target.value)}
             />
@@ -1802,7 +1814,7 @@ export default function BoothManagerPage() {
               onClick={() => setIsModalOpen(false)}
               className="min-h-[44px] px-4 cursor-pointer text-xs"
             >
-              Cancel
+              {tCom("cancel")}
             </Button>
             <Button
               type="submit"
@@ -1811,7 +1823,7 @@ export default function BoothManagerPage() {
               disabled={isSubmitting}
               className="min-h-[44px] px-4 cursor-pointer text-xs"
             >
-              {isSubmitting ? "Saving..." : "Save Booth"}
+              {isSubmitting ? tOrg("saving") : tOrg("saveBooth")}
             </Button>
           </div>
         </form>
@@ -1821,8 +1833,8 @@ export default function BoothManagerPage() {
       <Modal
         isOpen={isCsvModalOpen}
         onClose={() => setIsCsvModalOpen(false)}
-        title="Batch Import Exhibitor Booths (CSV)"
-        description="Upload or paste comma-separated booth allocations to bulk populate your exhibition hall roster."
+        title={tOrg("csvTitle")}
+        description={tOrg("csvDesc")}
         size="lg"
       >
         <div className="space-y-4 pt-2">
@@ -1840,7 +1852,7 @@ export default function BoothManagerPage() {
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <label htmlFor="csv-input-textarea" className="text-xs font-semibold text-foreground">
-                Paste CSV Data (Columns: BoothNumber, HallName, CompanyName, Industry, Dimensions, AreaSqm, BoothType, Website, Description)
+                {tOrg("csvLabel")}
               </label>
               <button
                 type="button"
@@ -1851,7 +1863,7 @@ export default function BoothManagerPage() {
                   )
                 }
               >
-                Insert Sample Data
+                {tOrg("insertSample")}
               </button>
             </div>
             <textarea
@@ -1859,7 +1871,7 @@ export default function BoothManagerPage() {
               rows={4}
               value={csvRawText}
               onChange={(e) => handleParseCsv(e.target.value)}
-              placeholder="Hall A1 - B01, Hall A1, PT Nusantara Robotics, Industrial Automation, 6m x 3m, 18, RAW_SPACE, https://nusantara.com, Heavy arms..."
+              placeholder={tOrg("csvPh")}
               className="w-full font-mono rounded-md border border-input bg-background px-3 py-2 text-xs ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             />
           </div>
@@ -1868,18 +1880,18 @@ export default function BoothManagerPage() {
           {parsedCsvRows.length > 0 && (
             <div className="space-y-2">
               <div className="flex items-center justify-between text-xs font-semibold text-foreground">
-                <span>Validation Preview ({parsedCsvRows.filter((r) => r.valid).length} valid of {parsedCsvRows.length} rows)</span>
+                <span>{tOrg("validationPreview", { valid: parsedCsvRows.filter((r) => r.valid).length, total: parsedCsvRows.length })}</span>
               </div>
               <div className="max-h-48 overflow-y-auto border border-border rounded-lg text-xs">
                 <table className="w-full text-left">
                   <thead className="bg-muted/60 text-muted-foreground font-semibold border-b border-border">
                     <tr>
-                      <th className="p-2">Status</th>
-                      <th className="p-2">Booth #</th>
-                      <th className="p-2">Hall</th>
-                      <th className="p-2">Company</th>
-                      <th className="p-2">Industry</th>
-                      <th className="p-2">Space / Type</th>
+                      <th className="p-2">{tOrg("csvThStatus")}</th>
+                      <th className="p-2">{tOrg("csvThBooth")}</th>
+                      <th className="p-2">{tOrg("thHall")}</th>
+                      <th className="p-2">{tOrg("csvThCompany")}</th>
+                      <th className="p-2">{tOrg("thIndustry")}</th>
+                      <th className="p-2">{tOrg("csvThSpace")}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
@@ -1887,15 +1899,15 @@ export default function BoothManagerPage() {
                       <tr key={idx} className={row.valid ? "hover:bg-muted/30" : "bg-destructive/5 text-destructive"}>
                         <td className="p-2">
                           {row.valid ? (
-                            <Badge variant="success" size="sm">Valid</Badge>
+                            <Badge variant="success" size="sm">{tOrg("validBadge")}</Badge>
                           ) : (
-                            <Badge variant="destructive" size="sm">Invalid</Badge>
+                            <Badge variant="destructive" size="sm">{tOrg("invalidBadge")}</Badge>
                           )}
                         </td>
                         <td className="p-2 font-mono">{row.boothNumber}</td>
                         <td className="p-2">{row.hallName}</td>
-                        <td className="p-2 font-medium">{row.companyName || "Unassigned"}</td>
-                        <td className="p-2">{row.industry || "General Industry"}</td>
+                        <td className="p-2 font-medium">{row.companyName || tOrg("unassignedRow")}</td>
+                        <td className="p-2">{row.industry || tOrg("generalIndustry")}</td>
                         <td className="p-2 font-mono text-[11px]">
                           {row.dimensions || "3m x 3m"} ({row.areaSqm || 9} m²)
                         </td>
@@ -1915,7 +1927,7 @@ export default function BoothManagerPage() {
               onClick={() => setIsCsvModalOpen(false)}
               className="min-h-[44px] px-4 cursor-pointer text-xs"
             >
-              Cancel
+              {tCom("cancel")}
             </Button>
             <Button
               type="button"
@@ -1926,7 +1938,7 @@ export default function BoothManagerPage() {
               className="gap-1.5 min-h-[44px] px-4 cursor-pointer text-xs"
             >
               <Check className="h-4 w-4" />
-              <span>Import {parsedCsvRows.filter((r) => r.valid).length} Lots</span>
+              <span>{tOrg("importLots", { count: parsedCsvRows.filter((r) => r.valid).length })}</span>
             </Button>
           </div>
         </div>
@@ -1936,24 +1948,24 @@ export default function BoothManagerPage() {
       <Modal
         isOpen={!!deletingBooth}
         onClose={() => !isDeleting && setDeletingBooth(null)}
-        title="Decommission Booth Lot"
-        description="Are you sure you want to permanently decommission this floor lot from the exhibition hall grid?"
+        title={tOrg("decommModalTitle")}
+        description={tOrg("decommModalDesc")}
         size="sm"
       >
         <div className="space-y-4 pt-2">
           {deletingBooth && (
             <div className="p-3.5 bg-muted/50 rounded-lg border border-border text-xs space-y-1.5">
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Booth Number:</span>
+                <span className="text-muted-foreground">{tOrg("rowBoothNumber")}</span>
                 <span className="font-mono font-bold text-foreground">{deletingBooth.boothNumber}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Hall:</span>
+                <span className="text-muted-foreground">{tOrg("rowHall")}</span>
                 <span className="font-semibold text-foreground">{deletingBooth.hallName}</span>
               </div>
               {deletingBooth.companyName && (
                 <div className="flex items-center justify-between">
-                  <span className="text-muted-foreground">Assigned Tenant:</span>
+                  <span className="text-muted-foreground">{tOrg("rowTenant")}</span>
                   <span className="font-semibold text-foreground">{deletingBooth.companyName}</span>
                 </div>
               )}
@@ -1961,7 +1973,7 @@ export default function BoothManagerPage() {
           )}
 
           <p className="text-xs text-destructive font-medium">
-            This action cannot be undone. Commercial assignments and telemetry records associated with this booth lot will be deleted.
+            {tOrg("decommWarn")}
           </p>
 
           <div className="pt-3 border-t border-border flex items-center justify-end gap-2">
@@ -1973,7 +1985,7 @@ export default function BoothManagerPage() {
               onClick={() => setDeletingBooth(null)}
               className="min-h-[44px] px-4 cursor-pointer text-xs"
             >
-              Cancel
+              {tCom("cancel")}
             </Button>
             <Button
               type="button"
@@ -1984,7 +1996,7 @@ export default function BoothManagerPage() {
               className="min-h-[44px] px-4 cursor-pointer text-xs gap-1.5"
             >
               <Trash2 className="h-4 w-4" />
-              <span>{isDeleting ? "Decommissioning..." : "Confirm Decommission"}</span>
+              <span>{isDeleting ? tOrg("decommissioning") : tOrg("decommConfirm")}</span>
             </Button>
           </div>
         </div>
@@ -1994,14 +2006,14 @@ export default function BoothManagerPage() {
       {selectedBoothIds.size > 0 && (
         <div
           role="toolbar"
-          aria-label="Bulk actions for selected booths"
+          aria-label={tOrg("toolbarAria")}
           className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-card/95 backdrop-blur-md border border-primary/40 rounded-2xl shadow-2xl px-4 py-3 flex items-center gap-3 flex-wrap animate-fade-in"
         >
           <div className="flex items-center gap-2 text-xs font-semibold text-foreground pr-2 border-r border-border">
             <Badge variant="secondary" size="sm" className="font-mono font-bold">
               {selectedBoothIds.size}
             </Badge>
-            <span>{selectedBoothIds.size === 1 ? "Lot Selected" : "Lots Selected"}</span>
+            <span>{selectedBoothIds.size === 1 ? tOrg("lotSelected") : tOrg("lotsSelected")}</span>
           </div>
 
           <Button
@@ -2010,10 +2022,10 @@ export default function BoothManagerPage() {
             disabled={isBulkVacating}
             onClick={handleBulkVacate}
             className="text-xs min-h-[36px] sm:min-h-[44px] px-3 gap-1.5 cursor-pointer text-muted-foreground hover:text-amber-600 dark:hover:text-amber-400"
-            aria-label="Vacate tenants on selected booths"
+            aria-label={tOrg("vacateSelAria")}
           >
             <UserMinus className="h-4 w-4" />
-            <span>{isBulkVacating ? "Releasing..." : "Vacate Tenants"}</span>
+            <span>{isBulkVacating ? tOrg("releasing") : tOrg("vacateTenants")}</span>
           </Button>
 
           <Button
@@ -2022,10 +2034,10 @@ export default function BoothManagerPage() {
             disabled={isBulkDeleting}
             onClick={() => setIsBulkDeleteModalOpen(true)}
             className="text-xs min-h-[36px] sm:min-h-[44px] px-3 gap-1.5 cursor-pointer"
-            aria-label="Decommission selected booths"
+            aria-label={tOrg("decommSelAria")}
           >
             <Trash2 className="h-4 w-4" />
-            <span>Decommission Lots</span>
+            <span>{tOrg("decommissionLots")}</span>
           </Button>
 
           <Button
@@ -2033,10 +2045,10 @@ export default function BoothManagerPage() {
             size="sm"
             onClick={clearSelection}
             className="text-xs min-h-[36px] sm:min-h-[44px] px-2.5 gap-1 text-muted-foreground hover:text-foreground cursor-pointer"
-            aria-label="Clear all selections"
+            aria-label={tOrg("clearSelAria")}
           >
             <X className="h-4 w-4" />
-            <span>Clear</span>
+            <span>{tOrg("clearSelBtn")}</span>
           </Button>
         </div>
       )}
@@ -2045,14 +2057,14 @@ export default function BoothManagerPage() {
       <Modal
         isOpen={isBulkDeleteModalOpen}
         onClose={() => !isBulkDeleting && setIsBulkDeleteModalOpen(false)}
-        title="Bulk Decommission Booth Lots"
-        description={`Are you sure you want to permanently decommission ${selectedBoothIds.size} selected floor lots from the exhibition hall grid?`}
+        title={tOrg("bulkModalTitle")}
+        description={tOrg("bulkModalDesc", { count: selectedBoothIds.size })}
         size="sm"
       >
         <div className="space-y-4 pt-2">
           <div className="p-3.5 bg-muted/50 rounded-lg border border-border text-xs space-y-1.5 max-h-48 overflow-y-auto">
             <div className="font-semibold text-foreground mb-1">
-              Selected Lots for Decommission ({selectedBoothIds.size}):
+              {tOrg("bulkListTitle", { count: selectedBoothIds.size })}
             </div>
             <div className="flex flex-wrap gap-1.5">
               {booths
@@ -2066,7 +2078,7 @@ export default function BoothManagerPage() {
           </div>
 
           <p className="text-xs text-destructive font-medium">
-            This action cannot be undone. Commercial assignments and telemetry records associated with all {selectedBoothIds.size} booth lots will be deleted.
+            {tOrg("bulkWarn", { count: selectedBoothIds.size })}
           </p>
 
           <div className="pt-3 border-t border-border flex items-center justify-end gap-2">
@@ -2078,7 +2090,7 @@ export default function BoothManagerPage() {
               onClick={() => setIsBulkDeleteModalOpen(false)}
               className="min-h-[44px] px-4 cursor-pointer text-xs"
             >
-              Cancel
+              {tCom("cancel")}
             </Button>
             <Button
               type="button"
@@ -2089,7 +2101,7 @@ export default function BoothManagerPage() {
               className="min-h-[44px] px-4 cursor-pointer text-xs gap-1.5"
             >
               <Trash2 className="h-4 w-4" />
-              <span>{isBulkDeleting ? "Decommissioning..." : `Confirm Decommission (${selectedBoothIds.size})`}</span>
+              <span>{isBulkDeleting ? tOrg("decommissioning") : tOrg("bulkConfirm", { count: selectedBoothIds.size })}</span>
             </Button>
           </div>
         </div>
