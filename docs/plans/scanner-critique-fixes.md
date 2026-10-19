@@ -8,7 +8,7 @@ Direction: honest record first, all five issues, server re-admit.
   confirm.
 - [x] **2. Harden event scope** (`$impeccable harden`): eventId in verify
   body, event banner with change control, fix hardcoded ev-1 case.
-- [ ] **3. Clarify ownership UI + i18n** (`$impeccable clarify`): owned-event
+- [x] **3. Clarify ownership UI + i18n** (`$impeccable clarify`): owned-event
   selector defaulting from `?eventId=`, triage dictionary pass.
 - [ ] **4. Layout single triage** (`$impeccable layout`): one authoritative
   triage card on `<lg`, 44px audit buttons.

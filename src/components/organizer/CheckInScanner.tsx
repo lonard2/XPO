@@ -81,45 +81,59 @@ interface CheckInScannerProps {
 const SCAN_STATUS_MAP: Record<
   ScanResult["status"],
   {
+    labelKey: string;
     label: string;
     variant: "success" | "warning" | "destructive";
+    badgeKey: string;
     badgeText: string;
     icon: React.ComponentType<{ className?: string }>;
   }
 > = {
   CHECKED_IN: {
+    labelKey: "scanStatusCheckedIn",
     label: "Gate Entry Granted",
     variant: "success",
+    badgeKey: "scanBadgeAdmitted",
     badgeText: "Admitted",
     icon: CheckCircle2,
   },
   DOUBLE_SCAN: {
+    labelKey: "scanStatusDouble",
     label: "Double Scan Alert: Already Admitted",
     variant: "warning",
+    badgeKey: "scanBadgeDouble",
     badgeText: "Already Scanned",
     icon: AlertTriangle,
   },
   INVALID: {
+    labelKey: "scanStatusInvalid",
     label: "Pass Unverified: Invalid Ticket",
     variant: "destructive",
+    badgeKey: "scanBadgeInvalid",
     badgeText: "Invalid Pass",
     icon: XCircle,
   },
   CANCELLED: {
+    labelKey: "scanStatusCancelled",
     label: "Ticket Voided / Cancelled",
     variant: "destructive",
+    badgeKey: "scanBadgeCancelled",
     badgeText: "Cancelled",
     icon: XCircle,
   },
   NETWORK_ERROR: {
+    labelKey: "scanStatusNetwork",
     label: "Connection Timeout / Network Offline",
     variant: "warning",
+    badgeKey: "scanBadgeNetwork",
     badgeText: "Network Error",
     icon: WifiOff,
   },
   WRONG_EVENT: {
+    labelKey: "scanStatusWrongEvent",
     label: "Wrong Event Gate",
     variant: "warning",
+    badgeKey: "scanBadgeWrongEvent",
     badgeText: "Wrong Event",
     icon: AlertTriangle,
   },
@@ -170,6 +184,20 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
 
   const scanningEvent = ownedEvents.find((e: any) => e.id === selectedEventId) || null;
 
+  // Localized triage verdicts with English fallback when a key is absent.
+  const statusLabel = (status: ScanResult["status"]) => {
+    const m = SCAN_STATUS_MAP[status];
+    if (!m) return status;
+    const v = tOrg(m.labelKey);
+    return v && v !== m.labelKey ? v : m.label;
+  };
+  const statusBadge = (status: ScanResult["status"]) => {
+    const m = SCAN_STATUS_MAP[status];
+    if (!m) return status;
+    const v = tOrg(m.badgeKey);
+    return v && v !== m.badgeKey ? v : m.badgeText;
+  };
+
   const [inputMode, setInputMode] = React.useState<"camera" | "manual">("camera");
   const [manualHash, setManualHash] = React.useState("");
   const [isVerifying, setIsVerifying] = React.useState(false);
@@ -199,7 +227,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
   const startCamera = React.useCallback(async (overrideMode?: "environment" | "user") => {
     setCameraError(null);
     if (typeof navigator === "undefined" || !navigator.mediaDevices?.getUserMedia) {
-      setCameraError("Camera capture API is not supported on this device.");
+      setCameraError(tOrg("camUnsupported"));
       return;
     }
 
@@ -231,10 +259,10 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
       setCameraActive(false);
       if (err.name === "NotAllowedError" || err.name === "PermissionDeniedError") {
         setCameraError(
-          "Camera access denied in browser settings. To enable: tap the lock or camera icon in your address bar, set Camera to Allow, and tap Retry Sensor."
+          tOrg("camPermissionHelp")
         );
       } else {
-        setCameraError("Unable to initialize optical camera sensor on this device. Please check hardware permissions or type code by keyboard.");
+        setCameraError(tOrg("camDenied"));
       }
     }
   }, [facingMode]);
@@ -400,7 +428,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
               status: "DOUBLE_SCAN",
               training: isTraining,
               payloadToRetry: payload,
-              message: `Ticket was already admitted at ${prevTime}. Confirm attendee ID before authorizing re-entry.`,
+              message: tOrg("doubleMsg", { time: prevTime }),
               checkedInAt: data.checkedInAt,
               attendee: data.attendee,
               ticketTier: data.ticketTier,
@@ -423,7 +451,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
               reEntryOverridden: reAdmitted || undefined,
               message: reAdmitted
                 ? tOrg("overrideRecorded")
-                : "Pass verified successfully. Delegate admission granted.",
+                : tOrg("checkedMsg"),
               checkedInAt: data.checkedInAt || new Date().toISOString(),
               attendee: data.attendee,
               ticketTier: data.ticketTier,
@@ -451,17 +479,17 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
           ) {
             status = "CANCELLED";
             errorCode = "TICKET_CANCELLED";
-            humanMessage = "This ticket was cancelled or voided by the organizer and is not valid for entry.";
+            humanMessage = tOrg("cancelledMsg");
           } else if (rawErr.includes("TICKET_NOT_FOUND") || rawErr.toLowerCase().includes("does not match")) {
             errorCode = "TICKET_NOT_FOUND";
-            humanMessage = "Pass code not found in event database. Verify booking reference or check attendee registration email.";
+            humanMessage = tOrg("notFoundMsg");
           } else if (rawErr.includes("EVENT_MISMATCH")) {
             status = "WRONG_EVENT";
             errorCode = "EVENT_MISMATCH";
-            humanMessage = "Pass belongs to a different event than this gate. Direct the attendee to the correct gate.";
+            humanMessage = tOrg("wrongEventMsg");
           } else if (rawErr.includes("INVALID_SIGNATURE") || rawErr.toLowerCase().includes("verification failed")) {
             errorCode = "INVALID_SIGNATURE";
-            humanMessage = "Cryptographic signature unverified. Pass may belong to a different event, hall, or date.";
+            humanMessage = tOrg("sigMsg");
           } else if (rawErr) {
             humanMessage = rawErr.replace(/^[A-Z_]+:\s*/, "");
           }
@@ -487,7 +515,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
           status: "NETWORK_ERROR",
           training: isTraining,
           errorCode: "NETWORK_TIMEOUT",
-          message: "Connection timeout. Venue Wi-Fi or mobile data may be offline. Check connection and tap Retry Verification.",
+          message: tOrg("networkMsg"),
           rawHash: targetIdentifier,
           payloadToRetry: payload,
           timestamp: nowIso,
@@ -662,7 +690,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
     const nowIso = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
     const updated: ScanResult = {
       ...lastResult,
-      message: "Attendee escorted to On-Site Resolution Desk for ticket investigation.",
+      message: tOrg("resDeskMsg"),
       timestamp: nowIso,
     };
     setScanHistory((prev) => [updated, ...prev.slice(0, 19)]);
@@ -684,13 +712,13 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
     if (scanHistory.length === 0) return;
 
     const headers = [
-      "Timestamp",
-      "Status",
-      "Attendee Name",
-      "Attendee Email",
-      "Ticket Tier",
-      "Message",
-      "Raw Hash / Code",
+      tOrg("csvHTimestamp"),
+      tOrg("csvHStatus"),
+      tOrg("csvHName"),
+      tOrg("csvHEmail"),
+      tOrg("csvHTier"),
+      tOrg("csvHMessage"),
+      tOrg("csvHHash"),
     ];
 
     const escapeCsv = (val: string | undefined | null) => {
@@ -846,31 +874,31 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <Card className="p-3.5 border-border bg-card text-center shadow-xs">
           <div className="text-xs uppercase font-semibold text-muted-foreground">
-            {tOrg("scannerScansProcessed") || "Scans Processed"}
+            {tOrg("scannerScansProcessed")}
           </div>
           <div className="text-xl font-bold text-foreground mt-0.5" data-testid="telemetry-processed">{shiftRows.length}</div>
         </Card>
         <Card className="p-3.5 border-border bg-card text-center shadow-xs">
           <div className="text-xs uppercase font-semibold text-muted-foreground">
-            {tOrg("scannerEntriesGranted") || "Entries Granted"}
+            {tOrg("scannerEntriesGranted")}
           </div>
           <div className="text-xl font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">{validScansCount}</div>
         </Card>
         <Card className="p-3.5 border-border bg-card text-center shadow-xs">
           <div className="text-xs uppercase font-semibold text-muted-foreground">
-            {tOrg("scannerDoubleBlocked") || "Double Scans Blocked"}
+            {tOrg("scannerDoubleBlocked")}
           </div>
           <div className="text-xl font-bold text-amber-700 dark:text-amber-400 mt-0.5">{doubleScansCount}</div>
         </Card>
         <Card className="p-3.5 border-border bg-card text-center shadow-xs">
           <div className="text-xs uppercase font-semibold text-muted-foreground">
-            {tOrg("scannerFraudBlocked") || "Invalid Passes Blocked"}
+            {tOrg("scannerFraudBlocked")}
           </div>
           <div className="text-xl font-bold text-rose-500 mt-0.5">
             {invalidScansCount}
             {networkErrorsCount > 0 && (
               <span className="text-xs font-normal text-amber-700 dark:text-amber-400 ml-1.5">
-                ({networkErrorsCount} net)
+                ({tOrg("netCount", { count: networkErrorsCount })})
               </span>
             )}
           </div>
@@ -896,7 +924,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   )}
                 >
                   <Camera className="h-4 w-4" />
-                  <span>{tOrg("cameraMode") || "Camera Stream"}</span>
+                  <span>{tOrg("cameraMode")}</span>
                 </button>
 
                 <button
@@ -911,7 +939,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   )}
                 >
                   <Search className="h-4 w-4" />
-                  <span>{tOrg("manualMode") || "Manual Code Entry"}</span>
+                  <span>{tOrg("manualMode")}</span>
                 </button>
               </div>
 
@@ -919,10 +947,10 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                 {/* Hardware Barcode Wedge Indicator */}
                 <div
                   className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-muted/60 border border-border/60 text-xs text-muted-foreground font-mono"
-                  title="USB and Bluetooth HID wedge barcode guns automatically detect ticket scans"
+                  title={tOrg("hidTitle")}
                 >
                   <ScanBarcode className="h-3.5 w-3.5 text-primary" />
-                  <span>HID Wedge Ready</span>
+                  <span>{tOrg("hidReady")}</span>
                 </div>
 
                 {/* Tactile Haptic Vibration Toggle */}
@@ -931,18 +959,18 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   size="sm"
                   className="min-h-[44px] min-w-[44px] px-2.5 text-xs gap-1.5 cursor-pointer"
                   onClick={() => setHapticsEnabled(!hapticsEnabled)}
-                  aria-label="Toggle tactile haptic vibration"
-                  title={hapticsEnabled ? "Haptic Vibration Active" : "Haptic Vibration Disabled"}
+                  aria-label={tOrg("hapticAria")}
+                  title={hapticsEnabled ? tOrg("hapticOnTitle") : tOrg("hapticOffTitle")}
                 >
                   {hapticsEnabled ? (
                     <>
                       <Vibrate className="h-4 w-4 text-emerald-500" />
-                      <span className="hidden sm:inline">Haptic On</span>
+                      <span className="hidden sm:inline">{tOrg("hapticOn")}</span>
                     </>
                   ) : (
                     <>
                       <VibrateOff className="h-4 w-4 text-muted-foreground" />
-                      <span className="hidden sm:inline">Haptic Off</span>
+                      <span className="hidden sm:inline">{tOrg("hapticOff")}</span>
                     </>
                   )}
                 </Button>
@@ -953,17 +981,17 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   size="sm"
                   className="min-h-[44px] min-w-[44px] px-2.5 text-xs gap-1.5 cursor-pointer"
                   onClick={() => setSoundEnabled(!soundEnabled)}
-                  aria-label="Toggle audio feedback"
+                  aria-label={tOrg("audioAria")}
                 >
                   {soundEnabled ? (
                     <>
                       <Volume2 className="h-4 w-4 text-emerald-500" />
-                      <span className="hidden sm:inline">{tOrg("scannerAudioOn") || "Audio On"}</span>
+                      <span className="hidden sm:inline">{tOrg("scannerAudioOn")}</span>
                     </>
                   ) : (
                     <>
                       <VolumeX className="h-4 w-4 text-muted-foreground" />
-                      <span className="hidden sm:inline">{tOrg("scannerAudioOff") || "Audio Off"}</span>
+                      <span className="hidden sm:inline">{tOrg("scannerAudioOff")}</span>
                     </>
                   )}
                 </Button>
@@ -999,7 +1027,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                           className="min-h-[44px] text-xs px-3.5 border-white/20 text-white hover:bg-white/10 gap-1.5 cursor-pointer"
                         >
                           <RefreshCw className="h-3.5 w-3.5" />
-                          <span>Retry Sensor</span>
+                          <span>{tOrg("retrySensor")}</span>
                         </Button>
                         <Button
                           type="button"
@@ -1008,7 +1036,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                           onClick={() => setInputMode("manual")}
                           className="min-h-[44px] text-xs px-4 cursor-pointer"
                         >
-                          Type Code by Keyboard
+                          {tOrg("typeByKeyboard")}
                         </Button>
                       </div>
                     </div>
@@ -1023,13 +1051,13 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                           variant="ghost"
                           size="sm"
                           onClick={toggleFacingMode}
-                          aria-label="Switch camera lens"
+                          aria-label={tOrg("lensAria")}
                           className="min-h-[44px] px-2.5 bg-slate-900/60 backdrop-blur-md border border-white/20 text-white hover:bg-slate-900/80 text-xs gap-1.5 cursor-pointer shadow-sm"
-                          title={facingMode === "environment" ? "Switch to Front Lens" : "Switch to Rear Lens"}
+                          title={facingMode === "environment" ? tOrg("frontLensTitle") : tOrg("rearLensTitle")}
                         >
                           <SwitchCamera className="h-4 w-4" />
                           <span className="hidden sm:inline">
-                            {facingMode === "environment" ? "Front Lens" : "Rear Lens"}
+                            {facingMode === "environment" ? tOrg("frontLens") : tOrg("rearLens")}
                           </span>
                         </Button>
                       </div>
@@ -1111,28 +1139,28 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                             <>
                               <CheckCircle2 className="h-16 w-16 text-emerald-400 animate-fade-in" />
                               <span className="text-xs font-mono font-bold text-emerald-300 mt-2 text-center uppercase tracking-wider">
-                                Entry Granted
+                                {tOrg("reticleGranted")}
                               </span>
                             </>
                           ) : lastResult.status === "DOUBLE_SCAN" ? (
                             <>
                               <AlertTriangle className="h-16 w-16 text-amber-400 animate-fade-in" />
                               <span className="text-xs font-mono font-bold text-amber-300 mt-2 text-center uppercase tracking-wider">
-                                Double Scan Blocked
+                                {tOrg("reticleDouble")}
                               </span>
                             </>
                           ) : lastResult.status === "NETWORK_ERROR" ? (
                             <>
                               <WifiOff className="h-16 w-16 text-amber-400 animate-pulse" />
                               <span className="text-xs font-mono font-bold text-amber-300 mt-2 text-center uppercase tracking-wider">
-                                Network Offline
+                                {tOrg("reticleOffline")}
                               </span>
                             </>
                           ) : (
                             <>
                               <XCircle className="h-16 w-16 text-rose-400 animate-fade-in" />
                               <span className="text-xs font-mono font-bold text-rose-300 mt-2 text-center uppercase tracking-wider">
-                                Invalid Pass
+                                {tOrg("reticleInvalid")}
                               </span>
                             </>
                           )
@@ -1140,7 +1168,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                           <>
                             <QrCode className="h-16 w-16 text-primary/80 animate-pulse" />
                             <span className="text-xs font-mono text-slate-300 mt-2 text-center">
-                              {tOrg("scannerAlignTarget") || "Align Delegate QR Pass in Target"}
+                              {tOrg("scannerAlignTarget")}
                             </span>
                           </>
                         )}
@@ -1150,7 +1178,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                         <div className="flex items-center gap-2">
                           <div className="flex items-center gap-1.5">
                             <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
-                            <span>{cameraActive ? (tOrg("scannerOpticalActive") || "Optical Camera Feed Active") : "Optical Sensor Ready"}</span>
+                            <span>{cameraActive ? (tOrg("scannerOpticalActive")) : tOrg("sensorReady")}</span>
                           </div>
                           <span className="hidden sm:inline text-slate-600">•</span>
                           <span className="hidden sm:inline-flex items-center gap-1 text-slate-300">
@@ -1158,7 +1186,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                             <span>HID Wedge Active</span>
                           </span>
                         </div>
-                        <span>{tOrg("scannerHmacGuard") || "Tamper Guard Active"}</span>
+                        <span>{tOrg("scannerHmacGuard")}</span>
                       </div>
                     </>
                   )}
@@ -1171,11 +1199,11 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
               <form onSubmit={handleManualSubmit} className="space-y-3 pt-2">
                 <Input
                   id="scanner-manual-input"
-                  label={tOrg("scannerManualLabel") || "Booking Code, Pass Hash, or Email"}
-                  placeholder={tOrg("scannerManualPlaceholder") || "e.g. XPO-PASS-BK1234-A8F4E290..."}
+                  label={tOrg("scannerManualLabel")}
+                  placeholder={tOrg("scannerManualPlaceholder")}
                   value={manualHash}
                   onChange={(e) => setManualHash(e.target.value)}
-                  helperText={tOrg("scannerManualHelper") || "Enter the booking reference, pass hash, or attendee registration email."}
+                  helperText={tOrg("scannerManualHelper")}
                 />
                 <Button
                   type="submit"
@@ -1186,8 +1214,8 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   <Search className="h-4 w-4" />
                   <span>
                     {isVerifying
-                      ? (tOrg("scannerVerifyingBtn") || "Verifying Pass...")
-                      : (tOrg("scannerValidateBtn") || "Validate & Check-In Pass")}
+                      ? (tOrg("scannerVerifyingBtn"))
+                      : (tOrg("scannerValidateBtn"))}
                   </span>
                 </Button>
               </form>
@@ -1197,14 +1225,14 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
             <div className="pt-3 border-t border-border space-y-2.5">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">
-                  {tOrg("scannerQuickTest") || "Staff Training & Simulation Scenarios:"}
+                  {tOrg("scannerQuickTest")}
                 </span>
                 <button
                   type="button"
                   onClick={() => setShowSimulator(!showSimulator)}
                   className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1 cursor-pointer focus-visible:outline-none focus-visible:underline"
                 >
-                  <span>{showSimulator ? "Hide Scenarios" : "Show Scenarios"}</span>
+                  <span>{showSimulator ? tOrg("hideScenarios") : tOrg("showScenarios")}</span>
                   {showSimulator ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
                 </button>
               </div>
@@ -1212,7 +1240,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
               {showSimulator && (
                 <div className="space-y-2">
                   <p className="text-xs text-muted-foreground">
-                    Practice with test scenarios before gates open. Verifies green, double-scan, and counterfeit handling. {tOrg("trainingHint")}
+                    {tOrg("simPractice")} {tOrg("trainingHint")}
                   </p>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                     <Button
@@ -1223,7 +1251,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                       disabled={isVerifying}
                       className="text-xs min-h-[44px] py-2 px-2.5 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10 cursor-pointer"
                     >
-                      {tOrg("scannerValidPass") || "Valid Pass"}
+                      {tOrg("scannerValidPass")}
                     </Button>
 
                     <Button
@@ -1234,7 +1262,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                       disabled={isVerifying}
                       className="text-xs min-h-[44px] py-2 px-2.5 border-primary/30 text-primary hover:bg-primary/10 cursor-pointer"
                     >
-                      {tOrg("scannerVipPass") || "VIP Delegate"}
+                      {tOrg("scannerVipPass")}
                     </Button>
 
                     <Button
@@ -1245,7 +1273,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                       disabled={isVerifying}
                       className="text-xs min-h-[44px] py-2 px-2.5 border-amber-500/30 text-amber-700 dark:text-amber-400 hover:bg-amber-500/10 cursor-pointer"
                     >
-                      {tOrg("scannerDoubleScan") || "Double Scan"}
+                      {tOrg("scannerDoubleScan")}
                     </Button>
 
                     <Button
@@ -1256,7 +1284,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                       disabled={isVerifying}
                       className="text-xs min-h-[44px] py-2 px-2.5 border-rose-500/30 text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 cursor-pointer"
                     >
-                      {tOrg("scannerFraudTamper") || "Fraud / Tamper"}
+                      {tOrg("scannerFraudTamper")}
                     </Button>
                   </div>
                 </div>
@@ -1306,7 +1334,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   )}
                   <div>
                     <h2 className="text-base font-bold text-foreground">
-                      {SCAN_STATUS_MAP[lastResult.status]?.label || lastResult.status}
+                      {statusLabel(lastResult.status)}
                     </h2>
                     <p className="text-xs text-muted-foreground mt-0.5">{lastResult.message}</p>
                   </div>
@@ -1317,7 +1345,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   size="sm"
                   className="font-semibold text-xs px-2.5 py-0.5 shrink-0"
                 >
-                  {SCAN_STATUS_MAP[lastResult.status]?.badgeText || lastResult.status}
+                  {statusBadge(lastResult.status)}
                 </Badge>
               </div>
 
@@ -1325,20 +1353,20 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
               {lastResult.attendee && (
                 <div className="p-3 bg-card rounded-xl border border-border/80 space-y-2 text-xs">
                   <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">{tOrg("scannerAttendee") || "Attendee:"}</span>
+                    <span className="text-muted-foreground">{tOrg("scannerAttendee")}</span>
                     <span className="font-bold text-foreground">{lastResult.attendee.name}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">{tOrg("scannerEmail") || "Email:"}</span>
+                    <span className="text-muted-foreground">{tOrg("scannerEmail")}</span>
                     <span className="font-mono text-foreground">{lastResult.attendee.email}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">{tOrg("scannerTicketTier") || "Ticket Tier:"}</span>
+                    <span className="text-muted-foreground">{tOrg("scannerTicketTier")}</span>
                     <span className="font-semibold text-primary">{lastResult.ticketTier?.name}</span>
                   </div>
                   {lastResult.checkedInAt && (
                     <div className="flex items-center justify-between pt-1 border-t border-border/60 text-xs">
-                      <span className="text-muted-foreground">{tOrg("scannerCheckInTime") || "Check-in Timestamp:"}</span>
+                      <span className="text-muted-foreground">{tOrg("scannerCheckInTime")}</span>
                       <span className="font-mono text-foreground">
                         {new Date(lastResult.checkedInAt).toLocaleTimeString()}
                       </span>
@@ -1352,10 +1380,10 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                 <div className="space-y-1.5 p-3 bg-card rounded-xl border border-border/80">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-                      {tOrg("scannerPerksUnlocked") || "Perks & Treats Unlocked:"}
+                      {tOrg("scannerPerksUnlocked")}
                     </span>
                     <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
-                      Issue items before attendee departs gate
+                      {tOrg("perksIssueHint")}
                     </span>
                   </div>
                   <div className="space-y-1 pt-1">
@@ -1377,7 +1405,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                 {lastResult.status === "DOUBLE_SCAN" && (
                   <>
                     <div className="text-xs text-muted-foreground leading-relaxed">
-                      Attendee already holds an admission timestamp. If badge was reprinted or attendee is returning from lunch, verify photo ID and grant override.
+                      {tOrg("doubleSop")}
                     </div>
                     <div className="flex items-center gap-2 pt-1">
                       <Button
@@ -1388,7 +1416,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                         className="flex-1 min-h-[44px] text-xs gap-1.5 cursor-pointer"
                       >
                         <Check className="h-4 w-4" />
-                        <span>{tOrg("scannerSupervisorOverride") || "Supervisor Override (Allow Re-Entry)"}</span>
+                        <span>{tOrg("scannerSupervisorOverride")}</span>
                       </Button>
                       <Button
                         type="button"
@@ -1397,7 +1425,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                         onClick={handleSendResolutionDesk}
                         className="min-h-[44px] text-xs px-3 cursor-pointer"
                       >
-                        {tOrg("scannerSendResolutionDesk") || "Escort to Resolution Desk"}
+                        {tOrg("scannerSendResolutionDesk")}
                       </Button>
                     </div>
                   </>
@@ -1406,7 +1434,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                 {lastResult.status === "NETWORK_ERROR" && (
                   <div className="space-y-2">
                     <p className="text-xs text-muted-foreground">
-                      Pass data was preserved. Check connection and retry verification:
+                      {tOrg("networkHint")}
                     </p>
                     <div className="flex items-center gap-2">
                       <Button
@@ -1417,7 +1445,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                         className="flex-1 min-h-[44px] text-xs gap-1.5 cursor-pointer"
                       >
                         <RefreshCw className="h-4 w-4" />
-                        <span>{tOrg("scannerRetryVerification") || "Retry Verification"}</span>
+                        <span>{tOrg("scannerRetryVerification")}</span>
                       </Button>
                       <Button
                         type="button"
@@ -1426,7 +1454,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                         onClick={() => setLastResult(null)}
                         className="min-h-[44px] text-xs px-3 cursor-pointer"
                       >
-                        Dismiss
+                        {tOrg("dismissBtn")}
                       </Button>
                     </div>
                   </div>
@@ -1435,7 +1463,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                 {(lastResult.status === "INVALID" || lastResult.status === "CANCELLED") && (
                   <div className="space-y-2">
                     <div className="text-xs text-muted-foreground leading-relaxed">
-                      Operator Instructions: Check booking code on attendee confirmation email. If issue persists, escort attendee to the On-Site Help Desk.
+                      {tOrg("invalidSop")}
                     </div>
                     <div className="flex items-center gap-2 pt-1">
                       <Button
@@ -1449,7 +1477,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                         className="flex-1 min-h-[44px] text-xs gap-1.5 cursor-pointer"
                       >
                         <Search className="h-4 w-4" />
-                        <span>Search by Email or Code</span>
+                        <span>{tOrg("searchByEmail")}</span>
                       </Button>
                       <Button
                         type="button"
@@ -1458,7 +1486,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                         onClick={() => setLastResult(null)}
                         className="min-h-[44px] text-xs px-3 cursor-pointer"
                       >
-                        Dismiss Alert
+                        {tOrg("dismissAlert")}
                       </Button>
                     </div>
                   </div>
@@ -1467,7 +1495,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                 {lastResult.status === "CHECKED_IN" && (
                   <div className="flex items-center justify-between gap-2 pt-1">
                     <span className="text-[11px] text-muted-foreground">
-                      Tip: Press Space or Esc to clear for next attendee
+                      {tOrg("spaceTip")}
                     </span>
                     <Button
                       type="button"
@@ -1476,7 +1504,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                       onClick={() => setLastResult(null)}
                       className="min-h-[44px] text-xs px-4 cursor-pointer"
                     >
-                      {tOrg("scannerNextAttendee") || "Clear for Next Attendee"}
+                      {tOrg("scannerNextAttendee")}
                     </Button>
                   </div>
                 )}
@@ -1486,10 +1514,10 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
             <Card className="p-8 border-border bg-card text-center space-y-3 shadow-xs">
               <QrCode className="h-10 w-10 text-muted-foreground mx-auto animate-pulse" />
               <h2 className="text-sm font-bold text-foreground">
-                {tOrg("scannerReadyTitle") || "Ready to Scan Passes"}
+                {tOrg("scannerReadyTitle")}
               </h2>
               <p className="text-xs text-muted-foreground max-w-xs mx-auto">
-                {tOrg("scannerReadyDesc") || "Scan attendee tickets using the camera target or enter booking codes to check in."}
+                {tOrg("scannerReadyDesc")}
               </p>
             </Card>
           )}
@@ -1499,11 +1527,11 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
             <div className="flex items-center justify-between">
               <h3 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
                 <Clock className="h-3.5 w-3.5 text-primary" />
-                <span>{tOrg("scannerRecentLogs") || "Gate Scan Activity Audit"}</span>
+                <span>{tOrg("scannerRecentLogs")}</span>
               </h3>
               <div className="flex items-center gap-2">
                 <span className="text-xs text-muted-foreground font-mono">
-                  {scanHistory.length} logs
+                  {tOrg("logsCount", { count: scanHistory.length })}
                 </span>
                 {scanHistory.length > 0 && (
                   <div className="flex items-center gap-1">
@@ -1513,10 +1541,10 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                       size="sm"
                       onClick={handleExportCsv}
                       className="min-h-[36px] px-2.5 text-xs gap-1 cursor-pointer"
-                      title="Download shift scan activity as RFC 4180 CSV"
+                      title={tOrg("exportCsvTitle")}
                     >
                       <Download className="h-3 w-3" />
-                      <span>Export CSV</span>
+                      <span>{tOrg("exportCsv")}</span>
                     </Button>
                     <Button
                       type="button"
@@ -1524,10 +1552,10 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                       size="sm"
                       onClick={handleResetShift}
                       className="min-h-[36px] px-2 text-xs text-muted-foreground hover:text-foreground gap-1 cursor-pointer"
-                      title="Reset shift audit logs"
+                      title={tOrg("resetShiftTitle")}
                     >
                       <RotateCcw className="h-3 w-3" />
-                      <span>{tOrg("scannerResetShift") || "Reset"}</span>
+                      <span>{tOrg("scannerResetShift")}</span>
                     </Button>
                   </div>
                 )}
@@ -1542,10 +1570,10 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                 >
                   <div className="min-w-0">
                     <div className="font-semibold text-foreground truncate">
-                      {scan.attendee?.name || scan.rawHash?.slice(0, 16) || "Scan Record"}
+                      {scan.attendee?.name || scan.rawHash?.slice(0, 16) || tOrg("scanRecord")}
                     </div>
                     <div className="text-xs text-muted-foreground">
-                      {scan.timestamp} • {scan.ticketTier?.name || "General Pass"}
+                      {scan.timestamp} • {scan.ticketTier?.name || tOrg("generalPass")}
                     </div>
                   </div>
                   <span className="flex flex-col items-end gap-1 shrink-0">
@@ -1554,7 +1582,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                       size="sm"
                       className="text-xs font-semibold px-2 py-0.5"
                     >
-                      {SCAN_STATUS_MAP[scan.status]?.badgeText || scan.status}
+                      {statusBadge(scan.status)}
                     </Badge>
                     {scan.training && (
                       <Badge variant="outline" size="sm" className="text-[11px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 border-amber-500/40">
@@ -1567,7 +1595,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
 
               {scanHistory.length === 0 && (
                 <div className="text-center py-4 text-xs text-muted-foreground">
-                  {tOrg("scannerNoLogs") || "No scan events recorded in this session."}
+                  {tOrg("scannerNoLogs")}
                 </div>
               )}
             </div>
@@ -1642,7 +1670,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                 <XCircle className="h-5 w-5 text-rose-400 shrink-0" />
               )}
               <span className="text-sm font-bold truncate">
-                {SCAN_STATUS_MAP[lastResult.status]?.label || lastResult.status}
+                {statusLabel(lastResult.status)}
               </span>
             </div>
 
@@ -1658,7 +1686,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   : "bg-rose-500/20 text-rose-300 border border-rose-500/40"
               )}
             >
-              {SCAN_STATUS_MAP[lastResult.status]?.badgeText || lastResult.status}
+              {statusBadge(lastResult.status)}
             </span>
           </div>
 
@@ -1674,7 +1702,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
               {lastResult.perks && lastResult.perks.length > 0 && (
                 <div className="flex items-center gap-1 bg-amber-400/20 text-amber-300 px-2 py-1 rounded-md text-[11px] font-medium shrink-0 border border-amber-400/30">
                   <Sparkles className="h-3 w-3" />
-                  <span>{lastResult.perks.length} Perks</span>
+                  <span>{tOrg("hudPerks", { count: lastResult.perks.length })}</span>
                 </div>
               )}
             </div>
@@ -1693,7 +1721,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                 onClick={() => setLastResult(null)}
                 className="w-full min-h-[44px] text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white cursor-pointer"
               >
-                {tOrg("scannerNextAttendee") || "Clear for Next Attendee"}
+                {tOrg("scannerNextAttendee")}
               </Button>
             )}
 
@@ -1705,7 +1733,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   onClick={handleOverrideReEntry}
                   className="flex-1 min-h-[44px] text-xs font-semibold bg-amber-600 hover:bg-amber-500 text-white cursor-pointer"
                 >
-                  {tOrg("scannerSupervisorOverride") || "Override Re-Entry"}
+                  {tOrg("scannerSupervisorOverride")}
                 </Button>
                 <Button
                   type="button"
@@ -1713,7 +1741,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   onClick={() => setLastResult(null)}
                   className="min-h-[44px] text-xs px-3 border-white/20 text-white hover:bg-white/10 cursor-pointer"
                 >
-                  Dismiss
+                  {tOrg("dismissBtn")}
                 </Button>
               </>
             )}
@@ -1727,7 +1755,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   className="flex-1 min-h-[44px] text-xs font-semibold gap-1.5 cursor-pointer"
                 >
                   <RefreshCw className="h-4 w-4" />
-                  <span>{tOrg("scannerRetryVerification") || "Retry"}</span>
+                  <span>{tOrg("scannerRetryVerification")}</span>
                 </Button>
                 <Button
                   type="button"
@@ -1735,7 +1763,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   onClick={() => setLastResult(null)}
                   className="min-h-[44px] text-xs px-3 border-white/20 text-white hover:bg-white/10 cursor-pointer"
                 >
-                  Dismiss
+                  {tOrg("dismissBtn")}
                 </Button>
               </>
             )}
@@ -1752,7 +1780,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   className="flex-1 min-h-[44px] text-xs font-semibold gap-1.5 border-white/20 text-white hover:bg-white/10 cursor-pointer"
                 >
                   <Search className="h-4 w-4" />
-                  <span>Manual Search</span>
+                  <span>{tOrg("manualSearchBtn")}</span>
                 </Button>
                 <Button
                   type="button"
@@ -1760,7 +1788,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   onClick={() => setLastResult(null)}
                   className="min-h-[44px] text-xs px-3 text-white hover:bg-white/10 cursor-pointer"
                 >
-                  Dismiss
+                  {tOrg("dismissBtn")}
                 </Button>
               </>
             )}

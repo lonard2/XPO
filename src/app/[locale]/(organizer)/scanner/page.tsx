@@ -24,23 +24,23 @@ export default function DoorScannerPage() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-              {tOrg("scannerTitle") || "Door Staff QR Check-In Console"}
+              {tOrg("scannerTitle")}
             </h1>
-            <Badge variant="success" size="sm">{tOrg("scannerReadyBadge") || "Gate Scanner Ready"}</Badge>
+            <Badge variant="success" size="sm">{tOrg("scannerReadyBadge")}</Badge>
           </div>
           <p className="text-xs text-muted-foreground mt-1">
-            {tOrg("scannerSubtitle") || "Scan attendee ticket QR codes for turnstile admission, double-scan alerts, and instant perk verification."}
+            {tOrg("scannerSubtitle")}
           </p>
         </div>
 
         <div className="flex items-center gap-2 text-xs text-muted-foreground bg-card p-2 px-3 rounded-lg border border-border shadow-xs">
           <ShieldCheck className="h-4 w-4 text-emerald-500 shrink-0" />
-          <span>{tOrg("scannerTamperGuard") || "Tamper-Proof Pass Verification Active"}</span>
+          <span>{tOrg("scannerTamperGuard")}</span>
         </div>
       </div>
 
       {/* Main Scanner Controller wrapped in Suspense for Next.js App Router static prerendering */}
-      <React.Suspense fallback={<div className="p-8 text-center text-xs text-muted-foreground">Initializing Gate Scanner...</div>}>
+      <React.Suspense fallback={<div className="p-8 text-center text-xs text-muted-foreground">{tOrg("initScanner")}</div>}>
         <DoorScannerContent />
       </React.Suspense>
     </div>
