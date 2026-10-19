@@ -970,7 +970,7 @@
     "wizardHeader": "新展会发布向导",
     "wizardStepOf": "第 {current} 步 / 共 {total} 步",
     "wizardTitle": "创建并发布MICE展会",
-    "wizardSubtitle": "通过4步流程完成展会分类原型、展厅分配、入场通行证和品牌外观配置。",
+    "wizardSubtitle": "通过4步流程完成展会分类、展厅分配、入场通行证和品牌外观配置。",
     "wizardStep1": "基本信息与分类",
     "wizardStep2": "场馆与展厅",
     "wizardStep3": "入场通行证",

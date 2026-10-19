@@ -12,7 +12,7 @@ Direction: multi-hall P0 first, all four issues, persist full array.
   deep-links plus fix of the draft-suppresses-template race.
 - [x] **4. Clarify overwrite guards** (`$impeccable clarify`): confirm guards
   on region-switch price rewrites and template overwrites, with undo.
-- [ ] **5. Polish final pass** (`$impeccable polish`): detector, screenshots,
+- [x] **5. Polish final pass** (`$impeccable polish`): detector, screenshots,
   full suite green.
 
 Each ships as its own commit pushed to `origin/main`. Verify by execution;
