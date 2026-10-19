@@ -7,7 +7,7 @@ Direction: booth scope first, all five issues, whole-card tap to scanner.
   over owned events only; platform-wide label retained for the admin full view.
 - [x] **2. Clarify dashboard i18n** (`$impeccable clarify`): header, KPI strip,
   roster, and onboarding strings into dictionaries with English as values.
-- [ ] **3. Layout roster cards** (`$impeccable layout`): two-badge identity cap;
+- [x] **3. Layout roster cards** (`$impeccable layout`): two-badge identity cap;
   stretched link retargeted to the scanner with event context.
 - [ ] **4. Distill header actions** (`$impeccable distill`): one canonical create
   action; single H1 with the live badge as eyebrow.

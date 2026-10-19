@@ -341,17 +341,17 @@ export function OrganizerEventsRoster({ events, locale, title, description, hide
                     {event._status === "LIVE" && (
                       <Badge className="bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30 text-xs font-bold gap-1 px-2 py-0.5">
                         <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                        Live Now
+                        {tOrg("tabLive")}
                       </Badge>
                     )}
                     {event._status === "UPCOMING" && (
                       <Badge variant="outline" className="text-xs font-semibold text-primary border-primary/40 bg-primary/5 px-2 py-0.5">
-                        Upcoming
+                        {tOrg("tabUpcoming")}
                       </Badge>
                     )}
                     {event._status === "CONCLUDED" && (
                       <Badge variant="outline" className="text-xs font-medium text-muted-foreground border-border bg-muted/60 px-2 py-0.5">
-                        Concluded
+                        {tOrg("tabConcluded")}
                       </Badge>
                     )}
 
@@ -371,19 +371,19 @@ export function OrganizerEventsRoster({ events, locale, title, description, hide
                   </div>
 
                   <div>
-                    {/* Ownership Identity */}
+                    {/* Ownership Identity (plain text: card identity capped at 2 badges) */}
                     {event.isPlatformCurated || !event.organizerId ? (
-                      <Badge variant="outline" className="text-[11px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 border-amber-500/40 bg-amber-500/10 px-2 py-0.5 mb-1.5">
+                      <span className="block text-[11px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 mb-1.5">
                         {tOrg("curatedBadge")}
-                      </Badge>
+                      </span>
                     ) : event.organizerName ? (
                       <span className="block text-[11px] font-medium text-muted-foreground mb-1.5 truncate">
                         {event.organizerName}
                       </span>
                     ) : null}
-                    {/* Stretched Link on Card Title */}
+                    {/* Stretched Link on Card Title (door operation first: scanner with context) */}
                     <Link
-                      href={`/${locale}/events/${event.id}/ai-reports`}
+                      href={`/${locale}/scanner?eventId=${event.id}`}
                       className="after:absolute after:inset-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
                     >
                       <CardTitle className="text-base font-bold text-foreground group-hover:text-primary transition-colors line-clamp-1">
