@@ -269,8 +269,9 @@ export default function NewEventWizardPage() {
   const isInitializedRef = React.useRef(false);
 
   // Admin curation & publication authority state: curated showcase,
-  // delegation to a registered organizer, or owned by the admin directly.
-  const [authorityMode, setAuthorityMode] = React.useState<"curated" | "delegated" | "self">(
+  // delegation to a registered organizer, admin-owned operations event,
+  // or a plain listing excluded from operations surfaces.
+  const [authorityMode, setAuthorityMode] = React.useState<"curated" | "delegated" | "self" | "listing">(
     isAdmin ? "curated" : "delegated"
   );
   const isPlatformCurated = authorityMode === "curated";
@@ -636,7 +637,7 @@ export default function NewEventWizardPage() {
       if (d.accentColor) setAccentColor(d.accentColor);
       if (d.heroImageUrl) setHeroImageUrl(d.heroImageUrl);
       if (d.currentStep) setCurrentStep(d.currentStep);
-      if (d.authorityMode) {
+      if (d.authorityMode === "curated" || d.authorityMode === "delegated" || d.authorityMode === "self" || d.authorityMode === "listing") {
         setAuthorityMode(d.authorityMode);
       } else if (d.isPlatformCurated !== undefined) {
         setAuthorityMode(d.isPlatformCurated ? "curated" : "delegated");
@@ -929,9 +930,10 @@ export default function NewEventWizardPage() {
             organizerId:
               authorityMode === "delegated"
                 ? targetOrganizerId.trim() || undefined
-                : authorityMode === "self"
+                : authorityMode === "self" || authorityMode === "listing"
                   ? user?.id
                   : undefined,
+            isListingOnly: authorityMode === "listing",
           }
         : {}),
       ticketTiers: ticketTiers.map((t) => ({
@@ -1330,7 +1332,7 @@ export default function NewEventWizardPage() {
               <div
                 role="radiogroup"
                 aria-label="Event Publication Authority"
-                className="grid grid-cols-1 lg:grid-cols-3 gap-3"
+                className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3"
               >
                 {/* Option 1: Platform-Curated / Official Venue Listing */}
                 <button
@@ -1439,10 +1441,45 @@ export default function NewEventWizardPage() {
                     Owned by your admin account. Add, modify, and delete freely without organizer involvement.
                   </p>
                 </button>
+                {/* Option 4: Simple Listing (no operations) */}
+                <button
+                  type="button"
+                  role="radio"
+                  aria-checked={authorityMode === "listing"}
+                  onClick={() => setAuthorityMode("listing")}
+                  className={cn(
+                    "min-h-[52px] p-4 rounded-xl border text-left cursor-pointer transition-all flex flex-col justify-between gap-2 focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none shadow-xs",
+                    authorityMode === "listing"
+                      ? "border-primary bg-primary/5 ring-1 ring-primary/30 shadow-xs"
+                      : "border-border/80 bg-background hover:border-primary/50 hover:bg-muted/30"
+                  )}
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <div
+                        className={cn(
+                          "h-4 w-4 rounded-full border flex items-center justify-center transition-colors shrink-0",
+                          authorityMode === "listing" ? "border-primary bg-primary text-primary-foreground" : "border-muted-foreground/50"
+                        )}
+                      >
+                        {authorityMode === "listing" && <div className="h-1.5 w-1.5 rounded-full bg-white" />}
+                      </div>
+                      <span className="text-xs font-bold text-foreground">
+                        Simple Listing
+                      </span>
+                    </div>
+                    <Badge variant="secondary" size="sm" className="text-[11px] font-semibold">
+                      No Operations
+                    </Badge>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground leading-relaxed pl-6">
+                    A plain customizable event page without dashboard, booth, or scanner operations.
+                  </p>
+                </button>
               </div>
 
               {/* Sub-fields depending on selection */}
-              {authorityMode === "self" ? (
+              {authorityMode === "self" || authorityMode === "listing" ? (
                 <div className="space-y-1.5 pt-2 border-t border-border/50">
                   <div className="flex items-center gap-2 text-xs">
                     <Badge variant="outline" size="sm" className="font-semibold text-primary">
@@ -2417,7 +2454,9 @@ export default function NewEventWizardPage() {
                       <span className="text-[11px] text-primary font-medium block mt-0.5">
                         {isPlatformCurated
                           ? `Platform-Curated (${organizerName.trim() || "Official Listing"})`
-                          : authorityMode === "self"
+                          : authorityMode === "listing"
+                            ? `Simple Listing (${user?.name || "Admin Account"})`
+                            : authorityMode === "self"
                             ? `Admin-Managed (${user?.name || "Admin Account"})`
                             : `Assigned Organizer: ${targetOrganizerId.trim() || "Unspecified"}`}
                       </span>

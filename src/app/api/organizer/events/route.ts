@@ -59,6 +59,7 @@ export async function POST(request: Request) {
       isPlatformCurated,
       organizerName,
       organizerId,
+      isListingOnly,
       showcaseJson,
     } = body;
 
@@ -187,6 +188,8 @@ export async function POST(request: Request) {
         organizerId: finalOrganizerId,
         organizerName: finalOrganizerName,
         isPlatformCurated: finalIsPlatformCurated,
+        // Listings are admin-only: fully customizable, excluded from operations.
+        isListingOnly: userRole === "ADMIN" && isListingOnly === true,
         startDate: new Date(startDate),
         endDate: new Date(endDate),
         heroImageUrl: heroImageUrl || "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1600&q=80",

@@ -78,6 +78,7 @@ model Event {
   venueHallId        String?
   venueHall          VenueHall?   @relation(fields: [venueHallId], references: [id])
   venueHallIds       String?      // JSON array of ALL allocated hall IDs; venueHallId stays the primary hall relation
+  isListingOnly      Boolean      @default(false) // Customizable public listing excluded from operations (dashboard, booths, scanner)
   title              String
   slug               String       @unique
   tagline            String?

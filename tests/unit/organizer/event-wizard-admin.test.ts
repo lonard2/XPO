@@ -547,3 +547,60 @@ describe("Admin self-managed events", () => {
     expect(payload.organizerId).toBe("usr-admin-1");
   });
 });
+
+describe("Admin simple listings", () => {
+  let fetchMock: ReturnType<typeof vi.fn>;
+
+  beforeEach(() => {
+    localStorage.clear();
+    mockRole = "ADMIN";
+    mockUser.role = "ADMIN";
+    fetchMock = vi.fn().mockImplementation((url: string) => {
+      if (url === "/api/venues") {
+        return Promise.resolve({ ok: true, json: () => Promise.resolve({ venues: [] }) });
+      }
+      if (url === "/api/organizer/events") {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ success: true, event: { id: "evt-list-1", slug: "x" } }),
+        });
+      }
+      return Promise.resolve({ ok: true, json: () => Promise.resolve({}) });
+    });
+    global.fetch = fetchMock;
+  });
+
+  it("creates a listing excluded from operations but owned by the admin", async () => {
+    const { container } = render(React.createElement(NewEventWizardPage));
+
+    const titleInput = container.querySelector("#wizard-event-title") as HTMLInputElement;
+    fireEvent.change(titleInput, { target: { value: "Simple Showcase Fair 2027" } });
+    const descInput = container.querySelector("#wizard-description") as HTMLTextAreaElement;
+    fireEvent.change(descInput, { target: { value: "A plain customizable listing." } });
+
+    fireEvent.click(screen.getByRole("radio", { name: /simple listing/i }));
+
+    fireEvent.click(screen.getByRole("button", { name: /continue to next step/i }));
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: /continue to next step/i })).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getByRole("button", { name: /continue to next step/i }));
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: /continue to next step/i })).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getByRole("button", { name: /continue to next step/i }));
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: /publish & launch exhibition/i })).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getByRole("button", { name: /publish & launch exhibition/i }));
+
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledWith("/api/organizer/events", expect.objectContaining({ method: "POST" }));
+    });
+    const postCall = fetchMock.mock.calls.find((call) => call[0] === "/api/organizer/events");
+    const payload = JSON.parse(postCall![1].body);
+    expect(payload.isListingOnly).toBe(true);
+    expect(payload.isPlatformCurated).toBe(false);
+    expect(payload.organizerId).toBe("usr-admin-1");
+  });
+});

@@ -220,3 +220,33 @@ describe("Booth manager data truth", () => {
     }
   });
 });
+
+describe("listing exclusion from operations", () => {
+  const eventsUrl = "/api/organizer/events";
+
+  it("hides listing-only events from the booth event filter", async () => {
+    global.fetch = vi.fn().mockImplementation((url: string) =>
+      Promise.resolve({
+        ok: true,
+        json: () =>
+          Promise.resolve(
+            url === eventsUrl
+              ? { events: [
+                  { id: "ev-9", title: "Expo Nine" },
+                  { id: "ev-list", title: "Plain Listing", isListingOnly: true },
+                ] }
+              : { booths: [] }
+          ),
+      })
+    ) as any;
+    const { container } = render(<BoothManagerPage />);
+    await waitFor(() => {
+      expect(screen.getByText(/sample floor data/i)).toBeInTheDocument();
+    });
+    const options = Array.from(container.querySelectorAll("#booth-event-filter option")).map(
+      (o) => (o as HTMLOptionElement).value
+    );
+    expect(options).toContain("ev-9");
+    expect(options).not.toContain("ev-list");
+  });
+});

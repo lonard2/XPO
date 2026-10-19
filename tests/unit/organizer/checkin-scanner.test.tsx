@@ -201,3 +201,37 @@ describe("CheckInScanner recognition", () => {
     expect(screen.getByText("Collect at Counter 3")).toBeInTheDocument();
   });
 });
+
+describe("CheckInScanner listing exclusion", () => {
+  beforeEach(() => {
+    localStorage.clear();
+    vi.restoreAllMocks();
+  });
+
+  it("omits listing-only events from the scanning context", async () => {
+    global.fetch = vi.fn().mockImplementation((url: string) => {
+      if (url.includes("/api/organizer/events")) {
+        return Promise.resolve({
+          ok: true,
+          json: () =>
+            Promise.resolve({
+              events: [
+                { id: "ev-9", title: "Expo Nine", organizerId: "cmt2sfr7n0000laeaurwdwe44" },
+                { id: "ev-list", title: "Plain Listing", organizerId: "cmt2sfr7n0000laeaurwdwe44", isListingOnly: true },
+              ],
+            }),
+        });
+      }
+      return Promise.resolve({ ok: true, json: () => Promise.resolve({}) });
+    }) as any;
+    render(<CheckInScanner defaultEventId="ev-list" />);
+    await waitFor(() => {
+      expect(screen.getByText("Scanning for:")).toBeInTheDocument();
+    });
+    expect(screen.getAllByText("All owned events").length).toBeGreaterThan(0);
+    const select = screen.getByLabelText(/scanning event/i) as HTMLSelectElement;
+    const values = Array.from(select.options).map((o) => o.value);
+    expect(values).toContain("ev-9");
+    expect(values).not.toContain("ev-list");
+  });
+});

@@ -309,16 +309,24 @@ export default function BoothManagerPage() {
     fetchBoothsAndEvents();
   }, [fetchBoothsAndEvents]);
 
+  // Listing-only events never enter operations views, even unfiltered.
+  const listingEventIds = React.useMemo(() => {
+    return new Set(events.filter((e: any) => e.isListingOnly).map((e: any) => e.id));
+  }, [events]);
+  const operationalBooths = React.useMemo(() => {
+    return booths.filter((b) => !listingEventIds.has(b.eventId));
+  }, [booths, listingEventIds]);
+
   // Extract unique halls, scoped to the selected event when one is set.
   // A global list would show foreign 0/0 pills from other events.
   const hallsList = React.useMemo(() => {
     const set = new Set<string>();
-    booths.forEach((b) => {
+    operationalBooths.forEach((b) => {
       if (selectedEventId !== "ALL" && b.eventId !== selectedEventId) return;
       if (b.hallName) set.add(b.hallName);
     });
     return Array.from(set);
-  }, [booths, selectedEventId]);
+  }, [operationalBooths, selectedEventId]);
 
   // Deep-link entry: apply validated eventId/hall/status/q once data loads.
   // Unknown values fall back to ALL so links never strand the operator.
@@ -329,7 +337,7 @@ export default function BoothManagerPage() {
       const params = new URLSearchParams(window.location.search);
       const eventId = params.get("eventId");
       const appliedEventId =
-        eventId && eventId !== "ALL" && events.some((e: any) => e.id === eventId) ? eventId : "ALL";
+        eventId && eventId !== "ALL" && events.some((e: any) => e.id === eventId && !e.isListingOnly) ? eventId : "ALL";
       if (appliedEventId !== "ALL") {
         setSelectedEventId(appliedEventId);
       }
@@ -382,16 +390,16 @@ export default function BoothManagerPage() {
     (dossierEvent?.venue?.halls || []).forEach((h: any) => {
       if (h?.name) names.add(h.name);
     });
-    booths.forEach((b) => {
+    operationalBooths.forEach((b) => {
       if (dossierEventId && b.eventId !== dossierEventId) return;
       if (b.hallName) names.add(b.hallName);
     });
     return Array.from(names);
-  }, [events, booths, formEventId, selectedEventId]);
+  }, [events, operationalBooths, formEventId, selectedEventId]);
 
   // Filtered Booths
   const filteredBooths = React.useMemo(() => {
-    return booths.filter((b) => {
+    return operationalBooths.filter((b) => {
       // Event filter
       if (selectedEventId !== "ALL" && b.eventId !== selectedEventId) {
         return false;
@@ -416,18 +424,18 @@ export default function BoothManagerPage() {
 
       return true;
     });
-  }, [booths, selectedEventId, selectedHall, statusFilter, searchQuery]);
+  }, [operationalBooths, selectedEventId, selectedHall, statusFilter, searchQuery]);
 
   // Statistics
-  const totalCount = booths.length;
-  const occupiedCount = booths.filter((b) => b.companyName && b.companyName.trim() !== "").length;
+  const totalCount = operationalBooths.length;
+  const occupiedCount = operationalBooths.filter((b) => b.companyName && b.companyName.trim() !== "").length;
   const availableCount = totalCount - occupiedCount;
   const occupancyPct = totalCount > 0 ? Math.round((occupiedCount / totalCount) * 100) : 0;
 
   // Per-Hall Saturation Telemetry
   const hallStats = React.useMemo(() => {
     return hallsList.map((hall) => {
-      const hallBooths = booths.filter((b) => {
+      const hallBooths = operationalBooths.filter((b) => {
         if (selectedEventId !== "ALL" && b.eventId !== selectedEventId) return false;
         return b.hallName === hall;
       });
@@ -437,7 +445,7 @@ export default function BoothManagerPage() {
       const saturation = total > 0 ? Math.round((occupied / total) * 100) : 0;
       return { hall, total, occupied, available, saturation };
     });
-  }, [booths, hallsList, selectedEventId]);
+  }, [operationalBooths, hallsList, selectedEventId]);
 
   // Batch Selection Helpers
   const toggleSelectBooth = (id: string) => {
@@ -1225,7 +1233,7 @@ export default function BoothManagerPage() {
               }}
             >
               <option value="ALL">{tOrg("allEvents")}</option>
-              {events.map((ev) => {
+              {events.filter((ev) => !ev.isListingOnly).map((ev) => {
                 const isCurated = ev.isPlatformCurated || !ev.organizerId;
                 const locked = isCurated && !isAdminView;
                 return (
@@ -1624,7 +1632,7 @@ export default function BoothManagerPage() {
           </div>
         )}
 
-        {booths.length === 0 ? (
+        {operationalBooths.length === 0 ? (
           <Card className="p-8 text-center bg-card rounded-xl border border-border space-y-4 shadow-xs">
             <div className="h-12 w-12 rounded-2xl bg-purple-500/10 text-purple-600 dark:text-purple-400 mx-auto flex items-center justify-center">
               <Store className="h-6 w-6" />

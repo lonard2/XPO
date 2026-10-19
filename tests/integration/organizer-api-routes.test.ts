@@ -151,6 +151,40 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
     await db.event.delete({ where: { id: json.event.id } }).catch(() => {});
   });
 
+  it("Organizer Events: POST stores admin listings excluded from operations", async () => {
+    const base = {
+      title: "Test Simple Listing 2027",
+      description: "Plain customizable listing.",
+      regionId: "id",
+      venueId: sampleVenue.id,
+      startDate: "2027-09-10T09:00:00.000Z",
+      endDate: "2027-09-12T18:00:00.000Z",
+      ticketTiers: [],
+    };
+    const adminReq = new Request("http://localhost:3000/api/organizer/events", {
+      method: "POST",
+      headers: adminHeaders,
+      body: JSON.stringify({ ...base, slug: "test-simple-listing-2027", isListingOnly: true }),
+    });
+    const adminRes = await createEventRoute(adminReq);
+    expect(adminRes.status).toBe(201);
+    const adminJson = await adminRes.json();
+    expect(adminJson.event.isListingOnly).toBe(true);
+
+    const orgReq = new Request("http://localhost:3000/api/organizer/events", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Cookie: "xpo_role=ORGANIZER" },
+      body: JSON.stringify({ ...base, slug: "test-listing-flag-ignored-2027", isListingOnly: true }),
+    });
+    const orgRes = await createEventRoute(orgReq);
+    expect(orgRes.status).toBe(201);
+    const orgJson = await orgRes.json();
+    expect(orgJson.event.isListingOnly).toBe(false);
+
+    await db.event.delete({ where: { id: adminJson.event.id } }).catch(() => {});
+    await db.event.delete({ where: { id: orgJson.event.id } }).catch(() => {});
+  });
+
   it("Organizer Branding: PUT updates event theme tokens and hero media", async () => {
     expect(createdEventId).toBeDefined();
 

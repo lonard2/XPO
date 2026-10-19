@@ -24,7 +24,7 @@ describe("Component: RegionSwitcher", () => {
     fireEvent.click(button);
 
     expect(screen.getByText("Japan")).toBeDefined();
-    expect(screen.getByText("Global Hubs")).toBeDefined();
+    expect(screen.getByText("Global Gateways")).toBeDefined();
   });
 
   it("navigates to the selected country edition route", () => {
@@ -42,7 +42,7 @@ describe("Component: RegionSwitcher", () => {
   it("renders cards variant with venue highlights and currencies", () => {
     render(<RegionSwitcher currentLocale="en" activeRegionCode="id" variant="cards" />);
 
-    expect(screen.getByText("JIExpo, ICE BSD, JICC, NICE PIK 2, GBK, JIS")).toBeDefined();
+    expect(screen.getByText("JIExpo Kemayoran, ICE BSD City, JICC Senayan, NICE PIK 2, GBK Complex, JIS")).toBeDefined();
     expect(screen.getByText("Currency: IDR")).toBeDefined();
     expect(screen.getByText("Currency: JPY")).toBeDefined();
     expect(screen.getByText("Currency: USD")).toBeDefined();

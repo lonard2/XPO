@@ -38,12 +38,13 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
   const tCom = await getTranslations({ locale, namespace: "common" });
 
   // Strict ownership: organizers see only their own events; admins see all.
-  // Callers without identity keep the historical unfiltered view.
+  // Listings never enter operations views. Callers without identity keep
+  // the historical unfiltered view.
   const cookieStore = await cookies();
   const caller = getEventCallerFromCookies(cookieStore);
   const isAdminView = caller.role === "ADMIN";
-  const eventWhere: any =
-    !isAdminView && caller.userId ? { organizerId: caller.userId } : {};
+  const eventWhere: any = { isListingOnly: false };
+  if (!isAdminView && caller.userId) eventWhere.organizerId = caller.userId;
 
   // Query events from Prisma with related bookings, tiers, booths, and venue
   let events: any[] = [];

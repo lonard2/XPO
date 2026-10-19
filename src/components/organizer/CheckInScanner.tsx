@@ -149,10 +149,12 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
   const [gateEvents, setGateEvents] = React.useState<any[]>([]);
   const [selectedEventId, setSelectedEventId] = React.useState<string>(defaultEventId || "ALL");
 
-  // Gate context: owned events for organizers, everything for admins.
+  // Owned events for organizers, everything for admins. Listings are
+  // customizable pages, never operations floor stock.
   const ownedEvents = React.useMemo(() => {
-    if (role === "ADMIN") return gateEvents;
-    return gateEvents.filter(
+    const operational = gateEvents.filter((e: any) => !e.isListingOnly);
+    if (role === "ADMIN") return operational;
+    return operational.filter(
       (e: any) => e.organizerId === user?.id || e.isPlatformCurated
     );
   }, [gateEvents, role, user?.id]);
