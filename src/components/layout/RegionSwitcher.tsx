@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
-import { regionForLocale, normalizeRegion } from "@/lib/i18n/regions";
+import { useActiveRegion } from "@/lib/i18n/useActiveRegion";
 import { SupportedCurrency } from "@/lib/i18n/formatters";
 
 export interface RegionOption {
@@ -99,42 +99,20 @@ export function RegionSwitcher({
   const containerRef = React.useRef<HTMLDivElement>(null);
   const triggerRef = React.useRef<HTMLButtonElement>(null);
 
-  // Derive initial region: explicit prop, then ?region=, then cookie, then the URL locale
-  const [currentRegion, setCurrentRegion] = React.useState<string>(() => {
-    const explicit = normalizeRegion(activeRegionCode);
-    if (explicit) return explicit;
-    if (typeof window !== "undefined") {
-      const queryRegion = normalizeRegion(new URLSearchParams(window.location.search).get("region"));
-      if (queryRegion) return queryRegion;
-      const cookieRegion = normalizeRegion(document.cookie.match(/xpo_region=([^;]+)/)?.[1]);
-      if (cookieRegion) return cookieRegion;
-    }
-    return regionForLocale(currentLocale) || "id";
-  });
+  // One precedence chain with the navbar: prop > ?region= > cookie > locale.
+  const hookRegion = useActiveRegion({ locale: currentLocale, activeRegionCode });
+  const [currentRegion, setCurrentRegion] = React.useState<string>(hookRegion);
+  const prevHookRef = React.useRef(hookRegion);
 
-  // Sync state whenever activeRegionCode, pathname, or window search changes
+  // Adopt shared resolution only when it moves under us (navigation,
+  // back-button, parent override) — never revert an in-flight local pick.
   React.useEffect(() => {
-    const explicit = normalizeRegion(activeRegionCode);
-    if (explicit) {
-      setCurrentRegion(explicit);
-      onActiveRegionChange?.(explicit);
-      return;
+    if (prevHookRef.current !== hookRegion) {
+      prevHookRef.current = hookRegion;
+      setCurrentRegion(hookRegion);
+      onActiveRegionChange?.(hookRegion);
     }
-    if (typeof window !== "undefined") {
-      const queryRegion = normalizeRegion(new URLSearchParams(window.location.search).get("region"));
-      if (queryRegion) {
-        setCurrentRegion(queryRegion);
-        onActiveRegionChange?.(queryRegion);
-        return;
-      }
-      const cookieRegion = normalizeRegion(document.cookie.match(/xpo_region=([^;]+)/)?.[1]);
-      if (cookieRegion) {
-        setCurrentRegion(cookieRegion);
-        onActiveRegionChange?.(cookieRegion);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeRegionCode, pathname]);
+  }, [hookRegion, onActiveRegionChange]);
 
   const selectedRegion =
     REGION_OPTIONS.find((r) => r.code === currentRegion) || REGION_OPTIONS[0];
@@ -147,17 +125,21 @@ export function RegionSwitcher({
       document.cookie = `xpo_region=${regionCode}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
     }
     
-    // Preserve current route path (e.g. /events, /venues, /calendar) while updating ?region=
-    let targetPath = pathname || `/${currentLocale}`;
-    if (targetPath.includes('/region/')) {
-      targetPath = `/${currentLocale}/region/${regionCode}`;
-      router.push(targetPath);
+    // Preserve current route path (e.g. /events, /venues, /calendar) while updating ?region=.
+    // On /region/ edition paths, swap the code segment and keep the subpath.
+    const targetPath = pathname || `/${currentLocale}`;
+    const regionPathMatch = targetPath.match(/^(\/[^/]+\/region\/)(id|jp|global)(\/.*)?$/i);
+    if (regionPathMatch) {
+      const rest = regionPathMatch[3] || "";
+      const params = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams();
+      params.delete('region');
+      const query = params.toString();
+      router.push(`${regionPathMatch[1]}${regionCode}${rest}${query ? `?${query}` : ""}`);
     } else {
       const currentParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams();
       currentParams.set('region', regionCode);
       router.push(`${targetPath}?${currentParams.toString()}`);
     }
-    router.refresh?.();
   };
 
   // Close dropdown on outside click or Escape key

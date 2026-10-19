@@ -24,7 +24,7 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { cn } from "@/lib/utils";
-import { regionForLocale, normalizeRegion } from "@/lib/i18n/regions";
+import { useActiveRegion } from "@/lib/i18n/useActiveRegion";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { RegionSwitcher } from "@/components/layout/RegionSwitcher";
 import { useSettings } from "@/components/settings/SettingsProvider";
@@ -61,31 +61,8 @@ export function Navbar({ locale = "en" }: NavbarProps) {
 
   const [localDarkMode, setLocalDarkMode] = React.useState(false);
 
-  // Extract active region from path, ?region=, cookie, or the URL locale (default 'id')
-  const regionMatch = pathname?.match(/\/region\/(id|jp|global)/i);
-  const [activeRegion, setActiveRegion] = React.useState<string>(
-    regionMatch ? regionMatch[1].toLowerCase() : regionForLocale(locale) || 'id'
-  );
-
-  React.useEffect(() => {
-    if (regionMatch) {
-      setActiveRegion(regionMatch[1].toLowerCase());
-      return;
-    }
-    if (typeof window !== 'undefined') {
-      const explicit = normalizeRegion(new URLSearchParams(window.location.search).get('region'));
-      if (explicit) {
-        setActiveRegion(explicit);
-        return;
-      }
-      const cookieRegion = normalizeRegion(document.cookie.match(/xpo_region=([^;]+)/)?.[1]);
-      if (cookieRegion) {
-        setActiveRegion(cookieRegion);
-        return;
-      }
-      setActiveRegion(regionForLocale(locale) || 'id');
-    }
-  }, [pathname, regionMatch, locale]);
+  // Single source of truth for the active edition (path > ?region= > cookie > locale).
+  const activeRegion = useActiveRegion({ locale });
 
   React.useEffect(() => {
     const isDark = document.documentElement.classList.contains("dark");

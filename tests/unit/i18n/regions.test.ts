@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import {
   regionForLocale,
   normalizeRegion,
@@ -106,5 +106,44 @@ describe("resolveActiveRegion", () => {
         }
       }
     }
+  });
+});
+
+describe("useActiveRegion", () => {
+  const renderRegion = async (props?: { locale?: string; activeRegionCode?: string | null }) => {
+    const { useActiveRegion } = await import("@/lib/i18n/useActiveRegion");
+    const { renderHook } = await import("@testing-library/react");
+    return renderHook(() => useActiveRegion(props));
+  };
+
+  beforeEach(() => {
+    window.history.replaceState({}, "", "/en");
+    document.cookie = "xpo_region=; path=/; max-age=0";
+  });
+
+  it("prefers ?region= over cookie and locale", async () => {
+    window.history.replaceState({}, "", "/en?region=jp");
+    document.cookie = "xpo_region=id; path=/";
+    const { result } = await renderRegion({ locale: "en" });
+    expect(result.current).toBe("jp");
+  });
+
+  it("prefers the cookie over the locale default", async () => {
+    document.cookie = "xpo_region=global; path=/";
+    const { result } = await renderRegion({ locale: "en" });
+    expect(result.current).toBe("global");
+  });
+
+  it("falls back to the locale edition, then id", async () => {
+    const { result: ja } = await renderRegion({ locale: "ja" });
+    expect(ja.current).toBe("jp");
+    const { result: en } = await renderRegion({ locale: "en" });
+    expect(en.current).toBe("id");
+  });
+
+  it("lets an explicit parent code win", async () => {
+    window.history.replaceState({}, "", "/en?region=jp");
+    const { result } = await renderRegion({ locale: "en", activeRegionCode: "global" });
+    expect(result.current).toBe("global");
   });
 });

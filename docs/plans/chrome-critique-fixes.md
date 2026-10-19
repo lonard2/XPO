@@ -7,7 +7,7 @@ Direction: distill CTAs first, all five issues, crumb-bar wins.
   the single canonical frame CTA; sidebar Create demoted to section link.
 - [x] **2. Clarify frame i18n** (`$impeccable clarify`): sidebar, crumbs,
   barrier, nav, switchers, footer strings into dictionaries.
-- [ ] **3. Structure region unity** (`$impeccable structure`): single
+- [x] **3. Structure region unity** (`$impeccable structure`): single
   `useActiveRegion()` hook, subpath-preserving switch, one URL form.
 - [ ] **4. Audit footer + listboxes** (`$impeccable audit`): link footer
   categories, arrow-key listboxes, real buttons for cards variant.
