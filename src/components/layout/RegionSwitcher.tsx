@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
 import { useTranslations } from "next-intl";
+import { handleListboxKeyDown } from "@/lib/a11y/listboxKeyboard";
 import { cn } from "@/lib/utils";
 import { useActiveRegion } from "@/lib/i18n/useActiveRegion";
 import { SupportedCurrency } from "@/lib/i18n/formatters";
@@ -174,7 +175,16 @@ export function RegionSwitcher({
             <Card
               key={region.code}
               interactive
+              role="button"
+              tabIndex={0}
+              aria-pressed={isSelected}
               onClick={() => handleRegionChange(region.code)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  handleRegionChange(region.code);
+                }
+              }}
               className={cn(
                 "cursor-pointer transition-all border text-left",
                 isSelected
@@ -287,6 +297,7 @@ export function RegionSwitcher({
         <div
           role="listbox"
           aria-label={tNav("regionListAria")}
+          onKeyDown={handleListboxKeyDown}
           className="absolute right-0 mt-1.5 w-64 origin-top-right rounded-xl border border-border bg-card p-1.5 shadow-xl z-50 animate-in fade-in-0 zoom-in-95 duration-100"
         >
           <div className="px-2.5 py-1.5 border-b border-border/50 text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">

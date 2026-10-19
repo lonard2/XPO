@@ -4,6 +4,7 @@ import * as React from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Globe, Check, ChevronDown, Languages } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { handleListboxKeyDown } from "@/lib/a11y/listboxKeyboard";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 import { SupportedLocale, SUPPORTED_LOCALES } from "@/lib/i18n/formatters";
@@ -156,6 +157,7 @@ export function LanguageSwitcher({
         <div
           role="listbox"
           aria-label={tNav("langListAria")}
+          onKeyDown={handleListboxKeyDown}
           className="absolute right-0 mt-1.5 w-56 origin-top-right rounded-xl border border-border bg-card p-1.5 shadow-xl z-50 animate-in fade-in-0 zoom-in-95 duration-100"
         >
           <div className="px-2.5 py-1.5 border-b border-border/50 text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">

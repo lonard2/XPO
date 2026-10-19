@@ -103,11 +103,11 @@ export function Footer({ locale = "en" }: { locale?: string }) {
             {getSafe(tFoot, "eventCategories", "Event Categories")}
           </h4>
           <ul className="space-y-2 text-xs text-muted-foreground">
-            <li>{getSafe(tArch, "INDUSTRIAL_B2B.title", "Industrial & Manufacturing B2B")}</li>
-            <li>{getSafe(tArch, "TECH_DEV_SUMMIT.title", "Technology, AI & Consumer Electronics")}</li>
-            <li>{getSafe(tArch, "MEDICAL_SYMPOSIUM.title", "Medical & Healthcare Congress")}</li>
-            <li>{getSafe(tArch, "AUTOMOTIVE_MOBILITY.title", "Automotive, EV & Mobility Motor Show")}</li>
-            <li>{getSafe(tArch, "POP_CULTURE_GAMING.title", "Pop Culture, Gaming & Comic Con")}</li>
+            <li><Link href={`/${locale}/events?archetype=INDUSTRIAL_B2B`} className="hover:text-foreground transition-colors">{getSafe(tArch, "INDUSTRIAL_B2B.title", "Industrial & Manufacturing B2B")}</Link></li>
+            <li><Link href={`/${locale}/events?archetype=TECH_DEV_SUMMIT`} className="hover:text-foreground transition-colors">{getSafe(tArch, "TECH_DEV_SUMMIT.title", "Technology, AI & Consumer Electronics")}</Link></li>
+            <li><Link href={`/${locale}/events?archetype=MEDICAL_SYMPOSIUM`} className="hover:text-foreground transition-colors">{getSafe(tArch, "MEDICAL_SYMPOSIUM.title", "Medical & Healthcare Congress")}</Link></li>
+            <li><Link href={`/${locale}/events?archetype=AUTOMOTIVE_MOBILITY`} className="hover:text-foreground transition-colors">{getSafe(tArch, "AUTOMOTIVE_MOBILITY.title", "Automotive, EV & Mobility Motor Show")}</Link></li>
+            <li><Link href={`/${locale}/events?archetype=POP_CULTURE_GAMING`} className="hover:text-foreground transition-colors">{getSafe(tArch, "POP_CULTURE_GAMING.title", "Pop Culture, Gaming & Comic Con")}</Link></li>
           </ul>
         </div>
 
