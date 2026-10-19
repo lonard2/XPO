@@ -1277,7 +1277,7 @@ export default function BoothManagerPage() {
               type="button"
               onClick={() => setViewMode("grid")}
               className={cn(
-                "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium min-h-[36px] cursor-pointer transition-colors",
+                "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium min-h-[44px] cursor-pointer transition-colors",
                 viewMode === "grid"
                   ? "bg-card text-foreground shadow-xs font-semibold"
                   : "text-muted-foreground hover:text-foreground"
@@ -1292,7 +1292,7 @@ export default function BoothManagerPage() {
               type="button"
               onClick={() => setViewMode("table")}
               className={cn(
-                "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium min-h-[36px] cursor-pointer transition-colors",
+                "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium min-h-[44px] cursor-pointer transition-colors",
                 viewMode === "table"
                   ? "bg-card text-foreground shadow-xs font-semibold"
                   : "text-muted-foreground hover:text-foreground"
@@ -1331,7 +1331,7 @@ export default function BoothManagerPage() {
                             role="checkbox"
                             aria-checked={selectedBoothIds.has(booth.id)}
                             onClick={() => toggleSelectBooth(booth.id)}
-                            className="mt-0.5 min-w-[36px] min-h-[36px] inline-flex items-center justify-center p-1.5 rounded-lg hover:bg-muted text-foreground cursor-pointer shrink-0 transition-colors"
+                            className="mt-0.5 min-w-[44px] min-h-[44px] inline-flex items-center justify-center p-1.5 rounded-lg hover:bg-muted text-foreground cursor-pointer shrink-0 transition-colors"
                             aria-label={selectedBoothIds.has(booth.id) ? tOrg("deselectBooth", { num: booth.boothNumber }) : tOrg("selectBooth", { num: booth.boothNumber })}
                           >
                             {selectedBoothIds.has(booth.id) ? (
@@ -1421,7 +1421,7 @@ export default function BoothManagerPage() {
                           <Button
                             size="sm"
                             variant="outline"
-                            className="text-xs min-h-[36px] px-2.5 gap-1 text-muted-foreground hover:text-amber-600 dark:hover:text-amber-400 cursor-pointer"
+                            className="text-xs min-h-[44px] px-2.5 gap-1 text-muted-foreground hover:text-amber-600 dark:hover:text-amber-400 cursor-pointer"
                             onClick={() => handleVacateBooth(booth)}
                             title={tOrg("vacateTitle")}
                             aria-label={tOrg("vacateAria", { num: booth.boothNumber })}
@@ -1434,7 +1434,7 @@ export default function BoothManagerPage() {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="text-xs min-h-[36px] px-2.5 gap-1 cursor-pointer"
+                          className="text-xs min-h-[44px] px-2.5 gap-1 cursor-pointer"
                           onClick={() => handleOpenEditModal(booth)}
                           aria-label={isOccupied ? tOrg("editAria", { num: booth.boothNumber }) : tOrg("assignAria", { num: booth.boothNumber })}
                         >
@@ -1445,7 +1445,7 @@ export default function BoothManagerPage() {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="text-xs min-h-[36px] px-2 text-destructive/80 hover:text-destructive hover:border-destructive/40 cursor-pointer"
+                          className="text-xs min-h-[44px] px-2 text-destructive/80 hover:text-destructive hover:border-destructive/40 cursor-pointer"
                           onClick={() => setDeletingBooth(booth)}
                           title={tOrg("decommTitleAttr")}
                           aria-label={tOrg("decommAria", { num: booth.boothNumber })}
@@ -1474,7 +1474,7 @@ export default function BoothManagerPage() {
                         role="checkbox"
                         aria-checked={allDisplayedSelected ? true : someDisplayedSelected ? "mixed" : false}
                         onClick={toggleSelectAll}
-                        className="min-w-[36px] min-h-[36px] inline-flex items-center justify-center p-1.5 rounded-lg hover:bg-muted text-foreground cursor-pointer transition-colors"
+                        className="min-w-[44px] min-h-[44px] inline-flex items-center justify-center p-1.5 rounded-lg hover:bg-muted text-foreground cursor-pointer transition-colors"
                         aria-label={allDisplayedSelected ? tOrg("deselectAllLots") : tOrg("selectAllLots")}
                       >
                         {allDisplayedSelected ? (
@@ -1516,7 +1516,7 @@ export default function BoothManagerPage() {
                             role="checkbox"
                             aria-checked={isSelected}
                             onClick={() => toggleSelectBooth(booth.id)}
-                            className="min-w-[36px] min-h-[36px] inline-flex items-center justify-center p-1.5 rounded-lg hover:bg-muted text-foreground cursor-pointer transition-colors"
+                            className="min-w-[44px] min-h-[44px] inline-flex items-center justify-center p-1.5 rounded-lg hover:bg-muted text-foreground cursor-pointer transition-colors"
                             aria-label={isSelected ? tOrg("deselectBooth", { num: booth.boothNumber }) : tOrg("selectBooth", { num: booth.boothNumber })}
                           >
                             {isSelected ? (
@@ -1584,7 +1584,7 @@ export default function BoothManagerPage() {
                               <Button
                                 size="sm"
                                 variant="outline"
-                                className="text-xs min-h-[36px] h-9 px-2 text-muted-foreground hover:text-amber-600 dark:hover:text-amber-400 cursor-pointer"
+                                className="text-xs min-h-[44px] px-2 text-muted-foreground hover:text-amber-600 dark:hover:text-amber-400 cursor-pointer"
                                 onClick={() => handleVacateBooth(booth)}
                                 title={tOrg("vacateTitle")}
                                 aria-label={`Vacate tenant from booth ${booth.boothNumber}`}
@@ -1595,7 +1595,7 @@ export default function BoothManagerPage() {
                             <Button
                               size="sm"
                               variant="outline"
-                              className="text-xs min-h-[36px] h-9 px-2.5 gap-1 cursor-pointer"
+                              className="text-xs min-h-[44px] px-2.5 gap-1 cursor-pointer"
                               onClick={() => handleOpenEditModal(booth)}
                               aria-label={isOccupied ? `Edit booth ${booth.boothNumber}` : `Assign booth ${booth.boothNumber}`}
                             >
@@ -1605,7 +1605,7 @@ export default function BoothManagerPage() {
                             <Button
                               size="sm"
                               variant="outline"
-                              className="text-xs min-h-[36px] h-9 px-2 text-destructive/80 hover:text-destructive hover:border-destructive/40 cursor-pointer"
+                              className="text-xs min-h-[44px] px-2 text-destructive/80 hover:text-destructive hover:border-destructive/40 cursor-pointer"
                               onClick={() => setDeletingBooth(booth)}
                               title="Decommission Lot"
                               aria-label={`Decommission booth ${booth.boothNumber}`}
@@ -1757,7 +1757,7 @@ export default function BoothManagerPage() {
               </label>
               <select
                 id="modal-booth-type"
-                className="w-full h-10 px-3 bg-background border border-input rounded-md text-xs"
+                className="w-full h-11 min-h-[44px] px-3 bg-background border border-input rounded-md text-xs"
                 value={formBoothType}
                 onChange={(e) => setFormBoothType(e.target.value)}
               >
@@ -2021,7 +2021,7 @@ export default function BoothManagerPage() {
             size="sm"
             disabled={isBulkVacating}
             onClick={handleBulkVacate}
-            className="text-xs min-h-[36px] sm:min-h-[44px] px-3 gap-1.5 cursor-pointer text-muted-foreground hover:text-amber-600 dark:hover:text-amber-400"
+            className="text-xs min-h-[44px] px-3 gap-1.5 cursor-pointer text-muted-foreground hover:text-amber-600 dark:hover:text-amber-400"
             aria-label={tOrg("vacateSelAria")}
           >
             <UserMinus className="h-4 w-4" />
@@ -2033,7 +2033,7 @@ export default function BoothManagerPage() {
             size="sm"
             disabled={isBulkDeleting}
             onClick={() => setIsBulkDeleteModalOpen(true)}
-            className="text-xs min-h-[36px] sm:min-h-[44px] px-3 gap-1.5 cursor-pointer"
+            className="text-xs min-h-[44px] px-3 gap-1.5 cursor-pointer"
             aria-label={tOrg("decommSelAria")}
           >
             <Trash2 className="h-4 w-4" />
@@ -2044,7 +2044,7 @@ export default function BoothManagerPage() {
             variant="ghost"
             size="sm"
             onClick={clearSelection}
-            className="text-xs min-h-[36px] sm:min-h-[44px] px-2.5 gap-1 text-muted-foreground hover:text-foreground cursor-pointer"
+            className="text-xs min-h-[44px] px-2.5 gap-1 text-muted-foreground hover:text-foreground cursor-pointer"
             aria-label={tOrg("clearSelAria")}
           >
             <X className="h-4 w-4" />
