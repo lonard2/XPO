@@ -66,7 +66,12 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
       orderBy: { startDate: "asc" },
     });
 
-    allBooths = await db.boothTenant.findMany();
+    // Booth occupancy must describe the same events the roster shows:
+    // owned events for organizers, the full set for admins. Never global.
+    const visibleIds = events.map((e: any) => e.id);
+    allBooths = visibleIds.length > 0
+      ? await db.boothTenant.findMany({ where: { eventId: { in: visibleIds } } })
+      : [];
   } catch (error) {
     console.error("Dashboard DB query error:", error);
     dbError = true;
@@ -302,7 +307,10 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
           {/* Card 4: Booth Occupancy */}
           <Card className="p-5 border-border/80 bg-card hover:border-primary/60 transition-all shadow-xs rounded-2xl">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-muted-foreground">{tOrg("kpiOccupancy") || "Booth Occupancy Rate"}</span>
+              <span className="text-xs font-medium text-muted-foreground">
+                {tOrg("kpiOccupancy") || "Booth Occupancy Rate"}
+                {isAdminView ? ` · ${tOrg("platformWide") || "platform-wide"}` : ""}
+              </span>
               <div className="h-8 w-8 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center">
                 <Store className="h-4 w-4" />
               </div>

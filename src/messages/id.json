@@ -1081,7 +1081,8 @@
     "scannerSupervisorOverride": "Izin Supervisor (Izinkan Masuk Kembali)",
     "scannerSendResolutionDesk": "Arahkan ke Meja Resolusi",
     "scannerNextAttendee": "Lanjut ke Peserta Berikutnya",
-    "scannerResetShift": "Reset Statistik Sesi"
+    "scannerResetShift": "Reset Statistik Sesi",
+    "platformWide": "seluruh platform"
   },
   "admin": {
     "dashboardTitle": "Tata Kelola & Agregator Admin",

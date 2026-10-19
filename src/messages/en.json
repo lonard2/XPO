@@ -1081,7 +1081,8 @@
     "scannerSupervisorOverride": "Supervisor Override (Allow Re-Entry)",
     "scannerSendResolutionDesk": "Escort to Resolution Desk",
     "scannerNextAttendee": "Clear for Next Attendee",
-    "scannerResetShift": "Reset Shift Stats"
+    "scannerResetShift": "Reset Shift Stats",
+    "platformWide": "platform-wide"
   },
   "admin": {
     "dashboardTitle": "Governance & Admin Agregator",

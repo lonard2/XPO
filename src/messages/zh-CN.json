@@ -1081,7 +1081,8 @@
     "scannerSupervisorOverride": "主管授权（准予重新入场）",
     "scannerSendResolutionDesk": "转交现场服务台处理",
     "scannerNextAttendee": "扫描下一位观众",
-    "scannerResetShift": "重置本班次统计"
+    "scannerResetShift": "重置本班次统计",
+    "platformWide": "全平台"
   },
   "admin": {
     "dashboardTitle": "管理统括中心",
