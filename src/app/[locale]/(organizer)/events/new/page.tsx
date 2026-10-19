@@ -441,7 +441,9 @@ export default function NewEventWizardPage() {
         const saved = localStorage.getItem(DRAFT_STORAGE_KEY);
         if (saved) {
           const parsed = JSON.parse(saved);
-          if (parsed && (parsed.title || parsed.ticketTiers?.length)) {
+          // A draft counts only with a real title: pristine autosaves carry
+          // default tiers but no content, and must not block entry points.
+          if (parsed && parsed.title) {
             setHasDraftAvailable(true);
             foundDraft = true;
           }
@@ -458,6 +460,11 @@ export default function NewEventWizardPage() {
           if (tmplKey && TEMPLATES[tmplKey]) {
             handleApplyTemplate(tmplKey);
           }
+          // Deep-link to a wizard step (validated); a waiting draft wins.
+          const stepParam = Number.parseInt(urlParams.get("step") || "", 10);
+          if (Number.isInteger(stepParam) && stepParam >= 1 && stepParam <= 4) {
+            setCurrentStep(stepParam);
+          }
         } catch {
           // Ignore
         }
@@ -466,6 +473,17 @@ export default function NewEventWizardPage() {
       isInitializedRef.current = true;
     });
   }, [handleApplyTemplate]);
+
+  // Keep the step deep-link in sync so views are shareable and refresh-safe.
+  // The template param is consumed once on mount and dropped from the URL.
+  React.useEffect(() => {
+    if (!isInitializedRef.current) return;
+    try {
+      router.replace(`${window.location.pathname}?step=${currentStep}`, { scroll: false });
+    } catch {
+      // Ignore router errors in restricted environments
+    }
+  }, [currentStep, router]);
 
   // Save Draft to LocalStorage whenever critical fields change
   React.useEffect(() => {

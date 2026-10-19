@@ -315,4 +315,62 @@ describe("Admin Platform-Curated Event Launch Wizard", () => {
     expect(payload.isPlatformCurated).toBe(false);
     expect(payload.organizerId).toBe("usr-org-debindo-99");
   });
+
+  it("mounts at the validated ?step= deep link", async () => {
+    window.history.replaceState({}, "", "/en/events/new?step=3");
+    try {
+      render(React.createElement(NewEventWizardPage));
+      await waitFor(() => {
+        expect(screen.getByText("Step 3 of 4")).toBeInTheDocument();
+      });
+    } finally {
+      window.history.replaceState({}, "", "/");
+    }
+  });
+
+  it("ignores an out-of-range ?step= value", async () => {
+    window.history.replaceState({}, "", "/en/events/new?step=9");
+    try {
+      render(React.createElement(NewEventWizardPage));
+      await waitFor(() => {
+        expect(screen.getByText("Step 1 of 4")).toBeInTheDocument();
+      });
+    } finally {
+      window.history.replaceState({}, "", "/");
+    }
+  });
+
+  it("applies ?template= over a pristine autosaved draft", async () => {
+    window.history.replaceState({}, "", "/en/events/new?template=tech");
+    localStorage.setItem(
+      "xpo_wizard_draft_v1",
+      JSON.stringify({ title: "", slug: "", ticketTiers: [{ id: "tier-1" }], currentStep: 1 })
+    );
+    try {
+      const { container } = render(React.createElement(NewEventWizardPage));
+      await waitFor(() => {
+        const titleInput = container.querySelector("#wizard-event-title") as HTMLInputElement;
+        expect(titleInput?.value).toBe("Asia AI Systems & Consumer Electronics Expo 2027");
+      });
+      expect(screen.queryByText(/Unsaved Event Draft Detected/)).toBeNull();
+    } finally {
+      window.history.replaceState({}, "", "/");
+    }
+  });
+
+  it("shows the draft banner for a titled draft and skips ?template=", async () => {
+    window.history.replaceState({}, "", "/en/events/new?template=tech");
+    localStorage.setItem(
+      "xpo_wizard_draft_v1",
+      JSON.stringify({ title: "My Half-Written Expo", slug: "my-half-written-expo", currentStep: 2 })
+    );
+    try {
+      render(React.createElement(NewEventWizardPage));
+      await waitFor(() => {
+        expect(screen.getByText(/Unsaved Event Draft Detected/)).toBeInTheDocument();
+      });
+    } finally {
+      window.history.replaceState({}, "", "/");
+    }
+  });
 });

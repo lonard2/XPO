@@ -8,7 +8,7 @@ Direction: multi-hall P0 first, all four issues, persist full array.
   collapse.
 - [x] **2. Clarify Category vocabulary** (`$impeccable clarify`): user-visible
   Archetype strings become Category; internal type names stay.
-- [ ] **3. Layout entry points** (`$impeccable layout`): working `?step=`
+- [x] **3. Layout entry points** (`$impeccable layout`): working `?step=`
   deep-links plus fix of the draft-suppresses-template race.
 - [ ] **4. Clarify overwrite guards** (`$impeccable clarify`): confirm guards
   on region-switch price rewrites and template overwrites, with undo.
