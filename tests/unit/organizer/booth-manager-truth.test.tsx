@@ -137,6 +137,63 @@ describe("Booth manager data truth", () => {
     }
   });
 
+  it("scopes hall pills to the selected event", async () => {
+    mockFetch((url: string) =>
+      Promise.resolve({
+        ok: true,
+        json: () =>
+          Promise.resolve(
+            url === eventsUrl
+              ? { events: [{ id: "ev-9", title: "Expo Nine" }] }
+              : {
+                  booths: [
+                    { id: "b1", eventId: "ev-9", companyName: "C1", boothNumber: "N1", hallName: "Hall 9" },
+                    { id: "b2", eventId: "ev-other", companyName: "C2", boothNumber: "N2", hallName: "Hall 1" },
+                  ],
+                }
+          ),
+      })
+    );
+    window.history.replaceState({}, "", "/en/booths?eventId=ev-9");
+    try {
+      const { container } = render(<BoothManagerPage />);
+      await waitFor(() => {
+        expect((screen.getByLabelText(/registered event/i) as HTMLSelectElement).value).toBe("ev-9");
+      });
+      const hallOptions = Array.from(
+        container.querySelectorAll("#booth-hall-filter option")
+      ).map((o) => (o as HTMLOptionElement).value);
+      expect(hallOptions).toContain("Hall 9");
+      expect(hallOptions).not.toContain("Hall 1");
+    } finally {
+      window.history.replaceState({}, "", "/");
+    }
+  });
+
+  it("blocks duplicate booth numbers within the event before submitting", async () => {
+    const postSpy = vi.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve({ success: true, booth: {} }) });
+    mockFetch((url: string, init?: any) => {
+      if (url === eventsUrl) return Promise.resolve({ ok: true, json: () => Promise.resolve({ events: [{ id: "ev-9", title: "Expo Nine" }] }) });
+      if (init?.method === "POST") return postSpy(url, init);
+      return Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({ booths: [{ id: "b1", eventId: "ev-9", companyName: "C1", boothNumber: "H9-A", hallName: "Hall 9" }] }),
+      });
+    });
+    const { container } = render(<BoothManagerPage />);
+    await waitFor(() => {
+      expect(screen.getByText("H9-A")).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getByRole("button", { name: /add new booth/i }));
+    fireEvent.change(container.querySelector("#modal-booth-number") as HTMLInputElement, { target: { value: "h9-a" } });
+    fireEvent.change(container.querySelector("#modal-hall-name") as HTMLInputElement, { target: { value: "Hall 9" } });
+    fireEvent.click(screen.getByRole("button", { name: /save booth/i }));
+    await waitFor(() => {
+      expect(screen.getByText(/already allocated for this event/i)).toBeInTheDocument();
+    });
+    expect(postSpy).not.toHaveBeenCalled();
+  });
+
   it("ignores unknown eventId and hall deep links", async () => {
     mockFetch((url: string) =>
       Promise.resolve({

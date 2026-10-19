@@ -249,6 +249,20 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
     const dupJson = await dupRes.json();
     expect(dupJson.success).toBe(false);
     expect(dupJson.error).toContain("already registered");
+
+    // 3. Reject case-insensitive duplicate booth number
+    const caseReq = new Request("http://localhost:3000/api/organizer/booths", {
+      method: "POST",
+      headers: adminHeaders,
+      body: JSON.stringify({
+        eventId: createdEventId,
+        companyName: "Case Variant Co",
+        boothNumber: "hall a1 - b12",
+        hallName: "Hall A1",
+      }),
+    });
+    const caseRes = await createBoothRoute(caseReq);
+    expect(caseRes.status).toBe(409);
   });
 
   it("Organizer Booths: POST supports batch CSV bulk import with database persistence", async () => {

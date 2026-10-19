@@ -302,14 +302,16 @@ export default function BoothManagerPage() {
     fetchBoothsAndEvents();
   }, [fetchBoothsAndEvents]);
 
-  // Extract unique halls
+  // Extract unique halls, scoped to the selected event when one is set.
+  // A global list would show foreign 0/0 pills from other events.
   const hallsList = React.useMemo(() => {
     const set = new Set<string>();
     booths.forEach((b) => {
+      if (selectedEventId !== "ALL" && b.eventId !== selectedEventId) return;
       if (b.hallName) set.add(b.hallName);
     });
     return Array.from(set);
-  }, [booths]);
+  }, [booths, selectedEventId]);
 
   // Deep-link entry: apply validated eventId/hall/status/q once data loads.
   // Unknown values fall back to ALL so links never strand the operator.
@@ -319,12 +321,21 @@ export default function BoothManagerPage() {
     try {
       const params = new URLSearchParams(window.location.search);
       const eventId = params.get("eventId");
-      if (eventId && eventId !== "ALL" && events.some((e: any) => e.id === eventId)) {
-        setSelectedEventId(eventId);
+      const appliedEventId =
+        eventId && eventId !== "ALL" && events.some((e: any) => e.id === eventId) ? eventId : "ALL";
+      if (appliedEventId !== "ALL") {
+        setSelectedEventId(appliedEventId);
       }
       const hall = params.get("hall");
-      if (hall && hall !== "ALL" && hallsList.includes(hall)) {
-        setSelectedHall(hall);
+      if (hall && hall !== "ALL") {
+        const scoped = new Set<string>();
+        booths.forEach((b: BoothItem) => {
+          if (appliedEventId !== "ALL" && b.eventId !== appliedEventId) return;
+          if (b.hallName) scoped.add(b.hallName);
+        });
+        if (scoped.has(hall)) {
+          setSelectedHall(hall);
+        }
       }
       const status = params.get("status");
       if (status && ["OCCUPIED", "AVAILABLE"].includes(status)) {
@@ -335,7 +346,7 @@ export default function BoothManagerPage() {
     } catch {
       // Ignore URL parsing errors
     }
-  }, [isLoading, events, hallsList]);
+  }, [isLoading, events, booths]);
 
   // Keep views shareable: sync active filters back to the URL.
   React.useEffect(() => {
@@ -352,6 +363,24 @@ export default function BoothManagerPage() {
       // Ignore router errors in restricted environments
     }
   }, [selectedEventId, selectedHall, statusFilter, searchQuery, isLoading, router]);
+
+  // Hall dossier for the modal combobox: the selected event's venue halls
+  // first, then hall names already used by that event's booths. Freeform
+  // entry stays possible for legacy and custom halls.
+  const hallDossier = React.useMemo(() => {
+    const names = new Set<string>();
+    const dossierEventId =
+      formEventId || (selectedEventId !== "ALL" ? selectedEventId : (events[0]?.id || ""));
+    const dossierEvent = events.find((e: any) => e.id === dossierEventId);
+    (dossierEvent?.venue?.halls || []).forEach((h: any) => {
+      if (h?.name) names.add(h.name);
+    });
+    booths.forEach((b) => {
+      if (dossierEventId && b.eventId !== dossierEventId) return;
+      if (b.hallName) names.add(b.hallName);
+    });
+    return Array.from(names);
+  }, [events, booths, formEventId, selectedEventId]);
 
   // Filtered Booths
   const filteredBooths = React.useMemo(() => {
@@ -479,6 +508,23 @@ export default function BoothManagerPage() {
 
     if (!formBoothNumber.trim() || !formHallName.trim()) {
       setFormError("Booth number and hall name are mandatory.");
+      return;
+    }
+
+    // Client-side duplicate guard within the target event (case-insensitive).
+    // The API re-checks with a 409; this stops the typo before the round trip.
+    const targetEventIdForDup =
+      editingBooth?.eventId ||
+      formEventId ||
+      (selectedEventId !== "ALL" ? selectedEventId : (events[0]?.id || ""));
+    const duplicate = booths.some(
+      (b) =>
+        b.eventId === targetEventIdForDup &&
+        b.boothNumber.trim().toLowerCase() === formBoothNumber.trim().toLowerCase() &&
+        b.id !== editingBooth?.id
+    );
+    if (duplicate) {
+      setFormError(`Booth lot "${formBoothNumber.trim()}" is already allocated for this event.`);
       return;
     }
 
@@ -1166,7 +1212,10 @@ export default function BoothManagerPage() {
               aria-label={tOrg("allEvents") || "Filter by Registered Event"}
               className="w-full h-11 min-h-[44px] px-3 bg-background border border-input rounded-md text-xs"
               value={selectedEventId}
-              onChange={(e) => setSelectedEventId(e.target.value)}
+              onChange={(e) => {
+                setSelectedEventId(e.target.value);
+                setSelectedHall("ALL");
+              }}
             >
               <option value="ALL">{tOrg("allEvents") || "All Registered Events"}</option>
               {events.map((ev) => (
@@ -1662,7 +1711,13 @@ export default function BoothManagerPage() {
               value={formHallName}
               onChange={(e) => setFormHallName(e.target.value)}
               required
+              list="hall-dossier-list"
             />
+            <datalist id="hall-dossier-list">
+              {hallDossier.map((h) => (
+                <option key={h} value={h} />
+              ))}
+            </datalist>
           </div>
 
           <Input

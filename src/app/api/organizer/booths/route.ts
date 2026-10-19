@@ -191,15 +191,16 @@ export async function POST(request: Request) {
       );
     }
 
-    // Collision check for single booth creation
-    const existing = await db.boothTenant.findFirst({
-      where: {
-        eventId,
-        boothNumber: boothNumber.trim(),
-      },
+    // Collision check for single booth creation (case-insensitive within event)
+    const siblings = await db.boothTenant.findMany({
+      where: { eventId },
+      select: { boothNumber: true },
     });
+    const taken = siblings.some(
+      (s) => s.boothNumber.trim().toLowerCase() === boothNumber.trim().toLowerCase()
+    );
 
-    if (existing) {
+    if (taken) {
       return NextResponse.json(
         { success: false, error: `Booth lot "${boothNumber}" is already registered for this event` },
         { status: 409 }
