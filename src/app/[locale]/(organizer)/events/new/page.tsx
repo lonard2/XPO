@@ -268,15 +268,19 @@ export default function NewEventWizardPage() {
   const [showDiscardModal, setShowDiscardModal] = React.useState(false);
   const isInitializedRef = React.useRef(false);
 
-  // Admin curation & publication authority state
-  const [isPlatformCurated, setIsPlatformCurated] = React.useState<boolean>(isAdmin);
+  // Admin curation & publication authority state: curated showcase,
+  // delegation to a registered organizer, or owned by the admin directly.
+  const [authorityMode, setAuthorityMode] = React.useState<"curated" | "delegated" | "self">(
+    isAdmin ? "curated" : "delegated"
+  );
+  const isPlatformCurated = authorityMode === "curated";
   const [organizerName, setOrganizerName] = React.useState<string>("");
   const [targetOrganizerId, setTargetOrganizerId] = React.useState<string>("");
 
   const prevAdminRef = React.useRef(isAdmin);
   React.useEffect(() => {
     if (!prevAdminRef.current && isAdmin) {
-      setIsPlatformCurated(true);
+      setAuthorityMode("curated");
     }
     prevAdminRef.current = isAdmin;
   }, [isAdmin]);
@@ -563,7 +567,7 @@ export default function NewEventWizardPage() {
         accentColor,
         heroImageUrl,
         currentStep,
-        isPlatformCurated,
+        authorityMode,
         organizerName,
         targetOrganizerId,
         savedAt: new Date().toISOString(),
@@ -592,7 +596,7 @@ export default function NewEventWizardPage() {
     accentColor,
     heroImageUrl,
     currentStep,
-    isPlatformCurated,
+    authorityMode,
     organizerName,
     targetOrganizerId,
   ]);
@@ -632,7 +636,11 @@ export default function NewEventWizardPage() {
       if (d.accentColor) setAccentColor(d.accentColor);
       if (d.heroImageUrl) setHeroImageUrl(d.heroImageUrl);
       if (d.currentStep) setCurrentStep(d.currentStep);
-      if (d.isPlatformCurated !== undefined) setIsPlatformCurated(d.isPlatformCurated);
+      if (d.authorityMode) {
+        setAuthorityMode(d.authorityMode);
+      } else if (d.isPlatformCurated !== undefined) {
+        setAuthorityMode(d.isPlatformCurated ? "curated" : "delegated");
+      }
       if (d.organizerName !== undefined) setOrganizerName(d.organizerName);
       if (d.targetOrganizerId !== undefined) setTargetOrganizerId(d.targetOrganizerId);
       setHasDraftAvailable(false);
@@ -916,9 +924,14 @@ export default function NewEventWizardPage() {
       heroImageUrl,
       ...(isAdmin
         ? {
-            isPlatformCurated,
+            isPlatformCurated: authorityMode === "curated",
             organizerName: organizerName.trim() || undefined,
-            organizerId: isPlatformCurated ? undefined : (targetOrganizerId.trim() || undefined),
+            organizerId:
+              authorityMode === "delegated"
+                ? targetOrganizerId.trim() || undefined
+                : authorityMode === "self"
+                  ? user?.id
+                  : undefined,
           }
         : {}),
       ticketTiers: ticketTiers.map((t) => ({
@@ -1317,14 +1330,14 @@ export default function NewEventWizardPage() {
               <div
                 role="radiogroup"
                 aria-label="Event Publication Authority"
-                className="grid grid-cols-1 md:grid-cols-2 gap-3"
+                className="grid grid-cols-1 lg:grid-cols-3 gap-3"
               >
                 {/* Option 1: Platform-Curated / Official Venue Listing */}
                 <button
                   type="button"
                   role="radio"
                   aria-checked={isPlatformCurated}
-                  onClick={() => setIsPlatformCurated(true)}
+                  onClick={() => setAuthorityMode("curated")}
                   className={cn(
                     "min-h-[52px] p-4 rounded-xl border text-left cursor-pointer transition-all flex flex-col justify-between gap-2 focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none shadow-xs",
                     isPlatformCurated
@@ -1359,11 +1372,11 @@ export default function NewEventWizardPage() {
                 <button
                   type="button"
                   role="radio"
-                  aria-checked={!isPlatformCurated}
-                  onClick={() => setIsPlatformCurated(false)}
+                  aria-checked={authorityMode === "delegated"}
+                  onClick={() => setAuthorityMode("delegated")}
                   className={cn(
                     "min-h-[52px] p-4 rounded-xl border text-left cursor-pointer transition-all flex flex-col justify-between gap-2 focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none shadow-xs",
-                    !isPlatformCurated
+                    authorityMode === "delegated"
                       ? "border-primary bg-primary/5 ring-1 ring-primary/30 shadow-xs"
                       : "border-border/80 bg-background hover:border-primary/50 hover:bg-muted/30"
                   )}
@@ -1373,10 +1386,10 @@ export default function NewEventWizardPage() {
                       <div
                         className={cn(
                           "h-4 w-4 rounded-full border flex items-center justify-center transition-colors shrink-0",
-                          !isPlatformCurated ? "border-primary bg-primary text-primary-foreground" : "border-muted-foreground/50"
+                          authorityMode === "delegated" ? "border-primary bg-primary text-primary-foreground" : "border-muted-foreground/50"
                         )}
                       >
-                        {!isPlatformCurated && <div className="h-1.5 w-1.5 rounded-full bg-white" />}
+                        {authorityMode === "delegated" && <div className="h-1.5 w-1.5 rounded-full bg-white" />}
                       </div>
                       <span className="text-xs font-bold text-foreground">
                         Assign to Registered Organizer
@@ -1390,10 +1403,57 @@ export default function NewEventWizardPage() {
                     Bind this exhibition directly to an existing registered organizer account.
                   </p>
                 </button>
+
+                {/* Option 3: Admin-Managed Event */}
+                <button
+                  type="button"
+                  role="radio"
+                  aria-checked={authorityMode === "self"}
+                  onClick={() => setAuthorityMode("self")}
+                  className={cn(
+                    "min-h-[52px] p-4 rounded-xl border text-left cursor-pointer transition-all flex flex-col justify-between gap-2 focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none shadow-xs",
+                    authorityMode === "self"
+                      ? "border-primary bg-primary/5 ring-1 ring-primary/30 shadow-xs"
+                      : "border-border/80 bg-background hover:border-primary/50 hover:bg-muted/30"
+                  )}
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <div
+                        className={cn(
+                          "h-4 w-4 rounded-full border flex items-center justify-center transition-colors shrink-0",
+                          authorityMode === "self" ? "border-primary bg-primary text-primary-foreground" : "border-muted-foreground/50"
+                        )}
+                      >
+                        {authorityMode === "self" && <div className="h-1.5 w-1.5 rounded-full bg-white" />}
+                      </div>
+                      <span className="text-xs font-bold text-foreground">
+                        Admin-Managed Event
+                      </span>
+                    </div>
+                    <Badge variant="secondary" size="sm" className="text-[11px] font-semibold">
+                      My Account
+                    </Badge>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground leading-relaxed pl-6">
+                    Owned by your admin account. Add, modify, and delete freely without organizer involvement.
+                  </p>
+                </button>
               </div>
 
               {/* Sub-fields depending on selection */}
-              {isPlatformCurated ? (
+              {authorityMode === "self" ? (
+                <div className="space-y-1.5 pt-2 border-t border-border/50">
+                  <div className="flex items-center gap-2 text-xs">
+                    <Badge variant="outline" size="sm" className="font-semibold text-primary">
+                      {user?.name || user?.email || "Admin"}
+                    </Badge>
+                    <span className="text-muted-foreground">
+                      This exhibition will be owned by your admin account.
+                    </span>
+                  </div>
+                </div>
+              ) : isPlatformCurated ? (
                 <div className="space-y-1.5 pt-2 border-t border-border/50">
                   <Input
                     id="wizard-organizer-name"
@@ -2357,7 +2417,9 @@ export default function NewEventWizardPage() {
                       <span className="text-[11px] text-primary font-medium block mt-0.5">
                         {isPlatformCurated
                           ? `Platform-Curated (${organizerName.trim() || "Official Listing"})`
-                          : `Assigned Organizer: ${targetOrganizerId.trim() || "Unspecified"}`}
+                          : authorityMode === "self"
+                            ? `Admin-Managed (${user?.name || "Admin Account"})`
+                            : `Assigned Organizer: ${targetOrganizerId.trim() || "Unspecified"}`}
                       </span>
                     )}
                   </div>

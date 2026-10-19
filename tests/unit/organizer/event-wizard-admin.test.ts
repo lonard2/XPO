@@ -491,3 +491,59 @@ describe("Admin Platform-Curated Event Launch Wizard", () => {
     }
   });
 });
+
+describe("Admin self-managed events", () => {
+  let fetchMock: ReturnType<typeof vi.fn>;
+
+  beforeEach(() => {
+    localStorage.clear();
+    mockRole = "ADMIN";
+    mockUser.role = "ADMIN";
+    fetchMock = vi.fn().mockImplementation((url: string) => {
+      if (url === "/api/venues") {
+        return Promise.resolve({ ok: true, json: () => Promise.resolve({ venues: [] }) });
+      }
+      if (url === "/api/organizer/events") {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ success: true, event: { id: "evt-self-1", slug: "x" } }),
+        });
+      }
+      return Promise.resolve({ ok: true, json: () => Promise.resolve({}) });
+    });
+    global.fetch = fetchMock;
+  });
+
+  it("creates an admin-owned event without organizer involvement", async () => {
+    const { container } = render(React.createElement(NewEventWizardPage));
+
+    const titleInput = container.querySelector("#wizard-event-title") as HTMLInputElement;
+    fireEvent.change(titleInput, { target: { value: "Admin Direct Expo 2027" } });
+    const descInput = container.querySelector("#wizard-description") as HTMLTextAreaElement;
+    fireEvent.change(descInput, { target: { value: "Directly managed by platform administration." } });
+
+    fireEvent.click(screen.getByRole("radio", { name: /admin-managed event/i }));
+
+    fireEvent.click(screen.getByRole("button", { name: /continue to next step/i }));
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: /continue to next step/i })).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getByRole("button", { name: /continue to next step/i }));
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: /continue to next step/i })).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getByRole("button", { name: /continue to next step/i }));
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: /publish & launch exhibition/i })).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getByRole("button", { name: /publish & launch exhibition/i }));
+
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledWith("/api/organizer/events", expect.objectContaining({ method: "POST" }));
+    });
+    const postCall = fetchMock.mock.calls.find((call) => call[0] === "/api/organizer/events");
+    const payload = JSON.parse(postCall![1].body);
+    expect(payload.isPlatformCurated).toBe(false);
+    expect(payload.organizerId).toBe("usr-admin-1");
+  });
+});
