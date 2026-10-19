@@ -1171,7 +1171,12 @@
     "clusterEnterprise": "Handel & Gewerbe",
     "clusterSovereign": "Staat & Verteidigung",
     "clusterHealth": "Gesundheit & Glaube",
-    "clusterCulture": "Kultur & Sport"
+    "clusterCulture": "Kultur & Sport",
+    "sampleBadge": "Beispiel",
+    "sampleBanner": "Beispieldaten werden angezeigt. Datenbank verbinden für echte Stände.",
+    "sampleErrorBanner": "Datenbank nicht erreichbar. Beispieldaten werden angezeigt.",
+    "csvPersisted": "{count} Messestände in der Datenbank gespeichert.",
+    "csvStaged": "{count} Stände nur auf diesem Gerät. Datenbank-Schreibvorgang unbestätigt."
   },
   "admin": {
     "dashboardTitle": "Admin-Governance & Aggregator",

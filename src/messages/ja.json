@@ -1171,7 +1171,12 @@
     "clusterEnterprise": "ビジネス・貿易",
     "clusterSovereign": "政府・防衛",
     "clusterHealth": "医療・信仰",
-    "clusterCulture": "文化・スポーツ"
+    "clusterCulture": "文化・スポーツ",
+    "sampleBadge": "サンプル",
+    "sampleBanner": "サンプルフロアデータを表示しています。実際のロット管理にはデータベースに接続してください。",
+    "sampleErrorBanner": "データベースに接続できません. サンプルフロアデータを表示しています。",
+    "csvPersisted": "{count}件のブースをデータベースに保存しました。",
+    "csvStaged": "{count}件はこのデバイス上のみ. データベースへの書き込みは未確認です。"
   },
   "admin": {
     "dashboardTitle": "管理統括・アグリゲーター",

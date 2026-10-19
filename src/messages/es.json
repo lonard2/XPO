@@ -1171,7 +1171,12 @@
     "clusterEnterprise": "Negocios y comercio",
     "clusterSovereign": "Gobierno y defensa",
     "clusterHealth": "Salud y fe",
-    "clusterCulture": "Cultura y deporte"
+    "clusterCulture": "Cultura y deporte",
+    "sampleBadge": "Muestra",
+    "sampleBanner": "Mostrando datos de ejemplo. conecte la base de datos para gestionar stands reales.",
+    "sampleErrorBanner": "Sin conexión a la base de datos. mostrando datos de ejemplo.",
+    "csvPersisted": "{count} stands guardados en la base de datos.",
+    "csvStaged": "{count} stands solo en este dispositivo. escritura no confirmada."
   },
   "admin": {
     "dashboardTitle": "Gobernanza y Agregador de Administración",

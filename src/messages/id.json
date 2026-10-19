@@ -1171,7 +1171,12 @@
     "clusterEnterprise": "Bisnis & Perdagangan",
     "clusterSovereign": "Pemerintahan & Pertahanan",
     "clusterHealth": "Kesehatan & Keyakinan",
-    "clusterCulture": "Budaya & Olahraga"
+    "clusterCulture": "Budaya & Olahraga",
+    "sampleBadge": "Contoh",
+    "sampleBanner": "Menampilkan data lantai contoh. hubungkan database untuk mengelola lot asli.",
+    "sampleErrorBanner": "Tidak dapat menjangkau database. menampilkan data lantai contoh.",
+    "csvPersisted": "Berhasil menyimpan {count} lot booth ke database.",
+    "csvStaged": "{count} lot booth hanya tersimpan di perangkat ini. penulisan database tidak terkonfirmasi."
   },
   "admin": {
     "dashboardTitle": "Tata Kelola & Agregator Admin",

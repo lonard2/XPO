@@ -1171,7 +1171,12 @@
     "clusterEnterprise": "Enterprise & Trade",
     "clusterSovereign": "Sovereign & Defense",
     "clusterHealth": "Health & Faith",
-    "clusterCulture": "Culture & Sports"
+    "clusterCulture": "Culture & Sports",
+    "sampleBadge": "Sample",
+    "sampleBanner": "Showing sample floor data. connect the database to manage real lots.",
+    "sampleErrorBanner": "Could not reach the database. showing sample floor data.",
+    "csvPersisted": "Successfully persisted {count} booth lots to database.",
+    "csvStaged": "{count} booth lots kept on this device only. database write did not confirm."
   },
   "admin": {
     "dashboardTitle": "Governance & Admin Agregator",

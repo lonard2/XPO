@@ -40,6 +40,7 @@ interface BoothItem {
   companyName: string;
   boothNumber: string;
   hallName: string;
+  isSample?: boolean;
   industry?: string | null;
   websiteUrl?: string | null;
   logoUrl?: string | null;
@@ -117,6 +118,7 @@ function sanitizeUrl(rawUrl: string | null | undefined): string | null {
 
 export default function BoothManagerPage() {
   const tOrg = useTranslations("organizer");
+  const tCom = useTranslations("common");
 
   const [booths, setBooths] = React.useState<BoothItem[]>([]);
   const [events, setEvents] = React.useState<any[]>([]);
@@ -125,6 +127,8 @@ export default function BoothManagerPage() {
   const [statusFilter, setStatusFilter] = React.useState<string>("ALL");
   const [searchQuery, setSearchQuery] = React.useState<string>("");
   const [isLoading, setIsLoading] = React.useState(true);
+  const [isSampleData, setIsSampleData] = React.useState(false);
+  const [fetchError, setFetchError] = React.useState(false);
 
   // Dual View Mode
   const [viewMode, setViewMode] = React.useState<"grid" | "table">("grid");
@@ -165,6 +169,7 @@ export default function BoothManagerPage() {
 
   const fetchBoothsAndEvents = React.useCallback(async () => {
     setIsLoading(true);
+    setFetchError(false);
     try {
       // Fetch events
       const evRes = await fetch("/api/organizer/events");
@@ -184,18 +189,28 @@ export default function BoothManagerPage() {
         const bData = await bRes.json();
         if (bData.booths && bData.booths.length > 0) {
           setBooths(bData.booths);
+          setIsSampleData(false);
           setIsLoading(false);
           return;
         }
+        // Reachable but empty: seeded demo rows, honestly labeled.
+        setIsSampleData(true);
+      } else {
+        // Unreachable: seeded demo rows plus an explicit error state.
+        setIsSampleData(true);
+        setFetchError(true);
       }
     } catch {
-      // Fallback
+      // Unreachable: seeded demo rows plus an explicit error state.
+      setIsSampleData(true);
+      setFetchError(true);
     }
 
     // Default Seeded Booths for instant interaction
     const defaultBooths: BoothItem[] = [
       {
         id: "b-1",
+        isSample: true,
         eventId: "ev-1",
         companyName: "PT Nusantara Robotics",
         boothNumber: "Hall A1 - B01",
@@ -209,6 +224,7 @@ export default function BoothManagerPage() {
       },
       {
         id: "b-2",
+        isSample: true,
         eventId: "ev-1",
         companyName: "Tokyo Precision Machining Ltd",
         boothNumber: "Hall A1 - B04",
@@ -222,6 +238,7 @@ export default function BoothManagerPage() {
       },
       {
         id: "b-3",
+        isSample: true,
         eventId: "ev-1",
         companyName: "Global Battery Solutions",
         boothNumber: "Hall A2 - C12",
@@ -235,6 +252,7 @@ export default function BoothManagerPage() {
       },
       {
         id: "b-4",
+        isSample: true,
         eventId: "ev-1",
         companyName: "",
         boothNumber: "Hall A2 - C15",
@@ -247,6 +265,7 @@ export default function BoothManagerPage() {
       },
       {
         id: "b-5",
+        isSample: true,
         eventId: "ev-1",
         companyName: "Pacific Industrial Automation",
         boothNumber: "Hall B1 - D08",
@@ -260,6 +279,7 @@ export default function BoothManagerPage() {
       },
       {
         id: "b-6",
+        isSample: true,
         eventId: "ev-1",
         companyName: "",
         boothNumber: "Hall B1 - D10",
@@ -787,7 +807,11 @@ export default function BoothManagerPage() {
       setIsCsvModalOpen(false);
       setCsvRawText("");
       setParsedCsvRows([]);
-      setToastMessage(`Successfully persisted ${validRows.length} booth lots to database.`);
+      if (data.booths) {
+        setToastMessage(tOrg("csvPersisted", { count: validRows.length }) || `Successfully persisted ${validRows.length} booth lots to database.`);
+      } else {
+        setToastMessage(tOrg("csvStaged", { count: validRows.length }) || `${validRows.length} booth lots kept on this device only — database write did not confirm.`);
+      }
       setTimeout(() => setToastMessage(""), 3500);
     } catch (err) {
       setCsvImportError((err as Error).message);
@@ -868,6 +892,35 @@ export default function BoothManagerPage() {
           >
             <X className="h-4 w-4" />
           </button>
+        </div>
+      )}
+
+      {/* SAMPLE DATA BANNER */}
+      {isSampleData && !isLoading && (
+        <div
+          role="status"
+          className="p-3.5 bg-amber-500/10 border border-amber-500/30 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs animate-fade-in shadow-xs"
+        >
+          <div className="flex items-center gap-2.5">
+            <Badge variant="outline" size="sm" className="font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 border-amber-500/40 shrink-0">
+              {tOrg("sampleBadge") || "Sample"}
+            </Badge>
+            <span className="font-medium text-amber-800 dark:text-amber-300">
+              {fetchError
+                ? tOrg("sampleErrorBanner") || "Could not reach the database — showing sample floor data."
+                : tOrg("sampleBanner") || "Showing sample floor data — connect the database to manage real lots."}
+            </span>
+          </div>
+          {fetchError && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={fetchBoothsAndEvents}
+              className="min-h-[44px] px-4 text-xs font-semibold cursor-pointer self-start sm:self-auto shrink-0"
+            >
+              {tCom("retry") || "Retry"}
+            </Button>
+          )}
         </div>
       )}
 
@@ -1205,6 +1258,11 @@ export default function BoothManagerPage() {
                           <Badge variant={isOccupied ? "secondary" : "success"} size="sm">
                             {isOccupied ? "Occupied" : "Available"}
                           </Badge>
+                          {booth.isSample && (
+                            <Badge variant="outline" size="sm" className="text-[11px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 border-amber-500/40">
+                              {tOrg("sampleBadge") || "Sample"}
+                            </Badge>
+                          )}
                           {booth.boothType && (
                             <Badge variant="outline" size="sm" className="text-[11px] py-0 px-1.5 font-normal">
                               {BOOTH_TYPES[booth.boothType]?.label || booth.boothType}
@@ -1371,6 +1429,11 @@ export default function BoothManagerPage() {
                         </td>
                         <td className="p-3 font-mono font-bold text-foreground">
                           {booth.boothNumber}
+                          {booth.isSample && (
+                            <Badge variant="outline" size="sm" className="ml-2 text-[11px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 border-amber-500/40">
+                              {tOrg("sampleBadge") || "Sample"}
+                            </Badge>
+                          )}
                         </td>
                         <td className="p-3 font-medium text-foreground">
                           <Badge variant="outline" size="sm">{booth.hallName}</Badge>

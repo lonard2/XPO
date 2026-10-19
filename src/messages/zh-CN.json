@@ -1171,7 +1171,12 @@
     "clusterEnterprise": "企业贸易",
     "clusterSovereign": "政务防务",
     "clusterHealth": "医疗信仰",
-    "clusterCulture": "文化体育"
+    "clusterCulture": "文化体育",
+    "sampleBadge": "示例",
+    "sampleBanner": "正在显示示例楼层数据. 连接数据库以管理真实展位。",
+    "sampleErrorBanner": "无法连接数据库. 正在显示示例楼层数据。",
+    "csvPersisted": "已将{count}个展位保存到数据库。",
+    "csvStaged": "{count}个展位仅保存在本设备. 数据库写入未确认。"
   },
   "admin": {
     "dashboardTitle": "管理统括中心",
