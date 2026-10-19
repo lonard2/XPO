@@ -1396,7 +1396,8 @@
     "manualSearchBtn": "Manual Search",
     "initScanner": "Initializing Gate Scanner...",
     "scannerPhotoAlt": "Photo of {name}",
-    "scannerCompany": "Company / Affiliation:"
+    "scannerCompany": "Company / Affiliation:",
+    "admittedSub": "({checked} of {total} admitted)"
   },
   "admin": {
     "dashboardTitle": "Governance & Admin Agregator",

@@ -23,6 +23,7 @@ import { cn } from "@/lib/utils";
 import { formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
 import { OrganizerOnboardingGuide } from "@/components/organizer/OrganizerOnboardingGuide";
 import { OrganizerEventsRoster } from "@/components/organizer/OrganizerEventsRoster";
+import { CountUp } from "@/components/ui/CountUp";
 import { DashboardRefreshButton } from "@/components/organizer/DashboardRefreshButton";
 
 interface DashboardPageProps {
@@ -235,7 +236,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
             </div>
             <div className="mt-3">
               <div className="text-2xl font-bold text-foreground tabular-nums">
-                {totalRegistrations.toLocaleString()} <span className="text-xs font-normal text-muted-foreground">{tCom("attendees")}</span>
+                <CountUp value={totalRegistrations} /> <span className="text-xs font-normal text-muted-foreground">{tCom("attendees")}</span>
               </div>
               <div className="flex items-center gap-1 mt-1 text-xs text-emerald-600 dark:text-emerald-400 font-medium">
                 <TrendingUp className="h-3 w-3" />
@@ -270,16 +271,16 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
           {/* Card 3: Overall Gate Check-In Rate */}
           <Card className="p-5 border-border/80 bg-card hover:border-primary/60 transition-all shadow-xs rounded-2xl">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-muted-foreground">Overall Gate Check-In Rate</span>
+              <span className="text-xs font-medium text-muted-foreground">{tOrg("checkinAria")}</span>
               <div className="h-8 w-8 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
                 <CheckCircle2 className="h-4 w-4" />
               </div>
             </div>
             <div className="mt-3">
               <div className="text-2xl font-bold text-foreground tabular-nums">
-                {checkInRate}%{" "}
+                <CountUp value={checkInRate} />%{" "}
                 <span className="text-xs font-normal text-muted-foreground">
-                  ({totalCheckedIn.toLocaleString()} of {totalRegistrations.toLocaleString()} admitted)
+                  {tOrg("admittedSub", { checked: totalCheckedIn.toLocaleString(), total: totalRegistrations.toLocaleString() })}
                 </span>
               </div>
               <div
@@ -312,7 +313,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
             </div>
             <div className="mt-3">
               <div className="text-2xl font-bold text-foreground tabular-nums">
-                {totalBooths > 0 ? `${boothOccupancy}%` : "0%"}{" "}
+                <CountUp value={totalBooths > 0 ? boothOccupancy : 0} />%{" "}
                 <span className="text-xs font-normal text-muted-foreground">
                   {tOrg("boothsUnitsCount", { occupied: occupiedBooths, total: totalBooths })}
                 </span>

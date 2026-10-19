@@ -1396,7 +1396,8 @@
     "manualSearchBtn": "Manuelle Suche",
     "initScanner": "Gate-Scanner wird initialisiert...",
     "scannerPhotoAlt": "Foto von {name}",
-    "scannerCompany": "Firma / Zugehörigkeit:"
+    "scannerCompany": "Firma / Zugehörigkeit:",
+    "admittedSub": "({checked} von {total} eingelassen)"
   },
   "admin": {
     "dashboardTitle": "Admin-Governance & Aggregator",

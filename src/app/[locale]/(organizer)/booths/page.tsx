@@ -27,6 +27,7 @@ import {
   MinusSquare,
 } from "lucide-react";
 import { Card } from "@/components/ui/Card";
+import { CountUp } from "@/components/ui/CountUp";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Input } from "@/components/ui/Input";
@@ -1024,25 +1025,25 @@ export default function BoothManagerPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="p-4 border-border bg-card shadow-xs">
           <div className="text-xs text-muted-foreground font-medium">{tOrg("boothsIndexed")}</div>
-          <div className="text-2xl font-bold text-foreground mt-1">{totalCount}</div>
+          <div className="text-2xl font-bold text-foreground mt-1"><CountUp value={totalCount} /></div>
           <div className="text-xs text-muted-foreground mt-0.5">{tOrg("acrossExhibitions", { count: hallsList.length })}</div>
         </Card>
 
         <Card className="p-4 border-border bg-card shadow-xs">
           <div className="text-xs text-muted-foreground font-medium">{tOrg("occupiedLots")}</div>
-          <div className="text-2xl font-bold text-primary mt-1">{occupiedCount}</div>
+          <div className="text-2xl font-bold text-primary mt-1"><CountUp value={occupiedCount} /></div>
           <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5 font-medium">{tOrg("occupiedOnly")}</div>
         </Card>
 
         <Card className="p-4 border-border bg-card shadow-xs">
           <div className="text-xs text-muted-foreground font-medium">{tOrg("availableUnits")}</div>
-          <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">{availableCount}</div>
+          <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-1"><CountUp value={availableCount} /></div>
           <div className="text-xs text-muted-foreground mt-0.5">{tOrg("availableOnly")}</div>
         </Card>
 
         <Card className="p-4 border-border bg-card shadow-xs">
           <div className="text-xs text-muted-foreground font-medium">{tOrg("occupancyRate")}</div>
-          <div className="text-2xl font-bold text-foreground mt-1">{occupancyPct}%</div>
+          <div className="text-2xl font-bold text-foreground mt-1"><CountUp value={occupancyPct} />%</div>
           <div
             className="w-full bg-muted rounded-full h-1.5 mt-2 overflow-hidden"
             role="progressbar"

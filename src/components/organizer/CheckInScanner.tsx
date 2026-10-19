@@ -28,6 +28,7 @@ import {
   SwitchCamera,
 } from "lucide-react";
 import { Card } from "@/components/ui/Card";
+import { CountUp } from "@/components/ui/CountUp";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Input } from "@/components/ui/Input";
@@ -878,26 +879,26 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
           <div className="text-xs uppercase font-semibold text-muted-foreground">
             {tOrg("scannerScansProcessed")}
           </div>
-          <div className="text-xl font-bold text-foreground mt-0.5" data-testid="telemetry-processed">{shiftRows.length}</div>
+          <div className="text-xl font-bold text-foreground mt-0.5" data-testid="telemetry-processed"><CountUp value={shiftRows.length} /></div>
         </Card>
         <Card className="p-3.5 border-border bg-card text-center shadow-xs">
           <div className="text-xs uppercase font-semibold text-muted-foreground">
             {tOrg("scannerEntriesGranted")}
           </div>
-          <div className="text-xl font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">{validScansCount}</div>
+          <div className="text-xl font-bold text-emerald-600 dark:text-emerald-400 mt-0.5"><CountUp value={validScansCount} /></div>
         </Card>
         <Card className="p-3.5 border-border bg-card text-center shadow-xs">
           <div className="text-xs uppercase font-semibold text-muted-foreground">
             {tOrg("scannerDoubleBlocked")}
           </div>
-          <div className="text-xl font-bold text-amber-700 dark:text-amber-400 mt-0.5">{doubleScansCount}</div>
+          <div className="text-xl font-bold text-amber-700 dark:text-amber-400 mt-0.5"><CountUp value={doubleScansCount} /></div>
         </Card>
         <Card className="p-3.5 border-border bg-card text-center shadow-xs">
           <div className="text-xs uppercase font-semibold text-muted-foreground">
             {tOrg("scannerFraudBlocked")}
           </div>
           <div className="text-xl font-bold text-rose-500 mt-0.5">
-            {invalidScansCount}
+            <CountUp value={invalidScansCount} />
             {networkErrorsCount > 0 && (
               <span className="text-xs font-normal text-amber-700 dark:text-amber-400 ml-1.5">
                 ({tOrg("netCount", { count: networkErrorsCount })})

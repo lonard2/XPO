@@ -1396,7 +1396,8 @@
     "manualSearchBtn": "手動検索",
     "initScanner": "ゲートスキャナーを初期化中...",
     "scannerPhotoAlt": "{name}の写真",
-    "scannerCompany": "所属:"
+    "scannerCompany": "所属:",
+    "admittedSub": "({total}件中{checked}件入場)"
   },
   "admin": {
     "dashboardTitle": "管理統括・アグリゲーター",

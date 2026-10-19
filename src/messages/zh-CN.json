@@ -1396,7 +1396,8 @@
     "manualSearchBtn": "手动搜索",
     "initScanner": "正在初始化闸机...",
     "scannerPhotoAlt": "{name}的照片",
-    "scannerCompany": "单位:"
+    "scannerCompany": "单位:",
+    "admittedSub": "(共{total}人, 已入场{checked}人)"
   },
   "admin": {
     "dashboardTitle": "管理统括中心",

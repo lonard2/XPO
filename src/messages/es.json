@@ -1396,7 +1396,8 @@
     "manualSearchBtn": "Búsqueda manual",
     "initScanner": "Iniciando escáner...",
     "scannerPhotoAlt": "Foto de {name}",
-    "scannerCompany": "Empresa / afiliación:"
+    "scannerCompany": "Empresa / afiliación:",
+    "admittedSub": "({checked} de {total} admitidos)"
   },
   "admin": {
     "dashboardTitle": "Gobernanza y Agregador de Administración",

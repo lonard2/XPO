@@ -7,7 +7,7 @@ calendar heat dots; hover sheen as an Expressive-only feature.
 - [x] **1. Expressive tilt return** (`tilt`): data-tilt back on discovery
   listing cards (events, venues) plus ambient glow on heroes; ops tables
   and coarse pointers stay tilt-free.
-- [ ] **2. Count-up telemetry** (`delight 1`): animated count-up hook for
+- [x] **2. Count-up telemetry** (`delight 1`): animated count-up hook for
   KPI/telemetry numbers with reduced-motion and motion-off bypass.
 - [ ] **3. Calendar heat dots** (`delight 3`): event-density dots on month
   cells (dedicated calendar + homepage quick calendar).

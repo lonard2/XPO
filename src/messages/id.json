@@ -1396,7 +1396,8 @@
     "manualSearchBtn": "Pencarian Manual",
     "initScanner": "Menginisialisasi Scanner Gerbang...",
     "scannerPhotoAlt": "Foto {name}",
-    "scannerCompany": "Perusahaan / Afiliasi:"
+    "scannerCompany": "Perusahaan / Afiliasi:",
+    "admittedSub": "({checked} dari {total} masuk)"
   },
   "admin": {
     "dashboardTitle": "Tata Kelola & Agregator Admin",
