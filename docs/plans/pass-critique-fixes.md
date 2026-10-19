@@ -13,7 +13,9 @@ Direction: gate i18n first, all five issues, server-persisted voucher claims.
   wallet H1, dedicated breadcrumb key.
 - [x] **5. Harden voucher claims** (`$impeccable harden`): server-persisted
   claims with hash-derived codes, tier-ID gating, undo affordance.
-- [ ] **6. Polish final pass** (`$impeccable polish`): detector, screenshots,
+- [x] **6. Polish final pass** (`$impeccable polish`): detector, screenshots,
   full suite green.
 
 Each ships as its own commit pushed to `origin/main`. Verify by execution.
+
+Verified: detector exit 0 with [] on six targets; tsc clean; 711 tests pass; desktop + mobile screenshots reviewed; dev server stopped, browser closed.
