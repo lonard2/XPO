@@ -13,7 +13,7 @@ Direction: trust data first, all five issues, badge and keep seeds.
   filter, dictionary pass, localized industry select.
 - [x] **5. Layout touch targets** (`$impeccable layout`): 44px minimums on the
   on-site path (toolbar, checkboxes, toggle, modal select).
-- [ ] **6. Polish final pass** (`$impeccable polish`): detector, screenshots,
+- [x] **6. Polish final pass** (`$impeccable polish`): detector, screenshots,
   full suite green.
 
 Each ships as its own commit pushed to `origin/main`. Verify by execution;
