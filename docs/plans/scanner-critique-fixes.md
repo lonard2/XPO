@@ -10,7 +10,7 @@ Direction: honest record first, all five issues, server re-admit.
   body, event banner with change control, fix hardcoded ev-1 case.
 - [x] **3. Clarify ownership UI + i18n** (`$impeccable clarify`): owned-event
   selector defaulting from `?eventId=`, triage dictionary pass.
-- [ ] **4. Layout single triage** (`$impeccable layout`): one authoritative
+- [x] **4. Layout single triage** (`$impeccable layout`): one authoritative
   triage card on `<lg`, 44px audit buttons.
 - [ ] **5. Clarify recognition** (`$impeccable clarify`): affiliation/photo
   and perk descriptions when provided.

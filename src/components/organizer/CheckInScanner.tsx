@@ -1299,7 +1299,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
           {lastResult ? (
             <Card
               className={cn(
-                "p-5 border-2 transition-all shadow-md animate-fade-in space-y-4",
+                "p-5 border-2 transition-all shadow-md animate-fade-in space-y-4 hidden lg:block",
                 lastResult.status === "CHECKED_IN"
                   ? "border-emerald-500 bg-emerald-500/5 dark:bg-emerald-950/20"
                   : lastResult.status === "DOUBLE_SCAN"
@@ -1540,7 +1540,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                       variant="outline"
                       size="sm"
                       onClick={handleExportCsv}
-                      className="min-h-[36px] px-2.5 text-xs gap-1 cursor-pointer"
+                      className="min-h-[44px] px-2.5 text-xs gap-1 cursor-pointer"
                       title={tOrg("exportCsvTitle")}
                     >
                       <Download className="h-3 w-3" />
@@ -1551,7 +1551,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                       variant="ghost"
                       size="sm"
                       onClick={handleResetShift}
-                      className="min-h-[36px] px-2 text-xs text-muted-foreground hover:text-foreground gap-1 cursor-pointer"
+                      className="min-h-[44px] px-2 text-xs text-muted-foreground hover:text-foreground gap-1 cursor-pointer"
                       title={tOrg("resetShiftTitle")}
                     >
                       <RotateCcw className="h-3 w-3" />
@@ -1734,6 +1734,14 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                   className="flex-1 min-h-[44px] text-xs font-semibold bg-amber-600 hover:bg-amber-500 text-white cursor-pointer"
                 >
                   {tOrg("scannerSupervisorOverride")}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleSendResolutionDesk}
+                  className="min-h-[44px] text-xs px-3 border-white/20 text-white hover:bg-white/10 cursor-pointer"
+                >
+                  {tOrg("scannerSendResolutionDesk")}
                 </Button>
                 <Button
                   type="button"
