@@ -1439,7 +1439,8 @@
     "mobileNavAria": "移动端导航",
     "crumbAria": "面包屑导航",
     "signInToContinue": "登录后继续",
-    "acrossHalls": "覆盖{count}个展厅"
+    "acrossHalls": "覆盖{count}个展厅",
+    "sortBy": "按{column}排序"
   },
   "admin": {
     "dashboardTitle": "管理统括中心",

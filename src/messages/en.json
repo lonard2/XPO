@@ -1439,7 +1439,8 @@
     "mobileNavAria": "Mobile Navigation",
     "crumbAria": "Breadcrumb",
     "signInToContinue": "Sign In to Continue",
-    "acrossHalls": "Across {count} exhibition halls"
+    "acrossHalls": "Across {count} exhibition halls",
+    "sortBy": "Sort by {column}"
   },
   "admin": {
     "dashboardTitle": "Governance & Admin Agregator",

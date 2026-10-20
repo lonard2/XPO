@@ -271,3 +271,44 @@ describe("booth KPI truth", () => {
     expect(screen.queryByText(/active exhibitions/i)).toBeNull();
   });
 });
+
+describe("booths table sorting", () => {
+  const rows = [
+    { id: "b1", eventId: "ev-9", companyName: "Zulu Co", boothNumber: "H9-Z", hallName: "Hall 9" },
+    { id: "b2", eventId: "ev-9", companyName: "Alpha Co", boothNumber: "H9-A", hallName: "Hall 9" },
+  ];
+
+  function renderTable() {
+    global.fetch = vi.fn().mockImplementation((url: string) =>
+      Promise.resolve({
+        ok: true,
+        json: () =>
+          Promise.resolve(
+            url.startsWith("/api/organizer/events")
+              ? { events: [{ id: "ev-9", title: "Expo Nine" }] }
+              : { booths: rows }
+          ),
+      })
+    ) as any;
+    return render(<BoothManagerPage />);
+  }
+
+  it("sorts by booth lot on header click with aria-sort", async () => {
+    const { container } = renderTable();
+    await waitFor(() => {
+      expect(screen.getByText("H9-Z")).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getByRole("button", { name: /table view/i }));
+    fireEvent.click(screen.getByRole("button", { name: /sort by booth lot/i }));
+    const cells = Array.from(container.querySelectorAll("tbody tr td:nth-child(2)")).map(
+      (td) => td.textContent
+    );
+    expect(cells[0]).toContain("H9-A");
+    expect(container.querySelector("th[aria-sort='ascending']")).not.toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: /sort by booth lot/i }));
+    const cells2 = Array.from(container.querySelectorAll("tbody tr td:nth-child(2)")).map(
+      (td) => td.textContent
+    );
+    expect(cells2[0]).toContain("H9-Z");
+  });
+});

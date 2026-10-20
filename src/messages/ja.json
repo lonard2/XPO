@@ -1439,7 +1439,8 @@
     "mobileNavAria": "モバイルナビゲーション",
     "crumbAria": "パンくずリスト",
     "signInToContinue": "サインインして続行",
-    "acrossHalls": "{count}ホールにわたり"
+    "acrossHalls": "{count}ホールにわたり",
+    "sortBy": "{column}で並替え"
   },
   "admin": {
     "dashboardTitle": "管理統括・アグリゲーター",

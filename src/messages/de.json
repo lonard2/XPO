@@ -1439,7 +1439,8 @@
     "mobileNavAria": "Mobile Navigation",
     "crumbAria": "Brotkrumen",
     "signInToContinue": "Anmelden und fortfahren",
-    "acrossHalls": "Über {count} Messehallen"
+    "acrossHalls": "Über {count} Messehallen",
+    "sortBy": "Nach {column} sortieren"
   },
   "admin": {
     "dashboardTitle": "Admin-Governance & Aggregator",

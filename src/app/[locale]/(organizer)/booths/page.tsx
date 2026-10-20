@@ -427,6 +427,39 @@ export default function BoothManagerPage() {
     });
   }, [operationalBooths, selectedEventId, selectedHall, statusFilter, searchQuery]);
 
+  // Table sorting (dense view): key + direction, shared comparator.
+  const [sortKey, setSortKey] = React.useState<string | null>(null);
+  const [sortDir, setSortDir] = React.useState<"asc" | "desc">("asc");
+  const toggleSort = (key: string) => {
+    if (sortKey === key) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortKey(key);
+      setSortDir("asc");
+    }
+  };
+  const sortValue = (b: BoothItem, key: string): string => {
+    switch (key) {
+      case "lot": return (b.boothNumber || "").toLowerCase();
+      case "hall": return (b.hallName || "").toLowerCase();
+      case "status": return b.companyName && b.companyName.trim() !== "" ? "1" : "0";
+      case "tenant": return (b.companyName || "").toLowerCase();
+      case "industry": return (b.industry || "").toLowerCase();
+      case "dims": return `${b.areaSqm || 0}`.padStart(8, "0") + (b.dimensions || "");
+      case "type": return (b.boothType || "").toLowerCase();
+      default: return "";
+    }
+  };
+  const sortedBooths = React.useMemo(() => {
+    if (!sortKey) return filteredBooths;
+    const dir = sortDir === "asc" ? 1 : -1;
+    return [...filteredBooths].sort((a, b) => {
+      const va = sortValue(a, sortKey);
+      const vb = sortValue(b, sortKey);
+      return (va < vb ? -1 : va > vb ? 1 : 0) * dir;
+    });
+  }, [filteredBooths, sortKey, sortDir]);
+
   // Statistics
   const totalCount = operationalBooths.length;
   const occupiedCount = operationalBooths.filter((b) => b.companyName && b.companyName.trim() !== "").length;
@@ -1496,18 +1529,18 @@ export default function BoothManagerPage() {
                         )}
                       </button>
                     </th>
-                    <th className="p-3 font-medium">{tOrg("thLot")}</th>
-                    <th className="p-3 font-medium">{tOrg("thHall")}</th>
-                    <th className="p-3 font-medium">{tOrg("thStatus")}</th>
-                    <th className="p-3 font-medium">{tOrg("thTenant")}</th>
-                    <th className="p-3 font-medium">{tOrg("thIndustry")}</th>
-                    <th className="p-3 font-medium">{tOrg("thDims")}</th>
-                    <th className="p-3 font-medium">{tOrg("thType")}</th>
+                    <th className="p-3 font-medium" aria-sort={sortKey === "lot" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}><button type="button" onClick={() => toggleSort("lot")} aria-label={tOrg("sortBy", { column: tOrg("thLot") })} className="inline-flex items-center gap-1 font-medium hover:text-foreground cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded">{tOrg("thLot")}<span aria-hidden="true" className="text-[10px]">{sortKey === "lot" ? (sortDir === "asc" ? "▲" : "▼") : ""}</span></button></th>
+                    <th className="p-3 font-medium" aria-sort={sortKey === "hall" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}><button type="button" onClick={() => toggleSort("hall")} aria-label={tOrg("sortBy", { column: tOrg("thHall") })} className="inline-flex items-center gap-1 font-medium hover:text-foreground cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded">{tOrg("thHall")}<span aria-hidden="true" className="text-[10px]">{sortKey === "hall" ? (sortDir === "asc" ? "▲" : "▼") : ""}</span></button></th>
+                    <th className="p-3 font-medium" aria-sort={sortKey === "status" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}><button type="button" onClick={() => toggleSort("status")} aria-label={tOrg("sortBy", { column: tOrg("thStatus") })} className="inline-flex items-center gap-1 font-medium hover:text-foreground cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded">{tOrg("thStatus")}<span aria-hidden="true" className="text-[10px]">{sortKey === "status" ? (sortDir === "asc" ? "▲" : "▼") : ""}</span></button></th>
+                    <th className="p-3 font-medium" aria-sort={sortKey === "tenant" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}><button type="button" onClick={() => toggleSort("tenant")} aria-label={tOrg("sortBy", { column: tOrg("thTenant") })} className="inline-flex items-center gap-1 font-medium hover:text-foreground cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded">{tOrg("thTenant")}<span aria-hidden="true" className="text-[10px]">{sortKey === "tenant" ? (sortDir === "asc" ? "▲" : "▼") : ""}</span></button></th>
+                    <th className="p-3 font-medium" aria-sort={sortKey === "industry" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}><button type="button" onClick={() => toggleSort("industry")} aria-label={tOrg("sortBy", { column: tOrg("thIndustry") })} className="inline-flex items-center gap-1 font-medium hover:text-foreground cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded">{tOrg("thIndustry")}<span aria-hidden="true" className="text-[10px]">{sortKey === "industry" ? (sortDir === "asc" ? "▲" : "▼") : ""}</span></button></th>
+                    <th className="p-3 font-medium" aria-sort={sortKey === "dims" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}><button type="button" onClick={() => toggleSort("dims")} aria-label={tOrg("sortBy", { column: tOrg("thDims") })} className="inline-flex items-center gap-1 font-medium hover:text-foreground cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded">{tOrg("thDims")}<span aria-hidden="true" className="text-[10px]">{sortKey === "dims" ? (sortDir === "asc" ? "▲" : "▼") : ""}</span></button></th>
+                    <th className="p-3 font-medium" aria-sort={sortKey === "type" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}><button type="button" onClick={() => toggleSort("type")} aria-label={tOrg("sortBy", { column: tOrg("thType") })} className="inline-flex items-center gap-1 font-medium hover:text-foreground cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded">{tOrg("thType")}<span aria-hidden="true" className="text-[10px]">{sortKey === "type" ? (sortDir === "asc" ? "▲" : "▼") : ""}</span></button></th>
                     <th className="p-3 font-medium">{tOrg("thActions")}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {filteredBooths.map((booth) => {
+                  {sortedBooths.map((booth) => {
                     const isOccupied = booth.companyName && booth.companyName.trim() !== "";
                     const isSelected = selectedBoothIds.has(booth.id);
                     return (
