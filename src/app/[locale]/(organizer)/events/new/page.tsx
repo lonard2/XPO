@@ -846,8 +846,12 @@ export default function NewEventWizardPage() {
       if (startDate && endDate) {
         const start = new Date(startDate);
         const end = new Date(endDate);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
         if (isNaN(start.getTime()) || isNaN(end.getTime())) {
           errors.startDate = "Please specify valid start and end dates.";
+        } else if (start < today) {
+          errors.startDate = "Opening date cannot be in the past.";
         } else if (end < start) {
           errors.endDate = "Closing date cannot be prior to opening date.";
         }
@@ -2027,6 +2031,7 @@ export default function NewEventWizardPage() {
                   label={tOrg("wizardStartDate") || "Opening Date"}
                   type="date"
                   value={startDate}
+                  min={new Date().toISOString().slice(0, 10)}
                   onChange={(e) => {
                     setStartDate(e.target.value);
                     clearFieldError("startDate");
@@ -2040,6 +2045,7 @@ export default function NewEventWizardPage() {
                   label={tOrg("wizardEndDate") || "Closing Date"}
                   type="date"
                   value={endDate}
+                  min={startDate || new Date().toISOString().slice(0, 10)}
                   onChange={(e) => {
                     setEndDate(e.target.value);
                     clearFieldError("endDate");

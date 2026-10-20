@@ -1,4 +1,6 @@
 import { describe, it, expect } from "vitest";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import * as React from "react";
 import {
   ARCHETYPE_DEFAULTS,
   ARCHETYPE_METADATA,
@@ -420,3 +422,25 @@ describe("Phase 9 Unit: Event Creation Wizard & Archetype Engine", () => {
 
 
 
+
+describe("wizard date floors", () => {
+  it("blocks past opening dates with a field error", async () => {
+    const { default: NewEventWizardPage } = await import("@/app/[locale]/(organizer)/events/new/page");
+    window.history.replaceState({}, "", "/en/events/new?step=2");
+    try {
+      const { container } = render(React.createElement(NewEventWizardPage));
+      await waitFor(() => {
+        expect(screen.getByText("Step 2 of 4")).toBeInTheDocument();
+      });
+      const start = container.querySelector("#wizard-start-date") as HTMLInputElement;
+      expect(start.getAttribute("min")).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      fireEvent.change(start, { target: { value: "2020-01-01" } });
+      fireEvent.click(screen.getByRole("button", { name: /continue to next step/i }));
+      await waitFor(() => {
+        expect(screen.getAllByText("Opening date cannot be in the past.").length).toBeGreaterThan(0);
+      });
+    } finally {
+      window.history.replaceState({}, "", "/");
+    }
+  });
+});
