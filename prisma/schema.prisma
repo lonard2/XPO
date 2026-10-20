@@ -233,3 +233,19 @@ model OtpCode {
   @@index([email])
   @@index([expiresAt])
 }
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorId   String?  // Resolved user id; null for anonymous/demo-less calls
+  actorRole String?  // ADMIN, ORGANIZER, ATTENDEE, or null
+  action    String   // e.g. event.delete, booth.bulk-import, pass.override
+  entity    String   // event, venue, booth, booking, user, session
+  entityId  String?
+  metadata  String?  // JSON-encoded context (titles, counts, reasons)
+  ip        String?
+  createdAt DateTime @default(now())
+
+  @@index([entity, entityId])
+  @@index([createdAt])
+  @@index([actorId])
+}
