@@ -10,7 +10,7 @@ structured errors, and CI gating every push.
 - [x] **C3. Health endpoint.** `/api/health` with DB ping, uptime, version.
 - [x] **C4. Structured errors.** JSON logger adopted on security-sensitive
   routes.
-- [ ] **C5. CI gating.** GitHub workflow running tsc + vitest (with PG
+- [x] **C5. CI gating.** GitHub workflow running tsc + vitest (with PG
   service) on push/PR.
 
 Each ships as its own commit pushed to `origin/main`. Verify by execution;

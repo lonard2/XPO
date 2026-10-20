@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    services:
+      db:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: xpo
+          POSTGRES_PASSWORD: xpo_ci_password
+          POSTGRES_DB: xpo
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U xpo -d xpo"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+
+    env:
+      DATABASE_URL: postgresql://xpo:xpo_ci_password@localhost:5432/xpo
+      QR_HMAC_SECRET: ci-test-secret-not-for-production
+      ALLOW_DEMO_AUTH: "true"
+      NODE_ENV: test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run db:generate
+      - run: npm run db:deploy
+      - run: npm run db:seed
+
+      - run: npm run type-check
+      - run: npm run test
