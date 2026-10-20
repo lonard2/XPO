@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { verifyTicketHash } from "@/lib/tickets/qrPass";
 import { resolveEventCaller, canWriteEvent } from "@/lib/auth/eventOwnership";
 import { rateLimitResponse } from "@/lib/api/rateLimit";
+import { audit } from "@/lib/observability/audit";
 import { reportError } from "@/lib/observability/logger";
 
 export async function POST(request: Request) {
@@ -143,6 +144,7 @@ export async function POST(request: Request) {
             !p.tierRequired ||
             restampTier.toLowerCase().includes(p.tierRequired.toLowerCase())
         );
+        await audit(request, { action: "pass.override", entity: "booking", entityId: booking.id, metadata: { eventId: booking.eventId } });
         return NextResponse.json(
           {
             valid: true,

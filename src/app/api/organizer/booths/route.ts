@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { requireEventWrites, requireBoothWrites } from "@/lib/auth/eventOwnership";
 import { rateLimitResponse } from "@/lib/api/rateLimit";
+import { audit } from "@/lib/observability/audit";
 import { parsePagination } from "@/lib/api/pagination";
 
 export async function GET(request: Request) {
@@ -177,6 +178,7 @@ export async function POST(request: Request) {
         orderBy: { boothNumber: "asc" },
       });
 
+      await audit(request, { action: "booth.bulk-import", entity: "event", entityId: eventId, metadata: { count: recordsToCreate.length } });
       return NextResponse.json({
         success: true,
         count: recordsToCreate.length,
@@ -247,6 +249,7 @@ export async function POST(request: Request) {
       },
     });
 
+    await audit(request, { action: "booth.create", entity: "booth", entityId: booth.id, metadata: { boothNumber: booth.boothNumber } });
     return NextResponse.json({ success: true, booth }, { status: 201 });
   } catch (error) {
     return NextResponse.json(
@@ -299,6 +302,7 @@ export async function PATCH(request: Request) {
         data: updateData,
       });
 
+      await audit(request, { action: "booth.bulk-vacate", entity: "booth", entityId: ids.join(","), metadata: { count: result.count } });
       return NextResponse.json({ success: true, count: result.count, ids });
     }
 
@@ -368,6 +372,7 @@ export async function PATCH(request: Request) {
       data: updateData,
     });
 
+    await audit(request, { action: "booth.update", entity: "booth", entityId: updated.id, metadata: { boothNumber: updated.boothNumber } });
     return NextResponse.json({ success: true, booth: updated });
   } catch (error) {
     return NextResponse.json(
@@ -424,6 +429,7 @@ export async function DELETE(request: Request) {
       const result = await db.boothTenant.deleteMany({
         where: { id: { in: ids } },
       });
+      await audit(request, { action: "booth.bulk-delete", entity: "booth", entityId: ids.join(","), metadata: { count: result.count } });
       return NextResponse.json({ success: true, count: result.count, ids });
     }
 
@@ -456,6 +462,7 @@ export async function DELETE(request: Request) {
       where: { id },
     });
 
+    await audit(request, { action: "booth.delete", entity: "booth", entityId: id, metadata: { boothNumber: existing.boothNumber } });
     return NextResponse.json({
       success: true,
       message: `Booth lot "${existing.boothNumber}" decommissioned successfully`,

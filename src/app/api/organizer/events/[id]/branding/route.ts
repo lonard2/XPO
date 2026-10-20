@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { resolveEventCaller, canWriteEvent } from "@/lib/auth/eventOwnership";
+import { audit } from "@/lib/observability/audit";
 
 interface RouteProps {
   params: Promise<{ id: string }>;
@@ -46,6 +47,7 @@ export async function PUT(request: Request, { params }: RouteProps) {
       },
     });
 
+    await audit(request, { action: "event.branding", entity: "event", entityId: updated.id });
     return NextResponse.json({ success: true, event: updated });
   } catch (error) {
     return NextResponse.json(

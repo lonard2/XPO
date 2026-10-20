@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { validateShowcase } from "@/lib/showcase";
+import { audit } from "@/lib/observability/audit";
 import { parsePagination } from "@/lib/api/pagination";
 
 export async function GET(request: Request) {
@@ -237,6 +238,7 @@ export async function POST(request: Request) {
       },
     });
 
+    await audit(request, { action: "event.create", entity: "event", entityId: newEvent.id, metadata: { title, isListingOnly: newEvent.isListingOnly } });
     return NextResponse.json({ success: true, event: newEvent }, { status: 201 });
   } catch (error) {
     console.error("Event creation error:", error);

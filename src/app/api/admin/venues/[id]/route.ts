@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { audit } from "@/lib/observability/audit";
 
 /** Parse an optional numeric hall spec; garbage becomes null, never NaN. */
 function numOrNull(v: unknown): number | null {
@@ -135,6 +136,7 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
       include: { region: true, halls: true },
     });
 
+    await audit(req, { action: "venue.update", entity: "venue", entityId: finalVenue?.id, metadata: { name: finalVenue?.name } });
     return NextResponse.json({
       success: true,
       message: `Venue '${finalVenue?.name}' successfully updated.`,
@@ -171,6 +173,7 @@ export async function DELETE(req: NextRequest, { params }: RouteParams) {
       where: { id: existingVenue.id },
     });
 
+    await audit(req, { action: "venue.delete", entity: "venue", entityId: existingVenue.id, metadata: { name: existingVenue.name } });
     return NextResponse.json({
       success: true,
       message: `Venue '${existingVenue.name}' deleted successfully.`,

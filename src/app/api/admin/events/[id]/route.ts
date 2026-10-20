@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { audit } from "@/lib/observability/audit";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -53,6 +54,7 @@ export async function DELETE(request: Request, { params }: RouteParams) {
     await db.booking.deleteMany({ where: { eventId: event.id } });
     await db.event.delete({ where: { id: event.id } });
 
+    await audit(request, { action: "event.delete", entity: "event", entityId: event.id, metadata: { title: event.title } });
     return NextResponse.json({
       success: true,
       message: `Event "${event.title}" and its bookings deleted successfully.`,

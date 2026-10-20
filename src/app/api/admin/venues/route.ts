@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { audit } from "@/lib/observability/audit";
 import { normalizeEventSlug } from "@/lib/crawler/venueScraper";
 import { FALLBACK_VENUES } from "@/lib/discovery/fallbackData";
 
@@ -153,6 +154,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    await audit(req, { action: "venue.create", entity: "venue", entityId: createdVenue.id, metadata: { name: createdVenue.name } });
     return NextResponse.json(
       {
         success: true,
