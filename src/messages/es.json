@@ -820,7 +820,12 @@
     "notSignedIn": "No identificado",
     "attendee": "Asistente",
     "organizer": "Organizador",
-    "admin": "SuperAdmin"
+    "admin": "SuperAdmin",
+    "otpTab": "Código por correo",
+    "otpRequestBtn": "Enviar código",
+    "otpCodeLabel": "Código de 6 dígitos",
+    "otpVerifyBtn": "Verificar e ingresar",
+    "otpSentHint": "Ingrese el código de 6 dígitos enviado a su bandeja."
   },
   "footer": {
     "brandDescription": "Plataforma digital empresarial para Reuniones, Incentivos, Conferencias y Exposiciones (MICE) a nivel global.",
@@ -1432,7 +1437,8 @@
     "mobileNavToggle": "Abrir o cerrar el menú",
     "organizerNavAria": "Navegación de organizador",
     "mobileNavAria": "Navegación móvil",
-    "crumbAria": "Migas de pan"
+    "crumbAria": "Migas de pan",
+    "signInToContinue": "Inicie sesión para continuar"
   },
   "admin": {
     "dashboardTitle": "Gobernanza y Agregador de Administración",

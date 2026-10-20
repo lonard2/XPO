@@ -820,7 +820,12 @@
     "notSignedIn": "未ログイン",
     "attendee": "来場者",
     "organizer": "主催者",
-    "admin": "最高管理者"
+    "admin": "最高管理者",
+    "otpTab": "メールコード",
+    "otpRequestBtn": "コードを送信",
+    "otpCodeLabel": "6桁コード",
+    "otpVerifyBtn": "認証してサインイン",
+    "otpSentHint": "受信箱に届いた6桁コードを入力してください。"
   },
   "footer": {
     "brandDescription": "国際会議、インセンティブ、コンベンション、展示会（MICE）のための統合デジタルプラットフォーム。",
@@ -1432,7 +1437,8 @@
     "mobileNavToggle": "ナビゲーションメニューを開閉",
     "organizerNavAria": "オーガナイザーナビゲーション",
     "mobileNavAria": "モバイルナビゲーション",
-    "crumbAria": "パンくずリスト"
+    "crumbAria": "パンくずリスト",
+    "signInToContinue": "サインインして続行"
   },
   "admin": {
     "dashboardTitle": "管理統括・アグリゲーター",

@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/lib/auth/session";
+import { AuthModal } from "@/components/auth/AuthModal";
 import { getRoleLabel, getRoleBadgeVariant } from "@/lib/auth/rbac";
 import { Badge } from "@/components/ui/Badge";
 import { Button, buttonVariants } from "@/components/ui/Button";
@@ -37,6 +38,7 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
   const locale = (params?.locale as string) || "en";
   const { user, role, switchRole } = useAuth();
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = React.useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = React.useState(false);
 
   const tOrg = useTranslations("organizer");
   const tCom = useTranslations("common");
@@ -99,6 +101,7 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
   // Enforce RBAC Access Barrier for Attendee role across Organizer Portal
   if (role === "ATTENDEE") {
     return (
+      <>
       <div
         role="alert"
         aria-labelledby="rbac-barrier-title"
@@ -120,11 +123,11 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
           <div className="flex flex-col gap-2.5 pt-4 border-t border-border">
             <Button
               variant="primary"
-              onClick={() => switchRole("ORGANIZER")}
+              onClick={() => setIsAuthModalOpen(true)}
               className="w-full gap-2 bg-amber-600 hover:bg-amber-700 text-white cursor-pointer min-h-[44px]"
             >
               <UserCheck className="h-4 w-4" />
-              <span>{tOrg("switchToOrganizer")}</span>
+              <span>{tOrg("signInToContinue")}</span>
             </Button>
             <Link
               href={`/${locale}`}
@@ -135,6 +138,8 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
           </div>
         </div>
       </div>
+      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} defaultTab="login" />
+      </>
     );
   }
 

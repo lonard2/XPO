@@ -820,7 +820,12 @@
     "notSignedIn": "Not signed in",
     "attendee": "Attendee",
     "organizer": "Organizer",
-    "admin": "SuperAdmin"
+    "admin": "SuperAdmin",
+    "otpTab": "Email Code",
+    "otpRequestBtn": "Send Code",
+    "otpCodeLabel": "6-Digit Code",
+    "otpVerifyBtn": "Verify & Sign In",
+    "otpSentHint": "Enter the 6-digit code sent to your inbox."
   },
   "footer": {
     "brandDescription": "Enterprise digital platform for Meetings, Incentives, Conferences, and Exhibitions worldwide.",
@@ -1432,7 +1437,8 @@
     "mobileNavToggle": "Toggle navigation menu",
     "organizerNavAria": "Organizer Navigation",
     "mobileNavAria": "Mobile Navigation",
-    "crumbAria": "Breadcrumb"
+    "crumbAria": "Breadcrumb",
+    "signInToContinue": "Sign In to Continue"
   },
   "admin": {
     "dashboardTitle": "Governance & Admin Agregator",

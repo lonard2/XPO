@@ -10,6 +10,7 @@ import {
   LogOut,
   CheckCircle2,
   XCircle,
+  Mail,
 } from "lucide-react";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
@@ -27,12 +28,80 @@ import { cn } from "@/lib/utils";
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
-  defaultTab?: "switcher" | "login" | "matrix";
+  defaultTab?: "switcher" | "login" | "otp" | "matrix";
 }
 
 export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModalProps) {
-  const { user, role, switchRole, login, logout, isAuthenticated } = useAuth();
-  const [activeTab, setActiveTab] = React.useState<"switcher" | "login" | "matrix">(defaultTab);
+  const { user, role, switchRole, login, refreshSession, logout, isAuthenticated } = useAuth();
+  const [activeTab, setActiveTab] = React.useState<"switcher" | "login" | "otp" | "matrix">(defaultTab);
+  const [demoAllowed, setDemoAllowed] = React.useState(true);
+  const [otpEmail, setOtpEmail] = React.useState("");
+  const [otpCode, setOtpCode] = React.useState("");
+  const [otpSent, setOtpSent] = React.useState(false);
+
+  // Persona switcher exists only where demo auth is enabled.
+  React.useEffect(() => {
+    if (!isOpen) return;
+    fetch("/api/auth/demo-status")
+      .then((r) => r.json())
+      .then((d) => {
+        const allowed = (d as any)?.allowed !== false;
+        setDemoAllowed(allowed);
+        if (!allowed) {
+          setActiveTab((t) => (t === "switcher" ? "login" : t));
+        }
+      })
+      .catch(() => {});
+  }, [isOpen]);
+
+  const handleOtpRequest = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginError("");
+    if (!otpEmail || !otpEmail.includes("@")) {
+      setLoginError("Please enter a valid email address.");
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      const res = await fetch("/api/auth/otp/request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: otpEmail }),
+      });
+      if (!res.ok) throw new Error("Failed to send code.");
+      setOtpSent(true);
+      setLoginSuccessMessage(`Code sent to ${otpEmail}. Enter the 6-digit code below.`);
+    } catch {
+      setLoginError("Failed to send code. Try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleOtpVerify = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginError("");
+    setIsSubmitting(true);
+    try {
+      const res = await fetch("/api/auth/otp/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: otpEmail, code: otpCode }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error((data as any).error || "Verification failed.");
+      await refreshSession();
+      setLoginSuccessMessage(`Signed in successfully as ${otpEmail}`);
+      setTimeout(() => {
+        onClose();
+        setLoginSuccessMessage("");
+      }, 1200);
+    } catch (err) {
+      setLoginError((err as Error).message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   let tAuth: any = (k: string) => k;
   let tCom: any = (k: string) => k;
@@ -80,8 +149,8 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
         onClose();
         setLoginSuccessMessage("");
       }, 1200);
-    } catch {
-      setLoginError("Authentication failed. Please check credentials.");
+    } catch (err) {
+      setLoginError((err as Error)?.message || "Authentication failed. Please check credentials.");
     } finally {
       setIsSubmitting(false);
     }
@@ -104,6 +173,7 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
       <div className="space-y-6 pt-2">
         {/* Navigation Tabs */}
         <div className="flex border-b border-border/80 gap-2">
+          {demoAllowed && (
           <button
             type="button"
             onClick={() => setActiveTab("switcher")}
@@ -117,10 +187,11 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
             <UserCheck className="h-4 w-4" />
             <span>{tAuth("roleSwitcherTab") || "Role Switcher"}</span>
           </button>
+          )}
 
           <button
             type="button"
-            onClick={() => setActiveTab("login")}
+            onClick={() => setActiveTab("otp")}
             className={cn(
               "flex items-center gap-2 pb-3 px-3 text-xs font-semibold border-b-2 transition-colors cursor-pointer",
               activeTab === "login"
@@ -130,6 +201,20 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
           >
             <LogIn className="h-4 w-4" />
             <span>{tAuth("loginTab") || "Credentials Sign-In"}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab("otp")}
+            className={cn(
+              "flex items-center gap-2 pb-3 px-3 text-xs font-semibold border-b-2 transition-colors cursor-pointer",
+              activeTab === "otp"
+                ? "border-primary text-primary"
+                : "border-transparent text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <Mail className="h-4 w-4" />
+            <span>{tAuth("otpTab") || "Email Code"}</span>
           </button>
 
           <button
@@ -162,8 +247,8 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
           </div>
         )}
 
-        {/* TAB 1: Role Switcher Persona Cards */}
-        {activeTab === "switcher" && (
+        {/* TAB 1: Role Switcher Persona Cards (demo auth only) */}
+        {demoAllowed && activeTab === "switcher" && (
           <div className="space-y-4">
             <div className="text-xs text-muted-foreground">
               {tAuth("switcherDescription") || "Select a persona below to instantaneously simulate its security permissions, access tier, and portal views."}
@@ -391,6 +476,57 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
               >
                 <LogIn className="h-4 w-4" />
                 <span>{isSubmitting ? (tAuth("authenticating") || "Authenticating...") : (tAuth("signInBtn") || "Sign In to XPO")}</span>
+              </Button>
+            </form>
+          </div>
+        )}
+
+        {/* TAB: Email Code Sign-In */}
+        {activeTab === "otp" && (
+          <div className="space-y-4">
+            <form onSubmit={otpSent ? handleOtpVerify : handleOtpRequest} className="space-y-4">
+              <Input
+                label={tAuth("emailLabel") || "Email Address"}
+                type="email"
+                placeholder="name@organization.com"
+                value={otpEmail}
+                onChange={(e) => {
+                  setOtpEmail(e.target.value);
+                  setOtpSent(false);
+                  setOtpCode("");
+                }}
+                required
+              />
+              {otpSent && (
+                <div className="space-y-3">
+                  <p className="text-xs text-muted-foreground">
+                    {tAuth("otpSentHint") || "Enter the 6-digit code sent to your inbox."}
+                  </p>
+                  <Input
+                    label={tAuth("otpCodeLabel") || "6-Digit Code"}
+                    placeholder="123456"
+                    inputMode="numeric"
+                    autoComplete="one-time-code"
+                    value={otpCode}
+                    onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                    required
+                  />
+                </div>
+              )}
+              <Button
+                type="submit"
+                variant="primary"
+                className="w-full gap-2"
+                disabled={isSubmitting}
+              >
+                <Mail className="h-4 w-4" />
+                <span>
+                  {isSubmitting
+                    ? (tAuth("authenticating") || "Authenticating...")
+                    : otpSent
+                      ? (tAuth("otpVerifyBtn") || "Verify & Sign In")
+                      : (tAuth("otpRequestBtn") || "Send Code")}
+                </span>
               </Button>
             </form>
           </div>

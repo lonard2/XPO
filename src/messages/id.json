@@ -820,7 +820,12 @@
     "notSignedIn": "Belum masuk",
     "attendee": "Pengunjung",
     "organizer": "Penyelenggara",
-    "admin": "SuperAdmin"
+    "admin": "SuperAdmin",
+    "otpTab": "Kode Email",
+    "otpRequestBtn": "Kirim Kode",
+    "otpCodeLabel": "Kode 6 Digit",
+    "otpVerifyBtn": "Verifikasi & Masuk",
+    "otpSentHint": "Masukkan kode 6 digit yang dikirim ke inbox."
   },
   "footer": {
     "brandDescription": "Infrastruktur digital enterprise untuk Pertemuan, Insentif, Konferensi, dan Pameran (MICE) di seluruh dunia.",
@@ -1432,7 +1437,8 @@
     "mobileNavToggle": "Buka/tutup menu navigasi",
     "organizerNavAria": "Navigasi Organizer",
     "mobileNavAria": "Navigasi Seluler",
-    "crumbAria": "Navigasi remah roti"
+    "crumbAria": "Navigasi remah roti",
+    "signInToContinue": "Masuk untuk Lanjut"
   },
   "admin": {
     "dashboardTitle": "Tata Kelola & Agregator Admin",

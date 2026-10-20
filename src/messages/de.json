@@ -820,7 +820,12 @@
     "notSignedIn": "Nicht angemeldet",
     "attendee": "Fachbesucher",
     "organizer": "Veranstalter",
-    "admin": "SuperAdmin"
+    "admin": "SuperAdmin",
+    "otpTab": "E-Mail-Code",
+    "otpRequestBtn": "Code senden",
+    "otpCodeLabel": "6-stelliger Code",
+    "otpVerifyBtn": "Verifizieren & anmelden",
+    "otpSentHint": "Geben Sie den 6-stelligen Code aus Ihrem Postfach ein."
   },
   "footer": {
     "brandDescription": "Enterprise-Plattform für Tagungen, Kongresse und Fachmessen (MICE) weltweit.",
@@ -1432,7 +1437,8 @@
     "mobileNavToggle": "Navigationsmenü umschalten",
     "organizerNavAria": "Veranstalter-Navigation",
     "mobileNavAria": "Mobile Navigation",
-    "crumbAria": "Brotkrumen"
+    "crumbAria": "Brotkrumen",
+    "signInToContinue": "Anmelden und fortfahren"
   },
   "admin": {
     "dashboardTitle": "Admin-Governance & Aggregator",

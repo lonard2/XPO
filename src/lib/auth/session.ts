@@ -122,6 +122,7 @@ export interface AuthContextType {
   isLoading: boolean;
   switchRole: (role: UserRole) => void;
   login: (email: string, password?: string) => Promise<boolean>;
+  refreshSession: () => Promise<boolean>;
   logout: () => void;
   hasPermission: (permission: Permission) => boolean;
 }
@@ -133,6 +134,7 @@ const AuthContext = React.createContext<AuthContextType>({
   isLoading: false,
   switchRole: () => {},
   login: async () => true,
+  refreshSession: async () => true,
   logout: () => {},
   hasPermission: () => true,
 });
@@ -142,16 +144,41 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
-    const existing = getStoredUser();
-    if (existing) {
-      setUser(existing);
-      setStoredUser(existing); // Ensure cookies sync
-    } else {
-      // Default to Organizer in development for seamless portal exploration
-      setUser(DEMO_ACCOUNTS.ORGANIZER);
-      setStoredUser(DEMO_ACCOUNTS.ORGANIZER);
-    }
-    setIsLoading(false);
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/auth/me");
+        if (!cancelled && res.ok) {
+          const data = await res.json();
+          if (data?.user) {
+            const authed: AuthUser = {
+              id: data.user.id,
+              email: data.user.email,
+              name: data.user.name,
+              role: isValidRole(data.user.role) ? data.user.role : "ATTENDEE",
+              organization: data.user.organization || undefined,
+            };
+            setUser(authed);
+            setStoredUser(authed);
+            setIsLoading(false);
+            return;
+          }
+        }
+      } catch {
+        // No session: fall through to the demo convenience below.
+      }
+      if (cancelled) return;
+      const existing = getStoredUser();
+      if (existing) {
+        setUser(existing);
+        setStoredUser(existing); // Ensure cookies sync
+      } else {
+        // Default to Organizer in development for seamless portal exploration
+        setUser(DEMO_ACCOUNTS.ORGANIZER);
+        setStoredUser(DEMO_ACCOUNTS.ORGANIZER);
+      }
+      setIsLoading(false);
+    })();
 
     const handleAuthChange = (e: Event) => {
       const customEvent = e as CustomEvent<AuthUser | null>;
@@ -167,31 +194,42 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(updated);
   }, []);
 
-  const login = React.useCallback(async (email: string): Promise<boolean> => {
-    const normalized = email.toLowerCase().trim();
-    // Check demo accounts matching email
-    const match = Object.values(DEMO_ACCOUNTS).find((acc) => acc.email.toLowerCase() === normalized);
-    if (match) {
-      setStoredUser(match);
-      setUser(match);
-      return true;
+  const login = React.useCallback(async (email: string, password?: string): Promise<boolean> => {
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      throw new Error((data as any).error || "Authentication failed. Please check credentials.");
     }
+    return refreshSession();
+  }, []);
 
-    // Otherwise create custom attendee session
-    const customUser: AuthUser = {
-      id: `user-${Date.now()}`,
-      email: normalized,
-      name: normalized.split("@")[0].replace(/[._]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
-      role: "ATTENDEE",
-      organization: "Independent Participant",
-      jobTitle: "Event Delegate",
-    };
-    setStoredUser(customUser);
-    setUser(customUser);
-    return true;
+  const refreshSession = React.useCallback(async (): Promise<boolean> => {
+    try {
+      const res = await fetch("/api/auth/me");
+      if (!res.ok) return false;
+      const data = await res.json();
+      if (!data?.user) return false;
+      const authed: AuthUser = {
+        id: data.user.id,
+        email: data.user.email,
+        name: data.user.name,
+        role: isValidRole(data.user.role) ? data.user.role : "ATTENDEE",
+        organization: data.user.organization || undefined,
+      };
+      setUser(authed);
+      setStoredUser(authed);
+      return true;
+    } catch {
+      return false;
+    }
   }, []);
 
   const logout = React.useCallback(() => {
+    fetch("/api/auth/logout", { method: "POST" }).catch(() => {});
     setStoredUser(null);
     setUser(null);
   }, []);
@@ -211,6 +249,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     isLoading,
     switchRole,
     login,
+    refreshSession,
     logout,
     hasPermission: checkUserPermission,
   };
@@ -229,6 +268,7 @@ export function useAuth(): AuthContextType {
       isLoading: false,
       switchRole: () => {},
       login: async () => true,
+      refreshSession: async () => true,
       logout: () => {},
       hasPermission: (perm) => checkPermission("ORGANIZER", perm),
     };

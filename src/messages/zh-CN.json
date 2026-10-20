@@ -820,7 +820,12 @@
     "notSignedIn": "未登录",
     "attendee": "参会观众",
     "organizer": "展会主办方",
-    "admin": "超级管理员"
+    "admin": "超级管理员",
+    "otpTab": "邮箱验证码",
+    "otpRequestBtn": "发送验证码",
+    "otpCodeLabel": "6位验证码",
+    "otpVerifyBtn": "验证并登录",
+    "otpSentHint": "请输入发送到收件箱的6位验证码。"
   },
   "footer": {
     "brandDescription": "服务于全球会议、奖励旅游、行业大会与大型展览（MICE）的企业级数字平台。",
@@ -1432,7 +1437,8 @@
     "mobileNavToggle": "打开/关闭导航菜单",
     "organizerNavAria": "主办方导航",
     "mobileNavAria": "移动端导航",
-    "crumbAria": "面包屑导航"
+    "crumbAria": "面包屑导航",
+    "signInToContinue": "登录后继续"
   },
   "admin": {
     "dashboardTitle": "管理统括中心",

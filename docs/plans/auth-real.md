@@ -35,7 +35,7 @@ survive only behind an explicit dev-only flag.
   log provider + test inbox; integration tests (happy + expired + locked).
 - [x] **A5. Caller cutover.** Session-first resolution with demo fallback
   flagged; existing suites green unmodified (they run with demo on).
-- [ ] **A6. UI cutover.** AuthModal gains password/OTP tabs; persona
+- [x] **A6. UI cutover.** AuthModal gains password/OTP tabs; persona
   switcher renders only when demo auth is allowed; ATTENDEE barrier copy
   points at sign-in, not role theater.
 - [ ] **A7. Polish + docs.** Full suite green, tsc clean, live register →
