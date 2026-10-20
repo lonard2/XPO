@@ -31,7 +31,7 @@ export function clearedSessionCookieHeader(): string {
 /** Mint a session and return the raw token (stored only as a hash). */
 export async function createSession(
   userId: string,
-  opts?: { userAgent?: string; ip?: string; ttlMs?: number }
+  opts?: { userAgent?: string | null; ip?: string | null; ttlMs?: number }
 ): Promise<string> {
   const token = randomToken();
   const ttl = opts?.ttlMs ?? DEFAULT_TTL_MS;

@@ -19,6 +19,8 @@ model User {
   interestsJson   String      @default("[]") // JSON Array of MICE interest tags
   passwordHash    String?     // scrypt hash; null means password login disabled
   emailVerifiedAt DateTime?   // Set on first verified login (either method)
+  failedLoginAttempts Int     @default(0) // Reset on success; 5 trips a 15-minute lockout
+  lockedUntilAt   DateTime?
   organizedEvents Event[]     @relation("OrganizerEvents")
   bookings        Booking[]
   aiReports       AIReport[]

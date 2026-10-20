@@ -29,7 +29,7 @@ survive only behind an explicit dev-only flag.
   scrypt hash/verify helpers with unit tests (RED→GREEN).
 - [x] **A2. Session mint/resolve/revoke.** Opaque token issuance, hashed
   storage, cookie flags, `/api/auth/me` + `/logout`; integration tests.
-- [ ] **A3. Password register + login.** Validation, duplicate handling,
+- [x] **A3. Password register + login.** Validation, duplicate handling,
   timing-safe compare, per-account login attempt caps; integration tests.
 - [ ] **A4. Email OTP request + verify.** Code issuance, TTL, attempt caps,
   log provider + test inbox; integration tests (happy + expired + locked).
