@@ -9,7 +9,7 @@ against the target), then transactions, then pagination, then polish.
 
 - [x] **B1. Postgres up.** Compose service, provider switch, `migrate dev`
   baseline on PG, seed green, scripts/README/env updated.
-- [ ] **B2. Transactions.** `$transaction` on event-create, booth bulk,
+- [x] **B2. Transactions.** `$transaction` on event-create, booth bulk,
   voucher claims, and ticket checkout paths.
 - [ ] **B3. Pagination.** Bounded `take`/`skip` (+ totals) on list
   endpoints: organizer events/booths plus admin lists.

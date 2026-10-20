@@ -106,22 +106,6 @@ export async function POST(request: Request) {
         seen.add(num.toLowerCase());
       }
 
-      // Check collisions with existing database records for this event
-      const existingBooths = await db.boothTenant.findMany({
-        where: { eventId },
-        select: { boothNumber: true },
-      });
-      const existingSet = new Set(existingBooths.map((eb) => eb.boothNumber.trim().toLowerCase()));
-      const collision = incomingBooths.find(
-        (b: IncomingBoothPayload) => b.boothNumber && existingSet.has(b.boothNumber.trim().toLowerCase())
-      );
-      if (collision) {
-        return NextResponse.json(
-          { success: false, error: `Booth lot "${collision.boothNumber}" is already allocated for this event in database` },
-          { status: 409 }
-        );
-      }
-
       const recordsToCreate = incomingBooths.map((b: IncomingBoothPayload) => ({
         eventId,
         companyName: b.companyName?.trim() || "",
@@ -136,9 +120,39 @@ export async function POST(request: Request) {
         boothType: b.boothType?.trim() || null,
       }));
 
-      await db.boothTenant.createMany({
-        data: recordsToCreate,
-      });
+      // Check-then-insert runs in one transaction so concurrent bulk
+      // imports cannot interleave a duplicate between the check and write.
+      try {
+        await db.$transaction(async (tx) => {
+          // Check collisions with existing database records for this event
+          const existingBooths = await tx.boothTenant.findMany({
+            where: { eventId },
+            select: { boothNumber: true },
+          });
+          const existingSet = new Set(existingBooths.map((eb) => eb.boothNumber.trim().toLowerCase()));
+          const collision = incomingBooths.find(
+            (b: IncomingBoothPayload) => b.boothNumber && existingSet.has(b.boothNumber.trim().toLowerCase())
+          );
+          if (collision) {
+            const err = new Error(`Booth lot "${collision.boothNumber}" is already allocated for this event in database`) as Error & { status?: number };
+            err.status = 409;
+            throw err;
+          }
+
+          await tx.boothTenant.createMany({
+            data: recordsToCreate,
+          });
+        });
+      } catch (error) {
+        const status = (error as Error & { status?: number }).status;
+        if (status) {
+          return NextResponse.json(
+            { success: false, error: (error as Error).message },
+            { status }
+          );
+        }
+        throw error;
+      }
 
       const updatedBooths = await db.boothTenant.findMany({
         where: { eventId },

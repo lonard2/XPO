@@ -98,3 +98,38 @@ describe("Phase 6 Integration: Ticket Reservation, Pricing & QR Pass Issuance", 
     expect(updatedTier?.soldCount).toBe(initialSoldCount + 1);
   });
 });
+
+describe("Checkout concurrency guard", () => {
+  it("never oversells a tier under parallel checkout bursts", async () => {
+    const { POST: checkoutRoute } = await import("@/app/api/tickets/checkout/route");
+    const event = await db.event.findFirst({ where: { slug: "manufacturing-indonesia-2026" } });
+    expect(event).toBeDefined();
+    const tier = await db.ticketTier.create({
+      data: { eventId: event!.id, name: "Concurrency Probe Tier", price: 1000, currency: "IDR", capacity: 3, soldCount: 0 },
+    });
+    try {
+      const attempts = Array.from({ length: 20 }, (_, i) => {
+        const req = new Request("http://localhost:3000/api/tickets/checkout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            eventId: event!.id,
+            tierId: tier.id,
+            attendeeName: `Conc Buyer ${i}`,
+            attendeeEmail: `test-conc-buyer-${Date.now()}-${i}@xpo.com`,
+          }),
+        });
+        return checkoutRoute(req).then(async (res) => ({ status: res.status }));
+      });
+      const results = await Promise.all(attempts);
+      const okCount = results.filter((r) => r.status === 201).length;
+      const fresh = await db.ticketTier.findUnique({ where: { id: tier.id } });
+      expect(fresh!.soldCount).toBe(3);
+      expect(okCount).toBe(3);
+    } finally {
+      await db.booking.deleteMany({ where: { ticketTierId: tier.id } });
+      await db.ticketTier.delete({ where: { id: tier.id } }).catch(() => {});
+      await db.user.deleteMany({ where: { email: { contains: "test-conc-buyer-" } } });
+    }
+  });
+});
