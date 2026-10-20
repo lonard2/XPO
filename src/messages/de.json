@@ -1441,7 +1441,9 @@
     "signInToContinue": "Anmelden und fortfahren",
     "acrossHalls": "Über {count} Messehallen",
     "sortBy": "Nach {column} sortieren",
-    "downloadTemplate": "Vorlage laden"
+    "downloadTemplate": "Vorlage laden",
+    "duplicateBtn": "Duplizieren",
+    "duplicateAria": "{title} als neuen Entwurf duplizieren"
   },
   "admin": {
     "dashboardTitle": "Admin-Governance & Aggregator",

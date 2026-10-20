@@ -1441,7 +1441,9 @@
     "signInToContinue": "サインインして続行",
     "acrossHalls": "{count}ホールにわたり",
     "sortBy": "{column}で並替え",
-    "downloadTemplate": "テンプレートをダウンロード"
+    "downloadTemplate": "テンプレートをダウンロード",
+    "duplicateBtn": "複製",
+    "duplicateAria": "{title}を新規下書きに複製"
   },
   "admin": {
     "dashboardTitle": "管理統括・アグリゲーター",

@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Calendar,
   Building2,
@@ -14,6 +15,7 @@ import {
   CheckCircle2,
   PlusCircle,
   Clock,
+  Copy,
   Layers,
   Users,
 } from "lucide-react";
@@ -58,8 +60,73 @@ interface OrganizerEventsRosterProps {
 
 export function OrganizerEventsRoster({ events, locale, title, description, hideAddButton }: OrganizerEventsRosterProps) {
   const tOrg = useTranslations('organizer');
+  const router = useRouter();
   const [activeTab, setActiveTab] = React.useState<EventOperationalStatus>("ALL");
   const [searchQuery, setSearchQuery] = React.useState("");
+
+  // Stage a titled copy in the wizard draft and open the wizard.
+  // Matches the wizard's autosave shape; the API derives a fresh slug.
+  const handleDuplicateEvent = (event: OrganizerEventItem) => {
+    const toDateInput = (v: Date | string) => {
+      const d = v instanceof Date ? v : new Date(v);
+      return Number.isNaN(d.getTime()) ? "" : d.toISOString().slice(0, 10);
+    };
+    const parseIds = (raw: string | null | undefined): string[] => {
+      if (!raw) return [];
+      try {
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed.filter((h) => typeof h === "string") : [];
+      } catch {
+        return [];
+      }
+    };
+    const tiers = ((event as any).ticketTiers || []).map((t: any) => {
+      let benefits = "";
+      try {
+        const raw = t.benefitsJson ? JSON.parse(t.benefitsJson) : t.benefits;
+        benefits = Array.isArray(raw) ? raw.join(", ") : String(raw || "");
+      } catch {
+        benefits = "";
+      }
+      return {
+        id: `tier-copy-${Math.random().toString(36).slice(2, 8)}`,
+        name: t.name || "General Pass",
+        price: Number(t.price) || 0,
+        currency: t.currency || "IDR",
+        capacity: Number(t.capacity) || 500,
+        benefits,
+      };
+    });
+    const hallIds = parseIds(event.venueHallIds);
+    const draft = {
+      title: `${event.title} (Copy)`,
+      slug: "",
+      tagline: event.tagline || "",
+      description: event.description || "",
+      archetype: event.archetype,
+      format: (event as any).format || "IN_PERSON",
+      scale: (event as any).scale || "LARGE",
+      regionId: (event as any).regionId || "id",
+      venueId: event.venue?.id || "",
+      venueHallId: event.venueHall?.id || hallIds[0] || "",
+      venueHallIds: hallIds.length > 0 ? hallIds : event.venueHall?.id ? [event.venueHall.id] : [],
+      startDate: toDateInput(event.startDate),
+      endDate: toDateInput(event.endDate),
+      ticketTiers: tiers,
+      primaryColor: "#ca8a04",
+      accentColor: "#16a34a",
+      heroImageUrl: "",
+      currentStep: 1,
+      savedAt: new Date().toISOString(),
+    };
+    try {
+      // Same storage key the wizard autosaves under.
+      localStorage.setItem("xpo_wizard_draft_v1", JSON.stringify(draft));
+    } catch {
+      // Storage full or disabled: wizard still opens blank.
+    }
+    router.push(`/${locale}/events/new`);
+  };
 
   const now = new Date();
 
@@ -494,6 +561,18 @@ export function OrganizerEventsRoster({ events, locale, title, description, hide
                       <span>{tOrg("launchScanner")}</span>
                     </Link>
                   </div>
+                  <button
+                    type="button"
+                    onClick={() => handleDuplicateEvent(event)}
+                    aria-label={tOrg("duplicateAria", { title: event.title })}
+                    className={cn(
+                      buttonVariants({ variant: "ghost", size: "sm" }),
+                      "w-full text-xs gap-1.5 min-h-[44px] sm:min-h-[36px] text-muted-foreground hover:text-foreground cursor-pointer"
+                    )}
+                  >
+                    <Copy className="h-3.5 w-3.5" />
+                    <span>{tOrg("duplicateBtn")}</span>
+                  </button>
                 </CardContent>
               </Card>
             );

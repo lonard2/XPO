@@ -1441,7 +1441,9 @@
     "signInToContinue": "Inicie sesión para continuar",
     "acrossHalls": "En {count} pabellones",
     "sortBy": "Ordenar por {column}",
-    "downloadTemplate": "Descargar plantilla"
+    "downloadTemplate": "Descargar plantilla",
+    "duplicateBtn": "Duplicar",
+    "duplicateAria": "Duplicar {title} como borrador"
   },
   "admin": {
     "dashboardTitle": "Gobernanza y Agregador de Administración",

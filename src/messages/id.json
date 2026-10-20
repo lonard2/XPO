@@ -1441,7 +1441,9 @@
     "signInToContinue": "Masuk untuk Lanjut",
     "acrossHalls": "Di {count} aula pameran",
     "sortBy": "Urutkan {column}",
-    "downloadTemplate": "Unduh Template"
+    "downloadTemplate": "Unduh Template",
+    "duplicateBtn": "Duplikat",
+    "duplicateAria": "Duplikat {title} menjadi draf baru"
   },
   "admin": {
     "dashboardTitle": "Tata Kelola & Agregator Admin",

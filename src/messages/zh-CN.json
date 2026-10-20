@@ -1441,7 +1441,9 @@
     "signInToContinue": "登录后继续",
     "acrossHalls": "覆盖{count}个展厅",
     "sortBy": "按{column}排序",
-    "downloadTemplate": "下载模板"
+    "downloadTemplate": "下载模板",
+    "duplicateBtn": "复制",
+    "duplicateAria": "将{title}复制为新草稿"
   },
   "admin": {
     "dashboardTitle": "管理统括中心",

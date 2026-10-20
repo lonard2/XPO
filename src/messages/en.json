@@ -1441,7 +1441,9 @@
     "signInToContinue": "Sign In to Continue",
     "acrossHalls": "Across {count} exhibition halls",
     "sortBy": "Sort by {column}",
-    "downloadTemplate": "Download Template"
+    "downloadTemplate": "Download Template",
+    "duplicateBtn": "Duplicate",
+    "duplicateAria": "Duplicate {title} into a new draft"
   },
   "admin": {
     "dashboardTitle": "Governance & Admin Agregator",
