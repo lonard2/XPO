@@ -38,7 +38,7 @@ survive only behind an explicit dev-only flag.
 - [x] **A6. UI cutover.** AuthModal gains password/OTP tabs; persona
   switcher renders only when demo auth is allowed; ATTENDEE barrier copy
   points at sign-in, not role theater.
-- [ ] **A7. Polish + docs.** Full suite green, tsc clean, live register →
+- [x] **A7. Polish + docs.** Full suite green, tsc clean, live register →
   login → mutate → logout probe, `.env.example` documented, guide note in
   `docs/guides/`.
 
