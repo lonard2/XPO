@@ -1438,7 +1438,8 @@
     "organizerNavAria": "主办方导航",
     "mobileNavAria": "移动端导航",
     "crumbAria": "面包屑导航",
-    "signInToContinue": "登录后继续"
+    "signInToContinue": "登录后继续",
+    "acrossHalls": "覆盖{count}个展厅"
   },
   "admin": {
     "dashboardTitle": "管理统括中心",

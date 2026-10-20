@@ -1438,7 +1438,8 @@
     "organizerNavAria": "Organizer Navigation",
     "mobileNavAria": "Mobile Navigation",
     "crumbAria": "Breadcrumb",
-    "signInToContinue": "Sign In to Continue"
+    "signInToContinue": "Sign In to Continue",
+    "acrossHalls": "Across {count} exhibition halls"
   },
   "admin": {
     "dashboardTitle": "Governance & Admin Agregator",

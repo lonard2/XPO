@@ -1438,7 +1438,8 @@
     "organizerNavAria": "Navegación de organizador",
     "mobileNavAria": "Navegación móvil",
     "crumbAria": "Migas de pan",
-    "signInToContinue": "Inicie sesión para continuar"
+    "signInToContinue": "Inicie sesión para continuar",
+    "acrossHalls": "En {count} pabellones"
   },
   "admin": {
     "dashboardTitle": "Gobernanza y Agregador de Administración",

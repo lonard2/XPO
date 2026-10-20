@@ -1035,7 +1035,7 @@ export default function BoothManagerPage() {
         <Card className="p-4 border-border bg-card shadow-xs">
           <div className="text-xs text-muted-foreground font-medium">{tOrg("boothsIndexed")}</div>
           <div className="text-2xl font-bold text-foreground mt-1"><CountUp value={totalCount} /></div>
-          <div className="text-xs text-muted-foreground mt-0.5">{tOrg("acrossExhibitions", { count: hallsList.length })}</div>
+          <div className="text-xs text-muted-foreground mt-0.5">{tOrg("acrossHalls", { count: hallsList.length })}</div>
         </Card>
 
         <Card className="p-4 border-border bg-card shadow-xs">

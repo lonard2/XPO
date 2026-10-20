@@ -250,3 +250,24 @@ describe("listing exclusion from operations", () => {
     expect(options).not.toContain("ev-list");
   });
 });
+
+describe("booth KPI truth", () => {
+  it("labels the hall count as halls, not exhibitions", async () => {
+    global.fetch = vi.fn().mockImplementation((url: string) =>
+      Promise.resolve({
+        ok: true,
+        json: () =>
+          Promise.resolve(
+            url.startsWith("/api/organizer/events")
+              ? { events: [] }
+              : { booths: [] }
+          ),
+      })
+    ) as any;
+    render(<BoothManagerPage />);
+    await waitFor(() => {
+      expect(screen.getByText("Across 3 exhibition halls")).toBeInTheDocument();
+    });
+    expect(screen.queryByText(/active exhibitions/i)).toBeNull();
+  });
+});

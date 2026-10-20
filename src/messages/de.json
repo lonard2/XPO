@@ -1438,7 +1438,8 @@
     "organizerNavAria": "Veranstalter-Navigation",
     "mobileNavAria": "Mobile Navigation",
     "crumbAria": "Brotkrumen",
-    "signInToContinue": "Anmelden und fortfahren"
+    "signInToContinue": "Anmelden und fortfahren",
+    "acrossHalls": "Über {count} Messehallen"
   },
   "admin": {
     "dashboardTitle": "Admin-Governance & Aggregator",

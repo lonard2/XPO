@@ -1438,7 +1438,8 @@
     "organizerNavAria": "Navigasi Organizer",
     "mobileNavAria": "Navigasi Seluler",
     "crumbAria": "Navigasi remah roti",
-    "signInToContinue": "Masuk untuk Lanjut"
+    "signInToContinue": "Masuk untuk Lanjut",
+    "acrossHalls": "Di {count} aula pameran"
   },
   "admin": {
     "dashboardTitle": "Tata Kelola & Agregator Admin",

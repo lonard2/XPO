@@ -1438,7 +1438,8 @@
     "organizerNavAria": "オーガナイザーナビゲーション",
     "mobileNavAria": "モバイルナビゲーション",
     "crumbAria": "パンくずリスト",
-    "signInToContinue": "サインインして続行"
+    "signInToContinue": "サインインして続行",
+    "acrossHalls": "{count}ホールにわたり"
   },
   "admin": {
     "dashboardTitle": "管理統括・アグリゲーター",
