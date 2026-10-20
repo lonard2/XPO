@@ -31,7 +31,7 @@ survive only behind an explicit dev-only flag.
   storage, cookie flags, `/api/auth/me` + `/logout`; integration tests.
 - [x] **A3. Password register + login.** Validation, duplicate handling,
   timing-safe compare, per-account login attempt caps; integration tests.
-- [ ] **A4. Email OTP request + verify.** Code issuance, TTL, attempt caps,
+- [x] **A4. Email OTP request + verify.** Code issuance, TTL, attempt caps,
   log provider + test inbox; integration tests (happy + expired + locked).
 - [ ] **A5. Caller cutover.** Session-first resolution with demo fallback
   flagged; existing suites green unmodified (they run with demo on).
