@@ -122,13 +122,13 @@ XPO/
 
 ### Prerequisites
 * Node.js >= 20.x
-* PostgreSQL or SQLite
+* Docker (for the Postgres dev database) or a reachable Postgres 16+
 * OpenRouter API Key (optional for development; grounded simulation active by default)
 
 ### Environment Configuration
 Create a `.env` file in the project root:
 ```env
-DATABASE_URL="file:./dev.db"
+DATABASE_URL="postgresql://xpo:xpo_dev_password@localhost:5433/xpo"
 OPENROUTER_API_KEY="your-openrouter-api-key"
 QR_HMAC_SECRET="xpo-mice-secure-ticket-salt-2026-production-key"
 NEXTAUTH_SECRET="xpo-platform-auth-secret-key-2026"
@@ -140,8 +140,9 @@ NEXT_PUBLIC_SITE_URL="http://localhost:3000"
 # 1. Install dependencies
 npm install
 
-# 2. Synchronize database schema and seed MICE dataset
-npx prisma db push
+# 2. Start Postgres, apply migrations, and seed the MICE dataset
+npm run db:up
+npm run db:deploy
 npm run db:seed
 
 # 3. Start local development server
