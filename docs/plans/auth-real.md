@@ -27,7 +27,7 @@ survive only behind an explicit dev-only flag.
 - [x] **A1. Schema + password primitives.** `User.passwordHash`,
   `User.emailVerifiedAt`; new `Session` + `OtpCode` models; `db push`;
   scrypt hash/verify helpers with unit tests (RED→GREEN).
-- [ ] **A2. Session mint/resolve/revoke.** Opaque token issuance, hashed
+- [x] **A2. Session mint/resolve/revoke.** Opaque token issuance, hashed
   storage, cookie flags, `/api/auth/me` + `/logout`; integration tests.
 - [ ] **A3. Password register + login.** Validation, duplicate handling,
   timing-safe compare, per-account login attempt caps; integration tests.
