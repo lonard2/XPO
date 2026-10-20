@@ -9,7 +9,7 @@ Small, safe improvements collected from critique backlogs and verification.
 - [x] **Q4. Duplicate event.** Dashboard roster action prefilling the wizard.
 - [x] **Q5. Wizard date floors.** `min={today}` on start/end inputs.
 - [x] **Q6. Hero image failure state.** Preview fallback when the URL breaks.
-- [ ] **Q7. Scanner CSV event slug.** Contextual export filenames.
+- [x] **Q7. Scanner CSV event slug.** Contextual export filenames.
 - [ ] **Q8. Polish + docs.** Full suite green, tsc clean.
 
 Each ships as its own commit pushed to `origin/main`. Verify by execution;

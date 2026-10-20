@@ -749,8 +749,11 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     const dateStamp = new Date().toISOString().slice(0, 10);
+    const eventSlug = scanningEvent && typeof scanningEvent.slug === "string" && scanningEvent.slug
+      ? scanningEvent.slug.replace(/[^a-z0-9-]+/gi, "-").replace(/^-+|-+$/g, "").toLowerCase() || null
+      : null;
     link.href = url;
-    link.setAttribute("download", `xpo-gate-scan-log-${dateStamp}.csv`);
+    link.setAttribute("download", eventSlug ? `xpo-gate-scan-log-${eventSlug}-${dateStamp}.csv` : `xpo-gate-scan-log-${dateStamp}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

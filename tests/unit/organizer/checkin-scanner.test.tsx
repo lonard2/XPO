@@ -235,3 +235,51 @@ describe("CheckInScanner listing exclusion", () => {
     expect(values).not.toContain("ev-list");
   });
 });
+
+describe("CheckInScanner export context", () => {
+  beforeEach(() => {
+    localStorage.clear();
+    vi.restoreAllMocks();
+  });
+
+  it("names the shift CSV after the scanning event", async () => {
+    global.fetch = vi.fn().mockImplementation((url: string) => {
+      if (url.includes("/api/organizer/events")) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ events: [{ id: "ev-9", title: "Expo Nine", slug: "expo-nine-2027", organizerId: "cmt2sfr7n0000laeaurwdwe44" }] }),
+        });
+      }
+      return Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({ valid: true, alreadyCheckedIn: false, status: "CHECKED_IN", attendee: { name: "X", email: "x@y" }, ticketTier: { id: "t", name: "S" }, event: { id: "ev-9", title: "Expo Nine" }, perks: [] }),
+      });
+    }) as any;
+    globalThis.URL.createObjectURL = vi.fn().mockImplementation(() => "blob:x") as any;
+    globalThis.URL.revokeObjectURL = vi.fn() as any;
+    const anchors: HTMLAnchorElement[] = [];
+    const origCreate = document.createElement.bind(document);
+    vi.spyOn(document, "createElement").mockImplementation(((tag: string) => {
+      const el = origCreate(tag) as HTMLAnchorElement;
+      if (tag === "a") anchors.push(el);
+      return el;
+    }) as any);
+    vi.spyOn(window.HTMLAnchorElement.prototype, "click").mockImplementation(() => {});
+    render(<CheckInScanner defaultEventId="ev-9" />);
+    fireEvent.click(screen.getByRole("button", { name: /manual code entry/i }));
+    fireEvent.change(document.querySelector("#scanner-manual-input") as HTMLInputElement, {
+      target: { value: "HASH-CSV-1" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /validate & check-in pass/i }));
+    await waitFor(() => {
+      expect(screen.getAllByText("X").length).toBeGreaterThan(0);
+    });
+    fireEvent.click(screen.getByRole("button", { name: /export csv/i }));
+    await waitFor(() => {
+      expect(anchors.length).toBeGreaterThan(0);
+    });
+    const dl = anchors[anchors.length - 1].getAttribute("download") || "";
+    expect(dl).toContain("expo-nine-2027");
+    expect(dl).toMatch(/\.csv$/);
+  });
+});
