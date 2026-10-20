@@ -104,6 +104,10 @@ export function EventPageShell({
   const [checkoutDrawerOpen, setCheckoutDrawerOpen] = React.useState(false);
   const [preselectedTierId, setPreselectedTierId] = React.useState<string | null>(null);
   const [activeTab, setActiveTab] = React.useState<"overview" | "agenda" | "floorMap" | "tickets">("overview");
+  const [heroFailed, setHeroFailed] = React.useState(false);
+  React.useEffect(() => {
+    setHeroFailed(false);
+  }, [heroImageUrl]);
 
   const tEvents = useTranslations("events");
   const tCommon = useTranslations("common");
@@ -328,14 +332,24 @@ export function EventPageShell({
       <header className="relative overflow-hidden border-b border-[var(--archetype-border)] bg-[var(--archetype-bg)] text-white">
         {/* Dynamic Background Image & Ambient Gradients */}
         <div className="absolute inset-0 z-0">
-          {heroImageUrl ? (
-            <div
-              className="absolute inset-0 bg-cover bg-center transition-transform duration-700"
-              style={{
-                backgroundImage: `url(${heroImageUrl})`,
-                opacity: resolvedBranding.bannerOverlayOpacity ?? 0.28,
-              }}
-            />
+          {heroImageUrl && !heroFailed ? (
+            <>
+              <img
+                src={heroImageUrl}
+                alt=""
+                aria-hidden="true"
+                data-hero-probe="true"
+                className="hidden"
+                onError={() => setHeroFailed(true)}
+              />
+              <div
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-700"
+                style={{
+                  backgroundImage: `url(${heroImageUrl})`,
+                  opacity: resolvedBranding.bannerOverlayOpacity ?? 0.28,
+                }}
+              />
+            </>
           ) : (
             <div
               className="absolute inset-0"

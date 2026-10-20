@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import * as React from "react";
 import { LivePreviewFrame } from "@/components/organizer/LivePreviewFrame";
 
@@ -89,5 +89,29 @@ describe("Phase 9 Component: LivePreviewFrame Real-Time Visual Customizer", () =
     expect(screen.queryByText("Featured Keynote Tracks & Timetable")).toBeNull();
     expect(screen.queryByText("Featured Exhibitors & Floor Booths")).toBeNull();
     expect(screen.queryByText("Attendee Perks & Exclusive Guidebook Treats")).toBeNull();
+  });
+});
+
+describe("LivePreviewFrame hero failure state", () => {
+  it("falls back to the brand gradient with a notice when the hero image breaks", async () => {
+    const { default: NewPreview } = await import("@/components/organizer/LivePreviewFrame").then(
+      (m) => ({ default: m.LivePreviewFrame })
+    );
+    const { container } = render(
+      <NewPreview
+        eventTitle="Broken Hero Expo"
+        archetype="TECH_DEV_SUMMIT"
+        primaryColor="#6366f1"
+        accentColor="#06b6d4"
+        fontFamily="font-mono"
+        heroImageUrl="https://broken.invalid/hero.jpg"
+      />
+    );
+    const probe = container.querySelector('img[data-hero-probe="true"]') as HTMLImageElement;
+    expect(probe).not.toBeNull();
+    fireEvent.error(probe);
+    await waitFor(() => {
+      expect(screen.getByText(/hero image.*unavailable/i)).toBeInTheDocument();
+    });
   });
 });

@@ -8,7 +8,7 @@ Small, safe improvements collected from critique backlogs and verification.
 - [x] **Q3. CSV template download.** One-click template file for bulk import.
 - [x] **Q4. Duplicate event.** Dashboard roster action prefilling the wizard.
 - [x] **Q5. Wizard date floors.** `min={today}` on start/end inputs.
-- [ ] **Q6. Hero image failure state.** Preview fallback when the URL breaks.
+- [x] **Q6. Hero image failure state.** Preview fallback when the URL breaks.
 - [ ] **Q7. Scanner CSV event slug.** Contextual export filenames.
 - [ ] **Q8. Polish + docs.** Full suite green, tsc clean.
 

@@ -213,6 +213,10 @@ export function LivePreviewFrame({
   ],
 }: LivePreviewFrameProps) {
   const [viewport, setViewport] = React.useState<ViewportMode>("desktop");
+  const [heroFailed, setHeroFailed] = React.useState(false);
+  React.useEffect(() => {
+    setHeroFailed(false);
+  }, [heroImageUrl]);
   const tokens = getArchetypeTokens(archetype as MiceArchetype);
 
   const getViewportWidthClass = () => {
@@ -341,13 +345,28 @@ export function LivePreviewFrame({
           <div className="space-y-6 pb-8 overflow-y-auto max-h-[750px]">
             {/* HERO BANNER SECTION */}
             <div className="relative min-h-[280px] sm:min-h-[320px] flex items-end p-5 sm:p-8 overflow-hidden">
-              {/* Hero Image Background */}
+              {/* Hero Image Background (probe tracks load failure) */}
+              <img
+                src={heroImageUrl}
+                alt=""
+                aria-hidden="true"
+                data-hero-probe="true"
+                className="hidden"
+                onError={() => setHeroFailed(true)}
+              />
               <div
                 className="absolute inset-0 bg-cover bg-center transition-all"
-                style={{
-                  backgroundImage: `url(${heroImageUrl})`,
-                }}
+                style={
+                  heroFailed
+                    ? { background: `linear-gradient(135deg, ${primaryColor}30 0%, ${accentColor}30 100%)` }
+                    : { backgroundImage: `url(${heroImageUrl})` }
+                }
               />
+              {heroFailed && (
+                <p className="absolute top-3 left-3 z-20 text-[11px] text-white/80 bg-black/50 px-2 py-1 rounded-md">
+                  Hero image unavailable — showing brand gradient.
+                </p>
+              )}
 
               {/* Dynamic Gradient Overlay */}
               <div
