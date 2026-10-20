@@ -312,3 +312,39 @@ describe("booths table sorting", () => {
     expect(cells2[0]).toContain("H9-Z");
   });
 });
+
+describe("CSV template download", () => {
+  it("downloads a header-plus-samples template file", async () => {
+    const { BOOTH_CSV_TEMPLATE } = await import("@/app/[locale]/(organizer)/booths/page");
+    expect(BOOTH_CSV_TEMPLATE).toMatch(/^BoothNumber,HallName,CompanyName/);
+    expect(BOOTH_CSV_TEMPLATE.split("\n")).toHaveLength(4);
+    global.fetch = vi.fn().mockImplementation((url: string) =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve(url.startsWith("/api/organizer/events") ? { events: [] } : { booths: [] }),
+      })
+    ) as any;
+    let seenBlob: Blob | null = null;
+    globalThis.URL.createObjectURL = vi.fn().mockImplementation((blob: Blob) => {
+      seenBlob = blob;
+      return "blob:template";
+    }) as any;
+    globalThis.URL.revokeObjectURL = vi.fn() as any;
+    const clickSpy = vi
+      .spyOn(window.HTMLAnchorElement.prototype, "click")
+      .mockImplementation(() => {});
+    render(<BoothManagerPage />);
+    await waitFor(() => {
+      expect(screen.getByText(/sample floor data/i)).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getByRole("button", { name: /import csv/i }));
+    fireEvent.click(screen.getByRole("button", { name: /download template/i }));
+    await waitFor(() => {
+      expect(clickSpy).toHaveBeenCalled();
+    });
+    expect(seenBlob).not.toBeNull();
+    expect(seenBlob!.size).toBeGreaterThan(200);
+    expect(seenBlob!.type).toContain("text/csv");
+    clickSpy.mockRestore();
+  });
+});

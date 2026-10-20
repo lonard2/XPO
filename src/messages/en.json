@@ -1440,7 +1440,8 @@
     "crumbAria": "Breadcrumb",
     "signInToContinue": "Sign In to Continue",
     "acrossHalls": "Across {count} exhibition halls",
-    "sortBy": "Sort by {column}"
+    "sortBy": "Sort by {column}",
+    "downloadTemplate": "Download Template"
   },
   "admin": {
     "dashboardTitle": "Governance & Admin Agregator",

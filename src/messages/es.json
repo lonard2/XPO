@@ -1440,7 +1440,8 @@
     "crumbAria": "Migas de pan",
     "signInToContinue": "Inicie sesión para continuar",
     "acrossHalls": "En {count} pabellones",
-    "sortBy": "Ordenar por {column}"
+    "sortBy": "Ordenar por {column}",
+    "downloadTemplate": "Descargar plantilla"
   },
   "admin": {
     "dashboardTitle": "Gobernanza y Agregador de Administración",

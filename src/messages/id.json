@@ -1440,7 +1440,8 @@
     "crumbAria": "Navigasi remah roti",
     "signInToContinue": "Masuk untuk Lanjut",
     "acrossHalls": "Di {count} aula pameran",
-    "sortBy": "Urutkan {column}"
+    "sortBy": "Urutkan {column}",
+    "downloadTemplate": "Unduh Template"
   },
   "admin": {
     "dashboardTitle": "Tata Kelola & Agregator Admin",

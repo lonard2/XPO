@@ -1440,7 +1440,8 @@
     "crumbAria": "パンくずリスト",
     "signInToContinue": "サインインして続行",
     "acrossHalls": "{count}ホールにわたり",
-    "sortBy": "{column}で並替え"
+    "sortBy": "{column}で並替え",
+    "downloadTemplate": "テンプレートをダウンロード"
   },
   "admin": {
     "dashboardTitle": "管理統括・アグリゲーター",
