@@ -3,9 +3,9 @@ import { db } from "@/lib/db";
 import { validateShowcase } from "@/lib/showcase";
 import { parsePagination } from "@/lib/api/pagination";
 
-export async function GET(request?: Request) {
+export async function GET(request: Request) {
   try {
-    const { searchParams } = new URL(request?.url || "http://localhost/");
+    const { searchParams } = new URL(request.url);
     const { take, skip } = parsePagination(searchParams);
     const [total, events] = await db.$transaction([
       db.event.count(),

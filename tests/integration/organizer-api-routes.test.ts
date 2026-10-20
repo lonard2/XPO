@@ -28,7 +28,9 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
   });
 
   it("Organizer Events: GET retrieves list of registered exhibitions", async () => {
-    const res = await getEventsRoute();
+    const res = await getEventsRoute(
+      new Request("http://localhost:3000/api/organizer/events")
+    );
     expect(res.status).toBe(200);
     const json = await res.json();
     expect(json.success).toBe(true);

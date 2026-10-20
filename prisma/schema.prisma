@@ -17,9 +17,13 @@ model User {
   avatarUrl       String?
   settingsJson    String?     // UI/UX & Account Preferences JSON
   interestsJson   String      @default("[]") // JSON Array of MICE interest tags
+  passwordHash    String?     // scrypt hash; null means password login disabled
+  emailVerifiedAt DateTime?   // Set on first verified login (either method)
   organizedEvents Event[]     @relation("OrganizerEvents")
   bookings        Booking[]
   aiReports       AIReport[]
+  sessions        Session[]
+  otpCodes        OtpCode[]
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
 }
@@ -195,4 +199,35 @@ model AIReport {
   reportType  String   // "DAILY_DIGEST", "SENTIMENT", "FOOT_TRAFFIC"
   contentJson String   // Structured metrics & analysis markdown
   createdAt   DateTime @default(now())
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique // SHA-256 of the opaque cookie token; token itself never stored
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userAgent String?
+  ip        String?
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model OtpCode {
+  id         String   @id @default(cuid())
+  email      String
+  codeHash   String   // SHA-256 of the 6-digit code; code itself never stored
+  purpose    String   @default("LOGIN") // LOGIN, VERIFY_EMAIL, RESET_PASSWORD
+  attempts   Int      @default(0)
+  maxAttempts Int     @default(5)
+  expiresAt  DateTime
+  consumedAt DateTime?
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@index([email])
+  @@index([expiresAt])
 }
