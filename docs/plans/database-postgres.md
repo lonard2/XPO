@@ -13,7 +13,7 @@ against the target), then transactions, then pagination, then polish.
   voucher claims, and ticket checkout paths.
 - [x] **B3. Pagination.** Bounded `take`/`skip` (+ totals) on list
   endpoints: organizer events/booths plus admin lists.
-- [ ] **B4. Polish + docs.** Full suite green on PG, tsc clean, sqlite
+- [x] **B4. Polish + docs.** Full suite green on PG, tsc clean, sqlite
   leftovers retired, deployment notes.
 
 Each ships as its own commit pushed to `origin/main`. Verify by execution;
