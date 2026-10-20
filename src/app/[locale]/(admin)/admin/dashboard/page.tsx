@@ -27,6 +27,8 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { formatCurrency, formatDateRange } from "@/lib/i18n/formatters";
 import { AdminDashboardClient } from "@/components/admin/AdminDashboardClient";
+import { recentAuditEntries } from "@/lib/observability/audit";
+import { detectAnomalies } from "@/lib/observability/anomalies";
 import { FALLBACK_VENUES, FALLBACK_EVENTS } from "@/lib/discovery/fallbackData";
 import { countHalls, isMeetingRoom } from "@/lib/discovery/venueSpaces";
 
@@ -150,45 +152,24 @@ export default async function AdminDashboardPage({ params }: AdminDashboardPageP
   ];
 
 
-  // Pre-configured platform audit log entries
-  const initialAuditLogs = [
-    {
-      id: "LOG-9402",
-      action: "HMAC_PASS_VALIDATION",
-      actor: "Door Staff Scanner (Terminal #4)",
-      target: "Pass XPO-PASS-BKG-8812",
-      severity: "INFO" as const,
-      timestamp: "2026-08-21 16:42:10",
-      details: "Constant-time signature verification succeeded. Attendee checked in at Hall A1 gate.",
-    },
-    {
-      id: "LOG-9401",
-      action: "CRAWLER_BATCH_SYNC",
-      actor: "Automated Ingestion Pipeline",
-      target: "JIExpo Kemayoran & ICE BSD",
-      severity: "SUCCESS" as const,
-      timestamp: "2026-08-21 15:30:00",
-      details: "Normalized 6 schedule feeds. Deduplicated 3 fingerprints. 3 new events staged.",
-    },
-    {
-      id: "LOG-9400",
-      action: "VENUE_HALL_ALLOCATION",
-      actor: "Platform Admin",
-      target: "JIExpo Kemayoran (Nusantara Hall 2)",
-      severity: "INFO" as const,
-      timestamp: "2026-08-21 14:15:22",
-      details: "Updated capacity to 3,500 seats with 6,500 sqm column-free floor plan.",
-    },
-    {
-      id: "LOG-9399",
-      action: "ORGANIZER_ROLE_GRANT",
-      actor: "Governance Authority",
-      target: "Java Festival Production",
-      severity: "SUCCESS" as const,
-      timestamp: "2026-08-21 11:05:14",
-      details: "Approved organizer credentials for Java Jazz International Festival 2026.",
-    },
-  ];
+  // Live audit trail and gate anomaly signals (no seeded fiction).
+  const [liveAuditRows, liveAnomalies] = await Promise.all([
+    recentAuditEntries(8).catch(() => []),
+    detectAnomalies({ hoursBack: 24 }).catch(() => []),
+  ]);
+  const liveAuditLogs = liveAuditRows.map((row: any) => ({
+    id: row.id,
+    action: row.action,
+    actor: `${row.actorRole || "System"}${row.actorId ? ` · ${row.actorId.slice(-4)}` : ""}`,
+    target: `${row.entity}:${(row.entityId || "").slice(-8)}`,
+    severity: (/delete|override/.test(row.action)
+      ? "ALERT"
+      : /create|bulk-import/.test(row.action)
+        ? "SUCCESS"
+        : "INFO") as "INFO" | "SUCCESS" | "WARN" | "ALERT",
+    timestamp: new Date(row.createdAt).toISOString(),
+    details: row.metadata || `${row.action} on ${row.entity}`,
+  }));
 
   return (
     <div className="space-y-8 animate-fade-in">
@@ -337,7 +318,8 @@ export default async function AdminDashboardPage({ params }: AdminDashboardPageP
       {/* Interactive Governance Client Component: Verification Queue & Audit Feed */}
       <AdminDashboardClient
         initialQueue={initialVerificationQueue}
-        initialLogs={initialAuditLogs}
+        initialLogs={liveAuditLogs}
+        initialAnomalies={liveAnomalies}
         locale={locale}
       />
     </div>

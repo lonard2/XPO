@@ -53,12 +53,22 @@ export interface AuditLogItem {
 interface AdminDashboardClientProps {
   initialQueue: VerificationRequest[];
   initialLogs: AuditLogItem[];
+  initialAnomalies?: Array<{
+    kind: string;
+    eventId: string;
+    eventTitle: string;
+    lastHour: number;
+    baselinePerHour: number;
+    supportingCount: number;
+    detail: string;
+  }>;
   locale: string;
 }
 
 export function AdminDashboardClient({
   initialQueue,
   initialLogs,
+  initialAnomalies = [],
   locale,
 }: AdminDashboardClientProps) {
   let tAdmin: any = (k: string) => k;
@@ -480,7 +490,27 @@ export function AdminDashboardClient({
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3 pt-0">
+            {initialAnomalies.length > 0 && (
+              <div className="space-y-2" role="alert">
+                {initialAnomalies.map((sig) => (
+                  <div
+                    key={`${sig.kind}-${sig.eventId}`}
+                    className="p-3 rounded-lg border border-amber-500/40 bg-amber-500/5 text-xs space-y-1"
+                  >
+                    <div className="font-bold text-amber-700 dark:text-amber-400">
+                      {sig.kind === "admission-spike" ? "Admission spike" : "Override cluster"} · {sig.eventTitle}
+                    </div>
+                    <p className="text-muted-foreground leading-relaxed">{sig.detail}</p>
+                  </div>
+                ))}
+              </div>
+            )}
             <div className="space-y-2.5 max-h-[380px] overflow-y-auto pr-1">
+              {logs.length === 0 && (
+                <div className="text-xs text-muted-foreground text-center py-4">
+                  No audit entries recorded yet. Admin and organizer mutations will appear here.
+                </div>
+              )}
               {logs.map((log) => (
                 <div
                   key={log.id}

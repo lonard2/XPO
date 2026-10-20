@@ -26,10 +26,11 @@ async function auditFor(entityId: string) {
 describe("Mutation audit instrumentation", () => {
   let venueId: string;
   let eventId: string;
+  let boothId: string | undefined;
 
   afterAll(async () => {
     await db.auditLog.deleteMany({
-      where: { OR: [{ entityId: venueId }, { entityId: eventId }] },
+      where: { OR: [{ entityId: venueId }, { entityId: eventId }, { entityId: boothId }] },
     }).catch(() => {});
     await db.$disconnect();
   });
@@ -89,7 +90,7 @@ describe("Mutation audit instrumentation", () => {
       })
     );
     expect(boothRes.status).toBe(201);
-    const boothId = (await boothRes.json()).booth.id;
+    boothId = (await boothRes.json()).booth.id;
 
     const deleteRes = await deleteEventRoute(
       req(`http://localhost:3000/api/admin/events/${eventId}`, "DELETE"),

@@ -7,7 +7,7 @@ surface without manual log-diving, and basic platform metrics exist.
   metadata; best-effort writes that never break the mutation.
 - [x] **D2. Instrument mutations.** Admin venue/event, organizer event,
   booth, branding/showcase, and override re-admit paths.
-- [ ] **D3. Check-in anomaly feed.** Double-scan/wrong-event/failure
+- [x] **D3. Check-in anomaly feed.** Double-scan/wrong-event/failure
   burst detection with an admin endpoint (plus dashboard surface).
 - [ ] **D4. Metrics endpoint.** Platform counts for ops overview.
 - [ ] **D5. Polish + docs.** Full suite green, tsc clean, guide note.
