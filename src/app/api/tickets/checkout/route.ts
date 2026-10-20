@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { generateTicketHash, generateSvgQrCode, type TicketPassPayload } from "@/lib/tickets/qrPass";
+import { rateLimitResponse } from "@/lib/api/rateLimit";
 
 export async function POST(request: Request) {
+  const limited = rateLimitResponse("tickets-checkout", request, { limit: 60, windowMs: 60_000 });
+  if (limited) return limited;
   try {
     const body = await request.json();
     const { eventId, tierId, attendeeName, attendeeEmail, quantity = 1, userId } = body;

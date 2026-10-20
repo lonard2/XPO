@@ -5,7 +5,7 @@ structured errors, and CI gating every push.
 
 - [x] **C1. Fail-closed secrets.** QR_HMAC_SECRET (and NEXTAUTH_SECRET)
   required in production; no hardcoded signing defaults.
-- [ ] **C2. Rate limits.** Verify, auth, import, and checkout routes bounded
+- [x] **C2. Rate limits.** Verify, auth, import, and checkout routes bounded
   per IP with 429s.
 - [ ] **C3. Health endpoint.** `/api/health` with DB ping, uptime, version.
 - [ ] **C4. Structured errors.** JSON logger adopted on security-sensitive

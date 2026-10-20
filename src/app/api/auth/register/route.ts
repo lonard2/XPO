@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { hashPassword } from "@/lib/auth/password";
+import { rateLimitResponse } from "@/lib/api/rateLimit";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /** POST /api/auth/register — public signup. Role is always ATTENDEE. */
 export async function POST(request: Request) {
+  const limited = rateLimitResponse("auth-register", request, { limit: 10, windowMs: 60 * 60_000 });
+  if (limited) return limited;
   try {
     const body = await request.json().catch(() => ({}));
     const name = typeof body.name === "string" ? body.name.trim() : "";

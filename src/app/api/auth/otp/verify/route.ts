@@ -2,9 +2,12 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { verifyOtp } from "@/lib/auth/otp";
 import { createSession, sessionCookieHeader } from "@/lib/auth/sessionStore";
+import { rateLimitResponse } from "@/lib/api/rateLimit";
 
 /** POST /api/auth/otp/verify — exchange a code for a session. */
 export async function POST(request: Request) {
+  const limited = rateLimitResponse("auth-otp-verify", request, { limit: 30, windowMs: 10 * 60_000 });
+  if (limited) return limited;
   try {
     const body = await request.json().catch(() => ({}));
     const email = typeof body.email === "string" ? body.email.toLowerCase().trim() : "";

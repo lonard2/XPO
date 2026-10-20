@@ -67,3 +67,24 @@ describe("Password register and login", () => {
     expect(unknown.status).toBe(401);
   });
 });
+
+describe("Login rate limiting", () => {
+  it("answers 429 past the per-IP budget", async () => {
+    const { POST: loginRoute } = await import("@/app/api/auth/login/route");
+    const { resetRateLimits } = await import("@/lib/api/rateLimit");
+    resetRateLimits();
+    const mk = () =>
+      new Request("http://localhost:3000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-forwarded-for": "198.51.100.77" },
+        body: JSON.stringify({ email: "nobody-here@xpo.com", password: "Wr0ng Pass 1!" }),
+      });
+    let last = 0;
+    for (let i = 0; i < 31; i++) {
+      const res = await loginRoute(mk());
+      last = res.status;
+      if (last === 429) break;
+    }
+    expect(last).toBe(429);
+  });
+});

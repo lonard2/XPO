@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { verifyPassword } from "@/lib/auth/password";
+import { rateLimitResponse } from "@/lib/api/rateLimit";
 import {
   createSession,
   sessionCookieHeader,
@@ -13,6 +14,8 @@ const LOCKOUT_MS = 15 * 60 * 1000;
 
 /** POST /api/auth/login — password login with per-account lockout. */
 export async function POST(request: Request) {
+  const limited = rateLimitResponse("auth-login", request, { limit: 30, windowMs: 15 * 60_000 });
+  if (limited) return limited;
   try {
     const body = await request.json().catch(() => ({}));
     const email = typeof body.email === "string" ? body.email.toLowerCase().trim() : "";

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { requireEventWrites, requireBoothWrites } from "@/lib/auth/eventOwnership";
+import { rateLimitResponse } from "@/lib/api/rateLimit";
 import { parsePagination } from "@/lib/api/pagination";
 
 export async function GET(request: Request) {
@@ -42,6 +43,8 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const limited = rateLimitResponse("organizer-booths-post", request, { limit: 60, windowMs: 60_000 });
+  if (limited) return limited;
   try {
     const cookieHeader = request.headers.get("cookie") || "";
     const roleMatch = cookieHeader.match(/xpo_role=([^;]+)/);

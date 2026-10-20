@@ -2,8 +2,11 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { verifyTicketHash } from "@/lib/tickets/qrPass";
 import { resolveEventCaller, canWriteEvent } from "@/lib/auth/eventOwnership";
+import { rateLimitResponse } from "@/lib/api/rateLimit";
 
 export async function POST(request: Request) {
+  const limited = rateLimitResponse("tickets-verify", request, { limit: 120, windowMs: 60_000 });
+  if (limited) return limited;
   try {
     const body = await request.json();
     const { qrCodeHash, payloadString, signature, autoCheckIn = true, supervisorOverride = false, eventId: scannedEventId } = body;
