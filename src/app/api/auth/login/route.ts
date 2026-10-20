@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { verifyPassword } from "@/lib/auth/password";
 import { rateLimitResponse } from "@/lib/api/rateLimit";
+import { reportError } from "@/lib/observability/logger";
 import {
   createSession,
   sessionCookieHeader,
@@ -75,6 +76,7 @@ export async function POST(request: Request) {
     res.headers.set("Set-Cookie", sessionCookieHeader(token, 30 * 24 * 60 * 60));
     return res;
   } catch (error) {
+    reportError("auth-login", error);
     return NextResponse.json(
       { error: `Login failed: ${(error as Error).message}` },
       { status: 500 }

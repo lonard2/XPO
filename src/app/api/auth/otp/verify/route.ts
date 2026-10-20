@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { verifyOtp } from "@/lib/auth/otp";
 import { createSession, sessionCookieHeader } from "@/lib/auth/sessionStore";
 import { rateLimitResponse } from "@/lib/api/rateLimit";
+import { reportError } from "@/lib/observability/logger";
 
 /** POST /api/auth/otp/verify — exchange a code for a session. */
 export async function POST(request: Request) {
@@ -30,6 +31,7 @@ export async function POST(request: Request) {
     res.headers.set("Set-Cookie", sessionCookieHeader(token, 30 * 24 * 60 * 60));
     return res;
   } catch (error) {
+    reportError("auth-otp-verify", error);
     return NextResponse.json(
       { error: `OTP verification failed: ${(error as Error).message}` },
       { status: 500 }

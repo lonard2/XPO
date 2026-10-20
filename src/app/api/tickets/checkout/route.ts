@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { generateTicketHash, generateSvgQrCode, type TicketPassPayload } from "@/lib/tickets/qrPass";
 import { rateLimitResponse } from "@/lib/api/rateLimit";
+import { reportError } from "@/lib/observability/logger";
 
 export async function POST(request: Request) {
   const limited = rateLimitResponse("tickets-checkout", request, { limit: 60, windowMs: 60_000 });
@@ -159,6 +160,7 @@ export async function POST(request: Request) {
       { status: 201 }
     );
   } catch (error) {
+    reportError("tickets-checkout", error);
     const guarded = error as Error & { status?: number; extra?: Record<string, unknown> };
     if (guarded.status) {
       return NextResponse.json(

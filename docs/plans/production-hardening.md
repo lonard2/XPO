@@ -8,7 +8,7 @@ structured errors, and CI gating every push.
 - [x] **C2. Rate limits.** Verify, auth, import, and checkout routes bounded
   per IP with 429s.
 - [x] **C3. Health endpoint.** `/api/health` with DB ping, uptime, version.
-- [ ] **C4. Structured errors.** JSON logger adopted on security-sensitive
+- [x] **C4. Structured errors.** JSON logger adopted on security-sensitive
   routes.
 - [ ] **C5. CI gating.** GitHub workflow running tsc + vitest (with PG
   service) on push/PR.

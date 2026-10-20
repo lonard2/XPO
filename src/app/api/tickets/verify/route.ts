@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { verifyTicketHash } from "@/lib/tickets/qrPass";
 import { resolveEventCaller, canWriteEvent } from "@/lib/auth/eventOwnership";
 import { rateLimitResponse } from "@/lib/api/rateLimit";
+import { reportError } from "@/lib/observability/logger";
 
 export async function POST(request: Request) {
   const limited = rateLimitResponse("tickets-verify", request, { limit: 120, windowMs: 60_000 });
@@ -348,6 +349,7 @@ export async function GET(request: Request) {
       perks: eligiblePerks,
     });
   } catch (error) {
+    reportError("tickets-verify", error);
     return NextResponse.json(
       { error: `INTERNAL_ERROR: ${(error as Error).message}` },
       { status: 500 }

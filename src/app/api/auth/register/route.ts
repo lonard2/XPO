@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { hashPassword } from "@/lib/auth/password";
 import { rateLimitResponse } from "@/lib/api/rateLimit";
+import { reportError } from "@/lib/observability/logger";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -39,6 +40,7 @@ export async function POST(request: Request) {
     });
     return NextResponse.json({ user }, { status: 201 });
   } catch (error) {
+    reportError("auth-register", error);
     return NextResponse.json(
       { error: `Registration failed: ${(error as Error).message}` },
       { status: 500 }

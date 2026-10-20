@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { requestOtp } from "@/lib/auth/otp";
 import { rateLimitResponse } from "@/lib/api/rateLimit";
+import { reportError } from "@/lib/observability/logger";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -21,6 +22,7 @@ export async function POST(request: Request) {
     await requestOtp(email, purpose);
     return NextResponse.json({ success: true });
   } catch (error) {
+    reportError("auth-otp-request", error);
     return NextResponse.json(
       { error: `OTP request failed: ${(error as Error).message}` },
       { status: 500 }
