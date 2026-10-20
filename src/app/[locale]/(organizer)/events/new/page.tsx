@@ -420,7 +420,7 @@ export default function NewEventWizardPage() {
   React.useEffect(() => {
     async function loadVenues() {
       try {
-        const res = await fetch("/api/venues");
+        const res = await fetch("/api/organizer/venues?take=500");
         if (res.ok) {
           const data = await res.json();
           if (data.venues && data.venues.length > 0) {

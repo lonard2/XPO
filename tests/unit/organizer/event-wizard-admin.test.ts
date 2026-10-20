@@ -604,3 +604,52 @@ describe("Admin simple listings", () => {
     expect(payload.organizerId).toBe("usr-admin-1");
   });
 });
+
+describe("Wizard live venue directory", () => {
+  let fetchMock: ReturnType<typeof vi.fn>;
+
+  beforeEach(() => {
+    localStorage.clear();
+    mockRole = "ORGANIZER";
+    mockUser.role = "ORGANIZER";
+    fetchMock = vi.fn().mockImplementation((url: string) => {
+      if (url.startsWith("/api/organizer/venues")) {
+        return Promise.resolve({
+          ok: true,
+          json: () =>
+            Promise.resolve({
+              venues: [
+                {
+                  id: "cmv-live-1",
+                  name: "Live Directory Hall",
+                  regionId: "id",
+                  city: "Jakarta",
+                  halls: [{ id: "cmv-hall-live-1", name: "Nusantara Hall 9", capacity: 9000 }],
+                },
+              ],
+              total: 1,
+            }),
+        });
+      }
+      return Promise.resolve({ ok: true, json: () => Promise.resolve({}) });
+    });
+    global.fetch = fetchMock;
+  });
+
+  it("lists real directory venues and halls instead of seeds", async () => {
+    window.history.replaceState({}, "", "/en/events/new?step=2");
+    try {
+      const { container } = render(React.createElement(NewEventWizardPage));
+      await waitFor(() => {
+        expect(screen.getByText("Step 2 of 4")).toBeInTheDocument();
+      });
+      const venueSelect = container.querySelector("#wizard-venue-select") as HTMLSelectElement;
+      const venueNames = Array.from(venueSelect.options).map((o) => o.text);
+      expect(venueNames.join("|")).toContain("Live Directory Hall");
+      expect(venueNames.join("|")).not.toContain("JIExpo Kemayoran");
+      expect(fetchMock.mock.calls.some(([u]: any[]) => String(u).startsWith("/api/organizer/venues"))).toBe(true);
+    } finally {
+      window.history.replaceState({}, "", "/");
+    }
+  });
+});

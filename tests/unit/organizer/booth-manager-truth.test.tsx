@@ -315,7 +315,7 @@ describe("booths table sorting", () => {
 
 describe("CSV template download", () => {
   it("downloads a header-plus-samples template file", async () => {
-    const { BOOTH_CSV_TEMPLATE } = await import("@/app/[locale]/(organizer)/booths/page");
+    const { BOOTH_CSV_TEMPLATE } = await import("@/lib/boothCsvTemplate");
     expect(BOOTH_CSV_TEMPLATE).toMatch(/^BoothNumber,HallName,CompanyName/);
     expect(BOOTH_CSV_TEMPLATE.split("\n")).toHaveLength(4);
     global.fetch = vi.fn().mockImplementation((url: string) =>
