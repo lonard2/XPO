@@ -40,9 +40,30 @@ export function getEventCaller(req: Request): EventCaller {
   return { role, userId, email };
 }
 
+/**
+ * Session-first caller resolution. A valid session always wins; demo
+ * persona cookies resolve only when demo auth is allowed. In production
+ * without the flag, cookie personas are inert and callers resolve empty.
+ */
+export async function resolveEventCaller(req: Request): Promise<EventCaller> {
+  const cookieHeader = req.headers.get("cookie") || "";
+  const session = await resolveSession(sessionTokenFromCookie(cookieHeader));
+  if (session) {
+    return { role: session.user.role, userId: session.user.id, email: session.user.email };
+  }
+  if (allowDemoAuth()) return getEventCaller(req);
+  return { role: null, userId: null, email: null };
+}
+
 interface CookieJar {
   get(name: string): { value: string } | undefined;
 }
+
+import {
+  resolveSession,
+  sessionTokenFromCookie,
+  allowDemoAuth,
+} from "./sessionStore";
 
 /** Resolve the caller from a cookie jar (server components via `next/headers`). */
 export function getEventCallerFromCookies(cookies: CookieJar): EventCaller {
@@ -60,6 +81,24 @@ export function getEventCallerFromCookies(cookies: CookieJar): EventCaller {
     }
   }
   return { role, userId, email };
+}
+
+/** Session-first resolution from a cookie jar. */
+export async function resolveEventCallerFromCookies(cookies: CookieJar): Promise<EventCaller> {
+  const names = ["xpo_session", "xpo_role", "xpo_auth_user"];
+  const header = names
+    .map((n) => {
+      const v = cookies.get(n)?.value;
+      return v ? `${n}=${v}` : null;
+    })
+    .filter(Boolean)
+    .join("; ");
+  const session = await resolveSession(sessionTokenFromCookie(header));
+  if (session) {
+    return { role: session.user.role, userId: session.user.id, email: session.user.email };
+  }
+  if (!allowDemoAuth()) return { role: null, userId: null, email: null };
+  return getEventCallerFromCookies(cookies);
 }
 
 /**
@@ -112,7 +151,7 @@ export async function requireEventWrites(
   if (ids.length === 0) {
     return { ok: false, status: 400, error: "Missing required eventId." };
   }
-  const caller = getEventCaller(req);
+  const caller = await resolveEventCaller(req);
   const events = await db.event.findMany({
     where: { id: { in: ids } },
     select: { id: true, organizerId: true },

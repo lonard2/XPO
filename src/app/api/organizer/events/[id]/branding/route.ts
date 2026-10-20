@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { getEventCaller, canWriteEvent } from "@/lib/auth/eventOwnership";
+import { resolveEventCaller, canWriteEvent } from "@/lib/auth/eventOwnership";
 
 interface RouteProps {
   params: Promise<{ id: string }>;
@@ -27,7 +27,7 @@ export async function PUT(request: Request, { params }: RouteProps) {
 
     // Strict ownership: ADMIN may brand anything; organizers only their own
     // events; platform-curated events are admin-only.
-    const caller = getEventCaller(request);
+    const caller = await resolveEventCaller(request);
     if (!canWriteEvent(caller, existing.organizerId)) {
       return NextResponse.json(
         { success: false, error: "Forbidden: Only the owning organizer or a platform administrator can update this event's branding." },

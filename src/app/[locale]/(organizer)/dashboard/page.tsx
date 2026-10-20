@@ -3,7 +3,7 @@ import Link from "next/link";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import { cookies } from "next/headers";
-import { getEventCallerFromCookies, partitionCurated } from "@/lib/auth/eventOwnership";
+import { resolveEventCallerFromCookies, partitionCurated } from "@/lib/auth/eventOwnership";
 import {
   Users,
   CreditCard,
@@ -41,7 +41,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
   // Listings never enter operations views. Callers without identity keep
   // the historical unfiltered view.
   const cookieStore = await cookies();
-  const caller = getEventCallerFromCookies(cookieStore);
+  const caller = await resolveEventCallerFromCookies(cookieStore);
   const isAdminView = caller.role === "ADMIN";
   const eventWhere: any = { isListingOnly: false };
   if (!isAdminView && caller.userId) eventWhere.organizerId = caller.userId;

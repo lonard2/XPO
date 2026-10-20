@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
-import { getEventCaller, canWriteEvent } from "@/lib/auth/eventOwnership";
+import { resolveEventCaller, canWriteEvent } from "@/lib/auth/eventOwnership";
 import {
   OpenRouterModel,
   ReportType,
@@ -105,7 +105,7 @@ export async function POST(req: NextRequest) {
       where: { OR: [{ id: eventId }, { slug: eventId }] },
       select: { organizerId: true },
     });
-    if (ownedEvent && !canWriteEvent(getEventCaller(req), ownedEvent.organizerId)) {
+    if (ownedEvent && !canWriteEvent(await resolveEventCaller(req), ownedEvent.organizerId)) {
       return NextResponse.json(
         { success: false, error: "Forbidden: Only the owning organizer or a platform administrator can generate reports for this event." },
         { status: 403 }

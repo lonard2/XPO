@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { verifyTicketHash } from "@/lib/tickets/qrPass";
-import { getEventCaller, canWriteEvent } from "@/lib/auth/eventOwnership";
+import { resolveEventCaller, canWriteEvent } from "@/lib/auth/eventOwnership";
 
 export async function POST(request: Request) {
   try {
@@ -115,7 +115,7 @@ export async function POST(request: Request) {
           where: { id: booking.eventId },
           select: { organizerId: true },
         });
-        if (!owner || !canWriteEvent(getEventCaller(request), owner.organizerId)) {
+        if (!owner || !canWriteEvent(await resolveEventCaller(request), owner.organizerId)) {
           return NextResponse.json(
             {
               valid: false,
@@ -209,7 +209,7 @@ export async function POST(request: Request) {
         where: { id: booking.eventId },
         select: { organizerId: true },
       });
-      if (!owner || !canWriteEvent(getEventCaller(request), owner.organizerId)) {
+      if (!owner || !canWriteEvent(await resolveEventCaller(request), owner.organizerId)) {
         return NextResponse.json(
           {
             valid: false,

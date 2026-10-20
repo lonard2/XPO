@@ -79,3 +79,11 @@ export function sessionTokenFromCookie(cookieHeader: string | null | undefined):
   const match = cookieHeader.match(/(?:^|; )xpo_session=([^;]*)/);
   return match ? decodeURIComponent(match[1]) : null;
 }
+
+/** Demo persona cookies resolve only when explicitly allowed (dev/test). */
+export function allowDemoAuth(): boolean {
+  const flag = process.env.ALLOW_DEMO_AUTH;
+  if (flag === "true") return true;
+  if (flag === "false") return false;
+  return process.env.NODE_ENV !== "production";
+}
