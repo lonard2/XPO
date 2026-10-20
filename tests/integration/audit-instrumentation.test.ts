@@ -100,7 +100,7 @@ describe("Mutation audit instrumentation", () => {
 
     const eventRows = await auditFor(eventId);
     expect(eventRows.map((r) => r.action).sort()).toEqual(["event.create", "event.delete"]);
-    const boothRows = await auditFor(boothId);
+    const boothRows = await auditFor(boothId!);
     expect(boothRows.map((r) => r.action)).toEqual(["booth.create"]);
   });
 });
