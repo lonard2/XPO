@@ -1,20 +1,28 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { validateShowcase } from "@/lib/showcase";
+import { parsePagination } from "@/lib/api/pagination";
 
-export async function GET() {
+export async function GET(request?: Request) {
   try {
-    const events = await db.event.findMany({
-      include: {
-        ticketTiers: true,
-        booths: true,
-        venue: { include: { halls: { select: { id: true, name: true, capacity: true } } } },
-        venueHall: true,
-      },
-      orderBy: { createdAt: "desc" },
-    });
+    const { searchParams } = new URL(request?.url || "http://localhost/");
+    const { take, skip } = parsePagination(searchParams);
+    const [total, events] = await db.$transaction([
+      db.event.count(),
+      db.event.findMany({
+        include: {
+          ticketTiers: true,
+          booths: true,
+          venue: { include: { halls: { select: { id: true, name: true, capacity: true } } } },
+          venueHall: true,
+        },
+        orderBy: { createdAt: "desc" },
+        take,
+        skip,
+      }),
+    ]);
 
-    return NextResponse.json({ success: true, events });
+    return NextResponse.json({ success: true, events, total, take, skip });
   } catch (error) {
     return NextResponse.json(
       { success: false, error: `Failed to fetch events: ${(error as Error).message}` },

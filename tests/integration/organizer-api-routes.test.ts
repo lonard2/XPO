@@ -151,8 +151,7 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
     await db.event.delete({ where: { id: json.event.id } }).catch(() => {});
   });
 
-  it("Organizer Events: POST stores admin listings excluded from operations", async () => {
-    const base = {
+  it("Organizer Events: POST stores admin listings excluded from operations", async () => {    const base = {
       title: "Test Simple Listing 2027",
       description: "Plain customizable listing.",
       regionId: "id",
@@ -496,3 +495,33 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
   });
 });
 
+
+describe("List pagination bounds", () => {
+  it("caps list windows and reports totals", async () => {
+    const { GET: getEvents } = await import("@/app/api/organizer/events/route");
+    const { GET: getBooths } = await import("@/app/api/organizer/booths/route");
+
+    const evRes = await getEvents(
+      new Request("http://localhost:3000/api/organizer/events?take=2&skip=1")
+    );
+    const evJson = await evRes.json();
+    expect(evJson.success).toBe(true);
+    expect(evJson.events.length).toBeLessThanOrEqual(2);
+    expect(evJson.total).toBeGreaterThanOrEqual(evJson.events.length);
+    expect(evJson.take).toBe(2);
+    expect(evJson.skip).toBe(1);
+
+    const capped = await getEvents(
+      new Request("http://localhost:3000/api/organizer/events?take=99999")
+    );
+    expect((await capped.json()).take).toBe(500);
+
+    const bRes = await getBooths(
+      new Request("http://localhost:3000/api/organizer/booths?take=1")
+    );
+    const bJson = await bRes.json();
+    expect(bJson.success).toBe(true);
+    expect(bJson.booths.length).toBeLessThanOrEqual(1);
+    expect(bJson.total).toBeGreaterThanOrEqual(bJson.booths.length);
+  });
+});

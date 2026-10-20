@@ -163,7 +163,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
     let cancelled = false;
     (async () => {
       try {
-        const res = await fetch("/api/organizer/events");
+        const res = await fetch("/api/organizer/events?take=500");
         if (!res.ok) return;
         const data = await res.json();
         if (!cancelled && Array.isArray(data.events)) setGateEvents(data.events);

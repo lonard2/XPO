@@ -181,7 +181,8 @@ export default function BoothManagerPage() {
     setFetchError(false);
     try {
       // Fetch events
-      const evRes = await fetch("/api/organizer/events");
+      // Full roster fetch: tallies and pills compute client-side over the bounded window.
+      const evRes = await fetch("/api/organizer/events?take=500");
       let loadedEvents: any[] = [];
       if (evRes.ok) {
         const evData = await evRes.json();
@@ -193,7 +194,7 @@ export default function BoothManagerPage() {
       }
 
       // Fetch booths
-      const bRes = await fetch("/api/organizer/booths");
+      const bRes = await fetch("/api/organizer/booths?take=500");
       if (bRes.ok) {
         const bData = await bRes.json();
         if (bData.booths && bData.booths.length > 0) {

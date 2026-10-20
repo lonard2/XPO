@@ -13,7 +13,7 @@ function mockFetch(impl: (url: string, init?: any) => Promise<any>) {
 const emptyOk = (url: string) =>
   Promise.resolve({
     ok: true,
-    json: () => Promise.resolve(url === eventsUrl ? { events: [] } : { booths: [] }),
+    json: () => Promise.resolve(url.startsWith(eventsUrl) ? { events: [] } : { booths: [] }),
   });
 
 describe("Booth manager data truth", () => {
@@ -34,7 +34,7 @@ describe("Booth manager data truth", () => {
 
   it("shows a fetch-error banner with Retry when the API is unreachable", async () => {
     mockFetch((url: string) => {
-      if (url === eventsUrl) return emptyOk(url);
+      if (url.startsWith(eventsUrl)) return emptyOk(url);
       return Promise.reject(new Error("network down"));
     });
     render(<BoothManagerPage />);
@@ -50,7 +50,7 @@ describe("Booth manager data truth", () => {
         ok: true,
         json: () =>
           Promise.resolve(
-            url === eventsUrl
+            url.startsWith(eventsUrl)
               ? { events: [] }
               : {
                   booths: [
@@ -75,8 +75,8 @@ describe("Booth manager data truth", () => {
   });
 
   it("branches the CSV toast to staged-local when the database write is absent", async () => {    mockFetch((url: string, init?: any) => {
-      if (url === eventsUrl) return emptyOk(url);
-      if (url === boothsUrl && init?.method === "POST") {
+      if (url.startsWith(eventsUrl)) return emptyOk(url);
+      if (url.startsWith(boothsUrl) && init?.method === "POST") {
         return Promise.resolve({ ok: true, json: () => Promise.resolve({ success: true }) });
       }
       return emptyOk(url);
@@ -109,7 +109,7 @@ describe("Booth manager data truth", () => {
         ok: true,
         json: () =>
           Promise.resolve(
-            url === eventsUrl
+            url.startsWith(eventsUrl)
               ? { events: [{ id: evId, title: "Expo Nine" }] }
               : {
                   booths: [
@@ -143,7 +143,7 @@ describe("Booth manager data truth", () => {
         ok: true,
         json: () =>
           Promise.resolve(
-            url === eventsUrl
+            url.startsWith(eventsUrl)
               ? { events: [{ id: "ev-9", title: "Expo Nine" }] }
               : {
                   booths: [
@@ -173,7 +173,7 @@ describe("Booth manager data truth", () => {
   it("blocks duplicate booth numbers within the event before submitting", async () => {
     const postSpy = vi.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve({ success: true, booth: {} }) });
     mockFetch((url: string, init?: any) => {
-      if (url === eventsUrl) return Promise.resolve({ ok: true, json: () => Promise.resolve({ events: [{ id: "ev-9", title: "Expo Nine" }] }) });
+      if (url.startsWith(eventsUrl)) return Promise.resolve({ ok: true, json: () => Promise.resolve({ events: [{ id: "ev-9", title: "Expo Nine" }] }) });
       if (init?.method === "POST") return postSpy(url, init);
       return Promise.resolve({
         ok: true,
@@ -200,7 +200,7 @@ describe("Booth manager data truth", () => {
         ok: true,
         json: () =>
           Promise.resolve(
-            url === eventsUrl
+            url.startsWith(eventsUrl)
               ? { events: [{ id: "ev-9", title: "Expo Nine" }] }
               : { booths: [{ id: "b1", eventId: "ev-9", companyName: "C", boothNumber: "N", hallName: "Hall 9" }] }
           ),
@@ -230,7 +230,7 @@ describe("listing exclusion from operations", () => {
         ok: true,
         json: () =>
           Promise.resolve(
-            url === eventsUrl
+            url.startsWith(eventsUrl)
               ? { events: [
                   { id: "ev-9", title: "Expo Nine" },
                   { id: "ev-list", title: "Plain Listing", isListingOnly: true },

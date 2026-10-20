@@ -100,7 +100,7 @@ describe("CheckInScanner event scope", () => {
   function mockScannerApis(verifyImpl: (body: any) => any) {
     const calls: any[] = [];
     global.fetch = vi.fn().mockImplementation((url: string, init?: any) => {
-      if (url.includes("/api/organizer/events")) {
+      if (url.startsWith("/api/organizer/events")) {
         return Promise.resolve({ ok: true, json: () => Promise.resolve({ events: ownedEvents }) });
       }
       const body = JSON.parse(init.body);
@@ -210,7 +210,7 @@ describe("CheckInScanner listing exclusion", () => {
 
   it("omits listing-only events from the scanning context", async () => {
     global.fetch = vi.fn().mockImplementation((url: string) => {
-      if (url.includes("/api/organizer/events")) {
+      if (url.startsWith("/api/organizer/events")) {
         return Promise.resolve({
           ok: true,
           json: () =>

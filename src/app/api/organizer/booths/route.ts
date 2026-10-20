@@ -1,31 +1,38 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { requireEventWrites, requireBoothWrites } from "@/lib/auth/eventOwnership";
+import { parsePagination } from "@/lib/api/pagination";
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const eventId = searchParams.get("eventId");
     const hallName = searchParams.get("hallName");
+    const { take, skip } = parsePagination(searchParams);
 
     const where: any = {};
     if (eventId) where.eventId = eventId;
     if (hallName && hallName !== "ALL") where.hallName = hallName;
 
-    const booths = await db.boothTenant.findMany({
-      where,
-      include: {
-        event: {
-          include: {
-            venue: true,
-            venueHall: true,
+    const [total, booths] = await db.$transaction([
+      db.boothTenant.count({ where }),
+      db.boothTenant.findMany({
+        where,
+        include: {
+          event: {
+            include: {
+              venue: true,
+              venueHall: true,
+            },
           },
         },
-      },
-      orderBy: { boothNumber: "asc" },
-    });
+        orderBy: { boothNumber: "asc" },
+        take,
+        skip,
+      }),
+    ]);
 
-    return NextResponse.json({ success: true, booths });
+    return NextResponse.json({ success: true, booths, total, take, skip });
   } catch (error) {
     return NextResponse.json(
       { success: false, error: `Failed to fetch booths: ${(error as Error).message}` },

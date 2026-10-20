@@ -11,7 +11,7 @@ against the target), then transactions, then pagination, then polish.
   baseline on PG, seed green, scripts/README/env updated.
 - [x] **B2. Transactions.** `$transaction` on event-create, booth bulk,
   voucher claims, and ticket checkout paths.
-- [ ] **B3. Pagination.** Bounded `take`/`skip` (+ totals) on list
+- [x] **B3. Pagination.** Bounded `take`/`skip` (+ totals) on list
   endpoints: organizer events/booths plus admin lists.
 - [ ] **B4. Polish + docs.** Full suite green on PG, tsc clean, sqlite
   leftovers retired, deployment notes.
