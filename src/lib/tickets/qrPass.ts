@@ -34,13 +34,28 @@ export const DEFAULT_HMAC_SECRET =
   process.env.QR_HMAC_SECRET || "xpo-mice-secure-ticket-salt-2026-production-key";
 
 /**
+ * Fail-closed secret resolution. Production refuses to sign or verify
+ * passes without an explicitly configured QR_HMAC_SECRET; dev and test
+ * keep a deterministic fallback so local flows and suites run unset.
+ */
+export function hmacSecret(): string {
+  const configured = process.env.QR_HMAC_SECRET;
+  if (configured) return configured;
+  if (process.env.NODE_ENV === "production") {
+    throw new Error("QR_HMAC_SECRET is not configured. Refusing to sign ticket passes.");
+  }
+  return DEFAULT_HMAC_SECRET;
+}
+
+/**
  * Deterministically generates an HMAC-SHA256 signed ticket pass payload and hash.
  * Follows strict canonicalization (sorted keys, lowercase/trimmed email, trimmed IDs).
  */
 export function generateTicketHash(
   payload: TicketPassPayload,
-  secret: string = DEFAULT_HMAC_SECRET
+  secret?: string
 ): TicketHashResult {
+  const key = secret ?? hmacSecret();
   const canonicalPayload = {
     attendeeEmail: payload.attendeeEmail.toLowerCase().trim(),
     bookingId: payload.bookingId.trim(),
@@ -52,7 +67,7 @@ export function generateTicketHash(
 
   const payloadString = JSON.stringify(canonicalPayload);
   const signature = crypto
-    .createHmac("sha256", secret)
+    .createHmac("sha256", key)
     .update(payloadString)
     .digest("hex");
 
@@ -70,7 +85,7 @@ export function generateTicketHash(
 export function verifyTicketHash(
   payloadString: string,
   signature: string,
-  secret: string = DEFAULT_HMAC_SECRET,
+  secret?: string,
   maxAgeMs?: number
 ): TicketVerifyResult {
   try {
@@ -79,7 +94,7 @@ export function verifyTicketHash(
     }
 
     const expectedSignature = crypto
-      .createHmac("sha256", secret)
+      .createHmac("sha256", secret ?? hmacSecret())
       .update(payloadString)
       .digest("hex");
 
