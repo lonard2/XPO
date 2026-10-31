@@ -8,7 +8,7 @@ Follow-up to the 24/40 critique. Five priority issues, shipped one commit each.
   rewritten in all six locales to read like a person wrote it.
 - [x] **H2. Concierge launcher collision.** The fixed launcher covers section CTAs
   (measured: 54px of the 162px "Convention Centers" button at 1440).
-- [ ] **H3. Tablet header overlap.** At 768 the language switcher covers `Venues` and
+- [x] **H3. Tablet header overlap.** At 768 the language switcher covers `Venues` and
   `My Passes`, and the account pill covers `Organizer`.
 - [ ] **H4. Venue name truncation.** `line-clamp-1` cuts the primary identifier on every
   venue card at every breakpoint.

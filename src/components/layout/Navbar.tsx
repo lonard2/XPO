@@ -133,7 +133,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
             </Link>
 
             {/* Desktop Navigation Links */}
-            <nav className="hidden md:flex items-center gap-0.5 lg:gap-1 xl:gap-1.5 min-w-0">
+            <nav className="hidden xl:flex items-center gap-0.5 lg:gap-1 xl:gap-1.5 min-w-0">
               {navLinks.map((link) => {
                 const Icon = link.icon;
                 const isActive = pathname === link.href;
@@ -148,7 +148,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
                         : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
                     )}
                   >
-                    <Icon className="h-3.5 w-3.5 lg:h-4 lg:w-4 shrink-0" />
+                    <Icon className="hidden 2xl:block h-3.5 w-3.5 lg:h-4 lg:w-4 shrink-0" />
                     <span>{link.label}</span>
                   </Link>
                 );
@@ -215,7 +215,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden h-11 w-11 min-h-[44px] min-w-[44px]"
+              className="xl:hidden h-11 w-11 min-h-[44px] min-w-[44px]"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label={tNav("menuAria")}
             >
@@ -226,7 +226,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
 
         {/* Mobile Dropdown Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden border-b border-border bg-card p-4 space-y-3 animate-fade-in">
+          <div className="xl:hidden border-b border-border bg-card p-4 space-y-3 animate-fade-in">
             {/* Active User Persona Banner */}
             <div
               onClick={() => {
