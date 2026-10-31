@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
+import { Breadcrumbs, BreadcrumbJsonLd } from '@/components/layout/Breadcrumbs';
 import { db } from '@/lib/db';
 import {
   Ticket,
@@ -28,6 +29,10 @@ export default async function MyTicketsPage({ params }: MyTicketsPageProps) {
 
   const tMy = await getTranslations({ locale, namespace: 'myTickets' });
   const tCom = await getTranslations({ locale, namespace: 'common' });
+  const crumbs = [
+    { label: tCom('home') || 'Home', href: `/${locale}` },
+    { label: tMy('breadcrumbWallet') || 'Pass Wallet', href: `/${locale}/my-tickets` },
+  ];
 
   let bookings: BookingSummary[] = [];
   try {
@@ -84,21 +89,13 @@ export default async function MyTicketsPage({ params }: MyTicketsPageProps) {
 
   return (
     <div className="min-h-screen bg-background text-foreground py-6 sm:py-10 space-y-8">
-      {/* Semantic Breadcrumb Navigation */}
-      <nav aria-label="Breadcrumb" className="border-b border-border bg-muted/30 py-3 -mt-6 sm:-mt-10 mb-6">
-        <ol className="max-w-7xl mx-auto flex items-center gap-2 text-xs text-muted-foreground px-4 sm:px-6 lg:px-8">
-          <li>
-            <Link href={`/${locale}`} className="hover:text-foreground flex items-center gap-1">
-              <ArrowLeft className="h-3.5 w-3.5" />
-              <span>{tCom('explore') || 'Home'}</span>
-            </Link>
-          </li>
-          <li aria-hidden="true">/</li>
-          <li aria-current="page" className="font-semibold text-foreground">
-            {tMy('breadcrumbWallet') || 'Pass Wallet'}
-          </li>
-        </ol>
-      </nav>
+      <Breadcrumbs
+        variant="strip"
+        className="-mt-6 sm:-mt-10 mb-6"
+        listClassName="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+        items={crumbs}
+      />
+      <BreadcrumbJsonLd items={crumbs} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* Page Header */}

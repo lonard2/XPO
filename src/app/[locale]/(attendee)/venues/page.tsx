@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { cookies, headers } from 'next/headers';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
+import { Breadcrumbs, BreadcrumbJsonLd } from '@/components/layout/Breadcrumbs';
 import {
   Building2,
   ArrowLeft,
@@ -33,6 +34,10 @@ export default async function VenuesPage({ params, searchParams }: VenuesPagePro
   const tVen = await getTranslations({ locale, namespace: 'venues' });
   const tCom = await getTranslations({ locale, namespace: 'common' });
   const tFoot = await getTranslations({ locale, namespace: 'footer' });
+  const crumbs = [
+    { label: tCom('home') || 'Home', href: `/${locale}` },
+    { label: tVen('title')?.split('&')?.[0]?.trim() || 'Venue Directory', href: `/${locale}/venues` },
+  ];
 
   const headerList = await headers();
   const cookieStore = await cookies();
@@ -65,21 +70,8 @@ export default async function VenuesPage({ params, searchParams }: VenuesPagePro
 
   return (
     <div className="flex flex-col gap-8 pb-16">
-      {/* Semantic Breadcrumb Navigation */}
-      <nav aria-label="Breadcrumb" className="border-b border-border bg-muted/30 py-3">
-        <ol className="container flex items-center gap-2 text-xs text-muted-foreground px-4">
-          <li>
-            <Link href={`/${locale}`} className="hover:text-foreground flex items-center gap-1">
-              <ArrowLeft className="h-3.5 w-3.5" />
-              <span>{tCom('explore') || 'Home'}</span>
-            </Link>
-          </li>
-          <li aria-hidden="true">/</li>
-          <li aria-current="page" className="font-semibold text-foreground">
-            {tVen('title')?.split('&')?.[0]?.trim() || 'Venue Directory'}
-          </li>
-        </ol>
-      </nav>
+      <Breadcrumbs variant="strip" items={crumbs} />
+      <BreadcrumbJsonLd items={crumbs} />
 
       {/* Hero Header Section */}
       <section className="container px-4">

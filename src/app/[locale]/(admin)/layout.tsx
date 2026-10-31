@@ -1,27 +1,11 @@
 "use client";
+import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { useTranslations } from "next-intl";
 
 import * as React from "react";
 import Link from "next/link";
 import { usePathname, useParams } from "next/navigation";
-import {
-  LayoutDashboard,
-  Building2,
-  RefreshCw,
-  ShieldCheck,
-  Compass,
-  Briefcase,
-  AlertCircle,
-  Menu,
-  X,
-  ChevronRight,
-  Database,
-  Cpu,
-  Lock,
-  Activity,
-  CheckCircle2,
-  Sliders,
-  CalendarDays,
-} from "lucide-react";
+import { LayoutDashboard, Building2, RefreshCw, ShieldCheck, Compass, Briefcase, AlertCircle, Menu, X, Database, Cpu, Lock, Activity, CheckCircle2, CalendarDays } from "lucide-react";
 import { useAuth } from "@/lib/auth/session";
 import { getRoleBadgeVariant } from "@/lib/auth/rbac";
 import { Badge } from "@/components/ui/Badge";
@@ -36,6 +20,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const pathname = usePathname();
   const params = useParams();
   const locale = (params?.locale as string) || "en";
+  const tAdmin = useTranslations("admin");
   const { user, role, switchRole } = useAuth();
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = React.useState(false);
 
@@ -54,7 +39,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     },
     {
       href: `/${locale}/admin/events`,
-      label: "Event Governance",
+      label: tAdmin("crumbEvents"),
       icon: CalendarDays,
       description: "Platform & organizer events, ownership & removal",
     },
@@ -74,18 +59,18 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   // Breadcrumbs derivation
   const getBreadcrumbs = () => {
-    const crumbs = [{ label: "Governance Hub", href: `/${locale}/admin/dashboard` }];
+    const crumbs = [{ label: tAdmin("crumbHub"), href: `/${locale}/admin/dashboard` }];
 
     if (pathname.includes("/admin/dashboard") || pathname.endsWith("/admin")) {
-      crumbs.push({ label: "Dashboard", href: `/${locale}/admin/dashboard` });
+      crumbs.push({ label: tAdmin("crumbDashboard"), href: `/${locale}/admin/dashboard` });
     } else if (pathname.includes("/admin/venues")) {
-      crumbs.push({ label: "Venue Directory", href: `/${locale}/admin/venues` });
+      crumbs.push({ label: tAdmin("crumbVenues"), href: `/${locale}/admin/venues` });
     } else if (pathname.includes("/admin/events")) {
-      crumbs.push({ label: "Event Governance", href: `/${locale}/admin/events` });
+      crumbs.push({ label: tAdmin("crumbEvents"), href: `/${locale}/admin/events` });
     } else if (pathname.includes("/admin/crawler")) {
-      crumbs.push({ label: "Crawler Ingestion", href: `/${locale}/admin/crawler` });
+      crumbs.push({ label: tAdmin("crumbCrawler"), href: `/${locale}/admin/crawler` });
     } else if (pathname.includes("/admin/audit")) {
-      crumbs.push({ label: "Audit & Security", href: `/${locale}/admin/audit` });
+      crumbs.push({ label: tAdmin("crumbAudit"), href: `/${locale}/admin/audit` });
     }
 
     return crumbs;
@@ -313,16 +298,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         <div className="flex-1 flex flex-col min-w-0">
           {/* Breadcrumb Header Bar */}
           <div className="border-b border-border/70 bg-card/40 px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4">
-            <nav className="flex items-center gap-1.5 text-xs text-muted-foreground">
-              {breadcrumbs.map((crumb, idx) => (
-                <React.Fragment key={crumb.label}>
-                  {idx > 0 && <ChevronRight className="h-3 w-3 text-muted-foreground/60" />}
-                  <span className={cn(idx === breadcrumbs.length - 1 ? "font-semibold text-foreground" : "hover:text-foreground")}>
-                    {crumb.label}
-                  </span>
-                </React.Fragment>
-              ))}
-            </nav>
+            <Breadcrumbs items={breadcrumbs} />
 
             <div className="flex items-center gap-2">
               <Link href={`/${locale}/admin/crawler`}>

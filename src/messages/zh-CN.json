@@ -1479,7 +1479,13 @@
     "auditTitle": "系统安全与操作审计日志",
     "auditSubtitle": "记录权限变更、凭证验签、爬虫同步及管理操作的不可篡改审计追踪。",
     "allSeverities": "所有告警级别",
-    "filterLogs": "筛选审计日志"
+    "filterLogs": "筛选审计日志",
+    "crumbHub": "治理中心",
+    "crumbDashboard": "仪表板",
+    "crumbVenues": "场馆目录",
+    "crumbEvents": "活动治理",
+    "crumbCrawler": "爬虫采集",
+    "crumbAudit": "审计与安全"
   },
   "ai": {
     "conciergeTitle": "展会服务助手",

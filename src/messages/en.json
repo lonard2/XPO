@@ -1479,7 +1479,13 @@
     "auditTitle": "System Audit & Security Logs",
     "auditSubtitle": "Immutable audit trail of RBAC events, cryptographic checks, crawler syncs, and administrative actions.",
     "allSeverities": "All Severity Levels",
-    "filterLogs": "Filter Audit Logs"
+    "filterLogs": "Filter Audit Logs",
+    "crumbHub": "Governance Hub",
+    "crumbDashboard": "Dashboard",
+    "crumbVenues": "Venue Directory",
+    "crumbEvents": "Event Governance",
+    "crumbCrawler": "Crawler Ingestion",
+    "crumbAudit": "Audit & Security"
   },
   "ai": {
     "conciergeTitle": "Attendee Event Concierge",

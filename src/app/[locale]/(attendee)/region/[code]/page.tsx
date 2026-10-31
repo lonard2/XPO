@@ -1,23 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { setRequestLocale, getTranslations } from "next-intl/server";
-import {
-  MapPin,
-  Building2,
-  Calendar,
-  Ticket,
-  Train,
-  Compass,
-  Coins,
-  Clock,
-  ArrowRight,
-  Sparkles,
-  Globe,
-  Layers,
-  ArrowLeft,
-  Navigation,
-  CheckCircle2,
-} from "lucide-react";
+import { Breadcrumbs, BreadcrumbJsonLd } from "@/components/layout/Breadcrumbs";
+import { MapPin, Building2, Calendar, Ticket, Train, Compass, Coins, Clock, ArrowRight, Globe, Layers, Navigation, CheckCircle2 } from "lucide-react";
 import { db } from "@/lib/db";
 import { countHalls, hallsOnly } from "@/lib/discovery/venueSpaces";
 import {
@@ -194,21 +179,16 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
   const venues: VenueModel[] = (regionData?.venues as VenueModel[]) || [];
   const events: EventModel[] = (regionData?.events as EventModel[]) || [];
 
+  // No country-edition index exists, so the trail is Home then the edition itself.
+  const crumbs = [
+    { label: tCommon("home") || "Home", href: `/${locale}` },
+    { label: activeMeta.name, href: `/${locale}/region/${code}` },
+  ];
+
   return (
     <div className="flex flex-col gap-10 pb-16">
-      {/* Breadcrumb Bar */}
-      <div className="border-b border-border bg-muted/30 py-3">
-        <div className="container flex items-center gap-2 text-xs text-muted-foreground px-4">
-          <Link href={`/${locale}`} className="hover:text-foreground flex items-center gap-1">
-            <ArrowLeft className="h-3.5 w-3.5" />
-            <span>{tCommon("back")}</span>
-          </Link>
-          <span>/</span>
-          <span>{t("title")}</span>
-          <span>/</span>
-          <span className="font-semibold text-foreground">{activeMeta.name}</span>
-        </div>
-      </div>
+      <Breadcrumbs variant="strip" items={crumbs} />
+      <BreadcrumbJsonLd items={crumbs} />
 
       {/* Hero Banner */}
       <section className="container px-4">

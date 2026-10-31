@@ -3,24 +3,9 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname, useParams } from "next/navigation";
-import {
-  LayoutDashboard,
-  PlusCircle,
-  Palette,
-  Store,
-  QrCode,
-  Compass,
-  Briefcase,
-  ShieldCheck,
-  UserCheck,
-  Menu,
-  X,
-  ChevronRight,
-  Sparkles,
-  BarChart3,
-  AlertCircle,
-} from "lucide-react";
+import { LayoutDashboard, PlusCircle, Store, QrCode, Compass, ShieldCheck, UserCheck, Menu, X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { useAuth } from "@/lib/auth/session";
 import { AuthModal } from "@/components/auth/AuthModal";
 import { getRoleLabel, getRoleBadgeVariant } from "@/lib/auth/rbac";
@@ -305,27 +290,7 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
         <div className="flex-1 flex flex-col min-w-0">
           {/* Breadcrumb Header Bar */}
           <div className="border-b border-border/70 bg-card/40 px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4">
-            <nav aria-label={tOrg("crumbAria")} className="flex items-center text-xs text-muted-foreground">
-              <ol className="flex items-center gap-1.5 list-none p-0 m-0">
-                {breadcrumbs.map((crumb, idx) => {
-                  const isLast = idx === breadcrumbs.length - 1;
-                  return (
-                    <li key={crumb.label} className="inline-flex items-center gap-1.5">
-                      {idx > 0 && <ChevronRight className="h-3 w-3 text-muted-foreground/60 shrink-0" aria-hidden="true" />}
-                      {isLast ? (
-                        <span className="font-semibold text-foreground" aria-current="page">
-                          {crumb.label}
-                        </span>
-                      ) : (
-                        <Link href={crumb.href} className="hover:text-foreground transition-colors">
-                          {crumb.label}
-                        </Link>
-                      )}
-                    </li>
-                  );
-                })}
-              </ol>
-            </nav>
+            <Breadcrumbs items={breadcrumbs} />
 
             <div className="flex items-center gap-2">
               <Link

@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import Link from 'next/link';
 import { cookies, headers } from 'next/headers';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
+import { Breadcrumbs, BreadcrumbJsonLd } from '@/components/layout/Breadcrumbs';
 import {
   Compass,
   ArrowLeft,
@@ -45,6 +46,11 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
   });
 
   const tEvents = await getTranslations({ locale, namespace: 'events' });
+  const tCom = await getTranslations({ locale, namespace: 'common' });
+  const crumbs = [
+    { label: tCom('home') || 'Home', href: `/${locale}` },
+    { label: tEvents('breadcrumbsTitle') || 'Events & Exhibitions', href: `/${locale}/events` },
+  ];
 
   // Fetch events from database
   let eventsList: DiscoveryEvent[] = FALLBACK_EVENTS;
@@ -84,19 +90,8 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Breadcrumb Navigation */}
-      <div className="border-b border-border bg-muted/30 py-3">
-        <div className="container flex items-center gap-2 text-xs text-muted-foreground px-4">
-          <Link href={`/${locale}`} className="hover:text-foreground flex items-center gap-1">
-            <ArrowLeft className="h-3.5 w-3.5" />
-            <span>{tEvents('breadcrumbsHome') || 'Home'}</span>
-          </Link>
-          <span>/</span>
-          <span className="font-semibold text-foreground">
-            {tEvents('breadcrumbsTitle') || 'Events & Exhibitions'}
-          </span>
-        </div>
-      </div>
+      <Breadcrumbs variant="strip" items={crumbs} />
+      <BreadcrumbJsonLd items={crumbs} />
 
       {/* Hero Header Section */}
       <section className="container px-4">

@@ -1479,7 +1479,13 @@
     "auditTitle": "システム監査・セキュリティログ",
     "auditSubtitle": "権限操作、暗号署名検証、クローラー同期、管理変更の改ざん不能な監査証跡。",
     "allSeverities": "すべての重要度",
-    "filterLogs": "ログを絞り込む"
+    "filterLogs": "ログを絞り込む",
+    "crumbHub": "ガバナンスハブ",
+    "crumbDashboard": "ダッシュボード",
+    "crumbVenues": "会場ディレクトリ",
+    "crumbEvents": "イベント管理",
+    "crumbCrawler": "クローラー取り込み",
+    "crumbAudit": "監査とセキュリティ"
   },
   "ai": {
     "conciergeTitle": "来場者AIコンシェルジュ",

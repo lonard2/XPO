@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Breadcrumbs, BreadcrumbJsonLd } from "@/components/layout/Breadcrumbs";
 import { notFound } from 'next/navigation';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { db } from '@/lib/db';
@@ -132,19 +133,19 @@ export default async function DigitalPassDetailPage({ params }: DigitalPassPageP
   const perksCount = booking.event.perks?.length || 0;
   const agendaCount = booking.event.agendaItems?.length || 0;
   const hasMap = Boolean(booking.event.booths && booking.event.booths.length > 0);
+  const crumbs = [
+    { label: tCom('home') || 'Home', href: `/${locale}` },
+    { label: tMy('breadcrumbWallet') || 'Pass Wallet', href: `/${locale}/my-tickets` },
+    { label: booking.event.title, href: `/${locale}/my-tickets/${booking.id}` },
+  ];
 
   return (
     <div className="min-h-screen bg-background text-foreground py-6 sm:py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* 1. Breadcrumb & Back Nav */}
+        <BreadcrumbJsonLd items={crumbs} />
         <div className="flex items-center justify-between border-b border-border/60 pb-4">
-          <Link
-            href={`/${locale}/my-tickets`}
-            className="inline-flex items-center gap-1.5 min-h-[44px] sm:min-h-[36px] text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-          >
-            <ChevronLeft className="h-4 w-4" />
-            <span>{tMy('title') || 'Back to My Pass Wallet'}</span>
-          </Link>
+          <Breadcrumbs items={crumbs} />
 
           <div className="flex items-center gap-2">
             <span className="text-xs font-mono text-muted-foreground hidden sm:inline">

@@ -1,15 +1,9 @@
 import * as React from "react";
+import { Breadcrumbs, BreadcrumbJsonLd } from "@/components/layout/Breadcrumbs";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { setRequestLocale } from "next-intl/server";
-import {
-  FileText,
-  ShieldCheck,
-  Ticket,
-  Store,
-  Scale,
-  Compass,
-  ArrowLeft,
-} from "lucide-react";
+import { FileText, ShieldCheck, Ticket, Store, Scale, Compass } from "lucide-react";
 import { routing } from "@/i18n/routing";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
@@ -36,21 +30,19 @@ export async function generateMetadata({ params }: TermsPageProps) {
 export default async function TermsPage({ params }: TermsPageProps) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const tCom = await getTranslations({ locale, namespace: "common" });
+  const tFoot = await getTranslations({ locale, namespace: "footer" });
+  const crumbs = [
+    { label: tCom("home") || "Home", href: `/${locale}` },
+    { label: tFoot("termsOfService") || "Terms of Service", href: `/${locale}/terms` },
+  ];
 
   return (
     <div className="container max-w-4xl py-8 sm:py-12 space-y-8 animate-fade-in">
       {/* Navigation Breadcrumb */}
       <div>
-        <Link
-          href={`/${locale}`}
-          className={cn(
-            buttonVariants({ variant: "ghost", size: "sm" }),
-            "gap-2 text-xs font-semibold text-muted-foreground hover:text-foreground mb-4 -ml-2"
-          )}
-        >
-          <ArrowLeft className="h-3.5 w-3.5" />
-          <span>Back to Discovery</span>
-        </Link>
+        <Breadcrumbs items={crumbs} className="mb-4" />
+        <BreadcrumbJsonLd items={crumbs} />
 
         <div className="space-y-2">
           <div className="flex items-center gap-2">

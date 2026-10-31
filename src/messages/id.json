@@ -1479,7 +1479,13 @@
     "auditTitle": "Log Audit & Keamanan Sistem",
     "auditSubtitle": "Jejak audit tidak dapat diubah untuk peristiwa RBAC, pemeriksaan kriptografi, dan tindakan admin.",
     "allSeverities": "Semua Tingkat Keparahan",
-    "filterLogs": "Saring Log Audit"
+    "filterLogs": "Saring Log Audit",
+    "crumbHub": "Pusat Tata Kelola",
+    "crumbDashboard": "Dasbor",
+    "crumbVenues": "Direktori Venue",
+    "crumbEvents": "Tata Kelola Acara",
+    "crumbCrawler": "Ingesti Crawler",
+    "crumbAudit": "Audit & Keamanan"
   },
   "ai": {
     "conciergeTitle": "Panduan Informasi Acara",

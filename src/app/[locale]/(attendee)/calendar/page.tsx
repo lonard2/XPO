@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { cookies, headers } from 'next/headers';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
+import { Breadcrumbs, BreadcrumbJsonLd } from "@/components/layout/Breadcrumbs";
 import { db } from '@/lib/db';
 import { resolveActiveRegion } from '@/lib/i18n/geo';
 import { FALLBACK_EVENTS } from '@/lib/discovery/fallbackData';
@@ -88,24 +89,23 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
     currency: region === 'id' ? 'IDR' : region === 'jp' ? 'JPY' : 'USD',
   }));
 
+  const crumbs = [
+    { label: tCom("home") || "Home", href: `/${locale}` },
+    { label: tCal("title") || "Master Event Calendar", href: `/${locale}/calendar` },
+  ];
+
   return (
     <div className="min-h-screen bg-background py-8 sm:py-12">
       <div className="container space-y-8">
         {/* Breadcrumb & Navigation */}
-        <div className="flex items-center justify-between">
-          <Link
-            href={`/${locale}`}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ArrowLeft className="h-3.5 w-3.5" />
-            <span>{tCom('back') || 'Back'}</span>
-          </Link>
-
+        <div className="flex items-center justify-between gap-4">
+          <Breadcrumbs items={crumbs} />
           <Badge variant="outline" className="text-xs font-semibold gap-1.5 uppercase px-2.5 py-1">
             <CalendarIcon className="h-3.5 w-3.5 text-primary" />
             <span>{region.toUpperCase()} {tCal('title') || 'Master Timetable'}</span>
           </Badge>
         </div>
+        <BreadcrumbJsonLd items={crumbs} />
 
         {/* Hero Section */}
         <div className="space-y-2 border-b border-border/80 pb-6">

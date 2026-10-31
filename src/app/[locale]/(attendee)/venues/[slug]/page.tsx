@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
+import { Breadcrumbs, BreadcrumbJsonLd } from '@/components/layout/Breadcrumbs';
 import {
   Building2,
   MapPin,
@@ -100,29 +101,16 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
   const totalCapacity = venue.halls?.reduce((acc, h) => acc + (h.capacity || 0), 0) || 25000;
   const totalFloorArea = venue.halls?.reduce((acc, h) => acc + (h.floorAreaSqm || 0), 0) || 30000;
 
+  const crumbs = [
+    { label: tCom('home') || 'Home', href: `/${locale}` },
+    { label: tVen('title')?.split('&')?.[0]?.trim() || 'Venues', href: `/${locale}/venues` },
+    { label: venue.name, href: `/${locale}/venues/${venue.slug}` },
+  ];
+
   return (
     <div className="flex flex-col gap-10 pb-16">
-      {/* Semantic Breadcrumb Navigation */}
-      <nav aria-label="Breadcrumb" className="border-b border-border bg-muted/30 py-3">
-        <ol className="container flex items-center gap-2 text-xs text-muted-foreground px-4">
-          <li>
-            <Link href={`/${locale}`} className="hover:text-foreground flex items-center gap-1 transition-colors min-h-[44px]">
-              <ArrowLeft className="h-3.5 w-3.5" />
-              <span>{tCom('home')}</span>
-            </Link>
-          </li>
-          <li aria-hidden="true" className="text-muted-foreground/60">/</li>
-          <li>
-            <Link href={`/${locale}/venues`} className="hover:text-foreground transition-colors min-h-[44px] inline-flex items-center">
-              <span>{tNav('venues') || 'Venues'}</span>
-            </Link>
-          </li>
-          <li aria-hidden="true" className="text-muted-foreground/60">/</li>
-          <li aria-current="page" className="font-semibold text-foreground truncate">
-            {venue.name}
-          </li>
-        </ol>
-      </nav>
+      <Breadcrumbs variant="strip" items={crumbs} />
+      <BreadcrumbJsonLd items={crumbs} />
 
       {/* Hero Venue Header Banner */}
       <section className="container px-4">

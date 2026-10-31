@@ -1479,7 +1479,13 @@
     "auditTitle": "System- & Sicherheits-Audit-Protokolle",
     "auditSubtitle": "Unveränderliche Protokolle für RBAC, kryptografische Prüfungen und Admin-Aktionen.",
     "allSeverities": "Alle Schweregrade",
-    "filterLogs": "Logs filtern"
+    "filterLogs": "Logs filtern",
+    "crumbHub": "Governance-Hub",
+    "crumbDashboard": "Dashboard",
+    "crumbVenues": "Veranstaltungsort-Verzeichnis",
+    "crumbEvents": "Event-Governance",
+    "crumbCrawler": "Crawler-Erfassung",
+    "crumbAudit": "Audit & Sicherheit"
   },
   "ai": {
     "conciergeTitle": "Event-Concierge",

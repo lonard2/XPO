@@ -1,22 +1,10 @@
 "use client";
+import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  Palette,
-  Bot,
-  User,
-  Globe2,
-  RotateCcw,
-  Sparkles,
-  ChevronRight,
-  ChevronDown,
-  Rows3,
-  Type,
-  ZoomIn,
-  Activity,
-} from "lucide-react";
+import { Palette, Bot, User, Globe2, RotateCcw, Sparkles, ChevronDown, Rows3, Type, ZoomIn, Activity } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useSettings, DEFAULT_SETTINGS } from "@/components/settings/SettingsProvider";
 import { ThemeModeSelector } from "@/components/settings/ThemeModeSelector";
@@ -102,14 +90,12 @@ export default function SettingsPage({ params }: SettingsPageProps) {
 
   return (
     <div className="container max-w-5xl py-8 sm:py-12 space-y-8 animate-fade-in">
-      {/* Breadcrumb Navigation */}
-      <nav aria-label="Breadcrumbs" className="flex items-center gap-1.5 text-xs text-muted-foreground">
-        <Link href={`/${locale}`} className="hover:text-foreground transition-colors">
-          {tCom("explore") || "Home"}
-        </Link>
-        <ChevronRight className="h-3.5 w-3.5" />
-        <span className="text-foreground font-medium">{tSet("title") || "Settings"}</span>
-      </nav>
+      <Breadcrumbs
+        items={[
+          { label: tCom("home") || "Home", href: `/${locale}` },
+          { label: tSet("title") || "Settings", href: `/${locale}/settings` },
+        ]}
+      />
 
       {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border/80 pb-6">

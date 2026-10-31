@@ -1479,7 +1479,13 @@
     "auditTitle": "Registros de Auditoría y Seguridad",
     "auditSubtitle": "Registro inmutable de eventos RBAC, firmas criptográficas y acciones de administración.",
     "allSeverities": "Todos los Niveles",
-    "filterLogs": "Filtrar Registros"
+    "filterLogs": "Filtrar Registros",
+    "crumbHub": "Centro de gobernanza",
+    "crumbDashboard": "Panel",
+    "crumbVenues": "Directorio de recintos",
+    "crumbEvents": "Gobernanza de eventos",
+    "crumbCrawler": "Ingesta del rastreador",
+    "crumbAudit": "Auditoría y seguridad"
   },
   "ai": {
     "conciergeTitle": "Asistente del Asistente",
