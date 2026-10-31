@@ -141,7 +141,7 @@ export default async function DigitalPassDetailPage({ params }: DigitalPassPageP
 
   return (
     <div className="min-h-screen bg-background text-foreground py-6 sm:py-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      <div className="container space-y-8">
         {/* 1. Breadcrumb & Back Nav */}
         <BreadcrumbJsonLd items={crumbs} />
         <div className="flex items-center justify-between border-b border-border/60 pb-4">

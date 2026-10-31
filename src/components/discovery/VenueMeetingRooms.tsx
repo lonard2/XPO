@@ -43,7 +43,7 @@ export function VenueMeetingRooms({ rooms, title, className }: VenueMeetingRooms
   }
 
   return (
-    <section className={cn('container px-4 space-y-4', className)}>
+    <section className={cn('container space-y-4', className)}>
       <div className="border-b border-border/80 pb-4">
         <button
           type="button"

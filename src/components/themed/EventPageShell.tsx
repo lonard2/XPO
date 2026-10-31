@@ -305,7 +305,7 @@ export function EventPageShell({
       {/* 1. Breadcrumb Bar */}
       <BreadcrumbJsonLd items={breadcrumbItems} />
       <div className="border-b border-border/40 bg-muted/20 backdrop-blur-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
+        <div className="container py-2.5">
           <Breadcrumbs items={breadcrumbItems} />
         </div>
       </div>
@@ -345,7 +345,7 @@ export function EventPageShell({
           <div className="absolute inset-0 bg-gradient-to-t from-[var(--archetype-bg)] via-[var(--archetype-bg)]/80 to-transparent" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-10 sm:pb-14 lg:pt-12">
+        <div className="relative z-10 container pt-8 pb-10 sm:pb-14 lg:pt-12">
           {/* Top Badges: capped at two — category plus one status. Scale and
               format move to the metadata line under the title. */}
           <div className="flex flex-wrap items-center gap-2 mb-4">
@@ -459,7 +459,7 @@ export function EventPageShell({
 
       {/* 3. Sub-Navigation Tabs Bar (outside the header: sticky works) */}
       <div className="border-t border-white/10 bg-black/40 backdrop-blur-md sticky top-0 z-30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container">
           <nav className="flex items-center gap-1 sm:gap-2 overflow-x-auto py-2.5 scrollbar-none" aria-label="Event Sections">
             <button
               type="button"
@@ -541,7 +541,7 @@ export function EventPageShell({
 
 
       {/* 4. Main Content Container */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 pb-36 md:pb-16 space-y-12">
+      <main className="container py-8 sm:py-12 pb-36 md:pb-16 space-y-12">
         {/* Tab 1: Overview & Archetype Specialized View */}
         {activeTab === "overview" && (
           <div className="space-y-12">

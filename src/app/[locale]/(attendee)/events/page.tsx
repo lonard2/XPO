@@ -94,7 +94,7 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
       <BreadcrumbJsonLd items={crumbs} />
 
       {/* Hero Header Section */}
-      <section className="container px-4">
+      <section className="container">
         <div className="rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/10 via-background to-background p-5 sm:p-8 lg:p-10 shadow-xs">
           <div className="max-w-3xl space-y-2.5 sm:space-y-3">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-semibold">
@@ -113,7 +113,7 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
 
       {/* Interactive Client Explorer with SearchParams Suspense */}
       <Suspense fallback={
-        <div className="container px-4 py-12 text-center text-xs text-muted-foreground">
+        <div className="container py-12 text-center text-xs text-muted-foreground">
           {tEvents('loading') || 'Loading discovery engine...'}
         </div>
       }>

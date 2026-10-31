@@ -113,7 +113,7 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
       <BreadcrumbJsonLd items={crumbs} />
 
       {/* Hero Venue Header Banner */}
-      <section className="container px-4">
+      <section className="container">
         <div className="relative overflow-hidden rounded-3xl border border-border/80 bg-card shadow-sm">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
             {/* Visual Image */}
@@ -219,7 +219,7 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
       </div>
 
       {/* Campus Spatial Topology & Hall Specifications Explorer */}
-      <section className="container px-4">
+      <section className="container">
         <VenueCampusExplorer
           venueName={venue.name}
           venueSlug={venue.slug}
@@ -233,7 +233,7 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
       )}
 
       {/* Structured Multi-Modal Transit & Logistics Hub */}
-      <section id="venue-transit" className="container px-4 scroll-mt-20">
+      <section id="venue-transit" className="container scroll-mt-20">
         <VenueTransitHub
           venueName={venue.name}
           address={venue.address}
@@ -244,7 +244,7 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
       </section>
 
       {/* Specialized In-Venue Timetable & Scheduled Exhibitions */}
-      <section id="venue-events" className="container px-4 scroll-mt-20">
+      <section id="venue-events" className="container scroll-mt-20">
         <VenueScheduleTable
           venueName={venue.name}
           events={upcomingEvents}

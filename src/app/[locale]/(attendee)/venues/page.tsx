@@ -74,7 +74,7 @@ export default async function VenuesPage({ params, searchParams }: VenuesPagePro
       <BreadcrumbJsonLd items={crumbs} />
 
       {/* Hero Header Section */}
-      <section className="container px-4">
+      <section className="container">
         <div className="rounded-3xl border border-border/80 bg-gradient-to-br from-primary/10 via-background to-background p-6 sm:p-10 shadow-xs">
           <div className="max-w-3xl space-y-3">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-semibold">
@@ -92,7 +92,7 @@ export default async function VenuesPage({ params, searchParams }: VenuesPagePro
       </section>
 
       {/* Interactive Venue Directory Explorer with Region Filters & Live Search */}
-      <section className="container px-4">
+      <section className="container">
         <VenueDirectoryExplorer venues={venuesList} locale={locale} initialRegion={activeRegion} />
       </section>
     </div>

@@ -191,7 +191,7 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
       <BreadcrumbJsonLd items={crumbs} />
 
       {/* Hero Banner */}
-      <section className="container px-4">
+      <section className="container">
         <div className="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/10 via-background to-background p-6 sm:p-10 shadow-sm">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
             <div className="space-y-4 max-w-3xl">
@@ -262,7 +262,7 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
       </section>
 
       {/* Regional Venue Spotlights */}
-      <section className="container px-4 space-y-6">
+      <section className="container space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-border pb-4">
           <div className="space-y-1">
             <h2 className="text-2xl font-bold tracking-tight text-foreground flex items-center gap-2">
@@ -366,7 +366,7 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
       </section>
 
       {/* Upcoming Regional Events */}
-      <section className="container px-4 space-y-6">
+      <section className="container space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-border pb-4">
           <div className="space-y-1">
             <h2 className="text-2xl font-bold tracking-tight text-foreground flex items-center gap-2">
@@ -465,7 +465,7 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
       </section>
 
       {/* Transit & Logistics Guide */}
-      <section className="container px-4">
+      <section className="container">
         <div className="rounded-3xl border border-border bg-card p-6 sm:p-10 space-y-6 shadow-sm">
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-semibold">

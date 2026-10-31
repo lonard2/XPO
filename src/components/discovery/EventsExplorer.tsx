@@ -301,7 +301,7 @@ export function EventsExplorer({
   return (
     <div className="flex flex-col gap-8 pb-16">
       {/* Faceted Filter & Search Toolbar */}
-      <section className="container px-4">
+      <section className="container">
         <div className="rounded-2xl border border-border/80 bg-card p-4 sm:p-5 shadow-xs">
           <FacetedFilterBar
             filters={filters}
@@ -318,7 +318,7 @@ export function EventsExplorer({
       </section>
 
       {/* Main Content Grid: Desktop Sidebar + Event Grid */}
-      <section className="container px-4">
+      <section className="container">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Desktop Left Filter Sidebar */}
           <aside className="hidden lg:block lg:col-span-3 sticky top-20 rounded-2xl border border-border/80 bg-card p-5 shadow-xs">

@@ -46,7 +46,7 @@ export function Breadcrumbs({
       <ol
         className={cn(
           "flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground",
-          variant === "strip" && "container px-4",
+          variant === "strip" && "container",
           listClassName
         )}
       >
