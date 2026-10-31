@@ -28,7 +28,7 @@ import {
 } from '@/lib/discovery/fallbackData';
 import { resolveActiveRegion } from '@/lib/i18n/geo';
 import { getCurrencyForRegion } from '@/lib/i18n/formatters';
-import { sortUpcomingFirst } from '@/lib/discovery/eventOrder';
+import { filterAttendable, sortUpcomingFirst } from '@/lib/discovery/eventOrder';
 import { type BannerSlide, type DiscoveryEvent, type VenueWithEvents } from '@/types/discovery';
 
 export interface HomePageProps {
@@ -131,12 +131,10 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
     if (dbEvents.length > 0) {
       featuredEvents = dbEvents as unknown as DiscoveryEvent[];
 
-      // Hero source: featured events plus anything a delegate can still attend. Sorting
-      // below puts an attendable event first, so concluded stock never leads the carousel
-      // while a live or upcoming event exists in the region.
-      const attendableNow = (event: (typeof dbEvents)[number]) =>
-        event.endDate.getTime() >= Date.now();
-      const bannerSource = dbEvents.filter((e) => e.isFeatured || attendableNow(e));
+      // Hero source: only what a delegate can still attend. A featured flag is a sort
+      // weight, not an exemption from the end date, so finished events cannot lead the
+      // carousel the way they used to.
+      const bannerSource = filterAttendable(dbEvents);
 
       bannerSlides = bannerSource.map((evt) => {
         const lowestTier = evt.ticketTiers?.sort((a, b) => a.price - b.price)[0];
@@ -160,9 +158,8 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         };
       });
 
-      if (bannerSlides.length === 0 && featuredEvents.length > 0) {
-        bannerSlides = [featuredEvents[0] as unknown as BannerSlide];
-      }
+      // No attendable event means no carousel. The search cockpit still renders, and
+      // advertising a concluded expo would be worse than showing none.
     }
 
     const dbVenues = await db.venue.findMany({
@@ -217,9 +214,9 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
 
   // "Upcoming" has to mean upcoming. Concluded editions stay reachable, but they move
   // into their own line instead of padding the grid with dead inventory.
-  const nowMs = Date.now();
-  const attendableEvents = featuredEvents.filter((event) => new Date(event.endDate).getTime() >= nowMs);
-  const concludedEvents = featuredEvents.filter((event) => new Date(event.endDate).getTime() < nowMs);
+  const now = new Date();
+  const attendableEvents = filterAttendable(featuredEvents, now);
+  const concludedEvents = featuredEvents.filter((event) => !attendableEvents.includes(event));
 
   const regionLocalizedName =
     activeRegionCode === 'id'

@@ -40,3 +40,19 @@ export function sortUpcomingFirst<T extends OrderableEvent>(
     })
     .map((entry) => entry.event);
 }
+
+/**
+ * Keeps only the events a delegate can still attend. A finished event belongs in a
+ * "recently concluded" line, never in a hero or an "Upcoming" grid, even when it was
+ * flagged as featured before it ended.
+ */
+export function filterAttendable<T extends OrderableEvent>(
+  events: readonly T[],
+  now: Date = new Date()
+): T[] {
+  const cutoff = now.getTime();
+  return events.filter((event) => {
+    const end = new Date(event.endDate).getTime();
+    return Number.isFinite(end) && end >= cutoff;
+  });
+}

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { sortUpcomingFirst } from "@/lib/discovery/eventOrder";
+import { filterAttendable, sortUpcomingFirst } from "@/lib/discovery/eventOrder";
 
 const NOW = new Date("2026-06-15T12:00:00.000Z");
 
@@ -93,5 +93,28 @@ describe("sortUpcomingFirst", () => {
       "concluded",
       "broken",
     ]);
+  });
+});
+
+describe("filterAttendable", () => {
+  const now = new Date("2026-10-31T12:00:00.000Z");
+  const events = [
+    { id: "live", startDate: "2026-10-29T09:00:00.000Z", endDate: "2026-11-02T18:00:00.000Z" },
+    { id: "upcoming", startDate: "2026-12-01T09:00:00.000Z", endDate: "2026-12-03T18:00:00.000Z" },
+    { id: "ended", startDate: "2026-06-10T09:00:00.000Z", endDate: "2026-07-13T18:00:00.000Z" },
+  ];
+
+  it("keeps live and upcoming events and drops finished ones", () => {
+    expect(filterAttendable(events, now).map((e) => e.id)).toEqual(["live", "upcoming"]);
+  });
+
+  it("keeps an event that ends later today", () => {
+    const endsToday = [{ id: "today", startDate: "2026-10-30T09:00:00.000Z", endDate: "2026-10-31T23:00:00.000Z" }];
+    expect(filterAttendable(endsToday, now)).toHaveLength(1);
+  });
+
+  it("drops an event that ended one second ago", () => {
+    const justEnded = [{ id: "just", startDate: "2026-10-30T09:00:00.000Z", endDate: "2026-10-31T11:59:59.000Z" }];
+    expect(filterAttendable(justEnded, now)).toHaveLength(0);
   });
 });
