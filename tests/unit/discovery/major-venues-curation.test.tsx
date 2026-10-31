@@ -49,23 +49,25 @@ describe("MajorVenuesUpcomingSection curation", () => {
       <MajorVenuesUpcomingSection venues={[activeVenue, quietVenue]} locale="en" regionCode="id" />
     );
 
-    // The active venue is a full card with its event.
+    // Both venues keep a card: the section doubles as the venue directory.
     expect(screen.getByText("Live Industrial Expo")).toBeDefined();
     expect(screen.getByText("Jakarta International Expo")).toBeDefined();
-
-    // The quiet venue is reachable, but not as a card that says nothing is happening.
-    expect(screen.getByText("Also in this edition")).toBeDefined();
     expect(screen.getByText("ICE BSD City")).toBeDefined();
-    expect(screen.queryByText("Indonesia Convention Exhibition")).toBeNull();
+    expect(screen.getByText("Indonesia Convention Exhibition")).toBeDefined();
+
+    // The quiet one says so once, without a 0 count masquerading as a status.
+    expect(screen.getByText("No events announced yet")).toBeDefined();
     expect(screen.queryByText(/0 LISTED/i)).toBeNull();
+    expect(screen.queryByText("Also in this edition")).toBeNull();
   });
 
-  it("renders no card grid when no venue has an attendable event", () => {
+  it("keeps every venue when nothing in the edition is scheduled", () => {
     const { container } = render(
       <MajorVenuesUpcomingSection venues={[quietVenue]} locale="en" regionCode="id" />
     );
 
-    expect(container.querySelector(".stagger-children")).toBeNull();
-    expect(screen.getByText("Also in this edition")).toBeDefined();
+    expect(container.querySelector(".stagger-children")).not.toBeNull();
+    expect(screen.getByText("ICE BSD City")).toBeDefined();
+    expect(screen.getByText("No events announced yet")).toBeDefined();
   });
 });

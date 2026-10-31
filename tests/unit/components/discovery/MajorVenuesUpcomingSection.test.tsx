@@ -137,7 +137,7 @@ describe('MajorVenuesUpcomingSection', () => {
     expect(screen.getByText('ICE BSD City')).toBeDefined();
   });
 
-  it('gives a card only to venues with an attendable event', () => {
+  it('gives every venue a card, with attendable ones first', () => {
     const { container } = render(
       <MajorVenuesUpcomingSection
         venues={[...concludedOnlyVenues, ...mockVenues]}
@@ -147,12 +147,10 @@ describe('MajorVenuesUpcomingSection', () => {
     );
 
     const names = [...container.querySelectorAll('h3')].map((node) => node.textContent?.trim());
-    expect(names).toEqual(['JIExpo Kemayoran']);
-    expect(screen.getByText('Also in this edition')).toBeDefined();
-    expect(screen.getByText('ICE BSD City')).toBeDefined();
+    expect(names).toEqual(['JIExpo Kemayoran', 'ICE BSD City']);
   });
 
-  it('drops the empty-state block for venues with nothing scheduled', () => {
+  it('says nothing is scheduled once, without a zero counter', () => {
     render(
       <MajorVenuesUpcomingSection
         venues={concludedOnlyVenues}
@@ -161,11 +159,10 @@ describe('MajorVenuesUpcomingSection', () => {
       />
     );
 
-    // The venue stays reachable from the quiet line, without a card that only
-    // says there is nothing to see.
-    expect(screen.getByText('Also in this edition')).toBeDefined();
-    expect(screen.queryByText('Check upcoming season dates in the venue directory')).toBeNull();
-    expect(screen.queryByText('No public events scheduled this week')).toBeNull();
+    // The venue keeps its card; only the event area is quiet.
+    expect(screen.getByText('ICE BSD City')).toBeDefined();
+    expect(screen.getByText('No events announced yet')).toBeDefined();
+    expect(screen.queryByText(/0 LISTED/i)).toBeNull();
   });
 
   it('returns null gracefully when empty venues array is provided', () => {

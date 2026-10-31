@@ -573,8 +573,8 @@
     "meetingRoomsNoMatch": "No meeting rooms match this search.",
     "explorerIntro": "Structural clear heights, floor loading ratings, pax capacities, and architectural wings.",
     "specsVerified": "Verified",
-    "alsoInEdition": "Also in this edition",
-    "listedCountOne": "1 event"
+    "listedCountOne": "1 event",
+    "noUpcomingShort": "No events announced yet"
   },
   "calendar": {
     "title": "Interactive Event Calendar",

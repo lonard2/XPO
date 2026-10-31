@@ -573,8 +573,8 @@
     "meetingRoomsNoMatch": "Ninguna sala coincide con la búsqueda.",
     "explorerIntro": "Alturas estructurales, cargas de suelo, capacidades y alas arquitectónicas.",
     "specsVerified": "Verificado",
-    "alsoInEdition": "También en esta edición",
-    "listedCountOne": "1 evento"
+    "listedCountOne": "1 evento",
+    "noUpcomingShort": "Aún no hay eventos anunciados"
   },
   "calendar": {
     "title": "Calendario Interactivo de Eventos",

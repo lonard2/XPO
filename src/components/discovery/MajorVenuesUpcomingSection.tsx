@@ -69,11 +69,14 @@ export function MajorVenuesUpcomingSection({
       return temporal.isUpcoming || temporal.isLive;
     });
 
-  // Venues with something attendable get a card. The rest still belong to the
-  // directory, so they stay reachable from a compact line instead of taking four
-  // full cards that only say nothing is happening.
-  const orderedVenues = venues.filter((venue) => attendableEventsFor(venue).length > 0);
-  const quietVenues = venues.filter((venue) => attendableEventsFor(venue).length === 0);
+  // Every venue keeps a card: this section doubles as the venue directory, and a
+  // campus with nothing scheduled this month is still a place a delegate may want to
+  // visit. Venues with something attendable lead; the quiet ones follow with a single
+  // muted line instead of a repeated empty-state block.
+  const orderedVenues = [
+    ...venues.filter((venue) => attendableEventsFor(venue).length > 0),
+    ...venues.filter((venue) => attendableEventsFor(venue).length === 0),
+  ];
 
   return (
     <section className={cn('w-full space-y-6', className)}>
@@ -180,14 +183,16 @@ export function MajorVenuesUpcomingSection({
               <div className="p-4 sm:p-5 pt-0 space-y-2.5 flex-1 flex flex-col justify-start">
                 <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground pt-3 border-t border-border/70 flex items-center justify-between">
                   <span>{tVen('currentUpcomingEvents')}</span>
-                  <span className="text-xs font-semibold text-primary font-mono tabular-nums">
-                    {upcomingEvents.length === 1
-                      ? tVen('listedCountOne')
-                      : tVen('listedCount', { count: upcomingEvents.length })}
-                  </span>
+                  {upcomingEvents.length > 0 && (
+                    <span className="text-xs font-semibold text-primary font-mono tabular-nums">
+                      {upcomingEvents.length === 1
+                        ? tVen('listedCountOne')
+                        : tVen('listedCount', { count: upcomingEvents.length })}
+                    </span>
+                  )}
                 </div>
 
-                {upcomingEvents.length > 0 && (
+                {upcomingEvents.length > 0 ? (
                   <div className="space-y-2">
                     {upcomingEvents.map((evt: VenueWithEvents['events'][number]) => {
                       const tokens = getArchetypeTokens(evt.archetype);
@@ -243,6 +248,10 @@ export function MajorVenuesUpcomingSection({
                       );
                     })}
                   </div>
+                ) : (
+                  <p className="pt-1 text-[11px] leading-relaxed text-muted-foreground">
+                    {tVen('noUpcomingShort')}
+                  </p>
                 )}
               </div>
 
@@ -262,28 +271,6 @@ export function MajorVenuesUpcomingSection({
       </div>
       )}
 
-      {quietVenues.length > 0 && (
-        <div className="rounded-xl border border-border/60 bg-muted/30 px-4 py-3">
-          <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
-            {tVen('alsoInEdition')}
-          </p>
-          <ul className="mt-2 flex flex-wrap gap-x-5 gap-y-2">
-            {quietVenues.map((venue) => (
-              <li key={venue.id}>
-                <Link
-                  href={`/${locale}/venues/${venue.slug}`}
-                  className="inline-flex items-baseline gap-1.5 text-xs font-semibold text-foreground hover:text-primary transition-colors"
-                >
-                  <span>{splitVenueName(venue.name).primary}</span>
-                  <span className="font-mono text-[11px] font-normal text-muted-foreground tabular-nums">
-                    {tVen('hallsCount', { count: countHalls(venue.halls) })}
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
     </section>
   );
 }

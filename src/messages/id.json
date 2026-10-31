@@ -573,8 +573,8 @@
     "meetingRoomsNoMatch": "Tidak ada ruang rapat yang cocok.",
     "explorerIntro": "Tinggi plafon struktural, rating beban lantai, kapasitas, dan sayap arsitektural.",
     "specsVerified": "Terverifikasi",
-    "alsoInEdition": "Juga di edisi ini",
-    "listedCountOne": "1 acara"
+    "listedCountOne": "1 acara",
+    "noUpcomingShort": "Belum ada acara diumumkan"
   },
   "calendar": {
     "title": "Kalender Acara Interaktif",

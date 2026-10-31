@@ -573,8 +573,8 @@
     "meetingRoomsNoMatch": "Keine Tagungsräume für diese Suche.",
     "explorerIntro": "Tragwerkshöhen, Bodenlasten, Kapazitäten und Architekturflügel.",
     "specsVerified": "Verifiziert",
-    "alsoInEdition": "Ebenfalls in dieser Ausgabe",
-    "listedCountOne": "1 Event"
+    "listedCountOne": "1 Event",
+    "noUpcomingShort": "Noch keine Events angekündigt"
   },
   "calendar": {
     "title": "Interaktiver Eventkalender",
