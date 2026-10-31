@@ -145,11 +145,11 @@
     "passHubPill2": "Schneller Drehkreuz-Scan",
     "passHubPill3": "Kryptografische Verifikation",
     "passHubCta": "Meine Einlasspässe anzeigen",
-    "networkingPerksTitle": "B2B-Verhandlungsräume, VIP-Lounge & Messe-Vorteile",
-    "networkingPerksDesc": "Zugang zu Einkäufer-Lounges, buchbaren bilateralen Meetingräumen, CME-Punkten für Fachkongresse und exklusiven Messe-Vorteilen.",
-    "networkingPerksPill1": "B2B-Matchmaking & Beschaffung",
-    "networkingPerksPill2": "VIP-Executive-Lounge-Zugang",
-    "networkingPerksPill3": "Akkreditierte Kongressvorträge",
+    "networkingPerksTitle": "Pass-Vorteile und der Leitfaden für den Veranstaltungstag",
+    "networkingPerksDesc": "Jeder Pass enthält den Veranstaltungsleitfaden mit Hallenplänen und dem Tagesablauf. Höhere Tarife ergänzen, was der Veranstalter angibt, vom Schnellzugang bis zur CME-Punkteverwaltung bei medizinischen Symposien.",
+    "networkingPerksPill1": "Leitfaden mit Hallenplänen",
+    "networkingPerksPill2": "VIP-Vorteile laut Veranstalter",
+    "networkingPerksPill3": "CME-Punkte bei medizinischen Events",
     "networkingPerksCta": "15 MICE-Kategorien entdecken",
     "organizerCalloutTitle": "Veranstalten Sie eine Fachmesse oder einen Kongress?",
     "organizerCalloutDesc": "Nutzen Sie das Veranstalter-Portal zur Veröffentlichung von Events, Standplatzvergabe, CI-Gestaltung und Drehkreuz-Einlasskontrolle.",
@@ -170,7 +170,8 @@
     "conciergeBannerTitle": "Besucher-Concierge & Berichts-Zentrale",
     "conciergeBannerDesc": "Echtzeit-Hallen-Navigation, ÖPNV-Logistik, Terminpläne und umfassende Veranstalter-Analysen.",
     "conciergeBannerBtn": "Einstellungen & Concierge-Präferenzen",
-    "recentlyConcluded": "Zuletzt beendet"
+    "recentlyConcluded": "Zuletzt beendet",
+    "perksCta": "Events ansehen"
   },
   "regions": {
     "title": "Länderausgaben",

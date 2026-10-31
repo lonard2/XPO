@@ -145,11 +145,11 @@
     "passHubPill2": "极速光学闸机扫描",
     "passHubPill3": "密码级安全核销验证",
     "passHubCta": "查看我的通行证",
-    "networkingPerksTitle": "B2B商贸洽谈室与VIP专属权益",
-    "networkingPerksDesc": "尊享特邀买家贵宾休息室、预约制双边商贸洽谈室、医学学术会议CME继续教育学分认证及现场专属礼券。",
-    "networkingPerksPill1": "B2B供需精准对接",
-    "networkingPerksPill2": "VIP行政贵宾厅礼遇",
-    "networkingPerksPill3": "认证学术交流分论坛",
+    "networkingPerksTitle": "通行证权益与当日指南",
+    "networkingPerksDesc": "每张通行证都包含活动指南，内含展厅地图与当日日程。更高档位会增加主办方列出的权益，从快速通道到医学研讨会的 CME 学分记录。",
+    "networkingPerksPill1": "含展厅地图的指南",
+    "networkingPerksPill2": "主办方设置的 VIP 权益",
+    "networkingPerksPill3": "医学活动 CME 学分",
     "networkingPerksCta": "探索15大MICE专业垂直领域",
     "organizerCalloutTitle": "正在筹备行业展会或高峰论坛？",
     "organizerCalloutDesc": "登录主办方管理门户，即可发布展会、分配展位租户、定制品牌视觉，并开启现场闸机核销系统。",
@@ -170,7 +170,8 @@
     "conciergeBannerTitle": "智能导览助手与报告中心",
     "conciergeBannerDesc": "即刻获取展厅导航指引、交通接驳信息、日程安排及全维度主办方分析报告。",
     "conciergeBannerBtn": "首选项与助手设置",
-    "recentlyConcluded": "近期已结束"
+    "recentlyConcluded": "近期已结束",
+    "perksCta": "浏览活动"
   },
   "regions": {
     "title": "国家/地区版本",

@@ -11,7 +11,7 @@ Everything still open after the two P0 fixes (`0fcf1f7`, `57fdf5f`).
   instead of a bare "Free" that hides VIP access.
 - [x] **C4. Verified badge.** Replace the unverifiable "Verified MICE Ecosystem" claim with
   a statement the platform can back.
-- [ ] **C5. Perks card.** Rewrite the unbacked deal-room copy to the features that exist,
+- [x] **C5. Perks card.** Rewrite the unbacked deal-room copy to the features that exist,
   and give the card a destination.
 - [ ] **C6. Calendar ARIA.** Give the date grid a real grid structure instead of orphaned
   row and columnheader roles.

@@ -145,11 +145,11 @@
     "passHubPill2": "スムーズな光学QRスキャン",
     "passHubPill3": "暗号化セキュリティ検証",
     "passHubCta": "マイトラベルパスを確認",
-    "networkingPerksTitle": "B2B商談ルーム＆VIP来場者特典",
-    "networkingPerksDesc": "バイヤーズラウンジへのアクセス、事前予約制の個別商談ルーム、医療シンポジウムの単位認定、特別優待クーポンを活用できます。",
-    "networkingPerksPill1": "B2B調達マッチング",
-    "networkingPerksPill2": "VIPエグゼクティブラウンジ",
-    "networkingPerksPill3": "認定シンポジウムトラック",
+    "networkingPerksTitle": "パスの特典と当日ガイドブック",
+    "networkingPerksDesc": "すべてのパスに、ホールマップと当日のタイムテーブルを含むガイドブックが付きます。上位チケットには主催者が定める特典（優先ゲート、医学会でのCME単位管理など）が加わります。",
+    "networkingPerksPill1": "ホールマップ付きガイドブック",
+    "networkingPerksPill2": "主催者設定のVIP特典",
+    "networkingPerksPill3": "医学会のCME単位",
     "networkingPerksCta": "15のMICEカテゴリーを探索",
     "organizerCalloutTitle": "展示会や国際サミットの主催をご検討ですか？",
     "organizerCalloutDesc": "主催者ポータルからイベントの公開、ブース配置の設計、ブランドビジュアルの編集、QR入場ゲートの運用が可能です。",
@@ -170,7 +170,8 @@
     "conciergeBannerTitle": "来場者コンシェルジュ＆レポートハブ",
     "conciergeBannerDesc": "会場ナビ、交通手段、タイムテーブル、主催者向け分析レポートをワンストップで確認できます。",
     "conciergeBannerBtn": "環境設定＆コンシェルジュ設定",
-    "recentlyConcluded": "終了した展示会"
+    "recentlyConcluded": "終了した展示会",
+    "perksCta": "イベントを見る"
   },
   "regions": {
     "title": "国・地域版エディション",

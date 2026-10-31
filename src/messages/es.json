@@ -145,11 +145,11 @@
     "passHubPill2": "Escaneo Óptico Inmediato",
     "passHubPill3": "Verificación Criptográfica",
     "passHubCta": "Ver Mis Pases",
-    "networkingPerksTitle": "Salas de Negociación B2B y Beneficios VIP",
-    "networkingPerksDesc": "Acceda a salas exclusivas para compradores, reuniones bilaterales programadas, créditos de formación médica y ventajas del evento.",
-    "networkingPerksPill1": "Encuentros de Compras B2B",
-    "networkingPerksPill2": "Acceso a Salas VIP Ejecutivas",
-    "networkingPerksPill3": "Sesiones Académicas Acreditadas",
+    "networkingPerksTitle": "Ventajas del pase y la guía del día",
+    "networkingPerksDesc": "Cada pase incluye la guía del evento con planos de pabellón y el programa del día. Las tarifas superiores añaden lo que indique el organizador, desde accesos rápidos hasta el registro de créditos CME en simposios médicos.",
+    "networkingPerksPill1": "Guía con planos de pabellón",
+    "networkingPerksPill2": "Ventajas VIP del organizador",
+    "networkingPerksPill3": "Créditos CME en eventos médicos",
     "networkingPerksCta": "Explorar las 15 Categorías MICE",
     "organizerCalloutTitle": "¿Organiza una Exposición o Cumbre Profesional?",
     "organizerCalloutDesc": "Acceda al Portal del Organizador para publicar eventos, distribuir stands, personalizar diseños visuales y gestionar el control de accesos.",
@@ -170,7 +170,8 @@
     "conciergeBannerTitle": "Asistente del Evento y Panel de Informes",
     "conciergeBannerDesc": "Consulte navegación en pabellones, rutas de transporte, programas y análisis avanzados.",
     "conciergeBannerBtn": "Preferencias y Ajustes del Asistente",
-    "recentlyConcluded": "Finalizadas recientemente"
+    "recentlyConcluded": "Finalizadas recientemente",
+    "perksCta": "Ver eventos"
   },
   "regions": {
     "title": "Ediciones Nacionales",

@@ -145,11 +145,11 @@
     "passHubPill2": "Instant Optical Scan",
     "passHubPill3": "Cryptographic Verification",
     "passHubCta": "View My Passes",
-    "networkingPerksTitle": "B2B Deal-Rooms, VIP Privileges & Day-of Perks",
-    "networkingPerksDesc": "Unlock executive buyer lounges, pre-scheduled bilateral meeting rooms, CME accreditation for medical symposiums, and curated attendee guidebook perks.",
-    "networkingPerksPill1": "B2B Procurement Matchmaking",
-    "networkingPerksPill2": "VIP Executive Lounge Access",
-    "networkingPerksPill3": "Accredited Symposium Tracks",
+    "networkingPerksTitle": "Pass perks and the day-of guidebook",
+    "networkingPerksDesc": "Every pass includes the event guidebook with hall maps and the day's timetable. Higher tiers add what the organizer lists, from fast-track gates to CME credit tracking on medical symposiums.",
+    "networkingPerksPill1": "Guidebook with hall maps",
+    "networkingPerksPill2": "Organizer-listed VIP perks",
+    "networkingPerksPill3": "CME credits on medical events",
     "networkingPerksCta": "Explore 15 MICE Categories",
     "organizerCalloutTitle": "Hosting an Exhibition or Industry Summit?",
     "organizerCalloutDesc": "Access the Organizer Portal to publish events, configure booth allocations, customize visual themes, and deploy optical turnstile check-in.",
@@ -170,7 +170,8 @@
     "conciergeBannerTitle": "Attendee Event Concierge & Reporting Hub",
     "conciergeBannerDesc": "Access real-time hall navigation, transit logistics, timetable schedules, and comprehensive organizer analytics reports.",
     "conciergeBannerBtn": "Preferences & Concierge Settings",
-    "recentlyConcluded": "Recently concluded"
+    "recentlyConcluded": "Recently concluded",
+    "perksCta": "Browse events"
   },
   "regions": {
     "title": "Country Editions",

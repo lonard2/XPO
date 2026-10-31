@@ -473,7 +473,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
             </div>
           </div>
 
-          {/* Bento Cell 3: B2B Deal-Rooms, VIP Privileges & Day-of Perks (Panoramic 12 Cols) */}
+          {/* Bento Cell 3: Pass perks and the day-of guidebook (Panoramic 12 Cols) */}
           <div className="lg:col-span-12 rounded-2xl border border-border/80 bg-gradient-to-r from-card via-card to-emerald-500/5 p-6 sm:p-8 shadow-sm hover:border-emerald-500/40 hover:shadow-md transition-all">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
               <div className="space-y-2 max-w-xl">
@@ -482,26 +482,33 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
                     <Sparkles className="h-5 w-5" />
                   </div>
                   <h3 className="text-lg sm:text-xl font-bold tracking-tight text-foreground text-balance">
-                    {tHome('networkingPerksTitle') || 'B2B Deal-Rooms, VIP Privileges & Day-of Perks'}
+                    {tHome('networkingPerksTitle') || 'Pass perks and the day-of guidebook'}
                   </h3>
                 </div>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed text-pretty">
-                  {tHome('networkingPerksDesc') || 'Unlock executive buyer lounges, pre-scheduled bilateral meeting rooms, CME accreditation for medical symposiums, and curated attendee guidebook perks.'}
+                  {tHome('networkingPerksDesc') || 'Every pass includes the event guidebook with hall maps and the day’s timetable. Higher tiers add what the organizer lists, from fast-track gates to CME credit tracking on medical symposiums.'}
                 </p>
+                <Link
+                  href={`/${locale}/events`}
+                  className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'mt-1 min-h-[44px] sm:min-h-[36px] gap-1.5 text-xs font-semibold')}
+                >
+                  <span>{tHome('perksCta') || 'Browse events'}</span>
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 shrink-0 lg:max-w-2xl w-full lg:w-auto">
                 <div className="flex items-center gap-2 rounded-xl bg-muted/40 p-3 text-xs text-foreground border border-border/40">
                   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
-                  <span>{tHome('networkingPerksPill1') || 'B2B Procurement Matchmaking'}</span>
+                  <span>{tHome('networkingPerksPill1') || 'Guidebook with hall maps'}</span>
                 </div>
                 <div className="flex items-center gap-2 rounded-xl bg-muted/40 p-3 text-xs text-foreground border border-border/40">
                   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
-                  <span>{tHome('networkingPerksPill2') || 'VIP Executive Lounge Access'}</span>
+                  <span>{tHome('networkingPerksPill2') || 'Organizer-listed VIP perks'}</span>
                 </div>
                 <div className="flex items-center gap-2 rounded-xl bg-muted/40 p-3 text-xs text-foreground border border-border/40">
                   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
-                  <span>{tHome('networkingPerksPill3') || 'Accredited Symposium Tracks'}</span>
+                  <span>{tHome('networkingPerksPill3') || 'CME credits on medical events'}</span>
                 </div>
               </div>
             </div>

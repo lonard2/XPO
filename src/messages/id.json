@@ -145,11 +145,11 @@
     "passHubPill2": "Pindai Optik Instan",
     "passHubPill3": "Verifikasi Kriptografis",
     "passHubCta": "Lihat Tiket Saya",
-    "networkingPerksTitle": "Ruang Transaksi B2B & Fasilitas Eksklusif",
-    "networkingPerksDesc": "Akses lounge pembeli eksklusif, reservasi ruang pertemuan bilateral bisnis, sertifikasi CME untuk simposium medis, dan voucher pameran.",
-    "networkingPerksPill1": "Pencocokan Pengadaan B2B",
-    "networkingPerksPill2": "Akses Lounge VIP Eksekutif",
-    "networkingPerksPill3": "Sesi Simposium Terakreditasi",
+    "networkingPerksTitle": "Keuntungan pas dan buku panduan hari-H",
+    "networkingPerksDesc": "Setiap pas menyertakan buku panduan acara dengan peta hall dan jadwal hari itu. Tier lebih tinggi menambahkan apa yang dicantumkan penyelenggara, dari jalur cepat masuk hingga pelacakan kredit CME pada simposium medis.",
+    "networkingPerksPill1": "Buku panduan dengan peta hall",
+    "networkingPerksPill2": "Keuntungan VIP dari penyelenggara",
+    "networkingPerksPill3": "Kredit CME di acara medis",
     "networkingPerksCta": "Jelajahi 15 Kategori MICE",
     "organizerCalloutTitle": "Menyelenggarakan Pameran atau Konferensi Industri?",
     "organizerCalloutDesc": "Gunakan Portal Penyelenggara untuk menerbitkan acara, mengelola alokasi stan, menyesuaikan tema visual, dan mengaktifkan pemindai tiket.",
@@ -170,7 +170,8 @@
     "conciergeBannerTitle": "Pusat Panduan & Laporan Analisis Acara",
     "conciergeBannerDesc": "Akses panduan transportasi umum, navigasi denah hall, jadwal acara, dan laporan analitik penyelenggara secara real-time.",
     "conciergeBannerBtn": "Pengaturan Asisten & Preferensi",
-    "recentlyConcluded": "Baru saja berakhir"
+    "recentlyConcluded": "Baru saja berakhir",
+    "perksCta": "Jelajahi acara"
   },
   "regions": {
     "title": "Edisi Negara",
