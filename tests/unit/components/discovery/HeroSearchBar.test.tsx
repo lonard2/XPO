@@ -24,7 +24,7 @@ describe('Discovery Component: HeroSearchBar (Homepage Search Cockpit)', () => {
     ).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /search/i })).toBeInTheDocument();
     expect(screen.getByText('Popular Searches:')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Industrial B2B' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Industrial & Manufacturing B2B' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'JIExpo Kemayoran' })).toBeInTheDocument();
   });
 
@@ -43,7 +43,7 @@ describe('Discovery Component: HeroSearchBar (Homepage Search Cockpit)', () => {
   it('T1.3: clicking a quick suggestion tag navigates directly to filtered events', () => {
     render(<HeroSearchBar locale="en" regionCode="id" />);
 
-    const tag = screen.getByRole('button', { name: 'Industrial B2B' });
+    const tag = screen.getByRole('button', { name: 'Industrial & Manufacturing B2B' });
     fireEvent.click(tag);
 
     expect(mockPush).toHaveBeenCalledWith('/en/events?archetype=INDUSTRIAL_B2B');
@@ -67,11 +67,11 @@ describe('Discovery Component: HeroSearchBar (Homepage Search Cockpit)', () => {
     const { rerender } = render(<HeroSearchBar locale="ja" regionCode="jp" />);
 
     expect(screen.getByRole('button', { name: 'Tokyo Big Sight' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Gaming & Anime' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Pop Culture & Gaming Expo' })).toBeInTheDocument();
 
     rerender(<HeroSearchBar locale="en" regionCode="global" />);
     expect(screen.getByRole('button', { name: 'Marina Bay Sands' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Financial Forum' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Finance, FinTech & Investor Forums' })).toBeInTheDocument();
   });
 
   it('T1.6: focuses search input on pressing "/" key when not active in input', () => {

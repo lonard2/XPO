@@ -121,7 +121,8 @@
     "slideLabel": "第 {current} 张，共 {total} 张：{title}",
     "proof1": "22 个展会类别",
     "proof2": "展厅与交通信息",
-    "proof3": "通行证离线可用"
+    "proof3": "通行证离线可用",
+    "searchAria": "搜索展会和场馆"
   },
   "home": {
     "searchCockpitPlaceholder": "搜索展会、峰会、场馆（例如：金沙博览、AI、医疗）...",

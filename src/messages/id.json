@@ -121,7 +121,8 @@
     "slideLabel": "Slide {current} dari {total}: {title}",
     "proof1": "22 kategori acara",
     "proof2": "Data hall dan transportasi",
-    "proof3": "Pas tetap bisa dipakai offline"
+    "proof3": "Pas tetap bisa dipakai offline",
+    "searchAria": "Cari pameran dan venue"
   },
   "home": {
     "searchCockpitPlaceholder": "Cari pameran, konferensi, venue (mis. JIExpo, Robotika, Medis)...",

@@ -6,6 +6,8 @@ import { Search, X, ArrowRight, Tag } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
+import { archTitle } from '@/lib/i18n/categories';
+import { getArchetypeTokens, type MiceArchetype } from '@/lib/theming';
 
 export interface HeroSearchBarProps {
   locale: string;
@@ -14,32 +16,35 @@ export interface HeroSearchBarProps {
 }
 
 interface QuickTag {
-  label: string;
+  /** Venue names are proper nouns and stay as written. */
+  label?: string;
+  /** Category tags resolve their label from the archetypes dictionary. */
+  archetype?: string;
   query: string;
   type?: 'keyword' | 'archetype';
 }
 
 const REGIONAL_SUGGESTIONS: Record<string, QuickTag[]> = {
   id: [
-    { label: 'Industrial B2B', query: 'INDUSTRIAL_B2B', type: 'archetype' },
-    { label: 'Tech & AI', query: 'TECH_DEV_SUMMIT', type: 'archetype' },
+    { archetype: 'INDUSTRIAL_B2B', query: 'INDUSTRIAL_B2B', type: 'archetype' },
+    { archetype: 'TECH_DEV_SUMMIT', query: 'TECH_DEV_SUMMIT', type: 'archetype' },
     { label: 'JIExpo Kemayoran', query: 'JIExpo' },
     { label: 'ICE BSD City', query: 'ICE BSD' },
-    { label: 'Mega Expo Fair', query: 'MEGA_EXPO_PAVILION', type: 'archetype' },
+    { archetype: 'MEGA_EXPO_PAVILION', query: 'MEGA_EXPO_PAVILION', type: 'archetype' },
   ],
   jp: [
-    { label: 'Tech & Developer', query: 'TECH_DEV_SUMMIT', type: 'archetype' },
-    { label: 'Gaming & Anime', query: 'POP_CULTURE_GAMING', type: 'archetype' },
+    { archetype: 'TECH_DEV_SUMMIT', query: 'TECH_DEV_SUMMIT', type: 'archetype' },
+    { archetype: 'POP_CULTURE_GAMING', query: 'POP_CULTURE_GAMING', type: 'archetype' },
     { label: 'Tokyo Big Sight', query: 'Tokyo Big Sight' },
     { label: 'Makuhari Messe', query: 'Makuhari Messe' },
-    { label: 'Green Energy', query: 'ENERGY_MINING_GREEN', type: 'archetype' },
+    { archetype: 'ENERGY_INFRASTRUCTURE', query: 'ENERGY_INFRASTRUCTURE', type: 'archetype' },
   ],
   global: [
-    { label: 'Financial Forum', query: 'FINANCIAL_FINTECH_INVESTOR', type: 'archetype' },
-    { label: 'Medical Symposium', query: 'MEDICAL_HEALTHCARE_SCIENCE', type: 'archetype' },
+    { archetype: 'FINANCE_INVESTOR', query: 'FINANCE_INVESTOR', type: 'archetype' },
+    { archetype: 'MEDICAL_SYMPOSIUM', query: 'MEDICAL_SYMPOSIUM', type: 'archetype' },
     { label: 'Marina Bay Sands', query: 'Marina Bay Sands' },
     { label: 'ExCeL London', query: 'ExCeL London' },
-    { label: 'Manufacturing B2B', query: 'INDUSTRIAL_B2B', type: 'archetype' },
+    { archetype: 'INDUSTRIAL_B2B', query: 'INDUSTRIAL_B2B', type: 'archetype' },
   ],
 };
 
@@ -54,6 +59,8 @@ export function HeroSearchBar({
 
   const tHome = useTranslations('home');
   const tCom = useTranslations('common');
+  const tHero = useTranslations('hero');
+  const tArch = useTranslations('archetypes');
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -112,7 +119,7 @@ export function HeroSearchBar({
         className
       )}
       role="search"
-      aria-label="Homepage event search cockpit"
+      aria-label={tHero("searchAria")}
     >
       <form onSubmit={handleSearch} className="flex items-center gap-2 sm:gap-3 w-full">
         <div className="relative flex-1 flex items-center">
@@ -167,16 +174,25 @@ export function HeroSearchBar({
           <span>{tHome('popularSearches') || 'Popular Searches'}:</span>
         </span>
 
-        {suggestions.map((tag) => (
+        {suggestions.map((tag) => {
+          const label = tag.archetype
+            ? archTitle(
+                tArch,
+                tag.archetype,
+                getArchetypeTokens(tag.archetype as MiceArchetype).displayName
+              )
+            : tag.label;
+          return (
           <button
-            key={tag.label}
+            key={tag.query}
             type="button"
             onClick={() => handleTagClick(tag)}
             className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-muted/60 hover:bg-primary/15 text-muted-foreground hover:text-primary border border-border/60 hover:border-primary/30 transition-all cursor-pointer min-h-[44px] sm:min-h-[36px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
-            {tag.label}
+            {label}
           </button>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

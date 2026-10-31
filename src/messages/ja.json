@@ -121,7 +121,8 @@
     "slideLabel": "スライド {current} / {total}: {title}",
     "proof1": "22のイベントカテゴリー",
     "proof2": "ホールと交通情報",
-    "proof3": "オフラインでも使えるパス"
+    "proof3": "オフラインでも使えるパス",
+    "searchAria": "展示会と会場を検索"
   },
   "home": {
     "searchCockpitPlaceholder": "展示会、サミット、会場を検索 (例: 東京ビッグサイト、AI、医療)...",

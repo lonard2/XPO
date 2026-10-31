@@ -121,7 +121,8 @@
     "slideLabel": "Diapositiva {current} de {total}: {title}",
     "proof1": "22 categorías de eventos",
     "proof2": "Datos de pabellón y transporte",
-    "proof3": "Pases sin conexión"
+    "proof3": "Pases sin conexión",
+    "searchAria": "Buscar ferias y recintos"
   },
   "home": {
     "searchCockpitPlaceholder": "Buscar ferias, cumbres, recintos (ej. ExCeL, Robótica, Medicina)...",

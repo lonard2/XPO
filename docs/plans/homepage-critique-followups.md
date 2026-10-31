@@ -15,7 +15,7 @@ Everything still open after the two P0 fixes (`0fcf1f7`, `57fdf5f`).
   and give the card a destination.
 - [x] **C6. Calendar ARIA.** Give the date grid a real grid structure instead of orphaned
   row and columnheader roles.
-- [ ] **C7. Search copy.** Localise the regional suggestion labels, and replace the
+- [x] **C7. Search copy.** Localise the regional suggestion labels, and replace the
   "cockpit" aria-label with plain language.
 - [ ] **C8. Small truths.** Footer category list, "1 listed" copy, dead `noUpcomingDetail`
   key, stale `PRODUCT.md` category count.
