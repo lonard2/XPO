@@ -68,14 +68,11 @@ export function MajorVenuesUpcomingSection({
       return temporal.isUpcoming || temporal.isLive;
     });
 
-  // Every venue stays in the spotlight, because this section doubles as the venue
-  // directory: hiding the five Indonesian venues without a near-term event left only
-  // JIExpo Kemayoran. Venues with something attendable lead, and the rest follow with a
-  // quiet line rather than the repeated empty-state block that used to fill four of six.
-  const orderedVenues = [
-    ...venues.filter((venue) => attendableEventsFor(venue).length > 0),
-    ...venues.filter((venue) => attendableEventsFor(venue).length === 0),
-  ];
+  // Venues with something attendable get a card. The rest still belong to the
+  // directory, so they stay reachable from a compact line instead of taking four
+  // full cards that only say nothing is happening.
+  const orderedVenues = venues.filter((venue) => attendableEventsFor(venue).length > 0);
+  const quietVenues = venues.filter((venue) => attendableEventsFor(venue).length === 0);
 
   return (
     <section className={cn('w-full space-y-6', className)}>
@@ -107,7 +104,14 @@ export function MajorVenuesUpcomingSection({
       </div>
 
       {/* Major Venues Responsive Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 stagger-children">
+      {orderedVenues.length > 0 && (
+      <div
+        className={cn(
+          "grid grid-cols-1 gap-6 stagger-children",
+          orderedVenues.length > 1 ? "md:grid-cols-2" : "max-w-2xl",
+          orderedVenues.length > 2 ? "xl:grid-cols-3" : ""
+        )}
+      >
         {orderedVenues.map((venue) => {
           // Max 3 attendable events per venue
           const upcomingEvents = attendableEventsFor(venue).slice(0, 3);
@@ -263,6 +267,30 @@ export function MajorVenuesUpcomingSection({
           );
         })}
       </div>
+      )}
+
+      {quietVenues.length > 0 && (
+        <div className="rounded-xl border border-border/60 bg-muted/30 px-4 py-3">
+          <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+            {tVen('alsoInEdition')}
+          </p>
+          <ul className="mt-2 flex flex-wrap gap-x-5 gap-y-2">
+            {quietVenues.map((venue) => (
+              <li key={venue.id}>
+                <Link
+                  href={`/${locale}/venues/${venue.slug}`}
+                  className="inline-flex items-baseline gap-1.5 text-xs font-semibold text-foreground hover:text-primary transition-colors"
+                >
+                  <span>{splitVenueName(venue.name).primary}</span>
+                  <span className="font-mono text-[11px] font-normal text-muted-foreground tabular-nums">
+                    {tVen('hallsCount', { count: countHalls(venue.halls) })}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </section>
   );
 }

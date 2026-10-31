@@ -169,7 +169,8 @@
     "adminPill3": "Seguridad y Verificación Empresarial",
     "conciergeBannerTitle": "Asistente del Evento y Panel de Informes",
     "conciergeBannerDesc": "Consulte navegación en pabellones, rutas de transporte, programas y análisis avanzados.",
-    "conciergeBannerBtn": "Preferencias y Ajustes del Asistente"
+    "conciergeBannerBtn": "Preferencias y Ajustes del Asistente",
+    "recentlyConcluded": "Finalizadas recientemente"
   },
   "regions": {
     "title": "Ediciones Nacionales",
@@ -570,7 +571,8 @@
     "meetingRoomsShowLess": "Mostrar menos",
     "meetingRoomsNoMatch": "Ninguna sala coincide con la búsqueda.",
     "explorerIntro": "Alturas estructurales, cargas de suelo, capacidades y alas arquitectónicas.",
-    "specsVerified": "Verificado"
+    "specsVerified": "Verificado",
+    "alsoInEdition": "También en esta edición"
   },
   "calendar": {
     "title": "Calendario Interactivo de Eventos",
@@ -621,7 +623,11 @@
     "copyTitle": "Copiar resumen de texto",
     "copyDesc": "Agenda en texto plano",
     "copiedTitle": "Agenda copiada!",
-    "copiedDesc": "Lista para pegar en chat o documentos"
+    "copiedDesc": "Lista para pegar en chat o documentos",
+    "jumpTo": "Ir a {title}",
+    "eventsCountZero": "Sin eventos",
+    "eventsCountOne": "1 evento",
+    "eventsCount": "{count} eventos"
   },
   "tickets": {
     "bookPass": "Reservar Pase de Entrada",

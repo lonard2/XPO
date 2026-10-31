@@ -80,3 +80,37 @@ describe('EventCalendarWidget heat dots', () => {
     expect(dots.length).toBeGreaterThanOrEqual(1);
   });
 });
+
+describe('EventCalendarWidget nearest upcoming', () => {
+  const ended: EventSummary[] = [
+    {
+      id: 'evt-past',
+      title: 'Pekan Raya Jakarta 2026',
+      slug: 'pekan-raya-jakarta-2026',
+      archetype: 'MEGA_EXPO',
+      startDate: new Date(Date.now() - 86400000 * 40).toISOString(),
+      endDate: new Date(Date.now() - 86400000 * 30).toISOString(),
+      venueName: 'JIExpo Kemayoran',
+      venueHallName: 'Hall A',
+      cityName: 'Jakarta',
+      regionCode: 'id',
+      lowestPrice: 0,
+      currency: 'IDR',
+    },
+  ];
+
+  it('never offers a concluded event as the next exhibition', () => {
+    render(<EventCalendarWidget events={ended} locale="en" regionCode="id" />);
+
+    expect(screen.getByText(/No scheduled exhibitions on this date/i)).toBeDefined();
+    expect(screen.queryByRole('button', { name: /Jump to/i })).toBeNull();
+    expect(screen.queryByText(/Pekan Raya Jakarta 2026/i)).toBeNull();
+  });
+
+  it('counts events on the selected day without borrowing a page title', () => {
+    render(<EventCalendarWidget events={mockEvents} locale="en" regionCode="id" />);
+
+    expect(screen.getByText(/^1 event$/i)).toBeDefined();
+    expect(screen.queryByText(/Event Directory/i)).toBeNull();
+  });
+});

@@ -55,7 +55,6 @@ export function EventCalendarWidget({
   onSelectDate,
 }: EventCalendarWidgetProps) {
   const tCal = useTranslations('calendar');
-  const tEvents = useTranslations('events');
   const tTickets = useTranslations('tickets');
 
   // Locale-aware narrow weekday labels (Sunday-first grid order); no hardcoded English.
@@ -120,7 +119,7 @@ export function EventCalendarWidget({
       const startStr = toISODateInTimezone(evt.startDate, timezone);
       return startStr >= selStr;
     });
-    return upcoming || sorted[0];
+    return upcoming ?? null;
   }, [events, eventsOnSelectedDate, selectedDate, timezone]);
 
   // Check if a calendar day has events
@@ -289,7 +288,11 @@ export function EventCalendarWidget({
               {tCal('eventsOnDate') || 'Schedule for'} {selectedDateFormatted}
             </span>
             <Badge variant="outline" className="text-xs font-semibold">
-              {eventsOnSelectedDate.length} {tEvents('title')?.split('&')?.[0]?.trim() || 'Events'}
+              {eventsOnSelectedDate.length === 0
+                ? tCal('eventsCountZero')
+                : eventsOnSelectedDate.length === 1
+                ? tCal('eventsCountOne')
+                : tCal('eventsCount', { count: eventsOnSelectedDate.length })}
             </Badge>
           </div>
 
@@ -376,7 +379,7 @@ export function EventCalendarWidget({
                       }}
                       className="inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:underline cursor-pointer bg-primary/10 hover:bg-primary/20 px-3.5 py-2 min-h-[44px] sm:min-h-[36px] rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                     >
-                      <span>Jump to: {nearestUpcomingEvent.title}</span>
+                      <span>{tCal('jumpTo', { title: nearestUpcomingEvent.title })}</span>
                       <ArrowRight className="h-3 w-3" />
                     </button>
                   </div>

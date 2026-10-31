@@ -169,7 +169,8 @@
     "adminPill3": "Enterprise Security & Verification",
     "conciergeBannerTitle": "Attendee Event Concierge & Reporting Hub",
     "conciergeBannerDesc": "Access real-time hall navigation, transit logistics, timetable schedules, and comprehensive organizer analytics reports.",
-    "conciergeBannerBtn": "Preferences & Concierge Settings"
+    "conciergeBannerBtn": "Preferences & Concierge Settings",
+    "recentlyConcluded": "Recently concluded"
   },
   "regions": {
     "title": "Country Editions",
@@ -570,7 +571,8 @@
     "meetingRoomsShowLess": "Show less",
     "meetingRoomsNoMatch": "No meeting rooms match this search.",
     "explorerIntro": "Structural clear heights, floor loading ratings, pax capacities, and architectural wings.",
-    "specsVerified": "Verified"
+    "specsVerified": "Verified",
+    "alsoInEdition": "Also in this edition"
   },
   "calendar": {
     "title": "Interactive Event Calendar",
@@ -621,7 +623,11 @@
     "copyTitle": "Copy Text Summary",
     "copyDesc": "Plain-text agenda",
     "copiedTitle": "Schedule Copied!",
-    "copiedDesc": "Ready to paste into chat or docs"
+    "copiedDesc": "Ready to paste into chat or docs",
+    "jumpTo": "Jump to {title}",
+    "eventsCountZero": "No events",
+    "eventsCountOne": "1 event",
+    "eventsCount": "{count} events"
   },
   "tickets": {
     "bookPass": "Book Ticket Pass",

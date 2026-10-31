@@ -12,7 +12,7 @@ Follow-up to the 24/40 critique. Five priority issues, shipped one commit each.
   `My Passes`, and the account pill covers `Organizer`.
 - [x] **H4. Venue name truncation.** `line-clamp-1` cuts the primary identifier on every
   venue card at every breakpoint.
-- [ ] **H5. Curation.** Six events enumerated four times, three badged Concluded under
+- [x] **H5. Curation.** Six events enumerated four times, three badged Concluded under
   an "Upcoming" eyebrow, four of six venue cards reading "0 LISTED".
 
 Deferred on purpose: countdown hydration mismatch (small separate commit), and the

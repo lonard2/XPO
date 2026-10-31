@@ -215,6 +215,12 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
   bannerSlides = sortUpcomingFirst(bannerSlides);
   featuredEvents = sortUpcomingFirst(featuredEvents);
 
+  // "Upcoming" has to mean upcoming. Concluded editions stay reachable, but they move
+  // into their own line instead of padding the grid with dead inventory.
+  const nowMs = Date.now();
+  const attendableEvents = featuredEvents.filter((event) => new Date(event.endDate).getTime() >= nowMs);
+  const concludedEvents = featuredEvents.filter((event) => new Date(event.endDate).getTime() < nowMs);
+
   const regionLocalizedName =
     activeRegionCode === 'id'
       ? tReg('id.name') || 'Indonesia'
@@ -275,7 +281,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
           </Link>
         </div>
 
-        {featuredEvents.length === 0 ? (
+        {attendableEvents.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border p-8 sm:p-12 text-center max-w-xl mx-auto space-y-4">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary mx-auto">
               <Calendar className="h-6 w-6" />
@@ -307,9 +313,29 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
-            {featuredEvents.map((event, idx) => (
+            {attendableEvents.map((event, idx) => (
               <EventCard key={event.id} event={event} locale={locale} priority={idx < 3} />
             ))}
+          </div>
+        )}
+
+        {concludedEvents.length > 0 && (
+          <div className="rounded-xl border border-border/60 bg-muted/30 px-4 py-3">
+            <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+              {tHome('recentlyConcluded')}
+            </p>
+            <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1.5">
+              {concludedEvents.map((event) => (
+                <li key={event.id}>
+                  <Link
+                    href={`/${locale}/events/${event.slug}`}
+                    className="text-xs font-medium text-muted-foreground hover:text-foreground hover:underline underline-offset-2"
+                  >
+                    {event.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         )}
       </section>

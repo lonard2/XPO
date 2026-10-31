@@ -169,7 +169,8 @@
     "adminPill3": "エンタープライズセキュリティ",
     "conciergeBannerTitle": "来場者コンシェルジュ＆レポートハブ",
     "conciergeBannerDesc": "会場ナビ、交通手段、タイムテーブル、主催者向け分析レポートをワンストップで確認できます。",
-    "conciergeBannerBtn": "環境設定＆コンシェルジュ設定"
+    "conciergeBannerBtn": "環境設定＆コンシェルジュ設定",
+    "recentlyConcluded": "終了した展示会"
   },
   "regions": {
     "title": "国・地域版エディション",
@@ -570,7 +571,8 @@
     "meetingRoomsShowLess": "折りたたむ",
     "meetingRoomsNoMatch": "条件に合う会議室がありません。",
     "explorerIntro": "構造天井高・床荷重・収容人数・建築ウイングのご案内。",
-    "specsVerified": "確認済み"
+    "specsVerified": "確認済み",
+    "alsoInEdition": "この地域の他の会場"
   },
   "calendar": {
     "title": "イベントカレンダー",
@@ -621,7 +623,11 @@
     "copyTitle": "テキスト概要をコピー",
     "copyDesc": "プレーンテキストの予定表",
     "copiedTitle": "予定表をコピーしました!",
-    "copiedDesc": "チャットやドキュメントに貼り付け可能"
+    "copiedDesc": "チャットやドキュメントに貼り付け可能",
+    "jumpTo": "{title}へ移動",
+    "eventsCountZero": "予定なし",
+    "eventsCountOne": "1件",
+    "eventsCount": "{count}件"
   },
   "tickets": {
     "bookPass": "入場パスを予約",

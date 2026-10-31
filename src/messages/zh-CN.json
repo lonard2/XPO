@@ -169,7 +169,8 @@
     "adminPill3": "企业级安全与防伪",
     "conciergeBannerTitle": "智能导览助手与报告中心",
     "conciergeBannerDesc": "即刻获取展厅导航指引、交通接驳信息、日程安排及全维度主办方分析报告。",
-    "conciergeBannerBtn": "首选项与助手设置"
+    "conciergeBannerBtn": "首选项与助手设置",
+    "recentlyConcluded": "近期已结束"
   },
   "regions": {
     "title": "国家/地区版本",
@@ -570,7 +571,8 @@
     "meetingRoomsShowLess": "收起",
     "meetingRoomsNoMatch": "没有符合条件的会议室。",
     "explorerIntro": "结构层高、地面承重、容量与建筑分区说明。",
-    "specsVerified": "已核实"
+    "specsVerified": "已核实",
+    "alsoInEdition": "本版本的其他场馆"
   },
   "calendar": {
     "title": "会展交互日历",
@@ -621,7 +623,11 @@
     "copyTitle": "复制文本摘要",
     "copyDesc": "纯文本议程",
     "copiedTitle": "日程已复制!",
-    "copiedDesc": "可粘贴到聊天或文档"
+    "copiedDesc": "可粘贴到聊天或文档",
+    "jumpTo": "跳转至 {title}",
+    "eventsCountZero": "暂无活动",
+    "eventsCountOne": "1 场活动",
+    "eventsCount": "{count} 场活动"
   },
   "tickets": {
     "bookPass": "预订入场通行证",
