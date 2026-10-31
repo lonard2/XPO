@@ -13,7 +13,7 @@ Everything still open after the two P0 fixes (`0fcf1f7`, `57fdf5f`).
   a statement the platform can back.
 - [x] **C5. Perks card.** Rewrite the unbacked deal-room copy to the features that exist,
   and give the card a destination.
-- [ ] **C6. Calendar ARIA.** Give the date grid a real grid structure instead of orphaned
+- [x] **C6. Calendar ARIA.** Give the date grid a real grid structure instead of orphaned
   row and columnheader roles.
 - [ ] **C7. Search copy.** Localise the regional suggestion labels, and replace the
   "cockpit" aria-label with plain language.

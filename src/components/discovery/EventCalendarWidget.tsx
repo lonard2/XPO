@@ -97,6 +97,11 @@ export function EventCalendarWidget({
   for (let d = 1; d <= daysInMonth; d++) {
     calendarDays.push({ dayNumber: d, date: new Date(year, month, d) });
   }
+  // Grid semantics need rows, so the flat day list is chunked into weeks.
+  const calendarWeeks: Array<Array<{ dayNumber: number | null; date: Date | null }>> = [];
+  for (let i = 0; i < calendarDays.length; i += 7) {
+    calendarWeeks.push(calendarDays.slice(i, i + 7));
+  }
 
   // Filter events active on selected date (timezone-normalized to active region)
   const eventsOnSelectedDate = React.useMemo(() => {
@@ -212,18 +217,26 @@ export function EventCalendarWidget({
             </div>
           </div>
 
-          {/* Weekday Labels */}
-          <div className="grid grid-cols-7 gap-1 text-center text-xs font-bold text-muted-foreground uppercase" role="row">
-            {weekdayLabels.map((label, i) => (
-              <span key={i} role="columnheader">{label}</span>
-            ))}
-          </div>
+          {/* One grid: weekday headers and day cells live in real rows so a screen
+              reader can announce column position instead of a bag of buttons. */}
+          <div role="grid" aria-label={`Calendar dates for ${monthName}`} className="grid grid-cols-7 gap-1">
+            <div role="row" className="contents">
+              {weekdayLabels.map((label, i) => (
+                <span
+                  key={i}
+                  role="columnheader"
+                  className="text-center text-xs font-bold text-muted-foreground uppercase"
+                >
+                  {label}
+                </span>
+              ))}
+            </div>
 
-          {/* Days Grid */}
-          <div className="grid grid-cols-7 gap-1" role="group" aria-label={`Calendar dates for ${monthName}`}>
-            {calendarDays.map((cell, idx) => {
+            {calendarWeeks.map((week, weekIndex) => (
+              <div role="row" key={`week-${weekIndex}`} className="contents">
+                {week.map((cell, idx) => {
               if (!cell.dayNumber || !cell.date) {
-                return <div key={`empty-${idx}`} className="h-10 min-h-[44px] sm:h-9 sm:min-h-[36px]" aria-hidden="true" />;
+                return <div key={`empty-${weekIndex}-${idx}`} role="gridcell" aria-hidden="true" className="h-10 min-h-[44px] sm:h-9 sm:min-h-[36px]" />;
               }
 
               const hasEvents = hasEventOnDay(cell.date);
@@ -234,8 +247,8 @@ export function EventCalendarWidget({
               const cellDateStr = cell.date.toLocaleDateString(locale, { month: 'short', day: 'numeric', year: 'numeric' });
 
               return (
+                <div role="gridcell" key={cell.dayNumber}>
                 <button
-                  key={cell.dayNumber}
                   onClick={() => {
                     if (cell.date) {
                       setSelectedDate(cell.date);
@@ -276,8 +289,11 @@ export function EventCalendarWidget({
                     </span>
                   )}
                 </button>
+                </div>
               );
-            })}
+                })}
+              </div>
+            ))}
           </div>
         </div>
 

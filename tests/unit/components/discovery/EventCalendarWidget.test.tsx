@@ -114,3 +114,22 @@ describe('EventCalendarWidget nearest upcoming', () => {
     expect(screen.queryByText(/Event Directory/i)).toBeNull();
   });
 });
+
+describe('EventCalendarWidget grid semantics', () => {
+  it('exposes dates as a grid with rows, headers and cells', () => {
+    const { container } = render(
+      <EventCalendarWidget events={mockEvents} locale="en" regionCode="id" />
+    );
+
+    const grid = container.querySelector('[role="grid"]');
+    expect(grid).not.toBeNull();
+    expect(grid!.querySelectorAll('[role="row"]').length).toBeGreaterThan(1);
+    expect(grid!.querySelectorAll('[role="columnheader"]').length).toBe(7);
+
+    const cells = [...grid!.querySelectorAll('[role="gridcell"]')];
+    expect(cells.length).toBeGreaterThan(0);
+    for (const cell of cells) {
+      expect(cell.parentElement?.getAttribute('role')).toBe('row');
+    }
+  });
+});
