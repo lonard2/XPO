@@ -4,7 +4,7 @@ Everything still open after the two P0 fixes (`0fcf1f7`, `57fdf5f`).
 
 - [x] **C1. Inventory-shaped layout.** Featured grid adapts its columns to the number of
   attendable events; a single venue card is centred instead of hugging the left edge.
-- [ ] **C2. Mobile and tablet chrome.** Hero CTA clears the bottom nav at 390; tablets get
+- [x] **C2. Mobile and tablet chrome.** Hero CTA clears the bottom nav at 390; tablets get
   persistent navigation; carousel dots reach the 24px target floor; the smallest
   controls are enlarged.
 - [ ] **C3. Price disclosure.** Cards show a free trade pass plus the paid tier range

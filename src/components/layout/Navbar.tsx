@@ -170,7 +170,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
             <button
               type="button"
               onClick={() => setIsAuthModalOpen(true)}
-              className="flex items-center gap-1.5 px-2 lg:px-2.5 py-1.5 rounded-lg border border-border/80 hover:border-primary/40 bg-card hover:bg-accent/50 transition-all text-xs text-left cursor-pointer whitespace-nowrap min-h-[44px]"
+              className="flex items-center gap-1.5 px-2 lg:px-2.5 py-1.5 rounded-lg border border-border/80 hover:border-primary/40 bg-card hover:bg-accent/50 transition-all text-xs text-left cursor-pointer whitespace-nowrap min-h-[44px] min-w-[44px]"
               aria-label={tNav("authAria")}
             >
               <div className="h-6 w-6 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
@@ -216,12 +216,14 @@ export function Navbar({ locale = "en" }: NavbarProps) {
             {/* Mobile Menu Toggle */}
             <Button
               variant="ghost"
-              size="icon"
-              className="xl:hidden h-11 w-11 min-h-[44px] min-w-[44px]"
+              size="sm"
+              className="xl:hidden h-11 min-h-[44px] min-w-[44px] gap-1.5 px-2.5"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label={tNav("menuAria")}
+              aria-expanded={isMobileMenuOpen}
             >
               {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              <span className="hidden md:inline text-xs font-semibold">{tNav("toggleMenu")}</span>
             </Button>
           </div>
         </div>

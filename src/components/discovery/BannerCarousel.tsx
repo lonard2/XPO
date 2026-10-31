@@ -208,7 +208,7 @@ export function BannerCarousel({
         aria-roledescription="slide"
         aria-label={tHero('slideLabel', { current: currentIndex + 1, total: totalSlides, title: currentSlide.title })}
         aria-live={isEffectivePaused ? 'polite' : 'off'}
-        className="relative min-h-[420px] sm:min-h-[480px] lg:min-h-[520px] flex flex-col justify-end p-5 pt-20 pb-20 sm:p-8 lg:p-12 overflow-hidden"
+        className="relative min-h-[420px] sm:min-h-[480px] lg:min-h-[520px] flex flex-col justify-end p-5 pt-20 pb-16 sm:p-8 sm:pb-20 lg:p-12 overflow-hidden"
       >
         {/* Slide Image Layer */}
         {currentSlide.heroImageUrl ? (
@@ -236,7 +236,7 @@ export function BannerCarousel({
         <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/80 via-55% to-black/35 lg:bg-gradient-to-r lg:from-black/95 lg:via-black/80 lg:via-50% lg:to-black/25" />
 
         {/* Foreground Content Card */}
-        <div className="relative z-10 max-w-2xl space-y-3.5 sm:space-y-4">
+        <div className="relative z-10 max-w-2xl space-y-2.5 sm:space-y-4">
           {/* Top Category, Temporal Status & Region Badges */}
           <div className="flex flex-wrap items-center gap-2">
             <Badge
@@ -428,7 +428,7 @@ export function BannerCarousel({
               key={idx}
               type="button"
               onClick={() => goToSlide(idx)}
-              className="relative flex h-10 min-w-[20px] items-center justify-center px-1 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black/50 rounded-full"
+              className="relative flex h-10 min-w-[24px] items-center justify-center px-1 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black/50 rounded-full"
               aria-label={tHero('goToSlide', { index: idx + 1 })}
               aria-current={idx === currentIndex ? 'true' : undefined}
             >
