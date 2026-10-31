@@ -29,6 +29,7 @@ import {
 import { resolveActiveRegion } from '@/lib/i18n/geo';
 import { getCurrencyForRegion } from '@/lib/i18n/formatters';
 import { filterAttendable, sortUpcomingFirst } from '@/lib/discovery/eventOrder';
+import { featuredGridClass } from '@/lib/discovery/grids';
 import { type BannerSlide, type DiscoveryEvent, type VenueWithEvents } from '@/types/discovery';
 
 export interface HomePageProps {
@@ -309,7 +310,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
+          <div className={featuredGridClass(attendableEvents.length)}>
             {attendableEvents.map((event, idx) => (
               <EventCard key={event.id} event={event} locale={locale} priority={idx < 3} />
             ))}
