@@ -1,24 +1,11 @@
 "use client";
+import { Breadcrumbs, BreadcrumbJsonLd } from "@/components/layout/Breadcrumbs";
 
 import * as React from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import {
-  Calendar,
-  MapPin,
-  Sparkles,
-  Ticket,
-  Share2,
-  Check,
-  ChevronRight,
-  Layers,
-  Building2,
-  Clock,
-  Map as MapIcon,
-  ShieldCheck,
-  ArrowRight,
-  Info,
-} from "lucide-react";
+  Map as MapIcon, Calendar, MapPin, Sparkles, Ticket, Share2, Check, Layers, Building2, Clock, ArrowRight } from "lucide-react";
 import {
   type MiceArchetype,
   type BrandingConfig,
@@ -303,6 +290,12 @@ export function EventPageShell({
     );
   };
 
+  const breadcrumbItems = [
+    { label: tCommon("home") || "Home", href: `/${locale}` },
+    { label: tEvents("breadcrumbsTitle") || "Events & Exhibitions", href: `/${locale}/events` },
+    { label: title, href: `/${locale}/events/${slug}` },
+  ];
+
   return (
     <div
       id="event-page-root"
@@ -310,21 +303,10 @@ export function EventPageShell({
       style={cssVariables as React.CSSProperties}
     >
       {/* 1. Breadcrumb Bar */}
+      <BreadcrumbJsonLd items={breadcrumbItems} />
       <div className="border-b border-border/40 bg-muted/20 backdrop-blur-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
-          <nav className="flex items-center space-x-2 text-xs text-muted-foreground" aria-label="Breadcrumb">
-            <Link href={`/${locale}`} className="hover:text-foreground transition-colors">
-              {tCommon("explore") || "Home"}
-            </Link>
-            <ChevronRight className="h-3 w-3 text-muted-foreground/60" aria-hidden="true" />
-            <Link href={`/${locale}/events`} className="hover:text-foreground transition-colors">
-              {tEvents("title")?.split("&")?.[0]?.trim() || "Events"}
-            </Link>
-            <ChevronRight className="h-3 w-3 text-muted-foreground/60" aria-hidden="true" />
-            <span className="text-foreground font-medium truncate max-w-[200px] sm:max-w-md" aria-current="page">
-              {title}
-            </span>
-          </nav>
+          <Breadcrumbs items={breadcrumbItems} />
         </div>
       </div>
 
