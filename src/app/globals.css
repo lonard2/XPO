@@ -1,6 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
 
 /*
  * One page container for the whole app.
@@ -10,48 +9,34 @@
  * 16px until 1600px and then jumped to 48px. Defining it here keeps the gutter
  * scaling with the viewport and the width fluid until 1600px.
  */
-@layer components {
-  .container {
-    width: 100%;
-    max-width: none;
-    margin-inline: auto;
-    padding-inline: 1rem;
-  }
+@utility container {
+  width: 100%;
+  max-width: none;
+  margin-inline: auto;
+  padding-inline: 1rem;
 
   @media (min-width: 640px) {
-    .container {
-      padding-inline: 1.5rem;
-    }
+    padding-inline: 1.5rem;
   }
 
   @media (min-width: 1024px) {
-    .container {
-      padding-inline: 2rem;
-    }
+    padding-inline: 2rem;
   }
 
   @media (min-width: 1280px) {
-    .container {
-      padding-inline: 2.5rem;
-    }
+    padding-inline: 2.5rem;
   }
 
   @media (min-width: 1536px) {
-    .container {
-      padding-inline: 3rem;
-    }
+    padding-inline: 3rem;
   }
 
   @media (min-width: 1600px) {
-    .container {
-      max-width: 1600px;
-    }
+    max-width: 1600px;
   }
 
   @media (min-width: 1800px) {
-    .container {
-      max-width: 1800px;
-    }
+    max-width: 1800px;
   }
 }
 

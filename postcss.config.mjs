@@ -1,8 +1,7 @@
-/** @type {import('postcss-load-config').Config} */
+/** Tailwind 4 ships its own PostCSS plugin; autoprefixer is built in. */
 const config = {
   plugins: {
-    tailwindcss: {},
-    autoprefixer: {},
+    "@tailwindcss/postcss": {},
   },
 };
 
