@@ -181,11 +181,13 @@ export function MajorVenuesUpcomingSection({
                 <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground pt-3 border-t border-border/70 flex items-center justify-between">
                   <span>{tVen('currentUpcomingEvents')}</span>
                   <span className="text-xs font-semibold text-primary font-mono tabular-nums">
-                    {tVen('listedCount', { count: upcomingEvents.length })}
+                    {upcomingEvents.length === 1
+                      ? tVen('listedCountOne')
+                      : tVen('listedCount', { count: upcomingEvents.length })}
                   </span>
                 </div>
 
-                {upcomingEvents.length > 0 ? (
+                {upcomingEvents.length > 0 && (
                   <div className="space-y-2">
                     {upcomingEvents.map((evt: VenueWithEvents['events'][number]) => {
                       const tokens = getArchetypeTokens(evt.archetype);
@@ -241,10 +243,6 @@ export function MajorVenuesUpcomingSection({
                       );
                     })}
                   </div>
-                ) : (
-                  <p className="pt-1 text-[11px] leading-relaxed text-muted-foreground">
-                    {tVen('noUpcomingDetail')}
-                  </p>
                 )}
               </div>
 

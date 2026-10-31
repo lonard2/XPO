@@ -4,12 +4,15 @@ import * as React from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Building2, Compass, Cpu, Globe2 } from "lucide-react";
+import { MICE_INDUSTRY_CLUSTERS } from "@/lib/theming";
+import { clusterLabel } from "@/lib/i18n/categories";
 
 export function Footer({ locale = "en" }: { locale?: string }) {
   let tNav: any = null;
   let tReg: any = null;
   let tArch: any = null;
   let tFoot: any = null;
+  let tCluster: any = null;
 
   try {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -20,6 +23,8 @@ export function Footer({ locale = "en" }: { locale?: string }) {
     tArch = useTranslations("archetypes");
     // eslint-disable-next-line react-hooks/rules-of-hooks
     tFoot = useTranslations("footer");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tCluster = useTranslations("organizer");
   } catch {
     // Fallback if rendered outside provider in tests
   }
@@ -102,12 +107,15 @@ export function Footer({ locale = "en" }: { locale?: string }) {
           <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             {getSafe(tFoot, "eventCategories", "Event Categories")}
           </h4>
+          {/* All six clusters rather than five arbitrary categories out of twenty-two. */}
           <ul className="space-y-2 text-xs text-muted-foreground">
-            <li><Link href={`/${locale}/events?archetype=INDUSTRIAL_B2B`} className="hover:text-foreground transition-colors">{getSafe(tArch, "INDUSTRIAL_B2B.title", "Industrial & Manufacturing B2B")}</Link></li>
-            <li><Link href={`/${locale}/events?archetype=TECH_DEV_SUMMIT`} className="hover:text-foreground transition-colors">{getSafe(tArch, "TECH_DEV_SUMMIT.title", "Technology, AI & Consumer Electronics")}</Link></li>
-            <li><Link href={`/${locale}/events?archetype=MEDICAL_SYMPOSIUM`} className="hover:text-foreground transition-colors">{getSafe(tArch, "MEDICAL_SYMPOSIUM.title", "Medical & Healthcare Congress")}</Link></li>
-            <li><Link href={`/${locale}/events?archetype=AUTOMOTIVE_MOBILITY`} className="hover:text-foreground transition-colors">{getSafe(tArch, "AUTOMOTIVE_MOBILITY.title", "Automotive, EV & Mobility Motor Show")}</Link></li>
-            <li><Link href={`/${locale}/events?archetype=POP_CULTURE_GAMING`} className="hover:text-foreground transition-colors">{getSafe(tArch, "POP_CULTURE_GAMING.title", "Pop Culture, Gaming & Comic Con")}</Link></li>
+            {MICE_INDUSTRY_CLUSTERS.map((cluster) => (
+              <li key={cluster.id}>
+                <Link href={`/${locale}/events`} className="hover:text-foreground transition-colors">
+                  {clusterLabel(tCluster, cluster.id, cluster.shortLabel)}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 

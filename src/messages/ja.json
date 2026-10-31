@@ -492,8 +492,7 @@
     "multiHallLayout": "複合ホール構成",
     "editionSpotlight": "{region} エディション特集",
     "currentUpcomingEvents": "開催中・近日開催イベント",
-    "listedCount": "{count} 件",
-    "noUpcomingDetail": "会場ディレクトリで今後の開催時期をご確認ください",
+    "listedCount": "{count}件",
     "exploreFullCalendar": "{venue} の全カレンダーを見る",
     "happeningAtMajorVenues": "主要会場で開催中",
     "meetingRooms": "会議室",
@@ -574,7 +573,8 @@
     "meetingRoomsNoMatch": "条件に合う会議室がありません。",
     "explorerIntro": "構造天井高・床荷重・収容人数・建築ウイングのご案内。",
     "specsVerified": "確認済み",
-    "alsoInEdition": "この地域の他の会場"
+    "alsoInEdition": "この地域の他の会場",
+    "listedCountOne": "1件"
   },
   "calendar": {
     "title": "イベントカレンダー",

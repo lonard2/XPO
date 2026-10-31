@@ -34,7 +34,7 @@ Unlike generic consumer ticketing marketplaces (Eventbrite, Ticketmaster) or sta
 ## Capabilities and Constraints
 
 - **Capabilities**:
-  - 15 specialized MICE event categories with distinct visual identities and layout components.
+  - 22 specialized MICE event categories with distinct visual identities and layout components.
   - Interactive multi-month event calendar with iCalendar (`.ics`) standard export.
   - Multi-region venue directory and campus spatial explorer.
   - Cryptographic QR pass generation, 1-tap high-contrast turnstile scanner modal, and offline pass caching.

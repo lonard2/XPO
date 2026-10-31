@@ -492,8 +492,7 @@
     "multiHallLayout": "Tata Letak Multi-Hall",
     "editionSpotlight": "Sorotan Edisi {region}",
     "currentUpcomingEvents": "Acara Berlangsung & Akan Datang",
-    "listedCount": "{count} terdaftar",
-    "noUpcomingDetail": "Lihat jadwal musim mendatang di direktori venue",
+    "listedCount": "{count} acara",
     "exploreFullCalendar": "Jelajahi kalender lengkap {venue}",
     "happeningAtMajorVenues": "Berlangsung di Venue Utama",
     "meetingRooms": "Ruang Rapat",
@@ -574,7 +573,8 @@
     "meetingRoomsNoMatch": "Tidak ada ruang rapat yang cocok.",
     "explorerIntro": "Tinggi plafon struktural, rating beban lantai, kapasitas, dan sayap arsitektural.",
     "specsVerified": "Terverifikasi",
-    "alsoInEdition": "Juga di edisi ini"
+    "alsoInEdition": "Juga di edisi ini",
+    "listedCountOne": "1 acara"
   },
   "calendar": {
     "title": "Kalender Acara Interaktif",

@@ -35,11 +35,13 @@ describe("outer chrome audit fixes", () => {
     document.cookie = "xpo_region=; path=/; max-age=0";
   });
 
-  it("links footer categories to filtered discovery", () => {
+  it("covers the whole taxonomy in the footer, not five arbitrary categories", () => {
     const { container } = render(<Footer locale="en" />);
-    const links = Array.from(container.querySelectorAll('a[href*="archetype="]'));
-    expect(links.length).toBe(5);
-    expect(links[0].getAttribute("href")).toBe("/en/events?archetype=INDUSTRIAL_B2B");
+    const links = Array.from(container.querySelectorAll('a[href="/en/events"]'));
+    expect(links.length).toBe(6);
+    const text = links.map((link) => link.textContent?.trim() ?? "");
+    expect(text).toContain("Heavy Industry");
+    expect(text).toContain("Culture & Sports");
   });
 
   it("moves focus with arrow keys inside listboxes", () => {

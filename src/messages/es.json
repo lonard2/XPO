@@ -492,8 +492,7 @@
     "multiHallLayout": "Diseño Multi-Pabellón",
     "editionSpotlight": "Edición {region} destacada",
     "currentUpcomingEvents": "Eventos actuales y próximos",
-    "listedCount": "{count} listados",
-    "noUpcomingDetail": "Consulta las próximas fechas en el directorio de recintos",
+    "listedCount": "{count} eventos",
     "exploreFullCalendar": "Ver el calendario completo de {venue}",
     "happeningAtMajorVenues": "En curso en los principales recintos",
     "meetingRooms": "Salas de reuniones",
@@ -574,7 +573,8 @@
     "meetingRoomsNoMatch": "Ninguna sala coincide con la búsqueda.",
     "explorerIntro": "Alturas estructurales, cargas de suelo, capacidades y alas arquitectónicas.",
     "specsVerified": "Verificado",
-    "alsoInEdition": "También en esta edición"
+    "alsoInEdition": "También en esta edición",
+    "listedCountOne": "1 evento"
   },
   "calendar": {
     "title": "Calendario Interactivo de Eventos",

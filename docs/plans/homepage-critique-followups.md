@@ -17,7 +17,7 @@ Everything still open after the two P0 fixes (`0fcf1f7`, `57fdf5f`).
   row and columnheader roles.
 - [x] **C7. Search copy.** Localise the regional suggestion labels, and replace the
   "cockpit" aria-label with plain language.
-- [ ] **C8. Small truths.** Footer category list, "1 listed" copy, dead `noUpcomingDetail`
+- [x] **C8. Small truths.** Footer category list, "1 listed" copy, dead `noUpcomingDetail`
   key, stale `PRODUCT.md` category count.
 - [ ] **C9. Header clarity.** Make the region and language switchers visually distinct
   instead of two adjacent controls both answering "Indonesia".

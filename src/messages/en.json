@@ -492,8 +492,7 @@
     "multiHallLayout": "Multi-Hall Layout",
     "editionSpotlight": "{region} Edition Spotlight",
     "currentUpcomingEvents": "Current & Near-Upcoming Events",
-    "listedCount": "{count} listed",
-    "noUpcomingDetail": "Check upcoming season dates in the venue directory",
+    "listedCount": "{count} events",
     "exploreFullCalendar": "Explore full {venue} calendar",
     "happeningAtMajorVenues": "Happening at Major Venues",
     "meetingRooms": "Meeting Rooms",
@@ -574,7 +573,8 @@
     "meetingRoomsNoMatch": "No meeting rooms match this search.",
     "explorerIntro": "Structural clear heights, floor loading ratings, pax capacities, and architectural wings.",
     "specsVerified": "Verified",
-    "alsoInEdition": "Also in this edition"
+    "alsoInEdition": "Also in this edition",
+    "listedCountOne": "1 event"
   },
   "calendar": {
     "title": "Interactive Event Calendar",

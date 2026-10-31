@@ -492,8 +492,7 @@
     "multiHallLayout": "Multi-Hallen-Layout",
     "editionSpotlight": "{region}-Edition im Fokus",
     "currentUpcomingEvents": "Aktuelle und kommende Veranstaltungen",
-    "listedCount": "{count} gelistet",
-    "noUpcomingDetail": "Kommende Saisontermine im Veranstaltungsortverzeichnis prüfen",
+    "listedCount": "{count} Events",
     "exploreFullCalendar": "Vollständigen Kalender von {venue} ansehen",
     "happeningAtMajorVenues": "Aktuelles an den wichtigsten Veranstaltungsorten",
     "meetingRooms": "Tagungsräume",
@@ -574,7 +573,8 @@
     "meetingRoomsNoMatch": "Keine Tagungsräume für diese Suche.",
     "explorerIntro": "Tragwerkshöhen, Bodenlasten, Kapazitäten und Architekturflügel.",
     "specsVerified": "Verifiziert",
-    "alsoInEdition": "Ebenfalls in dieser Ausgabe"
+    "alsoInEdition": "Ebenfalls in dieser Ausgabe",
+    "listedCountOne": "1 Event"
   },
   "calendar": {
     "title": "Interaktiver Eventkalender",
