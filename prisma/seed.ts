@@ -1,9 +1,12 @@
 import { PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
 
-const prisma = new PrismaClient();
+// Prisma 7 connects through a driver adapter; the seed runs outside Next.
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL ?? "" });
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  console.log("🌱 Starting XPO MICE Relational Database Seeding...");
+  console.log("Starting XPO MICE relational database seeding...");
 
   // 1. Clean existing tables in reverse dependency order
   await prisma.aIReport.deleteMany();
@@ -1204,7 +1207,7 @@ async function main() {
 
   console.log("✓ Seeded realistic events across Indonesia, Japan, and Global hubs");
   console.log("✓ Seeded sample Attendee booking with SVG QR Hash and Organizer AI Report");
-  console.log("🎉 Seeding complete successfully!");
+  console.log("Seeding complete.");
 }
 
 main()
