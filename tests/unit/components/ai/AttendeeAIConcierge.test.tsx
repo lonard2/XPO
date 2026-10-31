@@ -7,6 +7,8 @@ import { AttendeeAIConcierge } from "@/components/ai/AttendeeAIConcierge";
 describe("AttendeeAIConcierge Component", () => {
   beforeEach(() => {
     localStorage.clear();
+    // The launcher waits until the opening screen has scrolled away.
+    Object.defineProperty(window, "scrollY", { value: 1200, writable: true, configurable: true });
     // Mock scrollIntoView
     Element.prototype.scrollIntoView = vi.fn();
     // Mock fetch for concierge API
@@ -136,5 +138,36 @@ describe("AttendeeAIConcierge Component", () => {
     });
 
     expect(screen.getByText(/Chat history cleared/i)).toBeInTheDocument();
+  });
+});
+
+describe("AttendeeAIConcierge launcher placement", () => {
+  beforeEach(() => {
+    localStorage.clear();
+    Element.prototype.scrollIntoView = vi.fn();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it("stays out of the opening screen so it cannot cover the search cockpit", async () => {
+    Object.defineProperty(window, "scrollY", { value: 0, writable: true, configurable: true });
+    render(
+      <SettingsProvider>
+        <AttendeeAIConcierge />
+      </SettingsProvider>
+    );
+
+    expect(screen.queryByRole("button", { name: /Open Attendee AI Concierge/i })).toBeNull();
+
+    Object.defineProperty(window, "scrollY", { value: 1400, writable: true, configurable: true });
+    act(() => {
+      window.dispatchEvent(new Event("scroll"));
+    });
+
+    expect(
+      screen.getByRole("button", { name: /Open Attendee AI Concierge/i })
+    ).toBeInTheDocument();
   });
 });

@@ -6,7 +6,7 @@ Follow-up to the 24/40 critique. Five priority issues, shipped one commit each.
   screen answered "which event is this" instead of "what is XPO". A visible masthead
   now states what the platform is, who it serves, and three checkable facts. Copy
   rewritten in all six locales to read like a person wrote it.
-- [ ] **H2. Concierge launcher collision.** The fixed launcher covers section CTAs
+- [x] **H2. Concierge launcher collision.** The fixed launcher covers section CTAs
   (measured: 54px of the 162px "Convention Centers" button at 1440).
 - [ ] **H3. Tablet header overlap.** At 768 the language switcher covers `Venues` and
   `My Passes`, and the account pill covers `Organizer`.

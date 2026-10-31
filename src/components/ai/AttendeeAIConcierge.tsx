@@ -61,6 +61,9 @@ export function AttendeeAIConcierge({ locale = "en", eventContext }: AttendeeAIC
   const [isExpanded, setIsExpanded] = React.useState(false);
   const [inputValue, setInputValue] = React.useState("");
   const [isStreaming, setIsStreaming] = React.useState(false);
+  // The launcher used to sit over the search cockpit, which is the page's primary
+  // control. Hold it back until the visitor has scrolled past the opening screen.
+  const [showLauncher, setShowLauncher] = React.useState(false);
   const [messages, setMessages] = React.useState<ChatMessage[]>([
     {
       id: "welcome-1",
@@ -90,6 +93,20 @@ export function AttendeeAIConcierge({ locale = "en", eventContext }: AttendeeAIC
       setTimeout(() => inputRef.current?.focus(), 150);
     }
   }, [isOpen]);
+
+  // Reveal the launcher once the opening screen has scrolled away.
+  React.useEffect(() => {
+    const syncLauncher = () => {
+      setShowLauncher(window.scrollY > window.innerHeight * 0.6);
+    };
+    syncLauncher();
+    window.addEventListener("scroll", syncLauncher, { passive: true });
+    window.addEventListener("resize", syncLauncher);
+    return () => {
+      window.removeEventListener("scroll", syncLauncher);
+      window.removeEventListener("resize", syncLauncher);
+    };
+  }, []);
 
   // If disabled in settings or not mounted yet, do not render
   if (!isMounted || !aiConciergeEnabled) {
@@ -232,26 +249,21 @@ export function AttendeeAIConcierge({ locale = "en", eventContext }: AttendeeAIC
   return (
     <>
       {/* Floating Action Button (FAB) */}
-      {!isOpen && (
+      {!isOpen && showLauncher && (
         <aside
           aria-label="Floating AI Concierge Launcher"
-          className="fixed bottom-20 md:bottom-6 right-4 sm:right-6 z-40 animate-fade-in"
+          className="fixed bottom-24 right-5 md:bottom-6 md:right-6 z-40 animate-fade-in"
         >
           <button
             type="button"
             onClick={() => setIsOpen(true)}
             aria-label="Open Attendee AI Concierge"
-            className="flex items-center gap-2.5 px-4 py-3 rounded-full bg-primary text-primary-foreground shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 group border border-primary/20"
+            className="relative flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 border border-primary/20"
           >
-            <div className="relative flex items-center justify-center">
-              <Bot className="h-5 w-5 stroke-[2.2]" />
-              <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-400" />
-              </span>
-            </div>
-            <span className="text-xs font-semibold tracking-wide pr-0.5 hidden xs:inline">
-              AI Concierge
+            <Bot className="h-5 w-5 stroke-[2.2]" />
+            <span aria-hidden="true" className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-400" />
             </span>
           </button>
         </aside>
@@ -264,7 +276,7 @@ export function AttendeeAIConcierge({ locale = "en", eventContext }: AttendeeAIC
           aria-label="Attendee AI Concierge Chat Dialog"
           aria-modal="true"
           className={cn(
-            "fixed z-50 bottom-20 md:bottom-6 right-3 sm:right-6 flex flex-col rounded-2xl border border-border bg-card shadow-2xl overflow-hidden transition-all duration-300 animate-fade-in",
+            "fixed z-50 bottom-24 right-3 sm:right-6 md:bottom-6 md:left-6 md:right-auto flex flex-col rounded-2xl border border-border bg-card shadow-2xl overflow-hidden transition-all duration-300 animate-fade-in",
             isExpanded
               ? "w-[94vw] sm:w-[580px] h-[88vh] max-h-[750px]"
               : "w-[92vw] sm:w-[400px] h-[80vh] max-h-[560px]"
