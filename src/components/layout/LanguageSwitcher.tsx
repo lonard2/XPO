@@ -145,7 +145,7 @@ export function LanguageSwitcher({
         aria-label={tNav("langTriggerAria", { label: languageLabel(tNav, activeLanguage.code, activeLanguage.label) })}
         className="h-11 px-2.5 gap-1.5 text-xs font-medium border border-border/60 hover:bg-accent hover:text-accent-foreground min-h-[44px]"
       >
-        <Globe className="h-3.5 w-3.5 text-muted-foreground" />
+        <Languages className="h-3.5 w-3.5 text-muted-foreground" />
         <span className="font-semibold uppercase tracking-wider">{activeLanguage.code.toUpperCase()}</span>
         <ChevronDown
           className={cn("h-3 w-3 text-muted-foreground transition-transform duration-200", {

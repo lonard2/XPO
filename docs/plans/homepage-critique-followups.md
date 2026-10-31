@@ -19,7 +19,7 @@ Everything still open after the two P0 fixes (`0fcf1f7`, `57fdf5f`).
   "cockpit" aria-label with plain language.
 - [x] **C8. Small truths.** Footer category list, "1 listed" copy, dead `noUpcomingDetail`
   key, stale `PRODUCT.md` category count.
-- [ ] **C9. Header clarity.** Make the region and language switchers visually distinct
+- [x] **C9. Header clarity.** Make the region and language switchers visually distinct
   instead of two adjacent controls both answering "Indonesia".
 
 Deferred: making editions path-based instead of cookie-based. That is a routing change,
