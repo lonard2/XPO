@@ -574,7 +574,8 @@
     "explorerIntro": "構造天井高・床荷重・収容人数・建築ウイングのご案内。",
     "specsVerified": "確認済み",
     "listedCountOne": "1件",
-    "noUpcomingShort": "開催予定はまだありません"
+    "noUpcomingShort": "開催予定はまだありません",
+    "wingCongress": "コングレスウィング"
   },
   "calendar": {
     "title": "イベントカレンダー",

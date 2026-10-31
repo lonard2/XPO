@@ -574,7 +574,8 @@
     "explorerIntro": "Structural clear heights, floor loading ratings, pax capacities, and architectural wings.",
     "specsVerified": "Verified",
     "listedCountOne": "1 event",
-    "noUpcomingShort": "No events announced yet"
+    "noUpcomingShort": "No events announced yet",
+    "wingCongress": "Congress Wing"
   },
   "calendar": {
     "title": "Interactive Event Calendar",

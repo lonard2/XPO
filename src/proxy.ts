@@ -6,7 +6,7 @@ import { canAccessRoute, UserRole, isValidRole } from './lib/auth/rbac';
 
 const intlMiddleware = createMiddleware(routing);
 
-export default function middleware(req: NextRequest) {
+export default function proxy(req: NextRequest) {
   const response = intlMiddleware(req);
   const detectedRegion = resolveRegionFromRequest(req);
 

@@ -574,7 +574,8 @@
     "explorerIntro": "Tragwerkshöhen, Bodenlasten, Kapazitäten und Architekturflügel.",
     "specsVerified": "Verifiziert",
     "listedCountOne": "1 Event",
-    "noUpcomingShort": "Noch keine Events angekündigt"
+    "noUpcomingShort": "Noch keine Events angekündigt",
+    "wingCongress": "Kongress-Flügel"
   },
   "calendar": {
     "title": "Interaktiver Eventkalender",

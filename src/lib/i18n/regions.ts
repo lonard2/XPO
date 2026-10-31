@@ -1,5 +1,4 @@
 import * as React from "react";
-import { usePathname } from "next/navigation";
 
 export type RegionCode = 'id' | 'jp' | 'global';
 
