@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import * as React from "react";
 import {
@@ -9,6 +9,28 @@ import {
   getArchetypeCssVariables,
   parseBrandingConfig,
 } from "@/lib/theming";
+
+
+// These suites exercise organizer-only surfaces, which sit behind the role gate.
+// They used to render because the app silently signed everyone in as an organizer;
+// the session is now guest-first, so the organizer is provided explicitly here.
+vi.mock("@/lib/auth/session", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/lib/auth/session")>();
+  return {
+    ...actual,
+    useAuth: () => ({
+      user: actual.DEMO_ACCOUNTS.ORGANIZER,
+      role: "ORGANIZER",
+      isAuthenticated: true,
+      isLoading: false,
+      switchRole: () => {},
+      login: async () => true,
+      refreshSession: async () => true,
+      logout: () => {},
+      hasPermission: () => true,
+    }),
+  };
+});
 
 describe("Phase 9 Unit: Event Creation Wizard & Archetype Engine", () => {
   it("verifies all 22 MICE category archetypes have valid default theme tokens", () => {

@@ -43,8 +43,11 @@ describe("Phase 8 Unit: Session Management & RBAC Security Suite", () => {
     expect(admin.email).toBe("admin@xpo.com");
   });
 
+  it("treats a visitor with no stored session as a guest, never a default persona", () => {
+    expect(getStoredUser()).toBeNull();
+  });
+
   it("persists and reads session user across localStorage and cookies synchronously", () => {
-    expect(getStoredUser()).toBeDefined();
 
     setStoredUser(DEMO_ACCOUNTS.ADMIN);
     const stored = getStoredUser();

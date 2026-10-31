@@ -78,8 +78,9 @@ export function getStoredUser(): AuthUser | null {
     // Ignore storage parsing errors
   }
 
-  // Default fallback is Organizer or Attendee
-  return DEMO_ACCOUNTS.ORGANIZER;
+  // No stored session means a guest. Demo personas are opt-in through the
+  // sign-in switcher, never an implicit login.
+  return null;
 }
 
 /**
@@ -128,19 +129,19 @@ export interface AuthContextType {
 }
 
 const AuthContext = React.createContext<AuthContextType>({
-  user: DEMO_ACCOUNTS.ORGANIZER,
-  role: "ORGANIZER",
-  isAuthenticated: true,
+  user: null,
+  role: "ATTENDEE",
+  isAuthenticated: false,
   isLoading: false,
   switchRole: () => {},
-  login: async () => true,
-  refreshSession: async () => true,
+  login: async () => false,
+  refreshSession: async () => false,
   logout: () => {},
-  hasPermission: () => true,
+  hasPermission: () => false,
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = React.useState<AuthUser | null>(DEMO_ACCOUNTS.ORGANIZER);
+  const [user, setUser] = React.useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
@@ -168,15 +169,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // No session: fall through to the demo convenience below.
       }
       if (cancelled) return;
-      const existing = getStoredUser();
-      if (existing) {
-        setUser(existing);
-        setStoredUser(existing); // Ensure cookies sync
-      } else {
-        // Default to Organizer in development for seamless portal exploration
-        setUser(DEMO_ACCOUNTS.ORGANIZER);
-        setStoredUser(DEMO_ACCOUNTS.ORGANIZER);
-      }
+      // A stored persona means someone chose it explicitly; otherwise this is a
+      // guest and the header must say so.
+      setUser(getStoredUser());
       setIsLoading(false);
     })();
 
@@ -262,15 +257,15 @@ export function useAuth(): AuthContextType {
   if (!context) {
     // Safe fallback if rendered without provider in isolated tests
     return {
-      user: DEMO_ACCOUNTS.ORGANIZER,
-      role: "ORGANIZER",
-      isAuthenticated: true,
+      user: null,
+      role: "ATTENDEE",
+      isAuthenticated: false,
       isLoading: false,
       switchRole: () => {},
-      login: async () => true,
-      refreshSession: async () => true,
+      login: async () => false,
+      refreshSession: async () => false,
       logout: () => {},
-      hasPermission: (perm) => checkPermission("ORGANIZER", perm),
+      hasPermission: (perm) => checkPermission("ATTENDEE", perm),
     };
   }
   return context;

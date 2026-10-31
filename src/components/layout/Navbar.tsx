@@ -181,9 +181,11 @@ export function Navbar({ locale = "en" }: NavbarProps) {
                   <span className="font-semibold text-foreground max-w-[85px] lg:max-w-[100px] truncate text-xs">
                     {user ? user.name.split(" ")[0] : (tNav("signIn"))}
                   </span>
-                  <Badge variant={getRoleBadgeVariant(role)} size="sm" className="text-xs py-0 px-1 font-semibold">
-                    {role}
-                  </Badge>
+                  {user && (
+                    <Badge variant={getRoleBadgeVariant(role)} size="sm" className="text-xs py-0 px-1 font-semibold">
+                      {role}
+                    </Badge>
+                  )}
                 </div>
               </div>
             </button>
@@ -305,10 +307,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
       </header>
 
       {/* Auth & Role Switcher Modal */}
-      <AuthModal
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-      />
+      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} defaultTab="login" allowPersonaTab={false} />
     </>
   );
 }

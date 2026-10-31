@@ -29,11 +29,21 @@ interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
   defaultTab?: "switcher" | "login" | "otp" | "matrix";
+  /** Persona switching is a development control, offered inside the organizer and
+   *  admin shells. The attendee chrome opens the sign-in form instead. */
+  allowPersonaTab?: boolean;
 }
 
-export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModalProps) {
+export function AuthModal({
+  isOpen,
+  onClose,
+  defaultTab = "switcher",
+  allowPersonaTab = true,
+}: AuthModalProps) {
   const { user, role, switchRole, login, refreshSession, logout, isAuthenticated } = useAuth();
-  const [activeTab, setActiveTab] = React.useState<"switcher" | "login" | "otp" | "matrix">(defaultTab);
+  const [activeTab, setActiveTab] = React.useState<"switcher" | "login" | "otp" | "matrix">(
+    allowPersonaTab ? defaultTab : defaultTab === "switcher" ? "login" : defaultTab
+  );
   const [demoAllowed, setDemoAllowed] = React.useState(true);
   const [otpEmail, setOtpEmail] = React.useState("");
   const [otpCode, setOtpCode] = React.useState("");
@@ -173,7 +183,7 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
       <div className="space-y-6 pt-2">
         {/* Navigation Tabs */}
         <div className="flex border-b border-border/80 gap-2">
-          {demoAllowed && (
+          {demoAllowed && allowPersonaTab && (
           <button
             type="button"
             onClick={() => setActiveTab("switcher")}
@@ -248,7 +258,7 @@ export function AuthModal({ isOpen, onClose, defaultTab = "switcher" }: AuthModa
         )}
 
         {/* TAB 1: Role Switcher Persona Cards (demo auth only) */}
-        {demoAllowed && activeTab === "switcher" && (
+        {demoAllowed && allowPersonaTab && activeTab === "switcher" && (
           <div className="space-y-4">
             <div className="text-xs text-muted-foreground">
               {tAuth("switcherDescription") || "Select a persona below to instantaneously simulate its security permissions, access tier, and portal views."}

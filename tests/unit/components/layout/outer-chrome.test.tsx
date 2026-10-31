@@ -6,6 +6,28 @@ import { RegionSwitcher } from "@/components/layout/RegionSwitcher";
 import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 import { handleListboxKeyDown } from "@/lib/a11y/listboxKeyboard";
 
+
+// These suites exercise organizer-only surfaces, which sit behind the role gate.
+// They used to render because the app silently signed everyone in as an organizer;
+// the session is now guest-first, so the organizer is provided explicitly here.
+vi.mock("@/lib/auth/session", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/lib/auth/session")>();
+  return {
+    ...actual,
+    useAuth: () => ({
+      user: actual.DEMO_ACCOUNTS.ORGANIZER,
+      role: "ORGANIZER",
+      isAuthenticated: true,
+      isLoading: false,
+      switchRole: () => {},
+      login: async () => true,
+      refreshSession: async () => true,
+      logout: () => {},
+      hasPermission: () => true,
+    }),
+  };
+});
+
 describe("outer chrome audit fixes", () => {
   beforeEach(() => {
     localStorage.clear();
