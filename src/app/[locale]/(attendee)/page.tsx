@@ -16,6 +16,7 @@ import { db } from '@/lib/db';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/Button';
 import { HeroSection } from '@/components/discovery/HeroSection';
+import { IdentityStrip } from '@/components/discovery/IdentityStrip';
 import { MajorVenuesUpcomingSection } from '@/components/discovery/MajorVenuesUpcomingSection';
 import { EventCategoryPills } from '@/components/discovery/EventCategoryPills';
 import { EventCalendarWidget } from '@/components/discovery/EventCalendarWidget';
@@ -223,13 +224,16 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
 
   return (
     <div className="flex flex-col gap-10 sm:gap-14 pb-24 md:pb-16">
-      {/* The hero rotates between events, so the page heading names the page rather than a slide. */}
-      <h1 className="sr-only">
-        {tHero('title')} {tHero('titleHighlight')}
-      </h1>
-
-      {/* 1. Hero Stage: Dynamic Banner Carousel + Search Cockpit */}
-      <section className="container pt-3 sm:pt-6">
+      {/* 1. Identity Plate + Hero Stage: the platform first, then the current event. */}
+      <section className="container pt-3 sm:pt-6 space-y-3">
+        <IdentityStrip
+          badge={tHero('badge')}
+          title={tHero('title')}
+          highlight={tHero('titleHighlight')}
+          subtitle={tHero('subtitle')}
+          proofs={[tHero('proof1'), tHero('proof2'), tHero('proof3')]}
+          regionName={regionLocalizedName}
+        />
         <HeroSection
           slides={bannerSlides}
           locale={locale}

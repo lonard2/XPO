@@ -93,10 +93,10 @@
     "languageHint_es": "スペイン/ラテンアメリカ"
   },
   "hero": {
-    "badge": "XPO デジタルMICEプラットフォーム",
-    "title": "国際展示会・コンベンション・学術会議：",
-    "titleHighlight": "統合インフラ",
-    "subtitle": "インドネシア、日本、そして世界主要都市のコンベンションセンターを結ぶ、エンタープライズMICEプラットフォーム。",
+    "badge": "MICEイベントディレクトリ",
+    "title": "展示会もカンファレンスも、",
+    "titleHighlight": "ホール単位で。",
+    "subtitle": "インドネシア、日本、その他の貿易都市から探せます。会場とホール、アクセス方法を確認して、パスはスマートフォンに保存できます。",
     "exploreEvents": "イベントを探す",
     "venueDirectory": "会場ディレクトリ",
     "spotlightHubs": "国・地域版",
@@ -118,7 +118,10 @@
     "pauseAutoplay": "自動再生を一時停止",
     "resumeAutoplay": "自動再生を再開",
     "goToSlide": "スライド {index} へ移動",
-    "slideLabel": "スライド {current} / {total}: {title}"
+    "slideLabel": "スライド {current} / {total}: {title}",
+    "proof1": "22のイベントカテゴリー",
+    "proof2": "ホールと交通情報",
+    "proof3": "オフラインでも使えるパス"
   },
   "home": {
     "searchCockpitPlaceholder": "展示会、サミット、会場を検索 (例: 東京ビッグサイト、AI、医療)...",

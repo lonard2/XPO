@@ -93,10 +93,10 @@
     "languageHint_es": "Spain / Latin America"
   },
   "hero": {
-    "badge": "XPO Digital MICE Ecosystem",
-    "title": "Global Conventions, Expos & Summits:",
-    "titleHighlight": "Enterprise Infrastructure",
-    "subtitle": "Institutional digital platform connecting trade delegates, organizers, and world-class convention complexes across Indonesia, Japan, and global gateways.",
+    "badge": "MICE event directory",
+    "title": "Expos and conferences,",
+    "titleHighlight": "down to the hall.",
+    "subtitle": "Find them in Indonesia, Japan, and other trade hubs. See the venue, the hall, and how to get there, then carry your pass on your phone.",
     "exploreEvents": "Explore Events",
     "venueDirectory": "Venue Directory",
     "spotlightHubs": "Country Editions",
@@ -118,7 +118,10 @@
     "pauseAutoplay": "Pause autoplay",
     "resumeAutoplay": "Resume autoplay",
     "goToSlide": "Go to slide {index}",
-    "slideLabel": "Slide {current} of {total}: {title}"
+    "slideLabel": "Slide {current} of {total}: {title}",
+    "proof1": "22 event categories",
+    "proof2": "Hall and transit data",
+    "proof3": "Passes work offline"
   },
   "home": {
     "searchCockpitPlaceholder": "Search exhibitions, summits, venues (e.g. JIExpo, Robotics, Medical)...",

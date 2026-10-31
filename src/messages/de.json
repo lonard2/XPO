@@ -93,10 +93,10 @@
     "languageHint_es": "Spanien / Lateinamerika"
   },
   "hero": {
-    "badge": "XPO Digitales MICE-Ökosystem",
-    "title": "Globale Messen, Kongresse & Events:",
-    "titleHighlight": "Enterprise-Infrastruktur",
-    "subtitle": "Die institutionelle Plattform für Fachdelegierte, Messeveranstalter und erstklassige Kongresszentren in Indonesien, Japan und internationalen Gateways.",
+    "badge": "MICE-Veranstaltungsverzeichnis",
+    "title": "Messen und Kongresse,",
+    "titleHighlight": "bis auf die Halle.",
+    "subtitle": "Finden Sie sie in Indonesien, Japan und anderen Handelszentren. Sehen Sie Veranstaltungsort, Halle und Anfahrt, und haben Sie Ihren Pass auf dem Smartphone dabei.",
     "exploreEvents": "Events Entdecken",
     "venueDirectory": "Messezentren",
     "spotlightHubs": "Länderausgaben",
@@ -118,7 +118,10 @@
     "pauseAutoplay": "Automatische Wiedergabe pausieren",
     "resumeAutoplay": "Automatische Wiedergabe fortsetzen",
     "goToSlide": "Zu Folie {index}",
-    "slideLabel": "Folie {current} von {total}: {title}"
+    "slideLabel": "Folie {current} von {total}: {title}",
+    "proof1": "22 Veranstaltungskategorien",
+    "proof2": "Hallen- und Anfahrtsdaten",
+    "proof3": "Pässe funktionieren offline"
   },
   "home": {
     "searchCockpitPlaceholder": "Messen, Gipfel, Veranstaltungsorte suchen (z. B. Messe Frankfurt, KI, Medizin)...",

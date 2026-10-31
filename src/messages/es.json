@@ -93,10 +93,10 @@
     "languageHint_es": "España / Latinoamérica"
   },
   "hero": {
-    "badge": "Ecosistema Digital MICE XPO",
-    "title": "Ferias Globales, Convenciones y Congresos:",
-    "titleHighlight": "Infraestructura Integrada",
-    "subtitle": "Plataforma institucional que conecta a delegados comerciales, organizadores y los principales centros de convenciones de Indonesia, Japón y el mundo.",
+    "badge": "Directorio de eventos MICE",
+    "title": "Ferias y congresos,",
+    "titleHighlight": "hasta el pabellón.",
+    "subtitle": "Encuéntralas en Indonesia, Japón y otros centros comerciales. Consulta el recinto, el pabellón y cómo llegar, y lleva tu pase en el teléfono.",
     "exploreEvents": "Explorar Ferias",
     "venueDirectory": "Directorio de Recintos",
     "spotlightHubs": "Ediciones Nacionales",
@@ -118,7 +118,10 @@
     "pauseAutoplay": "Pausar reproducción automática",
     "resumeAutoplay": "Reanudar reproducción automática",
     "goToSlide": "Ir a la diapositiva {index}",
-    "slideLabel": "Diapositiva {current} de {total}: {title}"
+    "slideLabel": "Diapositiva {current} de {total}: {title}",
+    "proof1": "22 categorías de eventos",
+    "proof2": "Datos de pabellón y transporte",
+    "proof3": "Pases sin conexión"
   },
   "home": {
     "searchCockpitPlaceholder": "Buscar ferias, cumbres, recintos (ej. ExCeL, Robótica, Medicina)...",

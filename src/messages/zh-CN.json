@@ -93,10 +93,10 @@
     "languageHint_es": "西班牙/拉美"
   },
   "hero": {
-    "badge": "XPO 会展数字生态平台",
-    "title": "全球峰会、国际会展与行业大会：",
-    "titleHighlight": "企业级基础设施",
-    "subtitle": "连接商务代表、主办方与印度尼西亚、日本及全球顶级会展中心的数字化基础设施平台。",
+    "badge": "MICE 展会目录",
+    "title": "展会与会议，",
+    "titleHighlight": "精确到展厅。",
+    "subtitle": "在印度尼西亚、日本及其他贸易城市都能找到。查看场馆、展厅和交通方式，通行证保存在手机里。",
     "exploreEvents": "浏览展会",
     "venueDirectory": "场馆名录",
     "spotlightHubs": "国家/地区版本",
@@ -118,7 +118,10 @@
     "pauseAutoplay": "暂停自动播放",
     "resumeAutoplay": "继续自动播放",
     "goToSlide": "转到第 {index} 张",
-    "slideLabel": "第 {current} 张，共 {total} 张：{title}"
+    "slideLabel": "第 {current} 张，共 {total} 张：{title}",
+    "proof1": "22 个展会类别",
+    "proof2": "展厅与交通信息",
+    "proof3": "通行证离线可用"
   },
   "home": {
     "searchCockpitPlaceholder": "搜索展会、峰会、场馆（例如：金沙博览、AI、医疗）...",

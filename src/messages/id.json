@@ -93,10 +93,10 @@
     "languageHint_es": "Spanyol / Amerika Latin"
   },
   "hero": {
-    "badge": "Ekosistem Digital MICE XPO",
-    "title": "Pameran Global, Konvensi & Ekspo:",
-    "titleHighlight": "Infrastruktur Terpadu",
-    "subtitle": "Platform enterprise yang menghubungkan delegasi bisnis, penyelenggara, dan pusat konvensi terkemuka di Indonesia, Jepang, dan gerbang global.",
+    "badge": "Direktori acara MICE",
+    "title": "Pameran dan konferensi,",
+    "titleHighlight": "sampai ke hall.",
+    "subtitle": "Temukan di Indonesia, Jepang, dan pusat dagang lain. Lihat venue, hall, dan cara menuju ke sana, lalu simpan pas Anda di ponsel.",
     "exploreEvents": "Jelajahi Pameran",
     "venueDirectory": "Direktori Venue",
     "spotlightHubs": "Edisi Negara",
@@ -118,7 +118,10 @@
     "pauseAutoplay": "Jeda putar otomatis",
     "resumeAutoplay": "Lanjutkan putar otomatis",
     "goToSlide": "Ke slide {index}",
-    "slideLabel": "Slide {current} dari {total}: {title}"
+    "slideLabel": "Slide {current} dari {total}: {title}",
+    "proof1": "22 kategori acara",
+    "proof2": "Data hall dan transportasi",
+    "proof3": "Pas tetap bisa dipakai offline"
   },
   "home": {
     "searchCockpitPlaceholder": "Cari pameran, konferensi, venue (mis. JIExpo, Robotika, Medis)...",
