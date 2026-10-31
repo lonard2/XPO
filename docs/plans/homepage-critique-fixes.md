@@ -10,7 +10,7 @@ Follow-up to the 24/40 critique. Five priority issues, shipped one commit each.
   (measured: 54px of the 162px "Convention Centers" button at 1440).
 - [x] **H3. Tablet header overlap.** At 768 the language switcher covers `Venues` and
   `My Passes`, and the account pill covers `Organizer`.
-- [ ] **H4. Venue name truncation.** `line-clamp-1` cuts the primary identifier on every
+- [x] **H4. Venue name truncation.** `line-clamp-1` cuts the primary identifier on every
   venue card at every breakpoint.
 - [ ] **H5. Curation.** Six events enumerated four times, three badged Concluded under
   an "Upcoming" eyebrow, four of six venue cards reading "0 LISTED".

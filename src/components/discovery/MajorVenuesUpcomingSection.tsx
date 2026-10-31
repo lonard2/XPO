@@ -28,6 +28,17 @@ export interface MajorVenuesUpcomingProps {
   className?: string;
 }
 
+/**
+ * Split "JIExpo Kemayoran (Jakarta International Expo)" into the name people use and
+ * the legal name in brackets. The bracketed half is what tells two venues apart, so it
+ * stays visible instead of being clipped off the end of a one-line clamp.
+ */
+export function splitVenueName(name: string): { primary: string; secondary: string | null } {
+  const match = name.match(/^(.*?)\s*\((.+)\)\s*$/);
+  if (!match) return { primary: name.trim(), secondary: null };
+  return { primary: match[1].trim(), secondary: match[2].trim() };
+}
+
 export function MajorVenuesUpcomingSection({
   venues,
   locale,
@@ -101,6 +112,7 @@ export function MajorVenuesUpcomingSection({
           // Max 3 attendable events per venue
           const upcomingEvents = attendableEventsFor(venue).slice(0, 3);
           const hallCount = countHalls(venue.halls);
+          const venueName = splitVenueName(venue.name);
 
           return (
             <Card
@@ -148,14 +160,18 @@ export function MajorVenuesUpcomingSection({
                 <Link
                   href={`/${locale}/venues/${venue.slug}`}
                   className="group inline-block"
+                  title={venue.name}
                 >
-                  <h3 className="text-lg sm:text-xl font-bold tracking-tight text-foreground group-hover:text-primary transition-colors line-clamp-1">
-                    {venue.name}
+                  <h3 className="text-lg sm:text-xl font-bold tracking-tight text-foreground group-hover:text-primary transition-colors line-clamp-2">
+                    {venueName.primary}
                   </h3>
+                  {venueName.secondary && (
+                    <p className="text-[11px] text-muted-foreground mt-0.5">{venueName.secondary}</p>
+                  )}
                 </Link>
                 {venue.transitInfo && (
-                  <p className="text-xs text-muted-foreground line-clamp-1 mt-1 flex items-center gap-1.5">
-                    <MapPin className="h-3.5 w-3.5 text-primary shrink-0" />
+                  <p className="text-xs text-muted-foreground line-clamp-2 mt-1 flex items-start gap-1.5">
+                    <MapPin className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />
                     <span>{venue.transitInfo}</span>
                   </p>
                 )}
