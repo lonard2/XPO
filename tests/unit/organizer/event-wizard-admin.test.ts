@@ -86,7 +86,7 @@ describe("Admin Platform-Curated Event Launch Wizard", () => {
       });
     });
 
-    global.fetch = fetchMock;
+    global.fetch = fetchMock as unknown as typeof fetch;
   });
 
   it("renders the Event Publication Authority and Ownership section for ADMIN role", async () => {
@@ -511,7 +511,7 @@ describe("Admin self-managed events", () => {
       }
       return Promise.resolve({ ok: true, json: () => Promise.resolve({}) });
     });
-    global.fetch = fetchMock;
+    global.fetch = fetchMock as unknown as typeof fetch;
   });
 
   it("creates an admin-owned event without organizer involvement", async () => {
@@ -567,7 +567,7 @@ describe("Admin simple listings", () => {
       }
       return Promise.resolve({ ok: true, json: () => Promise.resolve({}) });
     });
-    global.fetch = fetchMock;
+    global.fetch = fetchMock as unknown as typeof fetch;
   });
 
   it("creates a listing excluded from operations but owned by the admin", async () => {
@@ -633,7 +633,7 @@ describe("Wizard live venue directory", () => {
       }
       return Promise.resolve({ ok: true, json: () => Promise.resolve({}) });
     });
-    global.fetch = fetchMock;
+    global.fetch = fetchMock as unknown as typeof fetch;
   });
 
   it("lists real directory venues and halls instead of seeds", async () => {

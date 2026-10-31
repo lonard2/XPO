@@ -4,8 +4,7 @@ import * as React from "react";
 import {
   Code2,
   Terminal,
-  Github,
-  Twitter,
+  AtSign,
   ExternalLink,
   CheckCircle2,
   MapPin,
@@ -157,8 +156,8 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier }: Archet
                       <span className="font-medium text-foreground">{agenda.speakerName}</span>
                       {agenda.speakerRole && <span className="text-muted-foreground">({agenda.speakerRole})</span>}
                       <div className="flex items-center gap-2 ml-2">
-                        <Github className="h-3.5 w-3.5 text-muted-foreground hover:text-foreground cursor-pointer" />
-                        <Twitter className="h-3.5 w-3.5 text-muted-foreground hover:text-foreground cursor-pointer" />
+                        <Code2 className="h-3.5 w-3.5 text-muted-foreground hover:text-foreground cursor-pointer" />
+                        <AtSign className="h-3.5 w-3.5 text-muted-foreground hover:text-foreground cursor-pointer" />
                       </div>
                     </div>
                   )}
