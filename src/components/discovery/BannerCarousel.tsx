@@ -448,7 +448,7 @@ export function BannerCarousel({
   );
 }
 
-function BannerTemporalWidget({
+export function BannerTemporalWidget({
   startDate,
   endDate,
 }: {
@@ -458,9 +458,15 @@ function BannerTemporalWidget({
   const [temporal, setTemporal] = React.useState<EventTemporalDetails>(() =>
     getEventTemporalStatus(startDate, endDate)
   );
+  // The countdown ticks every second, so it cannot be part of the server markup:
+  // the client would hydrate with a different value and React would discard the
+  // server tree. The digits appear once the component is mounted, and the slot is
+  // reserved beforehand so the pill does not resize when they arrive.
+  const [isMounted, setIsMounted] = React.useState(false);
   const tHero = useTranslations('hero');
 
   React.useEffect(() => {
+    setIsMounted(true);
     setTemporal(getEventTemporalStatus(startDate, endDate));
     const timer = setInterval(() => {
       setTemporal(getEventTemporalStatus(startDate, endDate));
@@ -493,12 +499,22 @@ function BannerTemporalWidget({
   const time = temporal.timeRemaining;
   if (!time) return null;
 
+  const countdown = `${time.days}d ${String(time.hours).padStart(2, '0')}h ${String(
+    time.minutes
+  ).padStart(2, '0')}m ${String(time.seconds).padStart(2, '0')}s`;
+
   return (
     <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/60 px-3.5 py-1 text-xs backdrop-blur-md shadow-sm">
       <Clock className="h-3.5 w-3.5 text-primary shrink-0" />
       <span className="text-slate-300 font-medium">{tHero('startsIn')}</span>
-      <span className="font-mono font-bold text-white tracking-wide tabular-nums">
-        {time.days}d {String(time.hours).padStart(2, '0')}h {String(time.minutes).padStart(2, '0')}m {String(time.seconds).padStart(2, '0')}s
+      <span
+        className={cn(
+          'font-mono font-bold text-white tracking-wide tabular-nums',
+          !isMounted && 'invisible'
+        )}
+        aria-hidden={isMounted ? undefined : true}
+      >
+        {isMounted ? countdown : '00d 00h 00m 00s'}
       </span>
     </div>
   );

@@ -149,6 +149,15 @@ export function formatCurrency(
  * - Different months: "Jun 10 - Jul 12, 2026"
  * - Different years: "Dec 28, 2026 - Jan 3, 2027"
  */
+/**
+ * Node's ICU and a browser's ICU disagree on the whitespace around a date-range dash:
+ * Node emits U+2009 thin spaces, Chrome emits U+0020. The strings look identical and
+ * hydrate differently, so ranges are normalised to plain spaces.
+ */
+function normalizeRangeSpacing(value: string): string {
+  return value.replace(/[\u2009\u202F\u00A0]/g, ' ');
+}
+
 export function formatDateRange(
   startDate: Date | string,
   endDate: Date | string,
@@ -176,12 +185,12 @@ export function formatDateRange(
     });
 
     if (typeof formatter.formatRange === 'function') {
-      return formatter.formatRange(start, end);
+      return normalizeRangeSpacing(formatter.formatRange(start, end));
     }
 
     // Fallback if formatRange is not supported in host environment
-    const startFormatted = formatter.format(start);
-    const endFormatted = formatter.format(end);
+    const startFormatted = normalizeRangeSpacing(formatter.format(start));
+    const endFormatted = normalizeRangeSpacing(formatter.format(end));
     if (startFormatted === endFormatted) {
       return startFormatted;
     }

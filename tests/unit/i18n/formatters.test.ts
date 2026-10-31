@@ -243,3 +243,20 @@ describe("i18n Formatters: Temporal Status Calculation (getEventTemporalStatus)"
   });
 });
 
+
+describe("formatDateRange hydration stability", () => {
+  it("uses plain spaces around the range dash so server and browser agree", () => {
+    // Node's ICU separates a date range with U+2009 thin spaces; Chrome uses U+0020.
+    // That difference alone broke hydration of the hero date, so the output is
+    // normalised to plain spaces.
+    const range = formatDateRange(
+      "2026-11-05T09:00:00.000Z",
+      "2026-11-09T18:00:00.000Z",
+      "en",
+      "Asia/Jakarta"
+    );
+
+    expect(range).toBe("Nov 5 – 10, 2026");
+    expect(/[\u2009\u202F\u00A0]/.test(range)).toBe(false);
+  });
+});
