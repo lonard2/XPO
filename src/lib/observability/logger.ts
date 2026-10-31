@@ -4,6 +4,8 @@
  * Values are defensively serialized so logging never throws.
  */
 
+import { notifyAlert } from "./alerts";
+
 function safeContext(context?: Record<string, unknown>): Record<string, unknown> {
   if (!context) return {};
   const out: Record<string, unknown> = {};
@@ -41,6 +43,14 @@ function emit(
 export function reportError(scope: string, error: unknown, context?: Record<string, unknown>): void {
   const message = error instanceof Error ? error.message : String(error);
   emit("error", "error", scope, message, context);
+  // Fire-and-forget: alerting must never fail the request that triggered it.
+  void notifyAlert({
+    key: scope,
+    title: `Server error in ${scope}`,
+    message,
+    severity: "error",
+    context,
+  });
 }
 
 /** Suspicious-but-handled signal (rate hits, lockouts, mismatches). */

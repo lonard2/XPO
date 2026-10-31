@@ -141,6 +141,10 @@ EMAIL_PROVIDER="resend"            # resend | smtp | log
 RESEND_API_KEY="re_your_api_key"   # when EMAIL_PROVIDER=resend
 SMTP_URL="smtp://user:pass@host:587"  # when EMAIL_PROVIDER=smtp
 EMAIL_FROM="XPO MICE <no-reply@xpo.events>"
+
+# Alerting (optional; see docs/operations/monitoring.md)
+ALERT_WEBHOOK_URL="https://hooks.slack.com/services/..."
+ALERT_COOLDOWN_MS="900000"
 ```
 
 ### Setup & Execution Commands
