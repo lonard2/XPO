@@ -1,3 +1,6 @@
+import { activeEmailTransport, sendEmail } from "@/lib/email/transport";
+import { renderOtpEmail } from "@/lib/email/templates";
+
 export interface OtpOutboxEntry {
   email: string;
   code: string;
@@ -12,20 +15,9 @@ export interface OtpProvider {
 const testOutbox: OtpOutboxEntry[] = [];
 let override: OtpProvider | null = null;
 
-/** Log provider: server log in dev, in-memory outbox for tests. */
-const logProvider: OtpProvider = {
-  async send(entry) {
-    testOutbox.push(entry);
-    console.info(`[otp] code for ${entry.email} (${entry.purpose})`);
-  },
-};
-
+/** Test seam: replace delivery for a suite, then reset with null. */
 export function setOtpProvider(provider: OtpProvider | null): void {
   override = provider;
-}
-
-function activeProvider(): OtpProvider {
-  return override || logProvider;
 }
 
 export function readTestOtpOutbox(): OtpOutboxEntry[] {
@@ -36,6 +28,28 @@ export function clearTestOtpOutbox(): void {
   testOutbox.length = 0;
 }
 
+/**
+ * Deliver a login code through the configured email transport.
+ *
+ * Without a provider the code goes to the server log in development and the
+ * test outbox, which keeps local sign-in working. In production `sendEmail`
+ * throws instead, because a silently dropped code is a locked-out user.
+ */
 export async function deliverOtp(email: string, code: string, purpose: string): Promise<void> {
-  await activeProvider().send({ email, code, purpose, sentAt: new Date().toISOString() });
+  const entry: OtpOutboxEntry = { email, code, purpose, sentAt: new Date().toISOString() };
+
+  if (override) {
+    await override.send(entry);
+    return;
+  }
+
+  if (!activeEmailTransport().delivers) {
+    testOutbox.push(entry);
+    if (process.env.NODE_ENV !== "production") {
+      console.info(`[otp] code for ${email} (${purpose})`);
+    }
+  }
+
+  const { subject, text, html } = renderOtpEmail({ code, purpose });
+  await sendEmail({ to: email, subject, text, html });
 }

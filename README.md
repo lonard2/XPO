@@ -133,6 +133,14 @@ OPENROUTER_API_KEY="your-openrouter-api-key"
 QR_HMAC_SECRET="xpo-mice-secure-ticket-salt-2026-production-key"
 NEXTAUTH_SECRET="xpo-platform-auth-secret-key-2026"
 NEXT_PUBLIC_SITE_URL="http://localhost:3000"
+
+# Transactional email (OTP codes and booking confirmations)
+# Pick one provider. Without either, codes are logged in development and
+# the OTP endpoint fails loudly in production instead of silently.
+EMAIL_PROVIDER="resend"            # resend | smtp | log
+RESEND_API_KEY="re_your_api_key"   # when EMAIL_PROVIDER=resend
+SMTP_URL="smtp://user:pass@host:587"  # when EMAIL_PROVIDER=smtp
+EMAIL_FROM="XPO MICE <no-reply@xpo.events>"
 ```
 
 ### Setup & Execution Commands

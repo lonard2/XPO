@@ -3,6 +3,9 @@ import { db } from "@/lib/db";
 import { generateTicketHash, generateSvgQrCode, type TicketPassPayload } from "@/lib/tickets/qrPass";
 import { rateLimitResponse } from "@/lib/api/rateLimit";
 import { reportError } from "@/lib/observability/logger";
+import { sendEmail } from "@/lib/email/transport";
+import { renderBookingConfirmation } from "@/lib/email/templates";
+import { formatDateRange, getTimeZoneForRegion } from "@/lib/i18n/formatters";
 
 export async function POST(request: Request) {
   const limited = rateLimitResponse("tickets-checkout", request, { limit: 60, windowMs: 60_000 });
@@ -122,6 +125,32 @@ export async function POST(request: Request) {
       }
       return created;
     });
+
+    try {
+      const locale = typeof body.locale === "string" && body.locale ? body.locale : "en";
+      const timezone = getTimeZoneForRegion(booking.event.regionId || "id");
+      const venueText = [booking.event.venue?.name, booking.event.venueHall?.name]
+        .filter(Boolean)
+        .join(", ") || "Venue to be announced";
+      const mail = renderBookingConfirmation({
+        attendeeName: booking.attendeeName,
+        eventTitle: booking.event.title,
+        datesText: formatDateRange(
+          booking.event.startDate,
+          booking.event.endDate,
+          locale,
+          timezone
+        ),
+        venueText,
+        tierName: booking.ticketTier.name,
+        bookingId: booking.id,
+        passUrl: `${process.env.NEXT_PUBLIC_SITE_URL || "https://xpo.events"}/${locale}/my-tickets/${booking.id}`,
+      });
+      await sendEmail({ to: booking.attendeeEmail, ...mail });
+    } catch (mailError) {
+      // A committed booking must not fail because mail is down.
+      reportError("tickets-checkout-email", mailError);
+    }
 
     return NextResponse.json(
       {
