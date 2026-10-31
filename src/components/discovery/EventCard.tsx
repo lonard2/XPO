@@ -73,6 +73,21 @@ export const EventCard = React.memo(function EventCard({
       : (tCom('free') || 'Free');
   }, [event.ticketTiers, event.region?.currency, locale, tCom]);
 
+  // "Free" alone hid the paid tiers on the same event, so the card names the floor.
+  const paidFromDisplay = React.useMemo(() => {
+    const paid = (event.ticketTiers || [])
+      .filter((tier) => tier.price > 0)
+      .sort((a, b) => a.price - b.price)[0];
+    if (!paid) return null;
+    const currency = (paid.currency || event.region?.currency || 'IDR') as SupportedCurrency;
+    return formatCurrency(paid.price, currency, locale);
+  }, [event.ticketTiers, event.region?.currency, locale]);
+
+  const hasFreeTier = React.useMemo(
+    () => (event.ticketTiers || []).some((tier) => tier.price === 0),
+    [event.ticketTiers]
+  );
+
   const dateRangeDisplay = React.useMemo(() => {
     return formatDateRange(
       event.startDate,
@@ -283,6 +298,11 @@ export const EventCard = React.memo(function EventCard({
             <span className="text-sm font-extrabold text-foreground tabular-nums">
               {temporal.isPast ? tEvents('concluded') : priceDisplay}
             </span>
+            {!temporal.isPast && hasFreeTier && paidFromDisplay && (
+              <span className="text-[11px] text-muted-foreground">
+                {tTick('vipFrom', { price: paidFromDisplay })}
+              </span>
+            )}
           </div>
 
           <Link

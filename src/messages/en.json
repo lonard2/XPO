@@ -726,7 +726,8 @@
     "gateFranchise": "Investor Lounge: Valid for 1-on-1 discovery room entry.",
     "gateFaith": "Interpretation: Collect a multi-language receiver headset at the plenary gate.",
     "gateSports": "Bib Collection: Present your QR code at the timing desk.",
-    "gateMedia": "Press & Crew: Equipment clearance at the production stage."
+    "gateMedia": "Press & Crew: Equipment clearance at the production stage.",
+    "vipFrom": "VIP from {price}"
   },
   "myTickets": {
     "title": "My Passes & Bookings",

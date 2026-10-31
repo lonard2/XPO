@@ -726,7 +726,8 @@
     "gateFranchise": "Lounge Investor: Berlaku untuk ruang discovery 1-on-1.",
     "gateFaith": "Interpretasi: Ambil headset penerima multi-bahasa di gerbang pleno.",
     "gateSports": "Pengambilan Bib: Tunjukkan QR di meja timing.",
-    "gateMedia": "Pers & Kru: Izin peralatan di panggung produksi."
+    "gateMedia": "Pers & Kru: Izin peralatan di panggung produksi.",
+    "vipFrom": "VIP mulai {price}"
   },
   "myTickets": {
     "title": "Pas Masuk & Pesanan Saya",

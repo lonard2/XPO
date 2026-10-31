@@ -726,7 +726,8 @@
     "gateFranchise": "Sala de inversores: válida para salas 1 a 1.",
     "gateFaith": "Interpretación: recoja receptor multilingüe en plenario.",
     "gateSports": "Dorsal: muestre su QR en cronometraje.",
-    "gateMedia": "Prensa: permiso de equipos en producción."
+    "gateMedia": "Prensa: permiso de equipos en producción.",
+    "vipFrom": "VIP desde {price}"
   },
   "myTickets": {
     "title": "Mis Pases y Reservas",

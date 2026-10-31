@@ -726,7 +726,8 @@
     "gateFranchise": "投资者休息室:可进入1对1洽谈室。",
     "gateFaith": "口译:请在全体会议门领取多语接收器。",
     "gateSports": "号码布领取:请在计时处出示QR码。",
-    "gateMedia": "媒体:请在制作舞台办理器材许可。"
+    "gateMedia": "媒体:请在制作舞台办理器材许可。",
+    "vipFrom": "VIP {price} 起"
   },
   "myTickets": {
     "title": "我的通行证与订单",

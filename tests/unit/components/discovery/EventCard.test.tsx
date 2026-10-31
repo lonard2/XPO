@@ -120,3 +120,34 @@ describe('Discovery Component: EventCard', () => {
   });
 });
 
+
+describe("EventCard price disclosure", () => {
+  const withTiers = (tiers: Array<{ price: number }>) =>
+    ({
+      ...mockEvent,
+      startDate: new Date(Date.now() + 86400000 * 20),
+      endDate: new Date(Date.now() + 86400000 * 22),
+      ticketTiers: tiers.map((t, i) => ({
+        id: `t${i}`,
+        name: i === 0 ? "Trade Visitor" : "VIP",
+        price: t.price,
+        currency: "IDR",
+        capacity: 100,
+        benefitsJson: "[]",
+      })),
+    } as unknown as DiscoveryEvent);
+
+  it("names the paid floor beside a free trade pass", () => {
+    render(<EventCard event={withTiers([{ price: 0 }, { price: 450000 }])} locale="en" />);
+
+    expect(screen.getByText(/Free/i)).toBeDefined();
+    expect(screen.getByText(/VIP from/i)).toBeDefined();
+    expect(screen.getByText(/450/)).toBeDefined();
+  });
+
+  it("stays quiet when every tier is free", () => {
+    render(<EventCard event={withTiers([{ price: 0 }, { price: 0 }])} locale="en" />);
+
+    expect(screen.queryByText(/VIP from/i)).toBeNull();
+  });
+});

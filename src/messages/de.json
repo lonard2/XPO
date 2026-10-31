@@ -726,7 +726,8 @@
     "gateFranchise": "Investoren-Lounge: Für 1-zu-1-Räume gültig.",
     "gateFaith": "Dolmetschen: Mehrsprachen-Empfänger am Plenumstor abholen.",
     "gateSports": "Startnummer: QR am Zeitmesstisch zeigen.",
-    "gateMedia": "Presse: Gerätefreigabe an der Produktionsbühne."
+    "gateMedia": "Presse: Gerätefreigabe an der Produktionsbühne.",
+    "vipFrom": "VIP ab {price}"
   },
   "myTickets": {
     "title": "Meine Pässe & Buchungen",
