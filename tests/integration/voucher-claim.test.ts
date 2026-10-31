@@ -5,8 +5,8 @@ import {
   GET as listClaims,
   POST as claimVoucher,
   DELETE as releaseVoucher,
-  buildVoucherCode,
 } from "@/app/api/perks/claim/route";
+import { buildVoucherCode } from "@/lib/tickets/voucher";
 
 describe("voucher claim endpoint", () => {
   it("builds deterministic, collision-free codes", () => {
