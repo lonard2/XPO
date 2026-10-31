@@ -839,7 +839,6 @@
   },
   "footer": {
     "brandDescription": "Infrastruktur digital enterprise untuk Pertemuan, Insentif, Konferensi, dan Pameran (MICE) di seluruh dunia.",
-    "verifiedEcosystem": "Ekosistem MICE Terverifikasi",
     "countryEditions": "Edisi Negara",
     "eventCategories": "Kategori Acara",
     "organizerTools": "Portal & Alat Penyelenggara",
@@ -850,7 +849,8 @@
     "privacyPolicy": "Kebijakan Privasi",
     "termsOfService": "Syarat & Ketentuan Layanan",
     "infrastructureBadge": "Infrastruktur MICE Terpercaya",
-    "accessibleBadge": "Arsitektur Aksesibel Lintas Perangkat"
+    "accessibleBadge": "Arsitektur Aksesibel Lintas Perangkat",
+    "dataSource": "Data hall dari pengelola venue"
   },
   "settings": {
     "title": "Pengaturan Akun & Tampilan UI/UX",

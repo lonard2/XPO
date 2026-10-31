@@ -839,7 +839,6 @@
   },
   "footer": {
     "brandDescription": "国際会議、インセンティブ、コンベンション、展示会（MICE）のための統合デジタルプラットフォーム。",
-    "verifiedEcosystem": "認定MICEエコシステム",
     "countryEditions": "国・地域版",
     "eventCategories": "イベントカテゴリー",
     "organizerTools": "主催者ポータル＆ツール",
@@ -850,7 +849,8 @@
     "privacyPolicy": "プライバシーポリシー",
     "termsOfService": "利用規約",
     "infrastructureBadge": "エンタープライズMICEインフラ",
-    "accessibleBadge": "マルチデバイス対応アクセシビリティ"
+    "accessibleBadge": "マルチデバイス対応アクセシビリティ",
+    "dataSource": "ホール情報は会場の公開資料より"
   },
   "settings": {
     "title": "表示設定＆システム環境設定",

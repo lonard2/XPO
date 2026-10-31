@@ -839,7 +839,6 @@
   },
   "footer": {
     "brandDescription": "Plataforma digital empresarial para Reuniones, Incentivos, Conferencias y Exposiciones (MICE) a nivel global.",
-    "verifiedEcosystem": "Ecosistema MICE Verificado",
     "countryEditions": "Ediciones Nacionales",
     "eventCategories": "Categorías de Eventos",
     "organizerTools": "Portal y Herramientas del Organizador",
@@ -850,7 +849,8 @@
     "privacyPolicy": "Política de Privacidad",
     "termsOfService": "Términos del Servicio",
     "infrastructureBadge": "Infraestructura MICE Empresarial",
-    "accessibleBadge": "Arquitectura Accesible Multidispositivo"
+    "accessibleBadge": "Arquitectura Accesible Multidispositivo",
+    "dataSource": "Datos de pabellón de los recintos"
   },
   "settings": {
     "title": "Ajustes de Sistema y Visualización",

@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { Compass, ShieldCheck, Cpu, Globe2 } from "lucide-react";
+import { Building2, Compass, Cpu, Globe2 } from "lucide-react";
 
 export function Footer({ locale = "en" }: { locale?: string }) {
   let tNav: any = null;
@@ -56,8 +56,8 @@ export function Footer({ locale = "en" }: { locale?: string }) {
             )}
           </p>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <ShieldCheck className="h-4 w-4 text-emerald-500" />
-            <span>{getSafe(tFoot, "verifiedEcosystem", "Verified MICE Ecosystem")}</span>
+            <Building2 className="h-4 w-4 text-primary" />
+            <span>{getSafe(tFoot, "dataSource", "Hall data from venue operator listings")}</span>
           </div>
         </div>
 

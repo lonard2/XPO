@@ -839,7 +839,6 @@
   },
   "footer": {
     "brandDescription": "Enterprise-Plattform für Tagungen, Kongresse und Fachmessen (MICE) weltweit.",
-    "verifiedEcosystem": "Verifiziertes MICE-Ökosystem",
     "countryEditions": "Länderausgaben",
     "eventCategories": "Event-Kategorien",
     "organizerTools": "Veranstalter-Tools",
@@ -850,7 +849,8 @@
     "privacyPolicy": "Datenschutzerklärung",
     "termsOfService": "Nutzungsbedingungen",
     "infrastructureBadge": "Enterprise MICE-Infrastruktur",
-    "accessibleBadge": "Barrierefreie Multi-Device-Architektur"
+    "accessibleBadge": "Barrierefreie Multi-Device-Architektur",
+    "dataSource": "Hallendaten aus Betreiberangaben"
   },
   "settings": {
     "title": "System- & Anzeigeeinstellungen",

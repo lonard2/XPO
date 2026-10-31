@@ -9,7 +9,7 @@ Everything still open after the two P0 fixes (`0fcf1f7`, `57fdf5f`).
   controls are enlarged.
 - [x] **C3. Price disclosure.** Cards show a free trade pass plus the paid tier range
   instead of a bare "Free" that hides VIP access.
-- [ ] **C4. Verified badge.** Replace the unverifiable "Verified MICE Ecosystem" claim with
+- [x] **C4. Verified badge.** Replace the unverifiable "Verified MICE Ecosystem" claim with
   a statement the platform can back.
 - [ ] **C5. Perks card.** Rewrite the unbacked deal-room copy to the features that exist,
   and give the card a destination.

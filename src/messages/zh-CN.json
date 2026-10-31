@@ -839,7 +839,6 @@
   },
   "footer": {
     "brandDescription": "服务于全球会议、奖励旅游、行业大会与大型展览（MICE）的企业级数字平台。",
-    "verifiedEcosystem": "认证数字会展生态",
     "countryEditions": "国家/地区版本",
     "eventCategories": "展会分类",
     "organizerTools": "主办方门户与工具",
@@ -850,7 +849,8 @@
     "privacyPolicy": "隐私政策",
     "termsOfService": "服务条款",
     "infrastructureBadge": "企业级会展基础设施",
-    "accessibleBadge": "多端自适应无障碍架构"
+    "accessibleBadge": "多端自适应无障碍架构",
+    "dataSource": "展厅数据来自场馆公开资料"
   },
   "settings": {
     "title": "界面偏好与账户设置",

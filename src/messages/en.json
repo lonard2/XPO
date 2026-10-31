@@ -839,7 +839,6 @@
   },
   "footer": {
     "brandDescription": "Enterprise digital platform for Meetings, Incentives, Conferences, and Exhibitions worldwide.",
-    "verifiedEcosystem": "Verified MICE Ecosystem",
     "countryEditions": "Country Editions",
     "eventCategories": "Event Categories",
     "organizerTools": "Organizer Portal & Tools",
@@ -850,7 +849,8 @@
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of Service",
     "infrastructureBadge": "Enterprise MICE Infrastructure",
-    "accessibleBadge": "Accessible Multi-Device Architecture"
+    "accessibleBadge": "Accessible Multi-Device Architecture",
+    "dataSource": "Hall data from venue operator listings"
   },
   "settings": {
     "title": "System & Display Preferences",
