@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { validateShowcase } from "@/lib/showcase";
 import { audit } from "@/lib/observability/audit";
 import { parsePagination } from "@/lib/api/pagination";
+import { enforceRateLimit } from "@/lib/api/rateLimit";
 import { requireUser } from "@/lib/auth/guards";
 
 export async function GET(request: Request) {
@@ -42,6 +43,12 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
+    const limit = await enforceRateLimit("organizer-events-post", request, {
+      limit: 30,
+      windowMs: 60_000,
+    });
+    if (limit.response) return limit.response;
+
     // Deny by default: a missing identity is 401, not an implicit pass.
     const gate = await requireUser(request, ["ORGANIZER", "ADMIN"]);
     if (gate.response) return gate.response;
@@ -217,7 +224,10 @@ export async function POST(request: Request) {
     });
 
     await audit(request, { action: "event.create", entity: "event", entityId: newEvent.id, metadata: { title, isListingOnly: newEvent.isListingOnly } });
-    return NextResponse.json({ success: true, event: newEvent }, { status: 201 });
+    return NextResponse.json(
+      { success: true, event: newEvent },
+      { status: 201, headers: limit.headers }
+    );
   } catch (error) {
     console.error("Event creation error:", error);
     return NextResponse.json(

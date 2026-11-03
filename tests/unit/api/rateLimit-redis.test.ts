@@ -5,6 +5,7 @@ import {
   activeRateLimitStore,
   resetRateLimits,
   rateLimitResponse,
+  enforceRateLimit,
 } from "@/lib/api/rateLimit";
 
 /** Deterministic stand-in for a Redis server. */
@@ -23,10 +24,7 @@ function fakeRedis() {
         data.set(key, entry);
       }
       entry.count += 1;
-      if (entry.count > limit) {
-        return [0, Math.max(0, entry.deadline - now)];
-      }
-      return [1, 0];
+      return [entry.count, Math.max(0, entry.deadline - now)];
     },
     disconnect() {},
   };
@@ -70,8 +68,25 @@ describe("Redis rate limit store", () => {
     expect(limited?.status).toBe(429);
   });
 
-  it("fails open when the store is down", async () => {
-    const broken = new RedisRateLimitStore("redis://test", {
+  it("reports limit headers on success and on 429", async () => {
+    configureRateLimitStore(new RedisRateLimitStore("redis://test", fakeRedis()));
+    const rule = { limit: 2, windowMs: 60_000 };
+    const request = new Request("http://localhost/api/x");
+
+    const first = await enforceRateLimit("headers", request, rule);
+    expect(first.response).toBeNull();
+    expect(first.headers["X-RateLimit-Limit"]).toBe("2");
+    expect(first.headers["X-RateLimit-Remaining"]).toBe("1");
+    expect(Number(first.headers["X-RateLimit-Reset"])).toBeGreaterThan(0);
+
+    await enforceRateLimit("headers", request, rule);
+    const denied = await enforceRateLimit("headers", request, rule);
+    expect(denied.response?.status).toBe(429);
+    expect(denied.headers["X-RateLimit-Remaining"]).toBe("0");
+    expect(denied.response?.headers.get("Retry-After")).toBeTruthy();
+  });
+
+  it("fails open when the store is down", async () => {    const broken = new RedisRateLimitStore("redis://test", {
       async eval() {
         throw new Error("connection refused");
       },

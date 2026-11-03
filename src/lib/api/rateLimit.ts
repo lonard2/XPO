@@ -10,6 +10,12 @@ export interface RateLimitRule {
 export interface RateLimitVerdict {
   ok: boolean;
   retryAfterSec: number;
+  /** Configured ceiling for this window. */
+  limit: number;
+  /** Requests left after this one. */
+  remaining: number;
+  /** Epoch seconds when the window resets. */
+  resetAtSec: number;
 }
 
 export interface RateLimitStore {
@@ -30,16 +36,39 @@ function fixedWindow(
   now: number
 ): { verdict: RateLimitVerdict; bucket: Bucket } {
   if (!bucket || bucket.resetAt <= now) {
-    return { verdict: { ok: true, retryAfterSec: 0 }, bucket: { count: 1, resetAt: now + rule.windowMs } };
+    const resetAt = now + rule.windowMs;
+    return {
+      verdict: {
+        ok: true,
+        retryAfterSec: 0,
+        limit: rule.limit,
+        remaining: Math.max(0, rule.limit - 1),
+        resetAtSec: Math.ceil(resetAt / 1000),
+      },
+      bucket: { count: 1, resetAt },
+    };
   }
   if (bucket.count < rule.limit) {
+    const count = bucket.count + 1;
     return {
-      verdict: { ok: true, retryAfterSec: 0 },
-      bucket: { count: bucket.count + 1, resetAt: bucket.resetAt },
+      verdict: {
+        ok: true,
+        retryAfterSec: 0,
+        limit: rule.limit,
+        remaining: Math.max(0, rule.limit - count),
+        resetAtSec: Math.ceil(bucket.resetAt / 1000),
+      },
+      bucket: { count, resetAt: bucket.resetAt },
     };
   }
   return {
-    verdict: { ok: false, retryAfterSec: Math.max(1, Math.ceil((bucket.resetAt - now) / 1000)) },
+    verdict: {
+      ok: false,
+      retryAfterSec: Math.max(1, Math.ceil((bucket.resetAt - now) / 1000)),
+      limit: rule.limit,
+      remaining: 0,
+      resetAtSec: Math.ceil(bucket.resetAt / 1000),
+    },
     bucket,
   };
 }
@@ -69,10 +98,7 @@ local count = redis.call('INCR', KEYS[1])
 if count == 1 then
   redis.call('PEXPIRE', KEYS[1], ARGV[1])
 end
-if count > tonumber(ARGV[2]) then
-  return {0, redis.call('PTTL', KEYS[1])}
-end
-return {1, 0}
+return {count, redis.call('PTTL', KEYS[1])}
 `;
 
 interface RedisCommands {
@@ -119,9 +145,16 @@ export class RedisRateLimitStore implements RateLimitStore {
       rule.windowMs,
       rule.limit
     )) as [number, number];
-    const [allowed, ttlMs] = result;
-    if (allowed === 1) return { ok: true, retryAfterSec: 0 };
-    return { ok: false, retryAfterSec: Math.max(1, Math.ceil(ttlMs / 1000)) };
+    const [count, rawTtl] = result;
+    const ttlMs = rawTtl >= 0 ? rawTtl : rule.windowMs;
+    const allowed = count <= rule.limit;
+    return {
+      ok: allowed,
+      retryAfterSec: allowed ? 0 : Math.max(1, Math.ceil(ttlMs / 1000)),
+      limit: rule.limit,
+      remaining: Math.max(0, rule.limit - count),
+      resetAtSec: Math.ceil((Date.now() + ttlMs) / 1000),
+    };
   }
 
   reset(): void {
@@ -190,18 +223,35 @@ export function clientIp(request: Request): string {
   return request.headers.get("x-real-ip")?.trim() || "unknown";
 }
 
+export interface RateLimitOutcome {
+  response: Response | null;
+  /** Headers to attach to a successful response. Empty when the store failed open. */
+  headers: Record<string, string>;
+}
+
+function limitHeaders(rule: RateLimitRule, verdict: RateLimitVerdict): Record<string, string> {
+  return {
+    "X-RateLimit-Limit": String(rule.limit),
+    "X-RateLimit-Remaining": String(verdict.remaining),
+    "X-RateLimit-Reset": String(verdict.resetAtSec),
+  };
+}
+
 /**
- * 429 response honoring the active store's verdict, or null when allowed.
+ * Check the limit and return both the blocking response (or null) and the
+ * headers a handler should attach to its success response. Callers that only
+ * need the gate can use rateLimitResponse.
+ *
  * A store failure fails open: a downed cache must not take the site with it.
  * The miss is logged so a blind rate limiter does not stay blind.
  */
-export async function rateLimitResponse(
+export async function enforceRateLimit(
   route: string,
   request: Request,
   rule: RateLimitRule
-): Promise<Response | null> {
-  let verdict: RateLimitVerdict;
+): Promise<RateLimitOutcome> {
   const active = getActive();
+  let verdict: RateLimitVerdict;
   try {
     verdict = await active.hit(`${route}:${clientIp(request)}`, rule);
   } catch (error) {
@@ -209,11 +259,31 @@ export async function rateLimitResponse(
       route,
       error: error instanceof Error ? error.message : String(error),
     });
-    return null;
+    return { response: null, headers: {} };
   }
-  if (verdict.ok) return null;
-  return Response.json(
-    { error: "RATE_LIMITED: Too many requests. Back off and retry." },
-    { status: 429, headers: { "Retry-After": String(verdict.retryAfterSec) } }
-  );
+  const headers = limitHeaders(rule, verdict);
+  if (verdict.ok) return { response: null, headers };
+  return {
+    response: Response.json(
+      { error: "RATE_LIMITED: Too many requests. Back off and retry." },
+      {
+        status: 429,
+        headers: { ...headers, "Retry-After": String(verdict.retryAfterSec) },
+      }
+    ),
+    headers,
+  };
+}
+
+/**
+ * 429 response honoring the active store's verdict, or null when allowed.
+ * Kept as the gate-only entry point for handlers that do not surface
+ * X-RateLimit headers.
+ */
+export async function rateLimitResponse(
+  route: string,
+  request: Request,
+  rule: RateLimitRule
+): Promise<Response | null> {
+  return (await enforceRateLimit(route, request, rule)).response;
 }

@@ -1,6 +1,14 @@
 import "@testing-library/jest-dom/vitest";
-import { vi } from "vitest";
+import { vi, beforeEach } from "vitest";
 import enMessages from "@/messages/en.json";
+import { resetRateLimits } from "@/lib/api/rateLimit";
+
+// Counters live on globalThis so they survive across route bundles in one
+// process. Reset them per test so a suite that exercises a limit cannot leak
+// its spend into an unrelated file in the same worker.
+beforeEach(() => {
+  resetRateLimits();
+});
 
 vi.mock("next-intl", () => {
   return {

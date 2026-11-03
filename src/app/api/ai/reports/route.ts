@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { resolveEventCaller, canWriteEvent } from "@/lib/auth/eventOwnership";
+import { enforceRateLimit } from "@/lib/api/rateLimit";
 import {
   OpenRouterModel,
   ReportType,
@@ -83,6 +84,12 @@ export async function GET(req: NextRequest) {
  */
 export async function POST(req: NextRequest) {
   try {
+    const limit = await enforceRateLimit("ai-reports-post", req, {
+      limit: 10,
+      windowMs: 60_000,
+    });
+    if (limit.response) return limit.response;
+
     const body = await req.json();
     const parseResult = ReportRequestSchema.safeParse(body);
 
@@ -305,6 +312,7 @@ export async function POST(req: NextRequest) {
         "x-report-model": model,
         "x-report-type": reportType,
         "x-report-metadata": metadataHeader,
+        ...limit.headers,
       },
     });
   } catch (error) {
