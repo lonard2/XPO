@@ -196,17 +196,26 @@ been the bar in this repository.
 
 ### Track X: Exhibitor validation slice (test demand before building the scanner)
 
-- [ ] **X1. Booth claiming.** `BoothTenant` gains `userId` and claim status;
+- [x] **X1. Booth claiming.** `BoothTenant` gains `userId` and claim status;
   `POST /api/exhibitor/booths/[id]/claim` with organizer approval. M.
   *Done when:* an exhibitor claims a booth, the organizer approves, and the
   exhibitor sees only their booth.
-- [ ] **X2. Exhibitor self-service.** Scoped profile editing; surface
+  Shipped 2026-11-03 as `0b10f34`. Claim, approve, reject and withdraw with a
+  dashboard inbox; the Exhibitor Hub lists only the caller's booths. Verified
+  live: claim 201, dashboard pending, approve 200.
+- [x] **X2. Exhibitor self-service.** Scoped profile editing; surface
   `logoUrl`, `dimensions`, `areaSqm` and `boothType`, which organizers already
   write and nobody reads. S after X1.
   *Done when:* an exhibitor edits their own profile and the attendee card
   shows the new fields.
+  Shipped 2026-11-03 as `0b10f34` and `cb30c93`. Scoped editor refuses
+  allocation changes; the industrial directory card shows the logo and spec
+  chips. Verified live and in the archetype test.
 - [ ] **Gate.** Measure exhibitor logins and profile edits for one event
   cycle. Do not start X3 without a positive signal.
+  The signal is countable from `AuditLog` rows `booth.claim` and
+  `booth.profile.update`, grouped by distinct actor over one cycle. No cycle
+  has run yet, so X3 to X5 stay blocked by design.
 - [ ] **X3. Lead scanning.** `LeadScan` model reusing the QR verify path,
   plus a booth scanner mode. M. **Blocked by the gate.**
 - [ ] **X4. Exhibitor lead center.** Per-booth scans, meetings and
