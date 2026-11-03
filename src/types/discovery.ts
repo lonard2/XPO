@@ -57,6 +57,9 @@ export interface DiscoveryEvent {
   organizerId?: string | null;
   organizerName?: string | null;
   isPlatformCurated?: boolean;
+  /** Admin-curated listing with no on-platform checkout. */
+  isListingOnly?: boolean;
+  externalUrl?: string | null;
   organizer?: {
     id: string;
     name?: string | null;

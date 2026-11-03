@@ -427,6 +427,8 @@
     "concluded": "Beendet",
     "featuredBadge": "Empfohlen",
     "curatedListing": "Kuratierter Eintrag",
+    "externalListing": "Externer Eintrag",
+    "visitOfficialListing": "Offiziellen Eintrag besuchen",
     "officialListing": "Offizieller Eintrag des Veranstaltungsorts",
     "officialListingFallback": "Offizieller Eintrag",
     "curatedBy": "Kuratiert von",

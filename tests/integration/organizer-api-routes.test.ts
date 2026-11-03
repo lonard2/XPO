@@ -169,12 +169,18 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
     const adminReq = new Request("http://localhost:3000/api/organizer/events", {
       method: "POST",
       headers: adminHeaders,
-      body: JSON.stringify({ ...base, slug: "test-simple-listing-2027", isListingOnly: true }),
+      body: JSON.stringify({
+        ...base,
+        slug: "test-simple-listing-2027",
+        isListingOnly: true,
+        externalUrl: "https://organizer.example/listing",
+      }),
     });
     const adminRes = await createEventRoute(adminReq);
     expect(adminRes.status).toBe(201);
     const adminJson = await adminRes.json();
     expect(adminJson.event.isListingOnly).toBe(true);
+    expect(adminJson.event.externalUrl).toBe("https://organizer.example/listing");
 
     const orgReq = new Request("http://localhost:3000/api/organizer/events", {
       method: "POST",
@@ -183,12 +189,18 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
         Cookie: "xpo_role=ORGANIZER",
         "x-xpo-user-id": sampleOrganizer.id,
       },
-      body: JSON.stringify({ ...base, slug: "test-listing-flag-ignored-2027", isListingOnly: true }),
+      body: JSON.stringify({
+        ...base,
+        slug: "test-listing-flag-ignored-2027",
+        isListingOnly: true,
+        externalUrl: "https://organizer.example/ignored",
+      }),
     });
     const orgRes = await createEventRoute(orgReq);
     expect(orgRes.status).toBe(201);
     const orgJson = await orgRes.json();
     expect(orgJson.event.isListingOnly).toBe(false);
+    expect(orgJson.event.externalUrl).toBeNull();
 
     await db.event.delete({ where: { id: adminJson.event.id } }).catch(() => {});
     await db.event.delete({ where: { id: orgJson.event.id } }).catch(() => {});

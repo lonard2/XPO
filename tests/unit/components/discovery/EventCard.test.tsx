@@ -151,3 +151,31 @@ describe("EventCard price disclosure", () => {
     expect(screen.queryByText(/VIP from/i)).toBeNull();
   });
 });
+
+describe('Discovery Component: EventCard listing-only', () => {
+  it('badges an external listing and sends the CTA off platform', () => {
+    render(
+      <EventCard
+        event={{
+          ...mockEvent,
+          isListingOnly: true,
+          externalUrl: 'https://organizer.example/event',
+        }}
+        locale="en"
+      />
+    );
+
+    expect(screen.getByText('External listing')).toBeInTheDocument();
+    const link = screen.getByRole('link', { name: /Visit official listing/i });
+    expect(link).toHaveAttribute('href', 'https://organizer.example/event');
+    expect(link).toHaveAttribute('target', '_blank');
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+  });
+
+  it('labels the listing and drops the pass CTA when no URL is set', () => {
+    render(<EventCard event={{ ...mockEvent, isListingOnly: true }} locale="en" />);
+
+    expect(screen.getAllByText('External listing').length).toBeGreaterThan(0);
+    expect(screen.queryByText('View Pass')).toBeNull();
+  });
+});

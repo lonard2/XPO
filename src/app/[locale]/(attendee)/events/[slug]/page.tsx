@@ -256,6 +256,8 @@ export default async function EventDetailPage({ params }: EventPageProps) {
       agendaItems={event.agendaItems || []}
       booths={event.booths || []}
       showcaseAlerts={showcase.alerts}
+      isListingOnly={event.isListingOnly}
+      externalUrl={event.externalUrl}
     >
       <ArchetypeView event={event} locale={locale} />
       <EventOrganizerSection event={event} locale={locale} />

@@ -6,6 +6,17 @@ import { parsePagination } from "@/lib/api/pagination";
 import { enforceRateLimit } from "@/lib/api/rateLimit";
 import { requireUser } from "@/lib/auth/guards";
 
+/** Only http(s) URLs are stored; anything else is dropped, never echoed. */
+function safeExternalUrl(value: unknown): string | null {
+  if (typeof value !== "string" || !value.trim()) return null;
+  try {
+    const url = new URL(value.trim());
+    return url.protocol === "http:" || url.protocol === "https:" ? url.toString() : null;
+  } catch {
+    return null;
+  }
+}
+
 export async function GET(request: Request) {
   try {
     const gate = await requireUser(request, ["ORGANIZER", "ADMIN"]);
@@ -77,6 +88,7 @@ export async function POST(request: Request) {
       organizerName,
       organizerId,
       isListingOnly,
+      externalUrl,
       showcaseJson,
     } = body;
 
@@ -184,6 +196,8 @@ export async function POST(request: Request) {
         isPlatformCurated: finalIsPlatformCurated,
         // Listings are admin-only: fully customizable, excluded from operations.
         isListingOnly: userRole === "ADMIN" && isListingOnly === true,
+        externalUrl:
+          userRole === "ADMIN" && isListingOnly === true ? safeExternalUrl(externalUrl) : null,
         startDate: new Date(startDate),
         endDate: new Date(endDate),
         heroImageUrl: heroImageUrl || "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1600&q=80",

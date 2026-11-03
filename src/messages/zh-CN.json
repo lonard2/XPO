@@ -427,6 +427,8 @@
     "concluded": "已结束",
     "featuredBadge": "精选",
     "curatedListing": "精选收录",
+    "externalListing": "外部列表",
+    "visitOfficialListing": "访问官方列表",
     "officialListing": "场馆官方收录",
     "officialListingFallback": "官方收录",
     "curatedBy": "精选方",

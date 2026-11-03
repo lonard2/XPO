@@ -427,6 +427,8 @@
     "concluded": "Concluded",
     "featuredBadge": "Featured",
     "curatedListing": "Curated Listing",
+    "externalListing": "External listing",
+    "visitOfficialListing": "Visit official listing",
     "officialListing": "Official Venue Listing",
     "officialListingFallback": "Official Listing",
     "curatedBy": "Curated by",

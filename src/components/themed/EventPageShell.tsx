@@ -5,7 +5,7 @@ import * as React from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import {
-  Map as MapIcon, Calendar, MapPin, Sparkles, Ticket, Share2, Check, Layers, Building2, Clock, ArrowRight } from "lucide-react";
+  Map as MapIcon, Calendar, MapPin, Sparkles, Ticket, Share2, Check, Layers, Building2, Clock, ArrowRight, ExternalLink } from "lucide-react";
 import {
   type MiceArchetype,
   type BrandingConfig,
@@ -15,7 +15,7 @@ import {
   ARCHETYPE_METAS,
 } from "@/lib/theming";
 import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
+import { Button, buttonVariants } from "@/components/ui/Button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { formatDateRange, formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
 import { TicketCheckoutDrawer } from "@/components/tickets/TicketCheckoutDrawer";
@@ -59,6 +59,9 @@ export interface EventPageShellProps {
   booths?: BoothItem[];
   /** Organizer announcements for the guidebook; empty means no banner. */
   showcaseAlerts?: string[];
+  /** Admin-curated external listing: no on-platform checkout. */
+  isListingOnly?: boolean;
+  externalUrl?: string | null;
 }
 
 export function EventPageShell({
@@ -86,6 +89,8 @@ export function EventPageShell({
   agendaItems = [],
   booths = [],
   showcaseAlerts = [],
+  isListingOnly = false,
+  externalUrl = null,
 }: EventPageShellProps) {
   const [isCopied, setIsCopied] = React.useState(false);
   const [checkoutDrawerOpen, setCheckoutDrawerOpen] = React.useState(false);
@@ -138,6 +143,7 @@ export function EventPageShell({
   };
 
   const handleOpenCheckout = (tierId?: string) => {
+    if (isListingOnly) return;
     if (onBookPassClick) {
       onBookPassClick();
       return;
@@ -152,6 +158,26 @@ export function EventPageShell({
       ticketSection.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  const listingCta = externalUrl ? (
+    <a
+      href={externalUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={cn(
+        buttonVariants({ variant: "archetype", size: "lg" }),
+        "gap-2 font-semibold shadow-lg min-h-[44px]"
+      )}
+    >
+      <ExternalLink className="h-4 w-4" aria-hidden="true" />
+      {tEvents("visitOfficialListing") || "Visit official listing"}
+    </a>
+  ) : (
+    <Badge variant="outline" size="lg" className="font-semibold">
+      <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+      {tEvents("externalListing") || "External listing"}
+    </Badge>
+  );
 
   const formattedDate = formatDateRange(startDate, endDate, locale);
   const formattedPrice =
@@ -272,17 +298,19 @@ export function EventPageShell({
                 )}
               </div>
 
-              <div className="pt-6 mt-4 border-t border-border/60">
-                <Button
-                  variant={(tier as any).tier === "VIP" || tier.name?.toLowerCase().includes("vip") ? "default" : "outline"}
-                  className="w-full font-semibold gap-2 min-h-[44px] cursor-pointer"
-                  disabled={isSoldOut}
-                  onClick={() => handleOpenCheckout(tier.id)}
-                >
-                  <Ticket className="h-4 w-4" />
-                  <span>{isSoldOut ? "Sold Out" : tTickets("bookPass") || "Book Pass"}</span>
-                </Button>
-              </div>
+              {!isListingOnly && (
+                <div className="pt-6 mt-4 border-t border-border/60">
+                  <Button
+                    variant={(tier as any).tier === "VIP" || tier.name?.toLowerCase().includes("vip") ? "default" : "outline"}
+                    className="w-full font-semibold gap-2 min-h-[44px] cursor-pointer"
+                    disabled={isSoldOut}
+                    onClick={() => handleOpenCheckout(tier.id)}
+                  >
+                    <Ticket className="h-4 w-4" />
+                    <span>{isSoldOut ? "Sold Out" : tTickets("bookPass") || "Book Pass"}</span>
+                  </Button>
+                </div>
+              )}
             </Card>
           );
         })}
@@ -366,6 +394,17 @@ export function EventPageShell({
                 {resolvedBranding.heroBadge || tEvents("featured") || "Featured Event"}
               </Badge>
             )}
+
+            {isListingOnly && (
+              <Badge
+                variant="outline"
+                size="sm"
+                className="font-semibold shadow-xs border-white/30 bg-white/10 text-white"
+              >
+                <ExternalLink className="h-3 w-3" aria-hidden="true" />
+                {tEvents("externalListing") || "External listing"}
+              </Badge>
+            )}
           </div>
 
           {/* Title & Tagline */}
@@ -424,15 +463,19 @@ export function EventPageShell({
 
           {/* Action CTAs */}
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Button
-              size="lg"
-              variant="archetype"
-              onClick={() => handleOpenCheckout()}
-              className="gap-2 font-semibold shadow-lg text-white cursor-pointer min-h-[44px]"
-            >
-              <Ticket className="h-4 w-4" aria-hidden="true" />
-              {tEvents("reservePasses") || "Reserve Passes & Tickets"}
-            </Button>
+            {isListingOnly ? (
+              listingCta
+            ) : (
+              <Button
+                size="lg"
+                variant="archetype"
+                onClick={() => handleOpenCheckout()}
+                className="gap-2 font-semibold shadow-lg text-white cursor-pointer min-h-[44px]"
+              >
+                <Ticket className="h-4 w-4" aria-hidden="true" />
+                {tEvents("reservePasses") || "Reserve Passes & Tickets"}
+              </Button>
+            )}
 
             <Button
               variant="outline"
@@ -573,15 +616,19 @@ export function EventPageShell({
                       <Ticket className="h-4 w-4" />
                       <span>{tEvents("checkPassTiers") || "View Pass Tiers"} ({ticketTiers.length})</span>
                     </Button>
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      onClick={() => handleOpenCheckout()}
-                      className="font-semibold gap-2 min-h-[44px] cursor-pointer"
-                    >
-                      <span>{tEvents("reservePasses") || "Reserve Passes"}</span>
-                      <ArrowRight className="h-4 w-4" />
-                    </Button>
+                    {isListingOnly ? (
+                      listingCta
+                    ) : (
+                      <Button
+                        size="lg"
+                        variant="outline"
+                        onClick={() => handleOpenCheckout()}
+                        className="font-semibold gap-2 min-h-[44px] cursor-pointer"
+                      >
+                        <span>{tEvents("reservePasses") || "Reserve Passes"}</span>
+                        <ArrowRight className="h-4 w-4" />
+                      </Button>
+                    )}
                   </div>
                 </div>
               </section>
@@ -698,22 +745,43 @@ export function EventPageShell({
         <div className="flex items-center justify-between gap-3 max-w-md mx-auto">
           <div className="min-w-0 flex-1">
             <p className="text-xs text-muted-foreground truncate">{title}</p>
-            <p className="text-sm font-bold text-foreground">{formattedPrice}</p>
+            <p className="text-sm font-bold text-foreground">
+              {isListingOnly
+                ? tEvents("externalListing") || "External listing"
+                : formattedPrice}
+            </p>
           </div>
-          <Button
-            size="default"
-            variant="archetype"
-            onClick={() => handleOpenCheckout()}
-            className="shrink-0 font-semibold gap-1.5 shadow-md min-h-[44px] cursor-pointer"
-          >
-            <Ticket className="h-4 w-4" />
-            {tEvents("bookPass") || "Book Pass"}
-          </Button>
+          {isListingOnly ? (
+            externalUrl ? (
+              <a
+                href={externalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  buttonVariants({ variant: "archetype", size: "default" }),
+                  "shrink-0 font-semibold gap-1.5 shadow-md min-h-[44px]"
+                )}
+              >
+                <ExternalLink className="h-4 w-4" aria-hidden="true" />
+                {tEvents("visitOfficialListing") || "Visit listing"}
+              </a>
+            ) : null
+          ) : (
+            <Button
+              size="default"
+              variant="archetype"
+              onClick={() => handleOpenCheckout()}
+              className="shrink-0 font-semibold gap-1.5 shadow-md min-h-[44px] cursor-pointer"
+            >
+              <Ticket className="h-4 w-4" />
+              {tEvents("bookPass") || "Book Pass"}
+            </Button>
+          )}
         </div>
       </div>
 
       {/* 6. Ticket Pass Checkout Drawer */}
-      {ticketTiers && ticketTiers.length > 0 && (
+      {!isListingOnly && ticketTiers && ticketTiers.length > 0 && (
         <TicketCheckoutDrawer
           isOpen={checkoutDrawerOpen}
           onClose={() => setCheckoutDrawerOpen(false)}

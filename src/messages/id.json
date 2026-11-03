@@ -427,6 +427,8 @@
     "concluded": "Selesai",
     "featuredBadge": "Unggulan",
     "curatedListing": "Daftar Kurasi",
+    "externalListing": "Daftar eksternal",
+    "visitOfficialListing": "Kunjungi daftar resmi",
     "officialListing": "Daftar Resmi Venue",
     "officialListingFallback": "Daftar Resmi",
     "curatedBy": "Dikurasi oleh",

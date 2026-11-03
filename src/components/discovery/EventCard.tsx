@@ -11,6 +11,7 @@ import {
   Layers,
   ShieldCheck,
   Scale,
+  ExternalLink,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
 import { buttonVariants } from '@/components/ui/Button';
@@ -113,6 +114,9 @@ export const EventCard = React.memo(function EventCard({
     event.isPlatformCurated ||
     (event.organizerId === null && Boolean(event.organizerName))
   );
+  const isExternalListing = Boolean(event.isListingOnly);
+  const externalListingHref = event.externalUrl || `/${locale}/events/${event.slug}`;
+  const opensExternally = isExternalListing && Boolean(event.externalUrl);
   const curatedBadgeLabel = event.organizerName ? tEvents('curatedListing') : tEvents('officialListing');
   const organizerAttribution = React.useMemo(() => {
     if (isCurated) {
@@ -185,6 +189,13 @@ export const EventCard = React.memo(function EventCard({
             <Badge variant="outline" className="text-xs font-semibold gap-1 shadow-sm bg-background/90 backdrop-blur-sm text-foreground border-border">
               <ShieldCheck className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
               <span>{curatedBadgeLabel}</span>
+            </Badge>
+          )}
+
+          {isExternalListing && (
+            <Badge variant="outline" className="text-xs font-semibold gap-1 shadow-sm bg-background/90 backdrop-blur-sm text-foreground border-border">
+              <ExternalLink className="h-3 w-3" />
+              <span>{tEvents('externalListing')}</span>
             </Badge>
           )}
         </div>
@@ -306,14 +317,28 @@ export const EventCard = React.memo(function EventCard({
           </div>
 
           <Link
-            href={`/${locale}/events/${event.slug}`}
+            href={externalListingHref}
+            target={opensExternally ? '_blank' : undefined}
+            rel={opensExternally ? 'noopener noreferrer' : undefined}
             className={cn(
               buttonVariants({ variant: temporal.isPast ? 'outline' : 'default', size: 'sm' }),
               'gap-1 text-xs font-semibold shadow-sm min-h-[44px] min-w-[44px] px-3.5 cursor-pointer'
             )}
           >
-            <Ticket className="h-3.5 w-3.5" />
-            <span>{temporal.isPast ? (tCom('viewDetails') || 'View Details') : (tTick('viewPass') || 'View Pass')}</span>
+            {isExternalListing ? (
+              <ExternalLink className="h-3.5 w-3.5" />
+            ) : (
+              <Ticket className="h-3.5 w-3.5" />
+            )}
+            <span>
+              {isExternalListing
+                ? event.externalUrl
+                  ? tEvents('visitOfficialListing')
+                  : tEvents('externalListing')
+                : temporal.isPast
+                  ? (tCom('viewDetails') || 'View Details')
+                  : (tTick('viewPass') || 'View Pass')}
+            </span>
             <ArrowRight className="h-3 w-3 ml-0.5 transition-transform group-hover:translate-x-0.5" />
           </Link>
         </CardFooter>

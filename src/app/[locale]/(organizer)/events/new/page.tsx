@@ -277,6 +277,7 @@ export default function NewEventWizardPage() {
   const isPlatformCurated = authorityMode === "curated";
   const [organizerName, setOrganizerName] = React.useState<string>("");
   const [targetOrganizerId, setTargetOrganizerId] = React.useState<string>("");
+  const [externalUrl, setExternalUrl] = React.useState<string>("");
 
   const prevAdminRef = React.useRef(isAdmin);
   React.useEffect(() => {
@@ -939,6 +940,7 @@ export default function NewEventWizardPage() {
                   ? user?.id
                   : undefined,
             isListingOnly: authorityMode === "listing",
+            externalUrl: authorityMode === "listing" ? externalUrl.trim() : undefined,
           }
         : {}),
       ticketTiers: ticketTiers.map((t) => ({
@@ -1494,6 +1496,17 @@ export default function NewEventWizardPage() {
                       This exhibition will be owned by your admin account.
                     </span>
                   </div>
+                  {authorityMode === "listing" && (
+                    <Input
+                      id="wizard-external-url"
+                      label="Official listing URL"
+                      placeholder="https://organizer.example/event"
+                      value={externalUrl}
+                      onChange={(e) => setExternalUrl(e.target.value)}
+                      helperText="Off-platform registration link shown on the event page. Leave empty to show the listing without a link."
+                      className="min-h-[44px] pt-2"
+                    />
+                  )}
                 </div>
               ) : isPlatformCurated ? (
                 <div className="space-y-1.5 pt-2 border-t border-border/50">
