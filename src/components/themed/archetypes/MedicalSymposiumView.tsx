@@ -21,6 +21,7 @@ import {
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
+import { DemonstrationBadge } from "@/components/themed/DemonstrationBadge";
 import { formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
 import type { ArchetypeViewProps } from "./IndustrialB2BView";
 
@@ -116,10 +117,13 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
         {/* CME Credit Tracker Card */}
         <Card id="cme-credits" className="border-border bg-card shadow-md">
           <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <Badge variant="outline" size="sm" className="font-sans text-xs font-semibold text-emerald-600 border-emerald-500/30 bg-emerald-500/10">
-                Accredited Congress
-              </Badge>
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex flex-wrap items-center gap-1.5">
+                <Badge variant="outline" size="sm" className="font-sans text-xs font-semibold text-emerald-600 border-emerald-500/30 bg-emerald-500/10">
+                  Accredited Congress
+                </Badge>
+                <DemonstrationBadge />
+              </div>
               <Award className="h-5 w-5 text-amber-500" />
             </div>
             <CardTitle className="text-lg font-sans">CME Credit Eligibility</CardTitle>

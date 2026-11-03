@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
 import { Drawer } from "@/components/ui/Drawer";
+import { DemonstrationBadge } from "@/components/themed/DemonstrationBadge";
 import { formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
 import type { ArchetypeViewProps } from "./IndustrialB2BView";
 import { submitMeetingRequest } from "@/lib/meetings/client";
@@ -109,11 +110,14 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier }: Arch
         {/* Encrypted Badge & Chatham House Protocol */}
         <Card className="border-border bg-card shadow-md">
           <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <Badge variant="success" size="sm" className="gap-1">
-                <ShieldCheck className="h-3.5 w-3.5" />
-                KYC Level 3
-              </Badge>
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex flex-wrap items-center gap-1.5">
+                <Badge variant="success" size="sm" className="gap-1">
+                  <ShieldCheck className="h-3.5 w-3.5" />
+                  KYC Level 3
+                </Badge>
+                <DemonstrationBadge />
+              </div>
               <Lock className="h-4 w-4 text-[var(--archetype-accent)]" />
             </div>
             <CardTitle className="text-base">Chatham House Rule</CardTitle>
@@ -203,6 +207,9 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier }: Arch
           <p className="text-xs text-muted-foreground">
             All passes include encrypted deal-room reservation tokens and post-event pitch deck repository access.
           </p>
+          <div className="mt-2">
+            <DemonstrationBadge />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
