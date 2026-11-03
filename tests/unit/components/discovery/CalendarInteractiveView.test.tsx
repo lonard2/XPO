@@ -225,6 +225,28 @@ describe('CalendarInteractiveView Component', () => {
     expect(gcalHref).not.toContain('Asia/Jakarta/events');
   });
 
+  it('gives every listed event its own calendar deeplinks', () => {
+    render(
+      <CalendarInteractiveView
+        initialEvents={mockEvents}
+        locale="en"
+        region="id"
+      />
+    );
+
+    const googleLinks = screen.getAllByRole('link', { name: /google calendar:/i });
+    const outlookLinks = screen.getAllByRole('link', { name: /outlook 365 web:/i });
+
+    expect(googleLinks).toHaveLength(mockEvents.length);
+    expect(outlookLinks).toHaveLength(mockEvents.length);
+    googleLinks.forEach((link) => {
+      expect(link.getAttribute('href')).toContain('calendar.google.com/calendar/render');
+    });
+    outlookLinks.forEach((link) => {
+      expect(link.getAttribute('href')).toContain('outlook.live.com/calendar');
+    });
+  });
+
   it('syncs venue selection to the URL and counts pills from the active category', () => {
     render(
       <CalendarInteractiveView

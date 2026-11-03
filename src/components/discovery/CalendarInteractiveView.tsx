@@ -18,6 +18,8 @@ import {
   ExternalLink,
   FileSpreadsheet,
   Copy,
+  CalendarPlus,
+  Mail,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Badge } from '@/components/ui/Badge';
@@ -726,17 +728,37 @@ export function CalendarInteractiveView({
                           </div>
                         </div>
 
-                        <div className="pt-2 border-t border-border/60">
+                        <div className="pt-2 border-t border-border/60 flex items-center gap-1.5">
                           <Link
                             href={`/${locale}/events/${evt.slug}`}
                             className={buttonVariants({
                               size: 'sm',
-                              className: 'relative z-10 w-full gap-1.5 text-xs font-semibold min-h-[44px] sm:min-h-[36px] cursor-pointer',
+                              className: 'relative z-10 flex-1 gap-1.5 text-xs font-semibold min-h-[44px] sm:min-h-[36px] cursor-pointer',
                             })}
                           >
                             <Ticket className="h-3.5 w-3.5" />
                             <span>{tTix('viewPass') || 'View Event & Tickets'}</span>
                           </Link>
+                          <a
+                            href={generateGoogleCalendarUrl(evt, eventDetailsOrigin)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`${tCal('googleCalendar') || 'Google Calendar'}: ${evt.title}`}
+                            title={tCal('googleCalendar') || 'Google Calendar'}
+                            className="relative z-10 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-border text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                          >
+                            <CalendarPlus className="h-4 w-4" />
+                          </a>
+                          <a
+                            href={generateOutlookWebUrl(evt, eventDetailsOrigin)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`${tCal('outlookWeb') || 'Outlook 365 Web'}: ${evt.title}`}
+                            title={tCal('outlookWeb') || 'Outlook 365 Web'}
+                            className="relative z-10 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-border text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                          >
+                            <Mail className="h-4 w-4" />
+                          </a>
                         </div>
                       </div>
                     );
