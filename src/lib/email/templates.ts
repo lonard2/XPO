@@ -343,3 +343,42 @@ export function renderBookingTransfer({
   );
   return { subject, text, html };
 }
+
+export interface WaitlistPromotionInput {
+  name: string;
+  eventTitle: string;
+  tierName: string;
+  eventUrl: string;
+}
+
+/** Tells the head of the queue that a seat opened. */
+export function renderWaitlistPromotion({
+  name,
+  eventTitle,
+  tierName,
+  eventUrl,
+}: WaitlistPromotionInput) {
+  const subject = `A seat opened: ${eventTitle}`;
+  const text = [
+    `Hello ${name},`,
+    "",
+    `A seat opened in ${tierName} for ${eventTitle}.`,
+    "",
+    `Reserve it here: ${eventUrl}`,
+    "",
+    "Seats are released first come, first served. If you no longer need it, you can leave the waitlist from the event page.",
+    "",
+    "XPO MICE",
+  ].join("\n");
+  const html = shell(
+    [
+      paragraph(`Hello ${escapeHtml(name)},`),
+      paragraph(
+        `A seat opened in <strong>${escapeHtml(tierName)}</strong> for <strong>${escapeHtml(eventTitle)}</strong>.`
+      ),
+      `<p style="margin:0 0 16px;"><a href="${escapeHtml(eventUrl)}" style="display:inline-block;background:#1d4ed8;color:#ffffff;text-decoration:none;font-weight:600;font-size:14px;padding:12px 20px;border-radius:8px;">Reserve the seat</a></p>`,
+      paragraph("Seats are released first come, first served. If you no longer need it, you can leave the waitlist from the event page."),
+    ].join("")
+  );
+  return { subject, text, html };
+}

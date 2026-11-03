@@ -19,6 +19,7 @@ import { Button, buttonVariants } from "@/components/ui/Button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { formatDateRange, formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
 import { TicketCheckoutDrawer } from "@/components/tickets/TicketCheckoutDrawer";
+import { WaitlistForm } from "@/components/tickets/WaitlistForm";
 import { type TicketTierItem } from "@/components/tickets/TierSelector";
 import { HallFloorMap, type BoothItem } from "@/components/perks/HallFloorMap";
 import { InteractiveGuidebook, type AgendaSessionItem } from "@/components/perks/InteractiveGuidebook";
@@ -300,15 +301,18 @@ export function EventPageShell({
 
               {!isListingOnly && (
                 <div className="pt-6 mt-4 border-t border-border/60">
-                  <Button
-                    variant={(tier as any).tier === "VIP" || tier.name?.toLowerCase().includes("vip") ? "default" : "outline"}
-                    className="w-full font-semibold gap-2 min-h-[44px] cursor-pointer"
-                    disabled={isSoldOut}
-                    onClick={() => handleOpenCheckout(tier.id)}
-                  >
-                    <Ticket className="h-4 w-4" />
-                    <span>{isSoldOut ? "Sold Out" : tTickets("bookPass") || "Book Pass"}</span>
-                  </Button>
+                  {isSoldOut ? (
+                    <WaitlistForm eventId={id} tierId={tier.id} tierName={tier.name} />
+                  ) : (
+                    <Button
+                      variant={(tier as any).tier === "VIP" || tier.name?.toLowerCase().includes("vip") ? "default" : "outline"}
+                      className="w-full font-semibold gap-2 min-h-[44px] cursor-pointer"
+                      onClick={() => handleOpenCheckout(tier.id)}
+                    >
+                      <Ticket className="h-4 w-4" />
+                      <span>{tTickets("bookPass") || "Book Pass"}</span>
+                    </Button>
+                  )}
                 </div>
               )}
             </Card>

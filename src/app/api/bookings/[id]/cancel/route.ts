@@ -5,7 +5,8 @@ import { canWriteEvent } from "@/lib/auth/eventOwnership";
 import { audit } from "@/lib/observability/audit";
 import { reportError } from "@/lib/observability/logger";
 import { sendEmail } from "@/lib/email/transport";
-import { renderBookingCancellation } from "@/lib/email/templates";
+import { renderBookingCancellation, renderWaitlistPromotion } from "@/lib/email/templates";
+import { promoteWaitlist } from "@/lib/waitlist/promote";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -82,6 +83,25 @@ export async function POST(request: Request, { params }: RouteParams) {
       await sendEmail({ to: booking.attendeeEmail, ...mail });
     } catch (mailError) {
       reportError("booking-cancel-email", mailError, { bookingId: id });
+    }
+
+    // A freed seat goes to the head of the waitlist. Mail failure never
+    // undoes the promotion, which is already recorded.
+    const promoted = await promoteWaitlist(booking.ticketTierId);
+    if (promoted) {
+      try {
+        const mail = renderWaitlistPromotion({
+          name: promoted.name,
+          eventTitle: promoted.event.title,
+          tierName: promoted.ticketTier.name,
+          eventUrl: `${process.env.NEXT_PUBLIC_SITE_URL || "https://xpo.events"}/en/events/${promoted.event.slug}`,
+        });
+        await sendEmail({ to: promoted.email, ...mail });
+      } catch (mailError) {
+        reportError("waitlist-promotion-email", mailError, {
+          ticketTierId: booking.ticketTierId,
+        });
+      }
     }
 
     return NextResponse.json({ success: true, booking: { id, status: "CANCELLED" } });

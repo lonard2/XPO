@@ -105,6 +105,7 @@ model Event {
   aiReports          AIReport[]
   bookings           Booking[]
   meetingRequests  MeetingRequest[]
+  waitlist           WaitlistEntry[]
   createdAt          DateTime     @default(now())
   updatedAt          DateTime     @updatedAt
 }
@@ -120,6 +121,23 @@ model TicketTier {
   soldCount    Int       @default(0)
   benefitsJson String    @default("[]") // JSON array of perk descriptions
   bookings     Booking[]
+  waitlist     WaitlistEntry[]
+}
+
+model WaitlistEntry {
+  id           String      @id @default(cuid())
+  eventId      String
+  event        Event       @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  ticketTierId String
+  ticketTier   TicketTier  @relation(fields: [ticketTierId], references: [id], onDelete: Cascade)
+  name         String
+  email        String
+  status       String      @default("PENDING") // PENDING | PROMOTED | CANCELLED
+  promotedAt   DateTime?
+  createdAt    DateTime    @default(now())
+
+  @@unique([ticketTierId, email])
+  @@index([ticketTierId, status, createdAt])
 }
 
 model Booking {

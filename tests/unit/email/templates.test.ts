@@ -7,6 +7,7 @@ import {
   renderMeetingRequestDecision,
   renderBookingCancellation,
   renderBookingTransfer,
+  renderWaitlistPromotion,
 } from "@/lib/email/templates";
 
 describe("OTP email", () => {
@@ -172,5 +173,30 @@ describe("booking lifecycle emails", () => {
     });
     expect(cancelled.html).not.toContain("<img src=x");
     expect(transferred.html).not.toContain("<img src=x");
+  });
+});
+
+
+describe("waitlist promotion email", () => {
+  it("names the tier and links to the event", () => {
+    const mail = renderWaitlistPromotion({
+      name: "Queue One",
+      eventTitle: "Manufacturing Indonesia 2026",
+      tierName: "VIP Delegate",
+      eventUrl: "https://xpo.events/en/events/manufacturing-indonesia-2026",
+    });
+    expect(mail.subject).toContain("A seat opened");
+    expect(mail.text).toContain("VIP Delegate");
+    expect(mail.text).toContain("https://xpo.events/en/events/manufacturing-indonesia-2026");
+  });
+
+  it("escapes the holder name", () => {
+    const mail = renderWaitlistPromotion({
+      name: '<img src=x onerror="alert(1)">',
+      eventTitle: "Event",
+      tierName: "Pass",
+      eventUrl: "https://xpo.events/en/events/event",
+    });
+    expect(mail.html).not.toContain("<img src=x");
   });
 });
