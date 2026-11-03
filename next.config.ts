@@ -39,6 +39,8 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // Standalone output for the Docker image: server.js plus traced files only.
+  output: "standalone",
   // No next/image usage exists, so the remote optimizer proxy stays closed
   // instead of proxying arbitrary hosts through `hostname: "**"`.
   images: {

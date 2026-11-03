@@ -16,5 +16,51 @@ services:
       timeout: 3s
       retries: 10
 
+  # Production profile only: `docker compose --profile prod up -d`.
+  # `npm run db:up` keeps starting just the dev database.
+  migrate:
+    build:
+      context: .
+      target: migrate
+    profiles: ["prod"]
+    environment:
+      DATABASE_URL: postgresql://xpo:${POSTGRES_PASSWORD:-xpo_dev_password}@db:5432/${POSTGRES_DB:-xpo}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  app:
+    image: ${APP_IMAGE:-xpo:local}
+    build:
+      context: .
+      target: runner
+    profiles: ["prod"]
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    environment:
+      DATABASE_URL: postgresql://xpo:${POSTGRES_PASSWORD:-xpo_dev_password}@db:5432/${POSTGRES_DB:-xpo}
+      # Compose interpolates every service even when its profile is off, so a
+      # hard-required var here would break plain `npm run db:up`. The placeholder
+      # is deliberately unusable in production: override it (checklist item 1).
+      QR_HMAC_SECRET: ${QR_HMAC_SECRET:-dev-only-secret-not-for-production}
+      ALLOW_DEMO_AUTH: "false"
+      NODE_ENV: production
+      NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+      EMAIL_PROVIDER: ${EMAIL_PROVIDER:-log}
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      SMTP_URL: ${SMTP_URL:-}
+      EMAIL_FROM: ${EMAIL_FROM:-}
+      ALERT_WEBHOOK_URL: ${ALERT_WEBHOOK_URL:-}
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://localhost:3000/api/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+
 volumes:
   xpo-pgdata:
