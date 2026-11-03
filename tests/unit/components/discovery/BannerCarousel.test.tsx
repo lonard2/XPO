@@ -111,7 +111,8 @@ describe('Discovery Component: BannerCarousel', () => {
     expect(screen.getByText('Pekan Raya Jakarta 2025 (Concluded)')).toBeInTheDocument();
     expect(screen.getByText('Event Concluded')).toBeInTheDocument();
     expect(screen.getByText('This event has concluded. Pass registration is closed.')).toBeInTheDocument();
-    expect(screen.getByText('View Event Recap')).toBeInTheDocument();
+    expect(screen.getByText('View Event Details')).toBeInTheDocument();
+    expect(screen.queryByText('View Event Recap')).toBeNull();
     expect(screen.queryByText(/Event is Happening Now/i)).toBeNull();
   });
 

@@ -326,7 +326,7 @@ export function BannerCarousel({
                   )}
                 >
                   <History className="h-4 w-4" />
-                  <span>{tHero('viewRecap') || 'View Event Recap'}</span>
+                  <span>{tHero('viewDetails') || 'View Event Details'}</span>
                   <ArrowRight className="h-4 w-4 ml-0.5" />
                 </Link>
                 <Link
