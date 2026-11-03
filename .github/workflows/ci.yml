@@ -48,7 +48,10 @@ jobs:
 
       - run: npm run type-check
       - run: npm run lint
-      - run: npm run test
+      - run: npm run test:coverage
+
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
       # tsc does not apply Next's route-export rules, so a build was the only
       # thing that could catch an invalid route module.
       - run: npm run build
