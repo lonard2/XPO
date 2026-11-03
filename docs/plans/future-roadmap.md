@@ -1,5 +1,10 @@
 # XPO Future Roadmap
 
+> Superseded by `docs/plans/future-roadmap-revised.md`. That file re-verifies
+> every claim below against the code and corrects five items: authentication
+> severity, the A4 approach, the A5 fix, the D2 scope, and the B3 revenue
+> framing. Kept for history.
+
 Evidence-built from three codebase audits (unbacked UI promises, unused data
 model power, API and journey gaps) plus 2026 MICE industry direction. The
 industry consensus this year is unusually clear: matchmaking quality, lead
