@@ -86,7 +86,7 @@ been the bar in this repository.
 
 ### Track S: Security and correctness (do first, in order)
 
-- [ ] **S1. Auth consistency.** Replace every raw `xpo_role` read with
+- [x] **S1. Auth consistency.** Replace every raw `xpo_role` read with
   `resolveEventCaller` plus an explicit write guard. Deny by default: absent
   role is a 401, not a pass. Files: `organizer/events/route.ts`,
   `organizer/booths/route.ts`, `admin/events/[id]/{route,assign,release}.ts`,
@@ -94,11 +94,18 @@ been the bar in this repository.
   *Done when:* each route returns 401 without a session and 403 with the
   wrong role, covered by an integration test per route, and `grep` finds no
   `xpo_role` parsing outside `src/lib/auth/`.
-- [ ] **S2. Write-path rate limits.** Extend the existing limiter to event
+  Shipped 2026-11-03 as `495f330`. Guard in `src/lib/auth/guards.ts`; event
+  creation takes its owner from the caller and listing is scoped per
+  organizer. Verified live: 401, 403, 401, 201, 401 across five probes; full
+  suite 909 green.
+- [x] **S2. Write-path rate limits.** Extend the existing limiter to event
   creation and report generation, and emit `X-RateLimit-*` headers so
   integrators can back off. S.
   *Done when:* a burst test trips the limit and the headers appear on both
   success and 429.
+  Shipped 2026-11-03 as `e51baee`. 30 event creations and 10 reports per
+  minute; headers on 201 and 429. Verified live: remaining 29 on create,
+  then limit 10, remaining 0, Retry-After 60.
 
 ### Track T: Trust completion (finish what A1 started)
 
