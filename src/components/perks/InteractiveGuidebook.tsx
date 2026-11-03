@@ -39,6 +39,9 @@ export interface InteractiveGuidebookProps {
   locale?: string;
   /** Organizer announcements. Absent means none: no invented alerts. */
   alerts?: string[];
+  /** When present, bookmarks persist against the pass instead of localStorage. */
+  bookingId?: string;
+  initialBookmarkedIds?: string[];
 }
 
 export function InteractiveGuidebook({
@@ -46,20 +49,26 @@ export function InteractiveGuidebook({
   eventTitle,
   locale = "en",
   alerts = [],
+  bookingId,
+  initialBookmarkedIds = [],
 }: InteractiveGuidebookProps) {
   const tPerks = useTranslations("perks");
   const tEvents = useTranslations("events");
   const tCommon = useTranslations("common");
 
-  const [bookmarkedIds, setBookmarkedIds] = React.useState<Set<string>>(new Set());
+  const [bookmarkedIds, setBookmarkedIds] = React.useState<Set<string>>(
+    () => new Set(initialBookmarkedIds)
+  );
   const [selectedTrack, setSelectedTrack] = React.useState<string>("ALL");
   const [searchQuery, setSearchQuery] = React.useState<string>("");
   const [filterBookmarkedOnly, setFilterBookmarkedOnly] = React.useState<boolean>(false);
   const [selectedSessionId, setSelectedSessionId] = React.useState<string | null>(null);
   const [showAlertBanner, setShowAlertBanner] = React.useState<boolean>(true);
 
-  // Load bookmarks from localStorage on mount
+  // With a pass, the server is the source of truth. Without one, keep the
+  // event-page preview in local storage.
   React.useEffect(() => {
+    if (bookingId) return;
     try {
       const saved = localStorage.getItem(`xpo_agenda_${eventTitle}`);
       if (saved) {
@@ -68,24 +77,37 @@ export function InteractiveGuidebook({
     } catch {
       // Ignore
     }
-  }, [eventTitle]);
+  }, [eventTitle, bookingId]);
 
-  const toggleBookmark = (id: string, e: React.MouseEvent) => {
+  const toggleBookmark = async (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    setBookmarkedIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
+    const previous = bookmarkedIds;
+    const next = new Set(previous);
+    const saving = !next.has(id);
+    if (saving) next.add(id);
+    else next.delete(id);
+    setBookmarkedIds(next);
+
+    if (bookingId) {
       try {
-        localStorage.setItem(`xpo_agenda_${eventTitle}`, JSON.stringify(Array.from(next)));
+        const res = await fetch(`/api/bookings/${bookingId}/agenda`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ agendaItemId: id, saved: saving }),
+        });
+        if (!res.ok) throw new Error("agenda");
       } catch {
-        // Ignore
+        // Revert the star: the pass did not record the change.
+        setBookmarkedIds(previous);
       }
-      return next;
-    });
+      return;
+    }
+
+    try {
+      localStorage.setItem(`xpo_agenda_${eventTitle}`, JSON.stringify(Array.from(next)));
+    } catch {
+      // Ignore
+    }
   };
 
   // Distinct tracks

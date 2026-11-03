@@ -148,6 +148,17 @@ export default async function DigitalPassDetailPage({ params }: DigitalPassPageP
     notFound();
   }
 
+  let bookmarkedAgendaIds: string[] = [];
+  try {
+    const marks = await db.agendaBookmark.findMany({
+      where: { bookingId: booking.id },
+      select: { agendaItemId: true },
+    });
+    bookmarkedAgendaIds = marks.map((mark) => mark.agendaItemId);
+  } catch {
+    bookmarkedAgendaIds = [];
+  }
+
   const perksCount = booking.event.perks?.length || 0;
   const agendaCount = booking.event.agendaItems?.length || 0;
   const hasMap = Boolean(booking.event.booths && booking.event.booths.length > 0);
@@ -208,6 +219,8 @@ export default async function DigitalPassDetailPage({ params }: DigitalPassPageP
               agendaItems={booking.event.agendaItems}
               eventTitle={booking.event.title}
               locale={locale}
+              bookingId={booking.id}
+              initialBookmarkedIds={bookmarkedAgendaIds}
             />
           </section>
         )}
