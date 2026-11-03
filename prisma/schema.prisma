@@ -158,6 +158,7 @@ model Booking {
   createdAt     DateTime  @default(now())
   claims        VoucherClaim[]
   agendaBookmarks AgendaBookmark[]
+  sessionCheckIns SessionCheckIn[]
 }
 
 model AgendaItem {
@@ -172,6 +173,19 @@ model AgendaItem {
   endTime     DateTime
   track       String?
   bookmarks   AgendaBookmark[]
+  checkIns    SessionCheckIn[]
+}
+
+model SessionCheckIn {
+  id           String     @id @default(cuid())
+  bookingId    String
+  booking      Booking    @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  agendaItemId String
+  agendaItem   AgendaItem @relation(fields: [agendaItemId], references: [id], onDelete: Cascade)
+  checkedInAt  DateTime   @default(now())
+
+  @@unique([bookingId, agendaItemId])
+  @@index([agendaItemId])
 }
 
 model AgendaBookmark {

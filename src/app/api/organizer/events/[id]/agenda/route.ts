@@ -1,0 +1,57 @@
+import { NextResponse } from "next/server";
+import { db } from "@/lib/db";
+import { requireUser } from "@/lib/auth/guards";
+import { canWriteEvent } from "@/lib/auth/eventOwnership";
+
+interface RouteParams {
+  params: Promise<{ id: string }>;
+}
+
+/**
+ * GET /api/organizer/events/[id]/agenda — sessions for the scanner's session
+ * check-in selector. Scoped to the owning organizer or an admin.
+ */
+export async function GET(request: Request, { params }: RouteParams) {
+  const gate = await requireUser(request, ["ORGANIZER", "ADMIN"]);
+  if (gate.response) return gate.response;
+
+  try {
+    const { id } = await params;
+    const event = await db.event.findFirst({
+      where: { OR: [{ id }, { slug: id }] },
+      select: { id: true, organizerId: true },
+    });
+    if (!event) {
+      return NextResponse.json(
+        { success: false, error: "NOT_FOUND: event does not exist." },
+        { status: 404 }
+      );
+    }
+    if (!canWriteEvent(gate.caller, event.organizerId)) {
+      return NextResponse.json(
+        { success: false, error: "Forbidden: only the owning organizer can read this agenda." },
+        { status: 403 }
+      );
+    }
+
+    const sessions = await db.agendaItem.findMany({
+      where: { eventId: event.id },
+      orderBy: { startTime: "asc" },
+      select: {
+        id: true,
+        title: true,
+        location: true,
+        startTime: true,
+        endTime: true,
+        track: true,
+      },
+    });
+
+    return NextResponse.json({ success: true, sessions });
+  } catch {
+    return NextResponse.json(
+      { success: false, error: "INTERNAL_ERROR: could not load the agenda." },
+      { status: 500 }
+    );
+  }
+}

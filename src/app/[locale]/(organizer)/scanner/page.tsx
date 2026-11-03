@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { ShieldCheck } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { CheckInScanner } from "@/components/organizer/CheckInScanner";
+import { SessionCheckInPanel } from "@/components/organizer/SessionCheckInPanel";
 import { useTranslations } from "next-intl";
 
 function DoorScannerContent() {
@@ -43,6 +44,8 @@ export default function DoorScannerPage() {
       <React.Suspense fallback={<div className="p-8 text-center text-xs text-muted-foreground">{tOrg("initScanner")}</div>}>
         <DoorScannerContent />
       </React.Suspense>
+
+      <SessionCheckInPanel />
     </div>
   );
 }
