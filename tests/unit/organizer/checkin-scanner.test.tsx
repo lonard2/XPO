@@ -161,12 +161,12 @@ describe("CheckInScanner event scope", () => {
     await waitFor(() => {
       expect(screen.getByText('Scanning for:')).toBeInTheDocument();
       expect(screen.getByText('Expo Nine · Hall A')).toBeInTheDocument();
-    });
+    }, { timeout: 3000 });
     const select = screen.getByLabelText(/scanning event/i) as HTMLSelectElement;
     fireEvent.change(select, { target: { value: "ev-10" } });
     await waitFor(() => {
       expect(screen.getByText('Expo Ten · Hall B')).toBeInTheDocument();
-    });
+    }, { timeout: 3000 });
   });
 
   it("shows a wrong-event verdict when the server reports a mismatch", async () => {

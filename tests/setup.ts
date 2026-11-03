@@ -1,4 +1,17 @@
 import "@testing-library/jest-dom/vitest";
+import { readFileSync } from "node:fs";
+import { parse as parseEnv } from "dotenv";
+
+// Tests need the database URL, but loading the whole .env would also inject
+// provider keys and change code paths (the AI suite expects no live key).
+if (!process.env.DATABASE_URL) {
+  try {
+    const parsed = parseEnv(readFileSync(".env"));
+    if (parsed.DATABASE_URL) process.env.DATABASE_URL = parsed.DATABASE_URL;
+  } catch {
+    // No .env: CI supplies DATABASE_URL directly.
+  }
+}
 import { vi, beforeEach } from "vitest";
 import enMessages from "@/messages/en.json";
 import { resetRateLimits } from "@/lib/api/rateLimit";
