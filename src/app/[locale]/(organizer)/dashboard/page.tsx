@@ -23,6 +23,7 @@ import { cn } from "@/lib/utils";
 import { formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
 import { OrganizerOnboardingGuide } from "@/components/organizer/OrganizerOnboardingGuide";
 import { OrganizerEventsRoster } from "@/components/organizer/OrganizerEventsRoster";
+import { MeetingRequestInbox } from "@/components/organizer/MeetingRequestInbox";
 import { CountUp } from "@/components/ui/CountUp";
 import { DashboardRefreshButton } from "@/components/organizer/DashboardRefreshButton";
 
@@ -50,6 +51,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
   let events: any[] = [];
   let curatedEvents: any[] = [];
   let allBooths: any[] = [];
+  let meetingRequests: any[] = [];
   let dbError = false;
 
   try {
@@ -74,6 +76,15 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
     const visibleIds = events.map((e: any) => e.id);
     allBooths = visibleIds.length > 0
       ? await db.boothTenant.findMany({ where: { eventId: { in: visibleIds } } })
+      : [];
+
+    meetingRequests = visibleIds.length > 0
+      ? await db.meetingRequest.findMany({
+          where: { eventId: { in: visibleIds } },
+          include: { event: { select: { id: true, title: true, slug: true } } },
+          orderBy: { createdAt: "desc" },
+          take: 25,
+        })
       : [];
   } catch (error) {
     console.error("Dashboard DB query error:", error);
@@ -337,6 +348,21 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
           </Card>
         </div>
       </div>
+
+      <MeetingRequestInbox
+        initialRequests={meetingRequests.map((row: any) => ({
+          id: row.id,
+          type: row.type,
+          requesterName: row.requesterName,
+          requesterEmail: row.requesterEmail,
+          target: row.target,
+          slot: row.slot,
+          message: row.message,
+          status: row.status,
+          createdAt: row.createdAt.toISOString(),
+          event: row.event,
+        }))}
+      />
 
       {/* ONBOARDING & ROADMAP GUIDE */}
       <OrganizerOnboardingGuide

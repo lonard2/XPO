@@ -4,6 +4,7 @@ import {
   renderBookingConfirmation,
   renderMeetingRequestConfirmation,
   renderMeetingRequestNotification,
+  renderMeetingRequestDecision,
 } from "@/lib/email/templates";
 
 describe("OTP email", () => {
@@ -90,5 +91,41 @@ describe("meeting request emails", () => {
     expect(mail.html).not.toContain("<script>");
     expect(mail.html).not.toContain("<img src=x");
     expect(mail.html).toContain("&lt;script&gt;");
+  });
+});
+
+describe("meeting decision emails", () => {
+  const base = {
+    type: "RFQ" as const,
+    eventTitle: "Manufacturing Indonesia 2026",
+    requesterName: "PT Industri Prima",
+    target: "Apex Robotics",
+    slot: "5 units",
+    message: "Need 5 units by Q2",
+    reference: "cmr456",
+  };
+
+  it("tells the requester the request was confirmed", () => {
+    const mail = renderMeetingRequestDecision({ ...base, status: "CONFIRMED" });
+    expect(mail.subject).toContain("confirmed");
+    expect(mail.text).toContain("confirmed");
+    expect(mail.text).toContain("cmr456");
+    expect(mail.text).toContain("Apex Robotics");
+  });
+
+  it("tells the requester the request was declined", () => {
+    const mail = renderMeetingRequestDecision({ ...base, status: "DECLINED" });
+    expect(mail.subject).toContain("declined");
+    expect(mail.text).toContain("submit a new request");
+  });
+
+  it("escapes user-supplied text", () => {
+    const mail = renderMeetingRequestDecision({
+      ...base,
+      status: "CONFIRMED",
+      requesterName: '<img src=x onerror="alert(1)">',
+    });
+    expect(mail.html).not.toContain("<img src=x");
+    expect(mail.html).toContain("&lt;img src=x");
   });
 });

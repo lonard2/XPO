@@ -214,3 +214,48 @@ export function renderMeetingRequestNotification(
   );
   return { subject, text, html };
 }
+
+export type MeetingDecision = "CONFIRMED" | "DECLINED";
+
+/** Tells the requester what the organizer decided. */
+export function renderMeetingRequestDecision(
+  input: MeetingRequestEmailInput & { status: MeetingDecision }
+) {
+  const verb = input.status === "CONFIRMED" ? "confirmed" : "declined";
+  const subject = `Request ${verb}: ${MEETING_TYPE_LABEL[input.type]} at ${input.eventTitle}`;
+  const text = [
+    `Hello ${input.requesterName},`,
+    "",
+    `The organizer has ${verb} your ${MEETING_TYPE_LABEL[input.type].toLowerCase()} request for ${input.eventTitle}.`,
+    "",
+    ...meetingLines(input),
+    "",
+    input.status === "CONFIRMED"
+      ? "The organizer will contact you with the confirmed time and location."
+      : "You can submit a new request from the event page if your plans change.",
+    "",
+    "XPO MICE",
+  ].join("\n");
+  const html = shell(
+    [
+      paragraph(`Hello ${escapeHtml(input.requesterName)},`),
+      paragraph(
+        `The organizer has <strong>${verb}</strong> your ${escapeHtml(
+          MEETING_TYPE_LABEL[input.type].toLowerCase()
+        )} request for <strong>${escapeHtml(input.eventTitle)}</strong>.`
+      ),
+      `<table role="presentation" style="width:100%;border-collapse:collapse;margin:0 0 16px;font-size:14px;color:#0f172a;">${meetingLines(input)
+        .map((line) => {
+          const [label, ...rest] = line.split(": ");
+          return row(label, rest.join(": "));
+        })
+        .join("")}</table>`,
+      paragraph(
+        input.status === "CONFIRMED"
+          ? "The organizer will contact you with the confirmed time and location."
+          : "You can submit a new request from the event page if your plans change."
+      ),
+    ].join("")
+  );
+  return { subject, text, html };
+}
