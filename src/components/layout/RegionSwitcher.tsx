@@ -124,6 +124,7 @@ export function RegionSwitcher({
     setCurrentRegion(regionCode);
     onActiveRegionChange?.(regionCode);
     if (typeof document !== "undefined") {
+      // eslint-disable-next-line react-hooks/immutability -- cookie write in an event handler
       document.cookie = `xpo_region=${regionCode}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
     }
     

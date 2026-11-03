@@ -117,6 +117,7 @@ export function AttendeeAIConcierge({ locale = "en", eventContext }: AttendeeAIC
     const textToSend = (customPrompt || inputValue).trim();
     if (!textToSend || isStreaming) return;
 
+    // eslint-disable-next-line react-hooks/purity -- event handler, not render
     const userMessageId = `user-${Date.now()}`;
     const userMessage: ChatMessage = {
       id: userMessageId,
@@ -125,6 +126,7 @@ export function AttendeeAIConcierge({ locale = "en", eventContext }: AttendeeAIC
       timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
     };
 
+    // eslint-disable-next-line react-hooks/purity -- event handler, not render
     const assistantMessageId = `assistant-${Date.now()}`;
     const initialAssistantMessage: ChatMessage = {
       id: assistantMessageId,
@@ -165,6 +167,7 @@ export function AttendeeAIConcierge({ locale = "en", eventContext }: AttendeeAIC
         const { done, value } = await reader.read();
         if (done) break;
 
+        // eslint-disable-next-line react-hooks/immutability -- local accumulator inside an event handler
         accumulatedResponse += decoder.decode(value, { stream: true });
         setMessages((prev) =>
           prev.map((msg) =>
@@ -213,7 +216,7 @@ export function AttendeeAIConcierge({ locale = "en", eventContext }: AttendeeAIC
             return (
               <ul key={pIdx} className="space-y-1 my-1 list-disc list-inside pl-1 text-muted-foreground">
                 {items.map((item, iIdx) => {
-                  const cleanItem = item.replace(/^[*\-]\s+/, "");
+                  const cleanItem = item.replace(/^[*-]\s+/, "");
                   return (
                     <li key={iIdx} className="text-foreground">
                       <span

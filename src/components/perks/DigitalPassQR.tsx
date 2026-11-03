@@ -99,7 +99,9 @@ export function DigitalPassQR({ booking, locale = 'en', isDemoPreview = false }:
   const [cacheWarning, setCacheWarning] = React.useState<string | null>(null);
   const [cachedAt, setCachedAt] = React.useState<string | null>(null);
   const tMyTicketsRef = React.useRef(tMyTickets);
-  tMyTicketsRef.current = tMyTickets;
+  React.useEffect(() => {
+    tMyTicketsRef.current = tMyTickets;
+  });
 
   React.useEffect(() => {
     if (typeof window !== 'undefined' && window.localStorage) {

@@ -174,6 +174,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
               aria-label={tNav("authAria")}
             >
               <div className="h-6 w-6 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                {/* eslint-disable-next-line react-hooks/static-components -- RoleIcon is a stable import selected by role, not a new definition */}
                 <RoleIcon className="h-3.5 w-3.5" />
               </div>
               <div className="hidden sm:flex flex-col">
@@ -241,6 +242,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
             >
               <div className="flex items-center gap-2.5">
                 <div className="h-8 w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+                  {/* eslint-disable-next-line react-hooks/static-components -- RoleIcon is a stable import selected by role, not a new definition */}
                   <RoleIcon className="h-4 w-4" />
                 </div>
                 <div>

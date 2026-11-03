@@ -189,19 +189,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(updated);
   }, []);
 
-  const login = React.useCallback(async (email: string, password?: string): Promise<boolean> => {
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-    if (!res.ok) {
-      const data = await res.json().catch(() => ({}));
-      throw new Error((data as any).error || "Authentication failed. Please check credentials.");
-    }
-    return refreshSession();
-  }, []);
-
   const refreshSession = React.useCallback(async (): Promise<boolean> => {
     try {
       const res = await fetch("/api/auth/me");
@@ -228,6 +215,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setStoredUser(null);
     setUser(null);
   }, []);
+
+  const login = React.useCallback(async (email: string, password?: string): Promise<boolean> => {
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      throw new Error((data as any).error || "Authentication failed. Please check credentials.");
+    }
+    return refreshSession();
+  }, [refreshSession]);
 
   const checkUserPermission = React.useCallback(
     (permission: Permission): boolean => {

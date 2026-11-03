@@ -93,7 +93,6 @@ export function TicketCheckoutDrawer({
     setAttendeeEmail((v) => v || p.email || "");
     setOrganization((v) => v || p.organization || "");
     setJobTitle((v) => v || p.jobTitle || "");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, settingsReady, savedProfile]);
   const [copiedRef, setCopiedRef] = React.useState(false);
 

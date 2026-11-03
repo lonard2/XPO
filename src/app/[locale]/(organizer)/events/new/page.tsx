@@ -313,6 +313,50 @@ export default function NewEventWizardPage() {
   const [showTemplateModal, setShowTemplateModal] = React.useState(false);
   const [templateUndoAvailable, setTemplateUndoAvailable] = React.useState(false);
 
+
+  // Step 2: Venue & Hall (Regional defaults derived from route locale)
+  const initialRegion = React.useMemo(() => {
+    return locale === "ja" ? "jp" : locale === "global" ? "global" : "id";
+  }, [locale]);
+
+  const [regionId, setRegionId] = React.useState(initialRegion);
+  const [venueId, setVenueId] = React.useState("");
+  const [venueHallId, setVenueHallId] = React.useState("");
+  const [venueHallIds, setVenueHallIds] = React.useState<string[]>([]);
+  const [venuesList, setVenuesList] = React.useState<Venue[]>([]);
+  const [startDate, setStartDate] = React.useState("2027-04-14");
+  const [endDate, setEndDate] = React.useState("2027-04-17");
+
+  // Step 3: Ticket Tiers
+  const defaultCurrency = initialRegion === "jp" ? "JPY" : initialRegion === "global" ? "USD" : "IDR";
+  const defaultPaidPrice = initialRegion === "jp" ? 10000 : initialRegion === "global" ? 99 : 750000;
+
+  const [ticketTiers, setTicketTiers] = React.useState<TicketTierDraft[]>([
+    {
+      id: "tier-1",
+      name: "Standard Trade Visitor Pass",
+      price: 0,
+      currency: defaultCurrency,
+      capacity: 3500,
+      benefits: "Exhibition Floor Access, Daily Open Keynotes, Digital Guidebook",
+    },
+    {
+      id: "tier-2",
+      name: "VIP Buyer & Delegate Pass",
+      price: defaultPaidPrice,
+      currency: defaultCurrency,
+      capacity: 400,
+      benefits: "Fast-Track QR Gate, VIP Procurement Lounge, B2B Matchmaking App, Speaker Slide Downloads",
+    },
+  ]);
+
+  // Step 4: Branding Tokens
+  const [primaryColor, setPrimaryColor] = React.useState("#ca8a04");
+  const [accentColor, setAccentColor] = React.useState("#16a34a");
+  const [heroImageUrl, setHeroImageUrl] = React.useState(
+    "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1600&q=80"
+  );
+
   const handleApplyTemplate = React.useCallback((templateKey: string) => {
     const tmpl = TEMPLATES[templateKey];
     if (!tmpl) return;
@@ -372,49 +416,6 @@ export default function NewEventWizardPage() {
     templateSnapshotRef.current = null;
     setTemplateUndoAvailable(false);
   };
-
-  // Step 2: Venue & Hall (Regional defaults derived from route locale)
-  const initialRegion = React.useMemo(() => {
-    return locale === "ja" ? "jp" : locale === "global" ? "global" : "id";
-  }, [locale]);
-
-  const [regionId, setRegionId] = React.useState(initialRegion);
-  const [venueId, setVenueId] = React.useState("");
-  const [venueHallId, setVenueHallId] = React.useState("");
-  const [venueHallIds, setVenueHallIds] = React.useState<string[]>([]);
-  const [venuesList, setVenuesList] = React.useState<Venue[]>([]);
-  const [startDate, setStartDate] = React.useState("2027-04-14");
-  const [endDate, setEndDate] = React.useState("2027-04-17");
-
-  // Step 3: Ticket Tiers
-  const defaultCurrency = initialRegion === "jp" ? "JPY" : initialRegion === "global" ? "USD" : "IDR";
-  const defaultPaidPrice = initialRegion === "jp" ? 10000 : initialRegion === "global" ? 99 : 750000;
-
-  const [ticketTiers, setTicketTiers] = React.useState<TicketTierDraft[]>([
-    {
-      id: "tier-1",
-      name: "Standard Trade Visitor Pass",
-      price: 0,
-      currency: defaultCurrency,
-      capacity: 3500,
-      benefits: "Exhibition Floor Access, Daily Open Keynotes, Digital Guidebook",
-    },
-    {
-      id: "tier-2",
-      name: "VIP Buyer & Delegate Pass",
-      price: defaultPaidPrice,
-      currency: defaultCurrency,
-      capacity: 400,
-      benefits: "Fast-Track QR Gate, VIP Procurement Lounge, B2B Matchmaking App, Speaker Slide Downloads",
-    },
-  ]);
-
-  // Step 4: Branding Tokens
-  const [primaryColor, setPrimaryColor] = React.useState("#ca8a04");
-  const [accentColor, setAccentColor] = React.useState("#16a34a");
-  const [heroImageUrl, setHeroImageUrl] = React.useState(
-    "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1600&q=80"
-  );
 
   // Fetch Venues on Mount & Check Draft
   React.useEffect(() => {
@@ -976,6 +977,13 @@ export default function NewEventWizardPage() {
     }
   };
 
+  // Active cluster category filter
+  const displayedArchetypes = React.useMemo(() => {
+    if (selectedCluster === "ALL") return ARCHETYPE_LIST;
+    const cluster = MICE_INDUSTRY_CLUSTERS.find((c) => c.id === selectedCluster);
+    return cluster ? cluster.archetypes : ARCHETYPE_LIST;
+  }, [selectedCluster]);
+
   // RBAC Access Barrier for Attendee
   if (role === "ATTENDEE") {
     return (
@@ -1016,13 +1024,6 @@ export default function NewEventWizardPage() {
       </div>
     );
   }
-
-  // Active cluster category filter
-  const displayedArchetypes = React.useMemo(() => {
-    if (selectedCluster === "ALL") return ARCHETYPE_LIST;
-    const cluster = MICE_INDUSTRY_CLUSTERS.find((c) => c.id === selectedCluster);
-    return cluster ? cluster.archetypes : ARCHETYPE_LIST;
-  }, [selectedCluster]);
 
   const WIZARD_STEPS = [
     { step: 1, label: tOrg("wizardStep1"), sub: "22 MICE Categories", icon: Info },

@@ -71,6 +71,7 @@ export function HeroSearchBar({
     if (router?.push) {
       router.push(targetUrl);
     } else if (typeof window !== 'undefined') {
+      // eslint-disable-next-line react-hooks/immutability -- navigation side effect in an event handler
       window.location.href = targetUrl;
     }
   };
@@ -83,6 +84,7 @@ export function HeroSearchBar({
     if (router?.push) {
       router.push(targetUrl);
     } else if (typeof window !== 'undefined') {
+      // eslint-disable-next-line react-hooks/immutability -- navigation side effect in an event handler
       window.location.href = targetUrl;
     }
   };
