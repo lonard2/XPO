@@ -64,6 +64,7 @@ describe("CheckInScanner honest record", () => {
   beforeEach(() => {
     localStorage.clear();
     vi.restoreAllMocks();
+    vi.useRealTimers();
   });
 
   it("routes supervisor override through the verify API as a re-admit", async () => {
@@ -135,6 +136,7 @@ describe("CheckInScanner event scope", () => {
   beforeEach(() => {
     localStorage.clear();
     vi.restoreAllMocks();
+    vi.useRealTimers();
   });
 
   it("banners the deep-linked event and sends its id on verify", async () => {
@@ -191,6 +193,7 @@ describe("CheckInScanner recognition", () => {
   beforeEach(() => {
     localStorage.clear();
     vi.restoreAllMocks();
+    vi.useRealTimers();
   });
 
   it("renders affiliation, photo, and perk descriptions when provided", async () => {
@@ -228,6 +231,7 @@ describe("CheckInScanner listing exclusion", () => {
   beforeEach(() => {
     localStorage.clear();
     vi.restoreAllMocks();
+    vi.useRealTimers();
   });
 
   it("omits listing-only events from the scanning context", async () => {
@@ -262,6 +266,7 @@ describe("CheckInScanner export context", () => {
   beforeEach(() => {
     localStorage.clear();
     vi.restoreAllMocks();
+    vi.useRealTimers();
   });
 
   it("names the shift CSV after the scanning event", async () => {

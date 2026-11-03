@@ -220,7 +220,9 @@ describe("Phase 2 Integration: Relational Data Models & Venue Ingestion", () => 
         meeting: v.halls.filter((h) => h.kind === "MEETING_ROOM").length,
       };
     }
-    expect(counts).toEqual({
+    // Extra venues created by other test files may be present; the assertion
+    // is about the seeded venues' counts, not the absence of any other venue.
+    expect(counts).toMatchObject({
       "jiexpo-kemayoran": { halls: 13, meeting: 31 },
       "ice-bsd-city": { halls: 12, meeting: 29 },
       "jcc-senayan": { halls: 8, meeting: 14 },

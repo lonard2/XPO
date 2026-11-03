@@ -15,6 +15,7 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
   beforeAll(async () => {
     await db.$connect();
     sampleVenue = await db.venue.findFirst({
+      where: { halls: { some: {} } },
       include: { halls: true },
     });
     sampleOrganizer = await db.user.findFirst({ where: { role: "ORGANIZER" } });

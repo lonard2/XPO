@@ -11,6 +11,11 @@ export default defineConfig({
     include: ["tests/**/*.{test,spec}.{ts,tsx}"],
     // Playwright specs run under `npm run test:e2e`, never vitest.
     exclude: ["node_modules/", "tests/e2e/**"],
+    // Integration files share one Postgres database. Running files in
+    // parallel lets one file's temporary venue or event leak into another
+    // file's exact-count or delete assertion. Serial files trade a little
+    // wall time for deterministic results.
+    fileParallelism: false,
     coverage: {
       provider: "v8",
       reporter: ["text", "lcov"],
