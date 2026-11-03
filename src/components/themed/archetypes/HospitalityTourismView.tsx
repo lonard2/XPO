@@ -21,11 +21,38 @@ import { Badge } from "@/components/ui/Badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
 import { Drawer } from "@/components/ui/Drawer";
 import { type ArchetypeViewProps } from "./IndustrialB2BView";
+import { submitMeetingRequest } from "@/lib/meetings/client";
 
 export function HospitalityTourismView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
   const [buyerDrawerOpen, setBuyerDrawerOpen] = React.useState(false);
   const [selectedPavilion, setSelectedPavilion] = React.useState<string | null>(null);
   const [appointmentBooked, setAppointmentBooked] = React.useState(false);
+  const [appointmentReference, setAppointmentReference] = React.useState<string | null>(null);
+  const [appointmentError, setAppointmentError] = React.useState<string | null>(null);
+  const [appointmentSending, setAppointmentSending] = React.useState(false);
+
+  const handleAppointmentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = new FormData(e.currentTarget);
+    setAppointmentSending(true);
+    setAppointmentError(null);
+    try {
+      const reference = await submitMeetingRequest({
+        eventId: event.id,
+        type: "BUYER_APPOINTMENT",
+        requesterName: String(form.get("name") || ""),
+        requesterEmail: String(form.get("email") || ""),
+        target: selectedPavilion || "Hosted buyer session",
+        message: String(form.get("category") || ""),
+      });
+      setAppointmentReference(reference);
+      setAppointmentBooked(true);
+    } catch (err) {
+      setAppointmentError((err as Error).message);
+    } finally {
+      setAppointmentSending(false);
+    }
+  };
 
   // Tourism Pavilions & Hospitality Procurement Hub
   const destinationPavilions = [
@@ -171,9 +198,13 @@ export function HospitalityTourismView({ event, locale = "en", onSelectTier }: A
                 <CheckCircle2 className="h-8 w-8" />
               </div>
               <div className="space-y-1">
-                <h4 className="text-lg font-bold text-foreground">Buyer Appointment Confirmed</h4>
+                <h4 className="text-lg font-bold text-foreground">Buyer Appointment Requested</h4>
                 <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-                  Your procurement meeting with <span className="font-semibold text-foreground">{selectedPavilion}</span> has been confirmed. Please check in at Hosted Buyer Lounge Table B-12.
+                  Your procurement meeting request with <span className="font-semibold text-foreground">{selectedPavilion}</span> is
+                  recorded and the organizer has your contact details.
+                  {appointmentReference && (
+                    <span className="block mt-1 font-mono">Reference: {appointmentReference}</span>
+                  )}
                 </p>
               </div>
               <Button
@@ -187,13 +218,35 @@ export function HospitalityTourismView({ event, locale = "en", onSelectTier }: A
               </Button>
             </div>
           ) : (
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                setAppointmentBooked(true);
-              }}
-              className="space-y-4"
-            >
+            <form onSubmit={handleAppointmentSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs font-semibold text-foreground block mb-1.5">
+                    Full Name *
+                  </label>
+                  <input
+                    required
+                    name="name"
+                    type="text"
+                    autoComplete="name"
+                    placeholder="e.g. Alex Pratama"
+                    className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-background text-foreground font-medium min-h-[44px]"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-semibold text-foreground block mb-1.5">
+                    Contact Email *
+                  </label>
+                  <input
+                    required
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    placeholder="you@company.com"
+                    className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-background text-foreground font-medium min-h-[44px]"
+                  />
+                </div>
+              </div>
               <div>
                 <label className="text-xs font-semibold text-foreground block mb-1.5">
                   Destination / Hospitality Pavilion
@@ -210,7 +263,7 @@ export function HospitalityTourismView({ event, locale = "en", onSelectTier }: A
                 <label className="text-xs font-semibold text-foreground block mb-1.5">
                   Buyer Procurement Category
                 </label>
-                <select className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-background text-foreground font-medium">
+                <select name="category" className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-background text-foreground font-medium">
                   <option>MICE Corporate Retreats & Incentive Trips</option>
                   <option>Luxury Hotel & Resort Amenities Wholesale</option>
                   <option>Airline Group Ticketing & Charter Services</option>
@@ -231,6 +284,11 @@ export function HospitalityTourismView({ event, locale = "en", onSelectTier }: A
                 </div>
               </div>
 
+              {appointmentError && (
+                <p role="alert" className="text-xs text-destructive">
+                  {appointmentError}
+                </p>
+              )}
               <div className="pt-2 flex justify-end gap-3">
                 <Button
                   type="button"
@@ -241,9 +299,10 @@ export function HospitalityTourismView({ event, locale = "en", onSelectTier }: A
                 </Button>
                 <Button
                   type="submit"
+                  disabled={appointmentSending}
                   className="bg-cyan-600 hover:bg-cyan-700 text-white font-semibold"
                 >
-                  Confirm Appointment
+                  {appointmentSending ? "Sending…" : "Confirm Appointment"}
                 </Button>
               </div>
             </form>

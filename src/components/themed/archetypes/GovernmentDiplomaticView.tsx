@@ -22,11 +22,38 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Drawer } from "@/components/ui/Drawer";
 import { formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
 import type { ArchetypeViewProps } from "./IndustrialB2BView";
+import { submitMeetingRequest } from "@/lib/meetings/client";
 
 export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
   const [bilateralDrawerOpen, setBilateralDrawerOpen] = React.useState(false);
   const [selectedDelegation, setSelectedDelegation] = React.useState<string | null>(null);
   const [scheduled, setScheduled] = React.useState(false);
+  const [scheduleReference, setScheduleReference] = React.useState<string | null>(null);
+  const [scheduleError, setScheduleError] = React.useState<string | null>(null);
+  const [scheduleSending, setScheduleSending] = React.useState(false);
+
+  const handleScheduleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = new FormData(e.currentTarget);
+    setScheduleSending(true);
+    setScheduleError(null);
+    try {
+      const reference = await submitMeetingRequest({
+        eventId: event.id,
+        type: "BILATERAL_SLOT",
+        requesterName: `${String(form.get("minister") || "")} (${String(form.get("ministry") || "")})`,
+        requesterEmail: String(form.get("email") || ""),
+        target: selectedDelegation || "Delegation",
+        message: String(form.get("agenda") || ""),
+      });
+      setScheduleReference(reference);
+      setScheduled(true);
+    } catch (err) {
+      setScheduleError((err as Error).message);
+    } finally {
+      setScheduleSending(false);
+    }
+  };
 
   // Diplomatic delegations participating
   const delegations = [
@@ -280,24 +307,27 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier }:
             <div className="h-12 w-12 rounded-full bg-sky-500/20 text-sky-400 flex items-center justify-center mx-auto">
               <CheckCircle2 className="h-6 w-6" />
             </div>
-            <h4 className="text-base font-semibold text-foreground">Audience Request Dispatched</h4>
+            <h4 className="text-base font-semibold text-foreground">Audience Request Recorded</h4>
             <p className="text-xs text-muted-foreground max-w-xs mx-auto">
-              The diplomatic secretariat has received your bilateral memorandum. Official protocol confirmation will
-              follow via diplomatic pouch / encrypted channel.
+              The diplomatic secretariat has your bilateral memorandum and contact details, and will respond directly.
+              {scheduleReference && (
+                <span className="block mt-1 font-mono">Reference: {scheduleReference}</span>
+              )}
             </p>
           </div>
         ) : (
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              setScheduled(true);
-              setTimeout(() => {
-                setBilateralDrawerOpen(false);
-                setScheduled(false);
-              }, 2500);
-            }}
-            className="space-y-4 text-xs font-sans"
-          >
+          <form onSubmit={handleScheduleSubmit} className="space-y-4 text-xs font-sans">
+            <div className="space-y-1">
+              <label className="font-semibold text-foreground">Contact Email *</label>
+              <input
+                required
+                name="email"
+                type="email"
+                autoComplete="email"
+                placeholder="protocol@ministry.gov"
+                className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary"
+              />
+            </div>
             <div className="space-y-1">
               <label className="font-semibold text-foreground">Target Sovereign Mission</label>
               <input
@@ -311,6 +341,7 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier }:
               <label className="font-semibold text-foreground">Requesting Ministry / Institution *</label>
               <input
                 required
+                name="ministry"
                 type="text"
                 placeholder="e.g. Ministry of Foreign Affairs & Trade"
                 className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary"
@@ -320,6 +351,7 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier }:
               <label className="font-semibold text-foreground">Lead Minister / Ambassador *</label>
               <input
                 required
+                name="minister"
                 type="text"
                 placeholder="Full Name and Diplomatic Rank"
                 className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary"
@@ -328,15 +360,26 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier }:
             <div className="space-y-1">
               <label className="font-semibold text-foreground">Proposed Agenda Topics</label>
               <textarea
+                name="agenda"
                 rows={3}
                 placeholder="Bilateral trade agreements, clean energy transition partnerships, or joint diplomatic communiques..."
                 className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary"
               />
             </div>
+            {scheduleError && (
+              <p role="alert" className="text-xs text-destructive">
+                {scheduleError}
+              </p>
+            )}
             <div className="pt-2">
-              <Button type="submit" variant="archetype" className="w-full gap-2 font-semibold">
+              <Button
+                type="submit"
+                variant="archetype"
+                disabled={scheduleSending}
+                className="w-full gap-2 font-semibold"
+              >
                 <FileCheck className="h-4 w-4" />
-                Submit Protocol Request
+                {scheduleSending ? "Submitting…" : "Submit Protocol Request"}
               </Button>
             </div>
           </form>

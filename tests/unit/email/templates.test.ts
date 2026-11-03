@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { renderOtpEmail, renderBookingConfirmation } from "@/lib/email/templates";
+import {
+  renderOtpEmail,
+  renderBookingConfirmation,
+  renderMeetingRequestConfirmation,
+  renderMeetingRequestNotification,
+} from "@/lib/email/templates";
 
 describe("OTP email", () => {
   it("puts the code in the subject and body", () => {
@@ -48,5 +53,42 @@ describe("booking confirmation", () => {
     expect(mail.html).not.toContain("<img src=x");
     expect(mail.html).toContain("&lt;script&gt;");
     expect(mail.html).toContain("&lt;img src=x");
+  });
+});
+
+describe("meeting request emails", () => {
+  const base = {
+    type: "RFQ" as const,
+    eventTitle: "Manufacturing Indonesia 2026",
+    requesterName: "PT Industri Prima",
+    target: "Apex Robotics",
+    slot: "5 units",
+    message: "Need 5 units by Q2",
+    reference: "cmr123",
+  };
+
+  it("confirms receipt to the requester with the reference", () => {
+    const mail = renderMeetingRequestConfirmation(base);
+    expect(mail.subject).toContain("Request for Quotation");
+    expect(mail.text).toContain("cmr123");
+    expect(mail.text).toContain("Apex Robotics");
+    expect(mail.html).toContain("cmr123");
+  });
+
+  it("tells the organizer who to reply to", () => {
+    const mail = renderMeetingRequestNotification({ ...base, requesterEmail: "buyer@co.com" });
+    expect(mail.text).toContain("Reply to: buyer@co.com");
+    expect(mail.subject).toContain("request for quotation");
+  });
+
+  it("escapes user-supplied text", () => {
+    const mail = renderMeetingRequestConfirmation({
+      ...base,
+      requesterName: '<img src=x onerror="alert(1)">',
+      message: "Hello <script>alert(1)</script>",
+    });
+    expect(mail.html).not.toContain("<script>");
+    expect(mail.html).not.toContain("<img src=x");
+    expect(mail.html).toContain("&lt;script&gt;");
   });
 });

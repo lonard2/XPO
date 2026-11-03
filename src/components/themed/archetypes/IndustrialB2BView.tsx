@@ -25,6 +25,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Drawer } from "@/components/ui/Drawer";
 import { formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
 import { parseShowcase } from "@/lib/showcase";
+import { submitMeetingRequest } from "@/lib/meetings/client";
 import { ShowcaseProgramGrid } from "@/components/themed/ShowcaseProgramGrid";
 
 export interface ArchetypeViewProps {
@@ -92,9 +93,13 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier }: Archet
   const [rfqDrawerOpen, setRfqDrawerOpen] = React.useState(false);
   const [selectedBooth, setSelectedBooth] = React.useState<string | null>(null);
   const [rfqSubmitted, setRfqSubmitted] = React.useState(false);
+  const [rfqReference, setRfqReference] = React.useState<string | null>(null);
+  const [rfqError, setRfqError] = React.useState<string | null>(null);
+  const [rfqSending, setRfqSending] = React.useState(false);
+
   const [boothSearch, setBoothSearch] = React.useState("");
   const [selectedIndustry, setSelectedIndustry] = React.useState("ALL");
-  const [b2bMeetingSuccess, setB2bMeetingSuccess] = React.useState(false);
+
 
   // Unique industries
   const industries = ["ALL", ...Array.from(new Set(event.booths.map((b) => b.industry || "General Industry")))];
@@ -114,13 +119,34 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier }: Archet
     setRfqDrawerOpen(true);
   };
 
-  const handleRfqSubmit = (e: React.FormEvent) => {
+  const handleRfqSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setRfqSubmitted(true);
-    setTimeout(() => {
-      setRfqDrawerOpen(false);
-      setRfqSubmitted(false);
-    }, 2500);
+    const form = new FormData(e.currentTarget);
+    setRfqSending(true);
+    setRfqError(null);
+    try {
+      const reference = await submitMeetingRequest({
+        eventId: event.id,
+        type: "RFQ",
+        requesterName: String(form.get("company") || ""),
+        requesterEmail: String(form.get("email") || ""),
+        target: selectedBooth || "All Matching Heavy Equipment Exhibitors",
+        slot: String(form.get("quantity") || ""),
+        message: String(form.get("specs") || ""),
+      });
+      setRfqReference(reference);
+      setRfqSubmitted(true);
+    } catch (err) {
+      setRfqError((err as Error).message);
+    } finally {
+      setRfqSending(false);
+    }
+  };
+
+  // Slot booking needs an identity to reply to, so it opens the request drawer
+  // for that booth instead of recording an anonymous inquiry.
+  const handleBookSlot = (companyName: string) => {
+    handleOpenRfq(companyName);
   };
 
   // Organizer-authored showcase: sections render only with backing data.
@@ -279,10 +305,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier }: Archet
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => {
-                      setB2bMeetingSuccess(true);
-                      setTimeout(() => setB2bMeetingSuccess(false), 3000);
-                    }}
+                    onClick={() => handleBookSlot(booth.companyName)}
                     className="h-8 text-xs text-muted-foreground hover:text-foreground"
                   >
                     Book Slot
@@ -293,12 +316,6 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier }: Archet
           ))}
         </div>
 
-        {b2bMeetingSuccess && (
-          <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-lg text-xs text-emerald-400 flex items-center gap-2 animate-fade-in">
-            <CheckCircle2 className="h-4 w-4" />
-            Meeting slot inquiry submitted. The exhibitor sales team will confirm your B2B deal-room invitation.
-          </div>
-        )}
       </section>
 
       {/* 4. Technical Demos & Workshop Schedule */}
@@ -426,8 +443,10 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier }: Archet
             </div>
             <h4 className="text-base font-semibold text-foreground">RFQ Submitted Successfully</h4>
             <p className="text-xs text-muted-foreground max-w-xs mx-auto">
-              Your technical specification inquiry has been routed to the manufacturer. A sales engineer will respond
-              within 24 hours.
+              Your technical specification inquiry is recorded and the exhibitor has your contact details.
+              {rfqReference && (
+                <span className="block mt-1 font-mono">Reference: {rfqReference}</span>
+              )}
             </p>
           </div>
         ) : (
@@ -446,6 +465,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier }: Archet
                 <label className="text-xs font-semibold text-foreground">Company Name *</label>
                 <input
                   required
+                  name="company"
                   type="text"
                   autoComplete="organization"
                   placeholder="e.g. PT Industri Prima"
@@ -456,6 +476,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier }: Archet
                 <label className="text-xs font-semibold text-foreground">Estimated Quantity / Units *</label>
                 <input
                   required
+                  name="quantity"
                   type="text"
                   placeholder="e.g. 5 Units / Annual"
                   className="w-full px-3 py-2 text-xs rounded-md bg-background border border-border focus:ring-1 focus:ring-primary min-h-[40px]"
@@ -466,6 +487,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier }: Archet
               <label className="text-xs font-semibold text-foreground">Contact Email *</label>
               <input
                 required
+                name="email"
                 type="email"
                 autoComplete="email"
                 placeholder="procurement@company.com"
@@ -476,15 +498,26 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier }: Archet
               <label className="text-xs font-semibold text-foreground">Technical Specifications / RFQ Scope *</label>
               <textarea
                 required
+                name="specs"
                 rows={4}
                 placeholder="Detail your machinery requirements, precision tolerance, voltage standards, and expected delivery timeline..."
                 className="w-full px-3 py-2 text-xs rounded-md bg-background border border-border focus:ring-1 focus:ring-primary"
               />
             </div>
+            {rfqError && (
+              <p role="alert" className="text-xs text-destructive">
+                {rfqError}
+              </p>
+            )}
             <div className="pt-2">
-              <Button type="submit" variant="archetype" className="w-full gap-2 min-h-[44px] cursor-pointer">
+              <Button
+                type="submit"
+                variant="archetype"
+                disabled={rfqSending}
+                className="w-full gap-2 min-h-[44px] cursor-pointer"
+              >
                 <Send className="h-4 w-4" />
-                Transmit RFQ to Exhibitor
+                {rfqSending ? "Transmitting…" : "Transmit RFQ to Exhibitor"}
               </Button>
             </div>
           </form>

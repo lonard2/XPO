@@ -103,6 +103,7 @@ model Event {
   perks              EventPerk[]
   aiReports          AIReport[]
   bookings           Booking[]
+  meetingRequests  MeetingRequest[]
   createdAt          DateTime     @default(now())
   updatedAt          DateTime     @updatedAt
 }
@@ -247,4 +248,24 @@ model AuditLog {
   @@index([entity, entityId])
   @@index([createdAt])
   @@index([actorId])
+}
+
+model MeetingRequest {
+  id             String   @id @default(cuid())
+  eventId        String
+  event          Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  // RFQ | DEAL_SLOT | BUYER_APPOINTMENT | BILATERAL_SLOT | DEAL_ROOM
+  type           String
+  requesterName  String
+  requesterEmail String
+  // Booth company, deal opportunity, pavilion or delegation, as named in the UI.
+  target         String   @default("")
+  // Preferred slot or date range, free text; empty when the form asks for none.
+  slot           String   @default("")
+  message        String   @default("")
+  // PENDING | CONFIRMED | DECLINED
+  status         String   @default("PENDING")
+  createdAt      DateTime @default(now())
+
+  @@index([eventId, status])
 }

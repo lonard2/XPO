@@ -24,6 +24,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Drawer } from "@/components/ui/Drawer";
 import { formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
 import type { ArchetypeViewProps } from "./IndustrialB2BView";
+import { submitMeetingRequest } from "@/lib/meetings/client";
 import { parseShowcase } from "@/lib/showcase";
 import { ShowcaseProgramGrid } from "@/components/themed/ShowcaseProgramGrid";
 
@@ -31,6 +32,33 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier }: Arch
   const [dealRoomOpen, setDealRoomOpen] = React.useState(false);
   const [selectedDeal, setSelectedDeal] = React.useState<string | null>(null);
   const [bookingConfirmed, setBookingConfirmed] = React.useState(false);
+  const [bookingReference, setBookingReference] = React.useState<string | null>(null);
+  const [bookingError, setBookingError] = React.useState<string | null>(null);
+  const [bookingSending, setBookingSending] = React.useState(false);
+
+  const handleDealSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = new FormData(e.currentTarget);
+    setBookingSending(true);
+    setBookingError(null);
+    try {
+      const reference = await submitMeetingRequest({
+        eventId: event.id,
+        type: "DEAL_ROOM",
+        requesterName: String(form.get("fund") || ""),
+        requesterEmail: String(form.get("email") || ""),
+        target: selectedDeal || "Institutional Deal Room",
+        slot: String(form.get("slot") || ""),
+        message: `Horizon: ${String(form.get("horizon") || "")}. ${String(form.get("agenda") || "")}`,
+      });
+      setBookingReference(reference);
+      setBookingConfirmed(true);
+    } catch (err) {
+      setBookingError((err as Error).message);
+    } finally {
+      setBookingSending(false);
+    }
+  };
   const [kycVerified, setKycVerified] = React.useState(false);
 
   const handleBookDealRoom = (dealName: string) => {
@@ -237,22 +265,25 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier }: Arch
             </div>
             <h4 className="text-base font-semibold text-foreground">Deal Room Requested</h4>
             <p className="text-xs text-muted-foreground max-w-xs mx-auto">
-              The founder/fund team has been alerted. An encrypted calendar invite and NDA token will be dispatched to
-              your email.
+              The founder/fund team has your request and contact details, and will respond directly.
+              {bookingReference && (
+                <span className="block mt-1 font-mono">Reference: {bookingReference}</span>
+              )}
             </p>
           </div>
         ) : (
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              setBookingConfirmed(true);
-              setTimeout(() => {
-                setDealRoomOpen(false);
-                setBookingConfirmed(false);
-              }, 2500);
-            }}
-            className="space-y-4 text-xs"
-          >
+          <form onSubmit={handleDealSubmit} className="space-y-4 text-xs">
+            <div className="space-y-1">
+              <label className="font-semibold text-foreground">Contact Email *</label>
+              <input
+                required
+                name="email"
+                type="email"
+                autoComplete="email"
+                placeholder="partner@fund.com"
+                className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary min-h-[40px]"
+              />
+            </div>
             <div className="space-y-1">
               <label className="font-semibold text-foreground">Target Opportunity</label>
               <input
@@ -266,6 +297,7 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier }: Arch
               <label className="font-semibold text-foreground">Fund / Institution Name *</label>
               <input
                 required
+                name="fund"
                 type="text"
                 autoComplete="organization"
                 placeholder="e.g. Apex Global Ventures"
@@ -275,7 +307,7 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier }: Arch
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
                 <label className="font-semibold text-foreground">Preferred Time Slot *</label>
-                <select className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary min-h-[40px]">
+                <select name="slot" className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary min-h-[40px]">
                   <option>Day 1: 14:00 - 14:45</option>
                   <option>Day 1: 15:30 - 16:15</option>
                   <option>Day 2: 10:00 - 10:45</option>
@@ -284,7 +316,7 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier }: Arch
               </div>
               <div className="space-y-1">
                 <label className="font-semibold text-foreground">Investment Horizon / Check Size</label>
-                <select className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary min-h-[40px]">
+                <select name="horizon" className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary min-h-[40px]">
                   <option>$1M - $5M USD</option>
                   <option>$5M - $15M USD</option>
                   <option>$15M+ Growth Equity</option>
@@ -294,15 +326,26 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier }: Arch
             <div className="space-y-1">
               <label className="font-semibold text-foreground">Discussion Agenda / Due Diligence Topics</label>
               <textarea
+                name="agenda"
                 rows={3}
                 placeholder="Briefly state your investment thesis, current portfolio synergy, or specific questions regarding financial metrics..."
                 className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary"
               />
             </div>
+            {bookingError && (
+              <p role="alert" className="text-xs text-destructive">
+                {bookingError}
+              </p>
+            )}
             <div className="pt-2">
-              <Button type="submit" variant="archetype" className="w-full gap-2 font-semibold min-h-[44px] cursor-pointer">
+              <Button
+                type="submit"
+                variant="archetype"
+                disabled={bookingSending}
+                className="w-full gap-2 font-semibold min-h-[44px] cursor-pointer"
+              >
                 <Lock className="h-4 w-4" />
-                Confirm Deal-Room Reservation
+                {bookingSending ? "Reserving…" : "Confirm Deal-Room Reservation"}
               </Button>
             </div>
           </form>
