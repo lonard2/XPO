@@ -74,6 +74,12 @@ describe("startup environment validation", () => {
     expect(report.ok).toBe(true);
     expect(report.warnings).toEqual([]);
   });
+
+  it("allows development to boot without a signing secret, with a warning", () => {
+    const report = validateEnv({ DATABASE_URL: "postgresql://x" }, "development");
+    expect(report.ok).toBe(true);
+    expect(report.warnings.join(" ")).toMatch(/QR_HMAC_SECRET/);
+  });
 });
 
 describe("server boot hook", () => {

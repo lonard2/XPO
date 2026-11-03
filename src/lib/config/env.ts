@@ -26,9 +26,21 @@ export function validateEnv(
     errors.push("DATABASE_URL is not set.");
   }
   if (!secret) {
-    errors.push("QR_HMAC_SECRET is not set.");
+    if (isProd) {
+      errors.push("QR_HMAC_SECRET is not set.");
+    } else {
+      warnings.push(
+        "QR_HMAC_SECRET is not set; development uses a deterministic fallback. Set a unique secret before deploying."
+      );
+    }
   } else if (secret.length < 32) {
-    errors.push("QR_HMAC_SECRET is shorter than 32 characters.");
+    if (isProd) {
+      errors.push("QR_HMAC_SECRET is shorter than 32 characters.");
+    } else {
+      warnings.push(
+        "QR_HMAC_SECRET is shorter than 32 characters; development only. Set a longer secret before deploying."
+      );
+    }
   }
 
   if (isProd) {
