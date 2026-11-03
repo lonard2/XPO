@@ -7,7 +7,7 @@ import { reportError } from "@/lib/observability/logger";
 
 /** POST /api/auth/otp/verify — exchange a code for a session. */
 export async function POST(request: Request) {
-  const limited = rateLimitResponse("auth-otp-verify", request, { limit: 30, windowMs: 10 * 60_000 });
+  const limited = await rateLimitResponse("auth-otp-verify", request, { limit: 30, windowMs: 10 * 60_000 });
   if (limited) return limited;
   try {
     const body = await request.json().catch(() => ({}));

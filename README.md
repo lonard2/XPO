@@ -145,6 +145,9 @@ EMAIL_FROM="XPO MICE <no-reply@xpo.events>"
 # Alerting (optional; see docs/operations/monitoring.md)
 ALERT_WEBHOOK_URL="https://hooks.slack.com/services/..."
 ALERT_COOLDOWN_MS="900000"
+
+# Shared rate limits (optional; without it each instance counts alone)
+REDIS_URL="redis://localhost:6379"
 ```
 
 ### Setup & Execution Commands

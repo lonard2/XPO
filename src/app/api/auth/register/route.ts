@@ -8,7 +8,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /** POST /api/auth/register — public signup. Role is always ATTENDEE. */
 export async function POST(request: Request) {
-  const limited = rateLimitResponse("auth-register", request, { limit: 10, windowMs: 60 * 60_000 });
+  const limited = await rateLimitResponse("auth-register", request, { limit: 10, windowMs: 60 * 60_000 });
   if (limited) return limited;
   try {
     const body = await request.json().catch(() => ({}));

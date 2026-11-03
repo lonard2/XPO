@@ -15,7 +15,7 @@ const LOCKOUT_MS = 15 * 60 * 1000;
 
 /** POST /api/auth/login — password login with per-account lockout. */
 export async function POST(request: Request) {
-  const limited = rateLimitResponse("auth-login", request, { limit: 30, windowMs: 15 * 60_000 });
+  const limited = await rateLimitResponse("auth-login", request, { limit: 30, windowMs: 15 * 60_000 });
   if (limited) return limited;
   try {
     const body = await request.json().catch(() => ({}));

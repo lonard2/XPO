@@ -10,7 +10,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
  * endpoint never reveals whether an address is registered.
  */
 export async function POST(request: Request) {
-  const limited = rateLimitResponse("auth-otp-request", request, { limit: 10, windowMs: 10 * 60_000 });
+  const limited = await rateLimitResponse("auth-otp-request", request, { limit: 10, windowMs: 10 * 60_000 });
   if (limited) return limited;
   try {
     const body = await request.json().catch(() => ({}));

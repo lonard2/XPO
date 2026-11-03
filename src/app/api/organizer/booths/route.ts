@@ -44,7 +44,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const limited = rateLimitResponse("organizer-booths-post", request, { limit: 60, windowMs: 60_000 });
+  const limited = await rateLimitResponse("organizer-booths-post", request, { limit: 60, windowMs: 60_000 });
   if (limited) return limited;
   try {
     const cookieHeader = request.headers.get("cookie") || "";

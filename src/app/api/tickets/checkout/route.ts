@@ -8,7 +8,7 @@ import { renderBookingConfirmation } from "@/lib/email/templates";
 import { formatDateRange, getTimeZoneForRegion } from "@/lib/i18n/formatters";
 
 export async function POST(request: Request) {
-  const limited = rateLimitResponse("tickets-checkout", request, { limit: 60, windowMs: 60_000 });
+  const limited = await rateLimitResponse("tickets-checkout", request, { limit: 60, windowMs: 60_000 });
   if (limited) return limited;
   try {
     const body = await request.json();

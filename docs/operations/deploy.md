@@ -40,6 +40,10 @@ docker compose --profile prod up -d --build
 
 Startup order is enforced: `db` must be healthy, then `migrate` applies
 `prisma migrate deploy`, then `app` starts only when migrations succeed.
+`cache` (Valkey) starts alongside; the app connects lazily and runs on
+process-local counters if it is unreachable, so a cache outage degrades
+limits instead of stopping traffic. Set `REDIS_URL` to point at it;
+without the variable each instance counts alone.
 Watch it come up:
 
 ```bash

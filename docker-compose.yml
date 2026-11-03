@@ -18,6 +18,17 @@ services:
 
   # Production profile only: `docker compose --profile prod up -d`.
   # `npm run db:up` keeps starting just the dev database.
+  cache:
+    image: valkey/valkey:8-alpine
+    profiles: ["prod"]
+    restart: unless-stopped
+    command: ["valkey-server", "--save", "", "--appendonly", "no"]
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
   migrate:
     build:
       context: .
@@ -52,9 +63,14 @@ services:
       SMTP_URL: ${SMTP_URL:-}
       EMAIL_FROM: ${EMAIL_FROM:-}
       ALERT_WEBHOOK_URL: ${ALERT_WEBHOOK_URL:-}
+      # Unset means process-local limits. Set it and every instance shares
+      # counters through the cache service above.
+      REDIS_URL: ${REDIS_URL:-redis://cache:6379}
     depends_on:
       migrate:
         condition: service_completed_successfully
+      cache:
+        condition: service_started
     healthcheck:
       test: ["CMD-SHELL", "wget -q -O /dev/null http://localhost:3000/api/health || exit 1"]
       interval: 30s

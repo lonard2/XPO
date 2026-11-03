@@ -7,7 +7,7 @@ import { audit } from "@/lib/observability/audit";
 import { reportError } from "@/lib/observability/logger";
 
 export async function POST(request: Request) {
-  const limited = rateLimitResponse("tickets-verify", request, { limit: 120, windowMs: 60_000 });
+  const limited = await rateLimitResponse("tickets-verify", request, { limit: 120, windowMs: 60_000 });
   if (limited) return limited;
   try {
     const body = await request.json();

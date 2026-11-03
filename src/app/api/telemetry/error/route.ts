@@ -14,7 +14,7 @@ const MAX_URL = 300;
  * reporter cannot loop or surface an error to the user.
  */
 export async function POST(request: Request) {
-  const limited = rateLimitResponse("telemetry-error", request, { limit: 30, windowMs: 60_000 });
+  const limited = await rateLimitResponse("telemetry-error", request, { limit: 30, windowMs: 60_000 });
   if (limited) return limited;
 
   const body = (await request.json().catch(() => ({}))) as Record<string, unknown>;
