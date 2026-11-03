@@ -49,6 +49,11 @@ export function validateEnv(
     if (!env.NEXT_PUBLIC_APP_URL) {
       warnings.push("NEXT_PUBLIC_APP_URL is not set: canonicals fall back to https://xpo.events.");
     }
+    if (!env.CRON_SECRET) {
+      warnings.push(
+        "CRON_SECRET is not set: the reminder endpoint will reject every scheduler call."
+      );
+    }
   }
 
   return { ok: errors.length === 0, errors, warnings };

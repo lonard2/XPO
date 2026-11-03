@@ -153,6 +153,8 @@ model Booking {
   attendeeName  String
   attendeeEmail String
   checkedInAt   DateTime?
+  reminder24hSentAt DateTime?
+  reminder2hSentAt  DateTime?
   createdAt     DateTime  @default(now())
   claims        VoucherClaim[]
   agendaBookmarks AgendaBookmark[]

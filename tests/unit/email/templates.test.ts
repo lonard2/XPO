@@ -8,6 +8,7 @@ import {
   renderBookingCancellation,
   renderBookingTransfer,
   renderWaitlistPromotion,
+  renderEventReminder,
 } from "@/lib/email/templates";
 
 describe("OTP email", () => {
@@ -198,5 +199,33 @@ describe("waitlist promotion email", () => {
       eventUrl: "https://xpo.events/en/events/event",
     });
     expect(mail.html).not.toContain("<img src=x");
+  });
+});
+
+
+describe("event reminder email", () => {
+  it("states the window and links the pass", () => {
+    const mail = renderEventReminder({
+      attendeeName: "Alex Pratama",
+      eventTitle: "Manufacturing Indonesia 2026",
+      datesText: "14 - 17 September 2026",
+      venueText: "JIExpo Kemayoran, Hall A1",
+      hoursUntil: 24,
+      passUrl: "https://xpo.events/en/my-tickets/bkg-1",
+    });
+    expect(mail.subject).toContain("tomorrow");
+    expect(mail.text).toContain("https://xpo.events/en/my-tickets/bkg-1");
+  });
+
+  it("uses the short window for a two-hour reminder", () => {
+    const mail = renderEventReminder({
+      attendeeName: "Alex Pratama",
+      eventTitle: "Event",
+      datesText: "Today",
+      venueText: "Hall A1",
+      hoursUntil: 2,
+      passUrl: "https://xpo.events/en/my-tickets/bkg-1",
+    });
+    expect(mail.subject).toContain("in 2 hours");
   });
 });

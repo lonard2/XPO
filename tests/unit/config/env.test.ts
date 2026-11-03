@@ -16,12 +16,29 @@ describe("startup environment validation", () => {
         RESEND_API_KEY: "re_test",
         ALERT_WEBHOOK_URL: "https://hooks.example.com/x",
         NEXT_PUBLIC_APP_URL: "https://staging.example.com",
+        CRON_SECRET: "cron_test_secret",
       },
       "production"
     );
     expect(report.ok).toBe(true);
     expect(report.errors).toEqual([]);
     expect(report.warnings).toEqual([]);
+  });
+
+  it("warns when the reminder secret is missing in production", () => {
+    const report = validateEnv(
+      {
+        ...base,
+        NODE_ENV: "production",
+        ALLOW_DEMO_AUTH: "false",
+        RESEND_API_KEY: "re_test",
+        ALERT_WEBHOOK_URL: "https://hooks.example.com/x",
+        NEXT_PUBLIC_APP_URL: "https://staging.example.com",
+      },
+      "production"
+    );
+    expect(report.ok).toBe(true);
+    expect(report.warnings.join(" ")).toMatch(/CRON_SECRET/);
   });
 
   it("fails fast on a missing database and secret", () => {

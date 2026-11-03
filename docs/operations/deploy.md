@@ -104,6 +104,24 @@ Restore to production only after the scratch restore opens cleanly and the
 row counts match. Before any restore, take a fresh backup of the current
 state: restores are the one operation that cannot itself be rolled back.
 
+## Scheduled reminders
+
+`GET /api/cron/reminders` sends the T-24h and T-2h reminder emails. It is
+hosting-neutral: point any scheduler at it every 15 minutes with the secret.
+
+```sh
+curl -fsS -H "Authorization: Bearer $CRON_SECRET" https://<host>/api/cron/reminders
+```
+
+The route is idempotent: each booking carries `reminder24hSentAt` and
+`reminder2hSentAt`, so overlapping runs do not double-send, and a booking
+created inside the two-hour window gets only the short reminder. It returns
+`{ sent, candidates }`; alert if `candidates` stays above zero across two
+consecutive runs, which means delivery is failing.
+
+Without `CRON_SECRET` the endpoint returns 401 for every call and boot logs a
+warning in production.
+
 ## First deploy checklist
 
 - [ ] `QR_HMAC_SECRET` is random, unique per environment, and stored outside the repo
@@ -111,5 +129,6 @@ state: restores are the one operation that cannot itself be rolled back.
 - [ ] Email provider delivers (request a code, confirm it arrives)
 - [ ] `ALERT_WEBHOOK_URL` fires (trigger a test alert, confirm the channel)
 - [ ] External uptime monitor points at `/api/health` every 60 seconds
+- [ ] `CRON_SECRET` is set and a scheduler calls `/api/cron/reminders` every 15 minutes
 - [ ] Nightly backup cron exists and one restore has been rehearsed
 - [ ] Images are tagged per release

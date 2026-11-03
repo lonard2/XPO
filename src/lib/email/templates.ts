@@ -382,3 +382,54 @@ export function renderWaitlistPromotion({
   );
   return { subject, text, html };
 }
+
+export interface EventReminderInput {
+  attendeeName: string;
+  eventTitle: string;
+  datesText: string;
+  venueText: string;
+  hoursUntil: number;
+  passUrl: string;
+}
+
+/** Reminds a confirmed delegate that the event is close. */
+export function renderEventReminder({
+  attendeeName,
+  eventTitle,
+  datesText,
+  venueText,
+  hoursUntil,
+  passUrl,
+}: EventReminderInput) {
+  const when = hoursUntil <= 2 ? "in 2 hours" : "tomorrow";
+  const subject = `Reminder: ${eventTitle} starts ${when}`;
+  const text = [
+    `Hello ${attendeeName},`,
+    "",
+    `${eventTitle} starts ${when}.`,
+    "",
+    `Date: ${datesText}`,
+    `Venue: ${venueText}`,
+    "",
+    `Open your pass: ${passUrl}`,
+    "",
+    "Show the QR code at the gate. It works offline once the pass page has loaded.",
+    "",
+    "XPO MICE",
+  ].join("\n");
+  const html = shell(
+    [
+      paragraph(`Hello ${escapeHtml(attendeeName)},`),
+      paragraph(
+        `<strong>${escapeHtml(eventTitle)}</strong> starts ${escapeHtml(when)}.`
+      ),
+      `<table role="presentation" style="width:100%;border-collapse:collapse;margin:0 0 16px;font-size:14px;color:#0f172a;">${row(
+        "Date",
+        datesText
+      )}${row("Venue", venueText)}</table>`,
+      `<p style="margin:0 0 16px;"><a href="${escapeHtml(passUrl)}" style="display:inline-block;background:#1d4ed8;color:#ffffff;text-decoration:none;font-weight:600;font-size:14px;padding:12px 20px;border-radius:8px;">Open your pass</a></p>`,
+      paragraph("Show the QR code at the gate. It works offline once the pass page has loaded."),
+    ].join("")
+  );
+  return { subject, text, html };
+}
