@@ -76,6 +76,9 @@ export interface ArchetypeViewProps {
       websiteUrl?: string | null;
       logoUrl?: string | null;
       description?: string | null;
+      dimensions?: string | null;
+      areaSqm?: number | null;
+      boothType?: string | null;
     }>;
     perks: Array<{
       id: string;
@@ -283,7 +286,17 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier }: Archet
                   </Badge>
                   <span className="text-xs text-muted-foreground">{booth.hallName}</span>
                 </div>
-                <CardTitle className="text-base mt-2">{booth.companyName}</CardTitle>
+                <div className="flex items-center gap-2 mt-2">
+                  {booth.logoUrl && (
+                    <img
+                      src={booth.logoUrl}
+                      alt=""
+                      loading="lazy"
+                      className="h-8 w-8 rounded object-contain bg-muted/40 shrink-0"
+                    />
+                  )}
+                  <CardTitle className="text-base">{booth.companyName}</CardTitle>
+                </div>
                 {booth.industry && (
                   <p className="text-xs text-[var(--archetype-primary)] font-medium">{booth.industry}</p>
                 )}
@@ -291,6 +304,25 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier }: Archet
               <CardContent className="p-4 pt-1 space-y-3 text-xs">
                 {booth.description && (
                   <p className="text-muted-foreground line-clamp-2">{booth.description}</p>
+                )}
+                {(booth.dimensions || typeof booth.areaSqm === "number" || booth.boothType) && (
+                  <div className="flex flex-wrap gap-1.5">
+                    {booth.dimensions && (
+                      <Badge variant="outline" size="sm" className="font-mono text-[10px]">
+                        {booth.dimensions}
+                      </Badge>
+                    )}
+                    {typeof booth.areaSqm === "number" && (
+                      <Badge variant="outline" size="sm" className="font-mono text-[10px]">
+                        {booth.areaSqm} m²
+                      </Badge>
+                    )}
+                    {booth.boothType && (
+                      <Badge variant="outline" size="sm" className="text-[10px]">
+                        {booth.boothType.replace(/_/g, " ")}
+                      </Badge>
+                    )}
+                  </div>
                 )}
                 <div className="flex items-center justify-between pt-2 border-t border-border/40">
                   <Button

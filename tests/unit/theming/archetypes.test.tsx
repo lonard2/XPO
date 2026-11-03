@@ -75,6 +75,10 @@ const mockBaseEvent = {
       hallName: "Hall A1",
       industry: "CNC Machining",
       description: "High-precision 5-axis milling center manufacturer.",
+      logoUrl: "https://example.com/dmg.png",
+      dimensions: "6m x 3m",
+      areaSqm: 18,
+      boothType: "ISLAND",
     },
   ],
   perks: [
@@ -133,6 +137,11 @@ describe("Phase 5: 9 Archetype Specialized Views & EventPageShell", () => {
     expect(rfqBtn).toBeInTheDocument();
     fireEvent.click(rfqBtn);
     expect(screen.getByText("Target Exhibitor / Machine")).toBeInTheDocument();
+
+    // Organizer-written booth specs reach the attendee directory card.
+    expect(screen.getByText("6m x 3m")).toBeInTheDocument();
+    expect(screen.getByText("18 m²")).toBeInTheDocument();
+    expect(screen.getByText("ISLAND")).toBeInTheDocument();
   });
 
   it("renders TechDevSummitView with multi-track agenda and hackathon RSVP, and no invented stream or bounties", () => {
