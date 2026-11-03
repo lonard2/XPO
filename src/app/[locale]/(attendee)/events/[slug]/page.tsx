@@ -5,6 +5,8 @@ import { type MiceArchetype, isValidArchetype } from "@/lib/theming";
 import { EventPageShell } from "@/components/themed/EventPageShell";
 import { parseShowcase } from "@/lib/showcase";
 import { EventOrganizerSection } from "@/components/discovery/EventOrganizerSection";
+import { generateEventJsonLd } from "@/lib/seo/jsonLd";
+import { siteBaseUrl } from "@/lib/seo/site";
 
 
 import {
@@ -66,16 +68,39 @@ const ARCHETYPE_VIEW_MAP: Record<MiceArchetype, React.ComponentType<any>> = {
 };
 
 export async function generateMetadata({ params }: EventPageProps) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  const base = siteBaseUrl();
   try {
     const event = await db.event.findUnique({
       where: { slug },
-      select: { title: true, tagline: true, description: true },
+      select: {
+        title: true,
+        tagline: true,
+        description: true,
+        heroImageUrl: true,
+        venue: { select: { city: true } },
+      },
     });
     if (event) {
+      const description = event.tagline || event.description;
+      const url = `/${locale}/events/${slug}`;
       return {
         title: `${event.title} | XPO MICE Ecosystem`,
-        description: event.tagline || event.description,
+        description,
+        alternates: { canonical: `${base}${url}` },
+        openGraph: {
+          type: "website",
+          url,
+          title: event.title,
+          description,
+          ...(event.heroImageUrl ? { images: [{ url: event.heroImageUrl }] } : {}),
+        },
+        twitter: {
+          card: "summary_large_image",
+          title: event.title,
+          description,
+          ...(event.heroImageUrl ? { images: [event.heroImageUrl] } : {}),
+        },
       };
     }
   } catch {
@@ -160,8 +185,49 @@ export default async function EventDetailPage({ params }: EventPageProps) {
   // Organizer-authored showcase: absent data keeps showcase sections hidden.
   const showcase = parseShowcase((event as any).showcaseJson);
 
+  const eventJsonLd = generateEventJsonLd(
+    {
+      title: event.title,
+      slug: event.slug,
+      description: event.description,
+      archetype: event.archetype,
+      startDate: event.startDate,
+      endDate: event.endDate,
+      format: event.format,
+      heroImageUrl: event.heroImageUrl,
+      venue: event.venue
+        ? {
+            name: event.venue.name,
+            city: event.venue.city,
+            address: event.venue.address,
+            regionId: event.venue.region?.code ?? event.venue.regionId,
+          }
+        : null,
+      organizer: event.organizer
+        ? {
+            name: event.organizer.name,
+            organization: event.organizer.organization,
+          }
+        : event.organizerName
+          ? { name: event.organizerName }
+          : null,
+      ticketTiers: (event.ticketTiers || []).map((tier) => ({
+        name: tier.name,
+        price: tier.price,
+        currency: tier.currency,
+        capacity: tier.capacity,
+      })),
+    },
+    siteBaseUrl()
+  );
+
   return (
-    <EventPageShell
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(eventJsonLd) }}
+      />
+      <EventPageShell
       id={event.id}
       title={event.title}
       slug={event.slug}
@@ -193,7 +259,8 @@ export default async function EventDetailPage({ params }: EventPageProps) {
     >
       <ArchetypeView event={event} locale={locale} />
       <EventOrganizerSection event={event} locale={locale} />
-    </EventPageShell>
+      </EventPageShell>
+    </>
   );
 }
 

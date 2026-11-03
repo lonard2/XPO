@@ -45,24 +45,28 @@ export default function manifest(): MetadataRoute.Manifest {
         short_name: "Events",
         description: "Discover upcoming international conventions, trade expos, and summits.",
         url: "/events",
+        icons: [{ src: "/icons/shortcut-events.png", sizes: "96x96", type: "image/png" }],
       },
       {
         name: "My Digital Passes",
         short_name: "Passes",
         description: "Access your HMAC-signed cryptographic entry QR tickets and guidebook.",
         url: "/my-tickets",
+        icons: [{ src: "/icons/shortcut-tickets.png", sizes: "96x96", type: "image/png" }],
       },
       {
         name: "Organizer Portal",
         short_name: "Organizer",
         description: "Manage MICE events, booth allocations, and real-time customizer.",
         url: "/dashboard",
+        icons: [{ src: "/icons/shortcut-organizer.png", sizes: "96x96", type: "image/png" }],
       },
       {
         name: "Global Venue Directory",
         short_name: "Venues",
         description: "Browse exhibition complexes, halls, transit guides, and GPS maps.",
         url: "/venues",
+        icons: [{ src: "/icons/shortcut-venues.png", sizes: "96x96", type: "image/png" }],
       },
     ],
   };

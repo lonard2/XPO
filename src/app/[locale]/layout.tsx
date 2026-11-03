@@ -13,6 +13,8 @@ import { AuthProvider } from "@/lib/auth/session";
 import { AttendeeAIConcierge } from "@/components/ai/AttendeeAIConcierge";
 import { MotionTilt } from "@/components/settings/MotionTilt";
 import { ClientErrorReporter } from "@/components/observability/ClientErrorReporter";
+import { generateMiceWebsiteJsonLd } from "@/lib/seo/jsonLd";
+import { siteBaseUrl } from "@/lib/seo/site";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -46,6 +48,20 @@ export const metadata: Metadata = {
     template: "%s | XPO",
   },
   description: "Enterprise digital platform connecting trade delegates, exhibition organizers, and world-class convention complexes across Indonesia, Japan, and global gateways.",
+  icons: {
+    icon: [
+      { url: "/icons/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icons/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    shortcut: [{ url: "/icons/favicon-32x32.png" }],
+  },
+  themeColor: "#2563eb",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "XPO",
+  },
   openGraph: {
     type: "website",
     siteName: "XPO MICE Platform",
@@ -78,6 +94,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   setRequestLocale(locale);
   const messages = await getMessages();
   const dir = getLocaleDirection(locale);
+  const websiteJsonLd = generateMiceWebsiteJsonLd(siteBaseUrl());
 
   const skipLabel = (messages as any)?.common?.skipToContent || "Skip to main content";
 
@@ -106,6 +123,10 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
               <AttendeeAIConcierge locale={locale} />
               <MotionTilt />
               <ClientErrorReporter />
+              <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+              />
             </SettingsProvider>
           </AuthProvider>
         </NextIntlClientProvider>

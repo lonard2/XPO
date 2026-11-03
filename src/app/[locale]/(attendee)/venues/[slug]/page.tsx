@@ -18,6 +18,8 @@ import { VenueMeetingRooms } from '@/components/discovery/VenueMeetingRooms';
 import { VenueTransitHub } from '@/components/discovery/VenueTransitHub';
 import { VenueScheduleTable } from '@/components/discovery/VenueScheduleTable';
 import { FALLBACK_VENUES, FALLBACK_EVENTS } from '@/lib/discovery/fallbackData';
+import { generatePlaceJsonLd } from '@/lib/seo/jsonLd';
+import { siteBaseUrl } from '@/lib/seo/site';
 import { hallsOnly, meetingRoomsOnly, countHalls } from '@/lib/discovery/venueSpaces';
 import { type VenueSummary, type DiscoveryEvent } from '@/types/discovery';
 
@@ -33,16 +35,32 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: VenueDetailPageProps) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  const base = siteBaseUrl();
   const venue = FALLBACK_VENUES.find((v) => v.slug === slug);
   const title = venue ? `${venue.name} | XPO Venue Hub` : 'Venue Hub | XPO';
   const description = venue
     ? `Explore hall specifications, spatial campus topology, rapid transit routes, and upcoming exhibitions at ${venue.name}.`
     : 'MICE Venue Specifications and upcoming events.';
+  const url = `/${locale}/venues/${slug}`;
 
   return {
     title,
     description,
+    alternates: { canonical: `${base}${url}` },
+    openGraph: {
+      type: "website",
+      url,
+      title,
+      description,
+      ...(venue?.imageUrl ? { images: [{ url: venue.imageUrl }] } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      ...(venue?.imageUrl ? { images: [venue.imageUrl] } : {}),
+    },
   };
 }
 
@@ -107,10 +125,34 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
     { label: venue.name, href: `/${locale}/venues/${venue.slug}` },
   ];
 
+  const placeJsonLd = generatePlaceJsonLd(
+    {
+      name: venue.name,
+      slug: venue.slug,
+      city: venue.city,
+      address: venue.address,
+      latitude: venue.latitude ?? null,
+      longitude: venue.longitude ?? null,
+      transitInfo: venue.transitInfo,
+      imageUrl: venue.imageUrl ?? null,
+      regionId: venue.region?.code || venue.regionId,
+      halls: (venue.halls || []).map((hall) => ({
+        name: hall.name,
+        capacity: hall.capacity ?? null,
+        floorAreaSqm: hall.floorAreaSqm ?? null,
+      })),
+    },
+    siteBaseUrl()
+  );
+
   return (
     <div className="flex flex-col gap-10 pb-16">
       <Breadcrumbs variant="strip" items={crumbs} />
       <BreadcrumbJsonLd items={crumbs} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(placeJsonLd) }}
+      />
 
       {/* Hero Venue Header Banner */}
       <section className="container">
