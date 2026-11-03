@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { requireRole } from "@/lib/auth/guards";
 import { audit } from "@/lib/observability/audit";
 
 interface RouteParams {
@@ -15,21 +16,8 @@ interface RouteParams {
 export async function DELETE(request: Request, { params }: RouteParams) {
   try {
     // RBAC Authorization Check (same convention as assign/release endpoints)
-    const cookieHeader = request.headers.get("cookie") || "";
-    const roleMatch = cookieHeader.match(/xpo_role=([^;]+)/);
-    const userRole = roleMatch
-      ? decodeURIComponent(roleMatch[1])
-      : request.headers.get("x-xpo-user-role");
-
-    if (userRole !== "ADMIN") {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Forbidden: Only platform administrators can delete events.",
-        },
-        { status: 403 }
-      );
-    }
+    const gate = await requireRole(request, ["ADMIN"]);
+    if (gate.response) return gate.response;
 
     const { id } = await params;
 

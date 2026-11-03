@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { requireRole } from "@/lib/auth/guards";
 import { requireEventWrites, requireBoothWrites } from "@/lib/auth/eventOwnership";
 import { rateLimitResponse } from "@/lib/api/rateLimit";
 import { audit } from "@/lib/observability/audit";
@@ -47,16 +48,8 @@ export async function POST(request: Request) {
   const limited = await rateLimitResponse("organizer-booths-post", request, { limit: 60, windowMs: 60_000 });
   if (limited) return limited;
   try {
-    const cookieHeader = request.headers.get("cookie") || "";
-    const roleMatch = cookieHeader.match(/xpo_role=([^;]+)/);
-    const userRole = roleMatch ? decodeURIComponent(roleMatch[1]) : request.headers.get("x-xpo-user-role");
-
-    if (userRole === "ATTENDEE") {
-      return NextResponse.json(
-        { success: false, error: "Forbidden: Attendee role is not authorized to manage booths. Switch to Organizer or Admin persona." },
-        { status: 403 }
-      );
-    }
+    const gate = await requireRole(request, ["ORGANIZER", "ADMIN"]);
+    if (gate.response) return gate.response;
 
     const body = await request.json();
 
@@ -261,16 +254,8 @@ export async function POST(request: Request) {
 
 export async function PATCH(request: Request) {
   try {
-    const cookieHeader = request.headers.get("cookie") || "";
-    const roleMatch = cookieHeader.match(/xpo_role=([^;]+)/);
-    const userRole = roleMatch ? decodeURIComponent(roleMatch[1]) : request.headers.get("x-xpo-user-role");
-
-    if (userRole === "ATTENDEE") {
-      return NextResponse.json(
-        { success: false, error: "Forbidden: Attendee role is not authorized to update booths. Switch to Organizer or Admin persona." },
-        { status: 403 }
-      );
-    }
+    const gate = await requireRole(request, ["ORGANIZER", "ADMIN"]);
+    if (gate.response) return gate.response;
 
     const body = await request.json();
 
@@ -388,16 +373,8 @@ export async function PUT(request: Request) {
 
 export async function DELETE(request: Request) {
   try {
-    const cookieHeader = request.headers.get("cookie") || "";
-    const roleMatch = cookieHeader.match(/xpo_role=([^;]+)/);
-    const userRole = roleMatch ? decodeURIComponent(roleMatch[1]) : request.headers.get("x-xpo-user-role");
-
-    if (userRole === "ATTENDEE") {
-      return NextResponse.json(
-        { success: false, error: "Forbidden: Attendee role is not authorized to delete booths. Switch to Organizer or Admin persona." },
-        { status: 403 }
-      );
-    }
+    const gate = await requireRole(request, ["ORGANIZER", "ADMIN"]);
+    if (gate.response) return gate.response;
 
     const { searchParams } = new URL(request.url);
     let id = searchParams.get("id");

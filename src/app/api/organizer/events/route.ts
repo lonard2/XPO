@@ -3,14 +3,22 @@ import { db } from "@/lib/db";
 import { validateShowcase } from "@/lib/showcase";
 import { audit } from "@/lib/observability/audit";
 import { parsePagination } from "@/lib/api/pagination";
+import { requireUser } from "@/lib/auth/guards";
 
 export async function GET(request: Request) {
   try {
+    const gate = await requireUser(request, ["ORGANIZER", "ADMIN"]);
+    if (gate.response) return gate.response;
+
     const { searchParams } = new URL(request.url);
     const { take, skip } = parsePagination(searchParams);
+    // Organizers see only the events they own; admins see the platform.
+    const where =
+      gate.caller.role === "ADMIN" ? {} : { organizerId: gate.caller.userId as string };
     const [total, events] = await db.$transaction([
-      db.event.count(),
+      db.event.count({ where }),
       db.event.findMany({
+        where,
         include: {
           ticketTiers: true,
           booths: true,
@@ -34,17 +42,10 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    // RBAC Authorization Check
-    const cookieHeader = request.headers.get("cookie") || "";
-    const roleMatch = cookieHeader.match(/xpo_role=([^;]+)/);
-    const userRole = roleMatch ? decodeURIComponent(roleMatch[1]) : request.headers.get("x-xpo-user-role");
-
-    if (userRole === "ATTENDEE") {
-      return NextResponse.json(
-        { success: false, error: "Forbidden: Attendee role is not authorized to create exhibitions. Switch to Organizer or Admin persona." },
-        { status: 403 }
-      );
-    }
+    // Deny by default: a missing identity is 401, not an implicit pass.
+    const gate = await requireUser(request, ["ORGANIZER", "ADMIN"]);
+    if (gate.response) return gate.response;
+    const userRole = gate.caller.role as "ORGANIZER" | "ADMIN";
 
     const body = await request.json();
     const {
@@ -105,39 +106,16 @@ export async function POST(request: Request) {
         finalOrganizerName = organizerName || targetOrganizer?.organization || targetOrganizer?.name || null;
       }
     } else {
-      let authUser: { id?: string; email?: string } | null = null;
-      const userCookieMatch = cookieHeader.match(/xpo_auth_user=([^;]+)/);
-      if (userCookieMatch) {
-        try {
-          authUser = JSON.parse(decodeURIComponent(userCookieMatch[1]));
-        } catch {
-          // Ignore cookie parsing error
-        }
-      }
-
-      const headerUserId = request.headers.get("x-xpo-user-id") || authUser?.id;
-      const headerUserEmail = request.headers.get("x-xpo-user-email") || authUser?.email;
-
-      let organizer = null;
-      if (headerUserId) {
-        organizer = await db.user.findUnique({ where: { id: headerUserId } });
-      }
-      if (!organizer && headerUserEmail) {
-        organizer = await db.user.findUnique({ where: { email: headerUserEmail } });
-      }
-      if (!organizer && organizerId) {
-        organizer = await db.user.findUnique({ where: { id: organizerId } });
-      }
-      if (!organizer) {
-        organizer = await db.user.findFirst({
-          where: { role: "ORGANIZER" },
-        }) || await db.user.findFirst();
-      }
-
+      // Ownership is the caller's own id. Never fall back to an arbitrary
+      // organizer row: that attributed anonymous events to the first user.
+      const organizer = await db.user.findUnique({
+        where: { id: gate.caller.userId as string },
+        select: { id: true, name: true, organization: true },
+      });
       if (!organizer) {
         return NextResponse.json(
-          { success: false, error: "No organizer account found in database" },
-          { status: 500 }
+          { success: false, error: "Unauthorized: organizer account no longer exists." },
+          { status: 401 }
         );
       }
 

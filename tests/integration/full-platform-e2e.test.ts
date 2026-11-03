@@ -401,6 +401,7 @@ describe("XPO Full-Platform End-to-End Integration Suite (Milestone 9 Hardening)
 
       const createReq = new NextRequest("http://localhost:3000/api/organizer/events", {
         method: "POST",
+        headers: { "Content-Type": "application/json", Cookie: "xpo_role=ADMIN" },
         body: JSON.stringify({
           title: "Asia-Pacific Clean Energy Forum 2026",
           tagline: "Accelerating Renewable Grids & Green Infrastructure",

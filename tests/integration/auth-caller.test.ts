@@ -75,7 +75,8 @@ describe("Session-first caller cutover", () => {
       const res = await updateBoothRoute(
         patchReq(`xpo_role=ADMIN`, "Demo Admin Co")
       );
-      expect(res.status).toBe(403);
+      // With demo auth off, the cookie is inert: no session means 401.
+      expect(res.status).toBe(401);
     } finally {
       if (prev === undefined) delete process.env.ALLOW_DEMO_AUTH;
       else process.env.ALLOW_DEMO_AUTH = prev;

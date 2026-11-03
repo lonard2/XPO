@@ -238,7 +238,7 @@ describe("Milestone 6 Adversarial Stress & Security Suite (Phases 8 & 9)", () =>
 
       const req = new Request("http://localhost:3000/api/organizer/events", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Cookie: "xpo_role=ADMIN" },
         body: JSON.stringify(incompletePayload),
       });
 
@@ -278,7 +278,7 @@ describe("Milestone 6 Adversarial Stress & Security Suite (Phases 8 & 9)", () =>
 
       const req = new Request("http://localhost:3000/api/organizer/events", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Cookie: "xpo_role=ADMIN" },
         body: JSON.stringify(validPayload),
       });
 

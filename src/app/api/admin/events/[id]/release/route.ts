@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { requireRole } from "@/lib/auth/guards";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -13,21 +14,8 @@ interface RouteParams {
 export async function PATCH(request: Request, { params }: RouteParams) {
   try {
     // RBAC Authorization Check (same convention as the assign endpoint)
-    const cookieHeader = request.headers.get("cookie") || "";
-    const roleMatch = cookieHeader.match(/xpo_role=([^;]+)/);
-    const userRole = roleMatch
-      ? decodeURIComponent(roleMatch[1])
-      : request.headers.get("x-xpo-user-role");
-
-    if (userRole !== "ADMIN") {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Forbidden: Only platform administrators can release events to platform curation.",
-        },
-        { status: 403 }
-      );
-    }
+    const gate = await requireRole(request, ["ADMIN"]);
+    if (gate.response) return gate.response;
 
     const { id } = await params;
 

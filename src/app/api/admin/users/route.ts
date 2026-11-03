@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { requireRole } from "@/lib/auth/guards";
 
 /**
  * GET /api/admin/users?role=ORGANIZER — minimal user directory for admin
@@ -8,21 +9,8 @@ import { db } from "@/lib/db";
  */
 export async function GET(request: Request) {
   try {
-    const cookieHeader = request.headers.get("cookie") || "";
-    const roleMatch = cookieHeader.match(/xpo_role=([^;]+)/);
-    const userRole = roleMatch
-      ? decodeURIComponent(roleMatch[1])
-      : request.headers.get("x-xpo-user-role");
-
-    if (userRole !== "ADMIN") {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Forbidden: Only platform administrators can list users.",
-        },
-        { status: 403 }
-      );
-    }
+    const gate = await requireRole(request, ["ADMIN"]);
+    if (gate.response) return gate.response;
 
     const { searchParams } = new URL(request.url);
     const role = searchParams.get("role")?.toUpperCase();

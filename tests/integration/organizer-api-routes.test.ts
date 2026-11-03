@@ -6,6 +6,7 @@ import { GET as getBoothsRoute, POST as createBoothRoute, PATCH as updateBoothRo
 
 describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => {
   let sampleVenue: any;
+  let sampleOrganizer: any;
   let createdEventId: string;
 
   // Mutations now enforce strict ownership: exercise them as platform admin.
@@ -16,6 +17,7 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
     sampleVenue = await db.venue.findFirst({
       include: { halls: true },
     });
+    sampleOrganizer = await db.user.findFirst({ where: { role: "ORGANIZER" } });
   });
 
   afterAll(async () => {
@@ -29,7 +31,7 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
 
   it("Organizer Events: GET retrieves list of registered exhibitions", async () => {
     const res = await getEventsRoute(
-      new Request("http://localhost:3000/api/organizer/events")
+      new Request("http://localhost:3000/api/organizer/events", { headers: adminHeaders })
     );
     expect(res.status).toBe(200);
     const json = await res.json();
@@ -41,6 +43,7 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
   it("Organizer Events: POST rejects requests with missing mandatory fields (400)", async () => {
     const req = new Request("http://localhost:3000/api/organizer/events", {
       method: "POST",
+      headers: adminHeaders,
       body: JSON.stringify({
         title: "Incomplete Event",
         // missing description, venueId, dates
@@ -56,6 +59,7 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
   it("Organizer Events: POST creates new event with ticket tiers and branding (201)", async () => {
     const req = new Request("http://localhost:3000/api/organizer/events", {
       method: "POST",
+      headers: adminHeaders,
       body: JSON.stringify({
         title: "Test AI & Robotics Trade Fair 2027",
         slug: "test-ai-robotics-fair-2027",
@@ -174,7 +178,11 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
 
     const orgReq = new Request("http://localhost:3000/api/organizer/events", {
       method: "POST",
-      headers: { "Content-Type": "application/json", Cookie: "xpo_role=ORGANIZER" },
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: "xpo_role=ORGANIZER",
+        "x-xpo-user-id": sampleOrganizer.id,
+      },
       body: JSON.stringify({ ...base, slug: "test-listing-flag-ignored-2027", isListingOnly: true }),
     });
     const orgRes = await createEventRoute(orgReq);
@@ -499,12 +507,14 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
 
 
 describe("List pagination bounds", () => {
+  const headers = { Cookie: "xpo_role=ADMIN" };
+
   it("caps list windows and reports totals", async () => {
     const { GET: getEvents } = await import("@/app/api/organizer/events/route");
     const { GET: getBooths } = await import("@/app/api/organizer/booths/route");
 
     const evRes = await getEvents(
-      new Request("http://localhost:3000/api/organizer/events?take=2&skip=1")
+      new Request("http://localhost:3000/api/organizer/events?take=2&skip=1", { headers })
     );
     const evJson = await evRes.json();
     expect(evJson.success).toBe(true);
@@ -514,7 +524,7 @@ describe("List pagination bounds", () => {
     expect(evJson.skip).toBe(1);
 
     const capped = await getEvents(
-      new Request("http://localhost:3000/api/organizer/events?take=99999")
+      new Request("http://localhost:3000/api/organizer/events?take=99999", { headers })
     );
     expect((await capped.json()).take).toBe(500);
 
