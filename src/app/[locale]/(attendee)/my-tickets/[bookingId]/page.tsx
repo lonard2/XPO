@@ -3,6 +3,9 @@ import { Breadcrumbs, BreadcrumbJsonLd } from "@/components/layout/Breadcrumbs";
 import { notFound } from 'next/navigation';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { db } from '@/lib/db';
+import { cookies } from 'next/headers';
+import { resolveEventCallerFromCookies } from '@/lib/auth/eventOwnership';
+import { allowDemoAuth } from '@/lib/auth/sessionStore';
 import {
   QrCode,
   Calendar,
@@ -93,8 +96,19 @@ export default async function DigitalPassDetailPage({ params }: DigitalPassPageP
     booking = null;
   }
 
-  // Fallback realistic mock data if bookingId is a demo or not found
-  if (!booking) {
+  const cookieStore = await cookies();
+  const caller = await resolveEventCallerFromCookies(cookieStore);
+  const isAdminView = caller.role === 'ADMIN';
+  const showDemoPreview = !caller.userId && allowDemoAuth();
+
+  // A pass is private to its holder. Anyone else gets the same 404 as a
+  // missing booking, so ids cannot be probed.
+  if (booking && caller.userId && !isAdminView && booking.userId !== caller.userId) {
+    notFound();
+  }
+
+  // Fallback realistic mock data only for an anonymous demo visitor.
+  if (!booking && showDemoPreview) {
     let fallbackEvent = null;
     try {
       fallbackEvent = await db.event.findFirst({
@@ -128,6 +142,10 @@ export default async function DigitalPassDetailPage({ params }: DigitalPassPageP
     } else {
       notFound();
     }
+  }
+
+  if (!booking) {
+    notFound();
   }
 
   const perksCount = booking.event.perks?.length || 0;

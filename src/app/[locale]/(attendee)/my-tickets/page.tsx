@@ -2,6 +2,9 @@ import Link from 'next/link';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { Breadcrumbs, BreadcrumbJsonLd } from '@/components/layout/Breadcrumbs';
 import { db } from '@/lib/db';
+import { cookies } from 'next/headers';
+import { resolveEventCallerFromCookies } from '@/lib/auth/eventOwnership';
+import { allowDemoAuth } from '@/lib/auth/sessionStore';
 import {
   Ticket,
   ArrowLeft,
@@ -34,9 +37,16 @@ export default async function MyTicketsPage({ params }: MyTicketsPageProps) {
     { label: tMy('breadcrumbWallet') || 'Pass Wallet', href: `/${locale}/my-tickets` },
   ];
 
+  const cookieStore = await cookies();
+  const caller = await resolveEventCallerFromCookies(cookieStore);
+  const isAdminView = caller.role === 'ADMIN';
+  const showDemoPreview = !caller.userId && allowDemoAuth();
+
   let bookings: BookingSummary[] = [];
   try {
     const rawBookings = await db.booking.findMany({
+      // Holders see only their own passes; admins see the platform.
+      where: caller.userId && !isAdminView ? { userId: caller.userId } : {},
       include: {
         event: {
           include: {
@@ -60,8 +70,9 @@ export default async function MyTicketsPage({ params }: MyTicketsPageProps) {
     bookings = [];
   }
 
-  // Fallback sample bookings if DB is fresh/empty
-  if (bookings.length === 0) {
+  // A labelled preview only for an anonymous visitor in demo mode. A signed-in
+  // delegate with no passes sees the real empty state.
+  if (bookings.length === 0 && showDemoPreview) {
     try {
       const sampleEvent = await db.event.findFirst({
         include: { venue: { include: { region: true } }, venueHall: true, ticketTiers: true },

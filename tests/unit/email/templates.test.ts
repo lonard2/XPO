@@ -5,6 +5,8 @@ import {
   renderMeetingRequestConfirmation,
   renderMeetingRequestNotification,
   renderMeetingRequestDecision,
+  renderBookingCancellation,
+  renderBookingTransfer,
 } from "@/lib/email/templates";
 
 describe("OTP email", () => {
@@ -127,5 +129,48 @@ describe("meeting decision emails", () => {
     });
     expect(mail.html).not.toContain("<img src=x");
     expect(mail.html).toContain("&lt;img src=x");
+  });
+});
+
+
+describe("booking lifecycle emails", () => {
+  it("confirms a cancellation and names the released seat", () => {
+    const mail = renderBookingCancellation({
+      attendeeName: "Alex Pratama",
+      eventTitle: "Manufacturing Indonesia 2026",
+      bookingId: "bkg-1",
+    });
+    expect(mail.subject).toContain("cancelled");
+    expect(mail.text).toContain("seat is released");
+    expect(mail.text).toContain("bkg-1");
+  });
+
+  it("tells the new holder the pass is theirs and the QR still works", () => {
+    const mail = renderBookingTransfer({
+      attendeeName: "New Holder",
+      eventTitle: "Manufacturing Indonesia 2026",
+      bookingId: "bkg-1",
+      passUrl: "https://xpo.events/en/my-tickets/bkg-1",
+    });
+    expect(mail.subject).toContain("transferred");
+    expect(mail.text).toContain("https://xpo.events/en/my-tickets/bkg-1");
+    expect(mail.text).toContain("remains valid");
+  });
+
+  it("escapes the holder name in both messages", () => {
+    const name = '<img src=x onerror="alert(1)">';
+    const cancelled = renderBookingCancellation({
+      attendeeName: name,
+      eventTitle: "Event",
+      bookingId: "bkg-1",
+    });
+    const transferred = renderBookingTransfer({
+      attendeeName: name,
+      eventTitle: "Event",
+      bookingId: "bkg-1",
+      passUrl: "https://xpo.events/en/my-tickets/bkg-1",
+    });
+    expect(cancelled.html).not.toContain("<img src=x");
+    expect(transferred.html).not.toContain("<img src=x");
   });
 });

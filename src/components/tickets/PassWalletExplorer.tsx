@@ -22,6 +22,7 @@ import { Input } from '@/components/ui/Input';
 import { Button, buttonVariants } from '@/components/ui/Button';
 import { formatDateRange } from '@/lib/i18n/formatters';
 import { generateSvgQrCode } from '@/lib/tickets/qrPass';
+import { BookingManageActions } from '@/components/tickets/BookingManageActions';
 import { cn } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
 
@@ -436,6 +437,14 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
                     <span>{tMy('showPass') || 'Open Digital Pass & Treats'}</span>
                     <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
+                  {!booking.isDemoPreview && (
+                    <BookingManageActions
+                      bookingId={booking.id}
+                      attendeeName={booking.attendeeName}
+                      attendeeEmail={booking.attendeeEmail}
+                      status={booking.status}
+                    />
+                  )}
                 </div>
               </div>
             );

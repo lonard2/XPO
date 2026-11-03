@@ -259,3 +259,87 @@ export function renderMeetingRequestDecision(
   );
   return { subject, text, html };
 }
+
+export interface BookingCancellationInput {
+  attendeeName: string;
+  eventTitle: string;
+  bookingId: string;
+}
+
+/** Confirms a cancellation and states that the seat is released. */
+export function renderBookingCancellation({
+  attendeeName,
+  eventTitle,
+  bookingId,
+}: BookingCancellationInput) {
+  const subject = `Pass cancelled: ${eventTitle}`;
+  const text = [
+    `Hello ${attendeeName},`,
+    "",
+    `Your pass for ${eventTitle} has been cancelled and the seat is released.`,
+    "",
+    `Reference: ${bookingId}`,
+    "",
+    "If this was not you, contact the organizer immediately.",
+    "",
+    "XPO MICE",
+  ].join("\n");
+  const html = shell(
+    [
+      paragraph(`Hello ${escapeHtml(attendeeName)},`),
+      paragraph(
+        `Your pass for <strong>${escapeHtml(eventTitle)}</strong> has been cancelled and the seat is released.`
+      ),
+      `<table role="presentation" style="width:100%;border-collapse:collapse;margin:0 0 16px;font-size:14px;color:#0f172a;">${row(
+        "Reference",
+        bookingId,
+        true
+      )}</table>`,
+      paragraph("If this was not you, contact the organizer immediately."),
+    ].join("")
+  );
+  return { subject, text, html };
+}
+
+export interface BookingTransferInput extends BookingCancellationInput {
+  passUrl: string;
+}
+
+/** Tells the new holder that the pass now belongs to them. */
+export function renderBookingTransfer({
+  attendeeName,
+  eventTitle,
+  bookingId,
+  passUrl,
+}: BookingTransferInput) {
+  const subject = `Pass transferred to you: ${eventTitle}`;
+  const text = [
+    `Hello ${attendeeName},`,
+    "",
+    `A pass for ${eventTitle} has been transferred to you.`,
+    "",
+    `Reference: ${bookingId}`,
+    "",
+    `Open your pass: ${passUrl}`,
+    "",
+    "Show the QR code at the gate. The original pass QR remains valid.",
+    "",
+    "XPO MICE",
+  ].join("\n");
+  const html = shell(
+    [
+      paragraph(`Hello ${escapeHtml(attendeeName)},`),
+      paragraph(
+        `A pass for <strong>${escapeHtml(eventTitle)}</strong> has been transferred to you.`
+      ),
+      `<table role="presentation" style="width:100%;border-collapse:collapse;margin:0 0 16px;font-size:14px;color:#0f172a;">${row(
+        "Reference",
+        bookingId,
+        true
+      )}</table>`,
+      `<p style="margin:0 0 16px;"><a href="${escapeHtml(passUrl)}" style="display:inline-block;background:#1d4ed8;color:#ffffff;text-decoration:none;font-weight:600;font-size:14px;padding:12px 20px;border-radius:8px;">Open your pass</a></p>`,
+      paragraph("Show the QR code at the gate. The original pass QR remains valid."),
+    ].join("")
+  );
+  return { subject, text, html };
+}
