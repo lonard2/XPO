@@ -171,17 +171,28 @@ been the bar in this repository.
   and session pair; pass page loads it, guidebook writes through the API
   and reverts on failure. Verified live: save 200, one row, page renders
   My Agenda.
-- [ ] **C3. Waitlist with auto-promotion.** `WaitlistEntry` plus join and
+- [x] **C3. Waitlist with auto-promotion.** `WaitlistEntry` plus join and
   leave routes; a cancellation promotes the head of the queue by email. M.
   *Done when:* a sold-out tier accepts a waitlist entry and a cancellation
   promotes it.
-- [ ] **C4. Reminders.** `reminderSentAt` on `Booking` and a scheduler for
+  Shipped 2026-11-03 as `56b22b9`. Per-tier queue with position, idempotent
+  join, seats-available refusal, guarded promotion and email. Verified live:
+  join 201, duplicate 201, leave 200.
+- [x] **C4. Reminders.** `reminderSentAt` on `Booking` and a scheduler for
   T-24h and T-2h through the existing email layer. M.
   *Done when:* a booking receives exactly one reminder per window, proven by
   test with a clock stub.
-- [ ] **C5. Session check-in.** `SessionCheckIn` reusing the QR hash, feeding
+  Shipped 2026-11-03 as `fa2b067`. Ruling: two sent markers instead of one,
+  because a single `reminderSentAt` cannot express two windows. The route is
+  hosting-neutral and idempotent under overlapping runs. Verified live: 401
+  without the secret, 200 with it, one email and the marker set.
+- [x] **C5. Session check-in.** `SessionCheckIn` reusing the QR hash, feeding
   attendance into the exhibitor report and the agenda. S to M.
   *Done when:* a session scan records attendance without allowing duplicates.
+  Shipped 2026-11-03 as `5f86819`. Scanner panel with event and session
+  selection; repeats return alreadyCheckedIn. Attendance data is ready for
+  X5 once the exhibitor report exists. Verified live: 201 first scan, 200
+  repeat, one row.
 
 ### Track X: Exhibitor validation slice (test demand before building the scanner)
 
