@@ -153,16 +153,24 @@ been the bar in this repository.
 
 ### Track C: Attendee fundamentals (retention and inventory truth)
 
-- [ ] **C1. Cancellation and transfer.** `POST /api/bookings/[id]/cancel`
+- [x] **C1. Cancellation and transfer.** `POST /api/bookings/[id]/cancel`
   with status change, `soldCount` decrement, audit row and email; transfer
   re-issues the holder while keeping the hash. Free-tier void first; refunds
   wait for Track F. S.
   *Done when:* cancelling frees capacity, the audit row exists, and the email
   sends.
-- [ ] **C2. Persistent agenda.** New bookmark model joining booking and
+  Shipped 2026-11-03 as `dbad967`. Holder, owning organizer or admin may
+  cancel; holder or admin may transfer. Wallet scoped to the holder and the
+  pass page 404s for anyone else. Verified live: transfer 200, cancel 200,
+  hash unchanged, both emails attempted.
+- [x] **C2. Persistent agenda.** New bookmark model joining booking and
   agenda item, plus API and UI state that survives refresh. The prior roadmap
   understated this: no model exists. M.
   *Done when:* a saved session survives reload and appears in the guidebook.
+  Shipped 2026-11-03 as `5e34531`. `AgendaBookmark` with a unique booking
+  and session pair; pass page loads it, guidebook writes through the API
+  and reverts on failure. Verified live: save 200, one row, page renders
+  My Agenda.
 - [ ] **C3. Waitlist with auto-promotion.** `WaitlistEntry` plus join and
   leave routes; a cancellation promotes the head of the queue by email. M.
   *Done when:* a sold-out tier accepts a waitlist entry and a cancellation
