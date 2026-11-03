@@ -24,6 +24,7 @@ import { formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
 import { OrganizerOnboardingGuide } from "@/components/organizer/OrganizerOnboardingGuide";
 import { OrganizerEventsRoster } from "@/components/organizer/OrganizerEventsRoster";
 import { MeetingRequestInbox } from "@/components/organizer/MeetingRequestInbox";
+import { BoothClaimsInbox } from "@/components/organizer/BoothClaimsInbox";
 import { CountUp } from "@/components/ui/CountUp";
 import { DashboardRefreshButton } from "@/components/organizer/DashboardRefreshButton";
 
@@ -52,6 +53,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
   let curatedEvents: any[] = [];
   let allBooths: any[] = [];
   let meetingRequests: any[] = [];
+  let boothClaims: any[] = [];
   let dbError = false;
 
   try {
@@ -83,6 +85,18 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
           where: { eventId: { in: visibleIds } },
           include: { event: { select: { id: true, title: true, slug: true } } },
           orderBy: { createdAt: "desc" },
+          take: 25,
+        })
+      : [];
+
+    boothClaims = visibleIds.length > 0
+      ? await db.boothTenant.findMany({
+          where: { eventId: { in: visibleIds }, claimStatus: "PENDING" },
+          include: {
+            event: { select: { id: true, title: true, slug: true } },
+            claimedBy: { select: { id: true, name: true, email: true } },
+          },
+          orderBy: { boothNumber: "asc" },
           take: 25,
         })
       : [];
@@ -361,6 +375,19 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
           status: row.status,
           createdAt: row.createdAt.toISOString(),
           event: row.event,
+        }))}
+      />
+
+      <BoothClaimsInbox
+        initialClaims={boothClaims.map((row: any) => ({
+          id: row.id,
+          companyName: row.companyName,
+          boothNumber: row.boothNumber,
+          hallName: row.hallName,
+          event: { id: row.event.id, title: row.event.title },
+          claimedBy: row.claimedBy
+            ? { name: row.claimedBy.name, email: row.claimedBy.email }
+            : null,
         }))}
       />
 

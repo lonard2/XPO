@@ -22,6 +22,7 @@ model User {
   lockedUntilAt   DateTime?
   organizedEvents Event[]     @relation("OrganizerEvents")
   bookings        Booking[]
+  claimedBooths   BoothTenant[] @relation("BoothClaims")
   aiReports       AIReport[]
   sessions        Session[]
   otpCodes        OtpCode[]
@@ -214,6 +215,14 @@ model BoothTenant {
   dimensions  String?  // e.g. "3m x 3m", "6m x 3m"
   areaSqm     Float?   // e.g. 9.0, 18.0
   boothType   String?  // "SHELL_SCHEME", "RAW_SPACE", "ISLAND", "CORNER"
+  // Claim state: an exhibitor asks for a booth, the organizer approves.
+  userId      String?
+  claimedBy   User?    @relation("BoothClaims", fields: [userId], references: [id], onDelete: SetNull)
+  claimStatus String   @default("UNCLAIMED") // UNCLAIMED | PENDING | CLAIMED | REJECTED
+  claimedAt   DateTime?
+
+  @@index([userId])
+  @@index([eventId, claimStatus])
 }
 
 model EventPerk {
