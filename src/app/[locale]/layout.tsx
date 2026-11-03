@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import { Plus_Jakarta_Sans, Newsreader, JetBrains_Mono, Atkinson_Hyperlegible } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
@@ -56,7 +56,6 @@ export const metadata: Metadata = {
     apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
     shortcut: [{ url: "/icons/favicon-32x32.png" }],
   },
-  themeColor: "#2563eb",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -78,6 +77,10 @@ export const metadata: Metadata = {
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
+
+export const viewport: Viewport = {
+  themeColor: "#2563eb",
+};
 
 interface LocaleLayoutProps {
   children: React.ReactNode;
