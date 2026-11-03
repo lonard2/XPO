@@ -109,30 +109,47 @@ been the bar in this repository.
 
 ### Track T: Trust completion (finish what A1 started)
 
-- [ ] **T1. Organizer meeting-request inbox.** `MeetingRequest` is
+- [x] **T1. Organizer meeting-request inbox.** `MeetingRequest` is
   write-only today: no GET route and no reader anywhere in `src/`. Add a
   scoped list for the event's organizer with accept, decline and status
   transitions, plus an unread count. S.
   *Done when:* a submitted request appears in the organizer view, changes
   status, and the requester receives the status email.
-- [ ] **T2. Event recaps.** Add a recap field (photos, slides, recordings) or
+  Shipped 2026-11-03 as `fa753f1`. GET and PATCH routes with ownership,
+  audit and decision email; dashboard inbox with pending first. Verified
+  live: public submit, scoped list, confirm, dashboard render.
+- [x] **T2. Event recaps.** Add a recap field (photos, slides, recordings) or
   retarget the CTA. No recap data exists today. S.
   *Done when:* the past-event CTA opens a recap section when data exists and
   falls back to the event page when it does not.
-- [ ] **T3. Listing-only semantics.** Badge `isListingOnly` events in
+  Shipped 2026-11-03 as `26db720`. Took the retarget branch: the CTA now
+  says View Event Details. A recap field without an authoring path would
+  have been a new stub.
+- [x] **T3. Listing-only semantics.** Badge `isListingOnly` events in
   discovery as external listings with an off-platform CTA, and suppress the
   pass drawer for them. S.
   *Done when:* a listing-only event shows the external badge and cannot
   reach checkout, verified by test.
-- [ ] **T4. Showcase labelling.** Mark livestream, CME and deal-room sections
+  Shipped 2026-11-03 as `377f0ec`. Adds `externalUrl`, admin-only and
+  validated; card badge and off-platform CTA; every Book Pass control
+  replaced; checkout drawer never mounts. Verified in a browser: no Book
+  Pass, badge and external link present.
+- [x] **T4. Showcase labelling.** Mark livestream, CME and deal-room sections
   as demonstration content unless backed by data. Keep them visible, per the
   owner decision. S.
   *Done when:* every unbacked showcase section carries the label, and the
   label disappears once the backing field is populated.
-- [ ] **T5. Calendar export parity.** Per-event Google and Outlook links for
+  Shipped 2026-11-03 as `5db649b`. CME, KYC and deal-room credential claims
+  carry a Demonstration badge. The livestream section already gates on an
+  organizer-published URL, so it needed no label. Verified live on the
+  finance event page.
+- [x] **T5. Calendar export parity.** Per-event Google and Outlook links for
   each event in the filtered list; bulk stays `.ics` and CSV. S.
   *Done when:* every listed event produces its own valid deeplink and the
   bulk export still contains the full filtered set.
+  Shipped 2026-11-03 as `f006f6a`. One deeplink pair per card with
+  event-specific accessible names; bulk unchanged. Verified live: six
+  deeplink targets on the calendar page.
 
 ### Track C: Attendee fundamentals (retention and inventory truth)
 
