@@ -310,7 +310,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
             </div>
           </div>
         ) : (
-          <div className={featuredGridClass(attendableEvents.length)}>
+          <div className={cn(featuredGridClass(attendableEvents.length), 'stagger-children')}>
             {attendableEvents.map((event, idx) => (
               <EventCard key={event.id} event={event} locale={locale} priority={idx < 3} />
             ))}
@@ -376,9 +376,11 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 stagger-children">
           {/* Bento Cell 1: Interactive Hall Maps & Wayfinding (Dominant Primary Cell - 7 Cols) */}
-          <div className="lg:col-span-7 rounded-2xl border border-border/80 bg-gradient-to-br from-card via-card to-blue-500/5 p-6 sm:p-8 flex flex-col justify-between shadow-sm hover:border-primary/40 hover:shadow-md transition-all">
+          <div
+            data-tilt
+            className="lg:col-span-7 rounded-2xl border border-border/80 bg-gradient-to-br from-card via-card to-blue-500/5 p-6 sm:p-8 flex flex-col justify-between shadow-sm hover:border-primary/40 hover:shadow-md transition-all card-interactive-3d sheen">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400">
@@ -426,7 +428,9 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
           </div>
 
           {/* Bento Cell 2: Offline Cryptographic Passes (5 Cols) */}
-          <div className="lg:col-span-5 rounded-2xl border border-border/80 bg-gradient-to-br from-card via-card to-indigo-500/5 p-6 sm:p-8 flex flex-col justify-between shadow-sm hover:border-indigo-500/40 hover:shadow-md transition-all">
+          <div
+            data-tilt
+            className="lg:col-span-5 rounded-2xl border border-border/80 bg-gradient-to-br from-card via-card to-indigo-500/5 p-6 sm:p-8 flex flex-col justify-between shadow-sm hover:border-indigo-500/40 hover:shadow-md transition-all card-interactive-3d sheen">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
@@ -474,7 +478,9 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
           </div>
 
           {/* Bento Cell 3: Pass perks and the day-of guidebook (Panoramic 12 Cols) */}
-          <div className="lg:col-span-12 rounded-2xl border border-border/80 bg-gradient-to-r from-card via-card to-emerald-500/5 p-6 sm:p-8 shadow-sm hover:border-emerald-500/40 hover:shadow-md transition-all">
+          <div
+            data-tilt
+            className="lg:col-span-12 rounded-2xl border border-border/80 bg-gradient-to-r from-card via-card to-emerald-500/5 p-6 sm:p-8 shadow-sm hover:border-emerald-500/40 hover:shadow-md transition-all card-interactive-3d sheen">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
               <div className="space-y-2 max-w-xl">
                 <div className="flex items-center gap-3">
