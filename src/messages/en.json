@@ -966,6 +966,8 @@
     "suggestionsTitle": "Suggested for you",
     "suggestionsEmpty": "Save interests above and suggestions will appear here.",
     "suggestionMatch": "Matches {names}",
+    "suggestionsRerank": "Rank with AI",
+    "suggestionsAiNote": "Ranked by AI from your interests and past requests.",
     "localizationDesc": "Switch languages and regional hubs. Currency, timezones, and venue lists follow your hub."
   },
   "organizer": {

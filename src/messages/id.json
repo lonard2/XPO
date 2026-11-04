@@ -966,6 +966,8 @@
     "suggestionsTitle": "Disarankan untuk Anda",
     "suggestionsEmpty": "Simpan minat di atas dan saran akan muncul di sini.",
     "suggestionMatch": "Cocok dengan {names}",
+    "suggestionsRerank": "Urutkan dengan AI",
+    "suggestionsAiNote": "Diberi peringkat oleh AI dari minat dan permintaan Anda sebelumnya.",
     "localizationDesc": "Ganti bahasa dan hub regional. Mata uang, zona waktu, dan daftar venue mengikuti hub Anda."
   },
   "organizer": {

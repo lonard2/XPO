@@ -256,8 +256,12 @@ describe("XPO Full-Platform End-to-End Integration Suite (Milestone 9 Hardening)
       expect(tamperedCheck.valid).toBe(false);
       expect(tamperedCheck.error).toContain("INVALID_SIGNATURE");
 
-      // 3. Reject corrupted signature
-      const corruptedSignature = generatedSignature.slice(0, -4) + "ffff";
+      // 3. Reject corrupted signature. Flip the final nibble instead of
+      // overwriting a fixed suffix: a suffix overwrite is a no-op when the
+      // signature already ends that way, and the tampered pass would verify.
+      const lastNibble = generatedSignature.slice(-1);
+      const flippedNibble = lastNibble === "f" ? "0" : "f";
+      const corruptedSignature = generatedSignature.slice(0, -1) + flippedNibble;
       const corruptedCheck = verifyTicketHash(generatedPayloadString, corruptedSignature);
       expect(corruptedCheck.valid).toBe(false);
     });

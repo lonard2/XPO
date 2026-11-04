@@ -966,6 +966,8 @@
     "suggestionsTitle": "あなたへのおすすめ",
     "suggestionsEmpty": "上の興味を保存すると、提案がここに表示されます。",
     "suggestionMatch": "{names}に一致",
+    "suggestionsRerank": "AIで並び替え",
+    "suggestionsAiNote": "興味と過去のリクエストに基づいてAIがランク付けしました。",
     "localizationDesc": "言語と地域ハブを切り替えます。通貨、タイムゾーン、会場リストはハブに連動します。"
   },
   "organizer": {

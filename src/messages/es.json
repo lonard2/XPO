@@ -966,6 +966,8 @@
     "suggestionsTitle": "Sugerido para usted",
     "suggestionsEmpty": "Guarde sus intereses arriba y las sugerencias aparecerán aquí.",
     "suggestionMatch": "Coincide con {names}",
+    "suggestionsRerank": "Ordenar con IA",
+    "suggestionsAiNote": "Clasificado por IA según sus intereses y solicitudes anteriores.",
     "localizationDesc": "Cambie de idioma y hub regional. La moneda, las zonas horarias y las sedes siguen a su hub."
   },
   "organizer": {

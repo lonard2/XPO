@@ -44,8 +44,11 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
       event: { title: string; slug: string; venueName: string | null; city: string | null };
       score: number;
       matchedInterests: string[];
+      reason?: string;
     }>
   >([]);
+  const [rankedBy, setRankedBy] = React.useState<"rules" | "ai">("rules");
+  const [reranking, setReranking] = React.useState(false);
 
   // Display title: localized dictionary first, current metadata second.
   const interestTitle = (id: MiceArchetype) => {
@@ -124,14 +127,22 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMounted]);
 
-  async function loadSuggestions() {
+  async function loadSuggestions(rerank = false) {
+    if (rerank) setReranking(true);
     try {
-      const res = await fetch("/api/profile/suggestions");
+      const res = await fetch(`/api/profile/suggestions${rerank ? "?rerank=true" : ""}`);
       if (!res.ok) throw new Error("no suggestions");
-      const data = (await res.json()) as { suggestions?: typeof suggestions };
+      const data = (await res.json()) as {
+        suggestions?: typeof suggestions;
+        rankedBy?: "rules" | "ai";
+      };
       setSuggestions(Array.isArray(data.suggestions) ? data.suggestions.slice(0, 3) : []);
+      setRankedBy(data.rankedBy === "ai" ? "ai" : "rules");
     } catch {
       setSuggestions([]);
+      setRankedBy("rules");
+    } finally {
+      if (rerank) setReranking(false);
     }
   }
 
@@ -377,12 +388,29 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
       {/* Suggested events: rule-based matches on the stored interests. */}
       {syncState === "synced" && (
         <div className="space-y-2 pt-2 border-t border-border/60">
-          <div className="flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-primary" />
-            <span className="text-sm font-semibold text-foreground">
-              {tSet("suggestionsTitle") || "Suggested for you"}
-            </span>
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <Sparkles className="h-4 w-4 text-primary" />
+              <span className="text-sm font-semibold text-foreground">
+                {tSet("suggestionsTitle") || "Suggested for you"}
+              </span>
+            </div>
+            {suggestions.length > 0 && (
+              <button
+                type="button"
+                onClick={() => loadSuggestions(true)}
+                disabled={reranking}
+                className="text-[11px] font-semibold text-primary hover:underline underline-offset-2 cursor-pointer min-h-[36px] px-1 disabled:opacity-50"
+              >
+                {tSet("suggestionsRerank") || "Rank with AI"}
+              </button>
+            )}
           </div>
+          {rankedBy === "ai" && suggestions.length > 0 && (
+            <p className="text-[11px] text-muted-foreground">
+              {tSet("suggestionsAiNote") || "Ranked by AI from your interests and past requests."}
+            </p>
+          )}
           {suggestions.length === 0 ? (
             <p className="text-xs text-muted-foreground leading-relaxed">
               {tSet("suggestionsEmpty") || "Save interests above and suggestions will appear here."}
@@ -411,7 +439,8 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
                         .join(" · ")}
                     </p>
                     <p className="text-[11px] text-muted-foreground mt-0.5">
-                      {matchLine === "suggestionMatch" ? `Matches ${matchNames}` : matchLine}
+                      {suggestion.reason ??
+                        (matchLine === "suggestionMatch" ? `Matches ${matchNames}` : matchLine)}
                     </p>
                   </li>
                 );

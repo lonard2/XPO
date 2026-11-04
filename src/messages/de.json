@@ -966,6 +966,8 @@
     "suggestionsTitle": "Für Sie vorgeschlagen",
     "suggestionsEmpty": "Speichern Sie oben Interessen, dann erscheinen hier Vorschläge.",
     "suggestionMatch": "Passt zu {names}",
+    "suggestionsRerank": "Mit KI sortieren",
+    "suggestionsAiNote": "Von der KI anhand Ihrer Interessen und früheren Anfragen sortiert.",
     "localizationDesc": "Wechseln Sie Sprache und regionalen Hub. Währung, Zeitzonen und Venue-Listen folgen Ihrem Hub."
   },
   "organizer": {

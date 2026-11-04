@@ -36,7 +36,21 @@ function mockServer() {
     if (url === "/api/profile/suggestions") {
       return Promise.resolve({
         ok: true,
-        json: () => Promise.resolve({ suggestions: serverSuggestions }),
+        json: () => Promise.resolve({ suggestions: serverSuggestions, rankedBy: "rules" }),
+      });
+    }
+    if (url === "/api/profile/suggestions?rerank=true") {
+      return Promise.resolve({
+        ok: true,
+        json: () =>
+          Promise.resolve({
+            suggestions: serverSuggestions.map((s) => ({
+              ...s,
+              reason: "Top pick for your Tech Summit interest.",
+            })),
+            rankedBy: "ai",
+            modelUsed: "google/gemini-3.5-flash-lite",
+          }),
       });
     }
     return Promise.resolve({ ok: false, json: () => Promise.resolve({}) });
@@ -87,6 +101,27 @@ describe("ProfileSettingsForm server sync", () => {
       expect(screen.getByText(/Stored only in this browser/i)).toBeInTheDocument();
     });
     expect(screen.queryByText("Suggested for you")).toBeNull();
+  });
+
+  it("re-ranks through the model when asked and shows the AI note", async () => {
+    render(
+      <SettingsProvider>
+        <ProfileSettingsForm />
+      </SettingsProvider>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText("Suggested for you")).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /Rank with AI/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText("Top pick for your Tech Summit interest.")).toBeInTheDocument();
+    });
+    expect(screen.getByText(/Ranked by AI/i)).toBeInTheDocument();
+    const calls = (global.fetch as any).mock.calls.map(([url]: any[]) => url);
+    expect(calls).toContain("/api/profile/suggestions?rerank=true");
   });
 
   it("syncs interests to the server on save", async () => {
