@@ -289,7 +289,9 @@
     }
   }
   .motion-expressive .stagger-children > * {
-    animation: rise-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+    /* backwards, never both/forwards: a retained fill would keep overriding
+       the inline transforms the MotionTilt engine writes, killing tilt. */
+    animation: rise-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) backwards;
   }
   .motion-expressive .stagger-children > *:nth-child(2) { animation-delay: 0.04s; }
   .motion-expressive .stagger-children > *:nth-child(3) { animation-delay: 0.08s; }
