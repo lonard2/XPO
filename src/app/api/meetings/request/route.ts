@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { rateLimitResponse } from "@/lib/api/rateLimit";
+import { resolveEventCaller } from "@/lib/auth/eventOwnership";
 import { reportError } from "@/lib/observability/logger";
 import { audit } from "@/lib/observability/audit";
 import { sendEmail } from "@/lib/email/transport";
@@ -37,6 +38,7 @@ export async function POST(request: Request) {
     const target = typeof body.target === "string" ? body.target.trim().slice(0, MAX_TARGET) : "";
     const slot = typeof body.slot === "string" ? body.slot.trim().slice(0, MAX_SLOT) : "";
     const message = typeof body.message === "string" ? body.message.trim().slice(0, MAX_MESSAGE) : "";
+    const boothId = typeof body.boothId === "string" && body.boothId ? body.boothId : null;
 
     if (!eventId) {
       return NextResponse.json({ error: "VALIDATION_ERROR: eventId is required." }, { status: 400 });
@@ -62,6 +64,39 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "NOT_FOUND: event does not exist." }, { status: 404 });
     }
 
+    if (boothId) {
+      const booth = await db.boothTenant.findFirst({
+        where: { id: boothId, eventId },
+        select: { id: true },
+      });
+      if (!booth) {
+        return NextResponse.json(
+          { error: "NOT_FOUND: booth does not belong to this event." },
+          { status: 404 }
+        );
+      }
+    }
+
+    // Shared identity, best-effort: a signed-in requester is linked, plus
+    // their pass when exactly one confirmed booking exists for the event.
+    // Several passes means ambiguity, so nothing is linked rather than the
+    // wrong pass.
+    const caller = await resolveEventCaller(request);
+    const requesterId = caller.userId;
+    let bookingId: string | null = null;
+    if (requesterId) {
+      const passes = await db.booking.findMany({
+        where: {
+          userId: requesterId,
+          eventId,
+          status: { in: ["CONFIRMED", "CHECKED_IN"] },
+        },
+        orderBy: { createdAt: "asc" },
+        select: { id: true },
+      });
+      if (passes.length === 1) bookingId = passes[0].id;
+    }
+
     const created = await db.meetingRequest.create({
       data: {
         eventId,
@@ -71,6 +106,9 @@ export async function POST(request: Request) {
         target,
         slot,
         message,
+        requesterId,
+        bookingId,
+        boothId,
       },
     });
 
@@ -78,7 +116,7 @@ export async function POST(request: Request) {
       action: "meeting.request",
       entity: "MeetingRequest",
       entityId: created.id,
-      metadata: { eventId, type, target },
+      metadata: { eventId, type, target, requesterId, bookingId, boothId },
     });
 
     const mailInput = {

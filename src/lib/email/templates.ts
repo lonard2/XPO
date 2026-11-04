@@ -217,20 +217,44 @@ export function renderMeetingRequestNotification(
 
 export type MeetingDecision = "CONFIRMED" | "DECLINED";
 
+export interface MeetingDecisionInput extends MeetingRequestEmailInput {
+  status: MeetingDecision;
+  /** Formatted schedule, present when the organizer set a time. */
+  scheduledAt?: string;
+  location?: string;
+}
+
 /** Tells the requester what the organizer decided. */
-export function renderMeetingRequestDecision(
-  input: MeetingRequestEmailInput & { status: MeetingDecision }
-) {
-  const verb = input.status === "CONFIRMED" ? "confirmed" : "declined";
-  const subject = `Request ${verb}: ${MEETING_TYPE_LABEL[input.type]} at ${input.eventTitle}`;
+export function renderMeetingRequestDecision({
+  type,
+  eventTitle,
+  requesterName,
+  target,
+  slot,
+  message,
+  reference,
+  status,
+  scheduledAt,
+  location,
+}: MeetingDecisionInput) {
+  const verb = status === "CONFIRMED" ? "confirmed" : "declined";
+  const subject = `Request ${verb}: ${MEETING_TYPE_LABEL[type]} at ${eventTitle}`;
+  const scheduleLines =
+    status === "CONFIRMED" && (scheduledAt || location)
+      ? [
+          ...(scheduledAt ? [`When: ${scheduledAt}`] : []),
+          ...(location ? [`Where: ${location}`] : []),
+        ]
+      : [];
   const text = [
-    `Hello ${input.requesterName},`,
+    `Hello ${requesterName},`,
     "",
-    `The organizer has ${verb} your ${MEETING_TYPE_LABEL[input.type].toLowerCase()} request for ${input.eventTitle}.`,
+    `The organizer has ${verb} your ${MEETING_TYPE_LABEL[type].toLowerCase()} request for ${eventTitle}.`,
     "",
-    ...meetingLines(input),
+    ...meetingLines({ type, eventTitle, requesterName, target, slot, message, reference }),
+    ...scheduleLines,
     "",
-    input.status === "CONFIRMED"
+    status === "CONFIRMED"
       ? "The organizer will contact you with the confirmed time and location."
       : "You can submit a new request from the event page if your plans change.",
     "",
@@ -238,20 +262,22 @@ export function renderMeetingRequestDecision(
   ].join("\n");
   const html = shell(
     [
-      paragraph(`Hello ${escapeHtml(input.requesterName)},`),
+      paragraph(`Hello ${escapeHtml(requesterName)},`),
       paragraph(
         `The organizer has <strong>${verb}</strong> your ${escapeHtml(
-          MEETING_TYPE_LABEL[input.type].toLowerCase()
-        )} request for <strong>${escapeHtml(input.eventTitle)}</strong>.`
+          MEETING_TYPE_LABEL[type].toLowerCase()
+        )} request for <strong>${escapeHtml(eventTitle)}</strong>.`
       ),
-      `<table role="presentation" style="width:100%;border-collapse:collapse;margin:0 0 16px;font-size:14px;color:#0f172a;">${meetingLines(input)
+      `<table role="presentation" style="width:100%;border-collapse:collapse;margin:0 0 16px;font-size:14px;color:#0f172a;">${meetingLines({ type, eventTitle, requesterName, target, slot, message, reference })
         .map((line) => {
           const [label, ...rest] = line.split(": ");
           return row(label, rest.join(": "));
         })
-        .join("")}</table>`,
+        .join("")}${
+        status === "CONFIRMED" && scheduledAt ? row("When", scheduledAt) : ""
+      }${status === "CONFIRMED" && location ? row("Where", location) : ""}</table>`,
       paragraph(
-        input.status === "CONFIRMED"
+        status === "CONFIRMED"
           ? "The organizer will contact you with the confirmed time and location."
           : "You can submit a new request from the event page if your plans change."
       ),
@@ -429,6 +455,58 @@ export function renderEventReminder({
       )}${row("Venue", venueText)}</table>`,
       `<p style="margin:0 0 16px;"><a href="${escapeHtml(passUrl)}" style="display:inline-block;background:#1d4ed8;color:#ffffff;text-decoration:none;font-weight:600;font-size:14px;padding:12px 20px;border-radius:8px;">Open your pass</a></p>`,
       paragraph("Show the QR code at the gate. It works offline once the pass page has loaded."),
+    ].join("")
+  );
+  return { subject, text, html };
+}
+
+export interface MeetingRescheduleInput extends MeetingRequestEmailInput {
+  scheduledAt: string;
+  location: string;
+}
+
+/** Tells the requester a confirmed meeting moved to a new time or place. */
+export function renderMeetingRequestRescheduled({
+  type,
+  eventTitle,
+  requesterName,
+  target,
+  reference,
+  scheduledAt,
+  location,
+}: MeetingRescheduleInput) {
+  const subject = `Meeting rescheduled: ${MEETING_TYPE_LABEL[type]} at ${eventTitle}`;
+  const text = [
+    `Hello ${requesterName},`,
+    "",
+    `Your ${MEETING_TYPE_LABEL[type].toLowerCase()} for ${eventTitle} has a new time or location.`,
+    "",
+    `When: ${scheduledAt}`,
+    location ? `Where: ${location}` : "",
+    target ? `Target: ${target}` : "",
+    `Reference: ${reference}`,
+    "",
+    "If the new time does not work, reply to the organizer directly.",
+    "",
+    "XPO MICE",
+  ]
+    .filter((line) => line !== "")
+    .join("\n");
+  const html = shell(
+    [
+      paragraph(`Hello ${escapeHtml(requesterName)},`),
+      paragraph(
+        `Your ${escapeHtml(MEETING_TYPE_LABEL[type].toLowerCase())} for <strong>${escapeHtml(eventTitle)}</strong> has a new time or location.`
+      ),
+      `<table role="presentation" style="width:100%;border-collapse:collapse;margin:0 0 16px;font-size:14px;color:#0f172a;">${row(
+        "When",
+        scheduledAt
+      )}${location ? row("Where", location) : ""}${target ? row("Target", target) : ""}${row(
+        "Reference",
+        reference,
+        true
+      )}</table>`,
+      paragraph("If the new time does not work, reply to the organizer directly."),
     ].join("")
   );
   return { subject, text, html };

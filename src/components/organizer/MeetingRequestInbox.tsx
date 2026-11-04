@@ -2,10 +2,80 @@
 
 import * as React from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Check, X, Inbox, Mail, Building2 } from "lucide-react";
+import { X, Inbox, Mail, Building2, Ticket, Store, Check } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+
+function toLocalInputValue(iso: string | null): string {
+  if (!iso) return "";
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return "";
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+/**
+ * Optional schedule attached to a confirm or a reschedule. Empty means the
+ * meeting is confirmed without a fixed time; the organizer follows up.
+ */
+function ScheduleFields({
+  busy,
+  submitLabel,
+  initialScheduledAt = null,
+  initialLocation = "",
+  onSubmit,
+}: {
+  busy: boolean;
+  submitLabel: string;
+  initialScheduledAt?: string | null;
+  initialLocation?: string;
+  onSubmit: (schedule: { scheduledAt?: string; location?: string }) => void;
+}) {
+  const t = useTranslations("organizer");
+  const [scheduledAt, setScheduledAt] = React.useState(() => toLocalInputValue(initialScheduledAt));
+  const [location, setLocation] = React.useState(initialLocation);
+
+  return (
+    <div className="mt-2 grid grid-cols-1 sm:grid-cols-[1fr_1fr_auto] gap-2 items-end">
+      <label className="text-[11px] font-semibold text-foreground">
+        {t("meetingScheduleWhen") || "Date and time"}
+        <Input
+          type="datetime-local"
+          value={scheduledAt}
+          onChange={(e) => setScheduledAt(e.target.value)}
+          className="mt-1 min-h-[40px]"
+        />
+      </label>
+      <label className="text-[11px] font-semibold text-foreground">
+        {t("meetingScheduleWhere") || "Location"}
+        <Input
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          placeholder="Hall A1, Table B-12"
+          maxLength={200}
+          className="mt-1 min-h-[40px]"
+        />
+      </label>
+      <Button
+        type="button"
+        size="sm"
+        disabled={busy}
+        onClick={() =>
+          onSubmit({
+            ...(scheduledAt ? { scheduledAt: new Date(scheduledAt).toISOString() } : {}),
+            ...(location.trim() ? { location: location.trim() } : {}),
+          })
+        }
+        className="gap-1.5 min-h-[40px] cursor-pointer"
+      >
+        <Check className="h-3.5 w-3.5" />
+        {submitLabel}
+      </Button>
+    </div>
+  );
+}
 
 export interface MeetingRequestRow {
   id: string;
@@ -16,6 +86,11 @@ export interface MeetingRequestRow {
   slot: string;
   message: string;
   status: string;
+  scheduledAt: string | null;
+  location: string;
+  booking: { id: string; status: string; attendeeName: string; ticketTier: { id: string; name: string } } | null;
+  booth: { id: string; companyName: string; boothNumber: string; hallName: string } | null;
+  requesterInterests: string[];
   createdAt: string | Date;
   event: { id: string; title: string; slug: string };
 }
@@ -49,6 +124,18 @@ export function MeetingRequestInbox({
     [locale]
   );
 
+  const scheduleDisplay = React.useCallback(
+    (iso: string) => {
+      const date = new Date(iso);
+      if (Number.isNaN(date.getTime())) return iso;
+      return new Intl.DateTimeFormat(locale, {
+        dateStyle: "medium",
+        timeStyle: "short",
+      }).format(date);
+    },
+    [locale]
+  );
+
   const pendingCount = rows.filter((row) => row.status === "PENDING").length;
   const ordered = React.useMemo(
     () =>
@@ -61,7 +148,11 @@ export function MeetingRequestInbox({
     [rows]
   );
 
-  async function decide(id: string, status: Decision) {
+  async function decide(
+    id: string,
+    status: Decision,
+    schedule?: { scheduledAt?: string; location?: string }
+  ) {
     setBusy(id);
     setError(null);
     setNotice(null);
@@ -69,12 +160,58 @@ export function MeetingRequestInbox({
       const res = await fetch(`/api/meetings/requests/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status }),
+        body: JSON.stringify({ status, ...schedule }),
       });
-      const data = (await res.json().catch(() => ({}))) as { error?: string };
+      const data = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        request?: { scheduledAt?: string | null; location?: string };
+      };
       if (!res.ok) throw new Error(data.error || t("meetingRequestError"));
       setRows((current) =>
-        current.map((row) => (row.id === id ? { ...row, status } : row))
+        current.map((row) =>
+          row.id === id
+            ? {
+                ...row,
+                status,
+                scheduledAt: data.request?.scheduledAt ?? row.scheduledAt,
+                location: data.request?.location ?? row.location,
+              }
+            : row
+        )
+      );
+      setNotice(t("meetingRequestUpdated"));
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  async function reschedule(id: string, schedule: { scheduledAt?: string; location?: string }) {
+    setBusy(id);
+    setError(null);
+    setNotice(null);
+    try {
+      const res = await fetch(`/api/meetings/requests/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(schedule),
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        request?: { scheduledAt?: string | null; location?: string };
+      };
+      if (!res.ok) throw new Error(data.error || t("meetingRequestError"));
+      setRows((current) =>
+        current.map((row) =>
+          row.id === id
+            ? {
+                ...row,
+                scheduledAt: data.request?.scheduledAt ?? row.scheduledAt,
+                location: data.request?.location ?? row.location,
+              }
+            : row
+        )
       );
       setNotice(t("meetingRequestUpdated"));
     } catch (err) {
@@ -161,25 +298,54 @@ export function MeetingRequestInbox({
                 {row.slot && <span>{row.slot}</span>}
               </div>
 
+              <div className="mt-1 flex flex-wrap items-center gap-1.5 text-[11px]">
+                {row.booking ? (
+                  <Badge variant="outline" size="sm" className="gap-1">
+                    <Ticket className="h-3 w-3" />
+                    {row.booking.ticketTier.name} · {row.booking.status}
+                  </Badge>
+                ) : (
+                  <Badge variant="outline" size="sm" className="text-muted-foreground">
+                    {t("meetingNoPass") || "No pass linked"}
+                  </Badge>
+                )}
+                {row.booth && (
+                  <Badge variant="outline" size="sm" className="gap-1">
+                    <Store className="h-3 w-3" />
+                    {row.booth.companyName} · {row.booth.boothNumber}
+                  </Badge>
+                )}
+                {row.requesterInterests.length > 0 && (
+                  <span className="text-muted-foreground">
+                    {t("meetingInterests") || "Interests"}: {row.requesterInterests.join(", ")}
+                  </span>
+                )}
+              </div>
+
               {row.message && (
                 <p className="mt-1.5 text-xs text-muted-foreground line-clamp-2">
                   {row.message}
                 </p>
               )}
 
+              {row.status === "CONFIRMED" && (row.scheduledAt || row.location) && (
+                <p className="mt-1.5 text-xs font-medium text-foreground">
+                  {[row.scheduledAt ? scheduleDisplay(row.scheduledAt) : null, row.location || null]
+                    .filter(Boolean)
+                    .join(" · ")}
+                </p>
+              )}
+
+              {row.status === "PENDING" && (
+                <ScheduleFields
+                  key={`pending-${row.id}`}
+                  busy={busy === row.id}
+                  submitLabel={t("meetingRequestAccept")}
+                  onSubmit={(schedule) => decide(row.id, "CONFIRMED", schedule)}
+                />
+              )}
               {row.status === "PENDING" && (
                 <div className="mt-2 flex flex-wrap gap-2">
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="primary"
-                    disabled={busy === row.id}
-                    onClick={() => decide(row.id, "CONFIRMED")}
-                    className="gap-1.5 min-h-[36px] cursor-pointer"
-                  >
-                    <Check className="h-3.5 w-3.5" />
-                    {t("meetingRequestAccept")}
-                  </Button>
                   <Button
                     type="button"
                     size="sm"
@@ -192,6 +358,23 @@ export function MeetingRequestInbox({
                     {t("meetingRequestDecline")}
                   </Button>
                 </div>
+              )}
+              {row.status === "CONFIRMED" && (
+                <details className="mt-2 text-xs">
+                  <summary className="cursor-pointer text-muted-foreground hover:text-foreground min-h-[32px] inline-flex items-center">
+                    {t("meetingReschedule") || "Change time or location"}
+                  </summary>
+                  <div className="mt-1">
+                    <ScheduleFields
+                      key={`confirmed-${row.id}-${row.scheduledAt}-${row.location}`}
+                      busy={busy === row.id}
+                      initialScheduledAt={row.scheduledAt}
+                      initialLocation={row.location}
+                      submitLabel={t("meetingScheduleSave") || "Save schedule"}
+                      onSubmit={(schedule) => reschedule(row.id, schedule)}
+                    />
+                  </div>
+                </details>
               )}
             </li>
           ))}

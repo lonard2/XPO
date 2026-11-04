@@ -9,6 +9,7 @@ import {
   renderBookingTransfer,
   renderWaitlistPromotion,
   renderEventReminder,
+  renderMeetingRequestRescheduled,
 } from "@/lib/email/templates";
 
 describe("OTP email", () => {
@@ -227,5 +228,46 @@ describe("event reminder email", () => {
       passUrl: "https://xpo.events/en/my-tickets/bkg-1",
     });
     expect(mail.subject).toContain("in 2 hours");
+  });
+});
+
+
+describe("meeting schedule emails", () => {
+  const base = {
+    type: "DEAL_SLOT" as const,
+    eventTitle: "Manufacturing Indonesia 2026",
+    requesterName: "PT Industri Prima",
+    target: "Apex Robotics",
+    slot: "Morning",
+    message: "Interested",
+    reference: "cmr789",
+  };
+
+  it("adds When and Where to the confirmation when scheduled", () => {
+    const mail = renderMeetingRequestDecision({
+      ...base,
+      status: "CONFIRMED",
+      scheduledAt: "2 Oct 2026, 10:30 UTC",
+      location: "Hall A1, Table 4",
+    });
+    expect(mail.text).toContain("When: 2 Oct 2026, 10:30 UTC");
+    expect(mail.text).toContain("Where: Hall A1, Table 4");
+    expect(mail.html).toContain("Hall A1, Table 4");
+  });
+
+  it("omits schedule lines when no time was set", () => {
+    const mail = renderMeetingRequestDecision({ ...base, status: "CONFIRMED" });
+    expect(mail.text).not.toContain("When:");
+  });
+
+  it("tells the requester a confirmed meeting moved", () => {
+    const mail = renderMeetingRequestRescheduled({
+      ...base,
+      scheduledAt: "2 Oct 2026, 14:00 UTC",
+      location: "Hall B2",
+    });
+    expect(mail.subject).toContain("rescheduled");
+    expect(mail.text).toContain("When: 2 Oct 2026, 14:00 UTC");
+    expect(mail.text).toContain("Where: Hall B2");
   });
 });

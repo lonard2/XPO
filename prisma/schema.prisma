@@ -23,6 +23,7 @@ model User {
   organizedEvents Event[]     @relation("OrganizerEvents")
   bookings        Booking[]
   claimedBooths   BoothTenant[] @relation("BoothClaims")
+  meetingRequests MeetingRequest[] @relation("RequesterMeetings")
   aiReports       AIReport[]
   sessions        Session[]
   otpCodes        OtpCode[]
@@ -160,6 +161,7 @@ model Booking {
   claims        VoucherClaim[]
   agendaBookmarks AgendaBookmark[]
   sessionCheckIns SessionCheckIn[]
+  meetingRequests MeetingRequest[]
 }
 
 model AgendaItem {
@@ -220,6 +222,7 @@ model BoothTenant {
   claimedBy   User?    @relation("BoothClaims", fields: [userId], references: [id], onDelete: SetNull)
   claimStatus String   @default("UNCLAIMED") // UNCLAIMED | PENDING | CLAIMED | REJECTED
   claimedAt   DateTime?
+  meetingRequests MeetingRequest[]
 
   @@index([userId])
   @@index([eventId, claimStatus])
@@ -323,7 +326,19 @@ model MeetingRequest {
   message        String   @default("")
   // PENDING | CONFIRMED | DECLINED
   status         String   @default("PENDING")
+  // Shared identity: who asked, which pass proves attendance, which booth is
+  // the other side. All nullable because public forms predate accounts.
+  requesterId    String?
+  requester      User?        @relation("RequesterMeetings", fields: [requesterId], references: [id], onDelete: SetNull)
+  bookingId      String?
+  booking        Booking?     @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  boothId        String?
+  booth          BoothTenant? @relation(fields: [boothId], references: [id], onDelete: SetNull)
+  // Organizer-set schedule. Null until a confirmed time exists.
+  scheduledAt    DateTime?
+  location       String   @default("")
   createdAt      DateTime @default(now())
 
   @@index([eventId, status])
+  @@index([requesterId])
 }

@@ -83,7 +83,21 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
     meetingRequests = visibleIds.length > 0
       ? await db.meetingRequest.findMany({
           where: { eventId: { in: visibleIds } },
-          include: { event: { select: { id: true, title: true, slug: true } } },
+          include: {
+            event: { select: { id: true, title: true, slug: true } },
+            requester: { select: { interestsJson: true } },
+            booking: {
+              select: {
+                id: true,
+                status: true,
+                attendeeName: true,
+                ticketTier: { select: { id: true, name: true } },
+              },
+            },
+            booth: {
+              select: { id: true, companyName: true, boothNumber: true, hallName: true },
+            },
+          },
           orderBy: { createdAt: "desc" },
           take: 25,
         })
@@ -364,18 +378,34 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
       </div>
 
       <MeetingRequestInbox
-        initialRequests={meetingRequests.map((row: any) => ({
-          id: row.id,
-          type: row.type,
-          requesterName: row.requesterName,
-          requesterEmail: row.requesterEmail,
-          target: row.target,
-          slot: row.slot,
-          message: row.message,
-          status: row.status,
-          createdAt: row.createdAt.toISOString(),
-          event: row.event,
-        }))}
+        initialRequests={meetingRequests.map((row: any) => {
+          let requesterInterests: string[] = [];
+          try {
+            const parsed = JSON.parse(row.requester?.interestsJson || "[]");
+            if (Array.isArray(parsed)) {
+              requesterInterests = parsed.filter((id: unknown) => typeof id === "string");
+            }
+          } catch {
+            requesterInterests = [];
+          }
+          return {
+            id: row.id,
+            type: row.type,
+            requesterName: row.requesterName,
+            requesterEmail: row.requesterEmail,
+            target: row.target,
+            slot: row.slot,
+            message: row.message,
+            status: row.status,
+            scheduledAt: row.scheduledAt ? row.scheduledAt.toISOString() : null,
+            location: row.location || "",
+            booking: row.booking,
+            booth: row.booth,
+            requesterInterests,
+            createdAt: row.createdAt.toISOString(),
+            event: row.event,
+          };
+        })}
       />
 
       <BoothClaimsInbox

@@ -7,20 +7,37 @@ import { reportError } from "@/lib/observability/logger";
 import { sendEmail } from "@/lib/email/transport";
 import {
   renderMeetingRequestDecision,
+  renderMeetingRequestRescheduled,
   type MeetingRequestType,
 } from "@/lib/email/templates";
 
 const DECISIONS = ["CONFIRMED", "DECLINED"] as const;
 type Decision = (typeof DECISIONS)[number];
 
+const MAX_LOCATION = 200;
+
+function formatSchedule(date: Date): string {
+  return (
+    date.toLocaleString("en-GB", {
+      dateStyle: "medium",
+      timeStyle: "short",
+      timeZone: "UTC",
+    }) + " UTC"
+  );
+}
+
 interface RouteParams {
   params: Promise<{ id: string }>;
 }
 
 /**
- * PATCH /api/meetings/requests/[id] — accept or decline a request.
+ * PATCH /api/meetings/requests/[id] — accept, decline, or schedule a request.
  * Only the organizer who owns the parent event, or an admin, may decide.
  * The requester is emailed; a mail failure never undoes the decision.
+ *
+ * `status` is optional: omitting it updates the schedule on an already
+ * confirmed request (reschedule). Declining clears any schedule.
+ * `scheduledAt` must be an ISO datetime inside the event window.
  */
 export async function PATCH(request: Request, { params }: RouteParams) {
   const gate = await requireUser(request, ["ORGANIZER", "ADMIN"]);
@@ -29,18 +46,44 @@ export async function PATCH(request: Request, { params }: RouteParams) {
   try {
     const { id } = await params;
     const body = (await request.json().catch(() => ({}))) as Record<string, unknown>;
-    const status = typeof body.status === "string" ? body.status.toUpperCase() : "";
+    const rawStatus = typeof body.status === "string" ? body.status.toUpperCase() : "";
+    const status = rawStatus || null;
 
-    if (!(DECISIONS as readonly string[]).includes(status)) {
+    if (status && !(DECISIONS as readonly string[]).includes(status)) {
       return NextResponse.json(
         { success: false, error: "VALIDATION_ERROR: status must be CONFIRMED or DECLINED." },
         { status: 400 }
       );
     }
 
+    const location =
+      typeof body.location === "string" ? body.location.trim().slice(0, MAX_LOCATION) : null;
+
+    let scheduledAt: Date | null | undefined;
+    if (body.scheduledAt !== undefined) {
+      if (typeof body.scheduledAt !== "string" || !body.scheduledAt) {
+        return NextResponse.json(
+          { success: false, error: "VALIDATION_ERROR: scheduledAt must be an ISO datetime." },
+          { status: 400 }
+        );
+      }
+      const parsed = new Date(body.scheduledAt);
+      if (Number.isNaN(parsed.getTime())) {
+        return NextResponse.json(
+          { success: false, error: "VALIDATION_ERROR: scheduledAt must be an ISO datetime." },
+          { status: 400 }
+        );
+      }
+      scheduledAt = parsed;
+    }
+
     const row = await db.meetingRequest.findUnique({
       where: { id },
-      include: { event: { select: { id: true, title: true, organizerId: true } } },
+      include: {
+        event: {
+          select: { id: true, title: true, organizerId: true, startDate: true, endDate: true },
+        },
+      },
     });
     if (!row) {
       return NextResponse.json(
@@ -55,32 +98,93 @@ export async function PATCH(request: Request, { params }: RouteParams) {
       );
     }
 
+    const nextStatus = status ?? row.status;
+    if (nextStatus === "PENDING" && (scheduledAt || location)) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "VALIDATION_ERROR: a schedule needs a CONFIRMED request. Confirm it in the same call.",
+        },
+        { status: 400 }
+      );
+    }
+    if (scheduledAt && (scheduledAt < row.event.startDate || scheduledAt > row.event.endDate)) {
+      return NextResponse.json(
+        { success: false, error: "VALIDATION_ERROR: scheduledAt must fall inside the event dates." },
+        { status: 400 }
+      );
+    }
+
+    const data: Record<string, unknown> = {};
+    if (status) data.status = status;
+    if (nextStatus === "DECLINED") {
+      data.scheduledAt = null;
+      data.location = "";
+    } else {
+      if (scheduledAt !== undefined) data.scheduledAt = scheduledAt;
+      if (location !== null) data.location = location;
+    }
+    if (Object.keys(data).length === 0) {
+      return NextResponse.json(
+        { success: false, error: "VALIDATION_ERROR: nothing to update." },
+        { status: 400 }
+      );
+    }
+
     const updated = await db.meetingRequest.update({
       where: { id },
-      data: { status },
+      data,
     });
 
     await audit(request, {
-      action: `meeting.${status.toLowerCase()}`,
+      action: status ? `meeting.${status.toLowerCase()}` : "meeting.reschedule",
       entity: "MeetingRequest",
       entityId: id,
-      metadata: { eventId: row.eventId, type: row.type },
+      metadata: {
+        eventId: row.eventId,
+        type: row.type,
+        scheduledAt: updated.scheduledAt?.toISOString() ?? null,
+        location: updated.location || null,
+      },
     });
 
-    try {
-      const mail = renderMeetingRequestDecision({
-        type: row.type as MeetingRequestType,
-        eventTitle: row.event.title,
-        requesterName: row.requesterName,
-        target: row.target,
-        slot: row.slot,
-        message: row.message,
-        reference: row.id,
-        status: status as Decision,
-      });
-      await sendEmail({ to: row.requesterEmail, ...mail });
-    } catch (mailError) {
-      reportError("meetings-decision-email", mailError, { requestId: id });
+    if (status) {
+      try {
+        const mail = renderMeetingRequestDecision({
+          type: row.type as MeetingRequestType,
+          eventTitle: row.event.title,
+          requesterName: row.requesterName,
+          target: row.target,
+          slot: row.slot,
+          message: row.message,
+          reference: row.id,
+          status: status as Decision,
+          scheduledAt: updated.scheduledAt ? formatSchedule(updated.scheduledAt) : undefined,
+          location: updated.location || undefined,
+        });
+        await sendEmail({ to: row.requesterEmail, ...mail });
+      } catch (mailError) {
+        reportError("meetings-decision-email", mailError, { requestId: id });
+      }
+    } else if (updated.scheduledAt) {
+      // Reschedule without a status change still notifies the requester:
+      // a moved meeting they never hear about is a missed meeting.
+      try {
+        const mail = renderMeetingRequestRescheduled({
+          type: row.type as MeetingRequestType,
+          eventTitle: row.event.title,
+          requesterName: row.requesterName,
+          target: row.target,
+          slot: row.slot,
+          message: row.message,
+          reference: row.id,
+          scheduledAt: formatSchedule(updated.scheduledAt),
+          location: updated.location || "",
+        });
+        await sendEmail({ to: row.requesterEmail, ...mail });
+      } catch (mailError) {
+        reportError("meetings-decision-email", mailError, { requestId: id });
+      }
     }
 
     return NextResponse.json({ success: true, request: updated });
