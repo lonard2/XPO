@@ -17,6 +17,7 @@ describe("startup environment validation", () => {
         ALERT_WEBHOOK_URL: "https://hooks.example.com/x",
         NEXT_PUBLIC_APP_URL: "https://staging.example.com",
         CRON_SECRET: "cron_test_secret",
+        RESEND_WEBHOOK_SECRET: "whsec_test",
       },
       "production"
     );

@@ -22,6 +22,7 @@ NEXT_PUBLIC_APP_URL="https://staging.example.com"
 # Staging may use the log email provider; production must not.
 EMAIL_PROVIDER="resend"
 RESEND_API_KEY="re_..."
+RESEND_WEBHOOK_SECRET="whsec_..." # bounce/complaint ingestion; see operations/email.md
 ALERT_WEBHOOK_URL="https://hooks.slack.com/services/..."
 ```
 

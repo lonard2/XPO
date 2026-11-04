@@ -1,8 +1,18 @@
+import { db } from "@/lib/db";
+import { reportWarn } from "@/lib/observability/logger";
+
 export interface EmailMessage {
   to: string;
   subject: string;
   text: string;
   html?: string;
+  /**
+   * "otp" codes always send: suppressing them locks people out. Everything
+   * else defaults to "transactional" and is skipped for suppressed
+   * addresses. All mail in this codebase is one of the two; there is no
+   * marketing mail and therefore no unsubscribe path.
+   */
+  category?: "otp" | "transactional";
 }
 
 export interface EmailTransport {
@@ -99,15 +109,36 @@ export function activeEmailTransport(): EmailTransport {
   return selectTransport();
 }
 
+function reportSkipped(to: string, reason: string, subject: string): void {
+  reportWarn("email-suppressed", `skipped ${subject} to suppressed address`, {
+    to,
+    reason,
+  });
+}
+
 /**
  * Send one message. In production an unconfigured transport is an error rather
  * than a silent no-op, because the alternative is a user waiting for a code
  * that was never sent.
+ *
+ * Suppressed addresses (hard bounce or spam complaint) skip non-OTP mail.
+ * The skip is deliberate and logged, never silent: reputation damage from
+ * mailing complainers is worse than a missed reminder.
  */
 export async function sendEmail(message: EmailMessage): Promise<void> {
   const transport = selectTransport();
   if (!transport.delivers && process.env.NODE_ENV === "production") {
     throw new Error("No email provider is configured (set RESEND_API_KEY or SMTP_URL).");
+  }
+  if (message.category !== "otp") {
+    const suppressed = await db.emailSuppression.findUnique({
+      where: { email: message.to.toLowerCase().trim() },
+      select: { reason: true },
+    }).catch(() => null);
+    if (suppressed) {
+      reportSkipped(message.to, suppressed.reason, message.subject);
+      return;
+    }
   }
   await transport.send(message);
 }

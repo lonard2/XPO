@@ -186,6 +186,19 @@ model IdempotencyKey {
   @@index([expiresAt])
 }
 
+/**
+ * Email suppression list. A hard bounce or spam complaint for an address
+ * stops all non-OTP mail to it: continuing to mail complainers burns the
+ * sender reputation, and mailing dead addresses is pointless. OTP codes
+ * always send — suppressing them would lock people out of their accounts.
+ */
+model EmailSuppression {
+  email     String   @id // lowercased recipient
+  reason    String   // HARDBOUNCE | COMPLAINT
+  source    String   @default("")
+  createdAt DateTime @default(now())
+}
+
 model AgendaItem {
   id          String   @id @default(cuid())
   eventId     String

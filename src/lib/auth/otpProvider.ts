@@ -51,5 +51,6 @@ export async function deliverOtp(email: string, code: string, purpose: string): 
   }
 
   const { subject, text, html } = renderOtpEmail({ code, purpose });
-  await sendEmail({ to: email, subject, text, html });
+  // OTP bypasses suppression: a suppressed code is a locked-out user.
+  await sendEmail({ to: email, subject, text, html, category: "otp" });
 }

@@ -66,6 +66,11 @@ export function validateEnv(
         "CRON_SECRET is not set: the reminder endpoint will reject every scheduler call."
       );
     }
+    if (!env.RESEND_WEBHOOK_SECRET) {
+      warnings.push(
+        "RESEND_WEBHOOK_SECRET is not set: bounce webhooks are refused, so dead addresses never suppress."
+      );
+    }
   }
 
   return { ok: errors.length === 0, errors, warnings };
