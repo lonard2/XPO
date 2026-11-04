@@ -545,7 +545,7 @@ export function BannerCarousel({
                     "relative flex items-center gap-2.5 min-w-52 max-w-52 rounded-xl border p-2 text-left snap-start cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
                     active
                       ? "border-primary/60 bg-card"
-                      : "border-border/60 bg-card/60 hover:bg-card"
+                      : "border-white/15 bg-slate-950 hover:bg-slate-900"
                   )}
                 >
                   {slide.heroImageUrl ? (
@@ -563,10 +563,20 @@ export function BannerCarousel({
                     />
                   )}
                   <span className="min-w-0 flex-1">
-                    <span className="block truncate text-xs font-semibold text-foreground">
+                    <span
+                      className={cn(
+                        "block truncate text-xs font-semibold",
+                        active ? "text-foreground" : "text-white"
+                      )}
+                    >
                       {slide.title}
                     </span>
-                    <span className="block truncate text-[11px] text-muted-foreground">
+                    <span
+                      className={cn(
+                        "block truncate text-[11px]",
+                        active ? "text-muted-foreground" : "text-slate-400"
+                      )}
+                    >
                       {formatDateRange(slide.startDate, slide.endDate, locale, getTimeZoneForRegion((slide.regionCode || 'ID').toLowerCase()))}
                     </span>
                   </span>
