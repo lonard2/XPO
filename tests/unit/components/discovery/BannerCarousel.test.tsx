@@ -46,7 +46,7 @@ describe('Discovery Component: BannerCarousel', () => {
   it('T1.1: renders first slide with title, tagline, and countdown timer for upcoming event', () => {
     render(<BannerCarousel slides={mockSlides} locale="en" />);
 
-    expect(screen.getByText('Manufacturing Indonesia Expo 2026')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Manufacturing Indonesia Expo 2026' })).toBeInTheDocument();
     expect(screen.getByText('Leading automation and heavy machinery trade show')).toBeInTheDocument();
     expect(screen.getByText(/Starts in:/i)).toBeInTheDocument();
   });
@@ -57,7 +57,7 @@ describe('Discovery Component: BannerCarousel', () => {
     const nextBtn = screen.getByLabelText('Next slide');
     fireEvent.click(nextBtn);
 
-    expect(screen.getByText('Asia AI & Cloud Developer Summit 2026')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Asia AI & Cloud Developer Summit 2026' })).toBeInTheDocument();
   });
 
   it('T1.3: navigates to previous slide on clicking prev button with wrap-around', () => {
@@ -66,17 +66,17 @@ describe('Discovery Component: BannerCarousel', () => {
     const prevBtn = screen.getByLabelText('Previous slide');
     fireEvent.click(prevBtn);
 
-    expect(screen.getByText('Asia AI & Cloud Developer Summit 2026')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Asia AI & Cloud Developer Summit 2026' })).toBeInTheDocument();
   });
 
   it('T1.4: responds to keyboard ArrowRight and ArrowLeft key navigation', () => {
     render(<BannerCarousel slides={mockSlides} locale="en" />);
 
     fireEvent.keyDown(window, { key: 'ArrowRight' });
-    expect(screen.getByText('Asia AI & Cloud Developer Summit 2026')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Asia AI & Cloud Developer Summit 2026' })).toBeInTheDocument();
 
     fireEvent.keyDown(window, { key: 'ArrowLeft' });
-    expect(screen.getByText('Manufacturing Indonesia Expo 2026')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Manufacturing Indonesia Expo 2026' })).toBeInTheDocument();
   });
 
   it('T1.5: supports touch swipe gestures for mobile navigation', () => {
@@ -88,7 +88,7 @@ describe('Discovery Component: BannerCarousel', () => {
     fireEvent.touchMove(carousel, { targetTouches: [{ clientX: 100 }] });
     fireEvent.touchEnd(carousel);
 
-    expect(screen.getByText('Asia AI & Cloud Developer Summit 2026')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Asia AI & Cloud Developer Summit 2026' })).toBeInTheDocument();
   });
 
   it('T1.6: accurately renders past (lapsed) events with concluded badge and archive CTA', () => {
@@ -108,7 +108,7 @@ describe('Discovery Component: BannerCarousel', () => {
 
     render(<BannerCarousel slides={[pastSlide]} locale="en" />);
 
-    expect(screen.getByText('Pekan Raya Jakarta 2025 (Concluded)')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Pekan Raya Jakarta 2025 (Concluded)' })).toBeInTheDocument();
     expect(screen.getByText('Event Concluded')).toBeInTheDocument();
     expect(screen.getByText('This event has concluded. Pass registration is closed.')).toBeInTheDocument();
     expect(screen.getByText('View Event Details')).toBeInTheDocument();
@@ -134,7 +134,7 @@ describe('Discovery Component: BannerCarousel', () => {
 
     render(<BannerCarousel slides={[liveSlide]} locale="en" />);
 
-    expect(screen.getByText('Tokyo Robotics Live Championship 2026')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Tokyo Robotics Live Championship 2026' })).toBeInTheDocument();
     expect(screen.getByText('Happening Now')).toBeInTheDocument();
     expect(screen.getByText('Event is Happening Now - Doors Open')).toBeInTheDocument();
     expect(screen.getByText('Get Pass & Enter Doors')).toBeInTheDocument();
@@ -150,20 +150,21 @@ describe('Discovery Component: BannerCarousel', () => {
     const carousel = container.firstChild as HTMLElement;
 
     fireEvent.mouseEnter(carousel);
-    expect(screen.getByText('Manufacturing Indonesia Expo 2026')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Manufacturing Indonesia Expo 2026' })).toBeInTheDocument();
 
     fireEvent.mouseLeave(carousel);
-    expect(screen.getByText('Manufacturing Indonesia Expo 2026')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Manufacturing Indonesia Expo 2026' })).toBeInTheDocument();
   });
 
   it('T3.1: crossfades with at most two layers, outgoing hidden from AT', () => {
     render(<BannerCarousel slides={mockSlides} locale="en" />);
     fireEvent.click(screen.getByLabelText('Next slide'));
     // Hidden elements are excluded from role queries by default; ask for
-    // them explicitly. The outgoing layer must be among them.
-    const groups = screen.getAllByRole('group', { hidden: true });
-    expect(groups.length).toBeLessThanOrEqual(2);
-    const hidden = groups.filter((g) => g.getAttribute('aria-hidden') === 'true');
+    // them explicitly. Slide layers carry aria-roledescription="slide",
+    // which the up-next strip does not share.
+    const layers = document.querySelectorAll('[aria-roledescription="slide"]');
+    expect(layers.length).toBeLessThanOrEqual(2);
+    const hidden = Array.from(layers).filter((g) => g.getAttribute('aria-hidden') === 'true');
     expect(hidden.length).toBe(1);
   });
 
@@ -172,6 +173,28 @@ describe('Discovery Component: BannerCarousel', () => {
     fireEvent.click(screen.getByLabelText('Next slide'));
     fireEvent.click(screen.getByLabelText('Next slide'));
     fireEvent.click(screen.getByLabelText('Previous slide'));
-    expect(screen.getAllByRole('group').length).toBeLessThanOrEqual(2);
+    expect(document.querySelectorAll('[aria-roledescription="slide"]').length).toBeLessThanOrEqual(2);
+  });
+
+  it('T3.2: renders an up-next strip with one button per slide and current marked', () => {
+    render(<BannerCarousel slides={mockSlides} locale="en" />);
+    const strip = document.querySelector('.hero-strip');
+    expect(strip).not.toBeNull();
+    const buttons = strip!.querySelectorAll('button');
+    expect(buttons.length).toBe(mockSlides.length);
+    expect(buttons[0]).toHaveAttribute('aria-current', 'true');
+  });
+
+  it('T3.3: strip uses roving tabindex with a single tab stop', () => {
+    render(<BannerCarousel slides={mockSlides} locale="en" />);
+    const buttons = document.querySelector('.hero-strip')!.querySelectorAll('button');
+    const tabbables = Array.from(buttons).filter((b) => (b as HTMLElement).tabIndex === 0);
+    expect(tabbables.length).toBe(1);
+  });
+
+  it('T3.3b: a single slide renders no strip and no progress fill', () => {
+    render(<BannerCarousel slides={[mockSlides[0]]} locale="en" />);
+    expect(document.querySelector('.hero-strip')).toBeNull();
+    expect(document.querySelector('.hero-progress-fill')).toBeNull();
   });
 });

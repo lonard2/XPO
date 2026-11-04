@@ -55,6 +55,7 @@ export function BannerCarousel({
   const [touchEndY, setTouchEndY] = React.useState<number | null>(null);
   // Outgoing slide index for the crossfade. Null means a single layer.
   const [prevIndex, setPrevIndex] = React.useState<number | null>(null);
+  const stripRef = React.useRef<HTMLDivElement | null>(null);
 
   const totalSlides = slides?.length || 0;
   const isEffectivePaused = isManuallyPaused || isHovered || isFocused;
@@ -164,6 +165,15 @@ export function BannerCarousel({
 
   const clearPrevIndex = React.useCallback(() => setPrevIndex(null), []);
 
+  // Roving focus follows selection when the visitor is tabbing through the
+  // strip: arrows move both the slide and the single tab stop.
+  React.useEffect(() => {
+    const strip = stripRef.current;
+    if (!strip || !strip.contains(document.activeElement)) return;
+    const active = strip.querySelector<HTMLElement>('[data-active="true"]');
+    active?.focus();
+  }, [currentIndex]);
+
   // Fallback in case onTransitionEnd never fires (e.g. instant cut under
   // reduced motion): the outgoing layer always unmounts promptly.
   React.useEffect(() => {
@@ -223,9 +233,12 @@ export function BannerCarousel({
         onTransitionEnd={hidden ? undefined : clearPrevIndex}
         className={cn(
           "relative min-h-[420px] sm:min-h-[480px] lg:min-h-[520px] flex flex-col justify-end p-5 pt-20 pb-16 sm:p-8 sm:pb-20 lg:p-12 overflow-hidden",
+          "lg:grid lg:grid-cols-[1.55fr_1fr] lg:justify-stretch lg:gap-0 lg:p-0",
           hidden && "absolute inset-0 pointer-events-none"
         )}
       >
+        {/* Image column: full-bleed backdrop on mobile, left panel on desktop */}
+        <div className="absolute inset-0 lg:relative lg:min-h-[520px]">
         {/* Slide Image Layer */}
         {slide.heroImageUrl ? (
           <img
@@ -250,9 +263,13 @@ export function BannerCarousel({
 
         {/* High-Contrast Multi-Layer Scrim Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/80 via-55% to-black/35 lg:bg-gradient-to-r lg:from-black/95 lg:via-black/80 lg:via-50% lg:to-black/25" />
+        </div>
 
-        {/* Foreground Content Card */}
-        <div className="relative z-10 max-w-2xl space-y-2.5 sm:space-y-4">
+        {/* Story column: overlay content on mobile, dark panel on desktop */}
+        <div
+          className="hero-story relative z-10 max-w-2xl space-y-2.5 sm:space-y-4 lg:max-w-none lg:bg-slate-950 lg:border-l-4 lg:p-8 lg:space-y-3"
+          style={{ borderColor: archetypeTokens.primary }}
+        >
           {/* Top Category, Temporal Status & Region Badges */}
           <div className="flex flex-wrap items-center gap-2">
             <Badge
@@ -465,8 +482,9 @@ export function BannerCarousel({
           </button>
         </div>
 
-        {/* Slide Indicators with Backdrop Pill Scrim & 44px Touch Area Hitboxes */}
-        <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 flex items-center gap-1 z-20 bg-black/40 backdrop-blur-md px-2 py-1 rounded-full border border-white/10 shadow-sm">
+        {/* Slide Indicators with Backdrop Pill Scrim & 44px Touch Area Hitboxes.
+            Dots serve mobile; desktop uses the up-next strip below. */}
+        <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 lg:hidden flex items-center gap-1 z-20 bg-black/40 backdrop-blur-md px-2 py-1 rounded-full border border-white/10 shadow-sm">
           {slides.map((_, idx) => (
             <button
               key={idx}
@@ -487,6 +505,67 @@ export function BannerCarousel({
             </button>
           ))}
         </div>
+
+        {/* Up-next strip: desktop indicators with thumbnails. Hidden for a
+            single slide; mobile keeps the dots above. */}
+        {totalSlides > 1 && (
+          <div
+            ref={stripRef}
+            className="hero-strip hidden lg:flex items-stretch gap-2 mt-3 overflow-x-auto pb-1 snap-x"
+            role="group"
+            aria-label={tHero('upNext') || 'Up next'}
+          >
+            {slides.map((slide, idx) => {
+              const tokens = getArchetypeTokens(slide.archetype);
+              const active = idx === currentIndex;
+              return (
+                <button
+                  key={slide.id}
+                  type="button"
+                  onClick={() => goToSlide(idx)}
+                  tabIndex={active ? 0 : -1}
+                  data-active={active ? "true" : undefined}
+                  aria-label={tHero('goToSlide', { index: idx + 1 })}
+                  aria-current={active ? 'true' : undefined}
+                  className={cn(
+                    "relative flex items-center gap-2.5 min-w-52 max-w-52 rounded-xl border p-2 text-left snap-start cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                    active
+                      ? "border-primary/60 bg-card"
+                      : "border-border/60 bg-card/60 hover:bg-card"
+                  )}
+                >
+                  {slide.heroImageUrl ? (
+                    <img
+                      src={slide.heroImageUrl}
+                      alt=""
+                      loading="lazy"
+                      className="h-11 w-16 shrink-0 rounded-md object-cover"
+                    />
+                  ) : (
+                    <span
+                      aria-hidden="true"
+                      className="h-11 w-16 shrink-0 rounded-md"
+                      style={{ background: `linear-gradient(135deg, ${tokens.primary}55, #030712)` }}
+                    />
+                  )}
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-xs font-semibold text-foreground">
+                      {slide.title}
+                    </span>
+                    <span className="block truncate text-[11px] text-muted-foreground">
+                      {formatDateRange(slide.startDate, slide.endDate, locale, getTimeZoneForRegion((slide.regionCode || 'ID').toLowerCase()))}
+                    </span>
+                  </span>
+                  {active && (
+                    <span className="absolute inset-x-2 -bottom-0 h-0.5 overflow-hidden rounded-full bg-muted">
+                      <span className="hero-progress-fill block h-full w-0 bg-primary" />
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        )}
     </div>
   );
 }
