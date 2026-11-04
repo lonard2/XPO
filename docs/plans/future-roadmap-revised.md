@@ -225,11 +225,16 @@ been the bar in this repository.
 
 ### Track M: Matchmaking (rules before AI)
 
-- [ ] **M1. Profiles from interests.** Persist `interestsJson` and settings
+- [x] **M1. Profiles from interests.** Persist `interestsJson` and settings
   through `PATCH /api/profile` and make them readable by matching. This also
   removes the false "suggestions follow these interests" copy. M.
   *Done when:* interests round-trip to the database and a rule-based
   suggestion reads them.
+  Shipped 2026-11-04 as `3a0794b`. GET/PATCH `/api/profile` plus GET
+  `/api/profile/suggestions` with an auditable 2/1 scoring rule; the
+  settings form syncs on save with local-only fallback and renders the top
+  suggestions. Verified live: 401 anonymous, 200 with unknown ids dropped,
+  200 suggestions with a real scored event.
 - [ ] **M2. Request lifecycle.** Accept, decline and schedule on
   `MeetingRequest`, on shared identity (booking, booth, profile). Re-scoped
   from D2. M after M1 and X1.
