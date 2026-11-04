@@ -119,11 +119,13 @@ Builder calls (mine, check while reading):
 7. Fallback examples are hardcoded default-language strings, resolved
    through the same helper so non-English editions fall back identically.
 
-Still theirs (changes what gets built):
+Still theirs (changes what gets built) — resolved by owner 2026-11-04:
 
-- T1. What language is the default blurb written in — English everywhere
-  with fallback-by-design, or matched to each event's region? This sets
-  the admin editor guidance and what `id`/`ja` visitors read most often.
-- T2. Which rows can be blurb-edited — platform-curated events only, or
-  organizer-owned rows too — and what does the editor do in preview
-  (`isLive=false`) mode?
+- T1. Default blurb is English everywhere, fallback-by-design. Admin
+  editor labels the default textarea accordingly.
+- T2. All rows carry an editorial blurb area, but publication is gated by
+  a new `editorialApproved Boolean @default(false)`. Schema, PATCH body,
+  and admin editor gain the flag (approve/unapprove beside the textareas);
+  the carousel mapping renders a blurb only when approved. Preview
+  (`isLive=false`) mode shows the editor disabled with an explanatory
+  note. New guard: an unapproved blurb never renders.
