@@ -31,6 +31,10 @@ describe("Quality Gate: Event-detail expressive wiring", () => {
     expect(h1).not.toMatch(/stagger|animate|hero-/);
   });
 
+  it("glows the archetype hero frame with the event accent", () => {
+    expect(lineWith(shell, "border-[var(--archetype-border)]")).toContain("ambient-glow");
+  });
+
   it("cascades the shared program grid with press physics on cards", () => {
     expect(lineWith(programs, "grid grid-cols-1 md:grid-cols-3")).toContain("stagger-children");
     expect(lineWith(programs, "<Card key={idx}")).toContain("card-interactive-3d");

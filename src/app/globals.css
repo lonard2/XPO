@@ -237,6 +237,9 @@
 
   .motion-expressive .ambient-glow {
     position: relative;
+    /* Stacking context so the ::before glow (z-index -1) paints above the
+       host background instead of escaping behind the whole element. */
+    isolation: isolate;
   }
   .motion-expressive .ambient-glow::before {
     content: "";

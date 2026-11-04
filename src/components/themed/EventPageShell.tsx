@@ -343,7 +343,7 @@ export function EventPageShell({
       </div>
 
       {/* 2. Archetype Hero Banner */}
-      <header className="relative overflow-hidden border-b border-[var(--archetype-border)] bg-[var(--archetype-bg)] text-white">
+      <header className="relative overflow-hidden border-b border-[var(--archetype-border)] bg-[var(--archetype-bg)] text-white ambient-glow">
         {/* Dynamic Background Image & Ambient Gradients */}
         <div className="absolute inset-0 z-0">
           {heroImageUrl && !heroFailed ? (

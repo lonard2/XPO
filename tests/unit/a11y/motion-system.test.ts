@@ -29,4 +29,9 @@ describe("Quality Gate: Motion-system composability", () => {
     const keyframes = css.match(/@keyframes hero-crossfade \{[^}]*\}[^}]*\}/)?.[0] ?? "";
     expect(keyframes).not.toMatch(/transform/);
   });
+
+  it("ambient glow paints above host backgrounds (stacking context, not buried)", () => {
+    const rule = css.match(/\.ambient-glow \{[^}]*\}/)?.[0] ?? "";
+    expect(rule).toMatch(/isolation:\s*isolate/);
+  });
 });
