@@ -105,6 +105,16 @@ Restore to production only after the scratch restore opens cleanly and the
 row counts match. Before any restore, take a fresh backup of the current
 state: restores are the one operation that cannot itself be rolled back.
 
+> Drill record (2026-11-04, dev database): `pg_dump -Fc` completed cleanly
+> (133 KB). Restored into a scratch database with exit 0; row counts
+> matched exactly (Event 10, Venue 12, User 38, Booking 1,
+> MeetingRequest 0); the 15-row migration history came over intact; a
+> three-table join across events, tiers and bookings read correctly.
+> Scratch database dropped afterwards. Note for operators: `pg_restore`
+> needs the dump file inside the container (`docker cp` it in) and the
+> target database created beforehand; the one-liner in this section
+> assumes both.
+
 ## Scheduled reminders
 
 `GET /api/cron/reminders` sends the T-24h and T-2h reminder emails. It is
@@ -131,5 +141,5 @@ warning in production.
 - [ ] `ALERT_WEBHOOK_URL` fires (trigger a test alert, confirm the channel)
 - [ ] External uptime monitor points at `/api/health` every 60 seconds
 - [ ] `CRON_SECRET` is set and a scheduler calls `/api/cron/reminders` every 15 minutes
-- [ ] Nightly backup cron exists and one restore has been rehearsed
+- [ ] Nightly backup cron exists (restore rehearsed 2026-11-04, see above)
 - [ ] Images are tagged per release

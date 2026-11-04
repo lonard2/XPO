@@ -300,9 +300,13 @@ been the bar in this repository.
   scrubbed-versus-kept policy in operations/privacy.md, retention sweep
   with dry-run default. Verified live: export shape, retention 401,
   settings panel render.
-- [ ] **O3. Restore drill.** Execute the backup and restore procedure in
+- [x] **O3. Restore drill.** Execute the backup and restore procedure in
   `docs/operations/deploy.md` against a scratch database and record the
   result. S.
+  Shipped 2026-11-04. `pg_dump -Fc` plus `pg_restore` into a scratch
+  database, counts matched exactly, migration history intact, relational
+  reads verified, scratch dropped. Drill record lives in the deploy doc,
+  including the `docker cp` plus pre-create steps the one-liner assumed.
 - [ ] **O4. Contrast debt.** Clear the deferred serious-level kicker contrast
   findings and re-enable them in the axe gate. S.
 
