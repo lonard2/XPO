@@ -106,3 +106,6 @@ temp/
 test-results/
 playwright-report/
 blob-report/
+
+# Agent execution workspaces (ledgers, briefs, scratch)
+.superpowers/
