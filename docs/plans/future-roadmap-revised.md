@@ -275,10 +275,14 @@ been the bar in this repository.
   readers for booths and vouchers; static test locks user paging to
   `parsePagination` (audit found no violators). Verified live: 201 with
   unknown fields, identical 400s.
-- [ ] **P3. Checkout idempotency.** `Idempotency-Key` so retries never
+- [x] **P3. Checkout idempotency.** `Idempotency-Key` so retries never
   double-book. S to M.
   *Done when:* replaying the same key returns the original booking, proven by
   test.
+  Shipped 2026-11-04 as `0abcd7e`. Ledger table with atomic commit, 24h
+  expiry, fingerprint mismatch 409, replay marker header, no repeat email,
+  drawer mints one key per open. Verified live: 201 then 200 replay with
+  identical booking, one seat, 409 on mismatch.
 - [ ] **P4. Public API and webhooks.** Versioned read API with keys, booking
   and check-in webhooks with retries. L, last for a reason.
 
