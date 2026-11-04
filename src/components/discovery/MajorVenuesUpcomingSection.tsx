@@ -109,7 +109,7 @@ export function MajorVenuesUpcomingSection({
 
       {/* Major Venues Responsive Grid */}
       {orderedVenues.length > 0 && (
-      <div className={venueGridClass(orderedVenues.length)}>
+      <div className={cn(venueGridClass(orderedVenues.length), 'stagger-children')}>
         {orderedVenues.map((venue) => {
           // Max 3 attendable events per venue
           const upcomingEvents = attendableEventsFor(venue).slice(0, 3);
@@ -123,7 +123,7 @@ export function MajorVenuesUpcomingSection({
               className="flex flex-col justify-between overflow-hidden border-border/80 bg-card hover:border-primary/60 transition-all duration-300 shadow-xs hover:shadow-md"
             >
               {/* Venue Header Banner */}
-              <div className="relative h-36 sm:h-44 w-full overflow-hidden bg-slate-950">
+              <div className="relative h-36 sm:h-44 w-full overflow-hidden bg-slate-950 sheen">
                 {/* Painted underneath always, so a dead image URL degrades to the gradient
                     instead of a broken image. Two seeded venues had a 404 photo. */}
                 <div

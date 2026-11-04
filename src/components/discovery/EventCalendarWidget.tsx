@@ -312,7 +312,10 @@ export function EventCalendarWidget({
             </Badge>
           </div>
 
-          <div className="space-y-2.5 max-h-[260px] overflow-y-auto pr-1">
+          <div
+            key={toISODateInTimezone(selectedDate, timezone)}
+            className="space-y-2.5 max-h-[260px] overflow-y-auto pr-1 stagger-children"
+          >
             {eventsOnSelectedDate.length > 0 ? (
               eventsOnSelectedDate.map((evt) => {
                 const tokens = getArchetypeTokens(evt.archetype);

@@ -176,7 +176,7 @@ export function EventCategoryPills({
     const tileContent = (
       <div
         className={cn(
-          'group relative flex flex-col justify-between p-3.5 sm:p-4 rounded-2xl border transition-all duration-200 text-left h-full min-h-[125px] sm:min-h-[135px] shadow-xs cursor-pointer',
+          'group relative flex flex-col justify-between p-3.5 sm:p-4 rounded-2xl border transition-all duration-200 text-left h-full min-h-[125px] sm:min-h-[135px] shadow-xs cursor-pointer card-interactive-3d',
           isActive
             ? 'border-primary ring-2 ring-primary/30 bg-primary/5 shadow-sm'
             : 'border-border/80 bg-card hover:border-primary/50 hover:bg-muted/30 hover:shadow-sm'
