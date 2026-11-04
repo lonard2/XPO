@@ -71,8 +71,93 @@ describe("Phase 6 Integration: Ticket Checkout & Verification API Routes", () =>
     expect(json.code).toBe("VALIDATION_ERROR");
   });
 
+  describe("Checkout Route: Idempotency-Key", () => {
+    const stamp = Date.now();
+    const checkoutWithKey = (email: string, key?: string, extraBody: Record<string, unknown> = {}) =>
+      checkoutRoute(
+        new Request("http://localhost:3000/api/tickets/checkout", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(key ? { "Idempotency-Key": key } : {}),
+          },
+          body: JSON.stringify({
+            eventId: testEvent.id,
+            tierId: testTier.id,
+            attendeeName: "Idempotency Probe",
+            attendeeEmail: email,
+            ...extraBody,
+          }),
+        })
+      );
+
+    it("replays the original booking instead of double-booking", async () => {
+      const key = `idem-replay-${stamp}`;
+      const email = `api-route-test-idem-${stamp}@xpo.com`;
+
+      const first = await checkoutWithKey(email, key);
+      expect(first.status).toBe(201);
+      const firstJson = await first.json();
+
+      const tierBefore = (await db.ticketTier.findUnique({ where: { id: testTier.id } }))!.soldCount;
+      const second = await checkoutWithKey(email, key);
+      expect(second.status).toBe(200);
+      expect(second.headers.get("Idempotent-Replayed")).toBe("true");
+      const secondJson = await second.json();
+      expect(secondJson.booking.id).toBe(firstJson.booking.id);
+      expect(secondJson.booking.qrCodeHash).toBe(firstJson.booking.qrCodeHash);
+
+      const tierAfter = (await db.ticketTier.findUnique({ where: { id: testTier.id } }))!.soldCount;
+      expect(tierAfter).toBe(tierBefore);
+    });
+
+    it("refuses a reused key with a different payload", async () => {
+      const key = `idem-conflict-${stamp}`;
+      const first = await checkoutWithKey(`api-route-test-idem-a-${stamp}@xpo.com`, key);
+      expect(first.status).toBe(201);
+
+      const second = await checkoutWithKey(`api-route-test-idem-b-${stamp}@xpo.com`, key);
+      expect(second.status).toBe(409);
+      const json = await second.json();
+      expect(json.code).toBe("CONFLICT");
+    });
+
+    it("books twice without a key, preserving legacy behavior", async () => {
+      const first = await checkoutWithKey(`api-route-test-nokey-a-${stamp}@xpo.com`);
+      const second = await checkoutWithKey(`api-route-test-nokey-b-${stamp}@xpo.com`);
+      expect(first.status).toBe(201);
+      expect(second.status).toBe(201);
+      expect((await second.json()).booking.id).not.toBe((await first.json()).booking.id);
+    });
+
+    it("rejects an oversized key", async () => {
+      const res = await checkoutWithKey(`api-route-test-bigkey-${stamp}@xpo.com`, "k".repeat(129));
+      expect(res.status).toBe(400);
+      expect((await res.json()).code).toBe("VALIDATION_ERROR");
+    });
+
+    it("treats an expired key as a fresh checkout", async () => {
+      const key = `idem-expired-${stamp}`;
+      const email = `api-route-test-expired-${stamp}@xpo.com`;
+      const first = await checkoutWithKey(email, key);
+      expect(first.status).toBe(201);
+      const firstId = (await first.json()).booking.id;
+
+      await db.idempotencyKey.update({
+        where: { key },
+        data: { expiresAt: new Date(Date.now() - 1000) },
+      });
+
+      const second = await checkoutWithKey(email, key);
+      expect(second.status).toBe(201);
+      expect(second.headers.get("Idempotent-Replayed")).toBeNull();
+      expect((await second.json()).booking.id).not.toBe(firstId);
+    });
+  });
+
   it("Checkout Route: successfully creates booking, generates HMAC pass, and updates soldCount (201)", async () => {
-    const initialSoldCount = testTier.soldCount;
+    // Read fresh: other tests in this file legitimately consume capacity.
+    const initialSoldCount = (await db.ticketTier.findUnique({ where: { id: testTier.id } }))!.soldCount;
 
     const req = new Request("http://localhost:3000/api/tickets/checkout", {
       method: "POST",

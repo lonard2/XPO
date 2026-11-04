@@ -80,6 +80,21 @@ export function TicketCheckoutDrawer({
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
   const [confirmedBooking, setConfirmedBooking] = React.useState<any | null>(null);
 
+  // One idempotency key per drawer open: double-clicks and network retries
+  // replay the same checkout instead of booking twice. A fresh open means a
+  // fresh intent, so the key rotates with it.
+  const [idempotencyKey, setIdempotencyKey] = React.useState("");
+  React.useEffect(() => {
+    if (isOpen && !idempotencyKey) {
+      const uuid =
+        typeof crypto !== "undefined" && "randomUUID" in crypto
+          ? crypto.randomUUID()
+          : `key-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      setIdempotencyKey(uuid);
+    }
+    if (!isOpen) setIdempotencyKey("");
+  }, [isOpen, idempotencyKey]);
+
   // One-click registration: prefill blank fields from the attendee profile
   // whenever the drawer opens or the profile finishes loading. Never
   // overwrites already-entered text.
@@ -144,10 +159,19 @@ export function TicketCheckoutDrawer({
     setIsLoading(true);
     setErrorMessage(null);
 
+    // The open-effect normally mints this; fall back to a fresh key rather
+    // than submitting without one.
+    const key =
+      idempotencyKey ||
+      (typeof crypto !== "undefined" && "randomUUID" in crypto
+        ? crypto.randomUUID()
+        : `key-${Date.now()}-${Math.random().toString(36).slice(2)}`);
+    if (!idempotencyKey) setIdempotencyKey(key);
+
     try {
       const response = await fetch("/api/tickets/checkout", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "Idempotency-Key": key },
         body: JSON.stringify({
           eventId: event.id,
           tierId: selectedTier.id,

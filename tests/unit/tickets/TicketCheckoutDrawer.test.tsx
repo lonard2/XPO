@@ -212,7 +212,7 @@ describe("Phase 6 Unit: TicketCheckoutDrawer Component", () => {
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalledWith("/api/tickets/checkout", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "Idempotency-Key": expect.any(String) },
         body: JSON.stringify({
           eventId: "evt-machinery-2026",
           tierId: "tier-std-01",

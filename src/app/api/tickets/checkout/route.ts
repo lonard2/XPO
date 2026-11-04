@@ -8,6 +8,10 @@ import { sendEmail } from "@/lib/email/transport";
 import { renderBookingConfirmation } from "@/lib/email/templates";
 import { formatDateRange, getTimeZoneForRegion } from "@/lib/i18n/formatters";
 import { apiError } from "@/lib/api/envelope";
+import { sha256hex } from "@/lib/auth/password";
+
+const IDEMPOTENCY_WINDOW_MS = 24 * 60 * 60 * 1000;
+const MAX_KEY_LENGTH = 128;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -37,6 +41,93 @@ const FIELD_ERRORS: Record<string, string> = {
 export async function POST(request: Request) {
   const limited = await rateLimitResponse("tickets-checkout", request, { limit: 60, windowMs: 60_000 });
   if (limited) return limited;
+
+  type StoredBooking = {
+    id: string;
+    status: string;
+    qrCodeHash: string;
+    attendeeName: string;
+    attendeeEmail: string;
+    createdAt: Date;
+    ticketTier: { id: string; name: string; price: number; currency: string };
+    event: {
+      id: string;
+      title: string;
+      slug: string;
+      startDate: Date;
+      endDate: Date;
+      venue: { name: string; city: string } | null;
+      venueHall: { name: string } | null;
+    };
+  };
+  const bookingIncludes = {
+    event: { include: { venue: true, venueHall: true, perks: true } },
+    ticketTier: true,
+  } as const;
+
+  const bookingPayload = (
+    booking: StoredBooking,
+    signature: string,
+    payloadString: string,
+    svgQr: string
+  ) => ({
+    success: true,
+    message: "Ticket pass reservation confirmed successfully",
+    booking: {
+      id: booking.id,
+      status: booking.status,
+      qrCodeHash: booking.qrCodeHash,
+      signature,
+      payloadString,
+      svgQr,
+      attendeeName: booking.attendeeName,
+      attendeeEmail: booking.attendeeEmail,
+      createdAt: booking.createdAt,
+      ticketTier: {
+        id: booking.ticketTier.id,
+        name: booking.ticketTier.name,
+        price: booking.ticketTier.price,
+        currency: booking.ticketTier.currency,
+      },
+      event: {
+        id: booking.event.id,
+        title: booking.event.title,
+        slug: booking.event.slug,
+        startDate: booking.event.startDate,
+        endDate: booking.event.endDate,
+        venue: {
+          name: booking.event.venue?.name,
+          city: booking.event.venue?.city,
+          hallName: booking.event.venueHall?.name,
+        },
+      },
+    },
+  });
+
+  type ReplayStored = {
+    fingerprint: string;
+    signature: string;
+    payloadString: string;
+    svgQr: string;
+    booking: StoredBooking;
+  };
+
+  let idempotencyKey: string | null = null;
+  let fingerprint = "";
+
+  const replay = (stored: ReplayStored) => {
+    if (stored.fingerprint !== fingerprint) {
+      return apiError(
+        "CONFLICT: this Idempotency-Key was already used for a different checkout.",
+        409
+      );
+    }
+    return NextResponse.json(
+      bookingPayload(stored.booking, stored.signature, stored.payloadString, stored.svgQr),
+      { status: 200, headers: { "Idempotent-Replayed": "true" } }
+    );
+  };
+
   try {
     const body = await request.json();
     const parsed = CheckoutSchema.safeParse(body);
@@ -54,6 +145,25 @@ export async function POST(request: Request) {
     // conditional stock claim below is what enforces real capacity.
     const qty = Math.max(1, parseInt(String(parsed.data.quantity ?? 1), 10) || 1);
     const normalizedEmail = attendeeEmail.toLowerCase().trim();
+
+    // Idempotency: a retried request with the same key returns the original
+    // pass instead of booking again. Absent key means legacy behavior.
+    const rawKey = request.headers.get("Idempotency-Key");
+    idempotencyKey = rawKey?.trim() || null;
+    if (idempotencyKey && idempotencyKey.length > MAX_KEY_LENGTH) {
+      return apiError("VALIDATION_ERROR: Idempotency-Key is too long.", 400);
+    }
+    fingerprint = sha256hex(`${eventId}|${tierId}|${normalizedEmail}|${qty}`);
+
+    if (idempotencyKey) {
+      // Best-effort expiry sweep keeps the table bounded (mirrors sessions).
+      await db.idempotencyKey.deleteMany({ where: { expiresAt: { lt: new Date() } } }).catch(() => {});
+      const existing = await db.idempotencyKey.findUnique({
+        where: { key: idempotencyKey },
+        include: { booking: { include: bookingIncludes } },
+      });
+      if (existing) return replay(existing as unknown as Parameters<typeof replay>[0]);
+    }
 
     // Guarded failure helper: thrown inside the transaction, mapped below.
     const fail = (status: number, error: string, extra?: Record<string, unknown>): never => {
@@ -131,6 +241,22 @@ export async function POST(request: Request) {
         const remaining = Math.max(0, (current?.capacity || 0) - (current?.soldCount || 0));
         fail(400, "CAPACITY_EXCEEDED: Ticket tier is sold out or requested quantity exceeds remaining capacity", { remaining });
       }
+      // The key row commits atomically with the booking: a concurrent retry
+      // either blocks on the unique index or fails here, and the rollback
+      // leaves no orphaned booking behind.
+      if (idempotencyKey) {
+        await tx.idempotencyKey.create({
+          data: {
+            key: idempotencyKey,
+            bookingId: created.id,
+            fingerprint,
+            signature,
+            payloadString,
+            svgQr,
+            expiresAt: new Date(Date.now() + IDEMPOTENCY_WINDOW_MS),
+          },
+        });
+      }
       return created;
     });
 
@@ -162,44 +288,29 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json(
-      {
-        success: true,
-        message: "Ticket pass reservation confirmed successfully",
-        booking: {
-          id: booking.id,
-          status: booking.status,
-          qrCodeHash: booking.qrCodeHash,
-          signature,
-          payloadString,
-          svgQr,
-          attendeeName: booking.attendeeName,
-          attendeeEmail: booking.attendeeEmail,
-          createdAt: booking.createdAt,
-          ticketTier: {
-            id: booking.ticketTier.id,
-            name: booking.ticketTier.name,
-            price: booking.ticketTier.price,
-            currency: booking.ticketTier.currency,
-          },
-          event: {
-            id: booking.event.id,
-            title: booking.event.title,
-            slug: booking.event.slug,
-            startDate: booking.event.startDate,
-            endDate: booking.event.endDate,
-            venue: {
-              name: booking.event.venue?.name,
-              city: booking.event.venue?.city,
-              hallName: booking.event.venueHall?.name,
-            },
-          },
-        },
-      },
+      bookingPayload(booking, signature, payloadString, svgQr),
       { status: 201 }
     );
   } catch (error) {
     reportError("tickets-checkout", error);
     const guarded = error as Error & { status?: number; extra?: Record<string, unknown> };
+    // Lost race on the idempotency key: the winner committed first, so the
+    // original booking is now readable. Same fingerprint replays it.
+    const prismaError = error as { code?: string; meta?: { target?: unknown } };
+    if (
+      idempotencyKey &&
+      prismaError.code === "P2002" &&
+      Array.isArray(prismaError.meta?.target) &&
+      prismaError.meta.target.includes("key")
+    ) {
+      const winner = await db.idempotencyKey.findUnique({
+        where: { key: idempotencyKey },
+        include: { booking: { include: bookingIncludes } },
+      }).catch(() => null);
+      if (winner) {
+        return replay(winner as unknown as Parameters<typeof replay>[0]);
+      }
+    }
     if (guarded.status) {
       return apiError(guarded.message, guarded.status, { ...((guarded.extra || {})) });
     }

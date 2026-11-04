@@ -164,6 +164,26 @@ model Booking {
   agendaBookmarks AgendaBookmark[]
   sessionCheckIns SessionCheckIn[]
   meetingRequests MeetingRequest[]
+  idempotencyKey IdempotencyKey?
+}
+
+/**
+ * Checkout idempotency ledger. One row per `Idempotency-Key`: a retried
+ * request returns the stored pass instead of booking again. Rows expire
+ * after 24 hours; a sweep on each checkout keeps the table bounded.
+ */
+model IdempotencyKey {
+  key          String   @id
+  bookingId    String   @unique
+  booking      Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  fingerprint  String
+  signature    String
+  payloadString String
+  svgQr        String
+  createdAt    DateTime @default(now())
+  expiresAt    DateTime
+
+  @@index([expiresAt])
 }
 
 model AgendaItem {
