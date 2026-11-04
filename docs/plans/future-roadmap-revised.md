@@ -307,8 +307,11 @@ been the bar in this repository.
   database, counts matched exactly, migration history intact, relational
   reads verified, scratch dropped. Drill record lives in the deploy doc,
   including the `docker cp` plus pre-create steps the one-liner assumed.
-- [ ] **O4. Contrast debt.** Clear the deferred serious-level kicker contrast
+- [x] **O4. Contrast debt.** Clear the deferred serious-level kicker contrast
   findings and re-enable them in the axe gate. S.
+  Shipped 2026-11-04 as `dc2e623`. Five serious nodes fixed (derived
+  archetype label tones per theme, full-strength footnote ink); gate now
+  fails on serious and above, zero on all three pages in both themes.
 
 ### Track F: Money (gated, not scheduled)
 
