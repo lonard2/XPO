@@ -267,9 +267,14 @@ been the bar in this repository.
   existing prefix with status fallback; message text unchanged, extras
   preserved, guards and the limiter included. Health keeps its status
   shape. Verified live across all four shapes.
-- [ ] **P2. Validation and pagination.** Zod on checkout, booths and venues;
+- [x] **P2. Validation and pagination.** Zod on checkout, booths and venues;
   shared pagination; one id-or-slug helper; one DELETE body precedence. S,
   ongoing.
+  Shipped 2026-11-04 as `18fc8b6`. Checkout POST on a Zod schema with
+  identical 400s; `idOrSlugWhere` across nine lookups; body-wins DELETE
+  readers for booths and vouchers; static test locks user paging to
+  `parsePagination` (audit found no violators). Verified live: 201 with
+  unknown fields, identical 400s.
 - [ ] **P3. Checkout idempotency.** `Idempotency-Key` so retries never
   double-book. S to M.
   *Done when:* replaying the same key returns the original booking, proven by
