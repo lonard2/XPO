@@ -1,8 +1,9 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { User, Building2, Briefcase, Mail, CheckCircle2, BookmarkCheck, Sparkles, ChevronDown } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useSettings } from "./SettingsProvider";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
@@ -17,6 +18,7 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
   let tSet: any = (k: string) => k;
   let tArch: any = (k: string) => k;
   let tOrg: any = (k: string) => k;
+  let locale = "en";
   try {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     tSet = useTranslations("settings");
@@ -24,6 +26,8 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
     tArch = useTranslations("archetypes");
     // eslint-disable-next-line react-hooks/rules-of-hooks
     tOrg = useTranslations("organizer");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    locale = useLocale();
   } catch {
     // Fallback
   }
@@ -32,6 +36,16 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
   const [isSaved, setIsSaved] = React.useState(false);
   const [errors, setErrors] = React.useState<{ fullName?: string; email?: string }>({});
   const [collapsedClusters, setCollapsedClusters] = React.useState<Record<string, boolean>>({});
+  // unknown until the first server read: anonymous visitors stay local-only.
+  const [syncState, setSyncState] = React.useState<"unknown" | "synced" | "local">("unknown");
+  const [syncError, setSyncError] = React.useState(false);
+  const [suggestions, setSuggestions] = React.useState<
+    Array<{
+      event: { title: string; slug: string; venueName: string | null; city: string | null };
+      score: number;
+      matchedInterests: string[];
+    }>
+  >([]);
 
   // Display title: localized dictionary first, current metadata second.
   const interestTitle = (id: MiceArchetype) => {
@@ -70,6 +84,57 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
     }
   }, [profile, isMounted]);
 
+  // Signed-in delegates load the stored profile once, so interests survive
+  // across devices. Anonymous visitors keep the local-only form.
+  React.useEffect(() => {
+    if (!isMounted) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/profile");
+        if (!res.ok) throw new Error("anonymous");
+        const data = (await res.json()) as {
+          profile?: {
+            fullName: string;
+            email: string;
+            organization: string;
+            jobTitle: string;
+            interests: string[];
+          };
+        };
+        if (!data.profile || cancelled) return;
+        const serverProfile = {
+          fullName: data.profile.fullName || "",
+          email: data.profile.email || "",
+          organization: data.profile.organization || "",
+          jobTitle: data.profile.jobTitle || "",
+          interests: Array.isArray(data.profile.interests) ? data.profile.interests : [],
+        };
+        setFormData(serverProfile);
+        setProfile(serverProfile);
+        setSyncState("synced");
+        await loadSuggestions();
+      } catch {
+        if (!cancelled) setSyncState("local");
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMounted]);
+
+  async function loadSuggestions() {
+    try {
+      const res = await fetch("/api/profile/suggestions");
+      if (!res.ok) throw new Error("no suggestions");
+      const data = (await res.json()) as { suggestions?: typeof suggestions };
+      setSuggestions(Array.isArray(data.suggestions) ? data.suggestions.slice(0, 3) : []);
+    } catch {
+      setSuggestions([]);
+    }
+  }
+
   const validate = (data: typeof formData) => {
     const next: { fullName?: string; email?: string } = {};
     if (!data.fullName.trim()) {
@@ -94,7 +159,7 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
     setIsSaved(false);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const nextErrors = validate(formData);
     setErrors(nextErrors);
@@ -102,14 +167,46 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
     setProfile(formData);
     setIsSaved(true);
     setTimeout(() => setIsSaved(false), 4000);
+    // Best-effort server sync: local save already succeeded, so a failed
+    // PATCH only changes where the data lives, never loses it.
+    try {
+      const res = await fetch("/api/profile", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: formData.fullName,
+          organization: formData.organization,
+          jobTitle: formData.jobTitle,
+          interests: formData.interests,
+        }),
+      });
+      if (!res.ok) throw new Error("sync failed");
+      setSyncState("synced");
+      setSyncError(false);
+      await loadSuggestions();
+    } catch {
+      setSyncState("local");
+      setSyncError(true);
+    }
   };
 
-  const handleClearProfile = () => {
+  const handleClearProfile = async () => {
     const cleared = { fullName: "", email: "", organization: "", jobTitle: "", interests: [] as string[] };
     setFormData(cleared);
     setProfile(cleared);
     setErrors({});
     setIsSaved(false);
+    setSuggestions([]);
+    // Stop server-side suggestions without wiping the stored identity.
+    try {
+      await fetch("/api/profile", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ interests: [] }),
+      });
+    } catch {
+      // Local state is already cleared.
+    }
   };
 
   return (
@@ -128,7 +225,9 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
           {tSet("profileSubtitle") || "Your profile information is used for one-click pass registration and personalized MICE event suggestions."}
         </p>
         <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">
-          {tSet("profileLocalOnly") || "Stored only in this browser. Never sent anywhere until you register for a pass."}
+          {syncState === "synced"
+            ? tSet("profileSyncedNote") || "Saved to your account and used for event suggestions."
+            : tSet("profileLocalOnly") || "Stored only in this browser. Never sent anywhere until you register for a pass."}
         </p>
       </div>
 
@@ -211,7 +310,7 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
           </div>
         </div>
         <p className="text-xs text-muted-foreground leading-relaxed">
-          {tSet("matrixHint") || "Pick the categories you attend most. Your discovery feed and suggestions follow these interests."}
+          {tSet("matrixHint") || "Pick the categories you attend most. Signed-in delegates see event suggestions from these interests below."}
         </p>
 
         <div className="space-y-4 pt-1">
@@ -275,6 +374,53 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
         </div>
       </div>
 
+      {/* Suggested events: rule-based matches on the stored interests. */}
+      {syncState === "synced" && (
+        <div className="space-y-2 pt-2 border-t border-border/60">
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-primary" />
+            <span className="text-sm font-semibold text-foreground">
+              {tSet("suggestionsTitle") || "Suggested for you"}
+            </span>
+          </div>
+          {suggestions.length === 0 ? (
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              {tSet("suggestionsEmpty") || "Save interests above and suggestions will appear here."}
+            </p>
+          ) : (
+            <ul className="space-y-2">
+              {suggestions.map((suggestion) => {
+                const matchNames = suggestion.matchedInterests
+                  .map((id) => interestTitle(id as MiceArchetype))
+                  .join(", ");
+                const matchLine = tSet("suggestionMatch", { names: matchNames });
+                return (
+                  <li
+                    key={suggestion.event.slug}
+                    className="rounded-lg border border-border/70 bg-background p-3"
+                  >
+                    <Link
+                      href={`/${locale}/events/${suggestion.event.slug}`}
+                      className="text-sm font-semibold text-foreground hover:text-primary hover:underline underline-offset-2"
+                    >
+                      {suggestion.event.title}
+                    </Link>
+                    <p className="text-[11px] text-muted-foreground mt-0.5">
+                      {[suggestion.event.venueName, suggestion.event.city]
+                        .filter(Boolean)
+                        .join(" · ")}
+                    </p>
+                    <p className="text-[11px] text-muted-foreground mt-0.5">
+                      {matchLine === "suggestionMatch" ? `Matches ${matchNames}` : matchLine}
+                    </p>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
+      )}
+
       {/* Form Submission & Feedback */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-border/60">
         <div className="flex items-center gap-2">
@@ -283,6 +429,11 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
               <CheckCircle2 className="h-4 w-4" />
               <span>{tSet("preferencesSaved") || "Profile preferences successfully saved!"}</span>
             </div>
+          )}
+          {syncError && (
+            <p role="status" className="text-[11px] text-muted-foreground">
+              {tSet("profileLocalOnly") || "Stored only in this browser. Never sent anywhere until you register for a pass."}
+            </p>
           )}
         </div>
 

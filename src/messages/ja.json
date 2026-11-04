@@ -959,7 +959,11 @@
     "fontScaleLarge": "大",
     "fontScaleExtraLarge": "特大",
     "fontScaleLabel": "フォントスケール調整",
-    "matrixHint": "よく参加するカテゴリーを選んでください。発見フィードがこれに連動します。",
+    "matrixHint": "よく参加するカテゴリーを選んでください。サインイン中の参加者には、これらの興味に基づくイベント提案が下に表示されます。",
+    "profileSyncedNote": "アカウントに保存され、イベント提案に使用されます。",
+    "suggestionsTitle": "あなたへのおすすめ",
+    "suggestionsEmpty": "上の興味を保存すると、提案がここに表示されます。",
+    "suggestionMatch": "{names}に一致",
     "localizationDesc": "言語と地域ハブを切り替えます。通貨、タイムゾーン、会場リストはハブに連動します。"
   },
   "organizer": {

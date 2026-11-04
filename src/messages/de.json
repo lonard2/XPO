@@ -959,7 +959,11 @@
     "fontScaleLarge": "Groß",
     "fontScaleExtraLarge": "Sehr groß",
     "fontScaleLabel": "Schriftgrößenanpassung",
-    "matrixHint": "Wählen Sie Ihre häufigsten Kategorien. Ihr Discovery-Feed folgt diesen Interessen.",
+    "matrixHint": "Wählen Sie Ihre häufigsten Kategorien. Angemeldete Delegierte sehen unten Veranstaltungsvorschläge dazu.",
+    "profileSyncedNote": "In Ihrem Konto gespeichert und für Veranstaltungsvorschläge verwendet.",
+    "suggestionsTitle": "Für Sie vorgeschlagen",
+    "suggestionsEmpty": "Speichern Sie oben Interessen, dann erscheinen hier Vorschläge.",
+    "suggestionMatch": "Passt zu {names}",
     "localizationDesc": "Wechseln Sie Sprache und regionalen Hub. Währung, Zeitzonen und Venue-Listen folgen Ihrem Hub."
   },
   "organizer": {

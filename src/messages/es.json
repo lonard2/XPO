@@ -959,7 +959,11 @@
     "fontScaleLarge": "Grande",
     "fontScaleExtraLarge": "Muy grande",
     "fontScaleLabel": "Ajuste de escala de fuente",
-    "matrixHint": "Elija las categorías a las que más asiste. Su feed seguirá estos intereses.",
+    "matrixHint": "Elija las categorías a las que más asiste. Los delegados registrados verán abajo sugerencias de eventos basadas en estos intereses.",
+    "profileSyncedNote": "Guardado en su cuenta y usado para sugerencias de eventos.",
+    "suggestionsTitle": "Sugerido para usted",
+    "suggestionsEmpty": "Guarde sus intereses arriba y las sugerencias aparecerán aquí.",
+    "suggestionMatch": "Coincide con {names}",
     "localizationDesc": "Cambie de idioma y hub regional. La moneda, las zonas horarias y las sedes siguen a su hub."
   },
   "organizer": {

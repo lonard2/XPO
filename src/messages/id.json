@@ -959,7 +959,11 @@
     "fontScaleLarge": "Besar",
     "fontScaleExtraLarge": "Sangat besar",
     "fontScaleLabel": "Penyesuaian skala font",
-    "matrixHint": "Pilih kategori yang paling sering Anda hadiri. Feed discovery mengikuti minat ini.",
+    "matrixHint": "Pilih kategori yang paling sering Anda hadiri. Delegasi yang masuk akan melihat saran acara dari minat ini di bawah.",
+    "profileSyncedNote": "Tersimpan di akun Anda dan digunakan untuk saran acara.",
+    "suggestionsTitle": "Disarankan untuk Anda",
+    "suggestionsEmpty": "Simpan minat di atas dan saran akan muncul di sini.",
+    "suggestionMatch": "Cocok dengan {names}",
     "localizationDesc": "Ganti bahasa dan hub regional. Mata uang, zona waktu, dan daftar venue mengikuti hub Anda."
   },
   "organizer": {
