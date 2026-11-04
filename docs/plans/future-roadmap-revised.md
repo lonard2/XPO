@@ -261,8 +261,12 @@ been the bar in this repository.
 
 ### Track P: Platform maturity (one item per cycle, alongside)
 
-- [ ] **P1. Error envelope.** One `{success, error, code}` shape with
+- [x] **P1. Error envelope.** One `{success, error, code}` shape with
   machine-readable codes; three dialects exist now. S to M.
+  Shipped 2026-11-04 as `c240993`. `apiError()` derives the code from the
+  existing prefix with status fallback; message text unchanged, extras
+  preserved, guards and the limiter included. Health keeps its status
+  shape. Verified live across all four shapes.
 - [ ] **P2. Validation and pagination.** Zod on checkout, booths and venues;
   shared pagination; one id-or-slug helper; one DELETE body precedence. S,
   ongoing.
