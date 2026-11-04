@@ -294,8 +294,12 @@ been the bar in this repository.
   Shipped 2026-11-04 as `82ad209`. Suppression list with OTP bypass,
   Svix-verified Resend ingestion, admin lift, DNS and webhook docs.
   Verified live: ingest and removal round-trip.
-- [ ] **O2. Retention and deletion.** A deletion and export path for attendee
+- [x] **O2. Retention and deletion.** A deletion and export path for attendee
   PII, and a retention window for audit rows. M.
+  Shipped 2026-11-04 as `e55b027`. Export download, confirmed erase with
+  scrubbed-versus-kept policy in operations/privacy.md, retention sweep
+  with dry-run default. Verified live: export shape, retention 401,
+  settings panel render.
 - [ ] **O3. Restore drill.** Execute the backup and restore procedure in
   `docs/operations/deploy.md` against a scratch database and record the
   result. S.
