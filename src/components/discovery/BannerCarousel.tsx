@@ -456,10 +456,12 @@ export function BannerCarousel({
       aria-label={tHero('carouselLabel')}
     >
 
-      {/* Outgoing first (beneath), incoming last (on top) so the entrance
-          fade is visible instead of being covered by the old slide. */}
+      {/* Slide stage: bounds the absolutely-positioned outgoing layer to
+          the slide area so its image cannot bleed behind the strip below. */}
+      <div className="hero-stage relative">
       {prevIndex !== null && prevIndex !== currentIndex && renderSlide(prevIndex, true)}
       {renderSlide(currentIndex, false)}
+      </div>
 
         {/* Carousel Navigation Controls with WCAG 44x44px Touch Targets */}
         <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center gap-1.5 z-20">

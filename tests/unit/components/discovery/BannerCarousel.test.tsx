@@ -256,4 +256,16 @@ describe('Discovery Component: BannerCarousel', () => {
     expect(layers[1]).not.toHaveAttribute('aria-hidden');
     expect(layers[1].classList.contains('hero-crossfade-in')).toBe(true);
   });
+
+  it('T3.8: slide layers are staged apart from the strip, so the outgoing image cannot bleed behind it', () => {
+    render(<BannerCarousel slides={mockSlides} locale="en" />);
+    fireEvent.click(screen.getByLabelText('Next slide'));
+    const stage = document.querySelector('.hero-stage');
+    expect(stage).not.toBeNull();
+    // Both layers live in the stage; the absolutely-positioned outgoing
+    // layer binds to the stage, not the whole region.
+    expect(stage!.querySelectorAll('[aria-roledescription="slide"]').length).toBe(2);
+    expect(stage!.querySelector('.hero-strip')).toBeNull();
+    expect(document.querySelector('.hero-strip')).not.toBeNull();
+  });
 });
