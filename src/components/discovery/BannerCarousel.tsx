@@ -234,6 +234,7 @@ export function BannerCarousel({
         className={cn(
           "relative min-h-[420px] sm:min-h-[480px] lg:min-h-[520px] flex flex-col justify-end p-5 pt-20 pb-16 sm:p-8 sm:pb-20 lg:p-12 overflow-hidden",
           "lg:grid lg:grid-cols-[1.55fr_1fr] lg:justify-stretch lg:gap-0 lg:p-0",
+          !hidden && "hero-crossfade-in",
           hidden && "absolute inset-0 pointer-events-none"
         )}
       >
@@ -249,6 +250,7 @@ export function BannerCarousel({
             loading={currentIndex === 0 ? 'eager' : 'lazy'}
             className={cn(
               "absolute inset-0 h-full w-full object-cover object-center transition-transform duration-1000 scale-[1.02]",
+              "hero-drift",
               temporalStatus.isPast && "grayscale-[35%] opacity-75"
             )}
           />
@@ -267,7 +269,8 @@ export function BannerCarousel({
 
         {/* Story column: overlay content on mobile, dark panel on desktop */}
         <div
-          className="hero-story relative z-10 max-w-2xl space-y-2.5 sm:space-y-4 lg:max-w-none lg:bg-slate-950 lg:border-l-4 lg:p-8 lg:space-y-3"
+          key={`story-${slide.id}`}
+          className="hero-story stagger-children relative z-10 max-w-2xl space-y-2.5 sm:space-y-4 lg:max-w-none lg:bg-slate-950 lg:border-l-4 lg:p-8 lg:space-y-3"
           style={{ borderColor: archetypeTokens.primary }}
         >
           {/* Top Category, Temporal Status & Region Badges */}
@@ -496,12 +499,23 @@ export function BannerCarousel({
             >
               <span
                 className={cn(
-                  'h-2 rounded-full transition-all duration-300 block',
+                  'h-2 rounded-full transition-all duration-300 block relative overflow-hidden',
                   idx === currentIndex
                     ? 'w-6 bg-primary shadow-md'
                     : 'w-2 bg-white/40 hover:bg-white/70'
                 )}
-              />
+              >
+                {idx === currentIndex && totalSlides > 1 && (
+                  <span
+                    key={`${currentIndex}-${timerKey}`}
+                    className="hero-progress-fill absolute inset-0 bg-white/70"
+                    style={{
+                      animationDuration: `${autoPlayInterval}ms`,
+                      animationPlayState: isEffectivePaused ? 'paused' : 'running',
+                    }}
+                  />
+                )}
+              </span>
             </button>
           ))}
         </div>
@@ -556,9 +570,16 @@ export function BannerCarousel({
                       {formatDateRange(slide.startDate, slide.endDate, locale, getTimeZoneForRegion((slide.regionCode || 'ID').toLowerCase()))}
                     </span>
                   </span>
-                  {active && (
+                  {active && totalSlides > 1 && (
                     <span className="absolute inset-x-2 -bottom-0 h-0.5 overflow-hidden rounded-full bg-muted">
-                      <span className="hero-progress-fill block h-full w-0 bg-primary" />
+                      <span
+                        key={`${slide.id}-${timerKey}`}
+                        className="hero-progress-fill block h-full w-0 bg-primary"
+                        style={{
+                          animationDuration: `${autoPlayInterval}ms`,
+                          animationPlayState: isEffectivePaused ? 'paused' : 'running',
+                        }}
+                      />
                     </span>
                   )}
                 </button>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import { BannerCarousel } from '@/components/discovery/BannerCarousel';
 import { type BannerSlide } from '@/types/discovery';
 
@@ -196,5 +196,36 @@ describe('Discovery Component: BannerCarousel', () => {
     render(<BannerCarousel slides={[mockSlides[0]]} locale="en" />);
     expect(document.querySelector('.hero-strip')).toBeNull();
     expect(document.querySelector('.hero-progress-fill')).toBeNull();
+  });
+
+  it('T3.4: progress fill duration matches the autoplay interval and pauses with it', () => {
+    render(<BannerCarousel slides={mockSlides} locale="en" autoPlayInterval={9000} />);
+    const fill = document.querySelector('.hero-progress-fill') as HTMLElement;
+    expect(fill.style.animationDuration).toBe('9000ms');
+    fireEvent.mouseEnter(screen.getByRole('region'));
+    expect(fill.style.animationPlayState).toBe('paused');
+  });
+
+  it('T3.5: story content uses the shared stagger entrance', () => {
+    render(<BannerCarousel slides={mockSlides} locale="en" />);
+    expect(document.querySelector('.hero-story.stagger-children')).not.toBeNull();
+  });
+
+  it('T3.5b: rotation runs on the timer and the fill restarts on jump', () => {
+    render(<BannerCarousel slides={mockSlides} locale="en" autoPlayInterval={7000} />);
+    act(() => { vi.advanceTimersByTime(7000); });
+    expect(screen.getByRole('heading', { name: 'Asia AI & Cloud Developer Summit 2026' })).toBeInTheDocument();
+    const fillBefore = document.querySelector('.hero-progress-fill');
+    fireEvent.click(screen.getByLabelText('Next slide'));
+    // Keyed by slide plus timer generation, so manual navigation mounts a
+    // fresh bar instead of resuming the old one mid-fill.
+    expect(document.querySelector('.hero-progress-fill')).not.toBe(fillBefore);
+  });
+
+  it('T3.5c: a slide without an image falls back to the gradient', () => {
+    const imageless = { ...mockSlides[0], heroImageUrl: undefined };
+    render(<BannerCarousel slides={[imageless]} locale="en" />);
+    expect(document.querySelector('.hero-story')).not.toBeNull();
+    expect(screen.queryByRole('img')).toBeNull();
   });
 });
