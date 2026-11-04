@@ -18,6 +18,7 @@ describe("startup environment validation", () => {
         NEXT_PUBLIC_APP_URL: "https://staging.example.com",
         CRON_SECRET: "cron_test_secret",
         RESEND_WEBHOOK_SECRET: "whsec_test",
+        AUDIT_RETENTION_DAYS: "365",
       },
       "production"
     );
@@ -40,6 +41,24 @@ describe("startup environment validation", () => {
     );
     expect(report.ok).toBe(true);
     expect(report.warnings.join(" ")).toMatch(/CRON_SECRET/);
+  });
+
+  it("warns when retention and webhook secrets are missing in production", () => {
+    const report = validateEnv(
+      {
+        ...base,
+        NODE_ENV: "production",
+        ALLOW_DEMO_AUTH: "false",
+        RESEND_API_KEY: "re_test",
+        ALERT_WEBHOOK_URL: "https://hooks.example.com/x",
+        NEXT_PUBLIC_APP_URL: "https://staging.example.com",
+        CRON_SECRET: "cron_test_secret",
+      },
+      "production"
+    );
+    expect(report.ok).toBe(true);
+    expect(report.warnings.join(" ")).toMatch(/AUDIT_RETENTION_DAYS/);
+    expect(report.warnings.join(" ")).toMatch(/RESEND_WEBHOOK_SECRET/);
   });
 
   it("fails fast on a missing database and secret", () => {

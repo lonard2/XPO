@@ -71,6 +71,11 @@ export function validateEnv(
         "RESEND_WEBHOOK_SECRET is not set: bounce webhooks are refused, so dead addresses never suppress."
       );
     }
+    if (!env.AUDIT_RETENTION_DAYS) {
+      warnings.push(
+        "AUDIT_RETENTION_DAYS is not set: the retention job dry-runs and audit rows accumulate."
+      );
+    }
   }
 
   return { ok: errors.length === 0, errors, warnings };

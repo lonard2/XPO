@@ -14,6 +14,7 @@ import { FontScaleSlider } from "@/components/settings/FontScaleSlider";
 import { MotionController } from "@/components/settings/MotionController";
 import { AIConciergeToggle } from "@/components/settings/AIConciergeToggle";
 import { ProfileSettingsForm } from "@/components/settings/ProfileSettingsForm";
+import { DataRightsPanel } from "@/components/settings/DataRightsPanel";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/Tabs";
 import { Button } from "@/components/ui/Button";
 import { LanguageSwitcher, LANGUAGE_OPTIONS } from "@/components/layout/LanguageSwitcher";
@@ -277,6 +278,7 @@ export default function SettingsPage({ params }: SettingsPageProps) {
         {/* Tab 3: Attendee Profile & MICE Interest */}
         <TabsContent value="profile" className="space-y-6 animate-fade-in">
           <ProfileSettingsForm />
+          <DataRightsPanel />
         </TabsContent>
 
         {/* Tab 4: Language & Regional Hubs */}
