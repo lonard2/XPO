@@ -91,6 +91,30 @@ describe("Phase 6 Unit: Ticket & Event Treats Component System", () => {
       fireEvent.click(soldOutCard);
       expect(onSelectMock).not.toHaveBeenCalledWith("tier-soldout-03");
     });
+
+    it("gives available tier radios press physics, but not sold-out ones", () => {
+      const onSelectMock = vi.fn();
+      render(
+        <TierSelector
+          tiers={sampleTiers}
+          selectedTierId="tier-std-01"
+          onSelectTier={onSelectMock}
+        />
+      );
+
+      // Press feedback must never imply a disabled option is actionable.
+      const radios = screen.getAllByRole("radio");
+      expect(radios).toHaveLength(3);
+      for (const radio of radios) {
+        const soldOut = radio.getAttribute("aria-disabled") === "true" ||
+          radio.classList.contains("cursor-not-allowed");
+        if (soldOut) {
+          expect(radio.classList.contains("card-interactive-3d")).toBe(false);
+        } else {
+          expect(radio.classList.contains("card-interactive-3d")).toBe(true);
+        }
+      }
+    });
   });
 
   // ==========================================================================

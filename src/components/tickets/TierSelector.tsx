@@ -74,6 +74,7 @@ export function TierSelector({
             }}
             className={cn(
               "relative rounded-xl border p-4 transition-all duration-200 cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary min-h-[44px]",
+              !isSoldOut && "card-interactive-3d",
               isSoldOut
                 ? "opacity-55 cursor-not-allowed bg-muted/20 border-border/60"
                 : isSelected
