@@ -251,8 +251,13 @@ been the bar in this repository.
   rerank path rate-limited at 10/min. Verified live: rules fallback with
   headers, 400 on unknown model, and a real provider call returning
   rankedBy ai with a grounded reason.
-- [ ] **M4. Hosted buyer program.** Tier-gated meeting quotas with
+- [x] **M4. Hosted buyer program.** Tier-gated meeting quotas with
   booked-versus-held analytics. S after M2.
+  Shipped 2026-11-04 as `c1c9007`. HELD/NO_SHOW outcomes on confirmed
+  meetings, 1-5 requester ratings, per-tier quotas enforced on buyer
+  appointment confirmation, scoped analytics with inline quota editors,
+  wallet rating control. Verified live: quota validation and update,
+  analytics shape, dashboard strip render.
 
 ### Track P: Platform maturity (one item per cycle, alongside)
 
