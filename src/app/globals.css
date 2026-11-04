@@ -300,13 +300,13 @@
      grids never feel gated by animation. */
   .motion-expressive .stagger-children > *:nth-child(n + 7) { animation: none; }
 
-  /* Homepage hero motion, expressive only. Slow Ken Burns drift for slide
-     imagery, a gentle opacity crossfade for incoming slides, and a linear
-     autoplay progress fill. Transform/opacity only; the motion-off and
-     reduced-motion kills below (and the Subtle setting, which never adds
-     these classes) keep everything still otherwise. Durations for the
-     progress fill come from the component, matched to the autoplay
-     interval, so only the keyframes live here. */
+  /* Homepage hero motion. Slow Ken Burns drift for slide imagery and the
+     shared stagger entrance stay expressive-only. The slide crossfade
+     (opacity-only, 450ms) and the autoplay progress fill also run under the
+     default Subtle mode: they are orientation feedback, not decoration.
+     Motion-off and the reduced-motion kill below keep everything still
+     otherwise. Durations for the progress fill come from the component,
+     matched to the autoplay interval, so only the keyframes live here. */
   @keyframes hero-drift {
     from {
       transform: scale(1.02);
@@ -326,6 +326,7 @@
       opacity: 1;
     }
   }
+  .motion-subtle .hero-crossfade-in,
   .motion-expressive .hero-crossfade-in {
     animation: hero-crossfade 0.45s ease-out both;
   }
@@ -337,6 +338,7 @@
       width: 100%;
     }
   }
+  .motion-subtle .hero-progress-fill,
   .motion-expressive .hero-progress-fill {
     animation-name: hero-progress;
     animation-timing-function: linear;

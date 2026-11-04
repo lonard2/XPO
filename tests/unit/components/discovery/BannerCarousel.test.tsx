@@ -244,4 +244,16 @@ describe('Discovery Component: BannerCarousel', () => {
     }
     expect(missing).toEqual([]);
   });
+
+  it('T3.7: outgoing layer stacks beneath the incoming layer', () => {
+    render(<BannerCarousel slides={mockSlides} locale="en" />);
+    fireEvent.click(screen.getByLabelText('Next slide'));
+    const layers = document.querySelectorAll('[aria-roledescription="slide"]');
+    expect(layers.length).toBe(2);
+    // Outgoing renders first (beneath); incoming renders last (on top) and
+    // carries the entrance animation.
+    expect(layers[0]).toHaveAttribute('aria-hidden', 'true');
+    expect(layers[1]).not.toHaveAttribute('aria-hidden');
+    expect(layers[1].classList.contains('hero-crossfade-in')).toBe(true);
+  });
 });

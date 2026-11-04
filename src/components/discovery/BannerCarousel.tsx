@@ -230,7 +230,11 @@ export function BannerCarousel({
               }),
             })}
         aria-live={isEffectivePaused ? 'polite' : 'off'}
-        onTransitionEnd={hidden ? undefined : clearPrevIndex}
+        onAnimationEnd={hidden ? undefined : (e) => {
+          // CSS entrance is an animation, not a transition; only the layer's
+          // own animation end counts (child stagger/drift events bubble up).
+          if (e.target === e.currentTarget) clearPrevIndex();
+        }}
         className={cn(
           "relative min-h-[420px] sm:min-h-[480px] lg:min-h-[520px] flex flex-col justify-end p-5 pt-20 pb-16 sm:p-8 sm:pb-20 lg:p-12 overflow-hidden",
           "lg:grid lg:grid-cols-[1.55fr_1fr] lg:justify-stretch lg:gap-0 lg:p-0",
@@ -452,8 +456,10 @@ export function BannerCarousel({
       aria-label={tHero('carouselLabel')}
     >
 
-      {renderSlide(currentIndex, false)}
+      {/* Outgoing first (beneath), incoming last (on top) so the entrance
+          fade is visible instead of being covered by the old slide. */}
       {prevIndex !== null && prevIndex !== currentIndex && renderSlide(prevIndex, true)}
+      {renderSlide(currentIndex, false)}
 
         {/* Carousel Navigation Controls with WCAG 44x44px Touch Targets */}
         <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center gap-1.5 z-20">
