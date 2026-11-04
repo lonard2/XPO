@@ -155,4 +155,23 @@ describe('Discovery Component: BannerCarousel', () => {
     fireEvent.mouseLeave(carousel);
     expect(screen.getByText('Manufacturing Indonesia Expo 2026')).toBeInTheDocument();
   });
+
+  it('T3.1: crossfades with at most two layers, outgoing hidden from AT', () => {
+    render(<BannerCarousel slides={mockSlides} locale="en" />);
+    fireEvent.click(screen.getByLabelText('Next slide'));
+    // Hidden elements are excluded from role queries by default; ask for
+    // them explicitly. The outgoing layer must be among them.
+    const groups = screen.getAllByRole('group', { hidden: true });
+    expect(groups.length).toBeLessThanOrEqual(2);
+    const hidden = groups.filter((g) => g.getAttribute('aria-hidden') === 'true');
+    expect(hidden.length).toBe(1);
+  });
+
+  it('T3.1b: rapid navigation never stacks more than two layers', () => {
+    render(<BannerCarousel slides={mockSlides} locale="en" />);
+    fireEvent.click(screen.getByLabelText('Next slide'));
+    fireEvent.click(screen.getByLabelText('Next slide'));
+    fireEvent.click(screen.getByLabelText('Previous slide'));
+    expect(screen.getAllByRole('group').length).toBeLessThanOrEqual(2);
+  });
 });

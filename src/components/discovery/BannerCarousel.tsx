@@ -53,6 +53,8 @@ export function BannerCarousel({
   const [touchEndX, setTouchEndX] = React.useState<number | null>(null);
   const [touchStartY, setTouchStartY] = React.useState<number | null>(null);
   const [touchEndY, setTouchEndY] = React.useState<number | null>(null);
+  // Outgoing slide index for the crossfade. Null means a single layer.
+  const [prevIndex, setPrevIndex] = React.useState<number | null>(null);
 
   const totalSlides = slides?.length || 0;
   const isEffectivePaused = isManuallyPaused || isHovered || isFocused;
@@ -61,16 +63,24 @@ export function BannerCarousel({
     setTimerKey((k) => k + 1);
   }, []);
 
+  // Single navigation path: records the outgoing slide for the crossfade,
+  // then moves. All arrows, swipe, dots, keyboard and autoplay route here.
+  const goToIndex = React.useCallback((index: number) => {
+    if (index !== currentIndex) setPrevIndex(currentIndex);
+    setCurrentIndex(index);
+    resetAutoPlay();
+  }, [currentIndex, resetAutoPlay]);
+
   // Auto-play timer with reset hygiene
   React.useEffect(() => {
     if (totalSlides <= 1 || isEffectivePaused) return;
 
     const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % totalSlides);
+      goToIndex((currentIndex + 1) % totalSlides);
     }, autoPlayInterval);
 
     return () => clearInterval(timer);
-  }, [totalSlides, isEffectivePaused, autoPlayInterval, timerKey]);
+  }, [totalSlides, isEffectivePaused, autoPlayInterval, timerKey, currentIndex, goToIndex]);
 
   // Keyboard navigation with input focus scoping
   React.useEffect(() => {
@@ -80,17 +90,15 @@ export function BannerCarousel({
       if (isInputActive) return;
 
       if (e.key === 'ArrowLeft') {
-        setCurrentIndex((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
-        resetAutoPlay();
+        goToIndex(currentIndex === 0 ? totalSlides - 1 : currentIndex - 1);
       } else if (e.key === 'ArrowRight') {
-        setCurrentIndex((prev) => (prev + 1) % totalSlides);
-        resetAutoPlay();
+        goToIndex((currentIndex + 1) % totalSlides);
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [totalSlides, resetAutoPlay]);
+  }, [totalSlides, currentIndex, goToIndex]);
 
   // Touch Swipe Handlers with vertical scroll cancellation guard
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -131,11 +139,9 @@ export function BannerCarousel({
     const isRightSwipe = deltaX < -50;
 
     if (isLeftSwipe) {
-      setCurrentIndex((prev) => (prev + 1) % totalSlides);
-      resetAutoPlay();
+      goToIndex((currentIndex + 1) % totalSlides);
     } else if (isRightSwipe) {
-      setCurrentIndex((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
-      resetAutoPlay();
+      goToIndex(currentIndex === 0 ? totalSlides - 1 : currentIndex - 1);
     }
 
     setTouchStartX(null);
@@ -145,77 +151,87 @@ export function BannerCarousel({
   };
 
   const goToSlide = (index: number) => {
-    setCurrentIndex(index);
-    resetAutoPlay();
+    goToIndex(index);
   };
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % totalSlides);
-    resetAutoPlay();
+    goToIndex((currentIndex + 1) % totalSlides);
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
-    resetAutoPlay();
+    goToIndex(currentIndex === 0 ? totalSlides - 1 : currentIndex - 1);
   };
+
+  const clearPrevIndex = React.useCallback(() => setPrevIndex(null), []);
+
+  // Fallback in case onTransitionEnd never fires (e.g. instant cut under
+  // reduced motion): the outgoing layer always unmounts promptly.
+  React.useEffect(() => {
+    if (prevIndex === null) return;
+    const timer = setTimeout(() => setPrevIndex(null), 700);
+    return () => clearTimeout(timer);
+  }, [prevIndex, currentIndex]);
+
 
   if (!slides || slides.length === 0) {
     return null;
   }
 
-  const currentSlide = slides[currentIndex];
-  const archetypeTokens = getArchetypeTokens(currentSlide.archetype);
-  const archetypeBadge = getReadableBadgeColors(archetypeTokens.primary);
-  const regionCode = (currentSlide.regionCode || 'ID').toUpperCase();
-  const timezone = getTimeZoneForRegion(regionCode.toLowerCase());
-  const dateRangeDisplay = formatDateRange(
-    currentSlide.startDate,
-    currentSlide.endDate,
-    locale,
-    timezone
-  );
 
-  const temporalStatus = getEventTemporalStatus(
-    currentSlide.startDate,
-    currentSlide.endDate
-  );
+  // One slide layer. The outgoing layer renders stacked, inert and
+  // hidden from assistive tech while the incoming layer fades over it.
+  const renderSlide = (index: number, hidden: boolean) => {
+    const slide = slides[index];
+    const slideTokens = getArchetypeTokens(slide.archetype);
+    const slideBadge = getReadableBadgeColors(slideTokens.primary);
+    const slideRegionCode = (slide.regionCode || 'ID').toUpperCase();
+    const slideTimezone = getTimeZoneForRegion(slideRegionCode.toLowerCase());
+    const slideDateRange = formatDateRange(
+      slide.startDate,
+      slide.endDate,
+      locale,
+      slideTimezone
+    );
 
-  return (
-    <div
-      className={cn(
-        'relative w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-border/80 bg-slate-950 shadow-xl',
-        className
-      )}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onFocus={() => setIsFocused(true)}
-      onBlur={(e) => {
-        if (!e.currentTarget.contains(e.relatedTarget)) {
-          setIsFocused(false);
-        }
-      }}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-      role="region"
-      aria-roledescription="carousel"
-      aria-label={tHero('carouselLabel')}
-    >
-      {/* Slide Container */}
+    const slideTemporal = getEventTemporalStatus(
+      slide.startDate,
+      slide.endDate
+    );
+
+    // Local aliases so the extracted JSX below reads unchanged.
+    const archetypeTokens = slideTokens;
+    const archetypeBadge = slideBadge;
+    const regionCode = slideRegionCode;
+    const dateRangeDisplay = slideDateRange;
+    const temporalStatus = slideTemporal;
+
+    return (
       <div
-        key={currentSlide.id}
+        key={slide.id}
         role="group"
         aria-roledescription="slide"
-        aria-label={tHero('slideLabel', { current: currentIndex + 1, total: totalSlides, title: currentSlide.title })}
+        {...(hidden
+          ? { "aria-hidden": true as const, inert: true }
+          : {
+              "aria-label": tHero('slideLabel', {
+                current: index + 1,
+                total: totalSlides,
+                title: slide.title,
+              }),
+            })}
         aria-live={isEffectivePaused ? 'polite' : 'off'}
-        className="relative min-h-[420px] sm:min-h-[480px] lg:min-h-[520px] flex flex-col justify-end p-5 pt-20 pb-16 sm:p-8 sm:pb-20 lg:p-12 overflow-hidden"
+        onTransitionEnd={hidden ? undefined : clearPrevIndex}
+        className={cn(
+          "relative min-h-[420px] sm:min-h-[480px] lg:min-h-[520px] flex flex-col justify-end p-5 pt-20 pb-16 sm:p-8 sm:pb-20 lg:p-12 overflow-hidden",
+          hidden && "absolute inset-0 pointer-events-none"
+        )}
       >
         {/* Slide Image Layer */}
-        {currentSlide.heroImageUrl ? (
+        {slide.heroImageUrl ? (
           <img
-            key={currentSlide.id}
-            src={currentSlide.heroImageUrl}
-            alt={currentSlide.title}
+            key={slide.id}
+            src={slide.heroImageUrl}
+            alt={slide.title}
             fetchPriority={currentIndex === 0 ? 'high' : 'auto'}
             loading={currentIndex === 0 ? 'eager' : 'lazy'}
             className={cn(
@@ -263,7 +279,7 @@ export function BannerCarousel({
               </Badge>
             )}
 
-            {temporalStatus.isUpcoming && currentSlide.isFeatured && (
+            {temporalStatus.isUpcoming && slide.isFeatured && (
               <Badge variant="warning" className="text-xs font-semibold gap-1 shadow-sm">
                 <Layers className="h-3 w-3" />
                 <span>{tHero('featuredSpotlight') || 'Featured Spotlight'}</span>
@@ -273,13 +289,13 @@ export function BannerCarousel({
 
           {/* Event Title */}
           <h2 className="text-xl sm:text-3xl lg:text-5xl font-extrabold tracking-tight text-white leading-[1.18] drop-shadow-md text-balance">
-            {currentSlide.title}
+            {slide.title}
           </h2>
 
           {/* Event Tagline */}
-          {currentSlide.tagline && (
+          {slide.tagline && (
             <p className="text-xs sm:text-sm lg:text-base text-slate-200 line-clamp-2 max-w-xl leading-relaxed drop-shadow-sm text-pretty">
-              {currentSlide.tagline}
+              {slide.tagline}
             </p>
           )}
 
@@ -290,16 +306,16 @@ export function BannerCarousel({
               <span className="tabular-nums">{dateRangeDisplay}</span>
             </div>
 
-            {currentSlide.venueName && (
+            {slide.venueName && (
               <div className="flex items-center gap-1.5 text-slate-200 flex-wrap">
                 <Building2 className="h-4 w-4 text-primary/90 shrink-0" />
                 <span className="line-clamp-1">
-                  {currentSlide.venueName}
-                  {currentSlide.cityName && ` (${currentSlide.cityName})`}
+                  {slide.venueName}
+                  {slide.cityName && ` (${slide.cityName})`}
                 </span>
-                {currentSlide.venueHallName && (
+                {slide.venueHallName && (
                   <span className="text-xs font-semibold bg-white/15 px-2.5 py-0.5 rounded-md text-white backdrop-blur-xs border border-white/20">
-                    {currentSlide.venueHallName}
+                    {slide.venueHallName}
                   </span>
                 )}
               </div>
@@ -309,8 +325,8 @@ export function BannerCarousel({
           {/* Temporal Status / Countdown Widget */}
           <div className="pt-1">
             <BannerTemporalWidget
-              startDate={currentSlide.startDate}
-              endDate={currentSlide.endDate}
+              startDate={slide.startDate}
+              endDate={slide.endDate}
             />
           </div>
 
@@ -319,7 +335,7 @@ export function BannerCarousel({
             {temporalStatus.isPast ? (
               <>
                 <Link
-                  href={`/${locale}/events/${currentSlide.slug}`}
+                  href={`/${locale}/events/${slide.slug}`}
                   className={cn(
                     buttonVariants({ variant: 'outline', size: 'lg' }),
                     'gap-2 font-semibold bg-white/10 hover:bg-white/20 text-white border-white/30 backdrop-blur-md cursor-pointer'
@@ -343,7 +359,7 @@ export function BannerCarousel({
             ) : temporalStatus.isLive ? (
               <>
                 <Link
-                  href={`/${locale}/events/${currentSlide.slug}`}
+                  href={`/${locale}/events/${slide.slug}`}
                   className={cn(
                     buttonVariants({ size: 'lg' }),
                     'gap-2 font-semibold shadow-lg bg-emerald-600 hover:bg-emerald-700 text-white border-0 animate-pulse cursor-pointer'
@@ -354,7 +370,7 @@ export function BannerCarousel({
                   <ArrowRight className="h-4 w-4 ml-0.5" />
                 </Link>
                 <Link
-                  href={`/${locale}/events/${currentSlide.slug}#agenda`}
+                  href={`/${locale}/events/${slide.slug}#agenda`}
                   className={cn(
                     buttonVariants({ variant: 'outline', size: 'lg' }),
                     'bg-white/10 hover:bg-white/20 text-white border-white/30 backdrop-blur-md cursor-pointer gap-2'
@@ -367,7 +383,7 @@ export function BannerCarousel({
             ) : (
               <>
                 <Link
-                  href={`/${locale}/events/${currentSlide.slug}`}
+                  href={`/${locale}/events/${slide.slug}`}
                   className={cn(
                     buttonVariants({ size: 'lg' }),
                     'gap-2 font-semibold shadow-lg bg-primary hover:bg-primary/90 text-primary-foreground border-0 cursor-pointer'
@@ -390,6 +406,34 @@ export function BannerCarousel({
             )}
           </div>
         </div>
+      </div>
+    );
+  };
+
+  return (
+    <div
+      className={cn(
+        'relative w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-border/80 bg-slate-950 shadow-xl',
+        className
+      )}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onFocus={() => setIsFocused(true)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) {
+          setIsFocused(false);
+        }
+      }}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      role="region"
+      aria-roledescription="carousel"
+      aria-label={tHero('carouselLabel')}
+    >
+
+      {renderSlide(currentIndex, false)}
+      {prevIndex !== null && prevIndex !== currentIndex && renderSlide(prevIndex, true)}
 
         {/* Carousel Navigation Controls with WCAG 44x44px Touch Targets */}
         <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center gap-1.5 z-20">
@@ -443,7 +487,6 @@ export function BannerCarousel({
             </button>
           ))}
         </div>
-      </div>
     </div>
   );
 }
