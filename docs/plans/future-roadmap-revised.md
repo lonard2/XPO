@@ -243,8 +243,14 @@ been the bar in this repository.
   validation; reschedule notifies, decline clears; attendees read their own
   requests with a wallet section. Verified live: linked submit, scoped
   read, scheduled confirm, dashboard and wallet render.
-- [ ] **M3. AI re-ranking.** Rank suggestions through the OpenRouter layer
+- [x] **M3. AI re-ranking.** Rank suggestions through the OpenRouter layer
   with plain-language reasons, fed by M2 outcomes. S to M.
+  Shipped 2026-11-04 as `65db868`. `?rerank=true` reorders the rule
+  candidates using interests, meeting outcomes, bookings and claimed
+  industries; unknown ids dropped, failures fall back to rule order,
+  rerank path rate-limited at 10/min. Verified live: rules fallback with
+  headers, 400 on unknown model, and a real provider call returning
+  rankedBy ai with a grounded reason.
 - [ ] **M4. Hosted buyer program.** Tier-gated meeting quotas with
   booked-versus-held analytics. S after M2.
 
