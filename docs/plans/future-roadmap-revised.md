@@ -288,9 +288,12 @@ been the bar in this repository.
 
 ### Track O: Operational gaps absent from the prior roadmap
 
-- [ ] **O1. Email operations.** Bounce and complaint handling, a suppression
+- [x] **O1. Email operations.** Bounce and complaint handling, a suppression
   list, and documented SPF, DKIM and DMARC. Email now carries OTP, booking
   confirmations and meeting requests, so delivery is load-bearing. M.
+  Shipped 2026-11-04 as `82ad209`. Suppression list with OTP bypass,
+  Svix-verified Resend ingestion, admin lift, DNS and webhook docs.
+  Verified live: ingest and removal round-trip.
 - [ ] **O2. Retention and deletion.** A deletion and export path for attendee
   PII, and a retention window for audit rows. M.
 - [ ] **O3. Restore drill.** Execute the backup and restore procedure in
