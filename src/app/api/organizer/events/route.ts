@@ -211,6 +211,10 @@ export async function POST(request: Request) {
                 currency: t.currency || "IDR",
                 capacity: Number(t.capacity) || 500,
                 benefitsJson: JSON.stringify(t.benefits || ["General Admission Access"]),
+                meetingQuota:
+                  Number.isInteger(Number(t.meetingQuota)) && Number(t.meetingQuota) >= 0
+                    ? Number(t.meetingQuota)
+                    : 0,
               }))
             : [
                 {

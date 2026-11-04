@@ -116,6 +116,8 @@ interface TicketTierDraft {
   currency: string;
   capacity: number;
   benefits: string;
+  /** Hosted-buyer meetings per pass. 0 means unlimited. */
+  meetingQuota: number;
 }
 
 interface TemplatePreset {
@@ -154,6 +156,7 @@ const TEMPLATES: Record<string, TemplatePreset> = {
         currency: "IDR",
         capacity: 5000,
         benefits: "Exhibition Floor Access, Daily Open Keynotes, Digital Guidebook",
+        meetingQuota: 0,
       },
       {
         id: "tier-ind-2",
@@ -162,6 +165,7 @@ const TEMPLATES: Record<string, TemplatePreset> = {
         currency: "IDR",
         capacity: 500,
         benefits: "Fast-Track Turnstile Entry, VIP Deal Room Access, B2B Matchmaking App, Gala Dinner",
+        meetingQuota: 0,
       },
     ],
   },
@@ -185,6 +189,7 @@ const TEMPLATES: Record<string, TemplatePreset> = {
         currency: "IDR",
         capacity: 3000,
         benefits: "All-Track Keynotes, Workshop Access, Digital Badge",
+        meetingQuota: 0,
       },
       {
         id: "tier-tech-2",
@@ -193,6 +198,7 @@ const TEMPLATES: Record<string, TemplatePreset> = {
         currency: "IDR",
         capacity: 300,
         benefits: "VIP Lounge, Speaker Dinner, Device Showcase Fast-Track, Slide Archive",
+        meetingQuota: 0,
       },
     ],
   },
@@ -216,6 +222,7 @@ const TEMPLATES: Record<string, TemplatePreset> = {
         currency: "IDR",
         capacity: 8000,
         benefits: "Pavilion Access, Cosplay Hall Entry, Stage Viewing",
+        meetingQuota: 0,
       },
       {
         id: "tier-game-2",
@@ -224,6 +231,7 @@ const TEMPLATES: Record<string, TemplatePreset> = {
         currency: "IDR",
         capacity: 600,
         benefits: "Early Hall Access, Priority Stage Seating, Exclusive Merch Pack",
+        meetingQuota: 0,
       },
     ],
   },
@@ -340,6 +348,7 @@ export default function NewEventWizardPage() {
       currency: defaultCurrency,
       capacity: 3500,
       benefits: "Exhibition Floor Access, Daily Open Keynotes, Digital Guidebook",
+      meetingQuota: 0,
     },
     {
       id: "tier-2",
@@ -348,6 +357,7 @@ export default function NewEventWizardPage() {
       currency: defaultCurrency,
       capacity: 400,
       benefits: "Fast-Track QR Gate, VIP Procurement Lounge, B2B Matchmaking App, Speaker Slide Downloads",
+      meetingQuota: 3,
     },
   ]);
 
@@ -795,6 +805,7 @@ export default function NewEventWizardPage() {
       currency: regionId === "jp" ? "JPY" : regionId === "global" ? "USD" : "IDR",
       capacity: 250,
       benefits: "All-Access Pass, Networking Dinner, Exhibition Booth Passes",
+      meetingQuota: 0,
     };
     setTicketTiers([...ticketTiers, newTier]);
   };
@@ -949,6 +960,7 @@ export default function NewEventWizardPage() {
         currency: t.currency,
         capacity: t.capacity,
         benefits: t.benefits.split(",").map((b) => b.trim()).filter(Boolean),
+        meetingQuota: Math.max(0, Math.floor(Number(t.meetingQuota) || 0)),
       })),
     };
 
@@ -2116,6 +2128,7 @@ export default function NewEventWizardPage() {
                   currency: regionId === "jp" ? "JPY" : regionId === "global" ? "USD" : "IDR",
                   capacity: 2500,
                   benefits: "General Floor Access, Digital Guidebook, Open Keynotes",
+                  meetingQuota: 0,
                 };
                 setTicketTiers([...ticketTiers, freeTier]);
               }}
@@ -2135,6 +2148,7 @@ export default function NewEventWizardPage() {
                   currency: regionId === "jp" ? "JPY" : regionId === "global" ? "USD" : "IDR",
                   capacity: 250,
                   benefits: "Fast-Track Gate, VIP Lounge, B2B Matchmaking, Gala Dinner",
+                  meetingQuota: 0,
                 };
                 setTicketTiers([...ticketTiers, vipTier]);
               }}
@@ -2154,6 +2168,7 @@ export default function NewEventWizardPage() {
                   currency: regionId === "jp" ? "JPY" : regionId === "global" ? "USD" : "IDR",
                   capacity: 100,
                   benefits: "Backstage Access, Speaker Lounge, Keynote Slides, VIP Parking",
+                  meetingQuota: 0,
                 };
                 setTicketTiers([...ticketTiers, allAccessTier]);
               }}
@@ -2325,6 +2340,18 @@ export default function NewEventWizardPage() {
                       placeholder="Floor Access, VIP Lounge, Gala Dinner"
                       value={tier.benefits}
                       onChange={(e) => handleUpdateTier(tier.id, "benefits", e.target.value)}
+                    />
+                  </div>
+                  <div className="sm:col-span-1">
+                    <Input
+                      id={`wizard-tier-quota-${idx}`}
+                      label={tOrg("wizardTierQuota") || "Hosted meetings per pass (0 means unlimited)"}
+                      type="number"
+                      min={0}
+                      max={1000}
+                      placeholder="0"
+                      value={tier.meetingQuota ?? 0}
+                      onChange={(e) => handleUpdateTier(tier.id, "meetingQuota", Math.max(0, Math.floor(Number(e.target.value) || 0)))}
                     />
                   </div>
                 </div>

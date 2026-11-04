@@ -121,6 +121,8 @@ model TicketTier {
   currency     String    @default("IDR")
   capacity     Int
   soldCount    Int       @default(0)
+  // Hosted-buyer meeting quota for this tier. 0 means unlimited.
+  meetingQuota Int       @default(0)
   benefitsJson String    @default("[]") // JSON array of perk descriptions
   bookings     Booking[]
   waitlist     WaitlistEntry[]
@@ -337,6 +339,10 @@ model MeetingRequest {
   // Organizer-set schedule. Null until a confirmed time exists.
   scheduledAt    DateTime?
   location       String   @default("")
+  // Kept-meeting tracking: NONE until the organizer records what happened.
+  outcome        String   @default("NONE") // NONE | HELD | NO_SHOW
+  // Requester's 1-5 rating of a held meeting. Null until rated.
+  rating         Int?
   createdAt      DateTime @default(now())
 
   @@index([eventId, status])

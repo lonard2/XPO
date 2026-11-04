@@ -24,6 +24,7 @@ import { formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
 import { OrganizerOnboardingGuide } from "@/components/organizer/OrganizerOnboardingGuide";
 import { OrganizerEventsRoster } from "@/components/organizer/OrganizerEventsRoster";
 import { MeetingRequestInbox } from "@/components/organizer/MeetingRequestInbox";
+import { MeetingAnalyticsStrip } from "@/components/organizer/MeetingAnalyticsStrip";
 import { BoothClaimsInbox } from "@/components/organizer/BoothClaimsInbox";
 import { CountUp } from "@/components/ui/CountUp";
 import { DashboardRefreshButton } from "@/components/organizer/DashboardRefreshButton";
@@ -377,6 +378,8 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
         </div>
       </div>
 
+      <MeetingAnalyticsStrip />
+
       <MeetingRequestInbox
         initialRequests={meetingRequests.map((row: any) => {
           let requesterInterests: string[] = [];
@@ -399,6 +402,8 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
             status: row.status,
             scheduledAt: row.scheduledAt ? row.scheduledAt.toISOString() : null,
             location: row.location || "",
+            outcome: row.outcome,
+            rating: row.rating,
             booking: row.booking,
             booth: row.booth,
             requesterInterests,

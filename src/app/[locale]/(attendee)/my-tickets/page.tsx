@@ -13,6 +13,7 @@ import {
 import { buttonVariants } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { PassWalletExplorer, type BookingSummary } from '@/components/tickets/PassWalletExplorer';
+import { MeetingRatingControl } from '@/components/tickets/MeetingRatingControl';
 import { cn } from '@/lib/utils';
 
 interface MyTicketsPageProps {
@@ -53,6 +54,8 @@ export default async function MyTicketsPage({ params }: MyTicketsPageProps) {
     target: string;
     scheduledAt: Date | null;
     location: string;
+    outcome: string;
+    rating: number | null;
     createdAt: Date;
     event: { title: string; slug: string };
   }> = [];
@@ -229,6 +232,9 @@ export default async function MyTicketsPage({ params }: MyTicketsPageProps) {
                           .filter(Boolean)
                           .join(' · ')}
                       </p>
+                    )}
+                    {request.status === 'CONFIRMED' && request.outcome === 'HELD' && (
+                      <MeetingRatingControl requestId={request.id} initialRating={request.rating} />
                     )}
                   </li>
                 ))}

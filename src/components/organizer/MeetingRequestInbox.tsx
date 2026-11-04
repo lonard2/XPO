@@ -88,6 +88,8 @@ export interface MeetingRequestRow {
   status: string;
   scheduledAt: string | null;
   location: string;
+  outcome: string;
+  rating: number | null;
   booking: { id: string; status: string; attendeeName: string; ticketTier: { id: string; name: string } } | null;
   booth: { id: string; companyName: string; boothNumber: string; hallName: string } | null;
   requesterInterests: string[];
@@ -164,7 +166,7 @@ export function MeetingRequestInbox({
       });
       const data = (await res.json().catch(() => ({}))) as {
         error?: string;
-        request?: { scheduledAt?: string | null; location?: string };
+        request?: { scheduledAt?: string | null; location?: string; outcome?: string };
       };
       if (!res.ok) throw new Error(data.error || t("meetingRequestError"));
       setRows((current) =>
@@ -175,6 +177,7 @@ export function MeetingRequestInbox({
                 status,
                 scheduledAt: data.request?.scheduledAt ?? row.scheduledAt,
                 location: data.request?.location ?? row.location,
+                outcome: data.request?.outcome ?? row.outcome,
               }
             : row
         )
@@ -199,7 +202,7 @@ export function MeetingRequestInbox({
       });
       const data = (await res.json().catch(() => ({}))) as {
         error?: string;
-        request?: { scheduledAt?: string | null; location?: string };
+        request?: { scheduledAt?: string | null; location?: string; outcome?: string };
       };
       if (!res.ok) throw new Error(data.error || t("meetingRequestError"));
       setRows((current) =>
@@ -209,8 +212,37 @@ export function MeetingRequestInbox({
                 ...row,
                 scheduledAt: data.request?.scheduledAt ?? row.scheduledAt,
                 location: data.request?.location ?? row.location,
+                outcome: data.request?.outcome ?? row.outcome,
               }
             : row
+        )
+      );
+      setNotice(t("meetingRequestUpdated"));
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  async function markOutcome(id: string, outcome: "HELD" | "NO_SHOW") {
+    setBusy(id);
+    setError(null);
+    setNotice(null);
+    try {
+      const res = await fetch(`/api/meetings/requests/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ outcome }),
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        request?: { outcome?: string };
+      };
+      if (!res.ok) throw new Error(data.error || t("meetingRequestError"));
+      setRows((current) =>
+        current.map((row) =>
+          row.id === id ? { ...row, outcome: data.request?.outcome ?? outcome } : row
         )
       );
       setNotice(t("meetingRequestUpdated"));
@@ -357,6 +389,49 @@ export function MeetingRequestInbox({
                     <X className="h-3.5 w-3.5" />
                     {t("meetingRequestDecline")}
                   </Button>
+                </div>
+              )}
+              {row.status === "CONFIRMED" && (
+                <div className="mt-2 flex flex-wrap items-center gap-2">
+                  {row.outcome === "HELD" ? (
+                    <Badge variant="success" size="sm">
+                      {t("meetingOutcomeHeld") || "Held"}
+                    </Badge>
+                  ) : row.outcome === "NO_SHOW" ? (
+                    <Badge variant="destructive" size="sm">
+                      {t("meetingOutcomeNoShow") || "No-show"}
+                    </Badge>
+                  ) : (
+                    <>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="outline"
+                        disabled={busy === row.id}
+                        onClick={() => markOutcome(row.id, "HELD")}
+                        className="gap-1.5 min-h-[36px] cursor-pointer"
+                      >
+                        <Check className="h-3.5 w-3.5" />
+                        {t("meetingMarkHeld") || "Mark held"}
+                      </Button>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="ghost"
+                        disabled={busy === row.id}
+                        onClick={() => markOutcome(row.id, "NO_SHOW")}
+                        className="gap-1.5 min-h-[36px] cursor-pointer"
+                      >
+                        <X className="h-3.5 w-3.5" />
+                        {t("meetingMarkNoShow") || "Mark no-show"}
+                      </Button>
+                    </>
+                  )}
+                  {typeof row.rating === "number" && (
+                    <span className="text-[11px] text-muted-foreground">
+                      {t("meetingRated", { n: row.rating }) || `Rated ${row.rating}/5`}
+                    </span>
+                  )}
                 </div>
               )}
               {row.status === "CONFIRMED" && (

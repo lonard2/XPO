@@ -17,6 +17,8 @@ const pendingRow: MeetingRequestRow = {
   status: "PENDING",
   scheduledAt: null,
   location: "",
+  outcome: "NONE",
+  rating: null,
   booking: {
     id: "b-1",
     status: "CONFIRMED",
@@ -35,6 +37,8 @@ const confirmedRow: MeetingRequestRow = {
   status: "CONFIRMED",
   scheduledAt: "2027-10-02T10:30:00.000Z",
   location: "Hall A1",
+  outcome: "NONE",
+  rating: null,
 };
 
 function mockPatch(response: unknown, status = 200) {
@@ -81,6 +85,20 @@ describe("MeetingRequestInbox scheduling", () => {
       expect(body.scheduledAt).toContain("2027-10-02");
       expect(body.location).toBe("Hall A1");
     });
+  });
+
+  it("marks a confirmed meeting as held", async () => {
+    const heldRow: MeetingRequestRow = { ...confirmedRow, outcome: "NONE", scheduledAt: null, location: "" };
+    mockPatch({ request: { outcome: "HELD" } });
+    render(<MeetingRequestInbox initialRequests={[heldRow]} />);
+
+    fireEvent.click(screen.getByRole("button", { name: /Mark held/i }));
+
+    await waitFor(() => {
+      const [, init] = (global.fetch as any).mock.calls[0];
+      expect(JSON.parse(init.body)).toEqual({ outcome: "HELD" });
+    });
+    expect(screen.getByText("Held")).toBeInTheDocument();
   });
 
   it("displays the schedule on a confirmed row and reschedules it", async () => {
