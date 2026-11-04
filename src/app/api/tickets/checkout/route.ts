@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { db } from "@/lib/db";
 import { generateTicketHash, generateSvgQrCode, type TicketPassPayload } from "@/lib/tickets/qrPass";
 import { rateLimitResponse } from "@/lib/api/rateLimit";
@@ -8,32 +9,50 @@ import { renderBookingConfirmation } from "@/lib/email/templates";
 import { formatDateRange, getTimeZoneForRegion } from "@/lib/i18n/formatters";
 import { apiError } from "@/lib/api/envelope";
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/**
+ * Checkout body contract. Failure maps to the legacy per-field 400s so the
+ * messages clients match on stay byte-for-byte identical.
+ */
+const CheckoutSchema = z.object({
+  eventId: z.string().min(1),
+  tierId: z.string().min(1),
+  attendeeName: z.string().refine((v) => v.trim().length > 0, { message: "blank" }),
+  attendeeEmail: z.string().refine((v) => EMAIL_RE.test(v.trim()), { message: "bad" }),
+  quantity: z.unknown().optional(),
+  userId: z.string().optional(),
+  // Unknown locale types keep the historical fallback instead of failing:
+  // the email language must never break a paid reservation.
+  locale: z.unknown().optional(),
+});
+
+const FIELD_ERRORS: Record<string, string> = {
+  eventId: "VALIDATION_ERROR: Missing or invalid eventId",
+  tierId: "VALIDATION_ERROR: Missing or invalid tierId",
+  attendeeName: "VALIDATION_ERROR: Missing or invalid attendeeName",
+  attendeeEmail: "VALIDATION_ERROR: Missing or invalid attendeeEmail address",
+};
+
 export async function POST(request: Request) {
   const limited = await rateLimitResponse("tickets-checkout", request, { limit: 60, windowMs: 60_000 });
   if (limited) return limited;
   try {
     const body = await request.json();
-    const { eventId, tierId, attendeeName, attendeeEmail, quantity = 1, userId } = body;
+    const parsed = CheckoutSchema.safeParse(body);
+    if (!parsed.success) {
+      const field = parsed.error.issues[0]?.path[0];
+      const message =
+        typeof field === "string" && FIELD_ERRORS[field]
+          ? FIELD_ERRORS[field]
+          : "VALIDATION_ERROR: Missing or invalid request body";
+      return apiError(message, 400);
+    }
+    const { eventId, tierId, attendeeName, attendeeEmail, userId } = parsed.data;
 
-    // 1. Validation
-    if (!eventId || typeof eventId !== "string") {
-      return apiError("VALIDATION_ERROR: Missing or invalid eventId", 400);
-    }
-    if (!tierId || typeof tierId !== "string") {
-      return apiError("VALIDATION_ERROR: Missing or invalid tierId", 400);
-    }
-    if (!attendeeName || typeof attendeeName !== "string" || attendeeName.trim().length === 0) {
-      return apiError("VALIDATION_ERROR: Missing or invalid attendeeName", 400);
-    }
-    if (
-      !attendeeEmail ||
-      typeof attendeeEmail !== "string" ||
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(attendeeEmail.trim())
-    ) {
-      return apiError("VALIDATION_ERROR: Missing or invalid attendeeEmail address", 400);
-    }
-
-    const qty = Math.max(1, parseInt(String(quantity), 10) || 1);
+    // Quantity keeps its historical coercion (floor 1, no ceiling): the
+    // conditional stock claim below is what enforces real capacity.
+    const qty = Math.max(1, parseInt(String(parsed.data.quantity ?? 1), 10) || 1);
     const normalizedEmail = attendeeEmail.toLowerCase().trim();
 
     // Guarded failure helper: thrown inside the transaction, mapped below.
@@ -116,7 +135,8 @@ export async function POST(request: Request) {
     });
 
     try {
-      const locale = typeof body.locale === "string" && body.locale ? body.locale : "en";
+      const rawLocale = parsed.data.locale;
+      const locale = typeof rawLocale === "string" && rawLocale ? rawLocale : "en";
       const timezone = getTimeZoneForRegion(booking.event.regionId || "id");
       const venueText = [booking.event.venue?.name, booking.event.venueHall?.name]
         .filter(Boolean)

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { audit } from "@/lib/observability/audit";
 import { apiError } from "@/lib/api/envelope";
+import { idOrSlugWhere } from "@/lib/api/request";
 
 /** Parse an optional numeric hall spec; garbage becomes null, never NaN. */
 function numOrNull(v: unknown): number | null {
@@ -20,7 +21,7 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
 
     const venue = await db.venue.findFirst({
       where: {
-        OR: [{ id }, { slug: id }],
+        ...idOrSlugWhere(id),
       },
       include: {
         region: true,
@@ -65,7 +66,7 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
     } = body;
 
     const existingVenue = await db.venue.findFirst({
-      where: { OR: [{ id }, { slug: id }] },
+      where: { ...idOrSlugWhere(id) },
       include: { halls: true },
     });
 
@@ -141,7 +142,7 @@ export async function DELETE(req: NextRequest, { params }: RouteParams) {
     const { id } = await params;
 
     const existingVenue = await db.venue.findFirst({
-      where: { OR: [{ id }, { slug: id }] },
+      where: { ...idOrSlugWhere(id) },
     });
 
     if (!existingVenue) {

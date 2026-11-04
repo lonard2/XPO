@@ -53,6 +53,24 @@ describe("Phase 6 Integration: Ticket Checkout & Verification API Routes", () =>
     expect(res.status).toBe(404);
   });
 
+  it("Checkout Route: rejects a non-string userId as a client error, not a crash", async () => {
+    const req = new Request("http://localhost:3000/api/tickets/checkout", {
+      method: "POST",
+      body: JSON.stringify({
+        eventId: testEvent.id,
+        tierId: testTier.id,
+        attendeeName: "Test User",
+        attendeeEmail: "api-route-test-userid@xpo.com",
+        userId: 12345,
+      }),
+    });
+
+    const res = await checkoutRoute(req);
+    expect(res.status).toBe(400);
+    const json = await res.json();
+    expect(json.code).toBe("VALIDATION_ERROR");
+  });
+
   it("Checkout Route: successfully creates booking, generates HMAC pass, and updates soldCount (201)", async () => {
     const initialSoldCount = testTier.soldCount;
 

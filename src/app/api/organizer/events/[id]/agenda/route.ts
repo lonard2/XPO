@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { requireUser } from "@/lib/auth/guards";
 import { canWriteEvent } from "@/lib/auth/eventOwnership";
 import { apiError } from "@/lib/api/envelope";
+import { idOrSlugWhere } from "@/lib/api/request";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -19,7 +20,7 @@ export async function GET(request: Request, { params }: RouteParams) {
   try {
     const { id } = await params;
     const event = await db.event.findFirst({
-      where: { OR: [{ id }, { slug: id }] },
+      where: { ...idOrSlugWhere(id) },
       select: { id: true, organizerId: true },
     });
     if (!event) {

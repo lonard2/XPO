@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { resolveEventCaller, canWriteEvent } from "@/lib/auth/eventOwnership";
 import { audit } from "@/lib/observability/audit";
 import { apiError } from "@/lib/api/envelope";
+import { idOrSlugWhere } from "@/lib/api/request";
 
 interface RouteProps {
   params: Promise<{ id: string }>;
@@ -16,7 +17,7 @@ export async function PUT(request: Request, { params }: RouteProps) {
 
     const existing = await db.event.findFirst({
       where: {
-        OR: [{ id }, { slug: id }],
+        ...idOrSlugWhere(id),
       },
     });
 

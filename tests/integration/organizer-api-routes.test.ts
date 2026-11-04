@@ -400,6 +400,56 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
     expect(verify).toBeNull();
   });
 
+  it("Organizer Booths: DELETE lets the JSON body win over query params", async () => {
+    const makeBooth = (boothNumber: string) =>
+      createBoothRoute(
+        new Request("http://localhost:3000/api/organizer/booths", {
+          method: "POST",
+          headers: adminHeaders,
+          body: JSON.stringify({
+            eventId: createdEventId,
+            companyName: "Precedence Co",
+            boothNumber,
+            hallName: "Hall P",
+          }),
+        })
+      ).then((res) => res.json());
+
+    const keep = await makeBooth("Hall P - KEEP");
+    const drop = await makeBooth("Hall P - DROP");
+
+    const deleteRes = await deleteBoothRoute(
+      new Request(`http://localhost:3000/api/organizer/booths?id=${keep.booth.id}`, {
+        method: "DELETE",
+        headers: adminHeaders,
+        body: JSON.stringify({ id: drop.booth.id }),
+      })
+    );
+    expect(deleteRes.status).toBe(200);
+
+    expect(await db.boothTenant.findUnique({ where: { id: keep.booth.id } })).not.toBeNull();
+    expect(await db.boothTenant.findUnique({ where: { id: drop.booth.id } })).toBeNull();
+
+    await db.boothTenant.deleteMany({
+      where: { id: { in: [keep.booth.id] } },
+    });
+  });
+
+  it("Organizer Events: agenda lookup resolves a slug like an id", async () => {
+    const { GET: getAgenda } = await import("@/app/api/organizer/events/[id]/agenda/route");
+    const event = await db.event.findUnique({ where: { id: createdEventId } });
+    expect(event?.slug).toBeTruthy();
+
+    const res = await getAgenda(
+      new Request(`http://localhost:3000/api/organizer/events/${event!.slug}/agenda`, {
+        headers: adminHeaders,
+      }),
+      { params: Promise.resolve({ id: event!.slug }) }
+    );
+    expect(res.status).toBe(200);
+    expect((await res.json()).success).toBe(true);
+  });
+
   it("Organizer Booths: POST and PATCH persist MICE physical space dimensions and structure types", async () => {
     // 1. Create with physical space specs
     const createReq = new Request("http://localhost:3000/api/organizer/booths", {

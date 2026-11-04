@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { buildVoucherCode } from "@/lib/tickets/voucher";
 import { apiError } from "@/lib/api/envelope";
+import { readDeleteParams } from "@/lib/api/request";
 
 /** Legacy name-label rule, kept for perks without an exact tierId gate. */
 function legacyNameEligible(tierRequired: string, tierName: string): boolean {
@@ -99,13 +100,8 @@ export async function POST(request: Request) {
 /** DELETE /api/perks/claim — undo a claim (releases the voucher). */
 export async function DELETE(request: Request) {
   try {
-    const body = await request.json().catch(() => ({}));
-    let { bookingId, perkId } = body;
-    if ((!bookingId || !perkId) && request.url.includes("?")) {
-      const params = new URL(request.url).searchParams;
-      bookingId = bookingId || params.get("bookingId") || undefined;
-      perkId = perkId || params.get("perkId") || undefined;
-    }
+    // Query first, JSON body wins; an empty body keeps the query values.
+    const { bookingId, perkId } = await readDeleteParams(request, ["bookingId", "perkId"]);
     if (!bookingId || !perkId) {
       return apiError("Missing required fields (bookingId, perkId).", 400);
     }

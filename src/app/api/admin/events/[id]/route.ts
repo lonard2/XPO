@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { requireRole } from "@/lib/auth/guards";
 import { audit } from "@/lib/observability/audit";
 import { apiError } from "@/lib/api/envelope";
+import { idOrSlugWhere } from "@/lib/api/request";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -24,7 +25,7 @@ export async function DELETE(request: Request, { params }: RouteParams) {
 
     const event = await db.event.findFirst({
       where: {
-        OR: [{ id }, { slug: id }],
+        ...idOrSlugWhere(id),
       },
       select: { id: true, title: true },
     });

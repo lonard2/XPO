@@ -6,6 +6,7 @@ import { rateLimitResponse } from "@/lib/api/rateLimit";
 import { audit } from "@/lib/observability/audit";
 import { parsePagination } from "@/lib/api/pagination";
 import { apiError } from "@/lib/api/envelope";
+import { deleteIdentifiers } from "@/lib/api/request";
 
 export async function GET(request: Request) {
   try {
@@ -326,22 +327,8 @@ export async function DELETE(request: Request) {
     const gate = await requireRole(request, ["ORGANIZER", "ADMIN"]);
     if (gate.response) return gate.response;
 
-    const { searchParams } = new URL(request.url);
-    let id = searchParams.get("id");
-    let ids: string[] = [];
-
-    const idsParam = searchParams.get("ids");
-    if (idsParam) {
-      ids = idsParam.split(",").map((s) => s.trim()).filter(Boolean);
-    }
-
-    try {
-      const body = await request.json();
-      if (body?.id) id = body.id;
-      if (Array.isArray(body?.ids)) ids = body.ids;
-    } catch {
-      // Query param fallback
-    }
+    // Query first, JSON body wins; an empty body keeps the query values.
+    const { id, ids } = await deleteIdentifiers(request);
 
     // 1. Bulk Decommission Path
     if (ids.length > 0) {

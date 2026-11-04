@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { requireRole } from "@/lib/auth/guards";
 import { apiError } from "@/lib/api/envelope";
+import { idOrSlugWhere } from "@/lib/api/request";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -23,7 +24,7 @@ export async function PATCH(request: Request, { params }: RouteParams) {
 
     const event = await db.event.findFirst({
       where: {
-        OR: [{ id }, { slug: id }],
+        ...idOrSlugWhere(id),
       },
     });
 
