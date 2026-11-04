@@ -1,8 +1,10 @@
 import React from 'react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, act } from '@testing-library/react';
+import { readFileSync } from 'node:fs';
 import { BannerCarousel } from '@/components/discovery/BannerCarousel';
 import { type BannerSlide } from '@/types/discovery';
+import enMessages from '@/messages/en.json';
 
 const mockSlides: BannerSlide[] = [
   {
@@ -227,5 +229,19 @@ describe('Discovery Component: BannerCarousel', () => {
     render(<BannerCarousel slides={[imageless]} locale="en" />);
     expect(document.querySelector('.hero-story')).not.toBeNull();
     expect(screen.queryByRole('img')).toBeNull();
+  });
+
+  it('T3.6: every literal translation key the carousel uses exists in the dictionaries', () => {
+    // The unit mock returns the key for missing entries, so a missing key
+    // only explodes in production (next-intl throws MISSING_MESSAGE).
+    const source = readFileSync('src/components/discovery/BannerCarousel.tsx', 'utf8');
+    const hooks: Record<string, string> = { tHero: 'hero', tEvents: 'events', tHome: 'home' };
+    const missing: string[] = [];
+    for (const match of source.matchAll(/\b(tHero|tEvents|tHome)\('([^']+)'\)/g)) {
+      const [, hook, key] = match;
+      const bundle = (enMessages as Record<string, Record<string, unknown>>)[hooks[hook]];
+      if (!(key in bundle)) missing.push(`${hooks[hook]}.${key}`);
+    }
+    expect(missing).toEqual([]);
   });
 });

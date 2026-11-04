@@ -119,6 +119,7 @@
     "pauseAutoplay": "自動再生を一時停止",
     "resumeAutoplay": "自動再生を再開",
     "goToSlide": "スライド {index} へ移動",
+    "upNext": "次はこちら",
     "slideLabel": "スライド {current} / {total}: {title}",
     "proof1": "22のイベントカテゴリー",
     "proof2": "ホールと交通情報",

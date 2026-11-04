@@ -119,6 +119,7 @@
     "pauseAutoplay": "Pause autoplay",
     "resumeAutoplay": "Resume autoplay",
     "goToSlide": "Go to slide {index}",
+    "upNext": "Up next",
     "slideLabel": "Slide {current} of {total}: {title}",
     "proof1": "22 event categories",
     "proof2": "Hall and transit data",

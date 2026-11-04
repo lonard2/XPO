@@ -119,6 +119,7 @@
     "pauseAutoplay": "Pausar reproducción automática",
     "resumeAutoplay": "Reanudar reproducción automática",
     "goToSlide": "Ir a la diapositiva {index}",
+    "upNext": "A continuación",
     "slideLabel": "Diapositiva {current} de {total}: {title}",
     "proof1": "22 categorías de eventos",
     "proof2": "Datos de pabellón y transporte",
