@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { audit } from "@/lib/observability/audit";
+import { apiError } from "@/lib/api/envelope";
 
 /** Parse an optional numeric hall spec; garbage becomes null, never NaN. */
 function numOrNull(v: unknown): number | null {
@@ -35,10 +36,7 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
     });
 
     if (!venue) {
-      return NextResponse.json(
-        { success: false, error: `Venue not found with identifier '${id}'.` },
-        { status: 404 }
-      );
+      return apiError(`Venue not found with identifier '${id}'.`, 404);
     }
 
     return NextResponse.json({
@@ -46,13 +44,7 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
       venue,
     });
   } catch (error) {
-    return NextResponse.json(
-      {
-        success: false,
-        error: `Failed to retrieve venue: ${(error as Error).message}`,
-      },
-      { status: 500 }
-    );
+    return apiError(`Failed to retrieve venue: ${(error as Error).message}`, 500);
   }
 }
 
@@ -78,10 +70,7 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
     });
 
     if (!existingVenue) {
-      return NextResponse.json(
-        { success: false, error: `Venue not found with identifier '${id}'.` },
-        { status: 404 }
-      );
+      return apiError(`Venue not found with identifier '${id}'.`, 404);
     }
 
     // Update venue metadata
@@ -143,13 +132,7 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
       venue: finalVenue,
     });
   } catch (error) {
-    return NextResponse.json(
-      {
-        success: false,
-        error: `Failed to update venue: ${(error as Error).message}`,
-      },
-      { status: 500 }
-    );
+    return apiError(`Failed to update venue: ${(error as Error).message}`, 500);
   }
 }
 
@@ -162,10 +145,7 @@ export async function DELETE(req: NextRequest, { params }: RouteParams) {
     });
 
     if (!existingVenue) {
-      return NextResponse.json(
-        { success: false, error: `Venue not found with identifier '${id}'.` },
-        { status: 404 }
-      );
+      return apiError(`Venue not found with identifier '${id}'.`, 404);
     }
 
     // Delete venue (cascade deletes halls)
@@ -179,12 +159,6 @@ export async function DELETE(req: NextRequest, { params }: RouteParams) {
       message: `Venue '${existingVenue.name}' deleted successfully.`,
     });
   } catch (error) {
-    return NextResponse.json(
-      {
-        success: false,
-        error: `Failed to delete venue: ${(error as Error).message}`,
-      },
-      { status: 500 }
-    );
+    return apiError(`Failed to delete venue: ${(error as Error).message}`, 500);
   }
 }

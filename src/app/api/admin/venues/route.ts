@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { audit } from "@/lib/observability/audit";
 import { normalizeEventSlug } from "@/lib/crawler/venueScraper";
 import { FALLBACK_VENUES } from "@/lib/discovery/fallbackData";
+import { apiError } from "@/lib/api/envelope";
 
 /** Parse an optional numeric hall spec; garbage becomes null, never NaN. */
 function numOrNull(v: unknown): number | null {
@@ -58,13 +59,7 @@ export async function GET(req: NextRequest) {
       venues,
     });
   } catch (error) {
-    return NextResponse.json(
-      {
-        success: false,
-        error: `Failed to fetch venues: ${(error as Error).message}`,
-      },
-      { status: 500 }
-    );
+    return apiError(`Failed to fetch venues: ${(error as Error).message}`, 500);
   }
 }
 
@@ -84,13 +79,7 @@ export async function POST(req: NextRequest) {
     } = body;
 
     if (!name || !regionId || !city || !address) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Missing required fields: name, regionId, city, and address are mandatory.",
-        },
-        { status: 400 }
-      );
+      return apiError("Missing required fields: name, regionId, city, and address are mandatory.", 400);
     }
 
     // Ensure valid region exists
@@ -164,12 +153,6 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    return NextResponse.json(
-      {
-        success: false,
-        error: `Failed to create venue: ${(error as Error).message}`,
-      },
-      { status: 500 }
-    );
+    return apiError(`Failed to create venue: ${(error as Error).message}`, 500);
   }
 }

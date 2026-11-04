@@ -66,6 +66,10 @@ describe("Redis rate limit store", () => {
     expect(await rateLimitResponse("route", request, rule)).toBeNull();
     const limited = await rateLimitResponse("route", request, rule);
     expect(limited?.status).toBe(429);
+    expect(await limited?.json()).toMatchObject({
+      success: false,
+      code: "RATE_LIMITED",
+    });
   });
 
   it("reports limit headers on success and on 429", async () => {

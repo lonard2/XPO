@@ -1,13 +1,14 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { resolveEventCaller } from "@/lib/auth/eventOwnership";
+import { apiError } from "@/lib/api/envelope";
 
 /** GET /api/admin/metrics — admin-only platform overview counts. */
 export async function GET(request: Request) {
   try {
     const caller = await resolveEventCaller(request);
     if (caller.role !== "ADMIN") {
-      return NextResponse.json({ error: "Forbidden: platform administrators only." }, { status: 403 });
+      return apiError("Forbidden: platform administrators only.", 403);
     }
     const now = new Date();
     const dayAgo = new Date(now.getTime() - 24 * 3600_000);
@@ -53,9 +54,6 @@ export async function GET(request: Request) {
       audit24h,
     });
   } catch (error) {
-    return NextResponse.json(
-      { error: `Failed to load metrics: ${(error as Error).message}` },
-      { status: 500 }
-    );
+    return apiError(`Failed to load metrics: ${(error as Error).message}`, 500);
   }
 }

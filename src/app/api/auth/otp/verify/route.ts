@@ -4,6 +4,7 @@ import { verifyOtp } from "@/lib/auth/otp";
 import { createSession, sessionCookieHeader } from "@/lib/auth/sessionStore";
 import { rateLimitResponse } from "@/lib/api/rateLimit";
 import { reportError } from "@/lib/observability/logger";
+import { apiError } from "@/lib/api/envelope";
 
 /** POST /api/auth/otp/verify — exchange a code for a session. */
 export async function POST(request: Request) {
@@ -14,11 +15,11 @@ export async function POST(request: Request) {
     const email = typeof body.email === "string" ? body.email.toLowerCase().trim() : "";
     const code = typeof body.code === "string" ? body.code : "";
     if (!email || !code) {
-      return NextResponse.json({ error: "Email and code are required." }, { status: 400 });
+      return apiError("Email and code are required.", 400);
     }
     const result = await verifyOtp(email, code, "LOGIN");
     if (!result.ok || !result.userId) {
-      return NextResponse.json({ error: result.error || "Invalid or expired code." }, { status: result.status });
+      return apiError(result.error || "Invalid or expired code.", result.status);
     }
     const token = await createSession(result.userId, {
       userAgent: request.headers.get("user-agent"),
@@ -32,9 +33,6 @@ export async function POST(request: Request) {
     return res;
   } catch (error) {
     reportError("auth-otp-verify", error);
-    return NextResponse.json(
-      { error: `OTP verification failed: ${(error as Error).message}` },
-      { status: 500 }
-    );
+    return apiError(`OTP verification failed: ${(error as Error).message}`, 500);
   }
 }

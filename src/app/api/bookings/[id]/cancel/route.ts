@@ -7,6 +7,7 @@ import { reportError } from "@/lib/observability/logger";
 import { sendEmail } from "@/lib/email/transport";
 import { renderBookingCancellation, renderWaitlistPromotion } from "@/lib/email/templates";
 import { promoteWaitlist } from "@/lib/waitlist/promote";
+import { apiError } from "@/lib/api/envelope";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -34,29 +35,20 @@ export async function POST(request: Request, { params }: RouteParams) {
     });
 
     if (!booking) {
-      return NextResponse.json(
-        { success: false, error: "NOT_FOUND: booking does not exist." },
-        { status: 404 }
-      );
+      return apiError("NOT_FOUND: booking does not exist.", 404);
     }
 
     const isHolder = booking.userId === gate.caller.userId;
     const isOrganizer = canWriteEvent(gate.caller, booking.event.organizerId);
     if (!isHolder && !isOrganizer) {
-      return NextResponse.json(
-        { success: false, error: "Forbidden: only the pass holder or the owning organizer can cancel." },
-        { status: 403 }
-      );
+      return apiError("Forbidden: only the pass holder or the owning organizer can cancel.", 403);
     }
 
     if (booking.status === "CANCELLED") {
       return NextResponse.json({ success: true, booking: { id, status: "CANCELLED" } });
     }
     if (booking.status === "CHECKED_IN") {
-      return NextResponse.json(
-        { success: false, error: "CONFLICT: a checked-in pass cannot be cancelled." },
-        { status: 409 }
-      );
+      return apiError("CONFLICT: a checked-in pass cannot be cancelled.", 409);
     }
 
     await db.$transaction([
@@ -107,9 +99,6 @@ export async function POST(request: Request, { params }: RouteParams) {
     return NextResponse.json({ success: true, booking: { id, status: "CANCELLED" } });
   } catch (error) {
     reportError("booking-cancel", error);
-    return NextResponse.json(
-      { success: false, error: "INTERNAL_ERROR: could not cancel the booking." },
-      { status: 500 }
-    );
+    return apiError("INTERNAL_ERROR: could not cancel the booking.", 500);
   }
 }

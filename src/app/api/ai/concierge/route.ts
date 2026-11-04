@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { apiError } from "@/lib/api/envelope";
 
 export const runtime = "nodejs";
 
@@ -249,9 +250,6 @@ export async function POST(req: NextRequest) {
       },
     });
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to generate concierge response", details: (error as Error).message },
-      { status: 500 }
-    );
+    return apiError("Failed to generate concierge response", 500, { details: (error as Error).message });
   }
 }

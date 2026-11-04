@@ -4,6 +4,7 @@ import { requireUser } from "@/lib/auth/guards";
 import { canWriteEvent } from "@/lib/auth/eventOwnership";
 import { audit } from "@/lib/observability/audit";
 import { reportError } from "@/lib/observability/logger";
+import { apiError } from "@/lib/api/envelope";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -23,10 +24,7 @@ export async function PATCH(request: Request, { params }: RouteParams) {
     const quota = Number(body.meetingQuota);
 
     if (!Number.isInteger(quota) || quota < 0 || quota > 1000) {
-      return NextResponse.json(
-        { success: false, error: "VALIDATION_ERROR: meetingQuota must be an integer from 0 to 1000." },
-        { status: 400 }
-      );
+      return apiError("VALIDATION_ERROR: meetingQuota must be an integer from 0 to 1000.", 400);
     }
 
     const tier = await db.ticketTier.findUnique({
@@ -34,16 +32,10 @@ export async function PATCH(request: Request, { params }: RouteParams) {
       include: { event: { select: { id: true, organizerId: true } } },
     });
     if (!tier) {
-      return NextResponse.json(
-        { success: false, error: "NOT_FOUND: ticket tier does not exist." },
-        { status: 404 }
-      );
+      return apiError("NOT_FOUND: ticket tier does not exist.", 404);
     }
     if (!canWriteEvent(gate.caller, tier.event.organizerId)) {
-      return NextResponse.json(
-        { success: false, error: "Forbidden: only the owning organizer can set quotas." },
-        { status: 403 }
-      );
+      return apiError("Forbidden: only the owning organizer can set quotas.", 403);
     }
 
     const updated = await db.ticketTier.update({
@@ -62,9 +54,6 @@ export async function PATCH(request: Request, { params }: RouteParams) {
     return NextResponse.json({ success: true, tier: updated });
   } catch (error) {
     reportError("tier-quota", error);
-    return NextResponse.json(
-      { success: false, error: "INTERNAL_ERROR: could not set the quota." },
-      { status: 500 }
-    );
+    return apiError("INTERNAL_ERROR: could not set the quota.", 500);
   }
 }

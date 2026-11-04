@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { buildVoucherCode } from "@/lib/tickets/voucher";
+import { apiError } from "@/lib/api/envelope";
 
 /** Legacy name-label rule, kept for perks without an exact tierId gate. */
 function legacyNameEligible(tierRequired: string, tierName: string): boolean {
@@ -49,10 +50,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const bookingId = searchParams.get("bookingId");
     if (!bookingId) {
-      return NextResponse.json(
-        { success: false, error: "Query parameter 'bookingId' is required." },
-        { status: 400 }
-      );
+      return apiError("Query parameter 'bookingId' is required.", 400);
     }
     const claims = await db.voucherClaim.findMany({
       where: { bookingId },
@@ -61,10 +59,7 @@ export async function GET(request: Request) {
     });
     return NextResponse.json({ success: true, claims });
   } catch (error) {
-    return NextResponse.json(
-      { success: false, error: `Failed to list claims: ${(error as Error).message}` },
-      { status: 500 }
-    );
+    return apiError(`Failed to list claims: ${(error as Error).message}`, 500);
   }
 }
 
@@ -74,24 +69,18 @@ export async function POST(request: Request) {
     const body = await request.json().catch(() => ({}));
     const { bookingId, perkId } = body;
     if (!bookingId || !perkId) {
-      return NextResponse.json(
-        { success: false, error: "Missing required fields (bookingId, perkId)." },
-        { status: 400 }
-      );
+      return apiError("Missing required fields (bookingId, perkId).", 400);
     }
 
     const loaded = await loadBookingAndPerk(bookingId, perkId);
     if ("error" in loaded) {
-      return NextResponse.json(
-        { success: false, error: loaded.error },
-        { status: loaded.status }
-      );
+      return apiError(loaded.error ?? "NOT_FOUND: booking or perk is missing.", loaded.status);
     }
     const { booking, perk } = loaded;
 
     const denial = checkEligibility(perk, booking);
     if (denial) {
-      return NextResponse.json({ success: false, error: denial }, { status: 403 });
+      return apiError(denial, 403);
     }
 
     const code = buildVoucherCode(booking.qrCodeHash, perk.id);
@@ -103,10 +92,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true, claim }, { status: 201 });
   } catch (error) {
-    return NextResponse.json(
-      { success: false, error: `Failed to claim voucher: ${(error as Error).message}` },
-      { status: 500 }
-    );
+    return apiError(`Failed to claim voucher: ${(error as Error).message}`, 500);
   }
 }
 
@@ -121,18 +107,12 @@ export async function DELETE(request: Request) {
       perkId = perkId || params.get("perkId") || undefined;
     }
     if (!bookingId || !perkId) {
-      return NextResponse.json(
-        { success: false, error: "Missing required fields (bookingId, perkId)." },
-        { status: 400 }
-      );
+      return apiError("Missing required fields (bookingId, perkId).", 400);
     }
 
     await db.voucherClaim.deleteMany({ where: { bookingId, perkId } });
     return NextResponse.json({ success: true });
   } catch (error) {
-    return NextResponse.json(
-      { success: false, error: `Failed to release voucher: ${(error as Error).message}` },
-      { status: 500 }
-    );
+    return apiError(`Failed to release voucher: ${(error as Error).message}`, 500);
   }
 }

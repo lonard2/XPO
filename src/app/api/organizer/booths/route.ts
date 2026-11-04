@@ -5,6 +5,7 @@ import { requireEventWrites, requireBoothWrites } from "@/lib/auth/eventOwnershi
 import { rateLimitResponse } from "@/lib/api/rateLimit";
 import { audit } from "@/lib/observability/audit";
 import { parsePagination } from "@/lib/api/pagination";
+import { apiError } from "@/lib/api/envelope";
 
 export async function GET(request: Request) {
   try {
@@ -37,10 +38,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json({ success: true, booths, total, take, skip });
   } catch (error) {
-    return NextResponse.json(
-      { success: false, error: `Failed to fetch booths: ${(error as Error).message}` },
-      { status: 500 }
-    );
+    return apiError(`Failed to fetch booths: ${(error as Error).message}`, 500);
   }
 }
 
@@ -71,24 +69,15 @@ export async function POST(request: Request) {
       const { eventId } = body;
       const incomingBooths: IncomingBoothPayload[] = body.booths;
       if (!eventId) {
-        return NextResponse.json(
-          { success: false, error: "Missing required eventId for bulk import" },
-          { status: 400 }
-        );
+        return apiError("Missing required eventId for bulk import", 400);
       }
       // Strict ownership on the parent event before ingesting anything.
       const bulkGate = await requireEventWrites(request, [eventId], db);
       if (!bulkGate.ok) {
-        return NextResponse.json(
-          { success: false, error: bulkGate.error },
-          { status: bulkGate.status }
-        );
+        return apiError(bulkGate.error, bulkGate.status);
       }
       if (incomingBooths.length === 0) {
-        return NextResponse.json(
-          { success: false, error: "No booths provided for bulk import" },
-          { status: 400 }
-        );
+        return apiError("No booths provided for bulk import", 400);
       }
 
       // Check duplicates within incoming array
@@ -96,16 +85,10 @@ export async function POST(request: Request) {
       for (const b of incomingBooths) {
         const num = b.boothNumber?.trim();
         if (!num) {
-          return NextResponse.json(
-            { success: false, error: "Each booth in bulk import must have a valid boothNumber" },
-            { status: 400 }
-          );
+          return apiError("Each booth in bulk import must have a valid boothNumber", 400);
         }
         if (seen.has(num.toLowerCase())) {
-          return NextResponse.json(
-            { success: false, error: `Duplicate booth lot number "${num}" found in import dataset` },
-            { status: 409 }
-          );
+          return apiError(`Duplicate booth lot number "${num}" found in import dataset`, 409);
         }
         seen.add(num.toLowerCase());
       }
@@ -150,10 +133,7 @@ export async function POST(request: Request) {
       } catch (error) {
         const status = (error as Error & { status?: number }).status;
         if (status) {
-          return NextResponse.json(
-            { success: false, error: (error as Error).message },
-            { status }
-          );
+          return apiError((error as Error).message, status);
         }
         throw error;
       }
@@ -195,19 +175,13 @@ export async function POST(request: Request) {
     } = body;
 
     if (!eventId || !boothNumber || !hallName) {
-      return NextResponse.json(
-        { success: false, error: "Missing required fields (eventId, boothNumber, hallName)" },
-        { status: 400 }
-      );
+      return apiError("Missing required fields (eventId, boothNumber, hallName)", 400);
     }
 
     // Strict ownership on the parent event.
     const singleGate = await requireEventWrites(request, [eventId], db);
     if (!singleGate.ok) {
-      return NextResponse.json(
-        { success: false, error: singleGate.error },
-        { status: singleGate.status }
-      );
+      return apiError(singleGate.error, singleGate.status);
     }
 
     // Collision check for single booth creation (case-insensitive within event)
@@ -220,10 +194,7 @@ export async function POST(request: Request) {
     );
 
     if (taken) {
-      return NextResponse.json(
-        { success: false, error: `Booth lot "${boothNumber}" is already registered for this event` },
-        { status: 409 }
-      );
+      return apiError(`Booth lot "${boothNumber}" is already registered for this event`, 409);
     }
 
     const booth = await db.boothTenant.create({
@@ -245,10 +216,7 @@ export async function POST(request: Request) {
     await audit(request, { action: "booth.create", entity: "booth", entityId: booth.id, metadata: { boothNumber: booth.boothNumber } });
     return NextResponse.json({ success: true, booth }, { status: 201 });
   } catch (error) {
-    return NextResponse.json(
-      { success: false, error: `Failed to create booth: ${(error as Error).message}` },
-      { status: 500 }
-    );
+    return apiError(`Failed to create booth: ${(error as Error).message}`, 500);
   }
 }
 
@@ -263,18 +231,12 @@ export async function PATCH(request: Request) {
     if (body.bulk === true && Array.isArray(body.ids)) {
       const ids: string[] = body.ids;
       if (ids.length === 0) {
-        return NextResponse.json(
-          { success: false, error: "No IDs provided for bulk update" },
-          { status: 400 }
-        );
+        return apiError("No IDs provided for bulk update", 400);
       }
       // Strict ownership on every parent event before touching any booth.
       const bulkUpdateGate = await requireBoothWrites(request, ids, db);
       if (!bulkUpdateGate.ok) {
-        return NextResponse.json(
-          { success: false, error: bulkUpdateGate.error },
-          { status: bulkUpdateGate.status }
-        );
+        return apiError(bulkUpdateGate.error, bulkUpdateGate.status);
       }
       const updateData: Record<string, unknown> = {};
       if (body.companyName !== undefined) updateData.companyName = body.companyName !== null ? body.companyName.trim() : "";
@@ -306,19 +268,13 @@ export async function PATCH(request: Request) {
     } = body;
 
     if (!id) {
-      return NextResponse.json(
-        { success: false, error: "Missing booth ID for update" },
-        { status: 400 }
-      );
+      return apiError("Missing booth ID for update", 400);
     }
 
     // Strict ownership on the parent event.
     const singleUpdateGate = await requireBoothWrites(request, [id], db);
     if (!singleUpdateGate.ok) {
-      return NextResponse.json(
-        { success: false, error: singleUpdateGate.error },
-        { status: singleUpdateGate.status }
-      );
+      return apiError(singleUpdateGate.error, singleUpdateGate.status);
     }
 
     // If boothNumber is updated, ensure no collision with another booth in the same event
@@ -333,10 +289,7 @@ export async function PATCH(request: Request) {
           },
         });
         if (collision) {
-          return NextResponse.json(
-            { success: false, error: `Booth lot "${boothNumber}" is already allocated for another tenant in this event` },
-            { status: 409 }
-          );
+          return apiError(`Booth lot "${boothNumber}" is already allocated for another tenant in this event`, 409);
         }
       }
     }
@@ -360,10 +313,7 @@ export async function PATCH(request: Request) {
     await audit(request, { action: "booth.update", entity: "booth", entityId: updated.id, metadata: { boothNumber: updated.boothNumber } });
     return NextResponse.json({ success: true, booth: updated });
   } catch (error) {
-    return NextResponse.json(
-      { success: false, error: `Failed to update booth: ${(error as Error).message}` },
-      { status: 500 }
-    );
+    return apiError(`Failed to update booth: ${(error as Error).message}`, 500);
   }
 }
 
@@ -398,10 +348,7 @@ export async function DELETE(request: Request) {
       // Strict ownership on every parent event before deleting anything.
       const bulkDeleteGate = await requireBoothWrites(request, ids, db);
       if (!bulkDeleteGate.ok) {
-        return NextResponse.json(
-          { success: false, error: bulkDeleteGate.error },
-          { status: bulkDeleteGate.status }
-        );
+        return apiError(bulkDeleteGate.error, bulkDeleteGate.status);
       }
       const result = await db.boothTenant.deleteMany({
         where: { id: { in: ids } },
@@ -412,27 +359,18 @@ export async function DELETE(request: Request) {
 
     // 2. Single Decommission Path
     if (!id) {
-      return NextResponse.json(
-        { success: false, error: "Missing booth ID for deletion" },
-        { status: 400 }
-      );
+      return apiError("Missing booth ID for deletion", 400);
     }
 
     const existing = await db.boothTenant.findUnique({ where: { id } });
     if (!existing) {
-      return NextResponse.json(
-        { success: false, error: "Booth lot not found or already deleted" },
-        { status: 404 }
-      );
+      return apiError("Booth lot not found or already deleted", 404);
     }
 
     // Strict ownership on the parent event.
     const singleDeleteGate = await requireBoothWrites(request, [id], db);
     if (!singleDeleteGate.ok) {
-      return NextResponse.json(
-        { success: false, error: singleDeleteGate.error },
-        { status: singleDeleteGate.status }
-      );
+      return apiError(singleDeleteGate.error, singleDeleteGate.status);
     }
 
     await db.boothTenant.delete({
@@ -446,9 +384,6 @@ export async function DELETE(request: Request) {
       id,
     });
   } catch (error) {
-    return NextResponse.json(
-      { success: false, error: `Failed to delete booth: ${(error as Error).message}` },
-      { status: 500 }
-    );
+    return apiError(`Failed to delete booth: ${(error as Error).message}`, 500);
   }
 }

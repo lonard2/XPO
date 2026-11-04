@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { resolveEventCaller, canWriteEvent } from "@/lib/auth/eventOwnership";
 import { audit } from "@/lib/observability/audit";
 import { validateShowcase } from "@/lib/showcase";
+import { apiError } from "@/lib/api/envelope";
 
 interface RouteProps {
   params: Promise<{ id: string }>;
@@ -25,40 +26,22 @@ export async function PATCH(request: Request, { params }: RouteProps) {
     });
 
     if (!existing) {
-      return NextResponse.json(
-        { success: false, error: `Event not found for ID: ${id}` },
-        { status: 404 }
-      );
+      return apiError(`Event not found for ID: ${id}`, 404);
     }
 
     const caller = await resolveEventCaller(request);
     if (!canWriteEvent(caller, existing.organizerId)) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Forbidden: Only the owning organizer or a platform administrator can edit showcase content.",
-        },
-        { status: 403 }
-      );
+      return apiError("Forbidden: Only the owning organizer or a platform administrator can edit showcase content.", 403);
     }
 
     // Attestation is mandatory on every save: the publisher confirms accuracy.
     if (body.attested !== true) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Attestation required: confirm the content is accurate before saving.",
-        },
-        { status: 400 }
-      );
+      return apiError("Attestation required: confirm the content is accurate before saving.", 400);
     }
 
     const parsed = validateShowcase(body.showcase ?? body);
     if (!parsed.ok) {
-      return NextResponse.json(
-        { success: false, error: "Invalid showcase content.", issues: parsed.issues },
-        { status: 400 }
-      );
+      return apiError("Invalid showcase content.", 400, { issues: parsed.issues });
     }
 
     const nowIso = new Date().toISOString();
@@ -79,9 +62,6 @@ export async function PATCH(request: Request, { params }: RouteProps) {
     await audit(request, { action: "event.showcase", entity: "event", entityId: updated.id });
     return NextResponse.json({ success: true, event: updated });
   } catch (error) {
-    return NextResponse.json(
-      { success: false, error: `Failed to update showcase: ${(error as Error).message}` },
-      { status: 500 }
-    );
+    return apiError(`Failed to update showcase: ${(error as Error).message}`, 500);
   }
 }

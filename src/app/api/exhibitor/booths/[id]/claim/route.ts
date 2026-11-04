@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { requireUser } from "@/lib/auth/guards";
 import { canWriteEvent } from "@/lib/auth/eventOwnership";
 import { audit } from "@/lib/observability/audit";
+import { apiError } from "@/lib/api/envelope";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -25,10 +26,7 @@ export async function POST(request: Request, { params }: RouteParams) {
       select: { id: true, eventId: true, userId: true, claimStatus: true },
     });
     if (!booth) {
-      return NextResponse.json(
-        { success: false, error: "NOT_FOUND: booth does not exist." },
-        { status: 404 }
-      );
+      return apiError("NOT_FOUND: booth does not exist.", 404);
     }
 
     if (booth.claimStatus === "CLAIMED" || booth.claimStatus === "PENDING") {
@@ -38,10 +36,7 @@ export async function POST(request: Request, { params }: RouteParams) {
           booth: { id: booth.id, claimStatus: booth.claimStatus },
         });
       }
-      return NextResponse.json(
-        { success: false, error: "CONFLICT: this booth is already claimed or under review." },
-        { status: 409 }
-      );
+      return apiError("CONFLICT: this booth is already claimed or under review.", 409);
     }
 
     const updated = await db.boothTenant.update({
@@ -59,10 +54,7 @@ export async function POST(request: Request, { params }: RouteParams) {
 
     return NextResponse.json({ success: true, booth: updated }, { status: 201 });
   } catch {
-    return NextResponse.json(
-      { success: false, error: "INTERNAL_ERROR: could not claim the booth." },
-      { status: 500 }
-    );
+    return apiError("INTERNAL_ERROR: could not claim the booth.", 500);
   }
 }
 
@@ -78,10 +70,7 @@ export async function PATCH(request: Request, { params }: RouteParams) {
     const body = (await request.json().catch(() => ({}))) as Record<string, unknown>;
     const status = typeof body.status === "string" ? body.status.toUpperCase() : "";
     if (!(DECISIONS as readonly string[]).includes(status)) {
-      return NextResponse.json(
-        { success: false, error: "VALIDATION_ERROR: status must be CLAIMED or REJECTED." },
-        { status: 400 }
-      );
+      return apiError("VALIDATION_ERROR: status must be CLAIMED or REJECTED.", 400);
     }
 
     const booth = await db.boothTenant.findUnique({
@@ -89,23 +78,14 @@ export async function PATCH(request: Request, { params }: RouteParams) {
       include: { event: { select: { organizerId: true } } },
     });
     if (!booth) {
-      return NextResponse.json(
-        { success: false, error: "NOT_FOUND: booth does not exist." },
-        { status: 404 }
-      );
+      return apiError("NOT_FOUND: booth does not exist.", 404);
     }
     if (!canWriteEvent(gate.caller, booth.event.organizerId)) {
-      return NextResponse.json(
-        { success: false, error: "Forbidden: only the owning organizer can decide a claim." },
-        { status: 403 }
-      );
+      return apiError("Forbidden: only the owning organizer can decide a claim.", 403);
     }
 
     if (status === "CLAIMED" && !booth.userId) {
-      return NextResponse.json(
-        { success: false, error: "CONFLICT: no exhibitor is waiting on this booth." },
-        { status: 409 }
-      );
+      return apiError("CONFLICT: no exhibitor is waiting on this booth.", 409);
     }
 
     const updated = await db.boothTenant.update({
@@ -126,10 +106,7 @@ export async function PATCH(request: Request, { params }: RouteParams) {
 
     return NextResponse.json({ success: true, booth: updated });
   } catch {
-    return NextResponse.json(
-      { success: false, error: "INTERNAL_ERROR: could not decide the claim." },
-      { status: 500 }
-    );
+    return apiError("INTERNAL_ERROR: could not decide the claim.", 500);
   }
 }
 
@@ -148,22 +125,13 @@ export async function DELETE(request: Request, { params }: RouteParams) {
       select: { id: true, userId: true, claimStatus: true },
     });
     if (!booth) {
-      return NextResponse.json(
-        { success: false, error: "NOT_FOUND: booth does not exist." },
-        { status: 404 }
-      );
+      return apiError("NOT_FOUND: booth does not exist.", 404);
     }
     if (booth.userId !== gate.caller.userId && gate.caller.role !== "ADMIN") {
-      return NextResponse.json(
-        { success: false, error: "Forbidden: only the claimant can withdraw." },
-        { status: 403 }
-      );
+      return apiError("Forbidden: only the claimant can withdraw.", 403);
     }
     if (booth.claimStatus === "CLAIMED") {
-      return NextResponse.json(
-        { success: false, error: "CONFLICT: an approved booth needs the organizer to release it." },
-        { status: 409 }
-      );
+      return apiError("CONFLICT: an approved booth needs the organizer to release it.", 409);
     }
 
     await db.boothTenant.update({
@@ -173,9 +141,6 @@ export async function DELETE(request: Request, { params }: RouteParams) {
 
     return NextResponse.json({ success: true, booth: { id, claimStatus: "UNCLAIMED" } });
   } catch {
-    return NextResponse.json(
-      { success: false, error: "INTERNAL_ERROR: could not withdraw the claim." },
-      { status: 500 }
-    );
+    return apiError("INTERNAL_ERROR: could not withdraw the claim.", 500);
   }
 }

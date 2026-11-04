@@ -5,6 +5,7 @@ import { enforceRateLimit } from "@/lib/api/rateLimit";
 import { reportError } from "@/lib/observability/logger";
 import { normalizeInterests, scoreEventsByInterests } from "@/lib/matching/suggest";
 import { buildRerankSignals, rerankSuggestions, resolveRerankModel } from "@/lib/matching/rerank";
+import { apiError } from "@/lib/api/envelope";
 
 const LIMIT = 6;
 const CANDIDATES = 50;
@@ -26,10 +27,7 @@ export async function GET(request: Request) {
     const rerank = searchParams.get("rerank") === "true";
     const model = resolveRerankModel(searchParams.get("model"));
     if (searchParams.get("model") && !model) {
-      return NextResponse.json(
-        { success: false, error: "VALIDATION_ERROR: unknown model." },
-        { status: 400 }
-      );
+      return apiError("VALIDATION_ERROR: unknown model.", 400);
     }
 
     // LLM calls cost money and time; the rule path stays unthrottled.
@@ -48,10 +46,7 @@ export async function GET(request: Request) {
       select: { interestsJson: true },
     });
     if (!user) {
-      return NextResponse.json(
-        { success: false, error: "NOT_FOUND: user does not exist." },
-        { status: 404 }
-      );
+      return apiError("NOT_FOUND: user does not exist.", 404);
     }
 
     let interests: string[] = [];
@@ -140,9 +135,6 @@ export async function GET(request: Request) {
     );
   } catch (error) {
     reportError("profile-suggestions", error);
-    return NextResponse.json(
-      { success: false, error: "INTERNAL_ERROR: could not load suggestions." },
-      { status: 500 }
-    );
+    return apiError("INTERNAL_ERROR: could not load suggestions.", 500);
   }
 }

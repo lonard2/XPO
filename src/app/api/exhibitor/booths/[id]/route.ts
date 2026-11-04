@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { requireUser } from "@/lib/auth/guards";
 import { audit } from "@/lib/observability/audit";
+import { apiError } from "@/lib/api/envelope";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -35,22 +36,13 @@ export async function PATCH(request: Request, { params }: RouteParams) {
       select: { id: true, userId: true, claimStatus: true, eventId: true },
     });
     if (!booth) {
-      return NextResponse.json(
-        { success: false, error: "NOT_FOUND: booth does not exist." },
-        { status: 404 }
-      );
+      return apiError("NOT_FOUND: booth does not exist.", 404);
     }
     if (booth.userId !== gate.caller.userId && gate.caller.role !== "ADMIN") {
-      return NextResponse.json(
-        { success: false, error: "Forbidden: only the claimant can edit this booth." },
-        { status: 403 }
-      );
+      return apiError("Forbidden: only the claimant can edit this booth.", 403);
     }
     if (booth.claimStatus !== "PENDING" && booth.claimStatus !== "CLAIMED") {
-      return NextResponse.json(
-        { success: false, error: "CONFLICT: claim the booth before editing its profile." },
-        { status: 409 }
-      );
+      return apiError("CONFLICT: claim the booth before editing its profile.", 409);
     }
 
     const body = (await request.json().catch(() => ({}))) as Record<string, unknown>;
@@ -59,10 +51,7 @@ export async function PATCH(request: Request, { params }: RouteParams) {
     if (body.companyName !== undefined) {
       const value = typeof body.companyName === "string" ? body.companyName.trim() : "";
       if (!value) {
-        return NextResponse.json(
-          { success: false, error: "VALIDATION_ERROR: companyName cannot be empty." },
-          { status: 400 }
-        );
+        return apiError("VALIDATION_ERROR: companyName cannot be empty.", 400);
       }
       data.companyName = value.slice(0, 160);
     }
@@ -81,20 +70,14 @@ export async function PATCH(request: Request, { params }: RouteParams) {
     if (body.websiteUrl !== undefined) {
       const value = normalizeUrl(body.websiteUrl);
       if (value === "invalid") {
-        return NextResponse.json(
-          { success: false, error: "VALIDATION_ERROR: websiteUrl must be an http(s) URL." },
-          { status: 400 }
-        );
+        return apiError("VALIDATION_ERROR: websiteUrl must be an http(s) URL.", 400);
       }
       data.websiteUrl = value;
     }
     if (body.logoUrl !== undefined) {
       const value = normalizeUrl(body.logoUrl);
       if (value === "invalid") {
-        return NextResponse.json(
-          { success: false, error: "VALIDATION_ERROR: logoUrl must be an http(s) URL." },
-          { status: 400 }
-        );
+        return apiError("VALIDATION_ERROR: logoUrl must be an http(s) URL.", 400);
       }
       data.logoUrl = value;
     }
@@ -104,20 +87,14 @@ export async function PATCH(request: Request, { params }: RouteParams) {
       } else {
         const value = Number(body.areaSqm);
         if (!Number.isFinite(value) || value < 0) {
-          return NextResponse.json(
-            { success: false, error: "VALIDATION_ERROR: areaSqm must be a positive number." },
-            { status: 400 }
-          );
+          return apiError("VALIDATION_ERROR: areaSqm must be a positive number.", 400);
         }
         data.areaSqm = value;
       }
     }
 
     if (Object.keys(data).length === 0) {
-      return NextResponse.json(
-        { success: false, error: "VALIDATION_ERROR: no editable fields were provided." },
-        { status: 400 }
-      );
+      return apiError("VALIDATION_ERROR: no editable fields were provided.", 400);
     }
 
     const updated = await db.boothTenant.update({
@@ -145,9 +122,6 @@ export async function PATCH(request: Request, { params }: RouteParams) {
 
     return NextResponse.json({ success: true, booth: updated });
   } catch {
-    return NextResponse.json(
-      { success: false, error: "INTERNAL_ERROR: could not update the booth profile." },
-      { status: 500 }
-    );
+    return apiError("INTERNAL_ERROR: could not update the booth profile.", 500);
   }
 }

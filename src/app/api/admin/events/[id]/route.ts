@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { requireRole } from "@/lib/auth/guards";
 import { audit } from "@/lib/observability/audit";
+import { apiError } from "@/lib/api/envelope";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -29,13 +30,7 @@ export async function DELETE(request: Request, { params }: RouteParams) {
     });
 
     if (!event) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: `Event not found: No event matches identifier "${id}".`,
-        },
-        { status: 404 }
-      );
+      return apiError(`Event not found: No event matches identifier "${id}".`, 404);
     }
 
     // Bookings first: no cascade on Booking.event.
@@ -48,12 +43,6 @@ export async function DELETE(request: Request, { params }: RouteParams) {
       message: `Event "${event.title}" and its bookings deleted successfully.`,
     });
   } catch (error) {
-    return NextResponse.json(
-      {
-        success: false,
-        error: `Failed to delete event: ${(error as Error).message}`,
-      },
-      { status: 500 }
-    );
+    return apiError(`Failed to delete event: ${(error as Error).message}`, 500);
   }
 }

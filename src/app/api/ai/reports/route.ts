@@ -12,6 +12,7 @@ import {
   isValidOpenRouterModel,
   generateEventReportStream,
 } from "@/lib/ai/openrouter";
+import { apiError } from "@/lib/api/envelope";
 
 export const runtime = "nodejs";
 
@@ -36,10 +37,7 @@ export async function GET(req: NextRequest) {
     const eventId = searchParams.get("eventId");
 
     if (!eventId) {
-      return NextResponse.json(
-        { success: false, error: "Query parameter 'eventId' is required" },
-        { status: 400 }
-      );
+      return apiError("Query parameter 'eventId' is required", 400);
     }
 
     const reports = await db.aIReport.findMany({
@@ -71,10 +69,7 @@ export async function GET(req: NextRequest) {
       })),
     });
   } catch (error) {
-    return NextResponse.json(
-      { success: false, error: `Failed to fetch reports: ${(error as Error).message}` },
-      { status: 500 }
-    );
+    return apiError(`Failed to fetch reports: ${(error as Error).message}`, 500);
   }
 }
 
@@ -94,14 +89,7 @@ export async function POST(req: NextRequest) {
     const parseResult = ReportRequestSchema.safeParse(body);
 
     if (!parseResult.success) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Invalid request payload",
-          details: parseResult.error.flatten(),
-        },
-        { status: 400 }
-      );
+      return apiError("Invalid request payload", 400, { details: parseResult.error.flatten() });
     }
 
     const { eventId, model, reportType, focusArea, saveToHistory, authorId } = parseResult.data;
@@ -113,10 +101,7 @@ export async function POST(req: NextRequest) {
       select: { organizerId: true },
     });
     if (ownedEvent && !canWriteEvent(await resolveEventCaller(req), ownedEvent.organizerId)) {
-      return NextResponse.json(
-        { success: false, error: "Forbidden: Only the owning organizer or a platform administrator can generate reports for this event." },
-        { status: 403 }
-      );
+      return apiError("Forbidden: Only the owning organizer or a platform administrator can generate reports for this event.", 403);
     }
 
     // Fetch real event data from Prisma
@@ -316,10 +301,7 @@ export async function POST(req: NextRequest) {
       },
     });
   } catch (error) {
-    return NextResponse.json(
-      { success: false, error: `Report generation failed: ${(error as Error).message}` },
-      { status: 500 }
-    );
+    return apiError(`Report generation failed: ${(error as Error).message}`, 500);
   }
 }
 
@@ -333,10 +315,7 @@ export async function DELETE(req: NextRequest) {
     const reportId = searchParams.get("reportId");
 
     if (!reportId) {
-      return NextResponse.json(
-        { success: false, error: "Query parameter 'reportId' is required" },
-        { status: 400 }
-      );
+      return apiError("Query parameter 'reportId' is required", 400);
     }
 
     await db.aIReport.delete({
@@ -345,9 +324,6 @@ export async function DELETE(req: NextRequest) {
 
     return NextResponse.json({ success: true, message: "Report deleted successfully" });
   } catch (error) {
-    return NextResponse.json(
-      { success: false, error: `Failed to delete report: ${(error as Error).message}` },
-      { status: 500 }
-    );
+    return apiError(`Failed to delete report: ${(error as Error).message}`, 500);
   }
 }

@@ -1,4 +1,5 @@
 import { reportWarn } from "@/lib/observability/logger";
+import { apiError } from "@/lib/api/envelope";
 
 export interface RateLimitRule {
   /** Max hits per window. */
@@ -264,12 +265,11 @@ export async function enforceRateLimit(
   const headers = limitHeaders(rule, verdict);
   if (verdict.ok) return { response: null, headers };
   return {
-    response: Response.json(
-      { error: "RATE_LIMITED: Too many requests. Back off and retry." },
-      {
-        status: 429,
-        headers: { ...headers, "Retry-After": String(verdict.retryAfterSec) },
-      }
+    response: apiError(
+      "RATE_LIMITED: Too many requests. Back off and retry.",
+      429,
+      undefined,
+      { headers: { ...headers, "Retry-After": String(verdict.retryAfterSec) } }
     ),
     headers,
   };

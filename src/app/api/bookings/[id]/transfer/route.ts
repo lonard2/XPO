@@ -5,6 +5,7 @@ import { audit } from "@/lib/observability/audit";
 import { reportError } from "@/lib/observability/logger";
 import { sendEmail } from "@/lib/email/transport";
 import { renderBookingTransfer } from "@/lib/email/templates";
+import { apiError } from "@/lib/api/envelope";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_NAME = 120;
@@ -33,16 +34,10 @@ export async function POST(request: Request, { params }: RouteParams) {
     const locale = typeof body.locale === "string" && body.locale ? body.locale : "en";
 
     if (!attendeeName) {
-      return NextResponse.json(
-        { success: false, error: "VALIDATION_ERROR: attendeeName is required." },
-        { status: 400 }
-      );
+      return apiError("VALIDATION_ERROR: attendeeName is required.", 400);
     }
     if (!EMAIL_RE.test(attendeeEmail)) {
-      return NextResponse.json(
-        { success: false, error: "VALIDATION_ERROR: a valid attendeeEmail is required." },
-        { status: 400 }
-      );
+      return apiError("VALIDATION_ERROR: a valid attendeeEmail is required.", 400);
     }
 
     const booking = await db.booking.findUnique({
@@ -50,31 +45,19 @@ export async function POST(request: Request, { params }: RouteParams) {
       include: { event: { select: { id: true, title: true } } },
     });
     if (!booking) {
-      return NextResponse.json(
-        { success: false, error: "NOT_FOUND: booking does not exist." },
-        { status: 404 }
-      );
+      return apiError("NOT_FOUND: booking does not exist.", 404);
     }
 
     const isHolder = booking.userId === gate.caller.userId;
     const isAdmin = gate.caller.role === "ADMIN";
     if (!isHolder && !isAdmin) {
-      return NextResponse.json(
-        { success: false, error: "Forbidden: only the pass holder can transfer this pass." },
-        { status: 403 }
-      );
+      return apiError("Forbidden: only the pass holder can transfer this pass.", 403);
     }
     if (booking.status === "CANCELLED") {
-      return NextResponse.json(
-        { success: false, error: "CONFLICT: a cancelled pass cannot be transferred." },
-        { status: 409 }
-      );
+      return apiError("CONFLICT: a cancelled pass cannot be transferred.", 409);
     }
     if (booking.status === "CHECKED_IN") {
-      return NextResponse.json(
-        { success: false, error: "CONFLICT: a checked-in pass cannot be transferred." },
-        { status: 409 }
-      );
+      return apiError("CONFLICT: a checked-in pass cannot be transferred.", 409);
     }
 
     const updated = await db.booking.update({
@@ -112,9 +95,6 @@ export async function POST(request: Request, { params }: RouteParams) {
     });
   } catch (error) {
     reportError("booking-transfer", error);
-    return NextResponse.json(
-      { success: false, error: "INTERNAL_ERROR: could not transfer the booking." },
-      { status: 500 }
-    );
+    return apiError("INTERNAL_ERROR: could not transfer the booking.", 500);
   }
 }

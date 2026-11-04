@@ -6,6 +6,7 @@ import { reportError } from "@/lib/observability/logger";
 import { sendEmail } from "@/lib/email/transport";
 import { renderBookingConfirmation } from "@/lib/email/templates";
 import { formatDateRange, getTimeZoneForRegion } from "@/lib/i18n/formatters";
+import { apiError } from "@/lib/api/envelope";
 
 export async function POST(request: Request) {
   const limited = await rateLimitResponse("tickets-checkout", request, { limit: 60, windowMs: 60_000 });
@@ -16,32 +17,20 @@ export async function POST(request: Request) {
 
     // 1. Validation
     if (!eventId || typeof eventId !== "string") {
-      return NextResponse.json(
-        { error: "VALIDATION_ERROR: Missing or invalid eventId" },
-        { status: 400 }
-      );
+      return apiError("VALIDATION_ERROR: Missing or invalid eventId", 400);
     }
     if (!tierId || typeof tierId !== "string") {
-      return NextResponse.json(
-        { error: "VALIDATION_ERROR: Missing or invalid tierId" },
-        { status: 400 }
-      );
+      return apiError("VALIDATION_ERROR: Missing or invalid tierId", 400);
     }
     if (!attendeeName || typeof attendeeName !== "string" || attendeeName.trim().length === 0) {
-      return NextResponse.json(
-        { error: "VALIDATION_ERROR: Missing or invalid attendeeName" },
-        { status: 400 }
-      );
+      return apiError("VALIDATION_ERROR: Missing or invalid attendeeName", 400);
     }
     if (
       !attendeeEmail ||
       typeof attendeeEmail !== "string" ||
       !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(attendeeEmail.trim())
     ) {
-      return NextResponse.json(
-        { error: "VALIDATION_ERROR: Missing or invalid attendeeEmail address" },
-        { status: 400 }
-      );
+      return apiError("VALIDATION_ERROR: Missing or invalid attendeeEmail address", 400);
     }
 
     const qty = Math.max(1, parseInt(String(quantity), 10) || 1);
@@ -192,14 +181,8 @@ export async function POST(request: Request) {
     reportError("tickets-checkout", error);
     const guarded = error as Error & { status?: number; extra?: Record<string, unknown> };
     if (guarded.status) {
-      return NextResponse.json(
-        { error: guarded.message, ...(guarded.extra || {}) },
-        { status: guarded.status }
-      );
+      return apiError(guarded.message, guarded.status, { ...((guarded.extra || {})) });
     }
-    return NextResponse.json(
-      { error: `INTERNAL_ERROR: ${(error as Error).message}` },
-      { status: 500 }
-    );
+    return apiError(`INTERNAL_ERROR: ${(error as Error).message}`, 500);
   }
 }

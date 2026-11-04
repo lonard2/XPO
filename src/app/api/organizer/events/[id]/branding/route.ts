@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { resolveEventCaller, canWriteEvent } from "@/lib/auth/eventOwnership";
 import { audit } from "@/lib/observability/audit";
+import { apiError } from "@/lib/api/envelope";
 
 interface RouteProps {
   params: Promise<{ id: string }>;
@@ -20,20 +21,14 @@ export async function PUT(request: Request, { params }: RouteProps) {
     });
 
     if (!existing) {
-      return NextResponse.json(
-        { success: false, error: `Event not found for ID: ${id}` },
-        { status: 404 }
-      );
+      return apiError(`Event not found for ID: ${id}`, 404);
     }
 
     // Strict ownership: ADMIN may brand anything; organizers only their own
     // events; platform-curated events are admin-only.
     const caller = await resolveEventCaller(request);
     if (!canWriteEvent(caller, existing.organizerId)) {
-      return NextResponse.json(
-        { success: false, error: "Forbidden: Only the owning organizer or a platform administrator can update this event's branding." },
-        { status: 403 }
-      );
+      return apiError("Forbidden: Only the owning organizer or a platform administrator can update this event's branding.", 403);
     }
 
     const updated = await db.event.update({
@@ -50,9 +45,6 @@ export async function PUT(request: Request, { params }: RouteProps) {
     await audit(request, { action: "event.branding", entity: "event", entityId: updated.id });
     return NextResponse.json({ success: true, event: updated });
   } catch (error) {
-    return NextResponse.json(
-      { success: false, error: `Failed to update branding: ${(error as Error).message}` },
-      { status: 500 }
-    );
+    return apiError(`Failed to update branding: ${(error as Error).message}`, 500);
   }
 }

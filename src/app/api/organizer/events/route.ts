@@ -5,6 +5,7 @@ import { audit } from "@/lib/observability/audit";
 import { parsePagination } from "@/lib/api/pagination";
 import { enforceRateLimit } from "@/lib/api/rateLimit";
 import { requireUser } from "@/lib/auth/guards";
+import { apiError } from "@/lib/api/envelope";
 
 /** Only http(s) URLs are stored; anything else is dropped, never echoed. */
 function safeExternalUrl(value: unknown): string | null {
@@ -45,10 +46,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json({ success: true, events, total, take, skip });
   } catch (error) {
-    return NextResponse.json(
-      { success: false, error: `Failed to fetch events: ${(error as Error).message}` },
-      { status: 500 }
-    );
+    return apiError(`Failed to fetch events: ${(error as Error).message}`, 500);
   }
 }
 
@@ -93,10 +91,7 @@ export async function POST(request: Request) {
     } = body;
 
     if (!title || !description || !venueId || !startDate || !endDate) {
-      return NextResponse.json(
-        { success: false, error: "Missing mandatory fields (title, description, venueId, startDate, endDate)" },
-        { status: 400 }
-      );
+      return apiError("Missing mandatory fields (title, description, venueId, startDate, endDate)", 400);
     }
 
     // Auto-generate unique slug if not provided
@@ -132,10 +127,7 @@ export async function POST(request: Request) {
         select: { id: true, name: true, organization: true },
       });
       if (!organizer) {
-        return NextResponse.json(
-          { success: false, error: "Unauthorized: organizer account no longer exists." },
-          { status: 401 }
-        );
+        return apiError("Unauthorized: organizer account no longer exists.", 401);
       }
 
       finalOrganizerId = organizer.id;
@@ -248,9 +240,6 @@ export async function POST(request: Request) {
     );
   } catch (error) {
     console.error("Event creation error:", error);
-    return NextResponse.json(
-      { success: false, error: `Failed to create event: ${(error as Error).message}` },
-      { status: 500 }
-    );
+    return apiError(`Failed to create event: ${(error as Error).message}`, 500);
   }
 }

@@ -5,6 +5,7 @@ import { rateLimitResponse } from "@/lib/api/rateLimit";
 import { audit } from "@/lib/observability/audit";
 import { reportError } from "@/lib/observability/logger";
 import { normalizeInterests } from "@/lib/matching/suggest";
+import { apiError } from "@/lib/api/envelope";
 
 const MAX_NAME = 120;
 const MAX_ORG = 160;
@@ -39,10 +40,7 @@ export async function GET(request: Request) {
       },
     });
     if (!user) {
-      return NextResponse.json(
-        { success: false, error: "NOT_FOUND: user does not exist." },
-        { status: 404 }
-      );
+      return apiError("NOT_FOUND: user does not exist.", 404);
     }
 
     let interests: string[] = [];
@@ -64,10 +62,7 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     reportError("profile-get", error);
-    return NextResponse.json(
-      { success: false, error: "INTERNAL_ERROR: could not load the profile." },
-      { status: 500 }
-    );
+    return apiError("INTERNAL_ERROR: could not load the profile.", 500);
   }
 }
 
@@ -93,10 +88,7 @@ export async function PATCH(request: Request) {
     if (body.fullName !== undefined) {
       const value = typeof body.fullName === "string" ? body.fullName.trim().slice(0, MAX_NAME) : "";
       if (!value) {
-        return NextResponse.json(
-          { success: false, error: "VALIDATION_ERROR: fullName cannot be empty." },
-          { status: 400 }
-        );
+        return apiError("VALIDATION_ERROR: fullName cannot be empty.", 400);
       }
       data.name = value;
     }
@@ -111,19 +103,13 @@ export async function PATCH(request: Request) {
     if (body.interests !== undefined) {
       const interests = parseInterests(body.interests);
       if (interests === null) {
-        return NextResponse.json(
-          { success: false, error: "VALIDATION_ERROR: interests must be an array." },
-          { status: 400 }
-        );
+        return apiError("VALIDATION_ERROR: interests must be an array.", 400);
       }
       data.interestsJson = JSON.stringify(interests);
     }
 
     if (Object.keys(data).length === 0) {
-      return NextResponse.json(
-        { success: false, error: "VALIDATION_ERROR: no profile fields were provided." },
-        { status: 400 }
-      );
+      return apiError("VALIDATION_ERROR: no profile fields were provided.", 400);
     }
 
     const updated = await db.user.update({
@@ -158,9 +144,6 @@ export async function PATCH(request: Request) {
     });
   } catch (error) {
     reportError("profile-patch", error);
-    return NextResponse.json(
-      { success: false, error: "INTERNAL_ERROR: could not save the profile." },
-      { status: 500 }
-    );
+    return apiError("INTERNAL_ERROR: could not save the profile.", 500);
   }
 }

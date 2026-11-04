@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { rateLimitResponse } from "@/lib/api/rateLimit";
+import { apiError } from "@/lib/api/envelope";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_NAME = 120;
@@ -27,22 +28,13 @@ export async function POST(request: Request, { params }: RouteParams) {
     const email = typeof body.email === "string" ? body.email.toLowerCase().trim() : "";
 
     if (!tierId) {
-      return NextResponse.json(
-        { success: false, error: "VALIDATION_ERROR: tierId is required." },
-        { status: 400 }
-      );
+      return apiError("VALIDATION_ERROR: tierId is required.", 400);
     }
     if (!name) {
-      return NextResponse.json(
-        { success: false, error: "VALIDATION_ERROR: name is required." },
-        { status: 400 }
-      );
+      return apiError("VALIDATION_ERROR: name is required.", 400);
     }
     if (!EMAIL_RE.test(email)) {
-      return NextResponse.json(
-        { success: false, error: "VALIDATION_ERROR: a valid email is required." },
-        { status: 400 }
-      );
+      return apiError("VALIDATION_ERROR: a valid email is required.", 400);
     }
 
     const event = await db.event.findUnique({
@@ -50,10 +42,7 @@ export async function POST(request: Request, { params }: RouteParams) {
       select: { id: true },
     });
     if (!event) {
-      return NextResponse.json(
-        { success: false, error: "NOT_FOUND: event does not exist." },
-        { status: 404 }
-      );
+      return apiError("NOT_FOUND: event does not exist.", 404);
     }
 
     const tier = await db.ticketTier.findFirst({
@@ -61,26 +50,17 @@ export async function POST(request: Request, { params }: RouteParams) {
       select: { id: true, capacity: true, soldCount: true },
     });
     if (!tier) {
-      return NextResponse.json(
-        { success: false, error: "NOT_FOUND: ticket tier does not belong to this event." },
-        { status: 404 }
-      );
+      return apiError("NOT_FOUND: ticket tier does not belong to this event.", 404);
     }
     if (tier.soldCount < tier.capacity) {
-      return NextResponse.json(
-        { success: false, error: "SEATS_AVAILABLE: this tier still has seats. Book directly." },
-        { status: 409 }
-      );
+      return apiError("SEATS_AVAILABLE: this tier still has seats. Book directly.", 409);
     }
 
     const existing = await db.waitlistEntry.findUnique({
       where: { ticketTierId_email: { ticketTierId: tierId, email } },
     });
     if (existing?.status === "PROMOTED") {
-      return NextResponse.json(
-        { success: false, error: "ALREADY_PROMOTED: a seat was already offered to this email." },
-        { status: 409 }
-      );
+      return apiError("ALREADY_PROMOTED: a seat was already offered to this email.", 409);
     }
 
     const entry = existing
@@ -106,10 +86,7 @@ export async function POST(request: Request, { params }: RouteParams) {
       { status: 201 }
     );
   } catch {
-    return NextResponse.json(
-      { success: false, error: "INTERNAL_ERROR: could not join the waitlist." },
-      { status: 500 }
-    );
+    return apiError("INTERNAL_ERROR: could not join the waitlist.", 500);
   }
 }
 
@@ -124,10 +101,7 @@ export async function DELETE(request: Request, { params }: RouteParams) {
     const email = (searchParams.get("email") || "").toLowerCase().trim();
 
     if (!tierId || !EMAIL_RE.test(email)) {
-      return NextResponse.json(
-        { success: false, error: "VALIDATION_ERROR: tierId and a valid email are required." },
-        { status: 400 }
-      );
+      return apiError("VALIDATION_ERROR: tierId and a valid email are required.", 400);
     }
 
     const result = await db.waitlistEntry.updateMany({
@@ -137,9 +111,6 @@ export async function DELETE(request: Request, { params }: RouteParams) {
 
     return NextResponse.json({ success: true, removed: result.count });
   } catch {
-    return NextResponse.json(
-      { success: false, error: "INTERNAL_ERROR: could not leave the waitlist." },
-      { status: 500 }
-    );
+    return apiError("INTERNAL_ERROR: could not leave the waitlist.", 500);
   }
 }

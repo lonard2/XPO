@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { requireUser } from "@/lib/auth/guards";
 import { canWriteEvent } from "@/lib/auth/eventOwnership";
 import { audit } from "@/lib/observability/audit";
+import { apiError } from "@/lib/api/envelope";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -25,10 +26,7 @@ export async function POST(request: Request, { params }: RouteParams) {
     const qrCodeHash = typeof body.qrCodeHash === "string" ? body.qrCodeHash.trim() : "";
 
     if (!qrCodeHash) {
-      return NextResponse.json(
-        { success: false, error: "VALIDATION_ERROR: qrCodeHash is required." },
-        { status: 400 }
-      );
+      return apiError("VALIDATION_ERROR: qrCodeHash is required.", 400);
     }
 
     const session = await db.agendaItem.findUnique({
@@ -36,16 +34,10 @@ export async function POST(request: Request, { params }: RouteParams) {
       include: { event: { select: { id: true, organizerId: true, title: true } } },
     });
     if (!session) {
-      return NextResponse.json(
-        { success: false, error: "NOT_FOUND: session does not exist." },
-        { status: 404 }
-      );
+      return apiError("NOT_FOUND: session does not exist.", 404);
     }
     if (!canWriteEvent(gate.caller, session.event.organizerId)) {
-      return NextResponse.json(
-        { success: false, error: "Forbidden: only the owning organizer can check in this session." },
-        { status: 403 }
-      );
+      return apiError("Forbidden: only the owning organizer can check in this session.", 403);
     }
 
     const booking = await db.booking.findUnique({
@@ -59,16 +51,10 @@ export async function POST(request: Request, { params }: RouteParams) {
       },
     });
     if (!booking || booking.eventId !== session.eventId) {
-      return NextResponse.json(
-        { success: false, error: "NOT_FOUND: pass does not belong to this event." },
-        { status: 404 }
-      );
+      return apiError("NOT_FOUND: pass does not belong to this event.", 404);
     }
     if (booking.status === "CANCELLED") {
-      return NextResponse.json(
-        { success: false, error: "CONFLICT: a cancelled pass cannot check in." },
-        { status: 409 }
-      );
+      return apiError("CONFLICT: a cancelled pass cannot check in.", 409);
     }
 
     const existing = await db.sessionCheckIn.findUnique({
@@ -106,9 +92,6 @@ export async function POST(request: Request, { params }: RouteParams) {
       { status: 201 }
     );
   } catch {
-    return NextResponse.json(
-      { success: false, error: "INTERNAL_ERROR: could not record the session check-in." },
-      { status: 500 }
-    );
+    return apiError("INTERNAL_ERROR: could not record the session check-in.", 500);
   }
 }

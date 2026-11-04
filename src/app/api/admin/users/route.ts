@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { requireRole } from "@/lib/auth/guards";
+import { apiError } from "@/lib/api/envelope";
 
 /**
  * GET /api/admin/users?role=ORGANIZER — minimal user directory for admin
@@ -29,12 +30,6 @@ export async function GET(request: Request) {
 
     return NextResponse.json({ success: true, count: users.length, users });
   } catch (error) {
-    return NextResponse.json(
-      {
-        success: false,
-        error: `Failed to list users: ${(error as Error).message}`,
-      },
-      { status: 500 }
-    );
+    return apiError(`Failed to list users: ${(error as Error).message}`, 500);
   }
 }

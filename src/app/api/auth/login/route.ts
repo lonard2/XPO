@@ -8,6 +8,7 @@ import {
   sessionCookieHeader,
   clearedSessionCookieHeader,
 } from "@/lib/auth/sessionStore";
+import { apiError } from "@/lib/api/envelope";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_FAILURES = 5;
@@ -24,20 +25,17 @@ export async function POST(request: Request) {
     if (!EMAIL_RE.test(email) || !password) {
       // Flatten timing so unknown emails are indistinguishable.
       await verifyPassword("dummy-password-00!", "scrypt$00$00");
-      return NextResponse.json({ error: "Invalid email or password." }, { status: 401 });
+      return apiError("Invalid email or password.", 401);
     }
 
     const user = await db.user.findUnique({ where: { email } });
     if (!user || !user.passwordHash) {
       await verifyPassword("dummy-password-00!", "scrypt$00$00");
-      return NextResponse.json({ error: "Invalid email or password." }, { status: 401 });
+      return apiError("Invalid email or password.", 401);
     }
 
     if (user.lockedUntilAt && user.lockedUntilAt.getTime() > Date.now()) {
-      const res = NextResponse.json(
-        { error: "Account temporarily locked after repeated failures. Try again later." },
-        { status: 423 }
-      );
+      const res = apiError("Account temporarily locked after repeated failures. Try again later.", 423);
       res.headers.set("Set-Cookie", clearedSessionCookieHeader());
       return res;
     }
@@ -52,7 +50,7 @@ export async function POST(request: Request) {
           lockedUntilAt: failures >= MAX_FAILURES ? new Date(Date.now() + LOCKOUT_MS) : null,
         },
       });
-      return NextResponse.json({ error: "Invalid email or password." }, { status: 401 });
+      return apiError("Invalid email or password.", 401);
     }
 
     const [token] = await Promise.all([
@@ -77,9 +75,6 @@ export async function POST(request: Request) {
     return res;
   } catch (error) {
     reportError("auth-login", error);
-    return NextResponse.json(
-      { error: `Login failed: ${(error as Error).message}` },
-      { status: 500 }
-    );
+    return apiError(`Login failed: ${(error as Error).message}`, 500);
   }
 }

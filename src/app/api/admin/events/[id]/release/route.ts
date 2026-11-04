@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { requireRole } from "@/lib/auth/guards";
+import { apiError } from "@/lib/api/envelope";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -26,13 +27,7 @@ export async function PATCH(request: Request, { params }: RouteParams) {
     });
 
     if (!event) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: `Event not found: No event matches identifier "${id}".`,
-        },
-        { status: 404 }
-      );
+      return apiError(`Event not found: No event matches identifier "${id}".`, 404);
     }
 
     const updatedEvent = await db.event.update({
@@ -55,12 +50,6 @@ export async function PATCH(request: Request, { params }: RouteParams) {
       message: `Event "${updatedEvent.title}" released to platform curation.`,
     });
   } catch (error) {
-    return NextResponse.json(
-      {
-        success: false,
-        error: `Failed to release event: ${(error as Error).message}`,
-      },
-      { status: 500 }
-    );
+    return apiError(`Failed to release event: ${(error as Error).message}`, 500);
   }
 }

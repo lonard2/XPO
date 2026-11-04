@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { requireUser } from "@/lib/auth/guards";
 import { canWriteEvent } from "@/lib/auth/eventOwnership";
+import { apiError } from "@/lib/api/envelope";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -22,16 +23,10 @@ export async function GET(request: Request, { params }: RouteParams) {
       select: { id: true, organizerId: true },
     });
     if (!event) {
-      return NextResponse.json(
-        { success: false, error: "NOT_FOUND: event does not exist." },
-        { status: 404 }
-      );
+      return apiError("NOT_FOUND: event does not exist.", 404);
     }
     if (!canWriteEvent(gate.caller, event.organizerId)) {
-      return NextResponse.json(
-        { success: false, error: "Forbidden: only the owning organizer can read this agenda." },
-        { status: 403 }
-      );
+      return apiError("Forbidden: only the owning organizer can read this agenda.", 403);
     }
 
     const sessions = await db.agendaItem.findMany({
@@ -49,9 +44,6 @@ export async function GET(request: Request, { params }: RouteParams) {
 
     return NextResponse.json({ success: true, sessions });
   } catch {
-    return NextResponse.json(
-      { success: false, error: "INTERNAL_ERROR: could not load the agenda." },
-      { status: 500 }
-    );
+    return apiError("INTERNAL_ERROR: could not load the agenda.", 500);
   }
 }

@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { hashPassword } from "@/lib/auth/password";
 import { rateLimitResponse } from "@/lib/api/rateLimit";
 import { reportError } from "@/lib/observability/logger";
+import { apiError } from "@/lib/api/envelope";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -17,21 +18,21 @@ export async function POST(request: Request) {
     const password = typeof body.password === "string" ? body.password : "";
 
     if (!name) {
-      return NextResponse.json({ error: "Name is required." }, { status: 400 });
+      return apiError("Name is required.", 400);
     }
     if (!EMAIL_RE.test(email)) {
-      return NextResponse.json({ error: "A valid email address is required." }, { status: 400 });
+      return apiError("A valid email address is required.", 400);
     }
     let passwordHash: string;
     try {
       passwordHash = await hashPassword(password);
     } catch (err) {
-      return NextResponse.json({ error: (err as Error).message }, { status: 400 });
+      return apiError((err as Error).message, 400);
     }
 
     const existing = await db.user.findUnique({ where: { email } });
     if (existing) {
-      return NextResponse.json({ error: "An account with this email already exists." }, { status: 409 });
+      return apiError("An account with this email already exists.", 409);
     }
 
     const user = await db.user.create({
@@ -41,9 +42,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ user }, { status: 201 });
   } catch (error) {
     reportError("auth-register", error);
-    return NextResponse.json(
-      { error: `Registration failed: ${(error as Error).message}` },
-      { status: 500 }
-    );
+    return apiError(`Registration failed: ${(error as Error).message}`, 500);
   }
 }

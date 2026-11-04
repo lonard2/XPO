@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { requireUser } from "@/lib/auth/guards";
 import { reportError } from "@/lib/observability/logger";
+import { apiError } from "@/lib/api/envelope";
 
 /**
  * GET /api/meetings/analytics — booked-vs-held-vs-rated funnel for the
@@ -23,16 +24,10 @@ export async function GET(request: Request) {
         select: { id: true, organizerId: true },
       });
       if (!event) {
-        return NextResponse.json(
-          { success: false, error: "NOT_FOUND: event does not exist." },
-          { status: 404 }
-        );
+        return apiError("NOT_FOUND: event does not exist.", 404);
       }
       if (gate.caller.role !== "ADMIN" && event.organizerId !== gate.caller.userId) {
-        return NextResponse.json(
-          { success: false, error: "Forbidden: only the owning organizer can read this analytics." },
-          { status: 403 }
-        );
+        return apiError("Forbidden: only the owning organizer can read this analytics.", 403);
       }
     }
 
@@ -115,9 +110,6 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     reportError("meetings-analytics", error);
-    return NextResponse.json(
-      { success: false, error: "INTERNAL_ERROR: could not load meeting analytics." },
-      { status: 500 }
-    );
+    return apiError("INTERNAL_ERROR: could not load meeting analytics.", 500);
   }
 }

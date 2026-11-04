@@ -10,6 +10,7 @@ import {
   renderMeetingRequestNotification,
   type MeetingRequestType,
 } from "@/lib/email/templates";
+import { apiError } from "@/lib/api/envelope";
 
 const TYPES: MeetingRequestType[] = ["RFQ", "DEAL_SLOT", "BUYER_APPOINTMENT", "BILATERAL_SLOT", "DEAL_ROOM"];
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -41,19 +42,16 @@ export async function POST(request: Request) {
     const boothId = typeof body.boothId === "string" && body.boothId ? body.boothId : null;
 
     if (!eventId) {
-      return NextResponse.json({ error: "VALIDATION_ERROR: eventId is required." }, { status: 400 });
+      return apiError("VALIDATION_ERROR: eventId is required.", 400);
     }
     if (!(TYPES as string[]).includes(type)) {
-      return NextResponse.json(
-        { error: `VALIDATION_ERROR: type must be one of ${TYPES.join(", ")}.` },
-        { status: 400 }
-      );
+      return apiError(`VALIDATION_ERROR: type must be one of ${TYPES.join(", ")}.`, 400);
     }
     if (!requesterName) {
-      return NextResponse.json({ error: "VALIDATION_ERROR: requesterName is required." }, { status: 400 });
+      return apiError("VALIDATION_ERROR: requesterName is required.", 400);
     }
     if (!EMAIL_RE.test(requesterEmail)) {
-      return NextResponse.json({ error: "VALIDATION_ERROR: a valid requesterEmail is required." }, { status: 400 });
+      return apiError("VALIDATION_ERROR: a valid requesterEmail is required.", 400);
     }
 
     const event = await db.event.findUnique({
@@ -61,7 +59,7 @@ export async function POST(request: Request) {
       include: { organizer: { select: { email: true, name: true } } },
     });
     if (!event) {
-      return NextResponse.json({ error: "NOT_FOUND: event does not exist." }, { status: 404 });
+      return apiError("NOT_FOUND: event does not exist.", 404);
     }
 
     if (boothId) {
@@ -70,10 +68,7 @@ export async function POST(request: Request) {
         select: { id: true },
       });
       if (!booth) {
-        return NextResponse.json(
-          { error: "NOT_FOUND: booth does not belong to this event." },
-          { status: 404 }
-        );
+        return apiError("NOT_FOUND: booth does not belong to this event.", 404);
       }
     }
 
@@ -152,6 +147,6 @@ export async function POST(request: Request) {
     );
   } catch (error) {
     reportError("meetings-request", error);
-    return NextResponse.json({ error: "INTERNAL_ERROR: could not record the request." }, { status: 500 });
+    return apiError("INTERNAL_ERROR: could not record the request.", 500);
   }
 }

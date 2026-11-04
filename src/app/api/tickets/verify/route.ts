@@ -5,6 +5,7 @@ import { resolveEventCaller, canWriteEvent } from "@/lib/auth/eventOwnership";
 import { rateLimitResponse } from "@/lib/api/rateLimit";
 import { audit } from "@/lib/observability/audit";
 import { reportError } from "@/lib/observability/logger";
+import { apiError } from "@/lib/api/envelope";
 
 export async function POST(request: Request) {
   const limited = await rateLimitResponse("tickets-verify", request, { limit: 120, windowMs: 60_000 });
@@ -17,21 +18,12 @@ export async function POST(request: Request) {
     if (payloadString && signature) {
       const cryptoResult = verifyTicketHash(payloadString, signature);
       if (!cryptoResult.valid) {
-        return NextResponse.json(
-          {
-            valid: false,
-            error: cryptoResult.error || "INVALID_SIGNATURE: Cryptographic pass verification failed",
-          },
-          { status: 400 }
-        );
+        return apiError(cryptoResult.error || "INVALID_SIGNATURE: Cryptographic pass verification failed", 400, { valid: false });
       }
     }
 
     if (!qrCodeHash && !payloadString) {
-      return NextResponse.json(
-        { valid: false, error: "VALIDATION_ERROR: Missing qrCodeHash or signed payload" },
-        { status: 400 }
-      );
+      return apiError("VALIDATION_ERROR: Missing qrCodeHash or signed payload", 400, { valid: false });
     }
 
     // 2. Fetch booking record from DB
@@ -78,37 +70,18 @@ export async function POST(request: Request) {
     }
 
     if (!booking) {
-      return NextResponse.json(
-        {
-          valid: false,
-          error: "TICKET_NOT_FOUND: Pass does not match any registered booking in database",
-        },
-        { status: 404 }
-      );
+      return apiError("TICKET_NOT_FOUND: Pass does not match any registered booking in database", 404, { valid: false });
     }
 
     // 2b. Gate scope guard: a scanner locked to one event must not admit
     // passes from another event's allocation.
     if (scannedEventId && scannedEventId !== booking.eventId) {
-      return NextResponse.json(
-        {
-          valid: false,
-          error: "EVENT_MISMATCH: Pass belongs to a different event than the scanning gate",
-        },
-        { status: 400 }
-      );
+      return apiError("EVENT_MISMATCH: Pass belongs to a different event than the scanning gate", 400, { valid: false });
     }
 
     // 3. Status Guard: Cancelled
     if (booking.status === "CANCELLED") {
-      return NextResponse.json(
-        {
-          valid: false,
-          status: "CANCELLED",
-          error: "TICKET_CANCELLED: Pass has been voided or cancelled by organizer",
-        },
-        { status: 400 }
-      );
+      return apiError("TICKET_CANCELLED: Pass has been voided or cancelled by organizer", 400, { valid: false, status: "CANCELLED" });
     }
 
     // 4. Double Scan Prevention (+ supervisor override re-admit).
@@ -121,13 +94,7 @@ export async function POST(request: Request) {
           select: { organizerId: true },
         });
         if (!owner || !canWriteEvent(await resolveEventCaller(request), owner.organizerId)) {
-          return NextResponse.json(
-            {
-              valid: false,
-              error: "FORBIDDEN: Only the owning organizer or a platform administrator can check in this pass.",
-            },
-            { status: 403 }
-          );
+          return apiError("FORBIDDEN: Only the owning organizer or a platform administrator can check in this pass.", 403, { valid: false });
         }
         const restamped = await db.booking.update({
           where: { id: booking.id },
@@ -216,13 +183,7 @@ export async function POST(request: Request) {
         select: { organizerId: true },
       });
       if (!owner || !canWriteEvent(await resolveEventCaller(request), owner.organizerId)) {
-        return NextResponse.json(
-          {
-            valid: false,
-            error: "FORBIDDEN: Only the owning organizer or a platform administrator can check in this pass.",
-          },
-          { status: 403 }
-        );
+        return apiError("FORBIDDEN: Only the owning organizer or a platform administrator can check in this pass.", 403, { valid: false });
       }
       updatedBooking = await db.booking.update({
         where: { id: booking.id },
@@ -279,10 +240,7 @@ export async function POST(request: Request) {
       { status: 200 }
     );
   } catch (error) {
-    return NextResponse.json(
-      { error: `INTERNAL_ERROR: ${(error as Error).message}` },
-      { status: 500 }
-    );
+    return apiError(`INTERNAL_ERROR: ${(error as Error).message}`, 500);
   }
 }
 
@@ -293,10 +251,7 @@ export async function GET(request: Request) {
     const bookingId = searchParams.get("bookingId");
 
     if (!qrCodeHash && !bookingId) {
-      return NextResponse.json(
-        { error: "VALIDATION_ERROR: Missing qrCodeHash or bookingId query param" },
-        { status: 400 }
-      );
+      return apiError("VALIDATION_ERROR: Missing qrCodeHash or bookingId query param", 400);
     }
 
     const booking = await db.booking.findFirst({
@@ -314,10 +269,7 @@ export async function GET(request: Request) {
     });
 
     if (!booking) {
-      return NextResponse.json(
-        { valid: false, error: "TICKET_NOT_FOUND: No booking found" },
-        { status: 404 }
-      );
+      return apiError("TICKET_NOT_FOUND: No booking found", 404, { valid: false });
     }
 
     const eligiblePerks = booking.event.perks.filter(
@@ -352,9 +304,6 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     reportError("tickets-verify", error);
-    return NextResponse.json(
-      { error: `INTERNAL_ERROR: ${(error as Error).message}` },
-      { status: 500 }
-    );
+    return apiError(`INTERNAL_ERROR: ${(error as Error).message}`, 500);
   }
 }

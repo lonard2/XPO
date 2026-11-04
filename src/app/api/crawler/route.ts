@@ -5,6 +5,7 @@ import {
   VENUE_SCRAPER_SOURCES,
   type CrawlBatchOptions,
 } from "@/lib/crawler/venueScraper";
+import { apiError } from "@/lib/api/envelope";
 
 export async function GET(req: NextRequest) {
   try {
@@ -25,13 +26,7 @@ export async function GET(req: NextRequest) {
       history,
     });
   } catch (error) {
-    return NextResponse.json(
-      {
-        success: false,
-        error: `Failed to retrieve crawler status: ${(error as Error).message}`,
-      },
-      { status: 500 }
-    );
+    return apiError(`Failed to retrieve crawler status: ${(error as Error).message}`, 500);
   }
 }
 
@@ -56,12 +51,6 @@ export async function POST(req: NextRequest) {
       message: `Successfully executed crawler batch '${runRecord.runId}': ${runRecord.insertedCount} new events normalized/inserted, ${runRecord.skippedDuplicatesCount} duplicates skipped.`,
     });
   } catch (error) {
-    return NextResponse.json(
-      {
-        success: false,
-        error: `Crawler execution error: ${(error as Error).message}`,
-      },
-      { status: 500 }
-    );
+    return apiError(`Crawler execution error: ${(error as Error).message}`, 500);
   }
 }

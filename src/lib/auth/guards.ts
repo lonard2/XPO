@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { resolveEventCaller, type EventCaller } from "./eventOwnership";
+import { errorCodeFor } from "@/lib/api/envelope";
 
 export type GuardRole = "ATTENDEE" | "ORGANIZER" | "ADMIN";
 
@@ -9,16 +10,15 @@ export interface RoleGate {
 }
 
 function deny(authenticated: boolean, message?: string): NextResponse {
+  const status = authenticated ? 403 : 401;
+  const error =
+    message ??
+    (authenticated
+      ? "Forbidden: your role cannot perform this action."
+      : "Unauthorized: sign in to continue.");
   return NextResponse.json(
-    {
-      success: false,
-      error:
-        message ??
-        (authenticated
-          ? "Forbidden: your role cannot perform this action."
-          : "Unauthorized: sign in to continue."),
-    },
-    { status: authenticated ? 403 : 401 }
+    { success: false, error, code: errorCodeFor(error, status) },
+    { status }
   );
 }
 

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { apiError } from "@/lib/api/envelope";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -74,17 +75,11 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     }
 
     if (!event) {
-      return NextResponse.json(
-        { success: false, error: `Event not found for identifier: ${id}` },
-        { status: 404 }
-      );
+      return apiError(`Event not found for identifier: ${id}`, 404);
     }
 
     return NextResponse.json({ success: true, event });
   } catch (error) {
-    return NextResponse.json(
-      { success: false, error: `Failed to retrieve event: ${(error as Error).message}` },
-      { status: 500 }
-    );
+    return apiError(`Failed to retrieve event: ${(error as Error).message}`, 500);
   }
 }

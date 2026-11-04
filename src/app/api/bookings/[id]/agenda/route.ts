@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { requireUser } from "@/lib/auth/guards";
+import { apiError } from "@/lib/api/envelope";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -24,10 +25,7 @@ export async function POST(request: Request, { params }: RouteParams) {
     const saved = body.saved === true;
 
     if (!agendaItemId) {
-      return NextResponse.json(
-        { success: false, error: "VALIDATION_ERROR: agendaItemId is required." },
-        { status: 400 }
-      );
+      return apiError("VALIDATION_ERROR: agendaItemId is required.", 400);
     }
 
     const booking = await db.booking.findUnique({
@@ -35,22 +33,13 @@ export async function POST(request: Request, { params }: RouteParams) {
       select: { id: true, userId: true, eventId: true, status: true },
     });
     if (!booking) {
-      return NextResponse.json(
-        { success: false, error: "NOT_FOUND: booking does not exist." },
-        { status: 404 }
-      );
+      return apiError("NOT_FOUND: booking does not exist.", 404);
     }
     if (booking.userId !== gate.caller.userId && gate.caller.role !== "ADMIN") {
-      return NextResponse.json(
-        { success: false, error: "Forbidden: only the pass holder can change this agenda." },
-        { status: 403 }
-      );
+      return apiError("Forbidden: only the pass holder can change this agenda.", 403);
     }
     if (booking.status === "CANCELLED") {
-      return NextResponse.json(
-        { success: false, error: "CONFLICT: a cancelled pass has no agenda." },
-        { status: 409 }
-      );
+      return apiError("CONFLICT: a cancelled pass has no agenda.", 409);
     }
 
     const item = await db.agendaItem.findUnique({
@@ -58,10 +47,7 @@ export async function POST(request: Request, { params }: RouteParams) {
       select: { eventId: true },
     });
     if (!item || item.eventId !== booking.eventId) {
-      return NextResponse.json(
-        { success: false, error: "NOT_FOUND: session does not belong to this event." },
-        { status: 404 }
-      );
+      return apiError("NOT_FOUND: session does not belong to this event.", 404);
     }
 
     if (saved) {
@@ -76,9 +62,6 @@ export async function POST(request: Request, { params }: RouteParams) {
 
     return NextResponse.json({ success: true, saved });
   } catch {
-    return NextResponse.json(
-      { success: false, error: "INTERNAL_ERROR: could not update the agenda." },
-      { status: 500 }
-    );
+    return apiError("INTERNAL_ERROR: could not update the agenda.", 500);
   }
 }

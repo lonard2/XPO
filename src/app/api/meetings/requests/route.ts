@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { requireUser } from "@/lib/auth/guards";
+import { apiError } from "@/lib/api/envelope";
 
 /**
  * GET /api/meetings/requests — meeting and RFQ requests for the caller.
@@ -73,9 +74,6 @@ export async function GET(request: Request) {
 
     return NextResponse.json({ success: true, requests, total, pending });
   } catch {
-    return NextResponse.json(
-      { success: false, error: "Failed to load meeting requests." },
-      { status: 500 }
-    );
+    return apiError("Failed to load meeting requests.", 500);
   }
 }

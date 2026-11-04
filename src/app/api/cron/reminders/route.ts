@@ -4,6 +4,7 @@ import { sendEmail } from "@/lib/email/transport";
 import { renderEventReminder } from "@/lib/email/templates";
 import { reportError } from "@/lib/observability/logger";
 import { formatDateRange, getTimeZoneForRegion } from "@/lib/i18n/formatters";
+import { apiError } from "@/lib/api/envelope";
 
 const BATCH = 200;
 
@@ -23,10 +24,7 @@ function authorized(request: Request): boolean {
  */
 export async function GET(request: Request) {
   if (!authorized(request)) {
-    return NextResponse.json(
-      { success: false, error: "Unauthorized: a valid CRON_SECRET is required." },
-      { status: 401 }
-    );
+    return apiError("Unauthorized: a valid CRON_SECRET is required.", 401);
   }
 
   const now = new Date();
@@ -113,9 +111,6 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     reportError("reminders", error);
-    return NextResponse.json(
-      { success: false, error: "INTERNAL_ERROR: reminder run failed." },
-      { status: 500 }
-    );
+    return apiError("INTERNAL_ERROR: reminder run failed.", 500);
   }
 }

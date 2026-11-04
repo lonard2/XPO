@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { requireRole } from "@/lib/auth/guards";
+import { apiError } from "@/lib/api/envelope";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -17,13 +18,7 @@ export async function PATCH(request: Request, { params }: RouteParams) {
     const { organizerId, organizerName } = body;
 
     if (!organizerId || typeof organizerId !== "string" || !organizerId.trim()) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Bad Request: organizerId is required to reassign event ownership.",
-        },
-        { status: 400 }
-      );
+      return apiError("Bad Request: organizerId is required to reassign event ownership.", 400);
     }
 
     const event = await db.event.findFirst({
@@ -33,13 +28,7 @@ export async function PATCH(request: Request, { params }: RouteParams) {
     });
 
     if (!event) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: `Event not found: No event matches identifier "${id}".`,
-        },
-        { status: 404 }
-      );
+      return apiError(`Event not found: No event matches identifier "${id}".`, 404);
     }
 
     const targetOrganizer = await db.user.findUnique({
@@ -47,13 +36,7 @@ export async function PATCH(request: Request, { params }: RouteParams) {
     });
 
     if (!targetOrganizer) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: `Target organizer not found: No user matches ID "${organizerId}".`,
-        },
-        { status: 404 }
-      );
+      return apiError(`Target organizer not found: No user matches ID "${organizerId}".`, 404);
     }
 
     const assignedName =
@@ -81,12 +64,6 @@ export async function PATCH(request: Request, { params }: RouteParams) {
       message: `Event "${updatedEvent.title}" successfully transferred to organizer "${assignedName}".`,
     });
   } catch (error) {
-    return NextResponse.json(
-      {
-        success: false,
-        error: `Failed to reassign event ownership: ${(error as Error).message}`,
-      },
-      { status: 500 }
-    );
+    return apiError(`Failed to reassign event ownership: ${(error as Error).message}`, 500);
   }
 }
