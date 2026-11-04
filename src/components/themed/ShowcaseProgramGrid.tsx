@@ -57,9 +57,9 @@ export function ShowcaseProgramGrid({
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 stagger-children">
         {programs.map((program, idx) => (
-          <Card key={idx} className="border-border/80 bg-card hover:border-primary/40 transition-all shadow-xs flex flex-col justify-between">
+          <Card key={idx} className="border-border/80 bg-card hover:border-primary/40 transition-all shadow-xs flex flex-col justify-between card-interactive-3d">
             <CardHeader className="pb-2 space-y-1.5">
               <div className="flex items-center justify-between gap-2">
                 <Badge variant="outline" size="sm" className={cn("text-xs font-semibold capitalize", accentClass)}>

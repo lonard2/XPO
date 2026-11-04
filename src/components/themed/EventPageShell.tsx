@@ -427,7 +427,7 @@ export function EventPageShell({
           </div>
 
           {/* Key Event Metadata Strip */}
-          <div className="mt-6 pt-6 border-t border-white/10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs sm:text-sm text-slate-200">
+          <div className="mt-6 pt-6 border-t border-white/10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs sm:text-sm text-slate-200 stagger-children">
             <div className="flex items-center gap-3 bg-white/5 rounded-lg p-3 border border-white/10">
               <Calendar className="h-5 w-5 text-[var(--archetype-accent)] shrink-0" aria-hidden="true" />
               <div>
