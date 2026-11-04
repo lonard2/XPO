@@ -5,9 +5,8 @@ import { defineConfig, devices } from "@playwright/test";
  * against DATABASE_URL, so CI must seed Postgres first (it already does).
  * Chromium only: the matrix buys little here and costs minutes per run.
  *
- * Axe runs at impact critical only. Serious-level color-contrast debt on the
- * 11px category kickers is a known, deferred visual decision, not something
- * a gate should either bless or silently waive per run.
+ * Axe fails on serious impact and above across the three gate pages, after
+ * the kicker contrast debt was fixed rather than waived.
  */
 export default defineConfig({
   testDir: "./tests/e2e",

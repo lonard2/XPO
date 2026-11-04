@@ -993,3 +993,44 @@ export function getReadableBadgeColors(
 
   return { background: toHex(current), color: CONTRAST_INK_LIGHT };
 }
+
+// Card surfaces the archetype label can sit on. Kept in sync with the
+// --card tokens in globals.css (light: 0 0% 100%, dark: 224 71% 6%).
+const CARD_SURFACE_LIGHT = "#ffffff";
+const CARD_SURFACE_DARK = "#040a1a";
+
+/**
+ * Returns label tones derived from an archetype primary that reach
+ * `minimumRatio` as small text on cards in both themes.
+ *
+ * No single tone works in both: orange passes on the dark card but only
+ * reaches 3.56:1 on white, while indigo fails on both. So the tone is
+ * darkened for light mode and lightened for dark mode, in the same small
+ * steps as the badge helper. Render with `text-[var(--x)]` plus a
+ * `dark:text-[var(--x-dark)]` override.
+ */
+export function getReadableArchetypeLabel(
+  primary: string,
+  minimumRatio = 4.5
+): { light: string; dark: string } {
+  const parsed = parseHexColor(primary);
+  if (!parsed) {
+    return { light: CONTRAST_INK_DARK, dark: CONTRAST_INK_LIGHT };
+  }
+
+  let light: RgbChannels = { ...parsed };
+  for (let step = 0; step < 24 && getContrastRatio(toHex(light), CARD_SURFACE_LIGHT) < minimumRatio; step += 1) {
+    light = { r: light.r * 0.9, g: light.g * 0.9, b: light.b * 0.9 };
+  }
+
+  let dark: RgbChannels = { ...parsed };
+  for (let step = 0; step < 24 && getContrastRatio(toHex(dark), CARD_SURFACE_DARK) < minimumRatio; step += 1) {
+    dark = {
+      r: dark.r + (255 - dark.r) * 0.1,
+      g: dark.g + (255 - dark.g) * 0.1,
+      b: dark.b + (255 - dark.b) * 0.1,
+    };
+  }
+
+  return { light: toHex(light), dark: toHex(dark) };
+}

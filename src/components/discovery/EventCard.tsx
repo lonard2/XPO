@@ -18,7 +18,7 @@ import { buttonVariants } from '@/components/ui/Button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/Card';
 import { useTranslations } from 'next-intl';
 import { formatCurrency, formatDateRange, getTimeZoneForRegion, getEventTemporalStatus, type SupportedCurrency } from '@/lib/i18n/formatters';
-import { getArchetypeTokens } from '@/lib/theming';
+import { getArchetypeTokens, getReadableArchetypeLabel } from '@/lib/theming';
 import { type DiscoveryEvent } from '@/types/discovery';
 import { cn } from '@/lib/utils';
 
@@ -54,6 +54,13 @@ export const EventCard = React.memo(function EventCard({
     [event.archetype]
   );
   const regionCode = (event.region?.code || event.regionId || 'id').toLowerCase();
+  // Small uppercase labels cannot use the raw token: orange reaches only
+  // 3.56:1 on a light card and indigo fails in both themes. The derived
+  // tones keep the hue while passing 4.5:1 per theme.
+  const labelTones = React.useMemo(
+    () => getReadableArchetypeLabel(archetypeTokens.primary),
+    [archetypeTokens.primary]
+  );
   const timezone = React.useMemo(() => getTimeZoneForRegion(regionCode), [regionCode]);
   const temporal = React.useMemo(
     () => getEventTemporalStatus(event.startDate, event.endDate),
@@ -228,7 +235,10 @@ export const EventCard = React.memo(function EventCard({
           </div>
 
           <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-            <span className="font-bold uppercase tracking-wider truncate" style={{ color: archetypeTokens.primary }}>
+            <span
+              className="font-bold uppercase tracking-wider truncate text-[var(--archetype-label)] dark:text-[var(--archetype-label-dark)]"
+              style={{ "--archetype-label": labelTones.light, "--archetype-label-dark": labelTones.dark } as React.CSSProperties}
+            >
               {archetypeBadgeLabel}
             </span>
             <span aria-hidden="true" className="shrink-0">·</span>

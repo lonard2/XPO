@@ -7,6 +7,7 @@ import {
   getContrastRatio,
   getContrastTextColor,
   getReadableBadgeColors,
+  getReadableArchetypeLabel,
   ARCHETYPE_DEFAULTS,
   ARCHETYPE_LIST,
   ARCHETYPE_METAS,
@@ -239,6 +240,29 @@ describe("Contrast helpers for arbitrary colour surfaces", () => {
   it("leaves a background alone when it already passes", () => {
     expect(getReadableBadgeColors("#ea580c").background).toBe("#ea580c");
     expect(getReadableBadgeColors("#0f172a").background).toBe("#0f172a");
+  });
+
+  it("derives archetype label tones that pass 4.5:1 on both card surfaces", () => {
+    // The two axe-flagged hues: orange fails on light cards, indigo on both.
+    for (const primary of ["#ea580c", "#6366f1"]) {
+      const tones = getReadableArchetypeLabel(primary);
+      expect(getContrastRatio(tones.light, "#ffffff")).toBeGreaterThanOrEqual(4.5);
+      expect(getContrastRatio(tones.dark, "#040a1a")).toBeGreaterThanOrEqual(4.5);
+    }
+    // Every archetype primary gets passing tones.
+    for (const archetype of ARCHETYPE_LIST) {
+      const { primary } = ARCHETYPE_DEFAULTS[archetype];
+      const tones = getReadableArchetypeLabel(primary);
+      expect(getContrastRatio(tones.light, "#ffffff")).toBeGreaterThanOrEqual(4.5);
+      expect(getContrastRatio(tones.dark, "#040a1a")).toBeGreaterThanOrEqual(4.5);
+    }
+  });
+
+  it("falls back to house inks for unparseable label input", () => {
+    expect(getReadableArchetypeLabel("not-a-color")).toEqual({
+      light: "#0f172a",
+      dark: "#ffffff",
+    });
   });
 
   it("honours a custom minimum ratio", () => {

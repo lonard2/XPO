@@ -313,7 +313,8 @@ export function VenueCampusExplorer({
               <p className="text-xs text-muted-foreground">
                 {tVen('dossierIntro')}
               </p>
-              <p className="text-[11px] text-muted-foreground/80">
+              {/* Full-strength muted: the 80% tint drops 11px text below 4.5:1. */}
+              <p className="text-[11px] text-muted-foreground">
                 {tVen('specsUnverifiedNote')}
               </p>
             </div>

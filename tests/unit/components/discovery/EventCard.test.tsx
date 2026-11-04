@@ -2,6 +2,7 @@ import React from 'react';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { EventCard } from '@/components/discovery/EventCard';
+import { getReadableArchetypeLabel } from '@/lib/theming';
 import { type DiscoveryEvent } from '@/types/discovery';
 
 const mockEvent: DiscoveryEvent = {
@@ -108,7 +109,7 @@ describe('Discovery Component: EventCard', () => {
     expect(screen.getByText('Free')).toBeInTheDocument();
   });
 
-  it('T3.1: renders the archetype label in body metadata with the category color', () => {
+  it('T3.1: renders the archetype label in body metadata with a readable category tone', () => {
     const energyEvent: DiscoveryEvent = {
       ...mockEvent,
       archetype: 'ENERGY_INFRASTRUCTURE',
@@ -116,7 +117,11 @@ describe('Discovery Component: EventCard', () => {
 
     render(<EventCard event={energyEvent} locale="en" />);
     const energyLabel = screen.getByText(/energy/i);
-    expect(energyLabel).toHaveStyle({ color: '#d97706' });
+    // Derived tone, not the raw token: #d97706 only reaches ~3.9:1 on a
+    // light card, so the label carries the darkened theme tone per mode.
+    const expected = getReadableArchetypeLabel('#d97706');
+    expect(energyLabel.style.getPropertyValue('--archetype-label')).toBe(expected.light);
+    expect(energyLabel.style.getPropertyValue('--archetype-label-dark')).toBe(expected.dark);
   });
 });
 
