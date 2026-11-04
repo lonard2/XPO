@@ -235,9 +235,14 @@ been the bar in this repository.
   settings form syncs on save with local-only fallback and renders the top
   suggestions. Verified live: 401 anonymous, 200 with unknown ids dropped,
   200 suggestions with a real scored event.
-- [ ] **M2. Request lifecycle.** Accept, decline and schedule on
+- [x] **M2. Request lifecycle.** Accept, decline and schedule on
   `MeetingRequest`, on shared identity (booking, booth, profile). Re-scoped
   from D2. M after M1 and X1.
+  Shipped 2026-11-04 as `e4012de`. Requester, booking and booth links on
+  submit; scheduled time and location on confirm with event-window
+  validation; reschedule notifies, decline clears; attendees read their own
+  requests with a wallet section. Verified live: linked submit, scoped
+  read, scheduled confirm, dashboard and wallet render.
 - [ ] **M3. AI re-ranking.** Rank suggestions through the OpenRouter layer
   with plain-language reasons, fed by M2 outcomes. S to M.
 - [ ] **M4. Hosted buyer program.** Tier-gated meeting quotas with
