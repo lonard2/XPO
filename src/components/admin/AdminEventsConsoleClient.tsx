@@ -2,12 +2,14 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Search, PlusCircle, Undo2, Trash2 } from "lucide-react";
+import { Search, PlusCircle, Undo2, Trash2, PenLine } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { Modal } from "@/components/ui/Modal";
 import { cn } from "@/lib/utils";
+import { EDITORIAL_LOCALES } from "@/lib/discovery/editorial";
 
 export interface AdminEventItem {
   id: string;
@@ -23,6 +25,9 @@ export interface AdminEventItem {
   venue?: { name: string; city?: string } | null;
   organizer?: { name: string; organization?: string | null } | null;
   _count?: { ticketTiers: number; booths: number; bookings: number };
+  editorialBlurb?: string | null;
+  editorialBlurbI18n?: Record<string, string> | null;
+  editorialApproved?: boolean;
 }
 
 interface AdminEventsConsoleClientProps {
@@ -67,6 +72,10 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
   const [organizers, setOrganizers] = React.useState<Array<{ id: string; name: string; organization?: string | null }>>([]);
   const [assignFor, setAssignFor] = React.useState<string | null>(null);
   const [assignTo, setAssignTo] = React.useState<string>("");
+  const [blurbFor, setBlurbFor] = React.useState<AdminEventItem | null>(null);
+  const [blurbText, setBlurbText] = React.useState("");
+  const [blurbI18n, setBlurbI18n] = React.useState<Record<string, string>>({});
+  const [blurbApproved, setBlurbApproved] = React.useState(false);
 
   // Organizer directory for the assign picker (admin console only).
   React.useEffect(() => {
@@ -134,6 +143,44 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
       setEvents((prev) => prev.map((e) => (e.id === id ? data.event : e)));
       setAssignFor(null);
       setAssignTo("");
+      setFeedback({ type: "success", text: data.message });
+    } catch (err) {
+      setFeedback({ type: "error", text: (err as Error).message });
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  const openBlurbEditor = (e: AdminEventItem) => {
+    setBlurbFor(e);
+    setBlurbText(e.editorialBlurb ?? "");
+    setBlurbI18n({ ...(e.editorialBlurbI18n ?? {}) });
+    setBlurbApproved(e.editorialApproved ?? false);
+    setFeedback(null);
+  };
+
+  const runBlurbSave = async () => {
+    if (!blurbFor) return;
+    if (!isLive) {
+      setFeedback({ type: "error", text: "Preview data is read-only. Connect the database to manage events." });
+      return;
+    }
+    setBusyId(blurbFor.id);
+    setFeedback(null);
+    try {
+      const res = await fetch(`/api/admin/events/${blurbFor.id}/blurb`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          editorialBlurb: blurbText,
+          editorialBlurbI18n: blurbI18n,
+          editorialApproved: blurbApproved,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.error || "Blurb save failed");
+      setEvents((prev) => prev.map((e) => (e.id === blurbFor.id ? data.event : e)));
+      setBlurbFor(null);
       setFeedback({ type: "success", text: data.message });
     } catch (err) {
       setFeedback({ type: "error", text: (err as Error).message });
@@ -232,6 +279,20 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
           )}
           <Button
             type="button"
+            variant="outline"
+            size="sm"
+            disabled={busyId === e.id || !isLive}
+            onClick={() => openBlurbEditor(e)}
+            className="h-9 gap-1.5 text-xs cursor-pointer"
+          >
+            <PenLine className="h-3.5 w-3.5" />
+            <span>Editorial</span>
+          </Button>
+          {!isLive && (
+            <span className="text-[11px] text-muted-foreground">Preview data is read-only.</span>
+          )}
+          <Button
+            type="button"
             variant="ghost"
             size="sm"
             disabled={busyId === e.id}
@@ -298,6 +359,71 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
 
       {renderGroup("Organizer Events", "Owned by organizers. Release returns one to platform curation.", owned)}
       {renderGroup("Platform-Curated Events", "Owned by XPO Platform Administration. Assign an organizer via API to move one.", curated)}
+
+      <Modal
+        isOpen={blurbFor !== null}
+        onClose={() => setBlurbFor(null)}
+        title={blurbFor ? `Editorial blurb — ${blurbFor.title}` : "Editorial blurb"}
+        description="Carousel footnote. Renders only when approved; empty locales fall back to the default."
+        size="lg"
+      >
+        <div className="space-y-4">
+          <div className="space-y-1.5">
+            <label htmlFor="blurb-default" className="block text-xs font-medium text-foreground">
+              Default blurb (English) <span className="text-muted-foreground font-mono">{blurbText.length}/280</span>
+            </label>
+            <textarea
+              id="blurb-default"
+              rows={3}
+              maxLength={280}
+              value={blurbText}
+              onChange={(ev) => setBlurbText(ev.target.value)}
+              placeholder="Editors pick: why this event matters."
+              className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors"
+            />
+          </div>
+          {EDITORIAL_LOCALES.filter((code) => code !== "en").map((code) => (
+            <div key={code} className="space-y-1.5">
+              <label htmlFor={`blurb-${code}`} className="block text-xs font-medium text-foreground">
+                {code} <span className="text-muted-foreground font-mono">{(blurbI18n[code] ?? "").length}/280</span>
+              </label>
+              <textarea
+                id={`blurb-${code}`}
+                rows={2}
+                maxLength={280}
+                value={blurbI18n[code] ?? ""}
+                onChange={(ev) => setBlurbI18n((prev) => ({ ...prev, [code]: ev.target.value }))}
+                placeholder="Empty falls back to the default."
+                className="flex min-h-[64px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors"
+              />
+            </div>
+          ))}
+          <label className="flex items-center gap-2 text-xs font-medium text-foreground cursor-pointer">
+            <input
+              type="checkbox"
+              checked={blurbApproved}
+              onChange={(ev) => setBlurbApproved(ev.target.checked)}
+              className="h-4 w-4 rounded border-input accent-primary"
+            />
+            Approved for carousel
+          </label>
+          <div className="flex justify-end gap-2 pt-1">
+            <Button type="button" variant="ghost" size="sm" onClick={() => setBlurbFor(null)} className="h-9 text-xs cursor-pointer">
+              <span>Cancel</span>
+            </Button>
+            <Button
+              type="button"
+              variant="primary"
+              size="sm"
+              disabled={busyId === blurbFor?.id}
+              onClick={runBlurbSave}
+              className="h-9 text-xs cursor-pointer"
+            >
+              <span>Save</span>
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }
