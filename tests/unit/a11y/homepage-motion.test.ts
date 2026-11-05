@@ -16,8 +16,10 @@ const HOME_PAGE = path.resolve(__dirname, "../../../src/app/[locale]/(attendee)/
 describe("Quality Gate: Homepage motion wiring", () => {
   const page = fs.readFileSync(HOME_PAGE, "utf8");
 
-  it("cascades the featured grid and the bento grid entrances", () => {
-    expect(page.match(/stagger-children/g) ?? []).toHaveLength(2);
+  it("cascades the featured grid, editor rows, and the bento grid entrances", () => {
+    // Featured, editor rows (one class in source, one per row at runtime),
+    // and bento.
+    expect(page.match(/stagger-children/g) ?? []).toHaveLength(3);
     // Both grids render through the shared adaptive row.
     expect(page).toContain("<ResponsiveRow");
   });
