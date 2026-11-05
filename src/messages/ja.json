@@ -42,7 +42,9 @@
     "backToHome": "ディスカバリーに戻る",
     "skipToContent": "メインコンテンツへスキップ",
     "filters": "フィルター",
-    "home": "ホーム"
+    "home": "ホーム",
+    "discreetEventLabel": "非公開イベント",
+    "discreetEventDesc": "貸切予約のため利用中。"
   },
   "nav": {
     "brand": "XPO",

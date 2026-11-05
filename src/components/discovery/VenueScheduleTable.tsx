@@ -17,10 +17,11 @@ import { formatDateRange, getTimeZoneForRegion } from '@/lib/i18n/formatters';
 import { useTranslations } from 'next-intl';
 import { getArchetypeTokens, getReadableBadgeColors } from '@/lib/theming';
 import { type DiscoveryEvent } from '@/types/discovery';
+import { type ScheduleStub, isScheduleStub } from '@/lib/discovery/presentation';
 import { cn } from '@/lib/utils';
 
 export interface VenueScheduleTableProps {
-  events: DiscoveryEvent[];
+  events: Array<DiscoveryEvent | ScheduleStub>;
   locale: string;
   regionCode?: string;
   venueName: string;
@@ -35,6 +36,7 @@ export function VenueScheduleTable({
   className,
 }: VenueScheduleTableProps) {
   const tVen = useTranslations('venues');
+  const tCom = useTranslations('common');
   const timezone = getTimeZoneForRegion(regionCode);
 
   return (
@@ -79,6 +81,28 @@ export function VenueScheduleTable({
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {events.map((evt) => {
+            if (isScheduleStub(evt)) {
+              const stubHall = evt.venueHallName;
+              const stubDates = formatDateRange(evt.startDate, evt.endDate, locale, timezone);
+              return (
+                <div
+                  key={evt.id}
+                  className="flex flex-col justify-between rounded-2xl border border-dashed border-border/80 bg-muted/20 p-5 space-y-3"
+                >
+                  <span className="text-xs font-semibold text-muted-foreground bg-muted px-2 py-0.5 rounded self-start">
+                    {stubHall || tVen('defaultHall')}
+                  </span>
+                  <div className="space-y-1">
+                    <p className="text-sm font-bold text-foreground">{tCom('discreetEventLabel')}</p>
+                    <p className="text-xs text-muted-foreground">{tCom('discreetEventDesc')}</p>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <CalendarIcon className="h-3.5 w-3.5 shrink-0" />
+                    <span>{stubDates}</span>
+                  </div>
+                </div>
+              );
+            }
             const tokens = getArchetypeTokens(evt.archetype);
             const archetypeBadge = getReadableBadgeColors(tokens.primary);
             const dates = formatDateRange(evt.startDate, evt.endDate, locale, timezone);

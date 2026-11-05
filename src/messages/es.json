@@ -42,7 +42,9 @@
     "backToHome": "Volver a Descubrir",
     "skipToContent": "Saltar al contenido principal",
     "filters": "Filtros",
-    "home": "Inicio"
+    "home": "Inicio",
+    "discreetEventLabel": "Evento privado",
+    "discreetEventDesc": "Reservado para un evento privado."
   },
   "nav": {
     "brand": "XPO",

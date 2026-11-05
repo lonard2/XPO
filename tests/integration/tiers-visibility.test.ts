@@ -117,3 +117,24 @@ describe("Tiers: visibility enforcement and leak tests", () => {
     expect(sources).toContain("listingWhere");
   });
 });
+
+describe("Quality Gate: discreet dictionary usage", () => {
+  it("every discreet label key exists in all six locales", () => {
+    const source = readFileSync(
+      "src/components/discovery/VenueScheduleTable.tsx",
+      "utf8"
+    );
+    const missing: string[] = [];
+    for (const match of source.matchAll(/\btCom\('([^']+)'\)/g)) {
+      if (!match[1].startsWith("discreet")) continue;
+      for (const locale of ["en", "id", "ja", "zh-CN", "de", "es"]) {
+        const parsed = JSON.parse(
+          readFileSync(`src/messages/${locale}.json`, "utf8")
+        ) as Record<string, Record<string, unknown>>;
+        if (!(match[1] in (parsed.common ?? {})))
+          missing.push(`${locale}.common.${match[1]}`);
+      }
+    }
+    expect(missing).toEqual([]);
+  });
+});

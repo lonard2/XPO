@@ -77,3 +77,48 @@ export function stripDiscreetFields(
     endDate: row.endDate,
   };
 }
+
+export interface ScheduleStub extends DiscreetStub {
+  id: string;
+  discreet: true;
+}
+
+/** Type guard for schedule rows: stubs render occupancy, not links. */
+export function isScheduleStub(
+  row: unknown
+): row is ScheduleStub {
+  return (
+    typeof row === "object" &&
+    row !== null &&
+    (row as { discreet?: unknown }).discreet === true
+  );
+}
+
+/**
+ * Schedule rows: public events pass through by identity, discreet events
+ * become stubs, anything else (hidden, unknown) is dropped defensively so
+ * a caller can never render what it must not show.
+ */
+export function toScheduleRows<
+  T extends {
+    id: string;
+    visibility?: string | null;
+    venueHallName?: string | null;
+    startDate: Date | string;
+    endDate: Date | string;
+  },
+>(rows: T[]): Array<T | ScheduleStub> {
+  const out: Array<T | ScheduleStub> = [];
+  for (const row of rows) {
+    if (!row.visibility || row.visibility === "PUBLIC") {
+      out.push(row);
+    } else if (row.visibility === "DISCREET") {
+      out.push({
+        id: row.id,
+        discreet: true,
+        ...stripDiscreetFields(row),
+      });
+    }
+  }
+  return out;
+}

@@ -11,7 +11,7 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import { db } from '@/lib/db';
-import { listingWhere } from '@/lib/discovery/presentation';
+import { listingWhere, scheduleWhere, toScheduleRows } from '@/lib/discovery/presentation';
 import { Badge } from '@/components/ui/Badge';
 import { buttonVariants } from '@/components/ui/Button';
 import { VenueCampusExplorer } from '@/components/discovery/VenueCampusExplorer';
@@ -23,6 +23,7 @@ import { generatePlaceJsonLd } from '@/lib/seo/jsonLd';
 import { siteBaseUrl } from '@/lib/seo/site';
 import { hallsOnly, meetingRoomsOnly, countHalls } from '@/lib/discovery/venueSpaces';
 import { type VenueSummary, type DiscoveryEvent } from '@/types/discovery';
+import { type ScheduleStub } from '@/lib/discovery/presentation';
 
 export interface VenueDetailPageProps {
   params: Promise<{
@@ -76,7 +77,7 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
   const tFoot = await getTranslations({ locale, namespace: 'footer' });
 
   let venue: VenueSummary | null = null;
-  let upcomingEvents: DiscoveryEvent[] = [];
+  let upcomingEvents: Array<DiscoveryEvent | ScheduleStub> = [];
 
   try {
     const dbVenue = await db.venue.findUnique({
@@ -85,7 +86,7 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
         halls: true,
         region: true,
         events: {
-          where: listingWhere(),
+          where: scheduleWhere(),
           include: {
             venue: true,
             ticketTiers: true,
@@ -98,7 +99,7 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
 
     if (dbVenue) {
       venue = dbVenue as unknown as VenueSummary;
-      upcomingEvents = (dbVenue.events as unknown as DiscoveryEvent[]) || [];
+      upcomingEvents = toScheduleRows(dbVenue.events);
     }
   } catch {
     // Graceful fallback

@@ -42,7 +42,9 @@
     "backToHome": "Kembali ke Beranda",
     "skipToContent": "Loncat ke konten utama",
     "filters": "Filter",
-    "home": "Beranda"
+    "home": "Beranda",
+    "discreetEventLabel": "Acara privat",
+    "discreetEventDesc": "Dipesan untuk acara privat."
   },
   "nav": {
     "brand": "XPO",

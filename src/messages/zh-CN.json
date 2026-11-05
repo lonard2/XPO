@@ -42,7 +42,9 @@
     "backToHome": "返回发现页",
     "skipToContent": "跳转至主要内容",
     "filters": "筛选",
-    "home": "首页"
+    "home": "首页",
+    "discreetEventLabel": "私人活动",
+    "discreetEventDesc": "已为私人预订保留。"
   },
   "nav": {
     "brand": "XPO",

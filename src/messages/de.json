@@ -42,7 +42,9 @@
     "backToHome": "Zurück zur Übersicht",
     "skipToContent": "Zum Hauptinhalt springen",
     "filters": "Filter",
-    "home": "Start"
+    "home": "Start",
+    "discreetEventLabel": "Private Veranstaltung",
+    "discreetEventDesc": "Für eine private Buchung reserviert."
   },
   "nav": {
     "brand": "XPO",

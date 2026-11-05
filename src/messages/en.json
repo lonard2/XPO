@@ -42,7 +42,9 @@
     "backToHome": "Back to Discovery",
     "skipToContent": "Skip to main content",
     "filters": "Filters",
-    "home": "Home"
+    "home": "Home",
+    "discreetEventLabel": "Private event",
+    "discreetEventDesc": "Reserved for a private booking."
   },
   "nav": {
     "brand": "XPO",
