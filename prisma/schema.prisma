@@ -421,3 +421,21 @@ model MeetingRequest {
   @@index([eventId, status])
   @@index([requesterId])
 }
+
+// Editor-composed homepage rows. `regionId` null means all editions.
+// Positions are managed by the API, never supplied by clients.
+model HomepageRow {
+  id            String   @id @default(cuid())
+  title         String
+  titleI18n     Json?
+  subtitle      String?
+  subtitleI18n  Json?
+  regionId      String?
+  position      Int
+  eventIdsJson  String   @default("[]")
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([regionId, position])
+}
