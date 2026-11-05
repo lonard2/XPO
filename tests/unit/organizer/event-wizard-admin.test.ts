@@ -89,8 +89,65 @@ describe("Admin Platform-Curated Event Launch Wizard", () => {
     global.fetch = fetchMock as unknown as typeof fetch;
   });
 
-  it("renders the Event Publication Authority and Ownership section for ADMIN role", async () => {
-    mockRole = "ADMIN";
+  it("blocks an untouched venue suggestion from saving silently", async () => {
+    // Venue carries SMALL: the wizard suggests it into the tier select,
+    // but advancing without an explicit choice must still block.
+    (fetchMock as ReturnType<typeof vi.fn>).mockImplementation((url: string) => {
+      if (url === "/api/organizer/venues?take=500" || url.startsWith("/api/organizer/venues")) {
+        return Promise.resolve({
+          ok: true,
+          json: () =>
+            Promise.resolve({
+              venues: [
+                {
+                  id: "v-mall",
+                  name: "Grand Mall Atrium",
+                  regionId: "id",
+                  city: "Jakarta",
+                  size: "SMALL",
+                  halls: [{ id: "h-atrium", name: "Atrium", capacity: 800 }],
+                },
+              ],
+            }),
+        });
+      }
+      return Promise.resolve({ ok: true, json: () => Promise.resolve({}) });
+    });
+    const { container } = render(React.createElement(NewEventWizardPage));
+
+    const titleInput = container.querySelector("#wizard-event-title") as HTMLInputElement;
+    fireEvent.change(titleInput, { target: { value: "Untouched Tier Expo 2027" } });
+    const descInput = container.querySelector("#wizard-description") as HTMLTextAreaElement;
+    fireEvent.change(descInput, { target: { value: "Tier prefill must not save without confirmation." } });
+
+    // Step 1 -> Step 2, then attempt Step 2 -> Step 3 without touching tier.
+    fireEvent.click(screen.getByRole("button", { name: /continue to next step/i }));
+    await waitFor(() => {
+      expect(document.querySelector("#wizard-pagesize-select")).not.toBeNull();
+    });
+    // Pick the SMALL venue: the suggestion fills the tier untouched.
+    fireEvent.change(document.querySelector("#wizard-venue-select") as HTMLSelectElement, {
+      target: { value: "v-mall" },
+    });
+    expect(
+      (document.querySelector("#wizard-pagesize-select") as HTMLSelectElement).value
+    ).toBe("SMALL");
+    fireEvent.click(screen.getByRole("button", { name: /continue to next step/i }));
+
+    await waitFor(() => {
+      expect(
+        screen.getAllByText(/page size explicitly/i).length
+      ).toBeGreaterThan(0);
+    });
+    // Still on step 2: the tier select remains visible, step 3 absent.
+    expect(document.querySelector("#wizard-pagesize-select")).not.toBeNull();
+    const posts = (fetchMock as ReturnType<typeof vi.fn>).mock.calls.filter(
+      (call) => call[0] === "/api/organizer/events"
+    );
+    expect(posts).toHaveLength(0);
+  });
+
+  it("renders the Event Publication Authority and Ownership section for ADMIN role", async () => {    mockRole = "ADMIN";
     mockUser.role = "ADMIN";
 
     render(React.createElement(NewEventWizardPage));

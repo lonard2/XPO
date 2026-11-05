@@ -6,6 +6,7 @@ import { render, screen } from "@testing-library/react";
 import { EventPageShell } from "@/components/themed/EventPageShell";
 import { HospitalityTourismView } from "@/components/themed/archetypes/HospitalityTourismView";
 import { FaithPilgrimageCongressView } from "@/components/themed/archetypes/FaithPilgrimageCongressView";
+import { TechDevSummitView } from "@/components/themed/archetypes/TechDevSummitView";
 
 const SHELL = path.resolve(__dirname, "../../../src/components/themed/EventPageShell.tsx");
 const PROGRAMS = path.resolve(__dirname, "../../../src/components/themed/ShowcaseProgramGrid.tsx");
@@ -111,5 +112,19 @@ describe("Quality Gate: Event page sizes", () => {
     expect(
       screen.getByText(/Simultaneous Interpretation Channels/i)
     ).toBeDefined();
+  });
+
+  it("hides the livestream channel on SMALL", () => {
+    const withStream = {
+      ...smallEvent,
+      showcaseJson: JSON.stringify({ livestreamUrl: "https://stream.example.com/live" }),
+    };
+    const { unmount } = render(
+      <TechDevSummitView event={withStream as never} locale="en" pageSize="SMALL" />
+    );
+    expect(screen.queryByText(/Open Stream/i)).toBeNull();
+    unmount();
+    render(<TechDevSummitView event={withStream as never} locale="en" />);
+    expect(screen.getByText(/Open Stream/i)).toBeDefined();
   });
 });

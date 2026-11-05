@@ -17,10 +17,11 @@ import { useTranslations } from 'next-intl';
 import { formatDateRange, getTimeZoneForRegion } from '@/lib/i18n/formatters';
 import { getArchetypeTokens, getReadableArchetypeLabel } from '@/lib/theming';
 import { type EventSummary } from '@/types/discovery';
+import { type ScheduleStub, isScheduleStub } from '@/lib/discovery/presentation';
 import { cn } from '@/lib/utils';
 
 export interface EventCalendarWidgetProps {
-  events: EventSummary[];
+  events: Array<EventSummary | ScheduleStub>;
   locale: string;
   regionCode?: string;
   isCalendarPage?: boolean;
@@ -56,6 +57,7 @@ export function EventCalendarWidget({
 }: EventCalendarWidgetProps) {
   const tCal = useTranslations('calendar');
   const tTickets = useTranslations('tickets');
+  const tCom = useTranslations('common');
 
   // Locale-aware narrow weekday labels (Sunday-first grid order); no hardcoded English.
   const weekdayLabels = React.useMemo(() => {
@@ -113,11 +115,13 @@ export function EventCalendarWidget({
     });
   }, [events, selectedDate, timezone]);
 
-  // Find nearest upcoming event from selectedDate
+  // Find nearest upcoming event from selectedDate. Stubs never headline:
+  // no title, no link target.
   const nearestUpcomingEvent = React.useMemo(() => {
     if (eventsOnSelectedDate.length > 0 || events.length === 0) return null;
     const selStr = toISODateInTimezone(selectedDate, timezone);
-    const sorted = [...events].sort(
+    const full = events.filter((evt): evt is EventSummary => !isScheduleStub(evt));
+    const sorted = [...full].sort(
       (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
     );
     const upcoming = sorted.find((evt) => {
@@ -318,6 +322,23 @@ export function EventCalendarWidget({
           >
             {eventsOnSelectedDate.length > 0 ? (
               eventsOnSelectedDate.map((evt) => {
+                if (isScheduleStub(evt)) {
+                  return (
+                    <div
+                      key={evt.id}
+                      className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 rounded-xl border border-dashed border-border/80 bg-muted/20 p-3"
+                    >
+                      <div className="space-y-1 min-w-0">
+                        <p className="text-xs font-bold text-foreground">{tCom('discreetEventLabel')}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {[evt.venueHallName, formatDateRange(evt.startDate, evt.endDate, locale, timezone)]
+                            .filter(Boolean)
+                            .join(' · ')}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                }
                 const tokens = getArchetypeTokens(evt.archetype);
                 // Small uppercase labels cannot use the raw token (same rule
                 // as EventCard): the derived tones keep the hue at 4.5:1.

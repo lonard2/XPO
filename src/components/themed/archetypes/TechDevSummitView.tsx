@@ -19,7 +19,7 @@ import { parseShowcase } from "@/lib/showcase";
 import { ShowcaseProgramGrid } from "@/components/themed/ShowcaseProgramGrid";
 import type { ArchetypeViewProps } from "./IndustrialB2BView";
 
-export function TechDevSummitView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
+export function TechDevSummitView({ event, locale = "en", onSelectTier, pageSize = "LARGE" }: ArchetypeViewProps) {
   const [activeTrack, setActiveTrack] = React.useState("ALL");
   const [hackathonRsvp, setHackathonRsvp] = React.useState(false);
 
@@ -74,8 +74,8 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier }: Archet
         </div>
       </section>
 
-      {/* Livestream card: only when the organizer published a stream URL. */}
-      {showcase.livestreamUrl && (
+      {/* Livestream card: only when the organizer published a stream URL, never on SMALL. */}
+      {showcase.livestreamUrl && pageSize !== "SMALL" && (
         <section className="rounded-xl border border-border bg-card p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center gap-4">
           <div className="flex items-center gap-2.5 min-w-0">
             <span className="relative flex h-3 w-3 shrink-0">

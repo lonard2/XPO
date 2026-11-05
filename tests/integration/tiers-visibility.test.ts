@@ -12,6 +12,7 @@ import {
 } from "@/lib/discovery/presentation";
 import sitemap from "@/app/sitemap";
 import { GET as getSuggestions } from "@/app/api/profile/suggestions/route";
+import { GET as getPublicEvent } from "@/app/api/events/[id]/route";
 
 describe("Tiers: visibility enforcement and leak tests", () => {
   const stamp = Date.now();
@@ -100,6 +101,60 @@ describe("Tiers: visibility enforcement and leak tests", () => {
     const text = JSON.stringify(json);
     expect(text).not.toContain("Discreet Corporate Showcase");
     expect(text).not.toContain("Hidden Board Retreat");
+  });
+
+  it("refuses discreet and hidden events from the public event API", async () => {
+    const anon = { "Content-Type": "application/json" };
+    for (const slug of [discreetSlug, hiddenSlug]) {
+      const res = await getPublicEvent(
+        new Request(`http://localhost:3000/api/events/${slug}`, { headers: anon }) as never,
+        { params: Promise.resolve({ id: slug }) }
+      );
+      expect(res.status).toBe(404);
+      expect(JSON.stringify(await res.json())).not.toContain("Corporate Showcase");
+    }
+  });
+
+  it("still serves public events and owned non-public events with identity", async () => {
+    const publicEvent = await db.event.findFirst({
+      where: { visibility: "PUBLIC" },
+      select: { id: true, title: true },
+    });
+    const open = await getPublicEvent(
+      new Request(`http://localhost:3000/api/events/${publicEvent!.id}`, {
+        headers: { "Content-Type": "application/json" },
+      }) as never,
+      { params: Promise.resolve({ id: publicEvent!.id }) }
+    );
+    expect(open.status).toBe(200);
+
+    const owned = await db.event.findFirst({
+      where: { organizerId: { not: null } },
+      select: { id: true, organizerId: true },
+    });
+    await db.event.update({
+      where: { id: owned!.id },
+      data: { visibility: "HIDDEN" },
+    });
+    try {
+      const ownerRes = await getPublicEvent(
+        new Request(`http://localhost:3000/api/events/${owned!.id}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Cookie: "xpo_role=ORGANIZER",
+            "x-xpo-user-id": owned!.organizerId!,
+          },
+        }) as never,
+        { params: Promise.resolve({ id: owned!.id }) }
+      );
+      expect(ownerRes.status).toBe(200);
+      expect(JSON.stringify(await ownerRes.json())).toContain(owned!.id);
+    } finally {
+      await db.event.update({
+        where: { id: owned!.id },
+        data: { visibility: "PUBLIC" },
+      });
+    }
   });
 
   it("wires the listing filter into every public query", () => {

@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { apiError } from "@/lib/api/envelope";
+import {
+  resolveEventCaller,
+  canWriteEvent,
+} from "@/lib/auth/eventOwnership";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -76,6 +80,16 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 
     if (!event) {
       return apiError(`Event not found for identifier: ${id}`, 404);
+    }
+
+    // Visibility gate: discreet and hidden rows are reachable only by
+    // owners and admins (the customizer flow); strangers get the same 404
+    // as a missing id so tiers cannot be probed.
+    if ((event as { visibility?: string | null }).visibility !== "PUBLIC") {
+      const caller = await resolveEventCaller(request);
+      if (!canWriteEvent(caller, event.organizerId)) {
+        return apiError(`Event not found for identifier: ${id}`, 404);
+      }
     }
 
     return NextResponse.json({ success: true, event });

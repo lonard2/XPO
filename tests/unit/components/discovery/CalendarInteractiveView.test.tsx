@@ -113,6 +113,58 @@ describe('CalendarInteractiveView Component', () => {
     vi.clearAllMocks();
   });
 
+  it("renders discreet occupancy in the month list without links or identity", () => {
+    const stub = {
+      id: "evt-cal-discreet",
+      discreet: true as const,
+      venueHallName: "Grand Ballroom",
+      startDate: new Date().toISOString(),
+      endDate: new Date(Date.now() + 3600000).toISOString(),
+    };
+    render(
+      <CalendarInteractiveView
+        initialEvents={[...mockEvents, stub] as never}
+        locale="en"
+        region="id"
+        initialArchetype="all"
+        initialVenue="all"
+      />
+    );
+    expect(screen.getByText("Grand Ballroom")).toBeDefined();
+    const block = screen.getByText("Grand Ballroom").closest("div");
+    expect(block?.querySelector("a")).toBeNull();
+  });
+
+  it("excludes discreet stubs from iCal and CSV exports", () => {
+    const stub = {
+      id: "evt-cal-discreet",
+      discreet: true as const,
+      venueHallName: "Grand Ballroom",
+      startDate: new Date().toISOString(),
+      endDate: new Date(Date.now() + 3600000).toISOString(),
+    };
+    const icalSpy = vi.spyOn(icalModule, "downloadICalFile").mockReturnValue(true);
+    const csvSpy = vi.spyOn(icalModule, "downloadCsvSchedule").mockReturnValue(true);
+    try {
+      render(
+        <CalendarInteractiveView
+          initialEvents={[...mockEvents, stub] as never}
+          locale="en"
+          region="id"
+          initialArchetype="all"
+          initialVenue="all"
+        />
+      );
+      fireEvent.click(screen.getByRole("button", { name: /Export iCal/i }));
+      expect(icalSpy).toHaveBeenCalled();
+      const exported = icalSpy.mock.calls[0][0] as Array<{ id: string }>;
+      expect(exported.map((e) => e.id)).not.toContain("evt-cal-discreet");
+    } finally {
+      icalSpy.mockRestore();
+      csvSpy.mockRestore();
+    }
+  });
+
   it('renders events grouped by month milestones with venue tabs', () => {
     render(
       <CalendarInteractiveView

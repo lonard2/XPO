@@ -860,6 +860,8 @@ export default function NewEventWizardPage() {
       }
       if (!pageSize) {
         errors.pageSize = "Please choose an event page size explicitly.";
+      } else if (!pageSizeTouched) {
+        errors.pageSize = "Please confirm the suggested page size explicitly.";
       }
       if (!startDate) {
         errors.startDate = "Please specify an opening date.";
@@ -933,6 +935,13 @@ export default function NewEventWizardPage() {
 
     setIsSubmitting(true);
     setErrorMessage("");
+
+    // Final guard: tier confirmation cannot be bypassed by step tricks.
+    if (!pageSize || !pageSizeTouched) {
+      setErrorMessage("Please choose an event page size explicitly.");
+      setIsSubmitting(false);
+      return;
+    }
 
     const payload = {
       title,

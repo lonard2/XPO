@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { VenueScheduleTable } from "@/components/discovery/VenueScheduleTable";
+import { EventCalendarWidget } from "@/components/discovery/EventCalendarWidget";
 import type { EventSummary } from "@/types/discovery";
 
 const stubRow = {
@@ -40,5 +41,21 @@ describe("Discreet occupancy stubs", () => {
     const stubBlock = screen.getByText("Grand Ballroom").closest("div");
     expect(stubBlock?.querySelector("a")).toBeNull();
     expect(container.textContent).not.toContain("Secret");
+  });
+
+  it("renders hall plus generic label with no link in the calendar day list", () => {
+    const dated = {
+      ...stubRow,
+      startDate: new Date().toISOString(),
+      endDate: new Date(Date.now() + 3600000).toISOString(),
+    };
+    render(
+      <EventCalendarWidget
+        events={[publicEvent, dated as never]}
+        locale="en"
+        regionCode="id"
+      />
+    );
+    expect(screen.getByText(/Grand Ballroom/)).toBeDefined();
   });
 });

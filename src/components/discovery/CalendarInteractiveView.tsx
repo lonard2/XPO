@@ -27,9 +27,10 @@ import { Button, buttonVariants } from '@/components/ui/Button';
 import { EventCalendarWidget } from '@/components/discovery/EventCalendarWidget';
 import { EventCategoryPills } from '@/components/discovery/EventCategoryPills';
 import { formatDateRange, getTimeZoneForRegion } from '@/lib/i18n/formatters';
-import { getArchetypeTokens, type MiceArchetype } from '@/lib/theming';
+import { getArchetypeTokens, getReadableArchetypeLabel, type MiceArchetype } from '@/lib/theming';
 import { archTitle } from '@/lib/i18n/categories';
 import { type EventSummary } from '@/types/discovery';
+import { type ScheduleStub, isScheduleStub } from '@/lib/discovery/presentation';
 import {
   downloadICalFile,
   generateGoogleCalendarUrl,
@@ -40,7 +41,7 @@ import {
 import { cn } from '@/lib/utils';
 
 export interface CalendarInteractiveViewProps {
-  initialEvents: EventSummary[];
+  initialEvents: Array<EventSummary | ScheduleStub>;
   locale: string;
   region: string;
   initialArchetype?: string;
@@ -132,7 +133,7 @@ export function CalendarInteractiveView({
   const availableVenues = React.useMemo(() => {
     const venues = new Set<string>();
     for (const evt of initialEvents) {
-      if (evt.venueName) venues.add(evt.venueName);
+      if (!isScheduleStub(evt) && evt.venueName) venues.add(evt.venueName);
     }
     return Array.from(venues);
   }, [initialEvents]);
@@ -141,6 +142,7 @@ export function CalendarInteractiveView({
   // counts never promise more than the active category can deliver.
   const archetypeFilteredEvents = React.useMemo(() => {
     return initialEvents.filter((evt) => {
+      if (isScheduleStub(evt)) return !selectedArchetype || selectedArchetype === 'all';
       return (
         !selectedArchetype ||
         selectedArchetype === 'all' ||
@@ -149,9 +151,17 @@ export function CalendarInteractiveView({
     });
   }, [initialEvents, selectedArchetype]);
 
-  // Filter events based on active category & venue
+  // Filter events based on active category & venue. Stubs carry no
+  // archetype or venue to match on: they show under open filters and drop
+  // out as soon as the visitor narrows, rather than misattributing.
   const filteredEvents = React.useMemo(() => {
     return initialEvents.filter((evt) => {
+      if (isScheduleStub(evt)) {
+        const narrowed =
+          (selectedArchetype && selectedArchetype !== 'all') ||
+          (selectedVenue && selectedVenue !== 'all');
+        return !narrowed;
+      }
       const matchArchetype =
         !selectedArchetype ||
         selectedArchetype === 'all' ||
@@ -208,7 +218,7 @@ export function CalendarInteractiveView({
 
   // Group filtered events by Year-Month for chronological schedule chunking
   const eventsByMonth = React.useMemo(() => {
-    const groups: { [key: string]: { key: string; monthTitle: string; events: EventSummary[] } } = {};
+    const groups: { [key: string]: { key: string; monthTitle: string; events: Array<EventSummary | ScheduleStub> } } = {};
     const sorted = [...filteredEvents].sort(
       (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
     );
@@ -230,9 +240,11 @@ export function CalendarInteractiveView({
   const timezone = getTimeZoneForRegion(region);
 
   const nextUpcomingEvent = React.useMemo(() => {
-    if (filteredEvents.length === 0) return null;
+    // Stubs never headline exports or calendar links: no title, no slug.
+    const full = filteredEvents.filter((evt): evt is EventSummary => !isScheduleStub(evt));
+    if (full.length === 0) return null;
     const now = new Date().getTime();
-    const sorted = [...filteredEvents].sort(
+    const sorted = [...full].sort(
       (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
     );
     return sorted.find((e) => new Date(e.endDate).getTime() >= now) || sorted[0];
@@ -244,12 +256,19 @@ export function CalendarInteractiveView({
   const eventDetailsOrigin =
     typeof window !== 'undefined' ? `${window.location.origin}/${locale}` : `https://xpo-mice.com/${locale}`;
 
+  // Exports carry full rows only: stubs have no title, slug, or venue to
+  // serialize, and must never leak identity into downloaded files.
+  const exportableEvents = React.useMemo(
+    () => filteredEvents.filter((evt): evt is EventSummary => !isScheduleStub(evt)),
+    [filteredEvents]
+  );
+
   const handleExportICal = () => {
     setIsExporting(true);
     setExportError(null);
     const filename = `xpo-${region}-schedule.ics`;
     const calendarTitle = `XPO MICE ${region.toUpperCase()} Master Timetable`;
-    const ok = downloadICalFile(filteredEvents, filename, calendarTitle);
+    const ok = downloadICalFile(exportableEvents, filename, calendarTitle);
     if (!ok) {
       setIsExporting(false);
       setExportError(tCal('exportFailed') || 'Export failed. No events to export or your browser blocked the download.');
@@ -264,7 +283,7 @@ export function CalendarInteractiveView({
   const handleExportCsv = () => {
     setExportError(null);
     const filename = `xpo-${region}-schedule.csv`;
-    const ok = downloadCsvSchedule(filteredEvents, filename);
+    const ok = downloadCsvSchedule(exportableEvents, filename);
     if (!ok) {
       setExportError(tCal('exportFailed') || 'Export failed. No events to export or your browser blocked the download.');
       return;
@@ -275,7 +294,7 @@ export function CalendarInteractiveView({
   const handleCopyPlainText = async () => {
     try {
       setExportError(null);
-      const text = generatePlainTextSchedule(filteredEvents, locale);
+      const text = generatePlainTextSchedule(exportableEvents, locale);
       await navigator.clipboard.writeText(text);
       setCopiedText(true);
       setTimeout(() => {
@@ -619,7 +638,7 @@ export function CalendarInteractiveView({
             </button>
 
             {availableVenues.map((venueName) => {
-              const count = archetypeFilteredEvents.filter((e) => e.venueName === venueName).length;
+              const count = archetypeFilteredEvents.filter((e) => !isScheduleStub(e) && e.venueName === venueName).length;
               const isSelected = selectedVenue.toLowerCase() === venueName.toLowerCase();
 
               return (
@@ -667,7 +686,26 @@ export function CalendarInteractiveView({
                 {/* Event Cards Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                   {monthGroup.events.map((evt) => {
+                    if (isScheduleStub(evt)) {
+                      return (
+                        <div
+                          key={evt.id}
+                          className="flex flex-col justify-between rounded-xl border border-dashed border-border/80 bg-muted/20 p-4 space-y-2"
+                        >
+                          <span className="text-xs font-semibold text-muted-foreground bg-muted px-2 py-0.5 rounded self-start">
+                            {evt.venueHallName}
+                          </span>
+                          <p className="text-sm font-bold text-foreground">{tCom('discreetEventLabel')}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {formatDateRange(evt.startDate, evt.endDate, locale, timezone)}
+                          </p>
+                        </div>
+                      );
+                    }
                     const tokens = getArchetypeTokens(evt.archetype);
+                    // Same readable-tone rule as EventCard: raw primaries
+                    // fail 4.5:1 on light surfaces for several hues.
+                    const labelTones = getReadableArchetypeLabel(tokens.primary);
                     const dateRange = formatDateRange(evt.startDate, evt.endDate, locale, timezone);
 
                     let archetypeTitle = tokens.displayName;
@@ -689,12 +727,13 @@ export function CalendarInteractiveView({
                           <div className="flex items-center justify-between gap-2">
                             <Badge
                               variant="outline"
-                              className="text-xs font-semibold uppercase"
+                              className="text-xs font-semibold uppercase text-[var(--archetype-label)] dark:text-[var(--archetype-label-dark)]"
                               style={{
-                                color: tokens.primary,
+                                "--archetype-label": labelTones.light,
+                                "--archetype-label-dark": labelTones.dark,
                                 borderColor: `${tokens.primary}55`,
                                 backgroundColor: `${tokens.primary}12`,
-                              }}
+                              } as React.CSSProperties}
                             >
                               {archetypeTitle}
                             </Badge>

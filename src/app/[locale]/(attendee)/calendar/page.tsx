@@ -3,7 +3,7 @@ import { cookies, headers } from 'next/headers';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { Breadcrumbs, BreadcrumbJsonLd } from "@/components/layout/Breadcrumbs";
 import { db } from '@/lib/db';
-import { listingWhere } from '@/lib/discovery/presentation';
+import { scheduleWhere, toScheduleRows, isScheduleStub, type ScheduleStub } from '@/lib/discovery/presentation';
 import { resolveActiveRegion } from '@/lib/i18n/geo';
 import { FALLBACK_EVENTS } from '@/lib/discovery/fallbackData';
 import { CalendarInteractiveView } from '@/components/discovery/CalendarInteractiveView';
@@ -47,7 +47,7 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
 
   let events: any[] = [];
   try {
-    const whereClause: any = { ...listingWhere() };
+    const whereClause: any = { ...scheduleWhere() };
     if (region && region !== 'global') {
       whereClause.venue = { regionId: region };
     }
@@ -74,7 +74,10 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
     });
   }
 
-  const mappedEvents: EventSummary[] = events.map((e: any) => ({
+  const mappedEvents: Array<EventSummary | ScheduleStub> = toScheduleRows(events).map((e: any) => (
+    isScheduleStub(e)
+      ? e
+      : {
     id: e.id,
     title: e.title,
     slug: e.slug,
