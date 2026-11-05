@@ -112,7 +112,5 @@ Builder calls (mine, check while reading):
 7. SMALL keeps alerts (useful at intimate scale), hides the rest per
    section 2.
 
-Still theirs (changes what gets built):
-
-- V1. DISCREET direct-URL behavior is set to 404 above — confirm, or do
-  you want a "this event is private" stub page at the URL instead?
+Still theirs — resolved by owner 2026-11-05: V1 confirmed as 404.
+Stubs live only in schedules; no stub page at the URL.

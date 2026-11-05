@@ -94,12 +94,10 @@ Builder calls (mine, check while reading):
 6. Caps are Zod `.max` (UTF-16, repo convention), 400 through the envelope
    with per-field errors; titles need not be unique per event.
 
-Still theirs (changes what gets built):
+Still theirs — resolved by owner 2026-11-05 (all recommended options):
 
-- N1. Post-approval lifecycle: does an organizer edit to an APPROVED
-  update revert it to DRAFT for re-approval, or stay live? And is
-  rejection delete, back-to-DRAFT, or a reasoned third state?
-- N2. Who authors updates on platform-curated events (no organizer):
-  admin-only authorship, or blocked until assigned?
-- N3. Admin review shape: dedicated pending-updates tab/route, or inline
-  per-event approve buttons in the existing console?
+- N1. Organizer edits to APPROVED copy revert to DRAFT for re-approval;
+  rejection returns to DRAFT.
+- N2. Admin-side authorship on curated events (covers editorial posting;
+  no new role).
+- N3. Dedicated pending-updates tab with status filter and counts.
