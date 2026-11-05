@@ -195,6 +195,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         halls: true,
         region: true,
         events: {
+          where: listingWhere(),
           include: {
             venueHall: true,
             ticketTiers: true,

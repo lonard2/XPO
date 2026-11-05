@@ -171,6 +171,18 @@ describe("Tiers: visibility enforcement and leak tests", () => {
       .join("\n");
     expect(sources).toContain("listingWhere");
   });
+
+  it("filters the homepage venue rail's nested events too", () => {
+    const page = readFileSync(
+      "src/app/[locale]/(attendee)/page.tsx",
+      "utf8"
+    );
+    const lines = page.split("\n");
+    const idx = lines.findIndex((line) => line.trim() === "events: {");
+    expect(idx).toBeGreaterThan(-1);
+    const block = lines.slice(idx, idx + 4).join("\n");
+    expect(block).toContain("listingWhere");
+  });
 });
 
 describe("Quality Gate: discreet dictionary usage", () => {
