@@ -19,6 +19,7 @@ import { EventTableView } from '@/components/discovery/EventTableView';
 import { FacetedFilterBar } from '@/components/discovery/FacetedFilterBar';
 import { FilterSidebar } from '@/components/discovery/FilterSidebar';
 import { useTranslations } from 'next-intl';
+import { matchesDateRange } from '@/lib/discovery/dateFilters';
 import { type DiscoveryEvent, type FilterState } from '@/types/discovery';
 
 export interface EventsExplorerProps {
@@ -207,28 +208,7 @@ export function EventsExplorer({
       }
 
       // 7. Date Range filter
-      if (filters.dateRange !== 'all') {
-        const eventStartDate = new Date(event.startDate);
-        const eventStart = eventStartDate.getTime();
-        const now = new Date();
-
-        if (Number.isNaN(eventStart)) return false;
-
-        const eventEndDate = event.endDate ? new Date(event.endDate) : eventStartDate;
-        const eventEnd = Number.isNaN(eventEndDate.getTime()) ? eventStart : eventEndDate.getTime();
-
-        if (filters.dateRange === 'upcoming') {
-          if (eventStart < now.getTime() - 1000 * 60 * 60 * 24 * 30) return false;
-        } else if (filters.dateRange === 'this_month') {
-          const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0).getTime();
-          const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999).getTime();
-          if (eventEnd < startOfMonth || eventStart > endOfMonth) return false;
-        } else if (filters.dateRange === 'next_month') {
-          const startOfNextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1, 0, 0, 0, 0).getTime();
-          const endOfNextMonth = new Date(now.getFullYear(), now.getMonth() + 2, 0, 23, 59, 59, 999).getTime();
-          if (eventEnd < startOfNextMonth || eventStart > endOfNextMonth) return false;
-        }
-      }
+      if (!matchesDateRange(event, filters.dateRange)) return false;
 
       return true;
     }).sort((a, b) => {

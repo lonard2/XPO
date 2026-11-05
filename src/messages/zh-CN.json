@@ -387,7 +387,14 @@
     "freeAdmission": "免费",
     "shortlistCompare": "比较此活动",
     "shortlistCompareTitle": "比较活动",
-    "shortlistRemove": "从比较中移除"
+    "shortlistRemove": "从比较中移除",
+    "ongoingExhibitions": "正在举行",
+    "concludedExhibitions": "已结束",
+    "next7Days": "未来 7 天",
+    "next30Days": "未来 30 天",
+    "next90Days": "未来 90 天",
+    "thisWeek": "本周",
+    "thisYear": "今年"
   },
   "events": {
     "title": "展会名录与日程",

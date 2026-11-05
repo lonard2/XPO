@@ -133,8 +133,15 @@ export function FilterSidebar({
   const dateOptions = [
     { id: 'all', label: tDisc('allDates') || 'All Dates' },
     { id: 'upcoming', label: tDisc('upcomingExhibitions') || 'Upcoming Exhibitions' },
+    { id: 'ongoing', label: tDisc('ongoingExhibitions') || 'Happening Now' },
+    { id: 'concluded', label: tDisc('concludedExhibitions') || 'Concluded' },
+    { id: 'next_7_days', label: tDisc('next7Days') || 'Next 7 Days' },
+    { id: 'next_30_days', label: tDisc('next30Days') || 'Next 30 Days' },
+    { id: 'next_90_days', label: tDisc('next90Days') || 'Next 90 Days' },
+    { id: 'this_week', label: tDisc('thisWeek') || 'This Week' },
     { id: 'this_month', label: tDisc('thisMonth') || 'This Month' },
     { id: 'next_month', label: tDisc('nextMonth') || 'Next Month' },
+    { id: 'this_year', label: tDisc('thisYear') || 'This Year' },
   ];
 
   const hasActiveFilters =

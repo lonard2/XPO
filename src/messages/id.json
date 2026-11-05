@@ -387,7 +387,14 @@
     "freeAdmission": "Gratis",
     "shortlistCompare": "Bandingkan acara ini",
     "shortlistCompareTitle": "Bandingkan Acara",
-    "shortlistRemove": "Hapus dari perbandingan"
+    "shortlistRemove": "Hapus dari perbandingan",
+    "ongoingExhibitions": "Sedang Berlangsung",
+    "concludedExhibitions": "Telah Selesai",
+    "next7Days": "7 Hari Ke Depan",
+    "next30Days": "30 Hari Ke Depan",
+    "next90Days": "90 Hari Ke Depan",
+    "thisWeek": "Minggu Ini",
+    "thisYear": "Tahun Ini"
   },
   "events": {
     "title": "Direktori Acara & Jadwal",

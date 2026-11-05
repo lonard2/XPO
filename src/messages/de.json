@@ -387,7 +387,14 @@
     "freeAdmission": "Freier Eintritt",
     "shortlistCompare": "Dieses Event vergleichen",
     "shortlistCompareTitle": "Events vergleichen",
-    "shortlistRemove": "Aus Vergleich entfernen"
+    "shortlistRemove": "Aus Vergleich entfernen",
+    "ongoingExhibitions": "Läuft gerade",
+    "concludedExhibitions": "Beendet",
+    "next7Days": "Nächste 7 Tage",
+    "next30Days": "Nächste 30 Tage",
+    "next90Days": "Nächste 90 Tage",
+    "thisWeek": "Diese Woche",
+    "thisYear": "Dieses Jahr"
   },
   "events": {
     "title": "Messeverzeichnis & Kalender",

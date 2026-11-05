@@ -387,7 +387,14 @@
     "freeAdmission": "Entrada gratuita",
     "shortlistCompare": "Comparar este evento",
     "shortlistCompareTitle": "Comparar eventos",
-    "shortlistRemove": "Quitar de la comparación"
+    "shortlistRemove": "Quitar de la comparación",
+    "ongoingExhibitions": "En curso",
+    "concludedExhibitions": "Finalizados",
+    "next7Days": "Próximos 7 días",
+    "next30Days": "Próximos 30 días",
+    "next90Days": "Próximos 90 días",
+    "thisWeek": "Esta semana",
+    "thisYear": "Este año"
   },
   "events": {
     "title": "Directorio de Eventos y Calendario",

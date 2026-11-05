@@ -139,6 +139,59 @@ describe('Discovery Component: EventsExplorer Integration', () => {
     vi.useRealTimers();
   });
 
+  it('T3.4: filters concluded and ongoing events by status', () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-09-15T10:00:00Z'));
+
+    const { unmount } = render(
+      <EventsExplorer
+        initialEvents={FALLBACK_EVENTS}
+        locale="en"
+        initialFilters={{ dateRange: 'ongoing' }}
+      />
+    );
+    expect(
+      screen.getByText('Manufacturing Indonesia & Industrial Automation Expo 2026')
+    ).toBeInTheDocument();
+    expect(screen.queryByText('Asia AI & Cloud Developer Summit 2026')).toBeNull();
+    unmount();
+
+    vi.setSystemTime(new Date('2026-10-02T10:00:00Z'));
+    render(
+      <EventsExplorer
+        initialEvents={FALLBACK_EVENTS}
+        locale="en"
+        initialFilters={{ dateRange: 'concluded' }}
+      />
+    );
+    expect(
+      screen.getByText('Manufacturing Indonesia & Industrial Automation Expo 2026')
+    ).toBeInTheDocument();
+    expect(screen.queryByText('Asia AI & Cloud Developer Summit 2026')).toBeNull();
+
+    vi.useRealTimers();
+  });
+
+  it('T3.5: filters the next seven days by overlap', () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-10-02T10:00:00Z'));
+
+    render(
+      <EventsExplorer
+        initialEvents={FALLBACK_EVENTS}
+        locale="en"
+        initialFilters={{ dateRange: 'next_7_days' }}
+      />
+    );
+    // Asia AI starts 2026-10-08, six days out.
+    expect(screen.getByText('Asia AI & Cloud Developer Summit 2026')).toBeInTheDocument();
+    expect(
+      screen.queryByText('Tokyo International Robotics & Mechatronics Expo 2026')
+    ).toBeNull();
+
+    vi.useRealTimers();
+  });
+
   it('T4.1: switches between grid view and dense table view when toggle is clicked', () => {
     render(<EventsExplorer initialEvents={FALLBACK_EVENTS} locale="en" />);
 

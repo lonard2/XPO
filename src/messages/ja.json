@@ -387,7 +387,14 @@
     "freeAdmission": "無料",
     "shortlistCompare": "このイベントを比較",
     "shortlistCompareTitle": "イベントを比較",
-    "shortlistRemove": "比較から削除"
+    "shortlistRemove": "比較から削除",
+    "ongoingExhibitions": "開催中",
+    "concludedExhibitions": "終了",
+    "next7Days": "今後7日間",
+    "next30Days": "今後30日間",
+    "next90Days": "今後90日間",
+    "thisWeek": "今週",
+    "thisYear": "今年"
   },
   "events": {
     "title": "イベント一覧＆スケジュール",

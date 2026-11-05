@@ -104,7 +104,19 @@ export function ActiveFilterChips({
   }
 
   if (filters.dateRange && filters.dateRange !== 'all') {
-    const dateKey = filters.dateRange === 'upcoming' ? 'upcomingExhibitions' : filters.dateRange === 'this_month' ? 'thisMonth' : 'nextMonth';
+    const dateKeys: Record<string, string> = {
+      upcoming: 'upcomingExhibitions',
+      ongoing: 'ongoingExhibitions',
+      concluded: 'concludedExhibitions',
+      next_7_days: 'next7Days',
+      next_30_days: 'next30Days',
+      next_90_days: 'next90Days',
+      this_week: 'thisWeek',
+      this_month: 'thisMonth',
+      next_month: 'nextMonth',
+      this_year: 'thisYear',
+    };
+    const dateKey = dateKeys[filters.dateRange] || 'allDates';
     activeChips.push({
       key: 'dateRange',
       label: tDisc(dateKey) || filters.dateRange,
