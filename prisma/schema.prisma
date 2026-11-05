@@ -53,6 +53,7 @@ model Venue {
   longitude   Float?
   transitInfo String      // Transit instructions (KRL, MRT, TransJakarta)
   imageUrl    String?
+  size        String      @default("LARGE") // Presentation tier suggestion: LARGE | MEDIUM | SMALL. Events choose explicitly; this never auto-applies.
   halls       VenueHall[]
   events      Event[]
   createdAt   DateTime    @default(now())
@@ -99,6 +100,8 @@ model Event {
   editorialBlurb     String?      // English-default editorial line for the hero carousel; renders only when editorialApproved
   editorialBlurbI18n Json?        // Optional per-locale overrides: { locale: text }
   editorialApproved  Boolean      @default(false) // Editorial publication gate: unapproved blurbs never render
+  pageSize           String?      // Explicit human-chosen presentation tier: LARGE | MEDIUM | SMALL. Null means no choice yet.
+  visibility         String       @default("PUBLIC") // PUBLIC | DISCREET (occupancy without identity) | HIDDEN (link-only)
   brandingConfigJson String?      // Custom primary color, accent, hero override JSON
   showcaseJson     String?      // Nullable organizer-authored showcase content (stream, programs, alerts, channels); absent means sections stay hidden
   scale              String       @default("LARGE") // "GLOBAL_MEGA", "LARGE", "MEDIUM", "EXECUTIVE"
