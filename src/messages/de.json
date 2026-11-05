@@ -1564,7 +1564,9 @@
     "wizardPageSizeLarge": "Groß - volle Seite",
     "wizardPageSizeMedium": "Mittel - volle Bereiche, enger",
     "wizardPageSizeSmall": "Klein - kompakt",
-    "wizardPageSizeSuggestion": "{size} für {venue} vorgeschlagen - bitte explizit bestätigen."
+    "wizardPageSizeSuggestion": "{size} für {venue} vorgeschlagen - bitte explizit bestätigen.",
+    "openUpdates": "Updates veröffentlichen",
+    "ariaUpdates": "Neuigkeiten für {title} verwalten"
   },
   "admin": {
     "dashboardTitle": "Admin-Governance & Aggregator",

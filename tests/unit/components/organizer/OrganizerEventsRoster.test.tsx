@@ -51,6 +51,16 @@ const mockEvents: OrganizerEventItem[] = [
 ];
 
 describe("OrganizerEventsRoster Component", () => {
+  it("links every event to its news updates editor", () => {
+    render(<OrganizerEventsRoster events={mockEvents} locale="en" />);
+
+    const updatesLink = screen.getAllByRole("link", { name: /updates/i })[0];
+    expect(updatesLink).toBeDefined();
+    expect(updatesLink.getAttribute("href")).toBe(
+      "/en/events/evt-live-1/updates"
+    );
+  });
+
   it("renders operational status tabs with exact counts", () => {
     render(<OrganizerEventsRoster events={mockEvents} locale="en" />);
 

@@ -1564,7 +1564,9 @@
     "wizardPageSizeLarge": "Large - full page",
     "wizardPageSizeMedium": "Medium - full sections, tighter spacing",
     "wizardPageSizeSmall": "Small - compact essentials",
-    "wizardPageSizeSuggestion": "Suggested {size} for {venue} - confirm explicitly."
+    "wizardPageSizeSuggestion": "Suggested {size} for {venue} - confirm explicitly.",
+    "openUpdates": "Post updates",
+    "ariaUpdates": "Manage news updates for {title}"
   },
   "admin": {
     "dashboardTitle": "Governance & Admin Agregator",

@@ -1564,7 +1564,9 @@
     "wizardPageSizeLarge": "大 - フルページ",
     "wizardPageSizeMedium": "中 - フルセクション・狭い間隔",
     "wizardPageSizeSmall": "小 - コンパクト",
-    "wizardPageSizeSuggestion": "{venue}には{size}を推奨 - 明示的に確認してください。"
+    "wizardPageSizeSuggestion": "{venue}には{size}を推奨 - 明示的に確認してください。",
+    "openUpdates": "更新情報を投稿",
+    "ariaUpdates": "{title}の更新情報を管理"
   },
   "admin": {
     "dashboardTitle": "管理統括・アグリゲーター",

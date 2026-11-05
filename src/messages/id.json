@@ -1564,7 +1564,9 @@
     "wizardPageSizeLarge": "Besar - halaman penuh",
     "wizardPageSizeMedium": "Sedang - bagian penuh, jarak rapat",
     "wizardPageSizeSmall": "Kecil - esensial ringkas",
-    "wizardPageSizeSuggestion": "Disarankan {size} untuk {venue} - konfirmasi secara eksplisit."
+    "wizardPageSizeSuggestion": "Disarankan {size} untuk {venue} - konfirmasi secara eksplisit.",
+    "openUpdates": "Kirim kabar",
+    "ariaUpdates": "Kelola kabar untuk {title}"
   },
   "admin": {
     "dashboardTitle": "Tata Kelola & Agregator Admin",

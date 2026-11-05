@@ -101,6 +101,8 @@ temp/
 *.tsbuildinfo
 .impeccable/
 .agents/
+.codex/
+.gemini/
 
 # Playwright
 test-results/

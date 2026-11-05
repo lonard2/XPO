@@ -1564,7 +1564,9 @@
     "wizardPageSizeLarge": "Grande - página completa",
     "wizardPageSizeMedium": "Mediana - secciones completas, compacta",
     "wizardPageSizeSmall": "Pequeña - esencial",
-    "wizardPageSizeSuggestion": "{size} sugerido para {venue}: confirme explícitamente."
+    "wizardPageSizeSuggestion": "{size} sugerido para {venue}: confirme explícitamente.",
+    "openUpdates": "Publicar novedades",
+    "ariaUpdates": "Gestionar novedades de {title}"
   },
   "admin": {
     "dashboardTitle": "Gobernanza y Agregador de Administración",

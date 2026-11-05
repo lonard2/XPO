@@ -18,6 +18,7 @@ import {
   Copy,
   Layers,
   Users,
+  Megaphone,
 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
@@ -559,6 +560,18 @@ export function OrganizerEventsRoster({ events, locale, title, description, hide
                     >
                       <QrCode className="h-3.5 w-3.5 text-emerald-500" />
                       <span>{tOrg("launchScanner")}</span>
+                    </Link>
+
+                    <Link
+                      href={`/${locale}/events/${event.id}/updates`}
+                      aria-label={tOrg("ariaUpdates", { title: event.title })}
+                      className={cn(
+                        buttonVariants({ variant: "outline", size: "sm" }),
+                        "w-full text-xs gap-1.5 min-h-[44px] sm:min-h-[36px] col-span-2 cursor-pointer"
+                      )}
+                    >
+                      <Megaphone className="h-3.5 w-3.5 text-primary" />
+                      <span>{tOrg("openUpdates")}</span>
                     </Link>
                   </div>
                   <button
