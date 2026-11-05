@@ -98,6 +98,8 @@ export interface BannerSlide {
   id: string;
   title: string;
   tagline?: string | null;
+  /** Editorial line, pre-resolved server-side (locale override → default → null). */
+  editorialBlurb?: string | null;
   slug: string;
   heroImageUrl?: string | null;
   archetype: MiceArchetype | string;

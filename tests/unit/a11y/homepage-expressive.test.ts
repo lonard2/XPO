@@ -5,6 +5,8 @@ import * as path from "path";
 const VENUES = path.resolve(__dirname, "../../../src/components/discovery/MajorVenuesUpcomingSection.tsx");
 const PILLS = path.resolve(__dirname, "../../../src/components/discovery/EventCategoryPills.tsx");
 const CALENDAR = path.resolve(__dirname, "../../../src/components/discovery/EventCalendarWidget.tsx");
+const HOME_PAGE = path.resolve(__dirname, "../../../src/app/[locale]/(attendee)/page.tsx");
+const FALLBACK_DATA = path.resolve(__dirname, "../../../src/lib/discovery/fallbackData.ts");
 
 /**
  * Structural guard for homepage Expressive motion, part two.
@@ -46,5 +48,22 @@ describe("Quality Gate: Homepage expressive wiring, part two", () => {
     const block = lines.slice(Math.max(0, idx - 3), idx + 1).join("\n");
     expect(block).toContain("stagger-children");
     expect(block).toMatch(/key=\{[^;]*selectedDate/);
+  });
+});
+
+describe("Quality Gate: Editorial blurb banner wiring", () => {
+  const page = fs.readFileSync(HOME_PAGE, "utf8");
+  const fallback = fs.readFileSync(FALLBACK_DATA, "utf8");
+
+  it("resolves the blurb beside the tagline in the banner mapping", () => {
+    const lines = page.split("\n");
+    const idx = lines.findIndex((line) => line.includes("tagline: evt.tagline"));
+    expect(idx).toBeGreaterThan(-1);
+    const block = lines.slice(idx, idx + 5).join("\n");
+    expect(block).toContain("resolveEditorialBlurb");
+  });
+
+  it("ships editorial examples in the fallback slides", () => {
+    expect(fallback).toContain("editorialBlurb");
   });
 });

@@ -29,6 +29,7 @@ import {
 import { resolveActiveRegion } from '@/lib/i18n/geo';
 import { getCurrencyForRegion } from '@/lib/i18n/formatters';
 import { filterAttendable, sortUpcomingFirst } from '@/lib/discovery/eventOrder';
+import { resolveEditorialBlurb } from '@/lib/discovery/editorial';
 import { featuredGridClass } from '@/lib/discovery/grids';
 import { type BannerSlide, type DiscoveryEvent, type VenueWithEvents } from '@/types/discovery';
 
@@ -84,7 +85,21 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
     return true;
   });
 
-  let bannerSlides: BannerSlide[] = regionFallbackSlides.length > 0 ? regionFallbackSlides : FALLBACK_BANNER_SLIDES;
+  // Fallback literals carry the English-default blurb; resolve per locale
+  // so non-English editions fall back identically to DB rows.
+  const resolveFallbackSlides = (slides: BannerSlide[]): BannerSlide[] =>
+    slides.map((s) => ({
+      ...s,
+      editorialBlurb: resolveEditorialBlurb({
+        approved: true,
+        blurb: s.editorialBlurb ?? null,
+        i18n: null,
+        locale,
+      }),
+    }));
+  let bannerSlides: BannerSlide[] = resolveFallbackSlides(
+    regionFallbackSlides.length > 0 ? regionFallbackSlides : FALLBACK_BANNER_SLIDES
+  );
   let featuredEvents: DiscoveryEvent[] = regionFallbackEvents.length > 0 ? regionFallbackEvents : FALLBACK_EVENTS;
   let majorVenuesWithEvents: VenueWithEvents[] = regionFallbackVenues.map((v) => ({
     id: v.id,
@@ -143,6 +158,12 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
           id: evt.id,
           title: evt.title,
           tagline: evt.tagline,
+          editorialBlurb: resolveEditorialBlurb({
+            approved: evt.editorialApproved ?? false,
+            blurb: evt.editorialBlurb ?? null,
+            i18n: (evt.editorialBlurbI18n as Record<string, string> | null) ?? null,
+            locale,
+          }),
           slug: evt.slug,
           heroImageUrl: evt.heroImageUrl,
           archetype: evt.archetype,
