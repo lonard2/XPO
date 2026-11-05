@@ -554,9 +554,9 @@ export default function EventCustomizerPage() {
                 onChange={(e) => setPageSize(e.target.value)}
                 className="w-full h-11 rounded-md border border-input bg-background px-3 text-xs ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
-                <option value="LARGE">Large — full page</option>
-                <option value="MEDIUM">Medium — full sections, tighter spacing</option>
-                <option value="SMALL">Small — compact essentials</option>
+                <option value="LARGE">Large - full page</option>
+                <option value="MEDIUM">Medium - full sections, tighter spacing</option>
+                <option value="SMALL">Small - compact essentials</option>
               </select>
               <p className="text-[11px] text-muted-foreground mt-1">
                 Chosen by you; the venue only ever suggests.

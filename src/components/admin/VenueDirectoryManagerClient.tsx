@@ -563,9 +563,9 @@ export function VenueDirectoryManagerClient({
                 onChange={(e) => setFormData({ ...formData, size: e.target.value })}
                 className="w-full h-8 px-2.5 rounded-md border border-input bg-background text-foreground text-xs focus:ring-1 focus:ring-primary"
               >
-                <option value="LARGE">Large — full pages</option>
-                <option value="MEDIUM">Medium — tighter spacing</option>
-                <option value="SMALL">Small — compact suggestion</option>
+                <option value="LARGE">Large - full pages</option>
+                <option value="MEDIUM">Medium - tighter spacing</option>
+                <option value="SMALL">Small - compact suggestion</option>
               </select>
             </div>
 
