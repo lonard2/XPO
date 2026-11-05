@@ -11,6 +11,7 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import { db } from '@/lib/db';
+import { listingWhere } from '@/lib/discovery/presentation';
 import { Badge } from '@/components/ui/Badge';
 import { buttonVariants } from '@/components/ui/Button';
 import { VenueCampusExplorer } from '@/components/discovery/VenueCampusExplorer';
@@ -84,6 +85,7 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
         halls: true,
         region: true,
         events: {
+          where: listingWhere(),
           include: {
             venue: true,
             ticketTiers: true,

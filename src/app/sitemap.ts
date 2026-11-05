@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
 import { siteBaseUrl } from "@/lib/seo/site";
 import { db } from "@/lib/db";
+import { listingWhere } from "@/lib/discovery/presentation";
 
 /**
  * Sitemap for the public discovery surfaces only: locale homes, event and
@@ -53,6 +54,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     const [events, venues] = await db.$transaction([
       db.event.findMany({
+        where: listingWhere(),
         select: { slug: true, updatedAt: true },
       }),
       db.venue.findMany({

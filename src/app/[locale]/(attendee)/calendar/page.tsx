@@ -3,6 +3,7 @@ import { cookies, headers } from 'next/headers';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { Breadcrumbs, BreadcrumbJsonLd } from "@/components/layout/Breadcrumbs";
 import { db } from '@/lib/db';
+import { listingWhere } from '@/lib/discovery/presentation';
 import { resolveActiveRegion } from '@/lib/i18n/geo';
 import { FALLBACK_EVENTS } from '@/lib/discovery/fallbackData';
 import { CalendarInteractiveView } from '@/components/discovery/CalendarInteractiveView';
@@ -46,7 +47,7 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
 
   let events: any[] = [];
   try {
-    const whereClause: any = {};
+    const whereClause: any = { ...listingWhere() };
     if (region && region !== 'global') {
       whereClause.venue = { regionId: region };
     }

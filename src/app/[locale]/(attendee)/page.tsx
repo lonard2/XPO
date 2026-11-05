@@ -30,6 +30,7 @@ import {
 import { resolveActiveRegion } from '@/lib/i18n/geo';
 import { getCurrencyForRegion } from '@/lib/i18n/formatters';
 import { filterAttendable, sortUpcomingFirst } from '@/lib/discovery/eventOrder';
+import { listingWhere } from '@/lib/discovery/presentation';
 import { resolveEditorialBlurb } from '@/lib/discovery/editorial';
 import { featuredGridClass } from '@/lib/discovery/grids';
 import { type BannerSlide, type DiscoveryEvent, type VenueWithEvents } from '@/types/discovery';
@@ -130,7 +131,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
 
   try {
     const dbEvents = await db.event.findMany({
-      where: activeRegionCode !== 'global' ? { regionId: activeRegionCode } : { regionId: 'global' },
+      where: activeRegionCode !== 'global' ? { regionId: activeRegionCode, ...listingWhere() } : { regionId: 'global', ...listingWhere() },
       include: {
         venue: {
           include: {

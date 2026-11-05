@@ -37,6 +37,17 @@ export function listingWhere(): { visibility: string } {
   return { visibility: "PUBLIC" };
 }
 
+/** Detail-page routing by tier: discreet URLs 404, hidden URLs render
+ * link-only (noindex, no structured data). Unknown tiers stay unlisted:
+ * discovery defaults to hiding, never leaking. */
+export function resolveDetailVisibility(
+  visibility: string | null | undefined
+): "render" | "notFound" | "unlisted" {
+  if (!visibility || visibility === "PUBLIC") return "render";
+  if (visibility === "DISCREET") return "notFound";
+  return "unlisted";
+}
+
 /** Schedules show occupancy: public rows in full, discreet rows as stubs. */
 export function scheduleWhere(): { visibility: { in: string[] } } {
   return { visibility: { in: ["PUBLIC", "DISCREET"] } };

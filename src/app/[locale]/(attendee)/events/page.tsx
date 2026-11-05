@@ -11,6 +11,7 @@ import {
   Globe,
 } from 'lucide-react';
 import { db } from '@/lib/db';
+import { listingWhere } from '@/lib/discovery/presentation';
 import { resolveActiveRegion } from '@/lib/i18n/geo';
 import { EventsExplorer } from '@/components/discovery/EventsExplorer';
 import { FALLBACK_EVENTS } from '@/lib/discovery/fallbackData';
@@ -57,6 +58,7 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
 
   try {
     const dbEvents = await db.event.findMany({
+      where: listingWhere(),
       include: {
         venue: {
           include: {

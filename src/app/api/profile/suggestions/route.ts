@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { listingWhere } from "@/lib/discovery/presentation";
 import { requireUser } from "@/lib/auth/guards";
 import { enforceRateLimit } from "@/lib/api/rateLimit";
 import { reportError } from "@/lib/observability/logger";
@@ -61,7 +62,7 @@ export async function GET(request: Request) {
 
     const now = new Date();
     const events = await db.event.findMany({
-      where: { isListingOnly: false, endDate: { gte: now } },
+      where: { isListingOnly: false, endDate: { gte: now }, ...listingWhere() },
       orderBy: { startDate: "asc" },
       take: CANDIDATES,
       select: {

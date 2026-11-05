@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { type MiceArchetype, isValidArchetype } from "@/lib/theming";
 import { EventPageShell } from "@/components/themed/EventPageShell";
 import { parseShowcase } from "@/lib/showcase";
-import { resolvePageSize } from "@/lib/discovery/presentation";
+import { resolvePageSize, resolveDetailVisibility, listingWhere } from "@/lib/discovery/presentation";
 import { EventOrganizerSection } from "@/components/discovery/EventOrganizerSection";
 import { generateEventJsonLd } from "@/lib/seo/jsonLd";
 import { siteBaseUrl } from "@/lib/seo/site";
@@ -79,29 +79,45 @@ export async function generateMetadata({ params }: EventPageProps) {
         tagline: true,
         description: true,
         heroImageUrl: true,
+        visibility: true,
         venue: { select: { city: true } },
       },
     });
     if (event) {
+      const tier = resolveDetailVisibility(event.visibility);
+      if (tier === "notFound") {
+        // Discreet titles never reach crawlers or tab titles.
+        return {
+          title: "Event Details | XPO MICE Ecosystem",
+          description: "Discover upcoming conventions, trade exhibitions, and international summits.",
+          robots: { index: false, follow: false },
+        };
+      }
       const description = event.tagline || event.description;
       const url = `/${locale}/events/${slug}`;
+      const unlistedMeta = tier === "unlisted" ? { robots: { index: false, follow: false } } : {};
       return {
         title: `${event.title} | XPO MICE Ecosystem`,
         description,
         alternates: { canonical: `${base}${url}` },
-        openGraph: {
-          type: "website",
-          url,
-          title: event.title,
-          description,
-          ...(event.heroImageUrl ? { images: [{ url: event.heroImageUrl }] } : {}),
-        },
-        twitter: {
-          card: "summary_large_image",
-          title: event.title,
-          description,
-          ...(event.heroImageUrl ? { images: [event.heroImageUrl] } : {}),
-        },
+        ...unlistedMeta,
+        ...(tier === "unlisted"
+          ? {}
+          : {
+              openGraph: {
+                type: "website",
+                url,
+                title: event.title,
+                description,
+                ...(event.heroImageUrl ? { images: [{ url: event.heroImageUrl }] } : {}),
+              },
+              twitter: {
+                card: "summary_large_image",
+                title: event.title,
+                description,
+                ...(event.heroImageUrl ? { images: [event.heroImageUrl] } : {}),
+              },
+            }),
       };
     }
   } catch {
@@ -117,6 +133,7 @@ export async function generateMetadata({ params }: EventPageProps) {
 export async function generateStaticParams() {
   try {
     const events = await db.event.findMany({
+      where: listingWhere(),
       select: { slug: true },
     });
     if (events.length > 0) {
@@ -168,6 +185,16 @@ export default async function EventDetailPage({ params }: EventPageProps) {
   if (!event) {
     notFound();
   }
+
+  // Visibility routing: discreet URLs 404 (stubs live in schedules only);
+  // hidden URLs render link-only for invitees.
+  const detailVisibility = resolveDetailVisibility(
+    (event as { visibility?: string | null }).visibility ?? null
+  );
+  if (detailVisibility === "notFound") {
+    notFound();
+  }
+  const unlisted = detailVisibility === "unlisted";
 
   let newsUpdates: Array<{ id: string; title: string; body: string; approvedAt: string | null }> = [];
   try {
@@ -248,10 +275,12 @@ export default async function EventDetailPage({ params }: EventPageProps) {
 
   return (
     <>
+      {!unlisted && (
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(eventJsonLd) }}
       />
+      )}
       <EventPageShell
       id={event.id}
       title={event.title}
