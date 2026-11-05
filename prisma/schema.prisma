@@ -111,8 +111,42 @@ model Event {
   bookings           Booking[]
   meetingRequests  MeetingRequest[]
   waitlist           WaitlistEntry[]
+  updates            EventUpdate[]
   createdAt          DateTime     @default(now())
   updatedAt          DateTime     @updatedAt
+}
+
+// Organizer-authored news for an event timeline. DRAFT is invisible
+// everywhere except the author's preview; APPROVED renders on the event
+// page and becomes eligible for hand-picked homepage slots.
+model EventUpdate {
+  id        String   @id @default(cuid())
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  authorId  String?
+  title     String
+  body      String
+  status    String   @default("DRAFT") // "DRAFT" | "APPROVED"
+  approvedBy String?
+  approvedAt DateTime?
+  slots     HomepageNewsSlot[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([eventId, status])
+}
+
+// Hand-ordered homepage rail picks per region. Slots reference approved
+// updates; deleting an update evicts its slot via cascade.
+model HomepageNewsSlot {
+  id       String      @id @default(cuid())
+  updateId String      @unique
+  update   EventUpdate @relation(fields: [updateId], references: [id], onDelete: Cascade)
+  regionId String
+  position Int
+
+  @@unique([regionId, position])
+  @@index([regionId])
 }
 
 model TicketTier {
