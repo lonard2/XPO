@@ -44,7 +44,9 @@
     "filters": "Filtros",
     "home": "Inicio",
     "discreetEventLabel": "Evento privado",
-    "discreetEventDesc": "Reservado para un evento privado."
+    "discreetEventDesc": "Reservado para un evento privado.",
+    "previousItems": "Elementos anteriores",
+    "nextItems": "Elementos siguientes"
   },
   "nav": {
     "brand": "XPO",
@@ -1611,7 +1613,8 @@
     "homepageRowsDelete": "Eliminar",
     "homepageRowsMoveUp": "Subir",
     "homepageRowsMoveDown": "Bajar",
-    "homepageRowsLocalized": "Texto localizado"
+    "homepageRowsLocalized": "Texto localizado",
+    "homepageRowsConfirmDelete": "¿Eliminar la fila \"{title}\"?"
   },
   "ai": {
     "conciergeTitle": "Asistente del Asistente",

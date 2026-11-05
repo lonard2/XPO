@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { rowGridClass } from "@/lib/discovery/grids";
 
@@ -19,9 +20,10 @@ interface ResponsiveRowProps {
  * (tilt, sheen, press), so the row never imposes motion on them.
  */
 export function ResponsiveRow({ children, className, label }: ResponsiveRowProps) {
+  const tCom = useTranslations("common");
   const scrollerRef = React.useRef<HTMLDivElement | null>(null);
   const [canPrev, setCanPrev] = React.useState(false);
-  const [canNext, setCanNext] = React.useState(true);
+  const [canNext, setCanNext] = React.useState(false);
   const items = React.Children.toArray(children);
 
   const updateEdges = React.useCallback(() => {
@@ -29,8 +31,25 @@ export function ResponsiveRow({ children, className, label }: ResponsiveRowProps
     if (!el) return;
     const maxScroll = el.scrollWidth - el.clientWidth;
     setCanPrev(el.scrollLeft > 4);
-    setCanNext(el.scrollLeft < maxScroll - 4);
+    // No overflow means neither control can do anything.
+    setCanNext(maxScroll > 4 && el.scrollLeft < maxScroll - 4);
   }, []);
+
+  React.useEffect(() => {
+    updateEdges();
+    const el = scrollerRef.current;
+    if (!el || typeof ResizeObserver === "undefined") {
+      window.addEventListener("resize", updateEdges);
+      return () => window.removeEventListener("resize", updateEdges);
+    }
+    const observer = new ResizeObserver(updateEdges);
+    observer.observe(el);
+    window.addEventListener("resize", updateEdges);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", updateEdges);
+    };
+  }, [updateEdges, items.length]);
 
   const scrollByStep = (direction: -1 | 1) => {
     const el = scrollerRef.current;
@@ -45,14 +64,14 @@ export function ResponsiveRow({ children, className, label }: ResponsiveRowProps
   };
 
   const controlButton =
-    "flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full border border-border/80 bg-background text-foreground shadow-xs transition-colors hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary";
+    "flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full border border-border/80 bg-background text-foreground shadow-xs transition-all active:scale-[0.98] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary";
 
   return (
-    <div className={cn("space-y-3", className)}>
+    <div className="space-y-3">
       <div className="flex md:hidden items-center justify-end gap-2">
         <button
           type="button"
-          aria-label="Previous items"
+          aria-label={tCom("previousItems")}
           disabled={!canPrev}
           onClick={() => scrollByStep(-1)}
           className={controlButton}
@@ -61,7 +80,7 @@ export function ResponsiveRow({ children, className, label }: ResponsiveRowProps
         </button>
         <button
           type="button"
-          aria-label="Next items"
+          aria-label={tCom("nextItems")}
           disabled={!canNext}
           onClick={() => scrollByStep(1)}
           className={controlButton}
@@ -76,10 +95,20 @@ export function ResponsiveRow({ children, className, label }: ResponsiveRowProps
           role="region"
           aria-label={label}
           onScroll={updateEdges}
+          onKeyDown={(event) => {
+            if (event.key === "ArrowRight") {
+              event.preventDefault();
+              scrollByStep(1);
+            } else if (event.key === "ArrowLeft") {
+              event.preventDefault();
+              scrollByStep(-1);
+            }
+          }}
           className={cn(
             "flex gap-6 overflow-x-auto snap-x snap-mandatory pb-2",
-            "md:overflow-visible md:pb-0",
-            rowGridClass(items.length)
+            "md:grid md:overflow-visible md:pb-0",
+            rowGridClass(items.length),
+            className
           )}
         >
           {items.map((child, index) => (

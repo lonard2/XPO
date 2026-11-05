@@ -20,6 +20,7 @@ export const RowInputSchema = z.object({
     .optional(),
   regionId: z.enum(HOMEPAGE_REGIONS).nullable().optional(),
   eventIds: z.array(z.string().trim().min(1)).max(MAX_ROW_EVENTS),
+  isActive: z.boolean().optional(),
 });
 
 export type RowInput = z.infer<typeof RowInputSchema>;

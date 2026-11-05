@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import * as React from "react";
 import Link from "next/link";
 import { usePathname, useParams } from "next/navigation";
-import { LayoutDashboard, Building2, RefreshCw, ShieldCheck, Compass, Briefcase, AlertCircle, Menu, X, Database, Cpu, Lock, Activity, CheckCircle2, CalendarDays } from "lucide-react";
+import { LayoutDashboard, Building2, RefreshCw, ShieldCheck, Compass, Briefcase, AlertCircle, Menu, X, Database, Cpu, Lock, Activity, CheckCircle2, CalendarDays, LayoutGrid } from "lucide-react";
 import { useAuth } from "@/lib/auth/session";
 import { getRoleBadgeVariant } from "@/lib/auth/rbac";
 import { Badge } from "@/components/ui/Badge";
@@ -44,6 +44,12 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       description: "Platform & organizer events, ownership & removal",
     },
     {
+      href: `/${locale}/admin/homepage`,
+      label: tAdmin("homepageRowsTitle"),
+      icon: LayoutGrid,
+      description: "Composed homepage rows for each edition",
+    },
+    {
       href: `/${locale}/admin/crawler`,
       label: "Ingestion Crawler Engine",
       icon: RefreshCw,
@@ -67,6 +73,11 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       crumbs.push({ label: tAdmin("crumbVenues"), href: `/${locale}/admin/venues` });
     } else if (pathname.includes("/admin/events")) {
       crumbs.push({ label: tAdmin("crumbEvents"), href: `/${locale}/admin/events` });
+    } else if (pathname.includes("/admin/homepage")) {
+      crumbs.push({
+        label: tAdmin("homepageRowsTitle"),
+        href: `/${locale}/admin/homepage`,
+      });
     } else if (pathname.includes("/admin/crawler")) {
       crumbs.push({ label: tAdmin("crumbCrawler"), href: `/${locale}/admin/crawler` });
     } else if (pathname.includes("/admin/audit")) {

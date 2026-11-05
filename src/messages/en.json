@@ -44,7 +44,9 @@
     "filters": "Filters",
     "home": "Home",
     "discreetEventLabel": "Private event",
-    "discreetEventDesc": "Reserved for a private booking."
+    "discreetEventDesc": "Reserved for a private booking.",
+    "previousItems": "Previous items",
+    "nextItems": "Next items"
   },
   "nav": {
     "brand": "XPO",
@@ -1611,7 +1613,8 @@
     "homepageRowsDelete": "Delete",
     "homepageRowsMoveUp": "Move up",
     "homepageRowsMoveDown": "Move down",
-    "homepageRowsLocalized": "Localized copy"
+    "homepageRowsLocalized": "Localized copy",
+    "homepageRowsConfirmDelete": "Delete row \"{title}\"?"
   },
   "ai": {
     "conciergeTitle": "Attendee Event Concierge",

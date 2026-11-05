@@ -35,7 +35,8 @@ import { resolveEditorialBlurb } from '@/lib/discovery/editorial';
 import { selectRailItems } from '@/lib/news/feed';
 import { ResponsiveRow } from '@/components/discovery/ResponsiveRow';
 import { CrossRegionRail } from '@/components/discovery/CrossRegionRail';
-import { pickRailRegion, rankRailEvents, mergeRows, resolveRowCopy } from '@/lib/homepage/rows';
+import { pickRailRegion, rankRailEvents, mergeRows } from '@/lib/homepage/rows';
+import { resolveEditorRows } from '@/lib/homepage/editorRows';
 import { type BannerSlide, type DiscoveryEvent, type VenueWithEvents } from '@/types/discovery';
 
 export interface HomePageProps {
@@ -350,24 +351,11 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
           },
         })
       : [];
-    const byId = new Map(rowEvents.map((event) => [event.id, event as unknown as DiscoveryEvent]));
-    editorRows = merged
-      .map((row) => {
-        const copy = resolveRowCopy(
-          {
-            title: row.title,
-            titleI18n: row.titleI18n as Record<string, string> | null,
-            subtitle: row.subtitle,
-            subtitleI18n: row.subtitleI18n as Record<string, string> | null,
-          },
-          locale
-        );
-        const items = parseIds(row.eventIdsJson)
-          .map((id) => byId.get(id))
-          .filter((event): event is DiscoveryEvent => Boolean(event));
-        return { id: row.id, ...copy, items };
-      })
-      .filter((row) => row.items.length > 0);
+    editorRows = resolveEditorRows(
+      merged,
+      rowEvents as unknown as Array<DiscoveryEvent & { id: string }>,
+      locale
+    );
   } catch {
     editorRows = [];
   }

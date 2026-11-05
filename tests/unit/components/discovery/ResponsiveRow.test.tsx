@@ -9,6 +9,15 @@ beforeAll(() => {
   Element.prototype.scrollBy = vi.fn() as never;
 });
 
+const items = ["a", "b", "c"].map((id) => <div key={id}>{id}</div>);
+
+function stubMetrics(width: number, scrollWidth: number) {
+  const region = screen.getByRole("region");
+  Object.defineProperty(region, "clientWidth", { configurable: true, value: width });
+  Object.defineProperty(region, "scrollWidth", { configurable: true, value: scrollWidth });
+  fireEvent.scroll(region);
+}
+
 describe("rowGridClass", () => {
   it("centres a single item", () => {
     expect(rowGridClass(1)).toContain("max-w-3xl");
@@ -16,8 +25,6 @@ describe("rowGridClass", () => {
 });
 
 describe("ResponsiveRow", () => {
-  const items = ["a", "b", "c"].map((id) => <div key={id}>{id}</div>);
-
   it("renders every child and labeled scroller controls", () => {
     render(<ResponsiveRow>{items}</ResponsiveRow>);
 
@@ -28,12 +35,30 @@ describe("ResponsiveRow", () => {
     expect(screen.getByRole("button", { name: /next items/i })).toBeDefined();
   });
 
-  it("starts with Previous disabled and advances on Next", () => {
+  it("keeps the mobile scroller a flex container, never a grid", () => {
     render(<ResponsiveRow>{items}</ResponsiveRow>);
+    const region = screen.getByRole("region");
+    // twMerge previously collapsed flex into grid here, killing the scroll.
+    expect(region.classList.contains("flex")).toBe(true);
+    expect(region.classList.contains("grid")).toBe(false);
+    expect(region.classList.contains("md:grid")).toBe(true);
+  });
+
+  it("disables both controls when the items fit", () => {
+    render(<ResponsiveRow>{items}</ResponsiveRow>);
+    stubMetrics(300, 300);
+    expect(screen.getByRole("button", { name: /previous items/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /next items/i })).toBeDisabled();
+  });
+
+  it("advances on Next when there is overflow", () => {
+    render(<ResponsiveRow>{items}</ResponsiveRow>);
+    stubMetrics(300, 1200);
 
     const prev = screen.getByRole("button", { name: /previous items/i });
     const next = screen.getByRole("button", { name: /next items/i });
     expect(prev).toBeDisabled();
+    expect(next).not.toBeDisabled();
 
     fireEvent.click(next);
     expect(Element.prototype.scrollBy).toHaveBeenCalled();

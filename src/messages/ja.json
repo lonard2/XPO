@@ -44,7 +44,9 @@
     "filters": "フィルター",
     "home": "ホーム",
     "discreetEventLabel": "非公開イベント",
-    "discreetEventDesc": "貸切予約のため利用中。"
+    "discreetEventDesc": "貸切予約のため利用中。",
+    "previousItems": "前の項目",
+    "nextItems": "次の項目"
   },
   "nav": {
     "brand": "XPO",
@@ -1611,7 +1613,8 @@
     "homepageRowsDelete": "削除",
     "homepageRowsMoveUp": "上へ",
     "homepageRowsMoveDown": "下へ",
-    "homepageRowsLocalized": "ローカライズ文言"
+    "homepageRowsLocalized": "ローカライズ文言",
+    "homepageRowsConfirmDelete": "行「{title}」を削除しますか？"
   },
   "ai": {
     "conciergeTitle": "来場者AIコンシェルジュ",

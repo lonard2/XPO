@@ -120,9 +120,9 @@ describe("Component: HomepageRowsManager", () => {
 describe("Quality Gate: homepage editor rows", () => {
   const page = readFileSync("src/app/[locale]/(attendee)/page.tsx", "utf8");
 
-  it("merges scopes, resolves copy per locale, and skips unresolved ids", () => {
+  it("merges scopes and delegates resolution to the tested helper", () => {
     expect(page).toContain("mergeRows");
-    expect(page).toContain("resolveRowCopy");
+    expect(page).toContain("resolveEditorRows");
     expect(page).toContain("homepageRow");
     expect(page).toContain("listingWhere");
   });

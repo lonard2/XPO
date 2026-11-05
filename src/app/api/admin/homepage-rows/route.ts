@@ -38,7 +38,6 @@ export async function GET(request: Request) {
         where: {
           ...listingWhere(),
           endDate: { gte: new Date() },
-          ...(regionId ? { regionId } : {}),
         },
         select: { id: true, title: true, startDate: true, regionId: true },
         orderBy: { startDate: "asc" },

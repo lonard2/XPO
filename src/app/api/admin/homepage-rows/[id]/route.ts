@@ -38,7 +38,8 @@ export async function PUT(request: Request, { params }: RouteParams) {
       return apiError("Bad Request: every event id must be a public event that has not ended.", 400);
     }
 
-    const nextRegion = input.regionId ?? null;
+    const nextRegion =
+      input.regionId !== undefined ? input.regionId : existing.regionId;
     const moving = nextRegion !== existing.regionId;
     let position = existing.position;
     if (moving) {
@@ -54,11 +55,13 @@ export async function PUT(request: Request, { params }: RouteParams) {
       data: {
         title: input.title,
         titleI18n: input.titleI18n ?? undefined,
-        subtitle: input.subtitle ?? null,
+        subtitle: input.subtitle !== undefined ? input.subtitle : existing.subtitle,
         subtitleI18n: input.subtitleI18n ?? undefined,
         regionId: nextRegion,
         position,
         eventIdsJson: JSON.stringify(input.eventIds),
+        isActive:
+          input.isActive !== undefined ? input.isActive : existing.isActive,
       },
     });
 

@@ -53,16 +53,17 @@ const emptyDraft = (regionId: string): Draft => ({
 
 export function HomepageRowsManager({ locale }: { locale: string }) {
   const tAdmin = useTranslations("admin");
+  const tCom = useTranslations("common");
+  const defaultOverride = (EDITORIAL_LOCALES as readonly string[]).includes(locale) ? locale : "id";
   const [scope, setScope] = React.useState<string>("id");
   const [rows, setRows] = React.useState<RowItem[]>([]);
   const [candidates, setCandidates] = React.useState<Candidate[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [draft, setDraft] = React.useState<Draft | null>(null);
-  const [overrideLocale, setOverrideLocale] = React.useState<string>(
-    (EDITORIAL_LOCALES as readonly string[]).includes(locale) ? locale : "id"
-  );
+  const [overrideLocale, setOverrideLocale] = React.useState<string>(defaultOverride);
   const [busy, setBusy] = React.useState(false);
   const [feedback, setFeedback] = React.useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [search, setSearch] = React.useState("");
 
   const load = React.useCallback(async (nextScope: string) => {
     setIsLoading(true);
@@ -86,7 +87,7 @@ export function HomepageRowsManager({ locale }: { locale: string }) {
 
   const openNew = () => {
     setDraft(emptyDraft(scope === "all" ? "all" : scope));
-    setOverrideLocale("id");
+    setOverrideLocale(defaultOverride);
     setFeedback(null);
   };
 
@@ -107,13 +108,13 @@ export function HomepageRowsManager({ locale }: { locale: string }) {
       titleI18n: { ...(row.titleI18n ?? {}) },
       subtitleI18n: { ...(row.subtitleI18n ?? {}) },
     });
-    setOverrideLocale("id");
+    setOverrideLocale(defaultOverride);
     setFeedback(null);
   };
 
   const save = async () => {
     if (!draft || !draft.title.trim()) {
-      setFeedback({ type: "error", text: "Title is required." });
+      setFeedback({ type: "error", text: tAdmin("homepageRowsTitleRequired") });
       return;
     }
     setBusy(true);
@@ -139,9 +140,11 @@ export function HomepageRowsManager({ locale }: { locale: string }) {
       );
       const data = await res.json();
       if (!res.ok || !data.success) throw new Error(data.error || "Save failed");
+      const savedScope = draft.regionId;
       setDraft(null);
-      setFeedback({ type: "success", text: "Row saved." });
-      await load(scope);
+      setFeedback({ type: "success", text: tAdmin("homepageRowsSaved") });
+      if (savedScope !== scope) setScope(savedScope);
+      else await load(scope);
     } catch (err) {
       setFeedback({ type: "error", text: (err as Error).message });
     } finally {
@@ -150,7 +153,7 @@ export function HomepageRowsManager({ locale }: { locale: string }) {
   };
 
   const remove = async (row: RowItem) => {
-    if (!confirm(`Delete "${row.title}"?`)) return;
+    if (!confirm(tAdmin("homepageRowsConfirmDelete", { title: row.title }))) return;
     setBusy(true);
     try {
       const res = await fetch(`/api/admin/homepage-rows/${row.id}`, {
@@ -192,6 +195,40 @@ export function HomepageRowsManager({ locale }: { locale: string }) {
     }
   };
 
+  const filteredCandidates = React.useMemo(
+    () =>
+      candidates.filter((candidate) =>
+        candidate.title.toLowerCase().includes(search.toLowerCase())
+      ),
+    [candidates, search]
+  );
+
+  const toggleActive = async (row: RowItem) => {
+    setBusy(true);
+    try {
+      const res = await fetch(`/api/admin/homepage-rows/${row.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: row.title,
+          subtitle: row.subtitle ?? null,
+          titleI18n: row.titleI18n ?? undefined,
+          subtitleI18n: row.subtitleI18n ?? undefined,
+          regionId: row.regionId,
+          eventIds: JSON.parse(row.eventIdsJson) as string[],
+          isActive: !row.isActive,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.error || "Toggle failed");
+      await load(scope);
+    } catch (err) {
+      setFeedback({ type: "error", text: (err as Error).message });
+    } finally {
+      setBusy(false);
+    }
+  };
+
   const toggleEvent = (id: string) => {
     if (!draft) return;
     setDraft({
@@ -217,7 +254,7 @@ export function HomepageRowsManager({ locale }: { locale: string }) {
           >
             {SCOPES.map((s) => (
               <option key={s} value={s}>
-                {s === "all" ? "All editions" : s}
+                {s === "all" ? tAdmin("homepageRowsAllEditions") : s}
               </option>
             ))}
           </select>
@@ -228,6 +265,16 @@ export function HomepageRowsManager({ locale }: { locale: string }) {
         </Button>
       </div>
 
+      <div className="relative w-full sm:max-w-sm">
+        <Input
+          aria-label={tAdmin("homepageRowsSearch")}
+          placeholder={tAdmin("homepageRowsSearch")}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="h-10"
+        />
+      </div>
+
       {feedback && (
         <p role={feedback.type === "error" ? "alert" : "status"} className="text-xs font-medium text-muted-foreground">
           {feedback.text}
@@ -235,10 +282,10 @@ export function HomepageRowsManager({ locale }: { locale: string }) {
       )}
 
       {isLoading ? (
-        <p className="text-xs text-muted-foreground">Loading rows…</p>
+        <p className="text-xs text-muted-foreground">{tAdmin("homepageRowsLoading")}</p>
       ) : rows.length === 0 ? (
         <p className="text-xs text-muted-foreground rounded-xl border border-dashed border-border/80 p-4 text-center">
-          No rows in this scope.
+          {tAdmin("homepageRowsEmpty")}
         </p>
       ) : (
         <div className="space-y-2">
@@ -281,13 +328,23 @@ export function HomepageRowsManager({ locale }: { locale: string }) {
                   </Button>
                   <Button
                     type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => toggleActive(row)}
+                    disabled={busy}
+                    className="h-9 text-xs cursor-pointer"
+                  >
+                    <span>{row.isActive ? tAdmin("homepageRowsHide") : tAdmin("homepageRowsShow")}</span>
+                  </Button>
+                  <Button
+                    type="button"
                     variant="outline"
                     size="sm"
                     onClick={() => openEdit(row)}
                     className="h-9 gap-1.5 text-xs cursor-pointer"
                   >
                     <Pencil className="h-3.5 w-3.5" />
-                    <span>Edit</span>
+                    <span>{tAdmin("homepageRowsEditTitle")}</span>
                   </Button>
                   <Button
                     type="button"
@@ -310,7 +367,7 @@ export function HomepageRowsManager({ locale }: { locale: string }) {
       <Modal
         isOpen={draft !== null}
         onClose={() => setDraft(null)}
-        title={draft?.id ? "Edit row" : "New row"}
+        title={draft?.id ? tAdmin("homepageRowsEditTitle") : tAdmin("homepageRowsNewTitle")}
         description="Title, subtitle, scope, and an ordered event list."
         size="lg"
       >
@@ -350,7 +407,7 @@ export function HomepageRowsManager({ locale }: { locale: string }) {
               >
                 {SCOPES.map((s) => (
                   <option key={s} value={s}>
-                    {s === "all" ? "All editions" : s}
+                    {s === "all" ? tAdmin("homepageRowsAllEditions") : s}
                   </option>
                 ))}
               </select>
@@ -398,13 +455,13 @@ export function HomepageRowsManager({ locale }: { locale: string }) {
 
             <div className="space-y-1.5">
               <span className="block text-xs font-medium text-foreground">
-                {tAdmin("homepageRowsEvents")} ({draft.eventIds.length})
+                {tAdmin("homepageRowsEvents")} ({tAdmin("homepageRowsEventCount", { count: draft.eventIds.length })})
               </span>
               <div className="max-h-52 overflow-y-auto rounded-xl border border-border/80 divide-y divide-border/60">
-                {candidates.length === 0 ? (
-                  <p className="p-3 text-xs text-muted-foreground">No eligible events.</p>
+                {filteredCandidates.length === 0 ? (
+                  <p className="p-3 text-xs text-muted-foreground">{tAdmin("homepageRowsNoEligible")}</p>
                 ) : (
-                  candidates.map((candidate) => (
+                  filteredCandidates.map((candidate) => (
                     <label
                       key={candidate.id}
                       className={cn(
@@ -427,7 +484,7 @@ export function HomepageRowsManager({ locale }: { locale: string }) {
 
             <div className="flex justify-end gap-2 pt-1">
               <Button type="button" variant="ghost" size="sm" onClick={() => setDraft(null)} className="h-9 text-xs cursor-pointer">
-                <span>Cancel</span>
+                <span>{tCom("cancel")}</span>
               </Button>
               <Button
                 type="button"

@@ -44,7 +44,9 @@
     "filters": "Filter",
     "home": "Beranda",
     "discreetEventLabel": "Acara privat",
-    "discreetEventDesc": "Dipesan untuk acara privat."
+    "discreetEventDesc": "Dipesan untuk acara privat.",
+    "previousItems": "Item sebelumnya",
+    "nextItems": "Item berikutnya"
   },
   "nav": {
     "brand": "XPO",
@@ -1611,7 +1613,8 @@
     "homepageRowsDelete": "Hapus",
     "homepageRowsMoveUp": "Naikkan",
     "homepageRowsMoveDown": "Turunkan",
-    "homepageRowsLocalized": "Teks terlokalisasi"
+    "homepageRowsLocalized": "Teks terlokalisasi",
+    "homepageRowsConfirmDelete": "Hapus baris \"{title}\"?"
   },
   "ai": {
     "conciergeTitle": "Panduan Informasi Acara",

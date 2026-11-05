@@ -44,7 +44,9 @@
     "filters": "筛选",
     "home": "首页",
     "discreetEventLabel": "私人活动",
-    "discreetEventDesc": "已为私人预订保留。"
+    "discreetEventDesc": "已为私人预订保留。",
+    "previousItems": "上一组",
+    "nextItems": "下一组"
   },
   "nav": {
     "brand": "XPO",
@@ -1611,7 +1613,8 @@
     "homepageRowsDelete": "删除",
     "homepageRowsMoveUp": "上移",
     "homepageRowsMoveDown": "下移",
-    "homepageRowsLocalized": "本地化文案"
+    "homepageRowsLocalized": "本地化文案",
+    "homepageRowsConfirmDelete": "删除行“{title}”？"
   },
   "ai": {
     "conciergeTitle": "展会服务助手",

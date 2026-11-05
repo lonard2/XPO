@@ -25,6 +25,7 @@ export async function PUT(request: Request) {
 
     const rows = await db.homepageRow.findMany({
       where: { regionId },
+      orderBy: { position: "asc" },
       select: { id: true },
     });
     const scopeIds = new Set(rows.map((row) => row.id));

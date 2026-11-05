@@ -222,6 +222,42 @@ describe("Admin API: homepage rows", () => {
     expect(foreign.status).toBe(400);
   });
 
+  it("toggles isActive and keeps omitted fields unchanged on partial updates", async () => {
+    const created = await call(
+      createRow,
+      "http://localhost:3000/api/admin/homepage-rows",
+      "POST",
+      {
+        title: "Toggle probe",
+        subtitle: "Keep me",
+        regionId: "id",
+        eventIds: [publicIds[0]],
+      },
+      admin
+    );
+    const row = (await created.json()).row;
+    createdIds.push(row.id);
+
+    const hidden = await callById(
+      updateRow,
+      `http://localhost:3000/api/admin/homepage-rows/${row.id}`,
+      "PUT",
+      {
+        title: "Toggle probe",
+        eventIds: [publicIds[0]],
+        isActive: false,
+      },
+      admin,
+      row.id
+    );
+    expect(hidden.status).toBe(200);
+    const hiddenJson = await hidden.json();
+    expect(hiddenJson.row.isActive).toBe(false);
+    // Omitted region and subtitle survive a partial update.
+    expect(hiddenJson.row.regionId).toBe("id");
+    expect(hiddenJson.row.subtitle).toBe("Keep me");
+  });
+
   it("moves a row between scopes and deletes it", async () => {
     const created = await call(
       createRow,
