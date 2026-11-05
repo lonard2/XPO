@@ -276,7 +276,7 @@ export function BannerCarousel({
         {/* Story column: overlay content on mobile, dark panel on desktop */}
         <div
           key={`story-${slide.id}`}
-          className="hero-story stagger-children relative z-10 max-w-2xl space-y-2.5 sm:space-y-4 lg:max-w-none lg:bg-slate-950 lg:border-l-4 lg:p-8 lg:space-y-3"
+          className="hero-story stagger-children relative z-10 max-w-2xl space-y-2.5 sm:space-y-4 lg:max-w-none lg:bg-slate-950 lg:border-l lg:p-8 lg:space-y-3"
           style={{ borderColor: archetypeTokens.primary }}
         >
           {/* Top Category, Temporal Status & Region Badges */}
@@ -292,7 +292,7 @@ export function BannerCarousel({
 
             {/* Differentiated Temporal Badges */}
             {temporalStatus.isLive && (
-              <Badge className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold gap-1.5 shadow-md">
+              <Badge className="bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold gap-1.5 shadow-md">
                 <span className="h-2 w-2 rounded-full bg-white inline-block animate-ping" />
                 <span>{tHero('happeningNow')}</span>
               </Badge>

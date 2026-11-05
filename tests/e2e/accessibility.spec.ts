@@ -5,6 +5,10 @@ import AxeBuilder from "@axe-core/playwright";
  * Accessibility gate at serious impact and above. The former kicker
  * contrast debt is fixed (derived archetype label tones, full-strength
  * footnote ink), so anything serious or critical fails the build.
+ *
+ * The carousel's "Happening Now" badge only mounts on a live slide, so a
+ * page scan can miss it. tests/unit/a11y/live-badge-contrast.test.ts pins
+ * its emerald-700 pairing and the 4.5:1 floor deterministically.
  */
 test.describe("accessibility", () => {
   for (const path of ["/en", "/en/events", "/en/venues/jiexpo-kemayoran"]) {
