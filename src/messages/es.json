@@ -394,7 +394,8 @@
     "next30Days": "Próximos 30 días",
     "next90Days": "Próximos 90 días",
     "thisWeek": "Esta semana",
-    "thisYear": "Este año"
+    "thisYear": "Este año",
+    "showAllCategories": "Mostrar las 22 categorías"
   },
   "events": {
     "title": "Directorio de Eventos y Calendario",

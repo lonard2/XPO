@@ -4,32 +4,33 @@ import React from 'react';
 import { EventCategoryPills } from '@/components/discovery/EventCategoryPills';
 
 describe('EventCategoryPills', () => {
-  it('renders all 22 MICE domain category options by default in cluster groups', () => {
+  it('leads with eight representative categories and discloses the full set', () => {
     render(<EventCategoryPills locale="en" />);
 
     expect(screen.getByText('Explore by Event Category')).toBeDefined();
     expect(screen.getAllByText(/Industrial & Manufacturing/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Technology, AI & Consumer Electronics/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Medical & Healthcare/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Finance, FinTech & Investor/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Pop Culture & Gaming/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Music, Stage & Performing Arts/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Mega Expo & Multi-Pavilion/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Automotive, EV & Mobility/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Energy, Mining & Green/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Agriculture, Agritech & Food/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Hospitality, Tourism & Travel/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Education, EdTech & Academic/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Fashion, Beauty & Luxury/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Government & Diplomatic/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Corporate Incentive/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Building, Architecture & PropTech/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Aerospace, Aviation & Defense/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Supply Chain, Logistics & Packaging/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Franchise, Retail & SME Business/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Faith, Pilgrimage & Community/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Sports, Fitness & Outdoor Adventure/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Media, Broadcast & Pro-AV/i).length).toBeGreaterThan(0);
+    expect(
+      screen.getByRole('button', { name: /Show all 22 categories/i })
+    ).toBeDefined();
+    expect(screen.queryByText(/Faith, Pilgrimage & Community/i)).toBeNull();
+  });
+
+  it('reveals every category from the disclosure', () => {
+    render(<EventCategoryPills locale="en" />);
+
+    fireEvent.click(
+      screen.getByRole('button', { name: /Show all 22 categories/i })
+    );
+
+    expect(
+      screen.getAllByText(/Faith, Pilgrimage & Community/i).length
+    ).toBeGreaterThan(0);
+    expect(
+      screen.getAllByText(/Aerospace, Aviation & Defense/i).length
+    ).toBeGreaterThan(0);
   });
 
   it('renders the 6 industry cluster tabs with accessible tablist attributes', () => {
@@ -57,9 +58,17 @@ describe('EventCategoryPills', () => {
   it('renders interactive directional navigation affordances on category cards', () => {
     const { container } = render(<EventCategoryPills locale="en" />);
 
-    // ArrowUpRight icons rendered across category cards
+    // ArrowUpRight icons rendered across the eight representative cards
     const arrowIcons = container.querySelectorAll('svg.lucide-arrow-up-right');
-    expect(arrowIcons.length).toBe(22);
+    expect(arrowIcons.length).toBe(8);
+  });
+
+  it('wraps the cluster tabs instead of clipping the last one', () => {
+    render(<EventCategoryPills locale="en" />);
+
+    const tablist = screen.getByRole('tablist');
+    expect(tablist.className).toContain('flex-wrap');
+    expect(tablist.className).not.toContain('overflow-x-auto');
   });
 
   it('renders descriptive subtitles below category titles', () => {

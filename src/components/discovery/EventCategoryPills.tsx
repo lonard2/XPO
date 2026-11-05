@@ -111,6 +111,26 @@ const CATEGORY_MAP: Record<MiceArchetype, CategoryItem> = EVENT_CATEGORIES.reduc
 
 const CLUSTER_IDS = ['all', ...MICE_INDUSTRY_CLUSTERS.map((c) => c.id)];
 
+// One representative from each cluster, plus two flagship categories. The
+// full 22 stay one click away; opening with all of them reads as a wall.
+const REPRESENTATIVE_IDS: MiceArchetype[] = [
+  'INDUSTRIAL_B2B',
+  'TECH_DEV_SUMMIT',
+  'SUPPLY_CHAIN_LOGISTICS',
+  'GOVERNMENT_DIPLOMATIC',
+  'MEDICAL_SYMPOSIUM',
+  'POP_CULTURE_GAMING',
+  'MEGA_EXPO_PAVILION',
+  'FINANCE_INVESTOR',
+];
+const REPRESENTATIVE_CATEGORIES = REPRESENTATIVE_IDS.map(
+  (id) => CATEGORY_MAP[id]
+).filter(Boolean);
+
+// Centred flex-wrap, not a grid: a 22-item grid ends in an orphan row.
+const TILE_WRAPPER =
+  'w-[calc(50%-0.375rem)] sm:w-[calc(33.333%-0.5rem)] lg:w-[calc(25%-0.5625rem)] xl:w-[calc(20%-0.6rem)]';
+
 export interface EventCategoryPillsProps {
   locale: string;
   activeCategoryId?: string;
@@ -129,6 +149,7 @@ export function EventCategoryPills({
   const tOrg = useTranslations('organizer');
 
   const [selectedCluster, setSelectedCluster] = React.useState<string>('all');
+  const [showAllCategories, setShowAllCategories] = React.useState(false);
   const tabRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
 
   const handleTabKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -285,7 +306,7 @@ export function EventCategoryPills({
         role="tablist"
         aria-label={tDisc('clusterFilterLabel')}
         onKeyDown={handleTabKeyDown}
-        className="flex items-center gap-2 sm:gap-2.5 overflow-x-auto no-scrollbar py-2 px-0.5"
+        className="flex flex-wrap items-center gap-2 sm:gap-2.5 py-2 px-0.5"
       >
         <button
           ref={(el) => {
@@ -363,9 +384,33 @@ export function EventCategoryPills({
           role="tabpanel"
           aria-labelledby="cluster-tab-all"
           tabIndex={0}
-          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-3.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/40 rounded-2xl"
+          className="space-y-4 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/40 rounded-2xl"
         >
-          {EVENT_CATEGORIES.map((category) => renderCategoryTile(category))}
+          <div className="flex flex-wrap justify-center gap-3 sm:gap-3.5">
+            {(showAllCategories
+              ? EVENT_CATEGORIES
+              : REPRESENTATIVE_CATEGORIES
+            ).map((category) => (
+              <div key={category.id} className={TILE_WRAPPER}>
+                {renderCategoryTile(category)}
+              </div>
+            ))}
+          </div>
+
+          {!showAllCategories && (
+            <div className="flex justify-center">
+              <button
+                type="button"
+                onClick={() => setShowAllCategories(true)}
+                className="inline-flex min-h-[44px] items-center gap-1.5 rounded-full border border-border/80 bg-card px-4 py-2 text-xs font-semibold text-primary transition-colors hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+              >
+                <span>
+                  {tDisc('showAllCategories') || 'Show all 22 categories'}
+                </span>
+                <ArrowRight className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          )}
         </div>
       ) : (
         activeClusterObj && (
@@ -380,7 +425,11 @@ export function EventCategoryPills({
               <div>
                 <div className="flex items-center gap-2">
                   <h3 className="text-sm sm:text-base font-bold text-foreground">
-                    {activeClusterObj.label}
+                    {clusterLabel(
+                      tOrg,
+                      activeClusterObj.id,
+                      activeClusterObj.shortLabel
+                    )}
                   </h3>
                   <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full border border-primary/30 text-primary">
                     {tDisc('verticalCount', { count: activeClusterObj.archetypes.length })}
@@ -393,7 +442,10 @@ export function EventCategoryPills({
 
               <button
                 type="button"
-                onClick={() => setSelectedCluster('all')}
+                onClick={() => {
+                  setSelectedCluster('all');
+                  setShowAllCategories(true);
+                }}
                 className="text-xs font-semibold text-primary hover:underline cursor-pointer min-h-[44px] px-3 py-2 flex items-center gap-1.5 rounded-lg hover:bg-primary/10 transition-colors self-start sm:self-auto"
               >
                 <RotateCcw className="h-3.5 w-3.5" />

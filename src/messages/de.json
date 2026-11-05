@@ -394,7 +394,8 @@
     "next30Days": "Nächste 30 Tage",
     "next90Days": "Nächste 90 Tage",
     "thisWeek": "Diese Woche",
-    "thisYear": "Dieses Jahr"
+    "thisYear": "Dieses Jahr",
+    "showAllCategories": "Alle 22 Kategorien anzeigen"
   },
   "events": {
     "title": "Messeverzeichnis & Kalender",

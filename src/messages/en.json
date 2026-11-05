@@ -394,7 +394,8 @@
     "next30Days": "Next 30 Days",
     "next90Days": "Next 90 Days",
     "thisWeek": "This Week",
-    "thisYear": "This Year"
+    "thisYear": "This Year",
+    "showAllCategories": "Show all 22 categories"
   },
   "events": {
     "title": "Event Directory & Timetable",

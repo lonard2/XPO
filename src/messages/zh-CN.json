@@ -394,7 +394,8 @@
     "next30Days": "未来 30 天",
     "next90Days": "未来 90 天",
     "thisWeek": "本周",
-    "thisYear": "今年"
+    "thisYear": "今年",
+    "showAllCategories": "显示全部 22 个类别"
   },
   "events": {
     "title": "展会名录与日程",
