@@ -96,6 +96,9 @@ model Event {
   endDate            DateTime
   isFeatured         Boolean      @default(false)
   heroImageUrl       String?
+  editorialBlurb     String?      // English-default editorial line for the hero carousel; renders only when editorialApproved
+  editorialBlurbI18n Json?        // Optional per-locale overrides: { locale: text }
+  editorialApproved  Boolean      @default(false) // Editorial publication gate: unapproved blurbs never render
   brandingConfigJson String?      // Custom primary color, accent, hero override JSON
   showcaseJson     String?      // Nullable organizer-authored showcase content (stream, programs, alerts, channels); absent means sections stay hidden
   scale              String       @default("LARGE") // "GLOBAL_MEGA", "LARGE", "MEDIUM", "EXECUTIVE"
