@@ -1599,7 +1599,19 @@
     "crumbVenues": "Veranstaltungsort-Verzeichnis",
     "crumbEvents": "Event-Governance",
     "crumbCrawler": "Crawler-Erfassung",
-    "crumbAudit": "Audit & Sicherheit"
+    "crumbAudit": "Audit & Sicherheit",
+    "homepageRowsTitle": "Startseitenzeilen",
+    "homepageRowsSubtitle": "Titelzeilen aus öffentlichen Events zusammenstellen, pro Edition oder für alle.",
+    "homepageRowsScope": "Bereich",
+    "homepageRowsNew": "Neue Zeile",
+    "homepageRowsTitleField": "Titel",
+    "homepageRowsSubtitleField": "Untertitel",
+    "homepageRowsEvents": "Events",
+    "homepageRowsSave": "Speichern",
+    "homepageRowsDelete": "Löschen",
+    "homepageRowsMoveUp": "Nach oben",
+    "homepageRowsMoveDown": "Nach unten",
+    "homepageRowsLocalized": "Lokalisierter Text"
   },
   "ai": {
     "conciergeTitle": "Event-Concierge",

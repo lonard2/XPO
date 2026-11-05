@@ -1599,7 +1599,19 @@
     "crumbVenues": "Direktori Venue",
     "crumbEvents": "Tata Kelola Acara",
     "crumbCrawler": "Ingesti Crawler",
-    "crumbAudit": "Audit & Keamanan"
+    "crumbAudit": "Audit & Keamanan",
+    "homepageRowsTitle": "Baris beranda",
+    "homepageRowsSubtitle": "Susun baris berjudul dari acara publik, per edisi atau semua edisi.",
+    "homepageRowsScope": "Cakupan",
+    "homepageRowsNew": "Baris baru",
+    "homepageRowsTitleField": "Judul",
+    "homepageRowsSubtitleField": "Subjudul",
+    "homepageRowsEvents": "Acara",
+    "homepageRowsSave": "Simpan",
+    "homepageRowsDelete": "Hapus",
+    "homepageRowsMoveUp": "Naikkan",
+    "homepageRowsMoveDown": "Turunkan",
+    "homepageRowsLocalized": "Teks terlokalisasi"
   },
   "ai": {
     "conciergeTitle": "Panduan Informasi Acara",

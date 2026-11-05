@@ -1599,7 +1599,19 @@
     "crumbVenues": "Directorio de recintos",
     "crumbEvents": "Gobernanza de eventos",
     "crumbCrawler": "Ingesta del rastreador",
-    "crumbAudit": "Auditoría y seguridad"
+    "crumbAudit": "Auditoría y seguridad",
+    "homepageRowsTitle": "Filas de inicio",
+    "homepageRowsSubtitle": "Componga filas con título a partir de eventos públicos, por edición o todas.",
+    "homepageRowsScope": "Ámbito",
+    "homepageRowsNew": "Nueva fila",
+    "homepageRowsTitleField": "Título",
+    "homepageRowsSubtitleField": "Subtítulo",
+    "homepageRowsEvents": "Eventos",
+    "homepageRowsSave": "Guardar",
+    "homepageRowsDelete": "Eliminar",
+    "homepageRowsMoveUp": "Subir",
+    "homepageRowsMoveDown": "Bajar",
+    "homepageRowsLocalized": "Texto localizado"
   },
   "ai": {
     "conciergeTitle": "Asistente del Asistente",

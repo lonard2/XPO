@@ -1599,7 +1599,19 @@
     "crumbVenues": "Venue Directory",
     "crumbEvents": "Event Governance",
     "crumbCrawler": "Crawler Ingestion",
-    "crumbAudit": "Audit & Security"
+    "crumbAudit": "Audit & Security",
+    "homepageRowsTitle": "Homepage rows",
+    "homepageRowsSubtitle": "Compose titled rows from public events, scoped to an edition or all editions.",
+    "homepageRowsScope": "Scope",
+    "homepageRowsNew": "New row",
+    "homepageRowsTitleField": "Title",
+    "homepageRowsSubtitleField": "Subtitle",
+    "homepageRowsEvents": "Events",
+    "homepageRowsSave": "Save",
+    "homepageRowsDelete": "Delete",
+    "homepageRowsMoveUp": "Move up",
+    "homepageRowsMoveDown": "Move down",
+    "homepageRowsLocalized": "Localized copy"
   },
   "ai": {
     "conciergeTitle": "Attendee Event Concierge",

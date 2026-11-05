@@ -1599,7 +1599,19 @@
     "crumbVenues": "场馆目录",
     "crumbEvents": "活动治理",
     "crumbCrawler": "爬虫采集",
-    "crumbAudit": "审计与安全"
+    "crumbAudit": "审计与安全",
+    "homepageRowsTitle": "首页行",
+    "homepageRowsSubtitle": "从公开活动编排带标题的行，可按版本或全部版本。",
+    "homepageRowsScope": "范围",
+    "homepageRowsNew": "新建行",
+    "homepageRowsTitleField": "标题",
+    "homepageRowsSubtitleField": "副标题",
+    "homepageRowsEvents": "活动",
+    "homepageRowsSave": "保存",
+    "homepageRowsDelete": "删除",
+    "homepageRowsMoveUp": "上移",
+    "homepageRowsMoveDown": "下移",
+    "homepageRowsLocalized": "本地化文案"
   },
   "ai": {
     "conciergeTitle": "展会服务助手",

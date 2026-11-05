@@ -1599,7 +1599,19 @@
     "crumbVenues": "会場ディレクトリ",
     "crumbEvents": "イベント管理",
     "crumbCrawler": "クローラー取り込み",
-    "crumbAudit": "監査とセキュリティ"
+    "crumbAudit": "監査とセキュリティ",
+    "homepageRowsTitle": "ホームページ行",
+    "homepageRowsSubtitle": "公開イベントから見出し付きの行を構成します（エディション別または全エディション）。",
+    "homepageRowsScope": "範囲",
+    "homepageRowsNew": "新しい行",
+    "homepageRowsTitleField": "タイトル",
+    "homepageRowsSubtitleField": "サブタイトル",
+    "homepageRowsEvents": "イベント",
+    "homepageRowsSave": "保存",
+    "homepageRowsDelete": "削除",
+    "homepageRowsMoveUp": "上へ",
+    "homepageRowsMoveDown": "下へ",
+    "homepageRowsLocalized": "ローカライズ文言"
   },
   "ai": {
     "conciergeTitle": "来場者AIコンシェルジュ",

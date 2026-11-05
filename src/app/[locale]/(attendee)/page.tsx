@@ -35,7 +35,7 @@ import { resolveEditorialBlurb } from '@/lib/discovery/editorial';
 import { selectRailItems } from '@/lib/news/feed';
 import { ResponsiveRow } from '@/components/discovery/ResponsiveRow';
 import { CrossRegionRail } from '@/components/discovery/CrossRegionRail';
-import { pickRailRegion, rankRailEvents } from '@/lib/homepage/rows';
+import { pickRailRegion, rankRailEvents, mergeRows, resolveRowCopy } from '@/lib/homepage/rows';
 import { type BannerSlide, type DiscoveryEvent, type VenueWithEvents } from '@/types/discovery';
 
 export interface HomePageProps {
@@ -304,6 +304,73 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
     ? tReg(`${railRegion}.name`) || railRegion
     : "";
 
+  // Editor rows: region scope plus all-editions rows, merged by position.
+  // Stored ids that no longer resolve to a public attendable event are
+  // skipped, never rendered as empty cards.
+  let editorRows: Array<{
+    id: string;
+    title: string;
+    subtitle: string | null;
+    items: DiscoveryEvent[];
+  }> = [];
+  try {
+    const rows = await db.homepageRow.findMany({
+      where: {
+        isActive: true,
+        OR: [{ regionId: activeRegionCode }, { regionId: null }],
+      },
+      orderBy: { position: "asc" },
+    });
+    const merged = mergeRows(
+      rows.filter((row) => row.regionId === activeRegionCode),
+      rows.filter((row) => row.regionId === null)
+    );
+    const parseIds = (json: string): string[] => {
+      try {
+        const parsed = JSON.parse(json);
+        return Array.isArray(parsed) ? parsed.filter((id) => typeof id === "string") : [];
+      } catch {
+        return [];
+      }
+    };
+    const allIds = [...new Set(merged.flatMap((row) => parseIds(row.eventIdsJson)))];
+    const rowEvents = allIds.length
+      ? await db.event.findMany({
+          where: {
+            id: { in: allIds },
+            ...listingWhere(),
+            endDate: { gte: now },
+          },
+          include: {
+            venue: { include: { halls: true, region: true } },
+            venueHall: true,
+            region: true,
+            ticketTiers: true,
+          },
+        })
+      : [];
+    const byId = new Map(rowEvents.map((event) => [event.id, event as unknown as DiscoveryEvent]));
+    editorRows = merged
+      .map((row) => {
+        const copy = resolveRowCopy(
+          {
+            title: row.title,
+            titleI18n: row.titleI18n as Record<string, string> | null,
+            subtitle: row.subtitle,
+            subtitleI18n: row.subtitleI18n as Record<string, string> | null,
+          },
+          locale
+        );
+        const items = parseIds(row.eventIdsJson)
+          .map((id) => byId.get(id))
+          .filter((event): event is DiscoveryEvent => Boolean(event));
+        return { id: row.id, ...copy, items };
+      })
+      .filter((row) => row.items.length > 0);
+  } catch {
+    editorRows = [];
+  }
+
   const regionLocalizedName =
     activeRegionCode === 'id'
       ? tReg('id.name') || 'Indonesia'
@@ -433,12 +500,38 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         />
       )}
 
-      {/* 5. Editor hand-picked news rail (renders nothing without slots) */}
+      {/* 5. Editor rows: composed by platform editors, region or all editions */}
+      {editorRows.map((row) => (
+        <section key={row.id} className="container space-y-6">
+          <div className="flex flex-col gap-1 border-b border-border/80 pb-4">
+            <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-foreground text-balance">
+              {row.title}
+            </h2>
+            {row.subtitle && (
+              <p className="text-xs sm:text-sm text-muted-foreground text-pretty">
+                {row.subtitle}
+              </p>
+            )}
+          </div>
+          <ResponsiveRow className="stagger-children" label={row.title}>
+            {row.items.map((item, index) => (
+              <EventCard
+                key={item.id}
+                event={item}
+                locale={locale}
+                priority={index === 0}
+              />
+            ))}
+          </ResponsiveRow>
+        </section>
+      ))}
+
+      {/* 6. Editor hand-picked news rail (renders nothing without slots) */}
       {newsRailItems.length > 0 && (
         <HomepageNewsRail items={newsRailItems} locale={locale} />
       )}
 
-      {/* 6. Integrated Interactive Event Calendar Guide */}
+      {/* 7. Integrated Interactive Event Calendar Guide */}
       <section className="container">
         <EventCalendarWidget
           events={featuredEvents.map((e) => ({
@@ -460,12 +553,12 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         />
       </section>
 
-      {/* 7. 22 MICE Event Category Matrix */}
+      {/* 8. 22 MICE Event Category Matrix */}
       <section className="container">
         <EventCategoryPills locale={locale} />
       </section>
 
-      {/* 8. Attendee Experience & Venue Wayfinding Hub (Asymmetric Bento Showcase) */}
+      {/* 9. Attendee Experience & Venue Wayfinding Hub (Asymmetric Bento Showcase) */}
       <section className="container space-y-8">
         <div className="max-w-2xl space-y-2">
           <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground text-balance">
@@ -640,7 +733,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         </div>
       </section>
 
-      {/* 9. Event Concierge & System Preferences Banner */}
+      {/* 10. Event Concierge & System Preferences Banner */}
       <section className="container">
         <div className="rounded-2xl border border-primary/20 bg-primary/5 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="space-y-2 text-center sm:text-left">
