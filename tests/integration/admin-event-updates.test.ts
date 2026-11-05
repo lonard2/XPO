@@ -25,7 +25,7 @@ describe("Admin API: News review, authorship, and slots", () => {
   const slotRegion = "id";
 
   const call = (
-    handler: (req: Request, ctx: { params: Promise<Record<string, string>> }) => Promise<Response>,
+    handler: (req: Request, ctx: { params: Promise<any> }) => Promise<Response>,
     url: string,
     method: string,
     body: unknown,
