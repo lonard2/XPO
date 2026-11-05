@@ -66,6 +66,8 @@ export interface EventPageShellProps {
   externalUrl?: string | null;
   /** Approved news timeline entries; empty means no section. */
   newsUpdates?: Array<{ id: string; title: string; body: string; approvedAt: string | null }>;
+  /** Explicit presentation tier (resolved by the page: choice → venue → LARGE). */
+  pageSize?: "LARGE" | "MEDIUM" | "SMALL" | string;
 }
 
 export function EventPageShell({
@@ -96,6 +98,7 @@ export function EventPageShell({
   isListingOnly = false,
   externalUrl = null,
   newsUpdates = [],
+  pageSize = "LARGE",
 }: EventPageShellProps) {
   const [isCopied, setIsCopied] = React.useState(false);
   const [checkoutDrawerOpen, setCheckoutDrawerOpen] = React.useState(false);
@@ -381,7 +384,10 @@ export function EventPageShell({
           <div className="absolute inset-0 bg-gradient-to-t from-[var(--archetype-bg)] via-[var(--archetype-bg)]/80 to-transparent" />
         </div>
 
-        <div className="relative z-10 container pt-8 pb-10 sm:pb-14 lg:pt-12">
+        <div className={cn(
+          "relative z-10 container pt-8 pb-10 sm:pb-14 lg:pt-12",
+          pageSize === "SMALL" && "pt-6 pb-8 sm:pb-8 lg:pt-8"
+        )}>
           {/* Top Badges: capped at two — category plus one status. Scale and
               format move to the metadata line under the title. */}
           <div className="flex flex-wrap items-center gap-2 mb-4">
@@ -547,6 +553,8 @@ export function EventPageShell({
               )}
             </button>
 
+            {/* Booths directory lives here on full pages; SMALL stays lean. */}
+            {pageSize !== "SMALL" && (
             <button
               type="button"
               onClick={() => setActiveTab("floorMap")}
@@ -566,6 +574,7 @@ export function EventPageShell({
                 </span>
               )}
             </button>
+            )}
 
             <button
               type="button"
@@ -592,10 +601,13 @@ export function EventPageShell({
 
 
       {/* 4. Main Content Container */}
-      <main className="container py-8 sm:py-12 pb-36 md:pb-16 space-y-12">
+      <main className={cn(
+        "container py-8 sm:py-12 pb-36 md:pb-16 space-y-12",
+        pageSize !== "LARGE" && "space-y-8"
+      )}>
         {/* Tab 1: Overview & Archetype Specialized View */}
         {activeTab === "overview" && (
-          <div className="space-y-12">
+          <div className={cn("space-y-12", pageSize !== "LARGE" && "space-y-8")}>
             {children}
 
             {(newsUpdates?.length ?? 0) > 0 && (
@@ -690,7 +702,7 @@ export function EventPageShell({
         )}
 
         {/* Tab 3: Floor Map & Booths */}
-        {activeTab === "floorMap" && (
+        {activeTab === "floorMap" && pageSize !== "SMALL" && (
           <div className="space-y-6">
             {booths && booths.length > 0 ? (
               <HallFloorMap

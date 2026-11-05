@@ -29,7 +29,7 @@ import { submitMeetingRequest } from "@/lib/meetings/client";
 import { parseShowcase } from "@/lib/showcase";
 import { ShowcaseProgramGrid } from "@/components/themed/ShowcaseProgramGrid";
 
-export function FinanceInvestorView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
+export function FinanceInvestorView({ event, locale = "en", onSelectTier, pageSize = "LARGE" }: ArchetypeViewProps) {
   const [dealRoomOpen, setDealRoomOpen] = React.useState(false);
   const [selectedDeal, setSelectedDeal] = React.useState<string | null>(null);
   const [bookingConfirmed, setBookingConfirmed] = React.useState(false);
@@ -96,6 +96,7 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier }: Arch
           <div className="pt-2 flex flex-wrap items-center gap-3">
             
 
+            {pageSize !== "SMALL" && (
             <Button
               variant="outline"
               onClick={() => handleBookDealRoom("Sovereign Investor Deal Room 1")}
@@ -104,6 +105,7 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier }: Arch
               <Lock className="h-4 w-4 text-amber-500" />
               Book Private 1-on-1 Deal Suite
             </Button>
+            )}
           </div>
         </div>
 

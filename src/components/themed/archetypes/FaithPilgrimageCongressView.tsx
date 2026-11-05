@@ -22,7 +22,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { type ArchetypeViewProps } from "./IndustrialB2BView";
 import { parseShowcase, showcaseAgeDays, showcaseDateLabel, SHOWCASE_STALE_DAYS } from "@/lib/showcase";
 
-export function FaithPilgrimageCongressView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
+export function FaithPilgrimageCongressView({ event, locale = "en", onSelectTier, pageSize = "LARGE" }: ArchetypeViewProps) {
 
   // Organizer-authored showcase: channels render only with backing data.
   const showcase = React.useMemo(
@@ -60,8 +60,8 @@ export function FaithPilgrimageCongressView({ event, locale = "en", onSelectTier
         </div>
       </section>
 
-      {/* 2. Plenary Interpretation Channels (organizer data only; silent when empty) */}
-      {showcase.channels.length > 0 && (
+      {/* 2. Plenary Interpretation Channels (organizer data only; silent when empty or SMALL) */}
+      {showcase.channels.length > 0 && pageSize !== "SMALL" && (
       <section className="rounded-xl border border-border/80 bg-card p-5 sm:p-6 shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
           <div className="flex items-center gap-2.5">

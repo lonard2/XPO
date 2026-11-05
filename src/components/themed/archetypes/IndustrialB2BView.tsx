@@ -90,9 +90,11 @@ export interface ArchetypeViewProps {
   };
   locale?: string;
   onSelectTier?: (tierId: string) => void;
+  /** Explicit presentation tier; meeting drawers and showcase channels hide on SMALL. */
+  pageSize?: "LARGE" | "MEDIUM" | "SMALL";
 }
 
-export function IndustrialB2BView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
+export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize = "LARGE" }: ArchetypeViewProps) {
   const [rfqDrawerOpen, setRfqDrawerOpen] = React.useState(false);
   const [selectedBooth, setSelectedBooth] = React.useState<string | null>(null);
   const [rfqSubmitted, setRfqSubmitted] = React.useState(false);
@@ -177,6 +179,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier }: Archet
             {event.description}
           </p>
           <div className="pt-2 flex flex-wrap items-center gap-3">
+            {pageSize !== "SMALL" && (
             <Button
               variant="archetype"
               onClick={() => handleOpenRfq()}
@@ -185,6 +188,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier }: Archet
               <FileText className="h-4 w-4" />
               Submit RFQ / Procurement Tender
             </Button>
+            )}
             <Button
               variant="outline"
               onClick={() => {

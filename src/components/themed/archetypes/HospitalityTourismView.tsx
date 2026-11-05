@@ -23,7 +23,7 @@ import { Drawer } from "@/components/ui/Drawer";
 import { type ArchetypeViewProps } from "./IndustrialB2BView";
 import { submitMeetingRequest } from "@/lib/meetings/client";
 
-export function HospitalityTourismView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
+export function HospitalityTourismView({ event, locale = "en", onSelectTier, pageSize = "LARGE" }: ArchetypeViewProps) {
   const [buyerDrawerOpen, setBuyerDrawerOpen] = React.useState(false);
   const [selectedPavilion, setSelectedPavilion] = React.useState<string | null>(null);
   const [appointmentBooked, setAppointmentBooked] = React.useState(false);
@@ -163,6 +163,7 @@ export function HospitalityTourismView({ event, locale = "en", onSelectTier }: A
                   </div>
                 </div>
 
+                {pageSize !== "SMALL" && (
                 <Button
                   onClick={() => {
                     setSelectedPavilion(dest.name);
@@ -175,6 +176,7 @@ export function HospitalityTourismView({ event, locale = "en", onSelectTier }: A
                   <Handshake className="h-3.5 w-3.5 mr-1.5 text-cyan-500" />
                   Request Buyer Appointment
                 </Button>
+                )}
               </CardContent>
             </Card>
           ))}

@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { type MiceArchetype, isValidArchetype } from "@/lib/theming";
 import { EventPageShell } from "@/components/themed/EventPageShell";
 import { parseShowcase } from "@/lib/showcase";
+import { resolvePageSize } from "@/lib/discovery/presentation";
 import { EventOrganizerSection } from "@/components/discovery/EventOrganizerSection";
 import { generateEventJsonLd } from "@/lib/seo/jsonLd";
 import { siteBaseUrl } from "@/lib/seo/site";
@@ -238,6 +239,13 @@ export default async function EventDetailPage({ params }: EventPageProps) {
     siteBaseUrl()
   );
 
+  // Presentation tier: explicit human choice, else venue suggestion, else LARGE.
+  // Nothing auto-shrinks: without a recorded choice the full page renders.
+  const resolvedPageSize = resolvePageSize({
+    eventTier: (event as { pageSize?: string | null }).pageSize ?? null,
+    venueSize: (event.venue as { size?: string | null } | null)?.size ?? null,
+  });
+
   return (
     <>
       <script
@@ -276,8 +284,9 @@ export default async function EventDetailPage({ params }: EventPageProps) {
       isListingOnly={event.isListingOnly}
       externalUrl={event.externalUrl}
       newsUpdates={newsUpdates}
+      pageSize={resolvedPageSize}
     >
-      <ArchetypeView event={event} locale={locale} />
+      <ArchetypeView event={event} locale={locale} pageSize={resolvedPageSize} />
       <EventOrganizerSection event={event} locale={locale} />
       </EventPageShell>
     </>

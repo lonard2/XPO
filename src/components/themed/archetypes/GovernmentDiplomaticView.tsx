@@ -24,7 +24,7 @@ import { formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
 import type { ArchetypeViewProps } from "./IndustrialB2BView";
 import { submitMeetingRequest } from "@/lib/meetings/client";
 
-export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
+export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, pageSize = "LARGE" }: ArchetypeViewProps) {
   const [bilateralDrawerOpen, setBilateralDrawerOpen] = React.useState(false);
   const [selectedDelegation, setSelectedDelegation] = React.useState<string | null>(null);
   const [scheduled, setScheduled] = React.useState(false);
@@ -173,6 +173,7 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier }:
                   Bilateral slot capacity: 4 accredited diplomatic attachés per session.
                 </div>
                 <div className="pt-2">
+                  {pageSize !== "SMALL" && (
                   <Button
                     variant="outline"
                     size="sm"
@@ -182,6 +183,7 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier }:
                     <FileCheck className="h-3.5 w-3.5" />
                     Request Bilateral Dialogue Slot
                   </Button>
+                  )}
                 </div>
               </CardContent>
             </Card>
