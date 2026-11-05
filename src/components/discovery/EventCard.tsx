@@ -180,7 +180,7 @@ export const EventCard = React.memo(function EventCard({
             Category and format live in the body metadata row instead. */}
         <div className="absolute top-2.5 left-2.5 flex flex-wrap items-center gap-1.5 z-10">
           {temporal.isLive && (
-            <Badge className="bg-emerald-600 text-white text-xs font-bold gap-1 shadow-sm">
+            <Badge className="bg-emerald-700 text-white text-xs font-bold gap-1 shadow-sm">
               <span className="h-1.5 w-1.5 rounded-full bg-white inline-block animate-ping" />
               <span>{tEvents('live')}</span>
             </Badge>

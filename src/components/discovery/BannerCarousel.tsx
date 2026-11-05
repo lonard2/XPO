@@ -388,7 +388,7 @@ export function BannerCarousel({
                   href={`/${locale}/events/${slide.slug}`}
                   className={cn(
                     buttonVariants({ size: 'lg' }),
-                    'gap-2 font-semibold shadow-lg bg-emerald-600 hover:bg-emerald-700 text-white border-0 animate-pulse cursor-pointer'
+                    'gap-2 font-semibold shadow-lg bg-emerald-700 hover:bg-emerald-800 text-white border-0 cursor-pointer'
                   )}
                 >
                   <Ticket className="h-4 w-4" />
