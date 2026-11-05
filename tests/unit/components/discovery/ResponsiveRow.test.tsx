@@ -71,6 +71,29 @@ describe("ResponsiveRow", () => {
     expect(region.classList.contains("xl:grid-cols-4")).toBe(false);
   });
 
+  it("stretches every item so CTA rows align", () => {
+    render(<ResponsiveRow>{items}</ResponsiveRow>);
+    const region = screen.getByRole("region");
+    for (const wrapper of Array.from(region.children)) {
+      expect(wrapper.className).toContain("h-full");
+    }
+  });
+
+  it("centres an odd final item at tablet widths", () => {
+    render(<ResponsiveRow>{items}</ResponsiveRow>);
+    const last = screen.getByRole("region").lastElementChild;
+    expect(last?.className).toContain("md:col-span-2");
+    expect(last?.className).toContain("md:mx-auto");
+    expect(last?.className).toContain("md:w-1/2");
+    expect(last?.className).toContain("lg:col-span-1");
+  });
+
+  it("does not centre an even final item", () => {
+    render(<ResponsiveRow>{items.slice(0, 2)}</ResponsiveRow>);
+    const last = screen.getByRole("region").lastElementChild;
+    expect(last?.className).not.toContain("md:col-span-2");
+  });
+
   it("keeps the controls mobile-only", () => {
     render(<ResponsiveRow>{items}</ResponsiveRow>);
     const controls = screen

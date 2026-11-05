@@ -48,7 +48,7 @@ export function IdentityStrip({
       </div>
 
       <div className="px-4 py-4 sm:px-6 sm:py-5">
-        <h1 className="text-[1.7rem] leading-tight font-extrabold tracking-tight text-foreground text-balance sm:text-4xl">
+        <h1 className="text-[1.7rem] leading-tight font-extrabold tracking-tight text-foreground text-balance sm:text-5xl">
           {title} <span className="text-primary">{highlight}</span>
         </h1>
         <p className="mt-1.5 max-w-2xl text-xs leading-relaxed text-muted-foreground text-pretty sm:text-sm">

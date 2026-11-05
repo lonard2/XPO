@@ -237,7 +237,7 @@ export function BannerCarousel({
         }}
         className={cn(
           "relative min-h-[420px] sm:min-h-[480px] lg:min-h-[520px] flex flex-col justify-end p-5 pt-20 pb-16 sm:p-8 sm:pb-20 lg:p-12 overflow-hidden",
-          "lg:grid lg:grid-cols-[1.55fr_1fr] lg:justify-stretch lg:gap-0 lg:p-0",
+          "lg:grid lg:grid-cols-[1fr_1.4fr] lg:justify-stretch lg:gap-0 lg:p-0",
           hidden && "absolute inset-0 pointer-events-none"
         )}
       >
@@ -314,7 +314,7 @@ export function BannerCarousel({
           </div>
 
           {/* Event Title */}
-          <h2 className="text-xl sm:text-3xl lg:text-5xl font-extrabold tracking-tight text-white leading-[1.18] drop-shadow-md text-balance">
+          <h2 className="text-xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-white leading-[1.18] drop-shadow-md text-balance">
             {slide.title}
           </h2>
 
@@ -476,7 +476,7 @@ export function BannerCarousel({
       </div>
 
         {/* Carousel Navigation Controls with WCAG 44x44px Touch Targets */}
-        <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center gap-1.5 z-20">
+        <div className="absolute top-4 right-4 sm:top-6 sm:right-6 lg:top-auto lg:right-auto lg:bottom-4 lg:left-4 flex items-center gap-1.5 z-20">
           <button
             type="button"
             className="relative flex h-10 w-10 sm:h-9 sm:w-9 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 items-center justify-center rounded-full bg-black/50 hover:bg-black/80 text-white border border-white/20 backdrop-blur-sm transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/60 focus-visible:outline-none"

@@ -27,6 +27,9 @@ export function ResponsiveRow({ children, className, label, maxColumns = 5 }: Re
   const [canPrev, setCanPrev] = React.useState(false);
   const [canNext, setCanNext] = React.useState(false);
   const items = React.Children.toArray(children);
+  // An odd final item in a two-column tablet grid would sit alone in the
+  // left cell and read as a rendering error. Centre it instead.
+  const hasOddTail = items.length > 1 && items.length % 2 === 1;
 
   const updateEdges = React.useCallback(() => {
     const el = scrollerRef.current;
@@ -116,7 +119,12 @@ export function ResponsiveRow({ children, className, label, maxColumns = 5 }: Re
           {items.map((child, index) => (
             <div
               key={index}
-              className="snap-start shrink-0 w-[85%] sm:w-[60%] md:w-auto"
+              className={cn(
+                "snap-start shrink-0 w-[85%] sm:w-[60%] md:w-auto h-full",
+                hasOddTail &&
+                  index === items.length - 1 &&
+                  "md:col-span-2 md:mx-auto md:w-1/2 lg:col-span-1 lg:w-auto"
+              )}
             >
               {child}
             </div>

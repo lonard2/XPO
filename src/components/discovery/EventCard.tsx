@@ -156,7 +156,7 @@ export const EventCard = React.memo(function EventCard({
       return event.organizerName;
     }
     return null;
-  }, [isCurated, event.organizerName, event.venue?.name, event.organizer]);
+  }, [isCurated, event.organizerName, event.venue?.name, event.organizer, tEvents]);
 
   const formatLabel = event.format ? event.format.replace(/_/g, ' ') : tDisc('inPerson');
 
@@ -164,8 +164,9 @@ export const EventCard = React.memo(function EventCard({
     <Card
       interactive
       data-tilt
+      data-variant={variant}
       className={cn(
-        'group relative flex flex-col justify-between overflow-hidden border-border/80 bg-card transition-all duration-300 hover:border-primary/60 hover:shadow-md hover:-translate-y-0.5',
+        'group relative flex h-full flex-col justify-between overflow-hidden border-border/80 bg-card transition-all duration-300 hover:border-primary/60 hover:shadow-md hover:-translate-y-0.5',
         variant === 'horizontal' && 'md:flex-row md:items-center',
         className
       )}
@@ -273,7 +274,10 @@ export const EventCard = React.memo(function EventCard({
 
           <div className="flex items-start gap-2">
             <h3 className="text-base font-bold text-foreground leading-snug line-clamp-2 text-balance group-hover:text-primary transition-colors flex-1">
-              <Link href={`/${locale}/events/${event.slug}`} className="hover:underline after:absolute after:inset-0">
+              <Link
+                href={`/${locale}/events/${event.slug}`}
+                className="hover:underline after:absolute after:inset-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-sm"
+              >
                 {event.title}
               </Link>
             </h3>

@@ -43,6 +43,22 @@ describe("CrossRegionRail", () => {
     expect(screen.getByText("Cloud Summit 2026")).toBeDefined();
   });
 
+  it("uses a compact horizontal card when it has fewer than three items", () => {
+    render(
+      <CrossRegionRail
+        items={[event("a", "Robotics Expo 2026")]}
+        locale="en"
+        regionCode="jp"
+        regionName="Japan"
+      />
+    );
+
+    const card = screen
+      .getByText("Robotics Expo 2026")
+      .closest("[data-variant]");
+    expect(card?.getAttribute("data-variant")).toBe("horizontal");
+  });
+
   it("renders nothing without items", () => {
     const { container } = render(
       <CrossRegionRail items={[]} locale="en" regionCode="jp" regionName="Japan" />
