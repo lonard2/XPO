@@ -111,6 +111,17 @@ export const EventCard = React.memo(function EventCard({
     return formatCurrency(paid.price, currency, locale);
   }, [event.ticketTiers, event.region?.currency, locale]);
 
+  const paidCurrency = React.useMemo(() => {
+    const paid = (event.ticketTiers || [])
+      .filter((tier) => tier.price > 0)
+      .sort((a, b) => a.price - b.price)[0];
+    return (paid?.currency || event.region?.currency || 'IDR') as SupportedCurrency;
+  }, [event.ticketTiers, event.region?.currency]);
+
+  const showPaidCurrencyCode =
+    Boolean(paidFromDisplay) &&
+    !paidFromDisplay!.toUpperCase().includes(paidCurrency);
+
   const hasFreeTier = React.useMemo(
     () => (event.ticketTiers || []).some((tier) => tier.price === 0),
     [event.ticketTiers]
@@ -353,6 +364,11 @@ export const EventCard = React.memo(function EventCard({
             {!temporal.isPast && hasFreeTier && paidFromDisplay && (
               <span className="text-[11px] text-muted-foreground">
                 {tTick('vipFrom', { price: paidFromDisplay })}
+                {showPaidCurrencyCode && (
+                  <span className="ml-1 font-mono text-[10px] font-semibold">
+                    {paidCurrency}
+                  </span>
+                )}
               </span>
             )}
           </div>

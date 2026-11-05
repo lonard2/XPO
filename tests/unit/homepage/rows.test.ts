@@ -109,6 +109,16 @@ describe("Homepage row resolvers", () => {
     ]);
   });
 
+  it("matches a fallback lead by slug when the ids differ", () => {
+    const events = [
+      { id: "event-1", slug: "fashion" },
+      { id: "event-2", slug: "sports" },
+    ];
+    expect(
+      withoutHeroLead(events, "slide-id-1", "fashion").map((e) => e.id)
+    ).toEqual(["event-2"]);
+  });
+
   it("keeps every event when no hero lead is known", () => {
     const events = [{ id: "a" }, { id: "b" }];
     expect(withoutHeroLead(events, undefined)).toEqual(events);

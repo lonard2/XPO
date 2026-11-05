@@ -123,7 +123,8 @@ export function MajorVenuesUpcomingSection({
               key={venue.id}
               data-tilt
               data-quiet-venue={isQuiet ? 'true' : undefined}
-              className="flex flex-col justify-between overflow-hidden border-border/80 bg-card hover:border-primary/60 transition-all duration-300 shadow-xs hover:shadow-md"
+              data-venue-card
+              className="flex h-full flex-col justify-between overflow-hidden border-border/80 bg-card hover:border-primary/60 transition-all duration-300 shadow-xs hover:shadow-md"
             >
               {/* Venue Header Banner: quiet venues skip the photo */}
               {!isQuiet && (
@@ -155,7 +156,7 @@ export function MajorVenuesUpcomingSection({
                   {hallCount > 0 && (
                     <Badge variant="secondary" className="text-xs font-semibold bg-background/95 text-foreground border-border/70 tabular-nums backdrop-blur-md px-2.5 py-1 flex items-center gap-1">
                       <Layers className="h-3 w-3 text-primary shrink-0" />
-                      <span>{hallCount} Halls</span>
+                      <span>{hallCount === 1 ? tVen('hallsCountOne') : tVen('hallsCount', { count: hallCount })}</span>
                     </Badge>
                   )}
                 </div>
@@ -191,7 +192,7 @@ export function MajorVenuesUpcomingSection({
                     {hallCount > 0 && (
                       <span className="inline-flex items-center gap-1">
                         <Layers className="h-3.5 w-3.5 text-primary shrink-0" />
-                        {hallCount} Halls
+                        {hallCount === 1 ? tVen('hallsCountOne') : tVen('hallsCount', { count: hallCount })}
                       </span>
                     )}
                   </div>

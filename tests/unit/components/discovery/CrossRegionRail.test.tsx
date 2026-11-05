@@ -61,6 +61,22 @@ describe("CrossRegionRail", () => {
     expect(card?.getAttribute("data-variant")).toBe("horizontal");
   });
 
+  it("keeps a two-item rail in the grid, where cards stay readable", () => {
+    render(
+      <CrossRegionRail
+        items={[event("a", "Robotics Expo 2026"), event("b", "Cloud Summit 2026")]}
+        locale="en"
+        regionCode="jp"
+        regionName="Japan"
+      />
+    );
+
+    const card = screen
+      .getByText("Robotics Expo 2026")
+      .closest("[data-variant]");
+    expect(card?.getAttribute("data-variant")).toBe("grid");
+  });
+
   it("renders nothing without items", () => {
     const { container } = render(
       <CrossRegionRail items={[]} locale="en" regionCode="jp" regionName="Japan" />

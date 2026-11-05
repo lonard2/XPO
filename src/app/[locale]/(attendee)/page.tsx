@@ -266,7 +266,11 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
   const concludedEvents = featuredEvents.filter((event) => !attendableEvents.includes(event));
   // The hero already leads with the most imminent event; the featured row
   // shows what remains so the same card does not appear twice in a row.
-  const featuredRowEvents = withoutHeroLead(attendableEvents, bannerSlides[0]?.id);
+  const featuredRowEvents = withoutHeroLead(
+    attendableEvents,
+    bannerSlides[0]?.id,
+    bannerSlides[0]?.slug
+  );
 
   // Cross-region rail: one other region per UTC day, ranked by real demand
   // (confirmed or checked-in bookings) with a featured fallback. Empty means

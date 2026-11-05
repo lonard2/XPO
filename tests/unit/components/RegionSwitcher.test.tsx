@@ -43,9 +43,30 @@ describe("Component: RegionSwitcher", () => {
     render(<RegionSwitcher currentLocale="en" activeRegionCode="id" compact />);
 
     const button = screen.getByRole("button", { name: /Select Country/i });
-    expect(button).toHaveTextContent("ID");
-    expect(button).toHaveTextContent("IDR");
+    expect(button.textContent).toMatch(/ID\s*\(IDR\)/);
     expect(button).not.toHaveTextContent("Indonesia");
+  });
+
+  it("keeps the compact menu inside the phone viewport", () => {
+    render(<RegionSwitcher currentLocale="en" activeRegionCode="id" compact />);
+
+    fireEvent.click(screen.getByRole("button", { name: /Select Country/i }));
+
+    const listbox = screen.getByRole("listbox");
+    // A 256px box anchored right-0 to a narrow trigger runs off the left
+    // edge at 390. The compact menu is a fixed, inset sheet instead.
+    expect(listbox.className).toContain("fixed");
+    expect(listbox.className).toContain("left-4");
+    expect(listbox.className).toContain("right-4");
+  });
+
+  it("names the compact trigger by the label it shows", () => {
+    render(<RegionSwitcher currentLocale="en" activeRegionCode="id" compact />);
+
+    // WCAG 2.5.3: the visible "ID (IDR)" must be part of the accessible name.
+    expect(
+      screen.getByRole("button", { name: /ID \(IDR\)/ })
+    ).toBeDefined();
   });
 
   it("renders cards variant with venue highlights and currencies", () => {

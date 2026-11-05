@@ -1,6 +1,8 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import React from 'react';
+import * as fs from 'fs';
+import * as path from 'path';
 import { EventCategoryPills } from '@/components/discovery/EventCategoryPills';
 
 describe('EventCategoryPills', () => {
@@ -61,6 +63,20 @@ describe('EventCategoryPills', () => {
     // ArrowUpRight icons rendered across the eight representative cards
     const arrowIcons = container.querySelectorAll('svg.lucide-arrow-up-right');
     expect(arrowIcons.length).toBe(8);
+  });
+
+  it('matches tile widths to the responsive gap', () => {
+    // Widths that subtract the wrong gap overflow the row and drop a column.
+    const src = fs.readFileSync(
+      path.resolve(
+        __dirname,
+        '../../../../src/components/discovery/EventCategoryPills.tsx'
+      ),
+      'utf8'
+    );
+    expect(src).toContain('33.333%-0.5833rem');
+    expect(src).toContain('25%-0.65625rem');
+    expect(src).toContain('20%-0.7rem');
   });
 
   it('wraps the cluster tabs instead of clipping the last one', () => {

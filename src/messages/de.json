@@ -605,8 +605,8 @@
     "listedCountOne": "1 Event",
     "noUpcomingShort": "Noch keine Events angekündigt",
     "wingCongress": "Kongress-Flügel",
-    "alsoInEdition": "Auch in dieser Edition",
-    "viewAllVenues": "Alle Veranstaltungsorte ansehen"
+    "viewAllVenues": "Alle Veranstaltungsorte ansehen",
+    "hallsCountOne": "1 Halle"
   },
   "calendar": {
     "title": "Interaktiver Eventkalender",

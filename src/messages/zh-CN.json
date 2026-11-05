@@ -515,7 +515,7 @@
     "foundInOtherRegions": "在其他区域版本中找到匹配的展馆：",
     "viewInRegion": "查看：",
     "allRegions": "所有区域",
-    "hallsCount": "{count} 个展厅",
+    "hallsCount": "{count} 个展馆",
     "multiHallComplex": "多展厅综合体",
     "campusScale": "园区级规模",
     "multiHallLayout": "多展厅规划",
@@ -605,8 +605,8 @@
     "listedCountOne": "1 场",
     "noUpcomingShort": "暂无活动公布",
     "wingCongress": "会议中心翼",
-    "alsoInEdition": "本版本的其他场馆",
-    "viewAllVenues": "查看全部场馆"
+    "viewAllVenues": "查看全部场馆",
+    "hallsCountOne": "1 个展馆"
   },
   "calendar": {
     "title": "会展交互日历",

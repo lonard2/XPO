@@ -129,7 +129,7 @@ const REPRESENTATIVE_CATEGORIES = REPRESENTATIVE_IDS.map(
 
 // Centred flex-wrap, not a grid: a 22-item grid ends in an orphan row.
 const TILE_WRAPPER =
-  'w-[calc(50%-0.375rem)] sm:w-[calc(33.333%-0.5rem)] lg:w-[calc(25%-0.5625rem)] xl:w-[calc(20%-0.6rem)]';
+  'w-[calc(50%-0.375rem)] sm:w-[calc(33.333%-0.5833rem)] lg:w-[calc(25%-0.65625rem)] xl:w-[calc(20%-0.7rem)]';
 
 export interface EventCategoryPillsProps {
   locale: string;

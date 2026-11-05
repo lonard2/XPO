@@ -286,7 +286,26 @@ export function RegionSwitcher({
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
-        aria-label={tNav("regionTriggerAria", { label: regionName(tReg, selectedRegion.code, selectedRegion.editionTitle) })}
+        aria-label={
+          compact
+            ? `${selectedRegion.flagCode} (${selectedRegion.currency}): ${tNav(
+                "regionTriggerAria",
+                {
+                  label: regionName(
+                    tReg,
+                    selectedRegion.code,
+                    selectedRegion.editionTitle
+                  ),
+                }
+              )}`
+            : tNav("regionTriggerAria", {
+                label: regionName(
+                  tReg,
+                  selectedRegion.code,
+                  selectedRegion.editionTitle
+                ),
+              })
+        }
         className="h-9 px-2.5 gap-1.5 text-xs font-medium border border-border/60 hover:bg-accent hover:text-accent-foreground min-h-[44px]"
       >
         <Globe className="h-3.5 w-3.5 text-primary" />
@@ -314,7 +333,12 @@ export function RegionSwitcher({
           role="listbox"
           aria-label={tNav("regionListAria")}
           onKeyDown={handleListboxKeyDown}
-          className="absolute right-0 mt-1.5 w-64 origin-top-right rounded-xl border border-border bg-card p-1.5 shadow-xl z-50 animate-in fade-in-0 zoom-in-95 duration-100"
+          className={cn(
+            "mt-1.5 rounded-xl border border-border bg-card p-1.5 shadow-xl z-50 animate-in fade-in-0 zoom-in-95 duration-100",
+            compact
+              ? "fixed left-4 right-4 top-16 w-auto"
+              : "absolute right-0 w-64 origin-top-right"
+          )}
         >
           <div className="px-2.5 py-1.5 border-b border-border/50 text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
             <Globe className="h-3 w-3 text-primary" />

@@ -515,7 +515,7 @@
     "foundInOtherRegions": "Se encontraron recintos coincidentes en otras ediciones regionales:",
     "viewInRegion": "Ver en",
     "allRegions": "Todas las Regiones",
-    "hallsCount": "{count} Pabellones",
+    "hallsCount": "{count} pabellones",
     "multiHallComplex": "Complejo Multi-Pabellón",
     "campusScale": "Escala de Campus",
     "multiHallLayout": "Diseño Multi-Pabellón",
@@ -605,8 +605,8 @@
     "listedCountOne": "1 evento",
     "noUpcomingShort": "Aún no hay eventos anunciados",
     "wingCongress": "Ala de Congresos",
-    "alsoInEdition": "También en esta edición",
-    "viewAllVenues": "Ver todos los recintos"
+    "viewAllVenues": "Ver todos los recintos",
+    "hallsCountOne": "1 pabellón"
   },
   "calendar": {
     "title": "Calendario Interactivo de Eventos",

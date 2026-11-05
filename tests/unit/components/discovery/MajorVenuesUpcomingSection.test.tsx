@@ -150,6 +150,34 @@ describe('MajorVenuesUpcomingSection', () => {
     expect(names).toEqual(['JIExpo Kemayoran', 'ICE BSD City']);
   });
 
+  it('localizes the hall count on a quiet card', () => {
+    render(
+      <MajorVenuesUpcomingSection
+        venues={concludedOnlyVenues}
+        locale="id"
+        regionCode="id"
+      />
+    );
+
+    expect(screen.getByText('1 Hall')).toBeDefined();
+  });
+
+  it('stretches every venue card to the row height', () => {
+    const { container } = render(
+      <MajorVenuesUpcomingSection
+        venues={[...mockVenues, ...concludedOnlyVenues]}
+        locale="en"
+        regionCode="id"
+      />
+    );
+
+    const cards = container.querySelectorAll('[data-venue-card]');
+    expect(cards.length).toBe(2);
+    for (const card of cards) {
+      expect(card.className).toContain('h-full');
+    }
+  });
+
   it('renders quiet venues as compact cards without a photo', () => {
     const { container } = render(
       <MajorVenuesUpcomingSection

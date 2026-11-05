@@ -123,7 +123,7 @@ export function ResponsiveRow({ children, className, label, maxColumns = 5 }: Re
                 "snap-start shrink-0 w-[85%] sm:w-[60%] md:w-auto h-full",
                 hasOddTail &&
                   index === items.length - 1 &&
-                  "md:col-span-2 md:mx-auto md:w-1/2 lg:col-span-1 lg:w-auto"
+                  "md:col-span-2 md:mx-auto md:w-1/2 lg:col-span-1 lg:mx-0 lg:w-auto"
               )}
             >
               {child}

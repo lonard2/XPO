@@ -70,12 +70,17 @@ export function rankRailEvents<T extends RankableRailEvent>(
  * featured row shows what remains. A single-event edition keeps its lead
  * rather than rendering an empty row.
  */
-export function withoutHeroLead<T extends { id: string }>(
+export function withoutHeroLead<T extends { id: string; slug?: string }>(
   events: T[],
-  heroId: string | undefined
+  heroId: string | undefined,
+  heroSlug?: string
 ): T[] {
-  if (!heroId || events.length <= 1) return events;
-  const rest = events.filter((event) => event.id !== heroId);
+  if ((!heroId && !heroSlug) || events.length <= 1) return events;
+  const rest = events.filter((event) => {
+    if (heroId && event.id === heroId) return false;
+    if (heroSlug && event.slug === heroSlug) return false;
+    return true;
+  });
   return rest.length > 0 ? rest : events;
 }
 

@@ -204,6 +204,25 @@ describe('EventCard currency and venue clarity', () => {
     expect(screen.getByText('JPY')).toBeInTheDocument();
   });
 
+  it('names the currency on the VIP-from price of a free-floor card', () => {
+    const japanEvent = {
+      ...mockEvent,
+      id: 'japan-free-floor',
+      startDate: new Date('2027-09-14T09:00:00Z'),
+      endDate: new Date('2027-09-17T18:00:00Z'),
+      regionId: 'jp',
+      region: { id: 'jp', code: 'JP', name: 'Japan', currency: 'JPY' },
+      ticketTiers: [
+        { id: 'tier-free', name: 'Visitor Pass', price: 0, currency: 'JPY' },
+        { id: 'tier-vip', name: 'VIP Pass', price: 12000, currency: 'JPY' },
+      ],
+    } as DiscoveryEvent;
+
+    render(<EventCard event={japanEvent} locale="ja" />);
+
+    expect(screen.getByText('JPY')).toBeInTheDocument();
+  });
+
   it('keeps the venue name readable instead of clamping to one line', () => {
     render(<EventCard event={mockEvent} locale="en" />);
 

@@ -38,5 +38,7 @@ describe("BannerTemporalWidget hydration safety", () => {
     });
     // Seconds ticked every second for an event days away: false precision.
     expect(screen.queryByText(/\d+d \d+h \d+m \d+s/)).toBeNull();
+    // The placeholder also matches the minute regex; the mounted value must not.
+    expect(screen.queryByText('00d 00h 00m')).toBeNull();
   });
 });

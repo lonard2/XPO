@@ -171,14 +171,16 @@ export function Navbar({ locale = "en" }: NavbarProps) {
               <RegionSwitcher currentLocale={locale} activeRegionCode={activeRegion} />
             </div>
 
-            {/* Language Switcher */}
-            <LanguageSwitcher currentLocale={locale} />
+            {/* Language Switcher: phone space goes to the edition chip */}
+            <div className="hidden sm:block">
+              <LanguageSwitcher currentLocale={locale} />
+            </div>
 
             {/* Auth / Role Switcher Trigger Button */}
             <button
               type="button"
               onClick={() => setIsAuthModalOpen(true)}
-              className="flex items-center gap-1.5 px-2 lg:px-2.5 py-1.5 rounded-lg border border-border/80 hover:border-primary/40 bg-card hover:bg-accent/50 transition-all text-xs text-left cursor-pointer whitespace-nowrap min-h-[44px] min-w-[44px]"
+              className="hidden sm:flex items-center gap-1.5 px-2 lg:px-2.5 py-1.5 rounded-lg border border-border/80 hover:border-primary/40 bg-card hover:bg-accent/50 transition-all text-xs text-left cursor-pointer whitespace-nowrap min-h-[44px] min-w-[44px]"
               aria-label={tNav("authAria")}
             >
               <div className="h-6 w-6 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
@@ -304,7 +306,8 @@ export function Navbar({ locale = "en" }: NavbarProps) {
             </div>
 
             {/* Footer Settings & Language Info */}
-            <div className="pt-2 border-t border-border flex items-center justify-between">
+            <div className="pt-2 border-t border-border flex flex-col gap-2">
+              <LanguageSwitcher currentLocale={locale} />
               <Link
                 href={`/${locale}/settings`}
                 onClick={() => setIsMobileMenuOpen(false)}

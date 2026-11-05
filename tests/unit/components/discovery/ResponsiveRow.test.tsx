@@ -86,6 +86,7 @@ describe("ResponsiveRow", () => {
     expect(last?.className).toContain("md:mx-auto");
     expect(last?.className).toContain("md:w-1/2");
     expect(last?.className).toContain("lg:col-span-1");
+    expect(last?.className).toContain("lg:mx-0");
   });
 
   it("does not centre an even final item", () => {
