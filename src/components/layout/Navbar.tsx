@@ -126,7 +126,7 @@ export function Navbar({ locale = "en" }: NavbarProps) {
                 <span className="text-lg font-bold tracking-tight text-foreground leading-tight">
                   XPO
                 </span>
-                <span className="text-xs font-medium tracking-wider uppercase text-muted-foreground">
+                <span className="hidden text-xs font-medium tracking-wider uppercase text-muted-foreground sm:inline">
                   MICE Digital
                 </span>
               </div>
@@ -158,7 +158,15 @@ export function Navbar({ locale = "en" }: NavbarProps) {
 
           {/* Right Actions */}
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-            {/* Regional Hub Switcher */}
+            {/* Regional Hub Switcher: the edition is always visible, compact
+                below lg so the top bar keeps its single row. */}
+            <div className="lg:hidden">
+              <RegionSwitcher
+                currentLocale={locale}
+                activeRegionCode={activeRegion}
+                compact
+              />
+            </div>
             <div className="hidden lg:block">
               <RegionSwitcher currentLocale={locale} activeRegionCode={activeRegion} />
             </div>

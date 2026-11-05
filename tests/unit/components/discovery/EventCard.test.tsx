@@ -184,3 +184,30 @@ describe('Discovery Component: EventCard listing-only', () => {
     expect(screen.queryByText('View Pass')).toBeNull();
   });
 });
+
+describe('EventCard currency and venue clarity', () => {
+  it('names the ISO currency when the locale renders only a symbol', () => {
+    const japanEvent = {
+      ...mockEvent,
+      id: 'japan-event',
+      startDate: new Date('2027-09-14T09:00:00Z'),
+      endDate: new Date('2027-09-17T18:00:00Z'),
+      regionId: 'jp',
+      region: { id: 'jp', code: 'JP', name: 'Japan', currency: 'JPY' },
+      ticketTiers: [
+        { id: 'tier-jp', name: 'Standard Pass', price: 15000, currency: 'JPY' },
+      ],
+    } as DiscoveryEvent;
+
+    render(<EventCard event={japanEvent} locale="ja" />);
+
+    expect(screen.getByText('JPY')).toBeInTheDocument();
+  });
+
+  it('keeps the venue name readable instead of clamping to one line', () => {
+    render(<EventCard event={mockEvent} locale="en" />);
+
+    const venueLink = screen.getByText('JIExpo Kemayoran').closest('a');
+    expect(venueLink?.className).toContain('line-clamp-2');
+  });
+});

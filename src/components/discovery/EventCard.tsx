@@ -81,6 +81,26 @@ export const EventCard = React.memo(function EventCard({
       : (tCom('free') || 'Free');
   }, [event.ticketTiers, event.region?.currency, locale, tCom]);
 
+  // A locale can render JPY as "¥15,000" with no ISO code. In a multi-country
+  // edition that is ambiguous, so the card names the currency when the
+  // formatted string does not already carry it.
+  const priceCurrency = React.useMemo(() => {
+    const sortedTiers = event.ticketTiers && event.ticketTiers.length > 0
+      ? [...event.ticketTiers].sort((a, b) => a.price - b.price)
+      : [];
+    return (sortedTiers[0]?.currency || event.region?.currency || 'IDR') as SupportedCurrency;
+  }, [event.ticketTiers, event.region?.currency]);
+
+  const priceIsPaid = React.useMemo(() => {
+    const sortedTiers = event.ticketTiers && event.ticketTiers.length > 0
+      ? [...event.ticketTiers].sort((a, b) => a.price - b.price)
+      : [];
+    return (sortedTiers[0]?.price ?? 0) > 0;
+  }, [event.ticketTiers]);
+
+  const showCurrencyCode =
+    priceIsPaid && !priceDisplay.toUpperCase().includes(priceCurrency);
+
   // "Free" alone hid the paid tiers on the same event, so the card names the floor.
   const paidFromDisplay = React.useMemo(() => {
     const paid = (event.ticketTiers || [])
@@ -298,13 +318,15 @@ export const EventCard = React.memo(function EventCard({
             <div className="flex items-start gap-1.5 pt-1">
               <Building2 className="h-3.5 w-3.5 text-primary/80 shrink-0 mt-0.5" />
               <div className="flex flex-col">
-                <Link href={`/${locale}/venues/${event.venue.slug}`} className="relative z-10 font-medium text-foreground line-clamp-1 hover:underline hover:text-primary transition-colors">
+                <Link href={`/${locale}/venues/${event.venue.slug}`} className="relative z-10 font-medium text-foreground line-clamp-2 hover:underline hover:text-primary transition-colors">
                   {event.venue.name}
                 </Link>
-                <span className="text-xs text-muted-foreground flex items-center gap-1">
+                <span className="text-xs text-muted-foreground flex flex-wrap items-center gap-1">
                   <MapPin className="h-3 w-3 inline text-muted-foreground" />
-                  {event.venue.city}
-                  {event.venueHall && ` • ${event.venueHall.name}`}
+                  <span>{event.venue.city}</span>
+                  {event.venueHall && (
+                    <span className="break-words">• {event.venueHall.name}</span>
+                  )}
                 </span>
               </div>
             </div>
@@ -318,6 +340,11 @@ export const EventCard = React.memo(function EventCard({
             </span>
             <span className="text-sm font-extrabold text-foreground tabular-nums">
               {temporal.isPast ? tEvents('concluded') : priceDisplay}
+              {!temporal.isPast && showCurrencyCode && (
+                <span className="ml-1 align-middle font-mono text-[10px] font-semibold text-muted-foreground">
+                  {priceCurrency}
+                </span>
+              )}
             </span>
             {!temporal.isPast && hasFreeTier && paidFromDisplay && (
               <span className="text-[11px] text-muted-foreground">

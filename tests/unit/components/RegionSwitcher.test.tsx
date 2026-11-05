@@ -39,6 +39,15 @@ describe("Component: RegionSwitcher", () => {
     expect(mockPush).toHaveBeenCalledWith("/en?region=jp");
   });
 
+  it("renders a compact edition trigger with the currency code", () => {
+    render(<RegionSwitcher currentLocale="en" activeRegionCode="id" compact />);
+
+    const button = screen.getByRole("button", { name: /Select Country/i });
+    expect(button).toHaveTextContent("ID");
+    expect(button).toHaveTextContent("IDR");
+    expect(button).not.toHaveTextContent("Indonesia");
+  });
+
   it("renders cards variant with venue highlights and currencies", () => {
     render(<RegionSwitcher currentLocale="en" activeRegionCode="id" variant="cards" />);
 

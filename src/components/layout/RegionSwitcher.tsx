@@ -73,6 +73,8 @@ export interface RegionSwitcherProps {
   currentLocale?: string;
   activeRegionCode?: string;
   variant?: "dropdown" | "pills" | "cards";
+  /** Compact trigger for narrow top bars: flag code and ISO currency only. */
+  compact?: boolean;
   className?: string;
   onActiveRegionChange?: (code: "id" | "jp" | "global") => void;
 }
@@ -81,6 +83,7 @@ export function RegionSwitcher({
   currentLocale = "en",
   activeRegionCode,
   variant = "dropdown",
+  compact = false,
   className,
   onActiveRegionChange,
 }: RegionSwitcherProps) {
@@ -287,7 +290,18 @@ export function RegionSwitcher({
         className="h-9 px-2.5 gap-1.5 text-xs font-medium border border-border/60 hover:bg-accent hover:text-accent-foreground min-h-[44px]"
       >
         <Globe className="h-3.5 w-3.5 text-primary" />
-        <span className="font-semibold">{regionName(tReg, selectedRegion.code, selectedRegion.editionTitle)}</span>
+        {compact ? (
+          <>
+            <span className="font-semibold">{selectedRegion.flagCode}</span>
+            <span className="font-mono text-[11px] text-muted-foreground">
+              ({selectedRegion.currency})
+            </span>
+          </>
+        ) : (
+          <span className="font-semibold">
+            {regionName(tReg, selectedRegion.code, selectedRegion.editionTitle)}
+          </span>
+        )}
         <ChevronDown
           className={cn("h-3 w-3 text-muted-foreground transition-transform duration-200", {
             "rotate-180": isOpen,

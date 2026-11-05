@@ -335,7 +335,7 @@ export function BannerCarousel({
             {slide.venueName && (
               <div className="flex items-center gap-1.5 text-slate-200 flex-wrap">
                 <Building2 className="h-4 w-4 text-primary/90 shrink-0" />
-                <span className="line-clamp-1">
+                <span className="line-clamp-2">
                   {slide.venueName}
                   {slide.cityName && ` (${slide.cityName})`}
                 </span>
