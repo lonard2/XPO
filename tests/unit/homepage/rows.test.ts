@@ -6,6 +6,7 @@ import {
   rankRailEvents,
   mergeRows,
   resolveRowCopy,
+  withoutHeroLead,
 } from "@/lib/homepage/rows";
 
 const event = (
@@ -92,6 +93,25 @@ describe("Homepage row resolvers", () => {
       "region-2",
       "all-1",
     ]);
+  });
+
+  it("drops the hero lead from the featured row when other events remain", () => {
+    const events = [{ id: "lead" }, { id: "second" }, { id: "third" }];
+    expect(withoutHeroLead(events, "lead").map((e) => e.id)).toEqual([
+      "second",
+      "third",
+    ]);
+  });
+
+  it("keeps the hero lead when it is the only attendable event", () => {
+    expect(withoutHeroLead([{ id: "lead" }], "lead").map((e) => e.id)).toEqual([
+      "lead",
+    ]);
+  });
+
+  it("keeps every event when no hero lead is known", () => {
+    const events = [{ id: "a" }, { id: "b" }];
+    expect(withoutHeroLead(events, undefined)).toEqual(events);
   });
 
   it("resolves row copy by exact locale with a default fallback", () => {

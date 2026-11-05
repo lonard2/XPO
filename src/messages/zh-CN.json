@@ -175,9 +175,9 @@
     "adminPill1": "官方认证展厅平面图",
     "adminPill2": "实时日程排期遥测",
     "adminPill3": "企业级安全与防伪",
-    "conciergeBannerTitle": "智能导览助手与报告中心",
-    "conciergeBannerDesc": "即刻获取展厅导航指引、交通接驳信息、日程安排及全维度主办方分析报告。",
-    "conciergeBannerBtn": "首选项与助手设置",
+    "conciergeBannerTitle": "规划您的行程",
+    "conciergeBannerDesc": "浏览即将举行的展会，比较展馆，并准备好入场通行证。",
+    "conciergeBannerBtn": "浏览即将开放的通行证",
     "recentlyConcluded": "近期已结束",
     "perksCta": "浏览活动",
     "alsoHappeningIn": "{region}同期活动",
@@ -603,7 +603,8 @@
     "specsVerified": "已核实",
     "listedCountOne": "1 场",
     "noUpcomingShort": "暂无活动公布",
-    "wingCongress": "会议中心翼"
+    "wingCongress": "会议中心翼",
+    "alsoInEdition": "本版本的其他场馆"
   },
   "calendar": {
     "title": "会展交互日历",

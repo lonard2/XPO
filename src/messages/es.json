@@ -175,9 +175,9 @@
     "adminPill1": "Planos Verificados de Pabellón",
     "adminPill2": "Telemetría de Horarios en Tiempo Real",
     "adminPill3": "Seguridad y Verificación Empresarial",
-    "conciergeBannerTitle": "Asistente del Evento y Panel de Informes",
-    "conciergeBannerDesc": "Consulte navegación en pabellones, rutas de transporte, programas y análisis avanzados.",
-    "conciergeBannerBtn": "Preferencias y Ajustes del Asistente",
+    "conciergeBannerTitle": "Planifique su visita",
+    "conciergeBannerDesc": "Explore próximas ferias, compare pabellones y tenga su pase listo para la entrada.",
+    "conciergeBannerBtn": "Ver pases próximos",
     "recentlyConcluded": "Finalizadas recientemente",
     "perksCta": "Ver eventos",
     "alsoHappeningIn": "También en {region}",
@@ -603,7 +603,8 @@
     "specsVerified": "Verificado",
     "listedCountOne": "1 evento",
     "noUpcomingShort": "Aún no hay eventos anunciados",
-    "wingCongress": "Ala de Congresos"
+    "wingCongress": "Ala de Congresos",
+    "alsoInEdition": "También en esta edición"
   },
   "calendar": {
     "title": "Calendario Interactivo de Eventos",

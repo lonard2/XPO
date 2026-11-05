@@ -175,9 +175,9 @@
     "adminPill1": "Verified Hall Floor Plans",
     "adminPill2": "Real-Time Schedule Telemetry",
     "adminPill3": "Enterprise Security & Verification",
-    "conciergeBannerTitle": "Attendee Event Concierge & Reporting Hub",
-    "conciergeBannerDesc": "Access real-time hall navigation, transit logistics, timetable schedules, and comprehensive organizer analytics reports.",
-    "conciergeBannerBtn": "Preferences & Concierge Settings",
+    "conciergeBannerTitle": "Plan your visit",
+    "conciergeBannerDesc": "Browse upcoming exhibitions, compare halls, and keep your pass ready for the door.",
+    "conciergeBannerBtn": "Browse upcoming passes",
     "recentlyConcluded": "Recently concluded",
     "perksCta": "Browse events",
     "alsoHappeningIn": "Also happening in {region}",
@@ -603,7 +603,8 @@
     "specsVerified": "Verified",
     "listedCountOne": "1 event",
     "noUpcomingShort": "No events announced yet",
-    "wingCongress": "Congress Wing"
+    "wingCongress": "Congress Wing",
+    "alsoInEdition": "Also in this edition"
   },
   "calendar": {
     "title": "Interactive Event Calendar",

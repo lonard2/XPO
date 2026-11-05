@@ -65,6 +65,20 @@ export function rankRailEvents<T extends RankableRailEvent>(
   return [...featured, ...rest].slice(0, RAIL_SIZE);
 }
 
+/**
+ * The hero already leads with the most imminent attendable event, so the
+ * featured row shows what remains. A single-event edition keeps its lead
+ * rather than rendering an empty row.
+ */
+export function withoutHeroLead<T extends { id: string }>(
+  events: T[],
+  heroId: string | undefined
+): T[] {
+  if (!heroId || events.length <= 1) return events;
+  const rest = events.filter((event) => event.id !== heroId);
+  return rest.length > 0 ? rest : events;
+}
+
 export interface MergeableRow {
   regionId: string | null;
   position: number;

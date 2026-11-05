@@ -4,7 +4,6 @@ import { headers, cookies } from 'next/headers';
 import {
   Compass,
   Layers,
-  Cpu,
   ArrowRight,
   CheckCircle2,
   Building2,
@@ -35,7 +34,7 @@ import { resolveEditorialBlurb } from '@/lib/discovery/editorial';
 import { selectRailItems } from '@/lib/news/feed';
 import { ResponsiveRow } from '@/components/discovery/ResponsiveRow';
 import { CrossRegionRail } from '@/components/discovery/CrossRegionRail';
-import { pickRailRegion, rankRailEvents, mergeRows } from '@/lib/homepage/rows';
+import { pickRailRegion, rankRailEvents, mergeRows, withoutHeroLead } from '@/lib/homepage/rows';
 import { resolveEditorRows } from '@/lib/homepage/editorRows';
 import { type BannerSlide, type DiscoveryEvent, type VenueWithEvents } from '@/types/discovery';
 
@@ -265,6 +264,9 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
   }
   const attendableEvents = filterAttendable(featuredEvents, now);
   const concludedEvents = featuredEvents.filter((event) => !attendableEvents.includes(event));
+  // The hero already leads with the most imminent event; the featured row
+  // shows what remains so the same card does not appear twice in a row.
+  const featuredRowEvents = withoutHeroLead(attendableEvents, bannerSlides[0]?.id);
 
   // Cross-region rail: one other region per UTC day, ranked by real demand
   // (confirmed or checked-in bookings) with a featured fallback. Empty means
@@ -452,7 +454,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
           </div>
         ) : (
           <ResponsiveRow className="stagger-children" label={tHome('featuredInRegion') || 'Featured events'}>
-            {attendableEvents.map((event, idx) => (
+            {featuredRowEvents.map((event, idx) => (
               <EventCard key={event.id} event={event} locale={locale} priority={idx < 3} />
             ))}
           </ResponsiveRow>
@@ -722,23 +724,23 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         </div>
       </section>
 
-      {/* 10. Event Concierge & System Preferences Banner */}
+      {/* 10. Closing action: the page ends on a pass, not on settings */}
       <section className="container">
         <div className="rounded-2xl border border-primary/20 bg-primary/5 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="space-y-2 text-center sm:text-left">
             <div className="flex items-center justify-center sm:justify-start gap-2 text-primary font-bold text-sm">
-              <Cpu className="h-5 w-5" />
-              <span>{tHome('conciergeBannerTitle') || 'Attendee Event Concierge & Reporting Hub'}</span>
+              <Calendar className="h-5 w-5" />
+              <span>{tHome('conciergeBannerTitle') || 'Plan your visit'}</span>
             </div>
             <p className="text-xs text-muted-foreground max-w-xl text-pretty">
-              {tHome('conciergeBannerDesc') || 'Access real-time hall navigation, transit logistics, timetable schedules, and comprehensive organizer analytics reports.'}
+              {tHome('conciergeBannerDesc') || 'Browse upcoming exhibitions, compare halls, and keep your pass ready for the door.'}
             </p>
           </div>
           <Link
-            href={`/${locale}/settings`}
+            href={`/${locale}/events`}
             className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'min-h-[44px] sm:min-h-[36px] whitespace-nowrap gap-2 text-xs')}
           >
-            <span>{tHome('conciergeBannerBtn') || 'Preferences & Concierge Settings'}</span>
+            <span>{tHome('conciergeBannerBtn') || 'Browse upcoming passes'}</span>
             <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>

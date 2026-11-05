@@ -69,10 +69,11 @@ export function MajorVenuesUpcomingSection({
       return temporal.isUpcoming || temporal.isLive;
     });
 
-  // Every venue keeps a card: this section doubles as the venue directory, and a
-  // campus with nothing scheduled this month is still a place a delegate may want to
-  // visit. Venues with something attendable lead; the quiet ones follow with a single
-  // muted line instead of a repeated empty-state block.
+  // Every venue keeps a card: this section doubles as the venue directory,
+  // and a campus with nothing scheduled this month is still a place a
+  // delegate may want to visit. Venues with something attendable lead;
+  // quiet venues keep a compact card so six empty cards no longer add
+  // roughly 1,200px of repeated empty state.
   const orderedVenues = [
     ...venues.filter((venue) => attendableEventsFor(venue).length > 0),
     ...venues.filter((venue) => attendableEventsFor(venue).length === 0),
@@ -113,6 +114,7 @@ export function MajorVenuesUpcomingSection({
         {orderedVenues.map((venue) => {
           // Max 3 attendable events per venue
           const upcomingEvents = attendableEventsFor(venue).slice(0, 3);
+          const isQuiet = upcomingEvents.length === 0;
           const hallCount = countHalls(venue.halls);
           const venueName = splitVenueName(venue.name);
 
@@ -120,9 +122,11 @@ export function MajorVenuesUpcomingSection({
             <Card
               key={venue.id}
               data-tilt
+              data-quiet-venue={isQuiet ? 'true' : undefined}
               className="flex flex-col justify-between overflow-hidden border-border/80 bg-card hover:border-primary/60 transition-all duration-300 shadow-xs hover:shadow-md"
             >
-              {/* Venue Header Banner */}
+              {/* Venue Header Banner: quiet venues skip the photo */}
+              {!isQuiet && (
               <div className="relative h-36 sm:h-44 w-full overflow-hidden bg-slate-950 sheen">
                 {/* Painted underneath always, so a dead image URL degrades to the gradient
                     instead of a broken image. Two seeded venues had a 404 photo. */}
@@ -156,9 +160,10 @@ export function MajorVenuesUpcomingSection({
                   )}
                 </div>
               </div>
+              )}
 
               {/* Venue Title & Transit Link */}
-              <div className="p-4 sm:p-5 pb-3">
+              <div className={cn('p-4 sm:p-5', isQuiet ? 'pb-2' : 'pb-3')}>
                 <Link
                   href={`/${locale}/venues/${venue.slug}`}
                   className="group inline-block"
@@ -177,20 +182,34 @@ export function MajorVenuesUpcomingSection({
                     <span>{venue.transitInfo}</span>
                   </p>
                 )}
+                {isQuiet && (
+                  <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
+                    <span className="inline-flex items-center gap-1">
+                      <Building2 className="h-3.5 w-3.5 text-primary shrink-0" />
+                      {venue.city}
+                    </span>
+                    {hallCount > 0 && (
+                      <span className="inline-flex items-center gap-1">
+                        <Layers className="h-3.5 w-3.5 text-primary shrink-0" />
+                        {hallCount} Halls
+                      </span>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* Up to 3 Current & Near-Upcoming Events */}
-              <div className="p-4 sm:p-5 pt-0 space-y-2.5 flex-1 flex flex-col justify-start">
+              <div className={cn('p-4 sm:p-5 pt-0 space-y-2.5 flex-1 flex flex-col justify-start', isQuiet && 'pb-2')}>
+                {!isQuiet && (
                 <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground pt-3 border-t border-border/70 flex items-center justify-between">
                   <span>{tVen('currentUpcomingEvents')}</span>
-                  {upcomingEvents.length > 0 && (
-                    <span className="text-xs font-semibold text-primary font-mono tabular-nums">
-                      {upcomingEvents.length === 1
-                        ? tVen('listedCountOne')
-                        : tVen('listedCount', { count: upcomingEvents.length })}
-                    </span>
-                  )}
+                  <span className="text-xs font-semibold text-primary font-mono tabular-nums">
+                    {upcomingEvents.length === 1
+                      ? tVen('listedCountOne')
+                      : tVen('listedCount', { count: upcomingEvents.length })}
+                  </span>
                 </div>
+                )}
 
                 {upcomingEvents.length > 0 ? (
                   <div className="space-y-2">

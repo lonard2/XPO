@@ -150,6 +150,24 @@ describe('MajorVenuesUpcomingSection', () => {
     expect(names).toEqual(['JIExpo Kemayoran', 'ICE BSD City']);
   });
 
+  it('renders quiet venues as compact cards without a photo', () => {
+    const { container } = render(
+      <MajorVenuesUpcomingSection
+        venues={[...mockVenues, ...concludedOnlyVenues]}
+        locale="en"
+        regionCode="id"
+      />
+    );
+
+    const quiet = container.querySelector('[data-quiet-venue]');
+    expect(quiet).not.toBeNull();
+    expect(quiet?.textContent).toContain('ICE BSD City');
+    expect(quiet?.textContent).toContain('Tangerang');
+    // The quiet card skips the banner image and the event block.
+    expect(quiet?.querySelector('img')).toBeNull();
+    expect(quiet?.textContent).not.toContain('Current & Near-Upcoming Events');
+  });
+
   it('says nothing is scheduled once, without a zero counter', () => {
     render(
       <MajorVenuesUpcomingSection

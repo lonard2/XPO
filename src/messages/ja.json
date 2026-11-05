@@ -175,9 +175,9 @@
     "adminPill1": "検証済みホール図面",
     "adminPill2": "リアルタイムスケジュール監視",
     "adminPill3": "エンタープライズセキュリティ",
-    "conciergeBannerTitle": "来場者コンシェルジュ＆レポートハブ",
-    "conciergeBannerDesc": "会場ナビ、交通手段、タイムテーブル、主催者向け分析レポートをワンストップで確認できます。",
-    "conciergeBannerBtn": "環境設定＆コンシェルジュ設定",
+    "conciergeBannerTitle": "来場プラン",
+    "conciergeBannerDesc": "今後の展示会を探し、ホールを比較し、当日使えるパスを用意しましょう。",
+    "conciergeBannerBtn": "今後のパスを見る",
     "recentlyConcluded": "終了した展示会",
     "perksCta": "イベントを見る",
     "alsoHappeningIn": "{region}でも開催中",
@@ -603,7 +603,8 @@
     "specsVerified": "確認済み",
     "listedCountOne": "1件",
     "noUpcomingShort": "開催予定はまだありません",
-    "wingCongress": "コングレスウィング"
+    "wingCongress": "コングレスウィング",
+    "alsoInEdition": "このエディションの他の会場"
   },
   "calendar": {
     "title": "イベントカレンダー",

@@ -175,9 +175,9 @@
     "adminPill1": "Denah Hall Terverifikasi",
     "adminPill2": "Telemetri Jadwal Real-Time",
     "adminPill3": "Keamanan Enterprise & Verifikasi",
-    "conciergeBannerTitle": "Pusat Panduan & Laporan Analisis Acara",
-    "conciergeBannerDesc": "Akses panduan transportasi umum, navigasi denah hall, jadwal acara, dan laporan analitik penyelenggara secara real-time.",
-    "conciergeBannerBtn": "Pengaturan Asisten & Preferensi",
+    "conciergeBannerTitle": "Rencanakan kunjungan Anda",
+    "conciergeBannerDesc": "Jelajahi pameran mendatang, bandingkan hall, dan siapkan pas Anda untuk pintu masuk.",
+    "conciergeBannerBtn": "Jelajahi pas mendatang",
     "recentlyConcluded": "Baru saja berakhir",
     "perksCta": "Jelajahi acara",
     "alsoHappeningIn": "Juga berlangsung di {region}",
@@ -603,7 +603,8 @@
     "specsVerified": "Terverifikasi",
     "listedCountOne": "1 acara",
     "noUpcomingShort": "Belum ada acara diumumkan",
-    "wingCongress": "Wing Congress"
+    "wingCongress": "Wing Congress",
+    "alsoInEdition": "Juga di edisi ini"
   },
   "calendar": {
     "title": "Kalender Acara Interaktif",

@@ -175,9 +175,9 @@
     "adminPill1": "Verifizierte Hallenpläne",
     "adminPill2": "Echtzeit-Fahrplan-Telemetrie",
     "adminPill3": "Unternehmenssicherheit & Verifikation",
-    "conciergeBannerTitle": "Besucher-Concierge & Berichts-Zentrale",
-    "conciergeBannerDesc": "Echtzeit-Hallen-Navigation, ÖPNV-Logistik, Terminpläne und umfassende Veranstalter-Analysen.",
-    "conciergeBannerBtn": "Einstellungen & Concierge-Präferenzen",
+    "conciergeBannerTitle": "Planen Sie Ihren Besuch",
+    "conciergeBannerDesc": "Entdecken Sie kommende Messen, vergleichen Sie Hallen und halten Sie Ihren Pass bereit.",
+    "conciergeBannerBtn": "Kommende Pässe ansehen",
     "recentlyConcluded": "Zuletzt beendet",
     "perksCta": "Events ansehen",
     "alsoHappeningIn": "Auch in {region}",
@@ -603,7 +603,8 @@
     "specsVerified": "Verifiziert",
     "listedCountOne": "1 Event",
     "noUpcomingShort": "Noch keine Events angekündigt",
-    "wingCongress": "Kongress-Flügel"
+    "wingCongress": "Kongress-Flügel",
+    "alsoInEdition": "Auch in dieser Edition"
   },
   "calendar": {
     "title": "Interaktiver Eventkalender",
