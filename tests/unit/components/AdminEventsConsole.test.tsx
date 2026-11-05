@@ -94,6 +94,6 @@ describe("Component: AdminEventsConsole editorial editor", () => {
     );
 
     expect(screen.getByRole("button", { name: /editorial/i })).toBeDisabled();
-    expect(screen.getByText(/preview data is read-only/i)).toBeDefined();
+    expect(screen.getAllByText(/preview data is read-only/i).length).toBeGreaterThan(0);
   });
 });

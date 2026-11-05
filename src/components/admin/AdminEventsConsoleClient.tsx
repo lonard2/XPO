@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/Tabs";
 import { cn } from "@/lib/utils";
 import { EDITORIAL_LOCALES } from "@/lib/discovery/editorial";
 
@@ -76,6 +77,20 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
   const [blurbText, setBlurbText] = React.useState("");
   const [blurbI18n, setBlurbI18n] = React.useState<Record<string, string>>({});
   const [blurbApproved, setBlurbApproved] = React.useState(false);
+  const [reviewFilter, setReviewFilter] = React.useState<"DRAFT" | "APPROVED">("DRAFT");
+  const [reviewItems, setReviewItems] = React.useState<Array<{
+    id: string;
+    title: string;
+    body: string;
+    status: string;
+    event?: { id: string; title: string; regionId?: string } | null;
+  }>>([]);
+  const [reviewLoading, setReviewLoading] = React.useState(false);
+  const [slotRegion, setSlotRegion] = React.useState("id");
+  const [slotIds, setSlotIds] = React.useState<string[]>([]);
+  const [slotTitles, setSlotTitles] = React.useState<Record<string, string>>({});
+  const [slotAddId, setSlotAddId] = React.useState("");
+  const [slotOptions, setSlotOptions] = React.useState<Array<{ id: string; title: string }>>([]);
 
   // Organizer directory for the assign picker (admin console only).
   React.useEffect(() => {
@@ -182,6 +197,99 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
       setEvents((prev) => prev.map((e) => (e.id === blurbFor.id ? data.event : e)));
       setBlurbFor(null);
       setFeedback({ type: "success", text: data.message });
+    } catch (err) {
+      setFeedback({ type: "error", text: (err as Error).message });
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  const loadReview = React.useCallback(async (filter: "DRAFT" | "APPROVED") => {
+    if (!isLive) return;
+    setReviewLoading(true);
+    try {
+      const res = await fetch(`/api/admin/updates?status=${filter}`);
+      const data = await res.json();
+      if (res.ok && data.success) setReviewItems(data.updates ?? []);
+    } catch {
+      // Keep previous list on transient failure.
+    } finally {
+      setReviewLoading(false);
+    }
+  }, [isLive]);
+
+  const loadSlots = React.useCallback(async (region: string) => {
+    if (!isLive) return;
+    try {
+      const [slotsRes, approvedRes] = await Promise.all([
+        fetch(`/api/admin/news-slots?region=${region}`),
+        fetch(`/api/admin/updates?status=APPROVED&region=${region}`),
+      ]);
+      const slotsData = await slotsRes.json();
+      const approvedData = await approvedRes.json();
+      if (slotsRes.ok && slotsData.success) {
+        const list = (slotsData.slots ?? []) as Array<{ updateId: string; update?: { id: string; title: string } | null }>;
+        setSlotIds(list.map((s) => s.updateId));
+        const titles: Record<string, string> = {};
+        for (const s of list) {
+          if (s.update) titles[s.update.id] = s.update.title;
+        }
+        setSlotTitles(titles);
+      }
+      if (approvedRes.ok && approvedData.success) {
+        setSlotOptions(
+          ((approvedData.updates ?? []) as Array<{ id: string; title: string }>).map((u) => ({
+            id: u.id,
+            title: u.title,
+          }))
+        );
+      }
+    } catch {
+      // Keep previous slots on transient failure.
+    }
+  }, [isLive]);
+
+  const runModerate = async (updateId: string, approved: boolean) => {
+    if (!isLive) {
+      setFeedback({ type: "error", text: "Preview data is read-only. Connect the database to manage events." });
+      return;
+    }
+    setBusyId(updateId);
+    setFeedback(null);
+    try {
+      const res = await fetch(`/api/admin/updates/${updateId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ approved }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.error || "Moderation failed");
+      setFeedback({ type: "success", text: data.message ?? "Update moderated." });
+      await loadReview(reviewFilter);
+    } catch (err) {
+      setFeedback({ type: "error", text: (err as Error).message });
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  const runSaveSlots = async () => {
+    if (!isLive) {
+      setFeedback({ type: "error", text: "Preview data is read-only. Connect the database to manage events." });
+      return;
+    }
+    setBusyId(`slots-${slotRegion}`);
+    setFeedback(null);
+    try {
+      const res = await fetch("/api/admin/news-slots", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ regionId: slotRegion, slots: slotIds }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.error || "Slot save failed");
+      setFeedback({ type: "success", text: "Homepage slots saved." });
+      await loadSlots(slotRegion);
     } catch (err) {
       setFeedback({ type: "error", text: (err as Error).message });
     } finally {
@@ -324,8 +432,27 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
     </section>
   );
 
+  const [tab, setTab] = React.useState("events");
+
+  const openNewsTab = (value: string) => {
+    setTab(value);
+    if (value === "news" && isLive) {
+      void loadReview(reviewFilter);
+      void loadSlots(slotRegion);
+    }
+  };
+
   return (
     <div className="space-y-8">
+      <Tabs value={tab} onValueChange={openNewsTab}>
+        <TabsList>
+          <TabsTrigger value="events">Events</TabsTrigger>
+          <TabsTrigger value="news" disabled={!isLive}>News review</TabsTrigger>
+        </TabsList>
+        {!isLive && (
+          <p className="text-[11px] text-muted-foreground">Preview data is read-only.</p>
+        )}
+        <TabsContent value="events">
       <div className="flex flex-col sm:flex-row gap-3 sm:items-center justify-between">
         <div className="relative w-full sm:max-w-sm">
           <Search className="h-4 w-4 absolute left-3 top-3 text-muted-foreground pointer-events-none" />
@@ -359,6 +486,145 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
 
       {renderGroup("Organizer Events", "Owned by organizers. Release returns one to platform curation.", owned)}
       {renderGroup("Platform-Curated Events", "Owned by XPO Platform Administration. Assign an organizer via API to move one.", curated)}
+        </TabsContent>
+        <TabsContent value="news">
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              {(["DRAFT", "APPROVED"] as const).map((f) => (
+                <Button
+                  key={f}
+                  type="button"
+                  variant={reviewFilter === f ? "primary" : "outline"}
+                  size="sm"
+                  onClick={() => {
+                    setReviewFilter(f);
+                    void loadReview(f);
+                  }}
+                  className="h-9 text-xs cursor-pointer"
+                >
+                  <span>{f === "DRAFT" ? "Pending" : "Approved"}</span>
+                </Button>
+              ))}
+            </div>
+            {reviewLoading ? (
+              <p className="text-xs text-muted-foreground">Loading updates…</p>
+            ) : reviewItems.length === 0 ? (
+              <p className="text-xs text-muted-foreground rounded-xl border border-dashed border-border/80 p-4 text-center">
+                No updates in this state.
+              </p>
+            ) : (
+              <div className="space-y-2">
+                {reviewItems.map((u) => (
+                  <Card key={u.id} className="border-border/80 bg-card shadow-xs rounded-2xl">
+                    <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center gap-3">
+                      <div className="min-w-0 flex-1 space-y-1">
+                        <span className="text-sm font-bold text-foreground">{u.title}</span>
+                        <p className="text-xs text-muted-foreground truncate">
+                          {u.event?.title || "Event removed"}
+                          {u.event?.regionId ? ` · ${u.event.regionId}` : ""}
+                        </p>
+                      </div>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        disabled={busyId === u.id}
+                        onClick={() => runModerate(u.id, u.status !== "APPROVED")}
+                        className="h-9 gap-1.5 text-xs cursor-pointer shrink-0"
+                      >
+                        <span>{u.status === "APPROVED" ? "Unapprove" : "Approve"}</span>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+            <div className="rounded-2xl border border-border/80 p-4 space-y-3">
+              <div className="space-y-1.5">
+                <label htmlFor="news-slot-region" className="block text-xs font-medium text-foreground">
+                  Slots for region
+                </label>
+                <select
+                  id="news-slot-region"
+                  value={slotRegion}
+                  onChange={(ev) => {
+                    setSlotRegion(ev.target.value);
+                    void loadSlots(ev.target.value);
+                  }}
+                  className="h-9 rounded-lg border border-input bg-background px-2 text-xs min-h-[44px] sm:min-h-[36px] max-w-[220px]"
+                >
+                  <option value="id">Indonesia (id)</option>
+                  <option value="jp">Japan (jp)</option>
+                  <option value="global">Global (global)</option>
+                </select>
+              </div>
+              {slotIds.length === 0 ? (
+                <p className="text-xs text-muted-foreground">No slots saved for this region.</p>
+              ) : (
+                <ul className="space-y-1.5">
+                  {slotIds.map((id, idx) => (
+                    <li key={id} className="flex items-center gap-2 text-xs">
+                      <span className="font-mono text-muted-foreground w-6">{idx + 1}.</span>
+                      <span className="flex-1 truncate text-foreground">{slotTitles[id] || id}</span>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setSlotIds((prev) => prev.filter((s) => s !== id))}
+                        className="h-8 px-2 text-xs cursor-pointer"
+                      >
+                        <span>Remove</span>
+                      </Button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <div className="flex flex-wrap items-center gap-2">
+                <select
+                  aria-label="Add approved update to slots"
+                  value={slotAddId}
+                  onChange={(ev) => setSlotAddId(ev.target.value)}
+                  className="h-9 rounded-lg border border-input bg-background px-2 text-xs min-h-[44px] sm:min-h-[36px] max-w-[260px]"
+                >
+                  <option value="">Add approved update…</option>
+                  {slotOptions
+                    .filter((o) => !slotIds.includes(o.id))
+                    .map((o) => (
+                      <option key={o.id} value={o.id}>
+                        {o.title}
+                      </option>
+                    ))}
+                </select>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  disabled={!slotAddId}
+                  onClick={() => {
+                    if (slotAddId) {
+                      setSlotIds((prev) => [...prev, slotAddId]);
+                      setSlotAddId("");
+                    }
+                  }}
+                  className="h-9 text-xs cursor-pointer"
+                >
+                  <span>Add</span>
+                </Button>
+                <Button
+                  type="button"
+                  variant="primary"
+                  size="sm"
+                  disabled={busyId === `slots-${slotRegion}`}
+                  onClick={runSaveSlots}
+                  className="h-9 text-xs cursor-pointer"
+                >
+                  <span>Save slots</span>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </TabsContent>
+      </Tabs>
 
       <Modal
         isOpen={blurbFor !== null}
