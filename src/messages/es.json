@@ -1558,7 +1558,13 @@
     "sortBy": "Ordenar por {column}",
     "downloadTemplate": "Descargar plantilla",
     "duplicateBtn": "Duplicar",
-    "duplicateAria": "Duplicar {title} como borrador"
+    "duplicateAria": "Duplicar {title} como borrador",
+    "wizardPageSize": "Tamaño de página del evento",
+    "wizardPageSizePlaceholder": "Seleccionar tamaño…",
+    "wizardPageSizeLarge": "Grande — página completa",
+    "wizardPageSizeMedium": "Mediana — secciones completas, compacta",
+    "wizardPageSizeSmall": "Pequeña — esencial",
+    "wizardPageSizeSuggestion": "{size} sugerido para {venue}: confirme explícitamente."
   },
   "admin": {
     "dashboardTitle": "Gobernanza y Agregador de Administración",

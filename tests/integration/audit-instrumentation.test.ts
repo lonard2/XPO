@@ -72,6 +72,7 @@ describe("Mutation audit instrumentation", () => {
         title: `Audit Probe Expo ${stamp}`,
         slug: `audit-probe-expo-${stamp}`,
         description: "Audit instrumentation probe.",
+        pageSize: "LARGE",
         regionId: "id",
         venueId: venue!.id,
         startDate: "2027-01-01T09:00:00.000Z",

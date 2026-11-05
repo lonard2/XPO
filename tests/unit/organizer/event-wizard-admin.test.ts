@@ -212,17 +212,30 @@ describe("Admin Platform-Curated Event Launch Wizard", () => {
     const nextBtn = screen.getByRole("button", { name: /continue to next step/i });
     fireEvent.click(nextBtn);
 
-    // Advance Step 2 -> Step 3
+    // Advance Step 2 -> Step 3 (tier choice is mandatory since page sizes)
     await waitFor(() => {
       expect(screen.getByRole("button", { name: /continue to next step/i })).toBeInTheDocument();
     });
+    fireEvent.change(document.querySelector("#wizard-pagesize-select") as HTMLSelectElement, {
+      target: { value: "LARGE" },
+    });
     fireEvent.click(screen.getByRole("button", { name: /continue to next step/i }));
+    // Tier choice is mandatory since page sizes: pick it wherever visible.
+    {
+      const tierSelect = document.querySelector("#wizard-pagesize-select") as HTMLSelectElement | null;
+      if (tierSelect) fireEvent.change(tierSelect, { target: { value: "LARGE" } });
+    }
 
     // Advance Step 3 -> Step 4
     await waitFor(() => {
       expect(screen.getByRole("button", { name: /continue to next step/i })).toBeInTheDocument();
     });
     fireEvent.click(screen.getByRole("button", { name: /continue to next step/i }));
+    // Tier choice is mandatory since page sizes: pick it wherever visible.
+    {
+      const tierSelect = document.querySelector("#wizard-pagesize-select") as HTMLSelectElement | null;
+      if (tierSelect) fireEvent.change(tierSelect, { target: { value: "LARGE" } });
+    }
 
     // Step 4: Launch Event
     await waitFor(() => {
@@ -280,18 +293,36 @@ describe("Admin Platform-Curated Event Launch Wizard", () => {
 
     // Advance Step 1 -> Step 2
     fireEvent.click(screen.getByRole("button", { name: /continue to next step/i }));
+    // Tier choice is mandatory since page sizes: pick it wherever visible.
+    {
+      const tierSelect = document.querySelector("#wizard-pagesize-select") as HTMLSelectElement | null;
+      if (tierSelect) fireEvent.change(tierSelect, { target: { value: "LARGE" } });
+    }
 
-    // Advance Step 2 -> Step 3
+    // Advance Step 2 -> Step 3 (tier choice is mandatory since page sizes)
     await waitFor(() => {
       expect(screen.getByRole("button", { name: /continue to next step/i })).toBeInTheDocument();
     });
+    fireEvent.change(document.querySelector("#wizard-pagesize-select") as HTMLSelectElement, {
+      target: { value: "LARGE" },
+    });
     fireEvent.click(screen.getByRole("button", { name: /continue to next step/i }));
+    // Tier choice is mandatory since page sizes: pick it wherever visible.
+    {
+      const tierSelect = document.querySelector("#wizard-pagesize-select") as HTMLSelectElement | null;
+      if (tierSelect) fireEvent.change(tierSelect, { target: { value: "LARGE" } });
+    }
 
     // Advance Step 3 -> Step 4
     await waitFor(() => {
       expect(screen.getByRole("button", { name: /continue to next step/i })).toBeInTheDocument();
     });
     fireEvent.click(screen.getByRole("button", { name: /continue to next step/i }));
+    // Tier choice is mandatory since page sizes: pick it wherever visible.
+    {
+      const tierSelect = document.querySelector("#wizard-pagesize-select") as HTMLSelectElement | null;
+      if (tierSelect) fireEvent.change(tierSelect, { target: { value: "LARGE" } });
+    }
 
     // Step 4: Launch Event
     await waitFor(() => {
@@ -525,14 +556,29 @@ describe("Admin self-managed events", () => {
     fireEvent.click(screen.getByRole("radio", { name: /admin-managed event/i }));
 
     fireEvent.click(screen.getByRole("button", { name: /continue to next step/i }));
+    // Tier choice is mandatory since page sizes: pick it wherever visible.
+    {
+      const tierSelect = document.querySelector("#wizard-pagesize-select") as HTMLSelectElement | null;
+      if (tierSelect) fireEvent.change(tierSelect, { target: { value: "LARGE" } });
+    }
     await waitFor(() => {
       expect(screen.getByRole("button", { name: /continue to next step/i })).toBeInTheDocument();
     });
     fireEvent.click(screen.getByRole("button", { name: /continue to next step/i }));
+    // Tier choice is mandatory since page sizes: pick it wherever visible.
+    {
+      const tierSelect = document.querySelector("#wizard-pagesize-select") as HTMLSelectElement | null;
+      if (tierSelect) fireEvent.change(tierSelect, { target: { value: "LARGE" } });
+    }
     await waitFor(() => {
       expect(screen.getByRole("button", { name: /continue to next step/i })).toBeInTheDocument();
     });
     fireEvent.click(screen.getByRole("button", { name: /continue to next step/i }));
+    // Tier choice is mandatory since page sizes: pick it wherever visible.
+    {
+      const tierSelect = document.querySelector("#wizard-pagesize-select") as HTMLSelectElement | null;
+      if (tierSelect) fireEvent.change(tierSelect, { target: { value: "LARGE" } });
+    }
     await waitFor(() => {
       expect(screen.getByRole("button", { name: /publish & launch exhibition/i })).toBeInTheDocument();
     });
@@ -581,14 +627,29 @@ describe("Admin simple listings", () => {
     fireEvent.click(screen.getByRole("radio", { name: /simple listing/i }));
 
     fireEvent.click(screen.getByRole("button", { name: /continue to next step/i }));
+    // Tier choice is mandatory since page sizes: pick it wherever visible.
+    {
+      const tierSelect = document.querySelector("#wizard-pagesize-select") as HTMLSelectElement | null;
+      if (tierSelect) fireEvent.change(tierSelect, { target: { value: "LARGE" } });
+    }
     await waitFor(() => {
       expect(screen.getByRole("button", { name: /continue to next step/i })).toBeInTheDocument();
     });
     fireEvent.click(screen.getByRole("button", { name: /continue to next step/i }));
+    // Tier choice is mandatory since page sizes: pick it wherever visible.
+    {
+      const tierSelect = document.querySelector("#wizard-pagesize-select") as HTMLSelectElement | null;
+      if (tierSelect) fireEvent.change(tierSelect, { target: { value: "LARGE" } });
+    }
     await waitFor(() => {
       expect(screen.getByRole("button", { name: /continue to next step/i })).toBeInTheDocument();
     });
     fireEvent.click(screen.getByRole("button", { name: /continue to next step/i }));
+    // Tier choice is mandatory since page sizes: pick it wherever visible.
+    {
+      const tierSelect = document.querySelector("#wizard-pagesize-select") as HTMLSelectElement | null;
+      if (tierSelect) fireEvent.change(tierSelect, { target: { value: "LARGE" } });
+    }
     await waitFor(() => {
       expect(screen.getByRole("button", { name: /publish & launch exhibition/i })).toBeInTheDocument();
     });

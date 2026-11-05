@@ -68,6 +68,7 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
         archetype: "TECH_DEV_SUMMIT",
         format: "HYBRID",
         scale: "LARGE",
+        pageSize: "LARGE",
         regionId: "id",
         venueId: sampleVenue.id,
         venueHallId: sampleVenue.halls?.[0]?.id,
@@ -115,6 +116,7 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
         startDate: "2027-09-10T09:00:00.000Z",
         endDate: "2027-09-12T18:00:00.000Z",
         ticketTiers: [],
+        pageSize: "LARGE",
       }),
     });
 
@@ -145,6 +147,7 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
         startDate: "2027-09-10T09:00:00.000Z",
         endDate: "2027-09-12T18:00:00.000Z",
         ticketTiers: [],
+        pageSize: "LARGE",
       }),
     });
 
@@ -166,6 +169,7 @@ describe("Phase 9 Integration: Organizer Portal & Management API Routes", () => 
       startDate: "2027-09-10T09:00:00.000Z",
       endDate: "2027-09-12T18:00:00.000Z",
       ticketTiers: [],
+        pageSize: "LARGE",
     };
     const adminReq = new Request("http://localhost:3000/api/organizer/events", {
       method: "POST",

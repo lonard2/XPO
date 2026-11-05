@@ -45,6 +45,7 @@ export interface VenueItem {
   regionId: string;
   city: string;
   address: string;
+  size?: string | null;
   latitude?: number | null;
   longitude?: number | null;
   transitInfo: string;
@@ -100,6 +101,7 @@ export function VenueDirectoryManagerClient({
     regionId: string;
     city: string;
     address: string;
+    size: string;
     latitude: string;
     longitude: string;
     transitInfo: string;
@@ -110,6 +112,7 @@ export function VenueDirectoryManagerClient({
     regionId: "id",
     city: "",
     address: "",
+    size: "LARGE",
     latitude: "",
     longitude: "",
     transitInfo: "",
@@ -124,6 +127,7 @@ export function VenueDirectoryManagerClient({
       regionId: regionFilter === "all" ? "id" : regionFilter,
       city: "",
       address: "",
+      size: "LARGE",
       latitude: "",
       longitude: "",
       transitInfo: "",
@@ -141,6 +145,7 @@ export function VenueDirectoryManagerClient({
       regionId: venue.regionId,
       city: venue.city,
       address: venue.address,
+      size: venue.size || "LARGE",
       latitude: venue.latitude ? String(venue.latitude) : "",
       longitude: venue.longitude ? String(venue.longitude) : "",
       transitInfo: venue.transitInfo || "",
@@ -214,6 +219,7 @@ export function VenueDirectoryManagerClient({
       longitude: formData.longitude ? parseFloat(formData.longitude) : null,
       transitInfo: formData.transitInfo.trim() || "Rapid rail transit and bus connection.",
       imageUrl: formData.imageUrl.trim() || "/images/venues/convention-center.jpg",
+      size: ["LARGE", "MEDIUM", "SMALL"].includes(formData.size) ? formData.size : "LARGE",
       halls: formData.halls.map((h) => ({
         ...(h.id ? { id: h.id } : {}),
         name: h.name.trim(),
@@ -545,6 +551,21 @@ export function VenueDirectoryManagerClient({
                 <option value="id">Indonesia (ID - IDR Currency)</option>
                 <option value="jp">Japan (JP - JPY Currency)</option>
                 <option value="global">Global Hubs (GL - USD Currency)</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-muted-foreground font-semibold mb-1">
+                Presentation Size Suggestion
+              </label>
+              <select
+                value={formData.size}
+                onChange={(e) => setFormData({ ...formData, size: e.target.value })}
+                className="w-full h-8 px-2.5 rounded-md border border-input bg-background text-foreground text-xs focus:ring-1 focus:ring-primary"
+              >
+                <option value="LARGE">Large — full pages</option>
+                <option value="MEDIUM">Medium — tighter spacing</option>
+                <option value="SMALL">Small — compact suggestion</option>
               </select>
             </div>
 

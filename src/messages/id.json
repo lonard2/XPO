@@ -1558,7 +1558,13 @@
     "sortBy": "Urutkan {column}",
     "downloadTemplate": "Unduh Template",
     "duplicateBtn": "Duplikat",
-    "duplicateAria": "Duplikat {title} menjadi draf baru"
+    "duplicateAria": "Duplikat {title} menjadi draf baru",
+    "wizardPageSize": "Ukuran Halaman Acara",
+    "wizardPageSizePlaceholder": "Pilih ukuran halaman…",
+    "wizardPageSizeLarge": "Besar — halaman penuh",
+    "wizardPageSizeMedium": "Sedang — bagian penuh, jarak rapat",
+    "wizardPageSizeSmall": "Kecil — esensial ringkas",
+    "wizardPageSizeSuggestion": "Disarankan {size} untuk {venue} — konfirmasi secara eksplisit."
   },
   "admin": {
     "dashboardTitle": "Tata Kelola & Agregator Admin",

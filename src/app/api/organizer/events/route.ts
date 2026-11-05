@@ -72,6 +72,8 @@ export async function POST(request: Request) {
       archetype = "INDUSTRIAL_B2B",
       format = "IN_PERSON",
       scale = "LARGE",
+      pageSize,
+      visibility,
       regionId = "id",
       venueId,
       venueHallId,
@@ -92,6 +94,19 @@ export async function POST(request: Request) {
 
     if (!title || !description || !venueId || !startDate || !endDate) {
       return apiError("Missing mandatory fields (title, description, venueId, startDate, endDate)", 400);
+    }
+
+    // Presentation tier is an explicit human choice: the wizard prefills
+    // from the venue suggestion, but an unset tier never saves silently.
+    if (pageSize === undefined || pageSize === null || pageSize === "") {
+      return apiError("Missing mandatory field: pageSize (LARGE, MEDIUM, or SMALL) requires an explicit choice.", 400);
+    }
+    if (!["LARGE", "MEDIUM", "SMALL"].includes(pageSize)) {
+      return apiError("Bad Request: pageSize must be LARGE, MEDIUM, or SMALL.", 400);
+    }
+    // Visibility is admin-curated; organizers cannot set it at creation.
+    if (visibility !== undefined && visibility !== null) {
+      return apiError("Bad Request: visibility is set by platform administration, not at creation.", 400);
     }
 
     // Auto-generate unique slug if not provided
@@ -179,6 +194,7 @@ export async function POST(request: Request) {
         archetype,
         format,
         scale,
+        pageSize,
         regionId,
         venueId,
         venueHallId: primaryHallId,

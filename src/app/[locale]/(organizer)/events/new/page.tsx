@@ -106,6 +106,7 @@ interface Venue {
   name: string;
   regionId?: string;
   city: string;
+  size?: string;
   halls?: VenueHall[];
 }
 
@@ -312,6 +313,8 @@ export default function NewEventWizardPage() {
   const [archetype, setArchetype] = React.useState<MiceArchetype>("INDUSTRIAL_B2B");
   const [format, setFormat] = React.useState("IN_PERSON");
   const [scale, setScale] = React.useState("MEDIUM");
+  const [pageSize, setPageSize] = React.useState("");
+  const [pageSizeTouched, setPageSizeTouched] = React.useState(false);
 
   // Confirm + undo rails for destructive overwrites (region switch, templates)
   const tierBaselineRef = React.useRef<string>("");
@@ -608,6 +611,7 @@ export default function NewEventWizardPage() {
     primaryColor,
     accentColor,
     heroImageUrl,
+    pageSize,
     currentStep,
     authorityMode,
     organizerName,
@@ -630,6 +634,10 @@ export default function NewEventWizardPage() {
       if (d.archetype) setArchetype(d.archetype);
       if (d.format) setFormat(d.format);
       if (d.scale) setScale(d.scale);
+      if (d.pageSize && ["LARGE", "MEDIUM", "SMALL"].includes(d.pageSize)) {
+        setPageSize(d.pageSize);
+        setPageSizeTouched(true);
+      }
       if (d.regionId) setRegionId(d.regionId);
       if (d.venueId) setVenueId(d.venueId);
       if (d.venueHallIds && Array.isArray(d.venueHallIds) && d.venueHallIds.length > 0) {
@@ -850,6 +858,9 @@ export default function NewEventWizardPage() {
       if (!venueId) {
         errors.venueId = "Please select a hosting venue.";
       }
+      if (!pageSize) {
+        errors.pageSize = "Please choose an event page size explicitly.";
+      }
       if (!startDate) {
         errors.startDate = "Please specify an opening date.";
       }
@@ -931,6 +942,7 @@ export default function NewEventWizardPage() {
       archetype,
       format,
       scale,
+      pageSize,
       regionId,
       venueId,
       venueHallId: venueHallIds[0] || venueHallId,
@@ -1927,6 +1939,11 @@ export default function NewEventWizardPage() {
                     const initialHalls = v?.halls?.[0]?.id ? [v.halls[0].id] : [];
                     setVenueHallIds(initialHalls);
                     setVenueHallId(initialHalls[0] || "");
+                    // Suggest, never assign: an untouched tier follows the
+                    // venue; a confirmed choice stays put.
+                    if (!pageSizeTouched && v?.size && ["LARGE", "MEDIUM", "SMALL"].includes(v.size)) {
+                      setPageSize(v.size);
+                    }
                   }}
                 >
                   {filteredVenues.map((v) => (
@@ -2036,6 +2053,41 @@ export default function NewEventWizardPage() {
                 </div>
               </div>
             )}
+
+            {/* Event page size: explicit human choice, never inherited silently.
+                The venue suggests; the organizer confirms. */}
+            <div className="pt-2 border-t border-border/50">
+              <label htmlFor="wizard-pagesize-select" className="block text-xs font-semibold text-foreground mb-1.5">
+                {tOrg("wizardPageSize") || "Event Page Size"}
+              </label>
+              <select
+                id="wizard-pagesize-select"
+                className={cn(
+                  "w-full h-11 rounded-md border bg-background px-3 text-xs ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors",
+                  fieldErrors.pageSize ? "border-destructive focus-visible:ring-destructive" : "border-input"
+                )}
+                aria-invalid={!!fieldErrors.pageSize}
+                value={pageSize}
+                onChange={(e) => {
+                  setPageSize(e.target.value);
+                  setPageSizeTouched(true);
+                  clearFieldError("pageSize");
+                }}
+              >
+                <option value="">{tOrg("wizardPageSizePlaceholder") || "Select page size…"}</option>
+                <option value="LARGE">{tOrg("wizardPageSizeLarge") || "Large — full page"}</option>
+                <option value="MEDIUM">{tOrg("wizardPageSizeMedium") || "Medium — full sections, tighter spacing"}</option>
+                <option value="SMALL">{tOrg("wizardPageSizeSmall") || "Small — compact essentials"}</option>
+              </select>
+              {selectedVenue?.size && !pageSizeTouched && (
+                <p className="text-[11px] text-muted-foreground mt-1">
+                  {tOrg("wizardPageSizeSuggestion", { size: selectedVenue.size, venue: selectedVenue.name }) || `Suggested ${selectedVenue.size} for ${selectedVenue.name} — confirm explicitly.`}
+                </p>
+              )}
+              {fieldErrors.pageSize && (
+                <p className="text-xs text-destructive mt-1">{fieldErrors.pageSize}</p>
+              )}
+            </div>
 
             {/* Operational Date Window */}
             <div className="pt-2 border-t border-border/50 space-y-3">

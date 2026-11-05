@@ -63,6 +63,7 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
       transitInfo,
       imageUrl,
       halls,
+      size,
     } = body;
 
     const existingVenue = await db.venue.findFirst({
@@ -75,6 +76,9 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
     }
 
     // Update venue metadata
+    if (size !== undefined && size !== null && !["LARGE", "MEDIUM", "SMALL"].includes(size)) {
+      return apiError("Bad Request: size must be LARGE, MEDIUM, or SMALL.", 400);
+    }
     const updatedVenue = await db.venue.update({
       where: { id: existingVenue.id },
       data: {
@@ -86,6 +90,7 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
         longitude: longitude !== undefined ? (longitude ? parseFloat(longitude) : null) : existingVenue.longitude,
         transitInfo: transitInfo !== undefined ? transitInfo : existingVenue.transitInfo,
         imageUrl: imageUrl !== undefined ? imageUrl : existingVenue.imageUrl,
+        size: size !== undefined && size !== null ? size : existingVenue.size,
       },
     });
 

@@ -259,6 +259,7 @@ describe("Milestone 6 Adversarial Stress & Security Suite (Phases 8 & 9)", () =>
         archetype: "ENERGY_INFRASTRUCTURE",
         format: "IN_PERSON",
         scale: "MEDIUM",
+        pageSize: "MEDIUM",
         regionId: "id",
         venueId: venue!.id,
         startDate: "2027-11-10",

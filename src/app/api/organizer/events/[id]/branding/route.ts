@@ -13,7 +13,7 @@ export async function PUT(request: Request, { params }: RouteProps) {
   try {
     const { id } = await params;
     const body = await request.json();
-    const { brandingConfig, title, heroImageUrl } = body;
+    const { brandingConfig, title, heroImageUrl, pageSize, visibility } = body;
 
     const existing = await db.event.findFirst({
       where: {
@@ -32,11 +32,21 @@ export async function PUT(request: Request, { params }: RouteProps) {
       return apiError("Forbidden: Only the owning organizer or a platform administrator can update this event's branding.", 403);
     }
 
+    // Visibility is admin-curated: organizers who send it get a 400 and
+    // nothing else changes in that branch.
+    if (visibility !== undefined && visibility !== null && caller.role !== "ADMIN") {
+      return apiError("Bad Request: visibility is set by platform administration.", 400);
+    }
+    if (pageSize !== undefined && pageSize !== null && !["LARGE", "MEDIUM", "SMALL"].includes(pageSize)) {
+      return apiError("Bad Request: pageSize must be LARGE, MEDIUM, or SMALL.", 400);
+    }
+
     const updated = await db.event.update({
       where: { id: existing.id },
       data: {
         ...(title ? { title } : {}),
         ...(heroImageUrl ? { heroImageUrl } : {}),
+        ...(pageSize ? { pageSize } : {}),
         brandingConfigJson: typeof brandingConfig === "string"
           ? brandingConfig
           : JSON.stringify(brandingConfig || {}),

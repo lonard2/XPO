@@ -36,6 +36,7 @@ describe("rate limit headers", () => {
         body: JSON.stringify({
           title: "Rate Header Probe",
           description: "probe",
+          pageSize: "LARGE",
           regionId: "id",
           venueId,
           startDate: "2027-12-01T09:00:00.000Z",

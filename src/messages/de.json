@@ -1558,7 +1558,13 @@
     "sortBy": "Nach {column} sortieren",
     "downloadTemplate": "Vorlage laden",
     "duplicateBtn": "Duplizieren",
-    "duplicateAria": "{title} als neuen Entwurf duplizieren"
+    "duplicateAria": "{title} als neuen Entwurf duplizieren",
+    "wizardPageSize": "Veranstaltungsseitengröße",
+    "wizardPageSizePlaceholder": "Seitengröße wählen…",
+    "wizardPageSizeLarge": "Groß — volle Seite",
+    "wizardPageSizeMedium": "Mittel — volle Bereiche, enger",
+    "wizardPageSizeSmall": "Klein — kompakt",
+    "wizardPageSizeSuggestion": "{size} für {venue} vorgeschlagen — bitte explizit bestätigen."
   },
   "admin": {
     "dashboardTitle": "Admin-Governance & Aggregator",

@@ -413,6 +413,7 @@ describe("XPO Full-Platform End-to-End Integration Suite (Milestone 9 Hardening)
           archetype: "ENERGY_INFRASTRUCTURE",
           format: "IN_PERSON",
           scale: "LARGE",
+          pageSize: "LARGE",
           regionId: "id",
           venueId: venue!.id,
           startDate: new Date("2026-10-15T09:00:00Z").toISOString(),

@@ -28,6 +28,7 @@ describe("auth guards deny by default", () => {
     title: `Guard Test Event ${stamp}`,
     description: "Auth guard coverage.",
     regionId: "id",
+    pageSize: "LARGE",
     venueId: venue.id,
     startDate: "2027-10-01T09:00:00.000Z",
     endDate: "2027-10-03T18:00:00.000Z",

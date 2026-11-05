@@ -29,6 +29,8 @@ export interface AdminEventItem {
   editorialBlurb?: string | null;
   editorialBlurbI18n?: Record<string, string> | null;
   editorialApproved?: boolean;
+  pageSize?: string | null;
+  visibility?: string | null;
 }
 
 interface AdminEventsConsoleClientProps {
@@ -297,6 +299,33 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
     }
   };
 
+  const runPresentation = async (
+    id: string,
+    patch: { pageSize?: string | null; visibility?: string }
+  ) => {
+    if (!isLive) {
+      setFeedback({ type: "error", text: "Preview data is read-only. Connect the database to manage events." });
+      return;
+    }
+    setBusyId(id);
+    setFeedback(null);
+    try {
+      const res = await fetch(`/api/admin/events/${id}/presentation`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(patch),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.error || "Presentation save failed");
+      setEvents((prev) => prev.map((e) => (e.id === id ? data.event : e)));
+      setFeedback({ type: "success", text: data.message });
+    } catch (err) {
+      setFeedback({ type: "error", text: (err as Error).message });
+    } finally {
+      setBusyId(null);
+    }
+  };
+
   const renderRow = (e: AdminEventItem) => (
     <Card key={e.id} className="border-border/80 bg-card shadow-xs rounded-2xl">
       <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center gap-3">
@@ -396,6 +425,33 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
             <PenLine className="h-3.5 w-3.5" />
             <span>Editorial</span>
           </Button>
+          <select
+            aria-label={`Page size for ${e.title}`}
+            value={e.pageSize || ""}
+            disabled={busyId === e.id || !isLive}
+            onChange={(ev) => runPresentation(e.id, { pageSize: ev.target.value || null })}
+            className="h-9 rounded-lg border border-input bg-background px-2 text-xs min-h-[44px] sm:min-h-[36px] max-w-[130px] cursor-pointer"
+          >
+            <option value="">Tier: venue</option>
+            <option value="LARGE">Tier: large</option>
+            <option value="MEDIUM">Tier: medium</option>
+            <option value="SMALL">Tier: small</option>
+          </select>
+          <select
+            aria-label={`Visibility for ${e.title}`}
+            value={e.visibility || "PUBLIC"}
+            disabled={busyId === e.id || !isLive}
+            onChange={(ev) => {
+              if (confirm(`Set '${e.title}' visibility to ${ev.target.value}? Discreet hides identity; hidden unlists.`)) {
+                runPresentation(e.id, { visibility: ev.target.value });
+              }
+            }}
+            className="h-9 rounded-lg border border-input bg-background px-2 text-xs min-h-[44px] sm:min-h-[36px] max-w-[130px] cursor-pointer"
+          >
+            <option value="PUBLIC">Public</option>
+            <option value="DISCREET">Discreet</option>
+            <option value="HIDDEN">Hidden</option>
+          </select>
           {!isLive && (
             <span className="text-[11px] text-muted-foreground">Preview data is read-only.</span>
           )}

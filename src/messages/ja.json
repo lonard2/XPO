@@ -1558,7 +1558,13 @@
     "sortBy": "{column}で並替え",
     "downloadTemplate": "テンプレートをダウンロード",
     "duplicateBtn": "複製",
-    "duplicateAria": "{title}を新規下書きに複製"
+    "duplicateAria": "{title}を新規下書きに複製",
+    "wizardPageSize": "イベントページサイズ",
+    "wizardPageSizePlaceholder": "ページサイズを選択…",
+    "wizardPageSizeLarge": "大 — フルページ",
+    "wizardPageSizeMedium": "中 — フルセクション・狭い間隔",
+    "wizardPageSizeSmall": "小 — コンパクト",
+    "wizardPageSizeSuggestion": "{venue}には{size}を推奨 — 明示的に確認してください。"
   },
   "admin": {
     "dashboardTitle": "管理統括・アグリゲーター",

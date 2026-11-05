@@ -1558,7 +1558,13 @@
     "sortBy": "按{column}排序",
     "downloadTemplate": "下载模板",
     "duplicateBtn": "复制",
-    "duplicateAria": "将{title}复制为新草稿"
+    "duplicateAria": "将{title}复制为新草稿",
+    "wizardPageSize": "活动页面尺寸",
+    "wizardPageSizePlaceholder": "选择页面尺寸…",
+    "wizardPageSizeLarge": "大 — 完整页面",
+    "wizardPageSizeMedium": "中 — 完整分区、紧凑间距",
+    "wizardPageSizeSmall": "小 — 精简版",
+    "wizardPageSizeSuggestion": "建议{venue}使用{size} — 请明确确认。"
   },
   "admin": {
     "dashboardTitle": "管理统括中心",

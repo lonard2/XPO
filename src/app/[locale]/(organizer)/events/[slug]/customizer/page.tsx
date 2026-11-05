@@ -113,6 +113,7 @@ export default function EventCustomizerPage() {
   const [heroImageUrl, setHeroImageUrl] = React.useState(
     "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1600&q=80"
   );
+  const [pageSize, setPageSize] = React.useState("LARGE");
   const [bannerOverlayOpacity, setBannerOverlayOpacity] = React.useState(0.75);
 
   const [sectionsVisibility, setSectionsVisibility] = React.useState({
@@ -156,6 +157,9 @@ export default function EventCustomizerPage() {
               });
             }
             if (data.event.heroImageUrl) setHeroImageUrl(data.event.heroImageUrl);
+            if (data.event.pageSize && ["LARGE", "MEDIUM", "SMALL"].includes(data.event.pageSize)) {
+              setPageSize(data.event.pageSize);
+            }
             setIsLoading(false);
             return;
           }
@@ -269,6 +273,7 @@ export default function EventCustomizerPage() {
         body: JSON.stringify({
           brandingConfig,
           heroImageUrl,
+          pageSize,
         }),
       });
 
@@ -538,6 +543,25 @@ export default function EventCustomizerPage() {
               onChange={(e) => setHeroBadge(e.target.value)}
               helperText="Overrides default archetype category badge."
             />
+
+            <div>
+              <label htmlFor="customizer-page-size" className="block text-xs font-semibold text-foreground mb-1.5">
+                Event Page Size
+              </label>
+              <select
+                id="customizer-page-size"
+                value={pageSize}
+                onChange={(e) => setPageSize(e.target.value)}
+                className="w-full h-11 rounded-md border border-input bg-background px-3 text-xs ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                <option value="LARGE">Large — full page</option>
+                <option value="MEDIUM">Medium — full sections, tighter spacing</option>
+                <option value="SMALL">Small — compact essentials</option>
+              </select>
+              <p className="text-[11px] text-muted-foreground mt-1">
+                Chosen by you; the venue only ever suggests.
+              </p>
+            </div>
 
             <div>
               <Input
