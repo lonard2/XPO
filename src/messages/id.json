@@ -1627,5 +1627,11 @@
     "claimSubmitted": "Klaim dikirim untuk persetujuan penyelenggara.",
     "withdrawDone": "Klaim ditarik.",
     "unnamedBooth": "Stan belum ditentukan"
+  },
+  "news": {
+    "railTitle": "Kabar terbaru",
+    "railSubtitle": "Pilihan editor XPO",
+    "timelineTitle": "Kabar acara",
+    "viewEvent": "Lihat acara"
   }
 }

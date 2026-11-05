@@ -1627,5 +1627,11 @@
     "claimSubmitted": "主催者の承認待ちとして申請しました。",
     "withdrawDone": "申請を取り下げました。",
     "unnamedBooth": "未割当ブース"
+  },
+  "news": {
+    "railTitle": "最新情報",
+    "railSubtitle": "XPO編集部のおすすめ",
+    "timelineTitle": "イベントのお知らせ",
+    "viewEvent": "イベントを見る"
   }
 }

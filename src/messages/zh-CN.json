@@ -1627,5 +1627,11 @@
     "claimSubmitted": "申请已提交，等待主办方批准。",
     "withdrawDone": "申请已撤回。",
     "unnamedBooth": "未分配展位"
+  },
+  "news": {
+    "railTitle": "最新动态",
+    "railSubtitle": "XPO编辑精选",
+    "timelineTitle": "活动动态",
+    "viewEvent": "查看活动"
   }
 }

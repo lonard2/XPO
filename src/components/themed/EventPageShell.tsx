@@ -19,6 +19,7 @@ import { Button, buttonVariants } from "@/components/ui/Button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { formatDateRange, formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
 import { TicketCheckoutDrawer } from "@/components/tickets/TicketCheckoutDrawer";
+import { EventNewsTimeline } from "@/components/discovery/EventNewsTimeline";
 import { WaitlistForm } from "@/components/tickets/WaitlistForm";
 import { type TicketTierItem } from "@/components/tickets/TierSelector";
 import { HallFloorMap, type BoothItem } from "@/components/perks/HallFloorMap";
@@ -63,6 +64,8 @@ export interface EventPageShellProps {
   /** Admin-curated external listing: no on-platform checkout. */
   isListingOnly?: boolean;
   externalUrl?: string | null;
+  /** Approved news timeline entries; empty means no section. */
+  newsUpdates?: Array<{ id: string; title: string; body: string; approvedAt: string | null }>;
 }
 
 export function EventPageShell({
@@ -92,6 +95,7 @@ export function EventPageShell({
   showcaseAlerts = [],
   isListingOnly = false,
   externalUrl = null,
+  newsUpdates = [],
 }: EventPageShellProps) {
   const [isCopied, setIsCopied] = React.useState(false);
   const [checkoutDrawerOpen, setCheckoutDrawerOpen] = React.useState(false);
@@ -593,6 +597,10 @@ export function EventPageShell({
         {activeTab === "overview" && (
           <div className="space-y-12">
             {children}
+
+            {(newsUpdates?.length ?? 0) > 0 && (
+              <EventNewsTimeline items={newsUpdates} locale={locale} />
+            )}
 
             {/* Overview Pass Tiers Callout Banner */}
             {ticketTiers && ticketTiers.length > 0 && (

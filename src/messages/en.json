@@ -1627,5 +1627,11 @@
     "claimSubmitted": "Claim submitted for organizer approval.",
     "withdrawDone": "Claim withdrawn.",
     "unnamedBooth": "Unassigned booth"
+  },
+  "news": {
+    "railTitle": "Latest updates",
+    "railSubtitle": "Hand-picked by XPO editors",
+    "timelineTitle": "Event updates",
+    "viewEvent": "View event"
   }
 }

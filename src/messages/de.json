@@ -1627,5 +1627,11 @@
     "claimSubmitted": "Antrag zur Freigabe eingereicht.",
     "withdrawDone": "Antrag zurückgezogen.",
     "unnamedBooth": "Nicht zugewiesener Stand"
+  },
+  "news": {
+    "railTitle": "Neueste Meldungen",
+    "railSubtitle": "Von der XPO-Redaktion ausgewählt",
+    "timelineTitle": "Veranstaltungsupdates",
+    "viewEvent": "Veranstaltung ansehen"
   }
 }

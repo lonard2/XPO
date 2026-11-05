@@ -168,6 +168,23 @@ export default async function EventDetailPage({ params }: EventPageProps) {
     notFound();
   }
 
+  let newsUpdates: Array<{ id: string; title: string; body: string; approvedAt: string | null }> = [];
+  try {
+    const rows = await db.eventUpdate.findMany({
+      where: { eventId: event.id, status: "APPROVED" },
+      orderBy: { approvedAt: "desc" },
+      select: { id: true, title: true, body: true, approvedAt: true },
+    });
+    newsUpdates = rows.map((r) => ({
+      id: r.id,
+      title: r.title,
+      body: r.body,
+      approvedAt: r.approvedAt ? r.approvedAt.toISOString() : null,
+    }));
+  } catch {
+    newsUpdates = [];
+  }
+
   const safeArchetype: MiceArchetype = isValidArchetype(event.archetype)
     ? event.archetype
     : "INDUSTRIAL_B2B";
@@ -258,6 +275,7 @@ export default async function EventDetailPage({ params }: EventPageProps) {
       showcaseAlerts={showcase.alerts}
       isListingOnly={event.isListingOnly}
       externalUrl={event.externalUrl}
+      newsUpdates={newsUpdates}
     >
       <ArchetypeView event={event} locale={locale} />
       <EventOrganizerSection event={event} locale={locale} />

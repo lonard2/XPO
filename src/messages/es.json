@@ -1627,5 +1627,11 @@
     "claimSubmitted": "Solicitud enviada para aprobación del organizador.",
     "withdrawDone": "Solicitud retirada.",
     "unnamedBooth": "Stand sin asignar"
+  },
+  "news": {
+    "railTitle": "Últimas novedades",
+    "railSubtitle": "Selección de la redacción de XPO",
+    "timelineTitle": "Novedades del evento",
+    "viewEvent": "Ver evento"
   }
 }
