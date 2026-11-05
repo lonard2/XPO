@@ -63,7 +63,14 @@ resolved size; listing queries exclude by visibility centrally.
 
 ## Decided parts (builder-checkable, verify while reading)
 
-- Resolution: per-event override → venue default → LARGE.
+- Resolution: explicit per-event choice → venue suggestion → LARGE. No
+  event is ever auto-shrunk: `Venue.size` only prefills the suggestion
+  shown in editors, and the creation wizard requires explicit tier
+  confirmation (validation rejects unset — a prefill the organizer never
+  confirms does not save). Migration sets LARGE everywhere, so existing
+  pages cannot regress; curators adjust after.
+- Tier choice is selectable by organizer, editorial, and admin alike;
+  `visibility` stays ADMIN-only.
 - SMALL subset: short hero, key facts, program grid, venue pin, pass CTA;
   hides booths directory, meeting-request panels, and showcase channels;
   keeps alerts.
@@ -86,7 +93,9 @@ Builder calls (mine, check while reading):
 1. New columns, no reuse: `Venue.size` and `Event.pageSize` are
    presentation tiers (`LARGE`/`MEDIUM`/`SMALL`, Prisma String like the
    neighboring fields); `Event.scale` (magnitude) and `SCALE_LABELS`
-   stay untouched. `Event.pageSize` nullable = inherit venue.
+   stay untouched. `Event.pageSize` is set by explicit human choice at
+   creation (prefilled from the venue suggestion, confirmation required)
+   and editable after; `Venue.size` never auto-applies to events.
 2. MEDIUM renders the full section list with tighter spacing only; only
    SMALL hides (booths/floorMap tab, meeting-request tab entries,
    showcase channels within archetype children). Shell-only change:
