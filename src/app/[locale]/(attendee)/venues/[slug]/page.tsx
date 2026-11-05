@@ -11,7 +11,7 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import { db } from '@/lib/db';
-import { listingWhere, scheduleWhere, toScheduleRows } from '@/lib/discovery/presentation';
+import { loadVenueSchedule } from '@/lib/discovery/schedule';
 import { Badge } from '@/components/ui/Badge';
 import { buttonVariants } from '@/components/ui/Button';
 import { VenueCampusExplorer } from '@/components/discovery/VenueCampusExplorer';
@@ -85,21 +85,13 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
       include: {
         halls: true,
         region: true,
-        events: {
-          where: scheduleWhere(),
-          include: {
-            venue: true,
-            ticketTiers: true,
-            region: true,
-          },
-          orderBy: { startDate: 'asc' },
-        },
       },
     });
 
     if (dbVenue) {
       venue = dbVenue as unknown as VenueSummary;
-      upcomingEvents = toScheduleRows(dbVenue.events);
+      // Public rows in full; discreet rows projected to stubs at the query.
+      upcomingEvents = await loadVenueSchedule(dbVenue.id);
     }
   } catch {
     // Graceful fallback

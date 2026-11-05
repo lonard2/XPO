@@ -38,8 +38,9 @@ export function listingWhere(): { visibility: string } {
 }
 
 /** Detail-page routing by tier: discreet URLs 404, hidden URLs render
- * link-only (noindex, no structured data). Unknown tiers stay unlisted:
- * discovery defaults to hiding, never leaking. */
+ * link-only (noindex, no structured data). Rows with no recorded tier are
+ * legacy and render; an unrecognised non-null value stays unlisted so
+ * discovery never defaults to leaking. */
 export function resolveDetailVisibility(
   visibility: string | null | undefined
 ): "render" | "notFound" | "unlisted" {

@@ -32,6 +32,7 @@ import { getCurrencyForRegion } from '@/lib/i18n/formatters';
 import { filterAttendable, sortUpcomingFirst } from '@/lib/discovery/eventOrder';
 import { listingWhere } from '@/lib/discovery/presentation';
 import { resolveEditorialBlurb } from '@/lib/discovery/editorial';
+import { selectRailItems } from '@/lib/news/feed';
 import { featuredGridClass } from '@/lib/discovery/grids';
 import { type BannerSlide, type DiscoveryEvent, type VenueWithEvents } from '@/types/discovery';
 
@@ -254,20 +255,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
       },
       orderBy: { position: "asc" },
     });
-    newsRailItems = newSlots
-      .filter(
-        (s) =>
-          s.update?.status === "APPROVED" &&
-          s.update.event &&
-          new Date(s.update.event.endDate) >= now
-      )
-      .map((s) => ({
-        updateId: s.update!.id,
-        title: s.update!.title,
-        body: s.update!.body,
-        eventSlug: s.update!.event!.slug,
-        eventTitle: s.update!.event!.title,
-      }));
+    newsRailItems = selectRailItems(newSlots, now);
   } catch {
     newsRailItems = [];
   }

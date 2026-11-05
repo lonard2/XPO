@@ -116,7 +116,7 @@ Checked and safe as written: `api/events/[id]/waitlist` selects only ids and tie
 
 - [x] **Step 1:** Failing tests: discreet and hidden slugs absent from the sitemap; suggestions exclude both; public event JSON 404s for both; public events still serve; an owner still receives their own hidden event; `listingWhere` is wired into every listed surface.
 - [x] **Step 2:** Confirm failure. The public JSON test fails first, which is the point.
-- [ ] **Step 3 (open):** Replace the venue-schedule select-then-strip with a Prisma `select` that returns only stub fields for discreet rows, so the type system cannot hand a caller a field it must not render. Today the mapper is correct but the query still loads identity.
+- [x] **Step 3:** Discreet rows load through `loadVenueSchedule` (`src/lib/discovery/schedule.ts`): public rows in full, discreet rows via a `select` limited to id, dates, and hall name, merged by start date. `tests/integration/venue-schedule-projection.test.ts` asserts the stub carries no title, organizer, or description keys.
 - [x] **Step 4:** Apply `listingWhere` to homepage, events index, sitemap, suggestions, and `generateStaticParams`. Apply `scheduleWhere` plus `toScheduleRows` to the venue schedule and the calendar. Gate detail routing and metadata by `resolveDetailVisibility`.
 - [x] **Step 5:** Tests plus `tsc`/eslint clean.
 - [x] **Step 6:** Commit `feat(tiers): visibility enforcement with leak tests` (`9b0ad63`).
@@ -162,7 +162,7 @@ Checked and safe as written: `api/events/[id]/waitlist` selects only ids and tie
 - [x] **Step 1:** Failing tests: creation without a tier 400; creation stores the chosen tier; organizer visibility write 400 with visibility unchanged and a following size write 200; admin sets both, organizer 403 on the admin route; venue size persists through the admin path and no organizer venue writer exists.
 - [x] **Step 2:** Confirm failure.
 - [x] **Step 3:** Implement the wizard select with venue prefill, the customizer select, the admin presentation route, the console selects, the venue size field, and the organizer venue `size` read.
-- [ ] **Step 4 (open):** Enforce confirmation at the submit handler as well as in step validation. The plan called for this; the first implementation only rejected an empty value, so an untouched prefill saved silently until the review caught it. The shipped code now tracks `pageSizeTouched` and blocks both in `validateStep` and `handleSubmitEvent`; keep the handler guard in future edits.
+- [x] **Step 4:** Enforce confirmation at the submit handler as well as in step validation. The first implementation only rejected an empty value, so an untouched prefill saved silently until the review caught it. The shipped code tracks `pageSizeTouched` and blocks both in `validateStep` and `handleSubmitEvent`; keep the handler guard in future edits.
 - [x] **Step 5:** Tests plus `tsc`/eslint clean.
 - [x] **Step 6:** Commit `feat(tiers): role-split tier and visibility editing` (`3d264a8`, `acc0b69`).
 
@@ -181,9 +181,9 @@ Checked and safe as written: `api/events/[id]/waitlist` selects only ids and tie
 
 ## Open follow-ups
 
-1. Select-level discreet projection in the venue schedule (Task 3, Step 3).
-2. `resolveDetailVisibility` returns `render` for null while its comment says discovery defaults to hiding. The column is non-nullable today, so it is unreachable, but the code and the comment should agree.
-3. The admin venue `PUT` has no role gate of its own. Organizers have no venue write route, so the hole is architectural rather than reachable, but adding `requireRole` there would break the existing adversarial suite and needs its own task.
+1. The admin venue `PUT` has no role gate of its own. Organizers have no venue write route, so the hole is architectural rather than reachable, but adding `requireRole` there would break the existing adversarial suite and needs its own task.
+
+Resolved since the rewrite: select-level discreet projection (Task 3) and the `resolveDetailVisibility` comment now matches its behavior (rows without a recorded tier are legacy and render; unrecognised non-null values stay unlisted).
 
 ## Self-Review
 

@@ -3,6 +3,7 @@ import { z } from "zod";
 import { db } from "@/lib/db";
 import { requireRole } from "@/lib/auth/guards";
 import { apiError } from "@/lib/api/envelope";
+import { revertUpdateToDraft } from "@/lib/news/slots";
 
 interface RouteParams {
   params: Promise<{ updateId: string }>;
@@ -43,13 +44,7 @@ export async function PATCH(request: Request, { params }: RouteParams) {
       return NextResponse.json({ success: true, update: updated });
     }
 
-    const [updated] = await db.$transaction([
-      db.eventUpdate.update({
-        where: { id: row.id },
-        data: { status: "DRAFT", approvedBy: null, approvedAt: null },
-      }),
-      db.homepageNewsSlot.deleteMany({ where: { updateId: row.id } }),
-    ]);
+    const updated = await revertUpdateToDraft(row.id);
     return NextResponse.json({ success: true, update: updated });
   } catch (error) {
     return apiError(`Failed to moderate update: ${(error as Error).message}`, 500);

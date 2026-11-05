@@ -104,6 +104,9 @@ describe("Organizer API: Event updates CRUD and ownership", () => {
       where: { id: row.update.id },
       data: { status: "APPROVED", approvedAt: new Date() },
     });
+    await db.homepageNewsSlot.create({
+      data: { updateId: row.update.id, regionId: "id", position: 3 },
+    });
 
     const edited = await editUpdate(
       owner(`${base}/${row.update.id}`, "PATCH", { body: "More acts announced." }),
@@ -115,6 +118,10 @@ describe("Organizer API: Event updates CRUD and ownership", () => {
     const editedJson = await edited.json();
     expect(editedJson.update.status).toBe("DRAFT");
     expect(editedJson.update.approvedAt).toBeNull();
+    // Revert evicts the slot in the same transaction: no draft on the rail.
+    expect(
+      await db.homepageNewsSlot.count({ where: { updateId: row.update.id } })
+    ).toBe(0);
   });
 
   it("denies another organizer and deletes with slot eviction", async () => {

@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { type MiceArchetype, isValidArchetype } from "@/lib/theming";
 import { EventPageShell } from "@/components/themed/EventPageShell";
 import { parseShowcase } from "@/lib/showcase";
+import { selectTimelineItems } from "@/lib/news/feed";
 import { resolvePageSize, resolveDetailVisibility, listingWhere } from "@/lib/discovery/presentation";
 import { EventOrganizerSection } from "@/components/discovery/EventOrganizerSection";
 import { generateEventJsonLd } from "@/lib/seo/jsonLd";
@@ -201,14 +202,9 @@ export default async function EventDetailPage({ params }: EventPageProps) {
     const rows = await db.eventUpdate.findMany({
       where: { eventId: event.id, status: "APPROVED" },
       orderBy: { approvedAt: "desc" },
-      select: { id: true, title: true, body: true, approvedAt: true },
+      select: { id: true, title: true, body: true, status: true, approvedAt: true },
     });
-    newsUpdates = rows.map((r) => ({
-      id: r.id,
-      title: r.title,
-      body: r.body,
-      approvedAt: r.approvedAt ? r.approvedAt.toISOString() : null,
-    }));
+    newsUpdates = selectTimelineItems(rows);
   } catch {
     newsUpdates = [];
   }

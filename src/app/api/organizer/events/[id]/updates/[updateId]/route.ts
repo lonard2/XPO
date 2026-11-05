@@ -8,6 +8,7 @@ import {
   canWriteEvent,
 } from "@/lib/auth/eventOwnership";
 import { UPDATE_TITLE_MAX, UPDATE_BODY_MAX } from "@/lib/news/validation";
+import { revertUpdateToDraft } from "@/lib/news/slots";
 
 interface RouteParams {
   params: Promise<{ id: string; updateId: string }>;
@@ -55,17 +56,15 @@ export async function PATCH(request: Request, { params }: RouteParams) {
       return apiError("Bad Request: title and/or body are required.", 400);
     }
 
-    // Copy edits to approved rows revert to draft for re-approval.
+    // Copy edits to approved rows revert to draft for re-approval, and the
+    // revert evicts any homepage slot in the same transaction.
     const reverting = gate.row!.status === "APPROVED";
-    const updated = await db.eventUpdate.update({
-      where: { id: gate.row!.id },
-      data: {
-        ...parsed.data,
-        ...(reverting
-          ? { status: "DRAFT", approvedBy: null, approvedAt: null }
-          : {}),
-      },
-    });
+    const updated = reverting
+      ? await revertUpdateToDraft(gate.row!.id, parsed.data)
+      : await db.eventUpdate.update({
+          where: { id: gate.row!.id },
+          data: parsed.data,
+        });
     return NextResponse.json({ success: true, update: updated });
   } catch (error) {
     return apiError(`Failed to edit event update: ${(error as Error).message}`, 500);

@@ -14,7 +14,11 @@ describe("Admin API: Editorial blurb update endpoint", () => {
   };
 
   let targetEventId: string;
-  let original: { editorialBlurb: string | null; editorialApproved: boolean };
+  let original: {
+    editorialBlurb: string | null;
+    editorialBlurbI18n: unknown;
+    editorialApproved: boolean;
+  };
 
   const callPatch = (id: string, body: unknown, headers: Record<string, string>) =>
     updateBlurbRoute(
@@ -35,6 +39,7 @@ describe("Admin API: Editorial blurb update endpoint", () => {
     targetEventId = event.id;
     original = {
       editorialBlurb: event.editorialBlurb,
+      editorialBlurbI18n: event.editorialBlurbI18n,
       editorialApproved: event.editorialApproved,
     };
   });
@@ -45,7 +50,7 @@ describe("Admin API: Editorial blurb update endpoint", () => {
         where: { id: targetEventId },
         data: {
           editorialBlurb: original.editorialBlurb,
-          editorialBlurbI18n: undefined,
+          editorialBlurbI18n: original.editorialBlurbI18n as never,
           editorialApproved: original.editorialApproved,
         },
       })
@@ -125,6 +130,32 @@ describe("Admin API: Editorial blurb update endpoint", () => {
         locale: "id",
       })
     ).toBe("Pilihan editor.");
+  });
+
+  it("round-trips a hyphenated zh-CN override through the allowlist", async () => {
+    const res = await callPatch(
+      targetEventId,
+      {
+        editorialBlurb: "Editors pick: the flagship automation expo.",
+        editorialBlurbI18n: { "zh-CN": "编辑推荐" },
+        editorialApproved: true,
+      },
+      adminHeaders
+    );
+    expect(res.status).toBe(200);
+    const json = await res.json();
+    expect(json.success).toBe(true);
+    expect(
+      (json.event.editorialBlurbI18n as Record<string, string>)["zh-CN"]
+    ).toBe("编辑推荐");
+    expect(
+      resolveEditorialBlurb({
+        approved: json.event.editorialApproved,
+        blurb: json.event.editorialBlurb,
+        i18n: json.event.editorialBlurbI18n as Record<string, string> | null,
+        locale: "zh-CN",
+      })
+    ).toBe("编辑推荐");
   });
 
   it("saves text without publishing when unapproved", async () => {

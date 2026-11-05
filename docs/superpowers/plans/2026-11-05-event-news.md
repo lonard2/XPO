@@ -60,19 +60,19 @@
 **Files:**
 - Create: `src/app/api/organizer/events/[id]/updates/route.ts` (GET own, POST)
 - Create: `src/app/api/organizer/events/[id]/updates/[updateId]/route.ts` (PATCH, DELETE)
-- Create: `src/lib/news/slots.ts` with `evictSlotsForUpdate(tx, updateId)`
+- Create: `src/lib/news/slots.ts` with `revertUpdateToDraft(updateId, copy)` (transactional status revert plus slot eviction)
 - Test: `tests/integration/organizer-event-updates.test.ts`
 
 **Interfaces:**
 - Consumes: Task 1 schemas; `resolveEventCaller`/`canWriteEvent`.
-- Produces: CRUD honoring ownership; `evictSlotsForUpdate` reused by Task 4.
+- Produces: CRUD honoring ownership; `revertUpdateToDraft` reused by Task 4.
 
 **Steps:**
 
 - [x] **Step 1:** Failing tests: POST without ownership 403; POST valid 200 DRAFT; PATCH on APPROVED reverts to DRAFT with null `approvedAt`; PATCH by another organizer 403; DELETE removes the row and its slot; GET lists own drafts and never other events' rows.
 - [x] **Step 2:** Confirm failure.
 - [x] **Step 3:** Implement both routes mirroring the showcase ownership lines. PATCH forces DRAFT and clears approval stamps on copy edits; approval toggles from organizers are 400. DELETE by owner or ADMIN.
-- [ ] **Step 4 (open):** Route the revert path through `evictSlotsForUpdate` inside the same transaction as the status change, then extend the revert test to assert the slot count drops. Admin unapprove already evicts; the organizer path currently leaves a stale slot.
+- [x] **Step 4:** Route the revert path through `revertUpdateToDraft` inside the same transaction as the status change, then extend the revert test to assert the slot count drops. Admin unapprove already evicts; the organizer path currently leaves a stale slot.
 - [x] **Step 5:** Tests plus `tsc`/eslint clean.
 - [x] **Step 6:** Commit `feat(news): organizer updates API` (`f0dd79c`).
 
@@ -104,7 +104,7 @@
 - Test: `tests/integration/admin-event-updates.test.ts`
 
 **Interfaces:**
-- Consumes: Task 1 schemas; `evictSlotsForUpdate` from Task 2.
+- Consumes: Task 1 schemas; `revertUpdateToDraft` from Task 2.
 - Produces: queue data, approval state machine, ordered slots.
 
 **Steps:**
@@ -148,7 +148,7 @@
 - [x] **Step 1:** Failing tests: rail order and anchors; empty rail renders nothing; timeline renders approved rows only and carries `id="update-<id>"`; bodies contain no links; usage guard across six locales.
 - [x] **Step 2:** Confirm failure.
 - [x] **Step 3:** Add the `news` keys and implement both components. Rail query resolves slots to APPROVED updates on attendable public events; detail query filters APPROVED ordered `approvedAt` desc.
-- [ ] **Step 4 (open):** Add query-layer tests for both predicates. Today the components are tested with pre-filtered props, so a regression that stops filtering would not fail the suite. Assert against the server mapping output or extract the predicate into a tested helper.
+- [x] **Step 4:** Query-layer predicates live in `src/lib/news/feed.ts` (`selectRailItems`, `selectTimelineItems`) with unit coverage for draft, past-event, and ordering cases. Both pages consume them, so a regression that stops filtering fails the suite.
 - [x] **Step 5:** Tests plus `tsc`/eslint/parity clean.
 - [x] **Step 6:** Commit `feat(news): homepage rail and detail timeline` (`518cf0b`).
 
@@ -159,15 +159,17 @@
 
 ## Open follow-ups
 
-1. Organizer revert does not evict its slot. Route it through the invariant helper and assert eviction.
-2. No query-layer test for approved-only and past-event predicates.
-3. No PATCH round-trip test for a `zh-CN` key through the allowlist.
-4. Integration `afterAll` restores blurb and approval but not the i18n map (no-op on the throwaway DB, dirty on a reused one).
+None. All four previously open items shipped:
+
+1. Organizer revert evicts its slot through `revertUpdateToDraft` (`src/lib/news/slots.ts`), asserted in the revert test.
+2. Query-layer predicates are tested in `tests/unit/news/feed.test.ts` and consumed by both surfaces.
+3. A `zh-CN` PATCH round-trip test covers the hyphenated allowlist key.
+4. The integration `afterAll` captures and restores the original i18n map.
 
 ## Self-Review
 
 1. **Spec coverage:** goals 1 to 4 map to Tasks 1 to 6; N1 to Task 2 and 4; N2 to Task 4; N3 to Task 5.
 2. **Step scan:** test steps pin assertions; code steps pin files and signatures; no undetermined bodies.
-3. **Type consistency:** `updateAnchor`, slot shape `{ updateId, regionId, position }`, and `evictSlotsForUpdate` are used identically across tasks.
+3. **Type consistency:** `updateAnchor`, slot shape `{ updateId, regionId, position }`, and `revertUpdateToDraft` are used identically across tasks.
 4. **Review Focus:** each line names its owning task, and the two open predicate gaps are called out rather than implied covered.
 5. **Proportion:** the plan stays shorter than the code surface.
