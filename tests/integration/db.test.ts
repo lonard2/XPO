@@ -43,7 +43,7 @@ describe("Phase 2 Integration: Relational Data Models & Venue Ingestion", () => 
     expect(jicc?.halls.some((h) => h.name.includes("Plenary"))).toBe(true);
   });
 
-  it("carries the full up-to-date hall inventory for all six Indonesian venues", async () => {
+  it("carries the full up-to-date hall inventory for all seven Indonesian venues", async () => {
     const venues = await db.venue.findMany({
       where: { regionId: "id" },
       include: { halls: true },
@@ -98,9 +98,13 @@ describe("Phase 2 Integration: Relational Data Models & Venue Ingestion", () => 
     expect(jis.length).toBeGreaterThanOrEqual(8);
     expect(jis).toContain("Main Stadium Bowl");
     expect(jis).toContain("Sky View Deck");
+
+    // Grand Indonesia Atrium: intimate SMALL-tier retail space, one hall.
+    const atrium = names("grand-indonesia-atrium");
+    expect(atrium).toEqual(["Atrium Level 3A"]);
   });
 
-  it("carries the full up-to-date hall inventory for all three Japanese venues", async () => {
+  it("carries the full up-to-date hall inventory for all four Japanese venues", async () => {
     const venues = await db.venue.findMany({
       where: { regionId: "jp" },
       include: { halls: true },
@@ -142,10 +146,11 @@ describe("Phase 2 Integration: Relational Data Models & Venue Ingestion", () => 
       "tokyo-big-sight": { halls: 23, meeting: 24 },
       "makuhari-messe": { halls: 14, meeting: 25 },
       "pacifico-yokohama": { halls: 9, meeting: 79 },
+      "yoyogi-park-events-ground": { halls: 1, meeting: 0 },
     });
   });
 
-  it("carries the full up-to-date hall inventory for all three global venues", async () => {
+  it("carries the full up-to-date hall inventory for all four global venues", async () => {
     const venues = await db.venue.findMany({
       where: { regionId: "global" },
       include: { halls: true },
@@ -188,6 +193,7 @@ describe("Phase 2 Integration: Relational Data Models & Venue Ingestion", () => 
       "marina-bay-sands-expo": { halls: 23, meeting: 15 },
       "messe-frankfurt": { halls: 22, meeting: 1 },
       "excel-london": { halls: 18, meeting: 13 },
+      "battersea-riverside-plaza": { halls: 1, meeting: 0 },
     });
   });
 

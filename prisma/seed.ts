@@ -745,6 +745,69 @@ async function main() {
 
   console.log("✓ Venues and exact halls created across Indonesia (6), Japan (3), and Global (3)");
 
+  // 5.7 Intimate & non-traditional spaces (SMALL presentation tier).
+  // Malls, plazas, and open fields host real programming; the tier only
+  // suggests, and every event page size stays an explicit human choice.
+  await prisma.venue.create({
+    data: {
+      regionId: regionId.id,
+      name: "Grand Indonesia Atrium & Exhibition Space",
+      slug: "grand-indonesia-atrium",
+      city: "Central Jakarta",
+      address: "Jl. M.H. Thamrin No. 1, Menteng, Jakarta Pusat",
+      latitude: -6.1954,
+      longitude: 106.8227,
+      transitInfo: "MRT Bundaran HI Station (5 mins). TransJakarta Corridor 1 (Sarinah / Bundaran HI).",
+      imageUrl: "https://images.unsplash.com/photo-1481437156560-3205f6a55735?w=1200",
+      size: "SMALL",
+      halls: {
+        create: [
+          { name: "Atrium Level 3A", capacity: 1200, floorAreaSqm: 1800, description: "Triple-height retail atrium with rigging points for pop-up showcases." },
+        ],
+      },
+    },
+  });
+  await prisma.venue.create({
+    data: {
+      regionId: regionJp.id,
+      name: "Yoyogi Park Events Ground",
+      slug: "yoyogi-park-events-ground",
+      city: "Tokyo (Shibuya Ward)",
+      address: "2-1 Yoyogi-kamizono-cho, Shibuya City, Tokyo",
+      latitude: 35.6712,
+      longitude: 139.6949,
+      transitInfo: "JR Yamanote Line Harajuku Station (3 mins). Chiyoda Line Yoyogi-koen Station.",
+      imageUrl: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200",
+      size: "SMALL",
+      halls: {
+        create: [
+          { name: "Keyaki Plaza Lawn", capacity: 8000, floorAreaSqm: 12000, description: "Open-air lawn with temporary staging permits for seasonal festivals." },
+        ],
+      },
+    },
+  });
+  await prisma.venue.create({
+    data: {
+      regionId: regionGlobal.id,
+      name: "Battersea Riverside Plaza",
+      slug: "battersea-riverside-plaza",
+      city: "London",
+      address: "Circus Road West, Nine Elms, London SW11 8EZ",
+      latitude: 51.4817,
+      longitude: -0.1441,
+      transitInfo: "Northern Line Battersea Power Station (2 mins). Thames Clippers Battersea Pier.",
+      imageUrl: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1200",
+      size: "SMALL",
+      halls: {
+        create: [
+          { name: "Riverside Event Deck", capacity: 3000, floorAreaSqm: 4500, description: "Paved riverside deck with marquee allowances for open-air showcases." },
+        ],
+      },
+    },
+  });
+
+  console.log("✓ Intimate spaces seeded (1 per region, SMALL tier suggestion)");
+
   // =========================================================================
   // 6. Seed Events Spanning All Regions
   // =========================================================================

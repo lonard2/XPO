@@ -1561,10 +1561,10 @@
     "duplicateAria": "Duplicate {title} into a new draft",
     "wizardPageSize": "Event Page Size",
     "wizardPageSizePlaceholder": "Select page size…",
-    "wizardPageSizeLarge": "Large — full page",
-    "wizardPageSizeMedium": "Medium — full sections, tighter spacing",
-    "wizardPageSizeSmall": "Small — compact essentials",
-    "wizardPageSizeSuggestion": "Suggested {size} for {venue} — confirm explicitly."
+    "wizardPageSizeLarge": "Large - full page",
+    "wizardPageSizeMedium": "Medium - full sections, tighter spacing",
+    "wizardPageSizeSmall": "Small - compact essentials",
+    "wizardPageSizeSuggestion": "Suggested {size} for {venue} - confirm explicitly."
   },
   "admin": {
     "dashboardTitle": "Governance & Admin Agregator",

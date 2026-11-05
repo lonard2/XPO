@@ -2075,13 +2075,13 @@ export default function NewEventWizardPage() {
                 }}
               >
                 <option value="">{tOrg("wizardPageSizePlaceholder") || "Select page size…"}</option>
-                <option value="LARGE">{tOrg("wizardPageSizeLarge") || "Large — full page"}</option>
-                <option value="MEDIUM">{tOrg("wizardPageSizeMedium") || "Medium — full sections, tighter spacing"}</option>
-                <option value="SMALL">{tOrg("wizardPageSizeSmall") || "Small — compact essentials"}</option>
+                <option value="LARGE">{tOrg("wizardPageSizeLarge") || "Large - full page"}</option>
+                <option value="MEDIUM">{tOrg("wizardPageSizeMedium") || "Medium - full sections, tighter spacing"}</option>
+                <option value="SMALL">{tOrg("wizardPageSizeSmall") || "Small - compact essentials"}</option>
               </select>
               {selectedVenue?.size && !pageSizeTouched && (
                 <p className="text-[11px] text-muted-foreground mt-1">
-                  {tOrg("wizardPageSizeSuggestion", { size: selectedVenue.size, venue: selectedVenue.name }) || `Suggested ${selectedVenue.size} for ${selectedVenue.name} — confirm explicitly.`}
+                  {tOrg("wizardPageSizeSuggestion", { size: selectedVenue.size, venue: selectedVenue.name }) || `Suggested ${selectedVenue.size} for ${selectedVenue.name} - confirm explicitly.`}
                 </p>
               )}
               {fieldErrors.pageSize && (

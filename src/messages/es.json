@@ -1561,9 +1561,9 @@
     "duplicateAria": "Duplicar {title} como borrador",
     "wizardPageSize": "Tamaño de página del evento",
     "wizardPageSizePlaceholder": "Seleccionar tamaño…",
-    "wizardPageSizeLarge": "Grande — página completa",
-    "wizardPageSizeMedium": "Mediana — secciones completas, compacta",
-    "wizardPageSizeSmall": "Pequeña — esencial",
+    "wizardPageSizeLarge": "Grande - página completa",
+    "wizardPageSizeMedium": "Mediana - secciones completas, compacta",
+    "wizardPageSizeSmall": "Pequeña - esencial",
     "wizardPageSizeSuggestion": "{size} sugerido para {venue}: confirme explícitamente."
   },
   "admin": {
