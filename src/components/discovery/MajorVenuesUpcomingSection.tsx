@@ -109,7 +109,7 @@ export function MajorVenuesUpcomingSection({
 
       {/* Major Venues Responsive Grid */}
       {orderedVenues.length > 0 && (
-      <ResponsiveRow className="stagger-children" label={tVen('title') || 'Major venues'}>
+      <ResponsiveRow className="stagger-children" label={tVen('title') || 'Major venues'} maxColumns={3}>
         {orderedVenues.map((venue) => {
           // Max 3 attendable events per venue
           const upcomingEvents = attendableEventsFor(venue).slice(0, 3);

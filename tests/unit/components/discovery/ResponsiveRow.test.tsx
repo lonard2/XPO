@@ -64,6 +64,13 @@ describe("ResponsiveRow", () => {
     expect(Element.prototype.scrollBy).toHaveBeenCalled();
   });
 
+  it("honours a column cap for dense rows", () => {
+    render(<ResponsiveRow maxColumns={3}>{items}</ResponsiveRow>);
+    const region = screen.getByRole("region");
+    expect(region.classList.contains("lg:grid-cols-3")).toBe(true);
+    expect(region.classList.contains("xl:grid-cols-4")).toBe(false);
+  });
+
   it("keeps the controls mobile-only", () => {
     render(<ResponsiveRow>{items}</ResponsiveRow>);
     const controls = screen
