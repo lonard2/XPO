@@ -177,7 +177,10 @@
     "conciergeBannerDesc": "即刻获取展厅导航指引、交通接驳信息、日程安排及全维度主办方分析报告。",
     "conciergeBannerBtn": "首选项与助手设置",
     "recentlyConcluded": "近期已结束",
-    "perksCta": "浏览活动"
+    "perksCta": "浏览活动",
+    "alsoHappeningIn": "{region}同期活动",
+    "alsoHappeningSubtitle": "本版本之外的旗舰活动",
+    "exploreRegion": "探索地区"
   },
   "regions": {
     "title": "国家/地区版本",

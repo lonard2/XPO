@@ -177,7 +177,10 @@
     "conciergeBannerDesc": "Consulte navegación en pabellones, rutas de transporte, programas y análisis avanzados.",
     "conciergeBannerBtn": "Preferencias y Ajustes del Asistente",
     "recentlyConcluded": "Finalizadas recientemente",
-    "perksCta": "Ver eventos"
+    "perksCta": "Ver eventos",
+    "alsoHappeningIn": "También en {region}",
+    "alsoHappeningSubtitle": "Eventos destacados fuera de su edición",
+    "exploreRegion": "Explorar región"
   },
   "regions": {
     "title": "Ediciones Nacionales",

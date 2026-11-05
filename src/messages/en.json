@@ -177,7 +177,10 @@
     "conciergeBannerDesc": "Access real-time hall navigation, transit logistics, timetable schedules, and comprehensive organizer analytics reports.",
     "conciergeBannerBtn": "Preferences & Concierge Settings",
     "recentlyConcluded": "Recently concluded",
-    "perksCta": "Browse events"
+    "perksCta": "Browse events",
+    "alsoHappeningIn": "Also happening in {region}",
+    "alsoHappeningSubtitle": "Flagship events outside your edition",
+    "exploreRegion": "Explore region"
   },
   "regions": {
     "title": "Country Editions",

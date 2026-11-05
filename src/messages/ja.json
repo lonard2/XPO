@@ -177,7 +177,10 @@
     "conciergeBannerDesc": "会場ナビ、交通手段、タイムテーブル、主催者向け分析レポートをワンストップで確認できます。",
     "conciergeBannerBtn": "環境設定＆コンシェルジュ設定",
     "recentlyConcluded": "終了した展示会",
-    "perksCta": "イベントを見る"
+    "perksCta": "イベントを見る",
+    "alsoHappeningIn": "{region}でも開催中",
+    "alsoHappeningSubtitle": "このエディション以外の注目イベント",
+    "exploreRegion": "地域を見る"
   },
   "regions": {
     "title": "国・地域版エディション",

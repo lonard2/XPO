@@ -34,6 +34,8 @@ import { listingWhere } from '@/lib/discovery/presentation';
 import { resolveEditorialBlurb } from '@/lib/discovery/editorial';
 import { selectRailItems } from '@/lib/news/feed';
 import { ResponsiveRow } from '@/components/discovery/ResponsiveRow';
+import { CrossRegionRail } from '@/components/discovery/CrossRegionRail';
+import { pickRailRegion, rankRailEvents } from '@/lib/homepage/rows';
 import { type BannerSlide, type DiscoveryEvent, type VenueWithEvents } from '@/types/discovery';
 
 export interface HomePageProps {
@@ -262,6 +264,46 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
   const attendableEvents = filterAttendable(featuredEvents, now);
   const concludedEvents = featuredEvents.filter((event) => !attendableEvents.includes(event));
 
+  // Cross-region rail: one other region per UTC day, ranked by real demand
+  // (confirmed or checked-in bookings) with a featured fallback. Empty means
+  // no section, never a placeholder.
+  let railItems: DiscoveryEvent[] = [];
+  let railRegion = "";
+  try {
+    railRegion = pickRailRegion(activeRegionCode, now);
+    const railRows = await db.event.findMany({
+      where: {
+        regionId: railRegion,
+        ...listingWhere(),
+        endDate: { gte: now },
+      },
+      include: {
+        venue: { include: { halls: true, region: true } },
+        venueHall: true,
+        region: true,
+        ticketTiers: true,
+        _count: {
+          select: {
+            bookings: { where: { status: { in: ["CONFIRMED", "CHECKED_IN"] } } },
+          },
+        },
+      },
+      orderBy: { startDate: "asc" },
+    });
+    const ranked = rankRailEvents(
+      railRows.map((row) => ({
+        ...row,
+        bookingCount: row._count?.bookings ?? 0,
+      }))
+    );
+    railItems = ranked as unknown as DiscoveryEvent[];
+  } catch {
+    railItems = [];
+  }
+  const railRegionName = railRegion
+    ? tReg(`${railRegion}.name`) || railRegion
+    : "";
+
   const regionLocalizedName =
     activeRegionCode === 'id'
       ? tReg('id.name') || 'Indonesia'
@@ -381,12 +423,22 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         )}
       </section>
 
-      {/* 4. Editor hand-picked news rail (renders nothing without slots) */}
+      {/* 4. Cross-region rail: one other region per day, demand-ranked */}
+      {railItems.length > 0 && (
+        <CrossRegionRail
+          items={railItems}
+          locale={locale}
+          regionCode={railRegion}
+          regionName={railRegionName}
+        />
+      )}
+
+      {/* 5. Editor hand-picked news rail (renders nothing without slots) */}
       {newsRailItems.length > 0 && (
         <HomepageNewsRail items={newsRailItems} locale={locale} />
       )}
 
-      {/* 5. Integrated Interactive Event Calendar Guide */}
+      {/* 6. Integrated Interactive Event Calendar Guide */}
       <section className="container">
         <EventCalendarWidget
           events={featuredEvents.map((e) => ({
@@ -408,12 +460,12 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         />
       </section>
 
-      {/* 6. 22 MICE Event Category Matrix */}
+      {/* 7. 22 MICE Event Category Matrix */}
       <section className="container">
         <EventCategoryPills locale={locale} />
       </section>
 
-      {/* 7. Attendee Experience & Venue Wayfinding Hub (Asymmetric Bento Showcase) */}
+      {/* 8. Attendee Experience & Venue Wayfinding Hub (Asymmetric Bento Showcase) */}
       <section className="container space-y-8">
         <div className="max-w-2xl space-y-2">
           <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground text-balance">
@@ -588,7 +640,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         </div>
       </section>
 
-      {/* 8. Event Concierge & System Preferences Banner */}
+      {/* 9. Event Concierge & System Preferences Banner */}
       <section className="container">
         <div className="rounded-2xl border border-primary/20 bg-primary/5 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="space-y-2 text-center sm:text-left">

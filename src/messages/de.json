@@ -177,7 +177,10 @@
     "conciergeBannerDesc": "Echtzeit-Hallen-Navigation, ÖPNV-Logistik, Terminpläne und umfassende Veranstalter-Analysen.",
     "conciergeBannerBtn": "Einstellungen & Concierge-Präferenzen",
     "recentlyConcluded": "Zuletzt beendet",
-    "perksCta": "Events ansehen"
+    "perksCta": "Events ansehen",
+    "alsoHappeningIn": "Auch in {region}",
+    "alsoHappeningSubtitle": "Flaggschiff-Events außerhalb Ihrer Edition",
+    "exploreRegion": "Region erkunden"
   },
   "regions": {
     "title": "Länderausgaben",

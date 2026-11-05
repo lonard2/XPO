@@ -177,7 +177,10 @@
     "conciergeBannerDesc": "Akses panduan transportasi umum, navigasi denah hall, jadwal acara, dan laporan analitik penyelenggara secara real-time.",
     "conciergeBannerBtn": "Pengaturan Asisten & Preferensi",
     "recentlyConcluded": "Baru saja berakhir",
-    "perksCta": "Jelajahi acara"
+    "perksCta": "Jelajahi acara",
+    "alsoHappeningIn": "Juga berlangsung di {region}",
+    "alsoHappeningSubtitle": "Acara unggulan di luar edisi Anda",
+    "exploreRegion": "Jelajahi wilayah"
   },
   "regions": {
     "title": "Edisi Negara",
