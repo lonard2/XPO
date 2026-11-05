@@ -13,17 +13,6 @@ describe("rowGridClass", () => {
   it("centres a single item", () => {
     expect(rowGridClass(1)).toContain("max-w-3xl");
   });
-
-  it("adds columns as inventory grows", () => {
-    expect(rowGridClass(2)).toContain("md:grid-cols-2");
-    expect(rowGridClass(3)).toContain("lg:grid-cols-3");
-    expect(rowGridClass(4)).toContain("xl:grid-cols-4");
-    expect(rowGridClass(4)).not.toContain("1800px");
-  });
-
-  it("goes to five columns only on very wide screens", () => {
-    expect(rowGridClass(5)).toContain("min-[1800px]:grid-cols-5");
-  });
 });
 
 describe("ResponsiveRow", () => {

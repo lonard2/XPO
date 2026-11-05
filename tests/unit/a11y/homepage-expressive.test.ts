@@ -30,7 +30,8 @@ describe("Quality Gate: Homepage expressive wiring, part two", () => {
     src.split("\n").find((line) => line.includes(needle)) ?? "";
 
   it("cascades the major-venue grid entrance", () => {
-    expect(lineWith(venues, "venueGridClass(orderedVenues.length)")).toContain("stagger-children");
+    const row = lineWith(venues, "<ResponsiveRow");
+    expect(row).toContain("stagger-children");
   });
 
   it("sweeps the venue banner imagery on hover", () => {

@@ -3,6 +3,7 @@ import { ArrowRight, Megaphone } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/Button";
+import { ResponsiveRow } from "@/components/discovery/ResponsiveRow";
 
 export interface NewsRailItem {
   updateId: string;
@@ -25,7 +26,6 @@ interface HomepageNewsRailProps {
 export function HomepageNewsRail({ items, locale, className }: HomepageNewsRailProps) {
   const tNews = useTranslations("news");
   if (items.length === 0) return null;
-
   return (
     <section className={cn("container space-y-6", className)} aria-label={tNews("railTitle")}>
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-border/80 pb-4">
@@ -40,7 +40,7 @@ export function HomepageNewsRail({ items, locale, className }: HomepageNewsRailP
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 stagger-children">
+      <ResponsiveRow className="stagger-children" label={tNews("railTitle")}>
         {items.map((item) => (
           <article
             key={item.updateId}
@@ -66,7 +66,7 @@ export function HomepageNewsRail({ items, locale, className }: HomepageNewsRailP
             </Link>
           </article>
         ))}
-      </div>
+      </ResponsiveRow>
     </section>
   );
 }

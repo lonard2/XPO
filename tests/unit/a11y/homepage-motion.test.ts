@@ -18,6 +18,8 @@ describe("Quality Gate: Homepage motion wiring", () => {
 
   it("cascades the featured grid and the bento grid entrances", () => {
     expect(page.match(/stagger-children/g) ?? []).toHaveLength(2);
+    // Both grids render through the shared adaptive row.
+    expect(page).toContain("<ResponsiveRow");
   });
 
   it("wires all three bento cells to the tilt engine with tactile physics", () => {

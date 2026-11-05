@@ -5,21 +5,6 @@
  * hundreds of pixels of empty columns, which reads as a failed load rather than a
  * curated page. Column count now matches inventory, and a lone card is centred.
  */
-export function featuredGridClass(count: number): string {
-  const base = "grid grid-cols-1 gap-6";
-  if (count <= 1) return `${base} max-w-3xl`;
-  if (count === 2) return `${base} md:grid-cols-2`;
-  if (count === 3) return `${base} md:grid-cols-2 lg:grid-cols-3`;
-  return `${base} md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4`;
-}
-
-export function venueGridClass(count: number): string {
-  const base = "grid grid-cols-1 gap-6 stagger-children";
-  if (count <= 1) return `${base} max-w-3xl mx-auto`;
-  if (count === 2) return `${base} md:grid-cols-2`;
-  return `${base} md:grid-cols-2 xl:grid-cols-3`;
-}
-
 /**
  * Shared row grid: columns follow inventory, and five columns only appear
  * on very wide screens where the container (up to 1800px) fits them.

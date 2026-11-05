@@ -16,7 +16,7 @@ import { Card } from '@/components/ui/Card';
 import { useTranslations } from 'next-intl';
 import { formatDateRange, getTimeZoneForRegion, getEventTemporalStatus } from '@/lib/i18n/formatters';
 import { getArchetypeTokens, getReadableBadgeColors } from '@/lib/theming';
-import { venueGridClass } from '@/lib/discovery/grids';
+import { ResponsiveRow } from '@/components/discovery/ResponsiveRow';
 import { archTitle } from '@/lib/i18n/categories';
 import { countHalls } from '@/lib/discovery/venueSpaces';
 import { type VenueWithEvents } from '@/types/discovery';
@@ -109,7 +109,7 @@ export function MajorVenuesUpcomingSection({
 
       {/* Major Venues Responsive Grid */}
       {orderedVenues.length > 0 && (
-      <div className={cn(venueGridClass(orderedVenues.length), 'stagger-children')}>
+      <ResponsiveRow className="stagger-children" label={tVen('title') || 'Major venues'}>
         {orderedVenues.map((venue) => {
           // Max 3 attendable events per venue
           const upcomingEvents = attendableEventsFor(venue).slice(0, 3);
@@ -268,7 +268,7 @@ export function MajorVenuesUpcomingSection({
             </Card>
           );
         })}
-      </div>
+      </ResponsiveRow>
       )}
 
     </section>

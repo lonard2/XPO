@@ -33,7 +33,7 @@ import { filterAttendable, sortUpcomingFirst } from '@/lib/discovery/eventOrder'
 import { listingWhere } from '@/lib/discovery/presentation';
 import { resolveEditorialBlurb } from '@/lib/discovery/editorial';
 import { selectRailItems } from '@/lib/news/feed';
-import { featuredGridClass } from '@/lib/discovery/grids';
+import { ResponsiveRow } from '@/components/discovery/ResponsiveRow';
 import { type BannerSlide, type DiscoveryEvent, type VenueWithEvents } from '@/types/discovery';
 
 export interface HomePageProps {
@@ -353,11 +353,11 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
             </div>
           </div>
         ) : (
-          <div className={cn(featuredGridClass(attendableEvents.length), 'stagger-children')}>
+          <ResponsiveRow className="stagger-children" label={tHome('featuredInRegion') || 'Featured events'}>
             {attendableEvents.map((event, idx) => (
               <EventCard key={event.id} event={event} locale={locale} priority={idx < 3} />
             ))}
-          </div>
+          </ResponsiveRow>
         )}
 
         {concludedEvents.length > 0 && (
