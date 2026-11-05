@@ -120,6 +120,7 @@
     "resumeAutoplay": "继续自动播放",
     "goToSlide": "转到第 {index} 张",
     "upNext": "接下来",
+    "editorialByline": "XPO编辑部",
     "slideLabel": "第 {current} 张，共 {total} 张：{title}",
     "proof1": "22 个展会类别",
     "proof2": "展厅与交通信息",

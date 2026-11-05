@@ -429,6 +429,16 @@ export function BannerCarousel({
               </>
             )}
           </div>
+          {/* Editorial footnote: quarantined voice below the CTA row.
+              Renders only when a blurb resolved; otherwise no element. */}
+          {slide.editorialBlurb && (
+            <p className="hero-footnote border-t border-white/10 pt-2.5 text-xs leading-relaxed text-slate-400">
+              <span className="mr-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-300">
+                {tHero('editorialByline')}
+              </span>
+              <span className="line-clamp-3">{slide.editorialBlurb}</span>
+            </p>
+          )}
         </div>
       </div>
     );
@@ -561,19 +571,19 @@ export function BannerCarousel({
                       src={slide.heroImageUrl}
                       alt=""
                       loading="lazy"
-                      className="h-11 w-16 shrink-0 rounded-md object-cover"
+                      className="h-14 w-20 shrink-0 rounded-md object-cover"
                     />
                   ) : (
                     <span
                       aria-hidden="true"
-                      className="h-11 w-16 shrink-0 rounded-md"
+                      className="h-14 w-20 shrink-0 rounded-md"
                       style={{ background: `linear-gradient(135deg, ${tokens.primary}55, #030712)` }}
                     />
                   )}
                   <span className="min-w-0 flex-1">
                     <span
                       className={cn(
-                        "block truncate text-xs font-semibold",
+                        "block line-clamp-2 text-xs font-semibold",
                         active ? "text-foreground" : "text-white"
                       )}
                     >

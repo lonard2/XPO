@@ -257,6 +257,36 @@ describe('Discovery Component: BannerCarousel', () => {
     expect(layers[1].classList.contains('hero-crossfade-in')).toBe(true);
   });
 
+  it('T3.9: renders the editorial footnote with marker below the CTA row', () => {
+    render(
+      <BannerCarousel
+        slides={[{ ...mockSlides[0], editorialBlurb: 'Editors pick this expo.' }]}
+        locale="en"
+      />
+    );
+    const footnote = document.querySelector('.hero-footnote');
+    expect(footnote).not.toBeNull();
+    expect(footnote!.textContent).toContain('Editors pick this expo.');
+    // The unit next-intl mock resolves the real en dictionary, so this
+    // pins the shipped marker copy (missing keys would return the key).
+    expect(footnote!.textContent).toContain('XPO Editors');
+  });
+
+  it('T3.10: no footnote element and no gap block without a blurb', () => {
+    render(<BannerCarousel slides={[mockSlides[0]]} locale="en" />);
+    expect(document.querySelector('.hero-footnote')).toBeNull();
+  });
+
+  it('T3.11: strip thumbnails are roomier with two-line titles', () => {
+    render(<BannerCarousel slides={mockSlides} locale="en" />);
+    const strip = document.querySelector('.hero-strip')!;
+    // Thumbnails are img or gradient fallback; both carry the sizing.
+    expect(strip.querySelector('.h-14')).not.toBeNull();
+    const title = strip.querySelector('.min-w-0 > span');
+    expect(title?.classList.contains('line-clamp-2')).toBe(true);
+    expect(title?.classList.contains('truncate')).toBe(false);
+  });
+
   it('T3.8: slide layers are staged apart from the strip, so the outgoing image cannot bleed behind it', () => {
     render(<BannerCarousel slides={mockSlides} locale="en" />);
     fireEvent.click(screen.getByLabelText('Next slide'));
