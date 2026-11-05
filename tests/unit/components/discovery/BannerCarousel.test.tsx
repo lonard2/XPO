@@ -250,11 +250,16 @@ describe('Discovery Component: BannerCarousel', () => {
     fireEvent.click(screen.getByLabelText('Next slide'));
     const layers = document.querySelectorAll('[aria-roledescription="slide"]');
     expect(layers.length).toBe(2);
-    // Outgoing renders first (beneath); incoming renders last (on top) and
-    // carries the entrance animation.
+    // Outgoing renders first (beneath); incoming renders last (on top).
+    // The entrance fade lives on the image column, never on the text
+    // layer: text under a running CSS animation evaluates against the
+    // wrong background in assistive tech.
     expect(layers[0]).toHaveAttribute('aria-hidden', 'true');
     expect(layers[1]).not.toHaveAttribute('aria-hidden');
-    expect(layers[1].classList.contains('hero-crossfade-in')).toBe(true);
+    expect(layers[1].classList.contains('hero-crossfade-in')).toBe(false);
+    expect(
+      layers[1].querySelector('.hero-crossfade-in')
+    ).not.toBeNull();
   });
 
   it('T3.9: renders the editorial footnote with marker below the CTA row', () => {

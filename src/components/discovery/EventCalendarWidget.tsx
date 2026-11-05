@@ -15,7 +15,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Button, buttonVariants } from '@/components/ui/Button';
 import { useTranslations } from 'next-intl';
 import { formatDateRange, getTimeZoneForRegion } from '@/lib/i18n/formatters';
-import { getArchetypeTokens } from '@/lib/theming';
+import { getArchetypeTokens, getReadableArchetypeLabel } from '@/lib/theming';
 import { type EventSummary } from '@/types/discovery';
 import { cn } from '@/lib/utils';
 
@@ -319,6 +319,9 @@ export function EventCalendarWidget({
             {eventsOnSelectedDate.length > 0 ? (
               eventsOnSelectedDate.map((evt) => {
                 const tokens = getArchetypeTokens(evt.archetype);
+                // Small uppercase labels cannot use the raw token (same rule
+                // as EventCard): the derived tones keep the hue at 4.5:1.
+                const labelTones = getReadableArchetypeLabel(tokens.primary);
                 const dates = formatDateRange(evt.startDate, evt.endDate, locale, timezone);
 
                 return (
@@ -330,8 +333,8 @@ export function EventCalendarWidget({
                       <div className="flex items-center gap-1.5 flex-wrap">
                         <Badge
                           variant="outline"
-                          className="text-xs px-2 py-0.5 uppercase font-bold"
-                          style={{ color: tokens.primary, borderColor: `${tokens.primary}44` }}
+                          className="text-xs px-2 py-0.5 uppercase font-bold text-[var(--archetype-label)] dark:text-[var(--archetype-label-dark)]"
+                          style={{ "--archetype-label": labelTones.light, "--archetype-label-dark": labelTones.dark, borderColor: `${tokens.primary}44` } as React.CSSProperties}
                         >
                           {tokens.displayName}
                         </Badge>

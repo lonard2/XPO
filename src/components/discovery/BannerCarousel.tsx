@@ -238,12 +238,14 @@ export function BannerCarousel({
         className={cn(
           "relative min-h-[420px] sm:min-h-[480px] lg:min-h-[520px] flex flex-col justify-end p-5 pt-20 pb-16 sm:p-8 sm:pb-20 lg:p-12 overflow-hidden",
           "lg:grid lg:grid-cols-[1.55fr_1fr] lg:justify-stretch lg:gap-0 lg:p-0",
-          !hidden && "hero-crossfade-in",
           hidden && "absolute inset-0 pointer-events-none"
         )}
       >
-        {/* Image column: full-bleed backdrop on mobile, left panel on desktop */}
-        <div className="absolute inset-0 lg:relative lg:min-h-[520px]">
+        {/* Image column: full-bleed backdrop on mobile, left panel on desktop.
+            The entrance fade lives here, not on the slide root: text must
+            never sit under a running CSS animation (assistive tech
+            evaluates animated text against the wrong background). */}
+        <div className="hero-crossfade-in absolute inset-0 lg:relative lg:min-h-[520px]">
         {/* Slide Image Layer */}
         {slide.heroImageUrl ? (
           <img

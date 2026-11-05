@@ -30,6 +30,12 @@ describe("Quality Gate: Motion-system composability", () => {
     expect(keyframes).not.toMatch(/transform/);
   });
 
+  it("hero crossfade releases after finishing (axe-readable steady state)", () => {
+    const rule = css.match(/\.hero-crossfade-in \{[^}]*\}/)?.[0] ?? "";
+    expect(rule).not.toMatch(/both|forwards/);
+    expect(rule).toMatch(/backwards/);
+  });
+
   it("ambient glow paints above host backgrounds (stacking context, not buried)", () => {
     const rule = css.match(/\.ambient-glow \{[^}]*\}/)?.[0] ?? "";
     expect(rule).toMatch(/isolation:\s*isolate/);

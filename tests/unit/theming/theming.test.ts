@@ -242,6 +242,16 @@ describe("Contrast helpers for arbitrary colour surfaces", () => {
     expect(getReadableBadgeColors("#0f172a").background).toBe("#0f172a");
   });
 
+  it("derives archetype label tones that pass 4.5:1 on the real light surface", () => {
+    // --background in light theme is 210 20% 98% (#fafbfc), not pure
+    // white: calibrating to #ffffff shipped a 4.44 tone axe flags.
+    for (const archetype of ARCHETYPE_LIST) {
+      const { primary } = ARCHETYPE_DEFAULTS[archetype];
+      const tones = getReadableArchetypeLabel(primary);
+      expect(getContrastRatio(tones.light, "#fafbfc")).toBeGreaterThanOrEqual(4.5);
+    }
+  });
+
   it("derives archetype label tones that pass 4.5:1 on both card surfaces", () => {
     // The two axe-flagged hues: orange fails on light cards, indigo on both.
     for (const primary of ["#ea580c", "#6366f1"]) {

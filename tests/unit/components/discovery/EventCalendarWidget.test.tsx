@@ -3,6 +3,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import React from 'react';
 import { EventCalendarWidget } from '@/components/discovery/EventCalendarWidget';
 import { EventSummary } from '@/types/discovery';
+import { getArchetypeTokens, getContrastRatio } from '@/lib/theming';
 
 const mockEvents: EventSummary[] = [
   {
@@ -44,6 +45,33 @@ describe('EventCalendarWidget', () => {
     // No aria-selected mismatch under the group role; day selection uses aria-pressed.
     expect(container.querySelectorAll('[aria-selected]').length).toBe(0);
     expect(container.querySelectorAll('[aria-pressed]').length).toBeGreaterThan(20);
+  });
+
+  it('renders the archetype badge in a readable tone, not the raw primary', () => {
+    const fashion: EventSummary = {
+      ...mockEvents[0],
+      id: 'evt-fashion',
+      title: 'Fashion Week 2026',
+      archetype: 'FASHION_RETAIL',
+    };
+    const { container } = render(
+      <EventCalendarWidget events={[fashion]} locale="en" regionCode="id" />
+    );
+    const raw = getArchetypeTokens('FASHION_RETAIL').primary;
+    // Sanity: the raw hue genuinely fails on the light surface.
+    expect(getContrastRatio(raw, '#fafbfc')).toBeLessThan(4.5);
+
+    const label = getArchetypeTokens('FASHION_RETAIL').displayName;
+    const badge = [...container.querySelectorAll('.rounded-full.border')].find(
+      (el) => el.textContent?.includes(label)
+    ) as HTMLElement | undefined;
+    expect(badge).toBeDefined();
+    // Tones travel as CSS vars (light/dark themes); the raw primary must
+    // not appear as inline text color.
+    const rendered = badge!.style.getPropertyValue("--archetype-label").trim();
+    expect(rendered).not.toBe("");
+    expect(rendered).not.toBe(raw);
+    expect(getContrastRatio(rendered, "#fafbfc")).toBeGreaterThanOrEqual(4.5);
   });
 });
 

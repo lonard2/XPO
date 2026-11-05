@@ -333,7 +333,9 @@
   }
   .motion-subtle .hero-crossfade-in,
   .motion-expressive .hero-crossfade-in {
-    animation: hero-crossfade 0.45s ease-out both;
+    /* backwards like the stagger: no retained fill, so assistive tech
+       evaluates the steady state instead of the animation. */
+    animation: hero-crossfade 0.45s ease-out backwards;
   }
   @keyframes hero-progress {
     from {

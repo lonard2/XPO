@@ -995,8 +995,8 @@ export function getReadableBadgeColors(
 }
 
 // Card surfaces the archetype label can sit on. Kept in sync with the
-// --card tokens in globals.css (light: 0 0% 100%, dark: 224 71% 6%).
-const CARD_SURFACE_LIGHT = "#ffffff";
+// --background tokens in globals.css (light: 210 20% 98%, dark: 224 71% 4%).
+const CARD_SURFACE_LIGHT = "#fafbfc";
 const CARD_SURFACE_DARK = "#040a1a";
 
 /**
