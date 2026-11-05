@@ -605,7 +605,8 @@
     "listedCountOne": "1 evento",
     "noUpcomingShort": "Aún no hay eventos anunciados",
     "wingCongress": "Ala de Congresos",
-    "alsoInEdition": "También en esta edición"
+    "alsoInEdition": "También en esta edición",
+    "viewAllVenues": "Ver todos los recintos"
   },
   "calendar": {
     "title": "Calendario Interactivo de Eventos",

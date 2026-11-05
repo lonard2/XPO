@@ -34,7 +34,9 @@ describe("BannerTemporalWidget hydration safety", () => {
     render(<BannerTemporalWidget startDate={START} endDate={END} />);
 
     await waitFor(() => {
-      expect(screen.getByText(/\d+d \d+h \d+m \d+s/)).toBeDefined();
+      expect(screen.getByText(/\d+d \d+h \d+m/)).toBeDefined();
     });
+    // Seconds ticked every second for an event days away: false precision.
+    expect(screen.queryByText(/\d+d \d+h \d+m \d+s/)).toBeNull();
   });
 });

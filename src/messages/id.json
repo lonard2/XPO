@@ -100,8 +100,8 @@
   "hero": {
     "badge": "Direktori acara MICE",
     "title": "Pameran dan konferensi,",
-    "titleHighlight": "sampai ke hall.",
-    "subtitle": "Temukan di Indonesia, Jepang, dan pusat dagang lain. Lihat venue, hall, dan cara menuju ke sana, lalu simpan pas Anda di ponsel.",
+    "titleHighlight": "sampai ke balai pameran.",
+    "subtitle": "Temukan di Indonesia, Jepang, dan pusat dagang lain. Lihat venue, balai pameran, dan cara menuju ke sana, lalu simpan pas Anda di ponsel.",
     "exploreEvents": "Jelajahi Pameran",
     "venueDirectory": "Direktori Venue",
     "spotlightHubs": "Edisi Negara",
@@ -605,7 +605,8 @@
     "listedCountOne": "1 acara",
     "noUpcomingShort": "Belum ada acara diumumkan",
     "wingCongress": "Wing Congress",
-    "alsoInEdition": "Juga di edisi ini"
+    "alsoInEdition": "Juga di edisi ini",
+    "viewAllVenues": "Lihat semua venue"
   },
   "calendar": {
     "title": "Kalender Acara Interaktif",

@@ -391,13 +391,12 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
 
       {/* 2. Happening at Major Venues: Dedicated Campus Spotlight & Near-Upcoming Hall Listings */}
       {majorVenuesWithEvents.length > 0 && (
-        <section className="container">
-          <MajorVenuesUpcomingSection
-            venues={majorVenuesWithEvents}
-            locale={locale}
-            regionCode={activeRegionCode}
-          />
-        </section>
+        <MajorVenuesUpcomingSection
+          venues={majorVenuesWithEvents}
+          locale={locale}
+          regionCode={activeRegionCode}
+          className="container"
+        />
       )}
 
       {/* 3. Featured Trade Expos & Conferences Grid (Widescreen Multi-Column) */}

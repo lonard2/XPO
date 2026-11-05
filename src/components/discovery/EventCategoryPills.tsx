@@ -294,7 +294,7 @@ export function EventCategoryPills({
 
         <Link
           href={`/${locale}/events`}
-          className="text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1 self-start sm:self-auto shrink-0 min-h-[44px] px-2 py-2 items-center"
+          className="hidden sm:inline-flex items-center gap-1 self-start sm:self-auto shrink-0 min-h-[44px] px-2 py-2 text-xs font-semibold text-primary hover:underline"
         >
           <span>{tDisc('allArchetypes') || 'View All Categories'}</span>
           <ArrowRight className="h-3.5 w-3.5" />

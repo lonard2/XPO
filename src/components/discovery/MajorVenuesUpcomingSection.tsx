@@ -103,7 +103,7 @@ export function MajorVenuesUpcomingSection({
             'gap-1.5 text-xs self-start sm:self-auto whitespace-nowrap min-h-[44px] sm:min-h-[36px] font-semibold'
           )}
         >
-          <span>{tVen('title')?.split('&')?.[0]?.trim() || `View All ${currentRegionName} Venues`}</span>
+          <span>{tVen('viewAllVenues') || 'View all venues'}</span>
           <ChevronRight className="h-3.5 w-3.5" />
         </Link>
       </div>

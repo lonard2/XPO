@@ -38,7 +38,9 @@ describe("CrossRegionRail", () => {
       />
     );
 
-    expect(screen.getByText(/Japan/)).toBeDefined();
+    expect(
+      screen.getByRole("heading", { level: 2, name: /Japan/ })
+    ).toBeDefined();
     expect(screen.getByText("Robotics Expo 2026")).toBeDefined();
     expect(screen.getByText("Cloud Summit 2026")).toBeDefined();
   });

@@ -335,10 +335,10 @@ export function BannerCarousel({
             {slide.venueName && (
               <div className="flex items-center gap-1.5 text-slate-200 flex-wrap">
                 <Building2 className="h-4 w-4 text-primary/90 shrink-0" />
-                <span className="line-clamp-2">
-                  {slide.venueName}
-                  {slide.cityName && ` (${slide.cityName})`}
-                </span>
+                <span className="line-clamp-2">{slide.venueName}</span>
+                {slide.cityName && (
+                  <span className="text-slate-400">• {slide.cityName}</span>
+                )}
                 {slide.venueHallName && (
                   <span className="text-xs font-semibold bg-white/15 px-2.5 py-0.5 rounded-md text-white backdrop-blur-xs border border-white/20">
                     {slide.venueHallName}
@@ -641,9 +641,11 @@ export function BannerTemporalWidget({
   React.useEffect(() => {
     setIsMounted(true);
     setTemporal(getEventTemporalStatus(startDate, endDate));
+    // Minute granularity: an event days away does not need a ticking second
+    // counter pulling attention, and the digits stay stable long enough to read.
     const timer = setInterval(() => {
       setTemporal(getEventTemporalStatus(startDate, endDate));
-    }, 1000);
+    }, 60000);
 
     return () => clearInterval(timer);
   }, [startDate, endDate]);
@@ -674,7 +676,7 @@ export function BannerTemporalWidget({
 
   const countdown = `${time.days}d ${String(time.hours).padStart(2, '0')}h ${String(
     time.minutes
-  ).padStart(2, '0')}m ${String(time.seconds).padStart(2, '0')}s`;
+  ).padStart(2, '0')}m`;
 
   return (
     <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/60 px-3.5 py-1 text-xs backdrop-blur-md shadow-sm">
@@ -687,7 +689,7 @@ export function BannerTemporalWidget({
         )}
         aria-hidden={isMounted ? undefined : true}
       >
-        {isMounted ? countdown : '00d 00h 00m 00s'}
+        {isMounted ? countdown : '00d 00h 00m'}
       </span>
     </div>
   );

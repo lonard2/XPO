@@ -34,10 +34,10 @@ export function CrossRegionRail({
     <section className={cn("container space-y-6", className)} aria-label={tHome("alsoHappeningIn", { region: regionName })}>
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-border/80 pb-4">
         <div>
-          <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider mb-1">
+          <h2 className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider mb-1">
             <Globe2 className="h-4 w-4" />
             <span>{tHome("alsoHappeningIn", { region: regionName })}</span>
-          </div>
+          </h2>
           <p className="text-xs sm:text-sm text-muted-foreground">
             {tHome("alsoHappeningSubtitle")}
           </p>

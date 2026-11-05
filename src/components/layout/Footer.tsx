@@ -165,7 +165,7 @@ export function Footer({ locale = "en" }: { locale?: string }) {
             {getSafe(tFoot, "termsOfService", "Terms of Service")}
           </Link>
         </div>
-        <p className="flex items-center gap-2 flex-wrap">
+        <p className="flex min-w-0 flex-wrap items-center justify-center gap-2 text-center md:justify-end md:text-right">
           <span>{getSafe(tFoot, "infrastructureBadge", "Enterprise MICE Infrastructure")}</span>
           <span>•</span>
           <span>{getSafe(tFoot, "accessibleBadge", "Accessible Multi-Device Architecture")}</span>

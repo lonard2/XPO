@@ -6,6 +6,10 @@ const HOME_PAGE = path.resolve(
   __dirname,
   "../../../src/app/[locale]/(attendee)/page.tsx"
 );
+const VENUES = path.resolve(
+  __dirname,
+  "../../../src/components/discovery/MajorVenuesUpcomingSection.tsx"
+);
 
 describe("Quality Gate: homepage closing action", () => {
   const page = fs.readFileSync(HOME_PAGE, "utf8");
@@ -21,5 +25,18 @@ describe("Quality Gate: homepage closing action", () => {
   it("de-duplicates the hero lead from the featured row", () => {
     expect(page).toContain("withoutHeroLead");
     expect(page).toContain("featuredRowEvents");
+  });
+
+  it("wraps the venue section exactly once", () => {
+    expect(page).not.toMatch(
+      /<section className="container">\s*<MajorVenuesUpcomingSection/
+    );
+    expect(page).toContain('<MajorVenuesUpcomingSection');
+  });
+
+  it("uses a translation key for the venue directory CTA", () => {
+    const venues = fs.readFileSync(VENUES, "utf8");
+    expect(venues).toContain("viewAllVenues");
+    expect(venues).not.toContain(".split('&')");
   });
 });

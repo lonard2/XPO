@@ -605,7 +605,8 @@
     "listedCountOne": "1 场",
     "noUpcomingShort": "暂无活动公布",
     "wingCongress": "会议中心翼",
-    "alsoInEdition": "本版本的其他场馆"
+    "alsoInEdition": "本版本的其他场馆",
+    "viewAllVenues": "查看全部场馆"
   },
   "calendar": {
     "title": "会展交互日历",

@@ -605,7 +605,8 @@
     "listedCountOne": "1 event",
     "noUpcomingShort": "No events announced yet",
     "wingCongress": "Congress Wing",
-    "alsoInEdition": "Also in this edition"
+    "alsoInEdition": "Also in this edition",
+    "viewAllVenues": "View all venues"
   },
   "calendar": {
     "title": "Interactive Event Calendar",

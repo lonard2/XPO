@@ -605,7 +605,8 @@
     "listedCountOne": "1件",
     "noUpcomingShort": "開催予定はまだありません",
     "wingCongress": "コングレスウィング",
-    "alsoInEdition": "このエディションの他の会場"
+    "alsoInEdition": "このエディションの他の会場",
+    "viewAllVenues": "すべての会場を見る"
   },
   "calendar": {
     "title": "イベントカレンダー",
