@@ -41,6 +41,7 @@ export const EventTableView = React.memo(function EventTableView({
   shortlistLabel,
 }: EventTableViewProps) {
   const tEvents = useTranslations('events');
+  const tDisc = useTranslations('discovery');
   const tTick = useTranslations('tickets');
 
   if (events.length === 0) {
@@ -160,7 +161,7 @@ export const EventTableView = React.memo(function EventTableView({
                 <td className="p-[var(--table-cell-padding,0.875rem_1rem)] whitespace-nowrap">
                   <div className="flex items-center gap-1.5 flex-wrap">
                     <Badge variant="outline" className="text-[11px] font-medium py-0 px-2">
-                      {event.format.replace(/_/g, ' ')}
+                      {event.format === 'IN_PERSON' ? tDisc('inPerson') : event.format === 'HYBRID' ? tDisc('hybrid') : event.format === 'VIRTUAL' ? tDisc('virtual') : event.format.replace(/_/g, ' ')}
                     </Badge>
                     <span className="text-[11px] text-muted-foreground">
                       {event.scale.replace(/_/g, ' ')}

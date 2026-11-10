@@ -607,7 +607,8 @@
     "wingCongress": "コングレスウィング",
     "viewAllVenues": "すべての会場を見る",
     "hallsCountOne": "1 ホール",
-    "directoryTitle": "会場ディレクトリ"
+    "directoryTitle": "会場ディレクトリ",
+    "viewVenue": "会場を見る"
   },
   "calendar": {
     "title": "イベントカレンダー",

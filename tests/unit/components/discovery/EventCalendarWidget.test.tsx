@@ -30,6 +30,29 @@ describe('EventCalendarWidget', () => {
     expect(screen.getByText(/Full Multi-Track Timetable/i)).toBeDefined();
   });
 
+  it('opens on the next attendable event date, not an empty today', () => {
+    const future: EventSummary = {
+      ...mockEvents[0],
+      id: 'evt-future',
+      title: 'Future Expo 2027',
+      startDate: '2027-03-15T09:00:00Z',
+      endDate: '2027-03-16T18:00:00Z',
+    };
+
+    render(<EventCalendarWidget events={[future]} locale="en" regionCode="id" />);
+
+    expect(screen.getByText(/March 2027/)).toBeDefined();
+    expect(screen.getByText('Future Expo 2027')).toBeDefined();
+  });
+
+  it('uses a top-level heading for the calendar', () => {
+    render(<EventCalendarWidget events={mockEvents} locale="en" regionCode="id" />);
+
+    expect(
+      screen.getByRole('heading', { level: 2, name: /Event Calendar Guide/i })
+    ).toBeDefined();
+  });
+
   it('displays scheduled events on current active date', () => {
     render(<EventCalendarWidget events={mockEvents} locale="en" regionCode="id" />);
 

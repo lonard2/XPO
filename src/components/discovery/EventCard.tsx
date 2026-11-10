@@ -169,7 +169,13 @@ export const EventCard = React.memo(function EventCard({
     return null;
   }, [isCurated, event.organizerName, event.venue?.name, event.organizer, tEvents]);
 
-  const formatLabel = event.format ? event.format.replace(/_/g, ' ') : tDisc('inPerson');
+  const formatLabel = React.useMemo(() => {
+    if (!event.format) return tDisc('inPerson');
+    if (event.format === 'IN_PERSON') return tDisc('inPerson');
+    if (event.format === 'HYBRID') return tDisc('hybrid');
+    if (event.format === 'VIRTUAL') return tDisc('virtual');
+    return event.format.replace(/_/g, ' ');
+  }, [event.format, tDisc]);
 
   return (
     <Card
@@ -356,7 +362,7 @@ export const EventCard = React.memo(function EventCard({
             <span className="text-sm font-extrabold text-foreground tabular-nums">
               {temporal.isPast ? tEvents('concluded') : priceDisplay}
               {!temporal.isPast && showCurrencyCode && (
-                <span className="ml-1 align-middle font-mono text-[10px] font-semibold text-muted-foreground">
+                <span className="ml-1 align-middle font-mono text-[11px] font-semibold text-muted-foreground">
                   {priceCurrency}
                 </span>
               )}
@@ -365,7 +371,7 @@ export const EventCard = React.memo(function EventCard({
               <span className="text-[11px] text-muted-foreground">
                 {tTick('vipFrom', { price: paidFromDisplay })}
                 {showPaidCurrencyCode && (
-                  <span className="ml-1 font-mono text-[10px] font-semibold">
+                  <span className="ml-1 font-mono text-[11px] font-semibold">
                     {paidCurrency}
                   </span>
                 )}

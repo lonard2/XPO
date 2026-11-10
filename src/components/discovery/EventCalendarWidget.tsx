@@ -69,8 +69,20 @@ export function EventCalendarWidget({
     });
   }, [locale]);
 
-  const [selectedDate, setSelectedDate] = React.useState<Date>(() => new Date());
-  const [viewMonth, setViewMonth] = React.useState<Date>(() => new Date());
+  // Open on the next attendable event rather than an empty today. The
+  // homepage should not spend its first calendar view on a dead date.
+  const [initialDate] = React.useState<Date>(() => {
+    const full = events.filter((evt): evt is EventSummary => !isScheduleStub(evt));
+    const now = Date.now();
+    const next = full
+      .map((evt) => new Date(evt.startDate))
+      .filter((date) => !Number.isNaN(date.getTime()) && date.getTime() >= now)
+      .sort((a, b) => a.getTime() - b.getTime())[0];
+    return next ?? new Date();
+  });
+
+  const [selectedDate, setSelectedDate] = React.useState<Date>(initialDate);
+  const [viewMonth, setViewMonth] = React.useState<Date>(initialDate);
 
   const timezone = getTimeZoneForRegion(regionCode);
 
@@ -182,9 +194,9 @@ export function EventCalendarWidget({
             <CalendarIcon className="h-4 w-4" />
           </div>
           <div>
-            <h3 className="text-base sm:text-lg font-bold tracking-tight">
+            <h2 className="text-base sm:text-lg font-bold tracking-tight">
               {tCal('guideTitle') || 'Event Calendar Guide'}
-            </h3>
+            </h2>
             <p className="text-xs text-muted-foreground">
               {tCal('guideSubtitle') || 'Select a date to preview active exhibitions and keynotes.'}
             </p>
@@ -208,9 +220,9 @@ export function EventCalendarWidget({
         <div className="lg:col-span-5 rounded-xl border border-border/70 bg-background/50 p-4 space-y-3">
           {/* Month Controller */}
           <div className="flex items-center justify-between">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-foreground capitalize">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-foreground capitalize">
               {monthName}
-            </h4>
+            </h3>
             <div className="flex items-center gap-1">
               <Button size="icon" variant="ghost" className="h-10 w-10 sm:h-9 sm:w-9 min-h-[44px] min-w-[44px] sm:min-h-[36px] sm:min-w-[36px] rounded-lg cursor-pointer flex items-center justify-center hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2" onClick={prevMonth} aria-label={tCal('prevMonth') || 'Previous month'}>
                 <ChevronLeft className="h-4 w-4 sm:h-3.5 sm:w-3.5" />

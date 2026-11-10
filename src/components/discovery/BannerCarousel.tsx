@@ -75,6 +75,13 @@ export function BannerCarousel({
   // Auto-play timer with reset hygiene
   React.useEffect(() => {
     if (totalSlides <= 1 || isEffectivePaused) return;
+    // Reduced motion is a preference, not a hint: do not auto-advance.
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
 
     const timer = setInterval(() => {
       goToIndex((currentIndex + 1) % totalSlides);

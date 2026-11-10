@@ -607,7 +607,8 @@
     "wingCongress": "Kongress-Flügel",
     "viewAllVenues": "Alle Veranstaltungsorte ansehen",
     "hallsCountOne": "1 Halle",
-    "directoryTitle": "Veranstaltungsort-Verzeichnis"
+    "directoryTitle": "Veranstaltungsort-Verzeichnis",
+    "viewVenue": "Veranstaltungsort ansehen"
   },
   "calendar": {
     "title": "Interaktiver Eventkalender",

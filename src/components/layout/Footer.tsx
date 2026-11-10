@@ -43,7 +43,7 @@ export function Footer({ locale = "en" }: { locale?: string }) {
   };
 
   return (
-    <footer className="border-t border-border bg-card/50 text-foreground transition-colors pb-20 md:pb-8 pt-12">
+    <footer className="border-t border-border bg-card/50 text-foreground transition-colors pb-28 md:pb-8 pt-12">
       <div className="container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-12">
         {/* Col 1: Brand & Identity */}
         <div className="space-y-4">

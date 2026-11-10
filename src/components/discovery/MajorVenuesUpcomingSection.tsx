@@ -332,7 +332,7 @@ export function MajorVenuesUpcomingSection({
                       href={`/${locale}/venues/${venue.slug}`}
                       className="font-semibold text-primary hover:text-primary/80 transition-colors flex items-center gap-1.5 text-xs group/link"
                     >
-                      <span>{tVen('exploreFullCalendar', { venue: venue.name })}</span>
+                      <span>{tVen('viewVenue') || 'View venue'}</span>
                       <ArrowRight className="h-3.5 w-3.5 group-hover/link:translate-x-0.5 transition-transform" />
                     </Link>
                   </div>

@@ -42,6 +42,12 @@ describe("Quality Gate: homepage closing action", () => {
     expect(block).toContain("self-start");
   });
 
+  it("uses a view-venue label, not a calendar label that opens a venue", () => {
+    const venues = fs.readFileSync(VENUES, "utf8");
+    expect(venues).toContain("viewVenue");
+    expect(venues).not.toContain("exploreFullCalendar");
+  });
+
   it("uses a translation key for the venue directory CTA", () => {
     const venues = fs.readFileSync(VENUES, "utf8");
     expect(venues).toContain("viewAllVenues");

@@ -36,8 +36,21 @@ describe("Quality Gate: homepage hero hierarchy", () => {
     expect(banner).toContain("lg:text-4xl");
   });
 
+  it("pauses autoplay when reduced motion is requested", () => {
+    expect(banner).toContain("prefers-reduced-motion");
+  });
+
   it("reserves a mobile safe zone under the hero CTA", () => {
     expect(banner).toContain("pb-28");
+  });
+
+  it("gives every focusable element a visible 2px outline", () => {
+    const css = fs.readFileSync(
+      path.resolve(__dirname, "../../../src/app/globals.css"),
+      "utf8"
+    );
+    expect(css).toContain(":focus-visible");
+    expect(css).toContain("outline: 2px");
   });
 
   it("gives the primary card link a visible focus ring", () => {

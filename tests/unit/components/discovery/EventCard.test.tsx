@@ -223,6 +223,39 @@ describe('EventCard currency and venue clarity', () => {
     expect(screen.getByText('JPY')).toBeInTheDocument();
   });
 
+  it('renders the currency code at the documented 11px floor', () => {
+    const japanEvent = {
+      ...mockEvent,
+      id: 'japan-chip-size',
+      startDate: new Date('2027-09-14T09:00:00Z'),
+      endDate: new Date('2027-09-17T18:00:00Z'),
+      regionId: 'jp',
+      region: { id: 'jp', code: 'JP', name: 'Japan', currency: 'JPY' },
+      ticketTiers: [
+        { id: 'tier-jp', name: 'Standard Pass', price: 15000, currency: 'JPY' },
+      ],
+    } as DiscoveryEvent;
+
+    render(<EventCard event={japanEvent} locale="ja" />);
+
+    for (const chip of screen.getAllByText('JPY')) {
+      expect(chip.className).toContain('text-[11px]');
+      expect(chip.className).not.toContain('text-[10px]');
+    }
+  });
+
+  it('renders the event format as a human label, not a raw enum', () => {
+    render(
+      <EventCard
+        event={{ ...mockEvent, format: 'HYBRID' }}
+        locale="en"
+      />
+    );
+
+    expect(screen.getByText('Hybrid')).toBeInTheDocument();
+    expect(screen.queryByText('HYBRID')).toBeNull();
+  });
+
   it('keeps the venue name readable instead of clamping to one line', () => {
     render(<EventCard event={mockEvent} locale="en" />);
 

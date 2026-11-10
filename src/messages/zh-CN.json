@@ -607,7 +607,8 @@
     "wingCongress": "会议中心翼",
     "viewAllVenues": "查看全部场馆",
     "hallsCountOne": "1 个展馆",
-    "directoryTitle": "场馆目录"
+    "directoryTitle": "场馆目录",
+    "viewVenue": "查看场馆"
   },
   "calendar": {
     "title": "会展交互日历",

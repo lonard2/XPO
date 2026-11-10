@@ -607,7 +607,8 @@
     "wingCongress": "Ala de Congresos",
     "viewAllVenues": "Ver todos los recintos",
     "hallsCountOne": "1 pabellón",
-    "directoryTitle": "Directorio de recintos"
+    "directoryTitle": "Directorio de recintos",
+    "viewVenue": "Ver recinto"
   },
   "calendar": {
     "title": "Calendario Interactivo de Eventos",
