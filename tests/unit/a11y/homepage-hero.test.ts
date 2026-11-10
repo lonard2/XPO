@@ -24,10 +24,11 @@ describe("Quality Gate: homepage hero hierarchy", () => {
     expect(banner).toContain("lg:grid-cols-[1fr_1.4fr]");
   });
 
-  it("moves the carousel controls away from the badge row", () => {
-    expect(banner).toContain("lg:bottom-4");
+  it("moves the carousel controls away from the badge row and the strip", () => {
+    expect(banner).toContain("lg:top-4");
     expect(banner).toContain("lg:left-4");
-    expect(banner).toContain("lg:top-auto");
+    expect(banner).toContain("lg:bottom-auto");
+    expect(banner).not.toContain("lg:bottom-4");
   });
 
   it("keeps the platform H1 larger than the event title", () => {

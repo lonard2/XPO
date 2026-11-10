@@ -51,7 +51,11 @@ export function CrossRegionRail({
         </Link>
       </div>
 
-      <ResponsiveRow className="stagger-children" label={regionName}>
+      <ResponsiveRow
+        className="stagger-children"
+        label={regionName}
+        singleClassName="max-w-2xl"
+      >
         {items.map((item, index) => (
           <EventCard
             key={item.id}

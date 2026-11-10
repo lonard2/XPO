@@ -20,7 +20,7 @@ function stubMetrics(width: number, scrollWidth: number) {
 
 describe("rowGridClass", () => {
   it("centres a single item", () => {
-    expect(rowGridClass(1)).toContain("max-w-3xl");
+    expect(rowGridClass(1)).toContain("max-w-md");
   });
 });
 
@@ -93,6 +93,24 @@ describe("ResponsiveRow", () => {
     render(<ResponsiveRow>{items.slice(0, 2)}</ResponsiveRow>);
     const last = screen.getByRole("region").lastElementChild;
     expect(last?.className).not.toContain("md:col-span-2");
+  });
+
+  it("caps a one-item row at a compact width", () => {
+    render(<ResponsiveRow>{items.slice(0, 1)}</ResponsiveRow>);
+    const region = screen.getByRole("region");
+    expect(region.className).toContain("max-w-md");
+    expect(region.className).not.toContain("max-w-3xl");
+  });
+
+  it("lets a caller widen a single item when the card is horizontal", () => {
+    render(
+      <ResponsiveRow singleClassName="max-w-2xl">
+        {items.slice(0, 1)}
+      </ResponsiveRow>
+    );
+    const region = screen.getByRole("region");
+    expect(region.className).toContain("max-w-2xl");
+    expect(region.className).not.toContain("max-w-md");
   });
 
   it("keeps the controls mobile-only", () => {

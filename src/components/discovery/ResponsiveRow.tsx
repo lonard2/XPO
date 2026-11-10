@@ -13,6 +13,8 @@ interface ResponsiveRowProps {
   label?: string;
   /** Column cap at desktop widths. Dense cards cap lower than text rows. */
   maxColumns?: number;
+  /** Width override when the row holds exactly one item. */
+  singleClassName?: string;
 }
 
 /**
@@ -21,7 +23,13 @@ interface ResponsiveRowProps {
  * becomes the count-aware grid. Cards keep their own motion hooks
  * (tilt, sheen, press), so the row never imposes motion on them.
  */
-export function ResponsiveRow({ children, className, label, maxColumns = 5 }: ResponsiveRowProps) {
+export function ResponsiveRow({
+  children,
+  className,
+  label,
+  maxColumns = 5,
+  singleClassName,
+}: ResponsiveRowProps) {
   const tCom = useTranslations("common");
   const scrollerRef = React.useRef<HTMLDivElement | null>(null);
   const [canPrev, setCanPrev] = React.useState(false);
@@ -113,6 +121,7 @@ export function ResponsiveRow({ children, className, label, maxColumns = 5 }: Re
             "flex gap-6 overflow-x-auto snap-x snap-mandatory pb-2",
             "md:grid md:overflow-visible md:pb-0",
             rowGridClass(items.length, maxColumns),
+            items.length === 1 && singleClassName,
             className
           )}
         >

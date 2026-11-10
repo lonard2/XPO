@@ -59,6 +59,11 @@ describe("CrossRegionRail", () => {
       .getByText("Robotics Expo 2026")
       .closest("[data-variant]");
     expect(card?.getAttribute("data-variant")).toBe("horizontal");
+    // A horizontal card needs more width than a 448px grid card.
+    const scroller = screen
+      .getAllByRole("region")
+      .find((node) => node.className.includes("overflow-x-auto"));
+    expect(scroller?.className).toContain("max-w-2xl");
   });
 
   it("keeps a two-item rail in the grid, where cards stay readable", () => {
