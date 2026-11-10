@@ -19,7 +19,10 @@ import { normalizeRegion, regionForLocale, type RegionCode } from "./regions";
  */
 export function useActiveRegion(options?: {
   locale?: string;
+  /** Deliberate parent override; wins over the URL. */
   activeRegionCode?: string | null;
+  /** Server-resolved fallback for the first paint; the URL wins after mount. */
+  serverRegionCode?: string | null;
 }): RegionCode {
   const pathname: string | null = usePathname();
 
@@ -42,9 +45,14 @@ export function useActiveRegion(options?: {
         );
         if (cookieRegion) return cookieRegion;
       }
+      // The server fallback is the first-paint value; the browser state
+      // above wins once mounted so a query-only navigation and a remounted
+      // switcher both reflect the live edition.
+      const server = normalizeRegion(options?.serverRegionCode);
+      if (server) return server;
       return regionForLocale(options?.locale) ?? "id";
     },
-    [pathname, options?.locale, options?.activeRegionCode]
+    [pathname, options?.locale, options?.activeRegionCode, options?.serverRegionCode]
   );
 
   const [region, setRegion] = React.useState<RegionCode>(() => compute(false));

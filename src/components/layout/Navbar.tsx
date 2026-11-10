@@ -35,10 +35,10 @@ import { AuthModal } from "@/components/auth/AuthModal";
 interface NavbarProps {
   locale?: string;
   /** Server-resolved edition, so the first client render matches the HTML. */
-  activeRegionCode?: string;
+  serverRegionCode?: string;
 }
 
-export function Navbar({ locale = "en", activeRegionCode }: NavbarProps) {
+export function Navbar({ locale = "en", serverRegionCode }: NavbarProps) {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = React.useState(false);
@@ -64,7 +64,7 @@ export function Navbar({ locale = "en", activeRegionCode }: NavbarProps) {
   const [localDarkMode, setLocalDarkMode] = React.useState(false);
 
   // Single source of truth for the active edition (path > ?region= > cookie > locale).
-  const activeRegion = useActiveRegion({ locale, activeRegionCode });
+  const activeRegion = useActiveRegion({ locale, serverRegionCode });
 
   React.useEffect(() => {
     const isDark = document.documentElement.classList.contains("dark");

@@ -45,6 +45,30 @@ describe('EventCalendarWidget', () => {
     expect(screen.getByText('Future Expo 2027')).toBeDefined();
   });
 
+  it('opens on a live event today rather than a later one', () => {
+    const live: EventSummary = {
+      ...mockEvents[0],
+      id: 'evt-live',
+      title: 'Live Expo Today',
+      startDate: new Date(Date.now() - 86400000).toISOString(),
+      endDate: new Date(Date.now() + 86400000).toISOString(),
+    };
+    const future: EventSummary = {
+      ...mockEvents[0],
+      id: 'evt-later',
+      title: 'Later Expo',
+      startDate: '2027-03-15T09:00:00Z',
+      endDate: '2027-03-16T18:00:00Z',
+    };
+
+    render(
+      <EventCalendarWidget events={[future, live]} locale="en" regionCode="id" />
+    );
+
+    expect(screen.getByText('Live Expo Today')).toBeDefined();
+    expect(screen.queryByText('Later Expo')).toBeNull();
+  });
+
   it('uses a top-level heading for the calendar', () => {
     render(<EventCalendarWidget events={mockEvents} locale="en" regionCode="id" />);
 

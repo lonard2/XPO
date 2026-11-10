@@ -188,6 +188,7 @@ export function EventCategoryPills({
       if (tArch && typeof tArch.raw === 'function') {
         const obj = tArch.raw(category.id);
         if (obj?.title) translatedTitle = obj.title;
+        if (obj?.description) translatedSubtitle = obj.description;
       }
     } catch {
       // fallback

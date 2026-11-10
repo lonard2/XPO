@@ -202,7 +202,6 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         },
       },
       orderBy: { name: 'asc' },
-      take: 6,
     });
 
     if (dbVenues.length > 0) {
@@ -463,7 +462,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
 
         {concludedEvents.length > 0 && (
           <Link
-            href={`/${locale}/events?status=concluded`}
+            href={`/${locale}/events?dateRange=concluded`}
             className="inline-flex min-h-[44px] items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:underline underline-offset-2"
           >
             <span>{tHome('recentlyConcluded')}</span>

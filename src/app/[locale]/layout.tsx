@@ -127,7 +127,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
         <NextIntlClientProvider messages={messages} locale={locale}>
           <AuthProvider>
             <SettingsProvider>
-              <Navbar locale={locale} activeRegionCode={activeRegionCode} />
+              <Navbar locale={locale} serverRegionCode={activeRegionCode} />
               <main id="main-content" tabIndex={-1} className="flex-1 outline-none">
                 {children}
               </main>

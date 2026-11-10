@@ -42,6 +42,17 @@ describe("Quality Gate: homepage closing action", () => {
     expect(block).toContain("self-start");
   });
 
+  it("does not cap the venue directory at six", () => {
+    const idx = page.indexOf("db.venue.findMany");
+    expect(idx).toBeGreaterThan(-1);
+    const block = page.slice(idx, idx + 900);
+    expect(block).not.toContain("take: 6");
+  });
+
+  it("links the concluded archive to the supported date filter", () => {
+    expect(page).toContain("dateRange=concluded");
+  });
+
   it("uses a view-venue label, not a calendar label that opens a venue", () => {
     const venues = fs.readFileSync(VENUES, "utf8");
     expect(venues).toContain("viewVenue");

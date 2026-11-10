@@ -24,6 +24,13 @@ describe("Quality Gate: homepage hero hierarchy", () => {
     expect(banner).toContain("lg:grid-cols-[1fr_1.4fr]");
   });
 
+  it("hides the desktop transport controls on phones", () => {
+    const line = banner
+      .split("\n")
+      .find((row) => row.includes("absolute top-4 right-4"));
+    expect(line).toContain("hidden lg:flex");
+  });
+
   it("moves the carousel controls away from the badge row and the strip", () => {
     expect(banner).toContain("lg:top-4");
     expect(banner).toContain("lg:left-4");

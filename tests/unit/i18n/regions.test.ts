@@ -110,7 +110,11 @@ describe("resolveActiveRegion", () => {
 });
 
 describe("useActiveRegion", () => {
-  const renderRegion = async (props?: { locale?: string; activeRegionCode?: string | null }) => {
+  const renderRegion = async (props?: {
+    locale?: string;
+    activeRegionCode?: string | null;
+    serverRegionCode?: string | null;
+  }) => {
     const { useActiveRegion } = await import("@/lib/i18n/useActiveRegion");
     const { renderHook } = await import("@testing-library/react");
     return renderHook(() => useActiveRegion(props));
@@ -145,5 +149,12 @@ describe("useActiveRegion", () => {
     window.history.replaceState({}, "", "/en?region=jp");
     const { result } = await renderRegion({ locale: "en", activeRegionCode: "global" });
     expect(result.current).toBe("global");
+  });
+
+  it("lets the URL override a stale server fallback", async () => {
+    window.history.replaceState({}, "", "/en?region=jp");
+    document.cookie = "xpo_region=; path=/; max-age=0";
+    const { result } = await renderRegion({ locale: "en", serverRegionCode: "id" });
+    expect(result.current).toBe("jp");
   });
 });

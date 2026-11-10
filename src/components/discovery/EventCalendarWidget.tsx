@@ -74,11 +74,19 @@ export function EventCalendarWidget({
   const [initialDate] = React.useState<Date>(() => {
     const full = events.filter((evt): evt is EventSummary => !isScheduleStub(evt));
     const now = Date.now();
+    // Include a live event that started earlier but runs through today;
+    // otherwise the widget opens past the expo happening right now.
     const next = full
-      .map((evt) => new Date(evt.startDate))
-      .filter((date) => !Number.isNaN(date.getTime()) && date.getTime() >= now)
-      .sort((a, b) => a.getTime() - b.getTime())[0];
-    return next ?? new Date();
+      .filter((evt) => {
+        const end = new Date(evt.endDate).getTime();
+        return !Number.isNaN(end) && end >= now;
+      })
+      .sort(
+        (a, b) =>
+          new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+      )[0];
+    if (!next) return new Date();
+    return new Date(Math.max(new Date(next.startDate).getTime(), now));
   });
 
   const [selectedDate, setSelectedDate] = React.useState<Date>(initialDate);

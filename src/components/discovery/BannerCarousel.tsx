@@ -494,7 +494,7 @@ export function BannerCarousel({
       </div>
 
         {/* Carousel Navigation Controls with WCAG 44x44px Touch Targets */}
-        <div className="absolute top-4 right-4 sm:top-6 sm:right-6 lg:top-4 lg:left-4 lg:bottom-auto lg:right-auto flex items-center gap-1.5 z-20">
+        <div className="absolute top-4 right-4 sm:top-6 sm:right-6 lg:top-4 lg:left-4 lg:bottom-auto lg:right-auto hidden lg:flex items-center gap-1.5 z-20">
           <button
             type="button"
             className="relative flex h-10 w-10 sm:h-9 sm:w-9 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 items-center justify-center rounded-full bg-black/50 hover:bg-black/80 text-white border border-white/20 backdrop-blur-sm transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/60 focus-visible:outline-none"
