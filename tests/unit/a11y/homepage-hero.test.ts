@@ -36,6 +36,10 @@ describe("Quality Gate: homepage hero hierarchy", () => {
     expect(banner).toContain("lg:text-4xl");
   });
 
+  it("reserves a mobile safe zone under the hero CTA", () => {
+    expect(banner).toContain("pb-28");
+  });
+
   it("gives the primary card link a visible focus ring", () => {
     expect(card).toContain("focus-visible:ring-2");
     expect(card).toContain("data-variant={variant}");

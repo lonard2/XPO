@@ -416,7 +416,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
 
           <Link
             href={`/${locale}/events`}
-            className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'min-h-[44px] sm:min-h-[36px] gap-1.5 text-xs font-semibold')}
+            className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'self-start sm:self-auto min-h-[44px] sm:min-h-[36px] gap-1.5 text-xs font-semibold')}
           >
             <span>{tHome('viewFullSchedule') || 'View Full Schedule'}</span>
             <ArrowRight className="h-3.5 w-3.5" />

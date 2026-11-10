@@ -310,6 +310,18 @@ export function Navbar({ locale = "en", activeRegionCode }: NavbarProps) {
             {/* Footer Settings & Language Info */}
             <div className="pt-2 border-t border-border flex flex-col gap-2">
               <LanguageSwitcher currentLocale={locale} />
+              <button
+                type="button"
+                data-mobile-signin
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  setIsAuthModalOpen(true);
+                }}
+                className="flex items-center gap-2 text-xs font-medium text-foreground hover:text-primary py-1.5 text-left cursor-pointer"
+              >
+                <LogIn className="h-4 w-4" />
+                <span>{tNav("signIn")}</span>
+              </button>
               <Link
                 href={`/${locale}/settings`}
                 onClick={() => setIsMobileMenuOpen(false)}

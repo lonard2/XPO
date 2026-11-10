@@ -34,6 +34,14 @@ describe("Quality Gate: homepage closing action", () => {
     expect(page).toContain('<MajorVenuesUpcomingSection');
   });
 
+  it("keeps the featured CTA clear of the floating concierge on phones", () => {
+    const lines = page.split("\n");
+    const idx = lines.findIndex((line) => line.includes("viewFullSchedule"));
+    expect(idx).toBeGreaterThan(-1);
+    const block = lines.slice(Math.max(0, idx - 4), idx + 4).join("\n");
+    expect(block).toContain("self-start");
+  });
+
   it("uses a translation key for the venue directory CTA", () => {
     const venues = fs.readFileSync(VENUES, "utf8");
     expect(venues).toContain("viewAllVenues");

@@ -44,6 +44,7 @@ export function MobileBottomNav({ locale = "en" }: { locale?: string }) {
             <Link
               key={item.href}
               href={item.href}
+              aria-current={isActive ? "page" : undefined}
               className={cn(
                 "flex flex-col items-center justify-center flex-1 h-full py-1 text-[11px] font-medium transition-colors touch-manipulation",
                 isActive
