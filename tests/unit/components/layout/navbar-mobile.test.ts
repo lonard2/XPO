@@ -17,8 +17,12 @@ describe("Quality Gate: phone top bar", () => {
     expect(navbar).toContain("hidden sm:flex");
   });
 
-  it("offers a clear sign-in action inside the mobile drawer", () => {
-    expect(navbar).toContain("data-mobile-signin");
+  it("offers a clear sign-in action only to guests", () => {
+    const idx = navbar.indexOf("data-mobile-signin");
+    expect(idx).toBeGreaterThan(-1);
+    const block = navbar.slice(Math.max(0, idx - 260), idx + 420);
+    expect(block).toContain("!user");
+    expect(block).toContain("min-h-[44px]");
   });
 
   it("keeps the edition switcher visible at every width", () => {

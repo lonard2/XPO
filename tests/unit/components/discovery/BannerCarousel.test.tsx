@@ -62,6 +62,17 @@ describe('Discovery Component: BannerCarousel', () => {
     expect(screen.getByRole('heading', { name: 'Asia AI & Cloud Developer Summit 2026' })).toBeInTheDocument();
   });
 
+  it('keeps the mobile dots in normal flow below the stage', () => {
+    render(<BannerCarousel slides={mockSlides} locale="en" />);
+
+    const container = screen
+      .getAllByLabelText(/Go to slide 1/i)
+      .map((dot) => dot.parentElement)
+      .find((node) => node?.className.includes('lg:hidden'));
+    expect(container?.className).toContain('relative');
+    expect(container?.className).not.toContain('absolute');
+  });
+
   it('clamps the index when the slide array shrinks', () => {
     const { rerender } = render(<BannerCarousel slides={mockSlides} locale="en" />);
 

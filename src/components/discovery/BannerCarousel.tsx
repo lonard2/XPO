@@ -525,7 +525,7 @@ export function BannerCarousel({
 
         {/* Slide Indicators with Backdrop Pill Scrim & 44px Touch Area Hitboxes.
             Dots serve mobile; desktop uses the up-next strip below. */}
-        <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 lg:hidden flex items-center gap-1 z-20 bg-black/40 backdrop-blur-md px-2 py-1 rounded-full border border-white/10 shadow-sm">
+        <div className="relative mx-auto mt-3 mb-3 flex w-fit items-center gap-1 z-20 bg-black/40 backdrop-blur-md px-2 py-1 rounded-full border border-white/10 shadow-sm lg:hidden">
           {slides.map((_, idx) => (
             <button
               key={idx}
