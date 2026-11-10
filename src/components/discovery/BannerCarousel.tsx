@@ -254,7 +254,7 @@ export function BannerCarousel({
           if (e.target === e.currentTarget) clearPrevIndex();
         }}
         className={cn(
-          "relative min-h-[420px] sm:min-h-[480px] lg:min-h-[520px] flex flex-col justify-end p-5 pt-20 pb-28 sm:p-8 sm:pb-20 lg:p-12 overflow-hidden",
+          "relative min-h-[420px] sm:min-h-[480px] lg:min-h-[520px] flex flex-col justify-end p-5 pt-12 pb-28 sm:p-8 sm:pb-20 lg:p-12 overflow-hidden",
           "lg:grid lg:grid-cols-[1fr_1.4fr] lg:justify-stretch lg:gap-0 lg:p-0",
           hidden && "absolute inset-0 pointer-events-none"
         )}
