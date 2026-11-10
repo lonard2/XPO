@@ -102,10 +102,10 @@ describe('MajorVenuesUpcomingSection', () => {
       />
     );
 
-    expect(screen.getByText('JIExpo Kemayoran')).toBeDefined();
-    expect(screen.getByText('Jakarta Pusat')).toBeDefined();
-    expect(screen.getByText('Manufacturing Indonesia 2026')).toBeDefined();
-    expect(screen.getByText('Hall A1-D2')).toBeDefined();
+    expect(screen.getAllByText('JIExpo Kemayoran').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Jakarta Pusat').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Manufacturing Indonesia 2026').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Hall A1-D2').length).toBeGreaterThan(0);
   });
 
   it('does not list concluded events under the current and near-upcoming heading', () => {
@@ -133,11 +133,11 @@ describe('MajorVenuesUpcomingSection', () => {
       />
     );
 
-    expect(screen.getByText('JIExpo Kemayoran')).toBeDefined();
-    expect(screen.getByText('ICE BSD City')).toBeDefined();
+    expect(screen.getAllByText('JIExpo Kemayoran').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('ICE BSD City').length).toBeGreaterThan(0);
   });
 
-  it('gives every venue a card, with attendable ones first', () => {
+  it('lists every venue in the directory, including quiet ones', () => {
     const { container } = render(
       <MajorVenuesUpcomingSection
         venues={[...concludedOnlyVenues, ...mockVenues]}
@@ -146,8 +146,15 @@ describe('MajorVenuesUpcomingSection', () => {
       />
     );
 
+    // The spotlight only carries venues with events; the directory carries all.
     const names = [...container.querySelectorAll('h3')].map((node) => node.textContent?.trim());
-    expect(names).toEqual(['JIExpo Kemayoran', 'ICE BSD City']);
+    expect(names).toEqual(['JIExpo Kemayoran']);
+
+    const directory = container.querySelector('[data-venue-directory]');
+    expect(directory).not.toBeNull();
+    expect(directory?.textContent).toContain('JIExpo Kemayoran');
+    expect(directory?.textContent).toContain('ICE BSD City');
+    expect(directory?.textContent).toContain('No events announced yet');
   });
 
   it('localizes the hall count on a quiet card', () => {
@@ -162,7 +169,7 @@ describe('MajorVenuesUpcomingSection', () => {
     expect(screen.getByText('1 Hall')).toBeDefined();
   });
 
-  it('stretches every venue card to the row height', () => {
+  it('stretches every spotlight card to the row height', () => {
     const { container } = render(
       <MajorVenuesUpcomingSection
         venues={[...mockVenues, ...concludedOnlyVenues]}
@@ -172,13 +179,13 @@ describe('MajorVenuesUpcomingSection', () => {
     );
 
     const cards = container.querySelectorAll('[data-venue-card]');
-    expect(cards.length).toBe(2);
+    expect(cards.length).toBe(1);
     for (const card of cards) {
       expect(card.className).toContain('h-full');
     }
   });
 
-  it('renders quiet venues as compact cards without a photo', () => {
+  it('does not hide a quiet venue behind a photo card', () => {
     const { container } = render(
       <MajorVenuesUpcomingSection
         venues={[...mockVenues, ...concludedOnlyVenues]}
@@ -187,13 +194,10 @@ describe('MajorVenuesUpcomingSection', () => {
       />
     );
 
-    const quiet = container.querySelector('[data-quiet-venue]');
-    expect(quiet).not.toBeNull();
-    expect(quiet?.textContent).toContain('ICE BSD City');
-    expect(quiet?.textContent).toContain('Tangerang');
-    // The quiet card skips the banner image and the event block.
-    expect(quiet?.querySelector('img')).toBeNull();
-    expect(quiet?.textContent).not.toContain('Current & Near-Upcoming Events');
+    const directory = container.querySelector('[data-venue-directory]');
+    expect(directory?.querySelector('img')).toBeNull();
+    expect(directory?.textContent).toContain('Tangerang');
+    expect(directory?.textContent).toContain('ICE BSD City');
   });
 
   it('says nothing is scheduled once, without a zero counter', () => {
@@ -206,7 +210,7 @@ describe('MajorVenuesUpcomingSection', () => {
     );
 
     // The venue keeps its card; only the event area is quiet.
-    expect(screen.getByText('ICE BSD City')).toBeDefined();
+    expect(screen.getAllByText('ICE BSD City').length).toBeGreaterThan(0);
     expect(screen.getByText('No events announced yet')).toBeDefined();
     expect(screen.queryByText(/0 LISTED/i)).toBeNull();
   });

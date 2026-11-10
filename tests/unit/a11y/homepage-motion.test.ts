@@ -24,14 +24,14 @@ describe("Quality Gate: Homepage motion wiring", () => {
     expect(page).toContain("<ResponsiveRow");
   });
 
-  it("wires all three bento cells to the tilt engine with tactile physics", () => {
-    expect(page.match(/data-tilt/g) ?? []).toHaveLength(3);
-    expect(page.match(/card-interactive-3d/g) ?? []).toHaveLength(3);
+  it("wires the two inventory-facing bento cells to the tilt engine", () => {
+    expect(page.match(/data-tilt/g) ?? []).toHaveLength(2);
+    expect(page.match(/card-interactive-3d/g) ?? []).toHaveLength(2);
   });
 
   it("gives the bento cells the expressive hover sheen", () => {
     const cells = page.match(/<div[^>]*card-interactive-3d[^>]*>/g) ?? [];
-    expect(cells).toHaveLength(3);
+    expect(cells).toHaveLength(2);
     for (const cell of cells) expect(cell).toContain("sheen");
   });
 });

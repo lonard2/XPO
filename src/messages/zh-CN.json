@@ -483,7 +483,7 @@
   },
   "venues": {
     "title": "会展中心与展厅名录",
-    "subtitle": "查询印尼、日本及全球主要展馆、交通路线与展厅承重面积。",
+    "subtitle": "本版本的全部场馆，包含展馆数量、交通信息与下一场活动。",
     "searchVenuesPlaceholder": "按场馆名、城市或展厅搜索...",
     "grossSpace": "总展览面积",
     "totalHalls": "展厅总数",
@@ -606,7 +606,8 @@
     "noUpcomingShort": "暂无活动公布",
     "wingCongress": "会议中心翼",
     "viewAllVenues": "查看全部场馆",
-    "hallsCountOne": "1 个展馆"
+    "hallsCountOne": "1 个展馆",
+    "directoryTitle": "场馆目录"
   },
   "calendar": {
     "title": "会展交互日历",

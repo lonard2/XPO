@@ -483,7 +483,7 @@
   },
   "venues": {
     "title": "コンベンションセンター＆ホール一覧",
-    "subtitle": "インドネシア、日本、グローバルの主要展示場、交通アクセス、収容面積を検索。",
+    "subtitle": "このエディションのすべての会場。ホール数、交通アクセス、次の開催予定を掲載。",
     "searchVenuesPlaceholder": "会場名、都市、ホール名で検索...",
     "grossSpace": "総展示面積",
     "totalHalls": "総ホール数",
@@ -606,7 +606,8 @@
     "noUpcomingShort": "開催予定はまだありません",
     "wingCongress": "コングレスウィング",
     "viewAllVenues": "すべての会場を見る",
-    "hallsCountOne": "1 ホール"
+    "hallsCountOne": "1 ホール",
+    "directoryTitle": "会場ディレクトリ"
   },
   "calendar": {
     "title": "イベントカレンダー",

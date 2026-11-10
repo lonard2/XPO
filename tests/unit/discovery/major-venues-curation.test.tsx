@@ -50,10 +50,10 @@ describe("MajorVenuesUpcomingSection curation", () => {
     );
 
     // Both venues keep a card: the section doubles as the venue directory.
-    expect(screen.getByText("Live Industrial Expo")).toBeDefined();
-    expect(screen.getByText("Jakarta International Expo")).toBeDefined();
-    expect(screen.getByText("ICE BSD City")).toBeDefined();
-    expect(screen.getByText("Indonesia Convention Exhibition")).toBeDefined();
+    expect(screen.getAllByText("Live Industrial Expo").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Jakarta International Expo").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("ICE BSD City").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Indonesia Convention Exhibition").length).toBeGreaterThan(0);
 
     // The quiet one says so once, without a 0 count masquerading as a status.
     expect(screen.getByText("No events announced yet")).toBeDefined();
@@ -66,8 +66,9 @@ describe("MajorVenuesUpcomingSection curation", () => {
       <MajorVenuesUpcomingSection venues={[quietVenue]} locale="en" regionCode="id" />
     );
 
-    expect(container.querySelector(".stagger-children")).not.toBeNull();
-    expect(screen.getByText("ICE BSD City")).toBeDefined();
+    // No spotlight row exists, but the directory still carries the venue.
+    expect(container.querySelector("[data-venue-directory]")).not.toBeNull();
+    expect(screen.getAllByText("ICE BSD City").length).toBeGreaterThan(0);
     expect(screen.getByText("No events announced yet")).toBeDefined();
   });
 });

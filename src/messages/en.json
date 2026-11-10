@@ -483,7 +483,7 @@
   },
   "venues": {
     "title": "Convention Centers & Hall Directory",
-    "subtitle": "Search premier exhibition halls, transit routes, and floor capacities across Indonesia, Japan, and Global Gateways.",
+    "subtitle": "Every venue in this edition, with hall counts, transit access, and what is on next.",
     "searchVenuesPlaceholder": "Search venues by name, city, or hall...",
     "grossSpace": "Gross Exhibition Space",
     "totalHalls": "Total Halls",
@@ -606,7 +606,8 @@
     "noUpcomingShort": "No events announced yet",
     "wingCongress": "Congress Wing",
     "viewAllVenues": "View all venues",
-    "hallsCountOne": "1 Hall"
+    "hallsCountOne": "1 Hall",
+    "directoryTitle": "Venue directory"
   },
   "calendar": {
     "title": "Interactive Event Calendar",

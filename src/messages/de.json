@@ -483,7 +483,7 @@
   },
   "venues": {
     "title": "Kongresszentren & Hallenverzeichnis",
-    "subtitle": "Finden Sie führende Messehallen, Anfahrtswege und Kapazitäten in Indonesien, Japan und weltweit.",
+    "subtitle": "Alle Veranstaltungsorte dieser Edition mit Hallenanzahl, Anbindung und dem nächsten Event.",
     "searchVenuesPlaceholder": "Zentrum nach Name, Stadt oder Halle suchen...",
     "grossSpace": "Brutto-Ausstellungsfläche",
     "totalHalls": "Hallen gesamt",
@@ -606,7 +606,8 @@
     "noUpcomingShort": "Noch keine Events angekündigt",
     "wingCongress": "Kongress-Flügel",
     "viewAllVenues": "Alle Veranstaltungsorte ansehen",
-    "hallsCountOne": "1 Halle"
+    "hallsCountOne": "1 Halle",
+    "directoryTitle": "Veranstaltungsort-Verzeichnis"
   },
   "calendar": {
     "title": "Interaktiver Eventkalender",

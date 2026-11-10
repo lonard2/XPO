@@ -69,15 +69,76 @@ export function MajorVenuesUpcomingSection({
       return temporal.isUpcoming || temporal.isLive;
     });
 
-  // Every venue keeps a card: this section doubles as the venue directory,
-  // and a campus with nothing scheduled this month is still a place a
-  // delegate may want to visit. Venues with something attendable lead;
-  // quiet venues keep a compact card so six empty cards no longer add
-  // roughly 1,200px of repeated empty state.
+  // Every venue stays visible. Venues with something attendable get a
+  // spotlight card; the full directory below lists all of them, including
+  // the quiet ones. Nothing is filtered out or hidden.
+  const activeVenues = venues.filter(
+    (venue) => attendableEventsFor(venue).length > 0
+  );
   const orderedVenues = [
-    ...venues.filter((venue) => attendableEventsFor(venue).length > 0),
+    ...activeVenues,
     ...venues.filter((venue) => attendableEventsFor(venue).length === 0),
   ];
+
+  const renderDirectoryRow = (venue: VenueWithEvents) => {
+    const nextEvent = attendableEventsFor(venue)[0];
+    const hallCount = countHalls(venue.halls);
+    const venueName = splitVenueName(venue.name);
+    const dates = nextEvent
+      ? formatDateRange(nextEvent.startDate, nextEvent.endDate, locale, timezone)
+      : null;
+
+    return (
+      <li key={venue.id} className="border-b border-border/60 last:border-0">
+        <Link
+          href={`/${locale}/venues/${venue.slug}`}
+          className="flex min-h-[64px] flex-col gap-1 px-4 py-3 transition-colors hover:bg-muted/30 md:grid md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:items-center md:gap-4"
+        >
+          <div className="min-w-0">
+            <p className="text-sm font-semibold text-foreground">
+              {venueName.primary}
+            </p>
+            {venueName.secondary && (
+              <p className="text-[11px] text-muted-foreground">
+                {venueName.secondary}
+              </p>
+            )}
+            <p className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-muted-foreground">
+              <span className="inline-flex items-center gap-1">
+                <MapPin className="h-3 w-3 shrink-0 text-primary" />
+                {venue.city}
+              </span>
+              {hallCount > 0 && (
+                <span className="inline-flex items-center gap-1">
+                  <Layers className="h-3 w-3 shrink-0 text-primary" />
+                  {hallCount === 1
+                    ? tVen('hallsCountOne')
+                    : tVen('hallsCount', { count: hallCount })}
+                </span>
+              )}
+            </p>
+            {venue.transitInfo && (
+              <p className="mt-0.5 line-clamp-1 text-[11px] text-muted-foreground">
+                {venue.transitInfo}
+              </p>
+            )}
+          </div>
+          <div className="min-w-0 text-xs">
+            {nextEvent && dates ? (
+              <>
+                <p className="line-clamp-1 font-medium text-foreground">
+                  {nextEvent.title}
+                </p>
+                <p className="text-muted-foreground">{dates}</p>
+              </>
+            ) : (
+              <p className="text-muted-foreground">{tVen('noUpcomingShort')}</p>
+            )}
+          </div>
+        </Link>
+      </li>
+    );
+  };
 
   return (
     <section className={cn('w-full space-y-6', className)}>
@@ -89,10 +150,13 @@ export function MajorVenuesUpcomingSection({
             <span>{tVen('editionSpotlight', { region: currentRegionName })}</span>
           </div>
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight text-foreground">
-            {tVen('happeningAtMajorVenues')}
+            {activeVenues.length > 0
+              ? tVen('happeningAtMajorVenues')
+              : tVen('title')}
           </h2>
           <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-            {tVen('subtitle') || 'Quick glance at active exhibitions and upcoming highlights across top convention centers.'}
+            {tVen('subtitle') ||
+              'Every venue in this edition, with hall counts, transit access, and what is on next.'}
           </p>
         </div>
 
@@ -108,189 +172,192 @@ export function MajorVenuesUpcomingSection({
         </Link>
       </div>
 
-      {/* Major Venues Responsive Grid */}
-      {orderedVenues.length > 0 && (
-      <ResponsiveRow className="stagger-children" label={tVen('title') || 'Major venues'} maxColumns={3}>
-        {orderedVenues.map((venue) => {
-          // Max 3 attendable events per venue
-          const upcomingEvents = attendableEventsFor(venue).slice(0, 3);
-          const isQuiet = upcomingEvents.length === 0;
-          const hallCount = countHalls(venue.halls);
-          const venueName = splitVenueName(venue.name);
+      <div
+        className={cn(
+          'grid grid-cols-1 gap-6',
+          activeVenues.length > 0 && 'xl:grid-cols-[1.4fr_1fr]'
+        )}
+      >
+        {/* Spotlight: only venues with something attendable */}
+        {activeVenues.length > 0 && (
+          <ResponsiveRow
+            className="stagger-children"
+            label={tVen('happeningAtMajorVenues') || 'Major venues'}
+            maxColumns={3}
+          >
+            {activeVenues.map((venue) => {
+              const upcomingEvents = attendableEventsFor(venue).slice(0, 3);
+              const hallCount = countHalls(venue.halls);
+              const venueName = splitVenueName(venue.name);
 
-          return (
-            <Card
-              key={venue.id}
-              data-tilt
-              data-quiet-venue={isQuiet ? 'true' : undefined}
-              data-venue-card
-              className="flex h-full flex-col justify-between overflow-hidden border-border/80 bg-card hover:border-primary/60 transition-all duration-300 shadow-xs hover:shadow-md"
-            >
-              {/* Venue Header Banner: quiet venues skip the photo */}
-              {!isQuiet && (
-              <div className="relative h-36 sm:h-44 w-full overflow-hidden bg-slate-950 sheen">
-                {/* Painted underneath always, so a dead image URL degrades to the gradient
-                    instead of a broken image. Two seeded venues had a 404 photo. */}
-                <div
-                  className="absolute inset-0 bg-gradient-to-r from-primary/30 via-slate-800 to-slate-900"
-                  aria-hidden="true"
-                />
-                {venue.imageUrl && (
-                  <img
-                    src={venue.imageUrl}
-                    alt={venue.name}
-                    className="absolute inset-0 h-full w-full object-cover object-center opacity-75 hover:scale-105 transition-transform duration-700"
-                    onError={(event) => {
-                      event.currentTarget.style.display = 'none';
-                    }}
-                  />
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-card via-card/40 to-transparent" />
+              return (
+                <Card
+                  key={venue.id}
+                  data-tilt
+                  data-venue-card
+                  className="flex h-full flex-col justify-between overflow-hidden border-border/80 bg-card hover:border-primary/60 transition-all duration-300 shadow-xs hover:shadow-md"
+                >
+                  {/* Venue Header Banner */}
+                  <div className="relative h-36 sm:h-44 w-full overflow-hidden bg-slate-950 sheen">
+                    <div
+                      className="absolute inset-0 bg-gradient-to-r from-primary/30 via-slate-800 to-slate-900"
+                      aria-hidden="true"
+                    />
+                    {venue.imageUrl && (
+                      <img
+                        src={venue.imageUrl}
+                        alt={venue.name}
+                        className="absolute inset-0 h-full w-full object-cover object-center opacity-75 hover:scale-105 transition-transform duration-700"
+                        onError={(event) => {
+                          event.currentTarget.style.display = 'none';
+                        }}
+                      />
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-card via-card/40 to-transparent" />
 
-                <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between">
-                  <div className="flex items-center gap-1.5 text-xs font-semibold text-foreground bg-background/95 px-2.5 py-1 rounded-md backdrop-blur-md shadow-xs border border-border/70">
-                    <Building2 className="h-3.5 w-3.5 text-primary shrink-0" />
-                    <span className="line-clamp-1">{venue.city}</span>
+                    <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 text-xs font-semibold text-foreground bg-background/95 px-2.5 py-1 rounded-md backdrop-blur-md shadow-xs border border-border/70">
+                        <Building2 className="h-3.5 w-3.5 text-primary shrink-0" />
+                        <span className="line-clamp-1">{venue.city}</span>
+                      </div>
+
+                      {hallCount > 0 && (
+                        <Badge variant="secondary" className="text-xs font-semibold bg-background/95 text-foreground border-border/70 tabular-nums backdrop-blur-md px-2.5 py-1 flex items-center gap-1">
+                          <Layers className="h-3 w-3 text-primary shrink-0" />
+                          <span>
+                            {hallCount === 1
+                              ? tVen('hallsCountOne')
+                              : tVen('hallsCount', { count: hallCount })}
+                          </span>
+                        </Badge>
+                      )}
+                    </div>
                   </div>
 
-                  {hallCount > 0 && (
-                    <Badge variant="secondary" className="text-xs font-semibold bg-background/95 text-foreground border-border/70 tabular-nums backdrop-blur-md px-2.5 py-1 flex items-center gap-1">
-                      <Layers className="h-3 w-3 text-primary shrink-0" />
-                      <span>{hallCount === 1 ? tVen('hallsCountOne') : tVen('hallsCount', { count: hallCount })}</span>
-                    </Badge>
-                  )}
-                </div>
-              </div>
-              )}
-
-              {/* Venue Title & Transit Link */}
-              <div className={cn('p-4 sm:p-5', isQuiet ? 'pb-2' : 'pb-3')}>
-                <Link
-                  href={`/${locale}/venues/${venue.slug}`}
-                  className="group inline-block"
-                  title={venue.name}
-                >
-                  <h3 className="text-lg sm:text-xl font-bold tracking-tight text-foreground group-hover:text-primary transition-colors line-clamp-2">
-                    {venueName.primary}
-                  </h3>
-                  {venueName.secondary && (
-                    <p className="text-[11px] text-muted-foreground mt-0.5">{venueName.secondary}</p>
-                  )}
-                </Link>
-                {venue.transitInfo && (
-                  <p className="text-xs text-muted-foreground line-clamp-2 mt-1 flex items-start gap-1.5">
-                    <MapPin className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />
-                    <span>{venue.transitInfo}</span>
-                  </p>
-                )}
-                {isQuiet && (
-                  <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
-                    <span className="inline-flex items-center gap-1">
-                      <Building2 className="h-3.5 w-3.5 text-primary shrink-0" />
-                      {venue.city}
-                    </span>
-                    {hallCount > 0 && (
-                      <span className="inline-flex items-center gap-1">
-                        <Layers className="h-3.5 w-3.5 text-primary shrink-0" />
-                        {hallCount === 1 ? tVen('hallsCountOne') : tVen('hallsCount', { count: hallCount })}
-                      </span>
+                  {/* Venue Title & Transit Link */}
+                  <div className="p-4 sm:p-5 pb-3">
+                    <Link
+                      href={`/${locale}/venues/${venue.slug}`}
+                      className="group inline-block"
+                      title={venue.name}
+                    >
+                      <h3 className="text-lg sm:text-xl font-bold tracking-tight text-foreground group-hover:text-primary transition-colors line-clamp-2">
+                        {venueName.primary}
+                      </h3>
+                      {venueName.secondary && (
+                        <p className="text-[11px] text-muted-foreground mt-0.5">
+                          {venueName.secondary}
+                        </p>
+                      )}
+                    </Link>
+                    {venue.transitInfo && (
+                      <p className="text-xs text-muted-foreground line-clamp-2 mt-1 flex items-start gap-1.5">
+                        <MapPin className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />
+                        <span>{venue.transitInfo}</span>
+                      </p>
                     )}
                   </div>
-                )}
-              </div>
 
-              {/* Up to 3 Current & Near-Upcoming Events */}
-              <div className={cn('p-4 sm:p-5 pt-0 space-y-2.5 flex-1 flex flex-col justify-start', isQuiet && 'pb-2')}>
-                {!isQuiet && (
-                <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground pt-3 border-t border-border/70 flex items-center justify-between">
-                  <span>{tVen('currentUpcomingEvents')}</span>
-                  <span className="text-xs font-semibold text-primary font-mono tabular-nums">
-                    {upcomingEvents.length === 1
-                      ? tVen('listedCountOne')
-                      : tVen('listedCount', { count: upcomingEvents.length })}
-                  </span>
-                </div>
-                )}
+                  {/* Up to 3 Current & Near-Upcoming Events */}
+                  <div className="p-4 sm:p-5 pt-0 space-y-2.5 flex-1 flex flex-col justify-start">
+                    <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground pt-3 border-t border-border/70 flex items-center justify-between">
+                      <span>{tVen('currentUpcomingEvents')}</span>
+                      <span className="text-xs font-semibold text-primary font-mono tabular-nums">
+                        {upcomingEvents.length === 1
+                          ? tVen('listedCountOne')
+                          : tVen('listedCount', { count: upcomingEvents.length })}
+                      </span>
+                    </div>
 
-                {upcomingEvents.length > 0 ? (
-                  <div className="space-y-2">
-                    {upcomingEvents.map((evt: VenueWithEvents['events'][number]) => {
-                      const tokens = getArchetypeTokens(evt.archetype);
-                      const archetypeBadge = getReadableBadgeColors(tokens.primary);
-                      const dates = formatDateRange(evt.startDate, evt.endDate, locale, timezone);
+                    <div className="space-y-2">
+                      {upcomingEvents.map((evt: VenueWithEvents['events'][number]) => {
+                        const tokens = getArchetypeTokens(evt.archetype);
+                        const archetypeBadge = getReadableBadgeColors(tokens.primary);
+                        const dates = formatDateRange(evt.startDate, evt.endDate, locale, timezone);
 
-                      return (
-                        <div
-                          key={evt.id}
-                          className="group/evt relative rounded-xl border border-border/70 bg-muted/20 hover:bg-muted/40 p-3 hover:border-primary/40 transition-all flex items-center justify-between gap-3"
-                        >
-                          <div className="space-y-1.5 min-w-0 flex-1">
-                            <div className="flex items-center gap-1.5 flex-wrap">
-                              <Badge
-                                variant="default"
-                                className="text-[11px] px-2 py-0.5 uppercase font-bold tracking-wide shadow-none"
-                                style={{
-                                  backgroundColor: archetypeBadge.background,
-                                  color: archetypeBadge.color,
-                                }}
-                              >
-                                {archTitle(tArch, evt.archetype, tokens.displayName)}
-                              </Badge>
-
-                              {evt.venueHallName && (
-                                <span className="text-[11px] font-semibold text-foreground/90 bg-muted/80 px-2 py-0.5 rounded-md border border-border/60">
-                                  {evt.venueHallName}
-                                </span>
-                              )}
-                            </div>
-
-                            <Link
-                              href={`/${locale}/events/${evt.slug}`}
-                              className="block text-xs sm:text-sm font-bold text-foreground group-hover/evt:text-primary transition-colors truncate after:absolute after:inset-0 focus-visible:outline-none"
-                              title={evt.title}
-                            >
-                              {evt.title}
-                            </Link>
-
-                            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                              <Calendar className="h-3.5 w-3.5 shrink-0 text-muted-foreground/80" />
-                              <span className="truncate tabular-nums font-medium">{dates}</span>
-                            </div>
-                          </div>
-
+                        return (
                           <div
-                            aria-hidden="true"
-                            className="h-10 w-10 sm:h-9 sm:w-9 p-0 rounded-full bg-background/50 group-hover/evt:bg-primary group-hover/evt:text-primary-foreground transition-colors min-h-[44px] min-w-[44px] sm:min-h-[36px] sm:min-w-[36px] flex items-center justify-center shrink-0 border border-border/40 group-hover/evt:border-primary pointer-events-none"
+                            key={evt.id}
+                            className="group/evt relative rounded-xl border border-border/70 bg-muted/20 hover:bg-muted/40 p-3 hover:border-primary/40 transition-all flex items-center justify-between gap-3"
                           >
-                            <ArrowRight className="h-4 w-4" />
+                            <div className="space-y-1.5 min-w-0 flex-1">
+                              <div className="flex items-center gap-1.5 flex-wrap">
+                                <Badge
+                                  variant="default"
+                                  className="text-[11px] px-2 py-0.5 uppercase font-bold tracking-wide shadow-none"
+                                  style={{
+                                    backgroundColor: archetypeBadge.background,
+                                    color: archetypeBadge.color,
+                                  }}
+                                >
+                                  {archTitle(tArch, evt.archetype, tokens.displayName)}
+                                </Badge>
+
+                                {evt.venueHallName && (
+                                  <span className="text-[11px] font-semibold text-foreground/90 bg-muted/80 px-2 py-0.5 rounded-md border border-border/60">
+                                    {evt.venueHallName}
+                                  </span>
+                                )}
+                              </div>
+
+                              <Link
+                                href={`/${locale}/events/${evt.slug}`}
+                                className="block text-xs sm:text-sm font-bold text-foreground group-hover/evt:text-primary transition-colors truncate after:absolute after:inset-0 focus-visible:outline-none"
+                                title={evt.title}
+                              >
+                                {evt.title}
+                              </Link>
+
+                              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                                <Calendar className="h-3.5 w-3.5 shrink-0 text-muted-foreground/80" />
+                                <span className="truncate tabular-nums font-medium">{dates}</span>
+                              </div>
+                            </div>
+
+                            <div
+                              aria-hidden="true"
+                              className="h-10 w-10 sm:h-9 sm:w-9 p-0 rounded-full bg-background/50 group-hover/evt:bg-primary group-hover/evt:text-primary-foreground transition-colors min-h-[44px] min-w-[44px] sm:min-h-[36px] sm:min-w-[36px] flex items-center justify-center shrink-0 border border-border/40 group-hover/evt:border-primary pointer-events-none"
+                            >
+                              <ArrowRight className="h-4 w-4" />
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                    </div>
                   </div>
-                ) : (
-                  <p className="pt-1 text-[11px] leading-relaxed text-muted-foreground">
-                    {tVen('noUpcomingShort')}
-                  </p>
-                )}
-              </div>
 
-              {/* Venue Footer Link */}
-              <div className="px-4 sm:px-5 py-3 border-t border-border/70 bg-muted/30 flex items-center justify-between text-xs">
-                <Link
-                  href={`/${locale}/venues/${venue.slug}`}
-                  className="font-semibold text-primary hover:text-primary/80 transition-colors flex items-center gap-1.5 text-xs group/link"
-                >
-                  <span>{tVen('exploreFullCalendar', { venue: venue.name })}</span>
-                  <ArrowRight className="h-3.5 w-3.5 group-hover/link:translate-x-0.5 transition-transform" />
-                </Link>
-              </div>
-            </Card>
-          );
-        })}
-      </ResponsiveRow>
-      )}
+                  {/* Venue Footer Link */}
+                  <div className="px-4 sm:px-5 py-3 border-t border-border/70 bg-muted/30 flex items-center justify-between text-xs">
+                    <Link
+                      href={`/${locale}/venues/${venue.slug}`}
+                      className="font-semibold text-primary hover:text-primary/80 transition-colors flex items-center gap-1.5 text-xs group/link"
+                    >
+                      <span>{tVen('exploreFullCalendar', { venue: venue.name })}</span>
+                      <ArrowRight className="h-3.5 w-3.5 group-hover/link:translate-x-0.5 transition-transform" />
+                    </Link>
+                  </div>
+                </Card>
+              );
+            })}
+          </ResponsiveRow>
+        )}
 
+        {/* Full directory: every venue, including the quiet ones */}
+        <div
+          data-venue-directory
+          className="overflow-hidden rounded-2xl border border-border/70 bg-card"
+        >
+          <div className="flex items-center justify-between border-b border-border/70 bg-muted/20 px-4 py-3">
+            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              {tVen('directoryTitle') || 'Venue directory'}
+            </p>
+            <span className="font-mono text-[11px] font-semibold text-muted-foreground tabular-nums">
+              {orderedVenues.length}
+            </span>
+          </div>
+          <ul>{orderedVenues.map(renderDirectoryRow)}</ul>
+        </div>
+      </div>
     </section>
   );
 }

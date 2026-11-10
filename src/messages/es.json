@@ -483,7 +483,7 @@
   },
   "venues": {
     "title": "Recintos Feriales y Directorio de Pabellones",
-    "subtitle": "Consulte pabellones de exposiciones, accesos de transporte y capacidades en Indonesia, Japón y el mundo.",
+    "subtitle": "Todos los recintos de esta edición, con número de pabellones, acceso y próximo evento.",
     "searchVenuesPlaceholder": "Buscar recinto por nombre, ciudad o pabellón...",
     "grossSpace": "Superficie Bruta de Exposición",
     "totalHalls": "Total de Pabellones",
@@ -606,7 +606,8 @@
     "noUpcomingShort": "Aún no hay eventos anunciados",
     "wingCongress": "Ala de Congresos",
     "viewAllVenues": "Ver todos los recintos",
-    "hallsCountOne": "1 pabellón"
+    "hallsCountOne": "1 pabellón",
+    "directoryTitle": "Directorio de recintos"
   },
   "calendar": {
     "title": "Calendario Interactivo de Eventos",

@@ -483,7 +483,7 @@
   },
   "venues": {
     "title": "Pusat Konvensi & Direktori Hall",
-    "subtitle": "Cari hall pameran unggulan, akses transportasi, dan kapasitas ruangan di Indonesia, Jepang, dan Gerbang Global.",
+    "subtitle": "Setiap venue di edisi ini, lengkap dengan jumlah hall, akses transit, dan acara berikutnya.",
     "searchVenuesPlaceholder": "Cari venue berdasarkan nama, kota, atau hall...",
     "grossSpace": "Total Luas Area Pameran",
     "totalHalls": "Jumlah Hall",
@@ -606,7 +606,8 @@
     "noUpcomingShort": "Belum ada acara diumumkan",
     "wingCongress": "Wing Congress",
     "viewAllVenues": "Lihat semua venue",
-    "hallsCountOne": "1 Hall"
+    "hallsCountOne": "1 Hall",
+    "directoryTitle": "Direktori venue"
   },
   "calendar": {
     "title": "Kalender Acara Interaktif",

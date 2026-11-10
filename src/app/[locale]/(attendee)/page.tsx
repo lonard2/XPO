@@ -3,12 +3,10 @@ import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { headers, cookies } from 'next/headers';
 import {
   Compass,
-  Layers,
   ArrowRight,
   CheckCircle2,
   Building2,
   Ticket,
-  Sparkles,
   Calendar,
 } from 'lucide-react';
 import { db } from '@/lib/db';
@@ -464,23 +462,14 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         )}
 
         {concludedEvents.length > 0 && (
-          <div className="rounded-xl border border-border/60 bg-muted/30 px-4 py-3">
-            <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
-              {tHome('recentlyConcluded')}
-            </p>
-            <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1.5">
-              {concludedEvents.map((event) => (
-                <li key={event.id}>
-                  <Link
-                    href={`/${locale}/events/${event.slug}`}
-                    className="text-xs font-medium text-muted-foreground hover:text-foreground hover:underline underline-offset-2"
-                  >
-                    {event.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <Link
+            href={`/${locale}/events?status=concluded`}
+            className="inline-flex min-h-[44px] items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:underline underline-offset-2"
+          >
+            <span>{tHome('recentlyConcluded')}</span>
+            <span className="font-mono tabular-nums">({concludedEvents.length})</span>
+            <ArrowRight className="h-3 w-3" />
+          </Link>
         )}
       </section>
 
@@ -664,66 +653,6 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
             </div>
           </div>
 
-          {/* Bento Cell 3: Pass perks and the day-of guidebook (Panoramic 12 Cols) */}
-          <div
-            data-tilt
-            className="lg:col-span-12 rounded-2xl border border-border/80 bg-gradient-to-r from-card via-card to-emerald-500/5 p-6 sm:p-8 shadow-sm hover:border-emerald-500/40 hover:shadow-md transition-all card-interactive-3d sheen">
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-              <div className="space-y-2 max-w-xl">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
-                    <Sparkles className="h-5 w-5" />
-                  </div>
-                  <h3 className="text-lg sm:text-xl font-bold tracking-tight text-foreground text-balance">
-                    {tHome('networkingPerksTitle') || 'Pass perks and the day-of guidebook'}
-                  </h3>
-                </div>
-                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed text-pretty">
-                  {tHome('networkingPerksDesc') || 'Every pass includes the event guidebook with hall maps and the day’s timetable. Higher tiers add what the organizer lists, from fast-track gates to CME credit tracking on medical symposiums.'}
-                </p>
-                <Link
-                  href={`/${locale}/events`}
-                  className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'mt-1 min-h-[44px] sm:min-h-[36px] gap-1.5 text-xs font-semibold')}
-                >
-                  <span>{tHome('perksCta') || 'Browse events'}</span>
-                  <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 shrink-0 lg:max-w-2xl w-full lg:w-auto">
-                <div className="flex items-center gap-2 rounded-xl bg-muted/40 p-3 text-xs text-foreground border border-border/40">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
-                  <span>{tHome('networkingPerksPill1') || 'Guidebook with hall maps'}</span>
-                </div>
-                <div className="flex items-center gap-2 rounded-xl bg-muted/40 p-3 text-xs text-foreground border border-border/40">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
-                  <span>{tHome('networkingPerksPill2') || 'Organizer-listed VIP perks'}</span>
-                </div>
-                <div className="flex items-center gap-2 rounded-xl bg-muted/40 p-3 text-xs text-foreground border border-border/40">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
-                  <span>{tHome('networkingPerksPill3') || 'CME credits on medical events'}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Organizer Callout Strip (Secondary Audience Routing) */}
-        <div className="rounded-xl border border-border/60 bg-muted/30 px-5 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-          <div className="flex items-center gap-2.5 text-muted-foreground text-center sm:text-left">
-            <Layers className="h-4 w-4 text-primary shrink-0" />
-            <span>
-              <strong className="text-foreground font-semibold">{tHome('organizerCalloutTitle') || 'Hosting an Exhibition or Industry Summit?'}</strong>{' '}
-              {tHome('organizerCalloutDesc') || 'Access the Organizer Portal to publish events, configure booth allocations, customize visual themes, and deploy optical turnstile check-in.'}
-            </span>
-          </div>
-          <Link
-            href={`/${locale}/dashboard`}
-            className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'min-h-[44px] sm:min-h-[36px] text-xs font-semibold gap-1.5 shrink-0')}
-          >
-            <span>{tHome('organizerCalloutBtn') || 'Open Organizer Portal'}</span>
-            <ArrowRight className="h-3 w-3" />
-          </Link>
         </div>
       </section>
 

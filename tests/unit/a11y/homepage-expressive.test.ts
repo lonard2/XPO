@@ -30,10 +30,12 @@ describe("Quality Gate: Homepage expressive wiring, part two", () => {
     src.split("\n").find((line) => line.includes(needle)) ?? "";
 
   it("cascades the major-venue grid entrance", () => {
-    const row = lineWith(venues, "<ResponsiveRow");
-    expect(row).toContain("stagger-children");
+    const lines = venues.split("\n");
+    const idx = lines.findIndex((line) => line.includes("<ResponsiveRow"));
+    const block = lines.slice(idx, idx + 5).join("\n");
+    expect(block).toContain("stagger-children");
     // Venue cards are dense: three columns is the cap.
-    expect(row).toContain("maxColumns={3}");
+    expect(block).toContain("maxColumns={3}");
   });
 
   it("sweeps the venue banner imagery on hover", () => {
