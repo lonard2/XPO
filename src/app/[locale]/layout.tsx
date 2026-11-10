@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from "next";
+import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { Plus_Jakarta_Sans, Newsreader, JetBrains_Mono, Atkinson_Hyperlegible } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { routing, Locale } from "@/i18n/routing";
 import { getLocaleDirection } from "@/lib/i18n/formatters";
+import { resolveActiveRegion } from "@/lib/i18n/geo";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
@@ -89,6 +91,14 @@ interface LocaleLayoutProps {
 
 export default async function LocaleLayout({ children, params }: LocaleLayoutProps) {
   const { locale } = await params;
+  // Resolve the edition once on the server so the navbar and the page agree
+  // on the first paint. The client hook adopts this value as its explicit
+  // input and only reads the URL or cookie after mount.
+  const cookieStore = await cookies();
+  const activeRegionCode = resolveActiveRegion({
+    locale,
+    cookieRegion: cookieStore.get("xpo_region")?.value,
+  });
 
   if (!routing.locales.includes(locale as Locale)) {
     notFound();
@@ -117,7 +127,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
         <NextIntlClientProvider messages={messages} locale={locale}>
           <AuthProvider>
             <SettingsProvider>
-              <Navbar locale={locale} />
+              <Navbar locale={locale} activeRegionCode={activeRegionCode} />
               <main id="main-content" tabIndex={-1} className="flex-1 outline-none">
                 {children}
               </main>

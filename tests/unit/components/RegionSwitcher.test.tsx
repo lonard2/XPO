@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import React from "react";
 import { RegionSwitcher } from "@/components/layout/RegionSwitcher";
 
@@ -37,6 +37,20 @@ describe("Component: RegionSwitcher", () => {
     fireEvent.click(jpOption);
 
     expect(mockPush).toHaveBeenCalledWith("/en?region=jp");
+  });
+
+  it("resolves the edition from ?region= after mount", async () => {
+    document.cookie = "xpo_region=; path=/; max-age=0";
+    window.history.replaceState({}, "", "/en?region=jp");
+    render(<RegionSwitcher currentLocale="en" compact />);
+
+    // The first render is server-safe; the URL lands one paint later.
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: /JP \(JPY\)/ })
+      ).toBeDefined();
+    });
+    window.history.replaceState({}, "", "/en");
   });
 
   it("renders a compact edition trigger with the currency code", () => {

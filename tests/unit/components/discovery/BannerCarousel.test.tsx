@@ -62,6 +62,22 @@ describe('Discovery Component: BannerCarousel', () => {
     expect(screen.getByRole('heading', { name: 'Asia AI & Cloud Developer Summit 2026' })).toBeInTheDocument();
   });
 
+  it('clamps the index when the slide array shrinks', () => {
+    const { rerender } = render(<BannerCarousel slides={mockSlides} locale="en" />);
+
+    fireEvent.click(screen.getByLabelText('Next slide'));
+    expect(
+      screen.getByRole('heading', { name: 'Asia AI & Cloud Developer Summit 2026' })
+    ).toBeInTheDocument();
+
+    // An edition switch can hand the carousel a shorter array. The old
+    // index must not read past the end.
+    rerender(<BannerCarousel slides={[mockSlides[0]]} locale="en" />);
+    expect(
+      screen.getByRole('heading', { name: 'Manufacturing Indonesia Expo 2026' })
+    ).toBeInTheDocument();
+  });
+
   it('T1.3: navigates to previous slide on clicking prev button with wrap-around', () => {
     render(<BannerCarousel slides={mockSlides} locale="en" />);
 

@@ -182,6 +182,16 @@ export function BannerCarousel({
     return () => clearTimeout(timer);
   }, [prevIndex, currentIndex]);
 
+  // An edition switch can hand this component a shorter slide array. Clamp
+  // the index before the next render reads past the end.
+  React.useEffect(() => {
+    if (totalSlides === 0) return;
+    if (currentIndex > totalSlides - 1) {
+      setCurrentIndex(totalSlides - 1);
+      setPrevIndex(null);
+    }
+  }, [totalSlides, currentIndex]);
+
 
   if (!slides || slides.length === 0) {
     return null;
@@ -192,6 +202,7 @@ export function BannerCarousel({
   // hidden from assistive tech while the incoming layer fades over it.
   const renderSlide = (index: number, hidden: boolean) => {
     const slide = slides[index];
+    if (!slide) return null;
     const slideTokens = getArchetypeTokens(slide.archetype);
     const slideBadge = getReadableBadgeColors(slideTokens.primary);
     const slideRegionCode = (slide.regionCode || 'ID').toUpperCase();
