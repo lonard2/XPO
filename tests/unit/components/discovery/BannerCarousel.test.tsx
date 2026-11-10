@@ -43,6 +43,7 @@ describe('Discovery Component: BannerCarousel', () => {
 
   afterEach(() => {
     vi.useRealTimers();
+    vi.unstubAllGlobals();
   });
 
   it('T1.1: renders first slide with title, tagline, and countdown timer for upcoming event', () => {
@@ -71,6 +72,31 @@ describe('Discovery Component: BannerCarousel', () => {
       .find((node) => node?.className.includes('lg:hidden'));
     expect(container?.className).toContain('relative');
     expect(container?.className).not.toContain('absolute');
+  });
+
+  it('hides the autoplay control when reduced motion is requested', () => {
+    vi.stubGlobal(
+      'matchMedia',
+      vi.fn().mockReturnValue({
+        matches: true,
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+      })
+    );
+
+    render(<BannerCarousel slides={mockSlides} locale="en" />);
+    expect(screen.queryByLabelText(/Pause autoplay/i)).toBeNull();
+    expect(screen.queryByLabelText(/Resume autoplay/i)).toBeNull();
+  });
+
+  it('does not poison the index from an empty slide list', () => {
+    const { rerender } = render(<BannerCarousel slides={[]} locale="en" />);
+    fireEvent.keyDown(window, { key: 'ArrowRight' });
+
+    rerender(<BannerCarousel slides={mockSlides} locale="en" />);
+    expect(
+      screen.getByRole('heading', { name: 'Manufacturing Indonesia Expo 2026' })
+    ).toBeInTheDocument();
   });
 
   it('clamps the index when the slide array shrinks', () => {

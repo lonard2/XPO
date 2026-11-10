@@ -55,6 +55,7 @@ export function BannerCarousel({
   const [touchEndY, setTouchEndY] = React.useState<number | null>(null);
   // Outgoing slide index for the crossfade. Null means a single layer.
   const [prevIndex, setPrevIndex] = React.useState<number | null>(null);
+  const [prefersReducedMotion, setPrefersReducedMotion] = React.useState(false);
   const stripRef = React.useRef<HTMLDivElement | null>(null);
 
   const totalSlides = slides?.length || 0;
@@ -73,26 +74,40 @@ export function BannerCarousel({
   }, [currentIndex, resetAutoPlay]);
 
   // Auto-play timer with reset hygiene
+  // Reduced motion is a preference, not a hint: no auto-advance and no
+  // pause/resume control that would lie about a stopped timer.
   React.useEffect(() => {
-    if (totalSlides <= 1 || isEffectivePaused) return;
-    // Reduced motion is a preference, not a hint: do not auto-advance.
-    if (
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
-      return;
-    }
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setPrefersReducedMotion(media.matches);
+    const onChange = (event: MediaQueryListEvent) =>
+      setPrefersReducedMotion(event.matches);
+    media.addEventListener?.("change", onChange);
+    return () => media.removeEventListener?.("change", onChange);
+  }, []);
+
+  React.useEffect(() => {
+    if (totalSlides <= 1 || isEffectivePaused || prefersReducedMotion) return;
 
     const timer = setInterval(() => {
       goToIndex((currentIndex + 1) % totalSlides);
     }, autoPlayInterval);
 
     return () => clearInterval(timer);
-  }, [totalSlides, isEffectivePaused, autoPlayInterval, timerKey, currentIndex, goToIndex]);
+  }, [
+    totalSlides,
+    isEffectivePaused,
+    prefersReducedMotion,
+    autoPlayInterval,
+    timerKey,
+    currentIndex,
+    goToIndex,
+  ]);
 
   // Keyboard navigation with input focus scoping
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (totalSlides === 0) return;
       const activeEl = document.activeElement;
       const isInputActive = activeEl && ['INPUT', 'TEXTAREA', 'SELECT'].includes(activeEl.tagName);
       if (isInputActive) return;
@@ -203,6 +218,10 @@ export function BannerCarousel({
   if (!slides || slides.length === 0) {
     return null;
   }
+
+  // Clamp for the render itself. The effect below resets the state, but a
+  // shrinking array must not paint a blank frame before that effect runs.
+  const safeIndex = totalSlides > 0 ? Math.min(currentIndex, totalSlides - 1) : 0;
 
 
   // One slide layer. The outgoing layer renders stacked, inert and
@@ -490,7 +509,7 @@ export function BannerCarousel({
           the slide area so its image cannot bleed behind the strip below. */}
       <div className="hero-stage relative">
       {prevIndex !== null && prevIndex !== currentIndex && renderSlide(prevIndex, true)}
-      {renderSlide(currentIndex, false)}
+      {renderSlide(safeIndex, false)}
       </div>
 
         {/* Carousel Navigation Controls with WCAG 44x44px Touch Targets */}
@@ -513,14 +532,16 @@ export function BannerCarousel({
             <ChevronRight className="h-4 w-4" />
           </button>
 
-          <button
-            type="button"
-            className="relative flex h-10 w-10 sm:h-9 sm:w-9 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 items-center justify-center rounded-full bg-black/50 hover:bg-black/80 text-white border border-white/20 backdrop-blur-sm transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/60 focus-visible:outline-none"
-            onClick={() => setIsManuallyPaused(!isManuallyPaused)}
-            aria-label={isManuallyPaused ? tHero('resumeAutoplay') : tHero('pauseAutoplay')}
-          >
-            {isManuallyPaused ? <Play className="h-3.5 w-3.5" /> : <Pause className="h-3.5 w-3.5" />}
-          </button>
+          {!prefersReducedMotion && (
+            <button
+              type="button"
+              className="relative flex h-10 w-10 sm:h-9 sm:w-9 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 items-center justify-center rounded-full bg-black/50 hover:bg-black/80 text-white border border-white/20 backdrop-blur-sm transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/60 focus-visible:outline-none"
+              onClick={() => setIsManuallyPaused(!isManuallyPaused)}
+              aria-label={isManuallyPaused ? tHero('resumeAutoplay') : tHero('pauseAutoplay')}
+            >
+              {isManuallyPaused ? <Play className="h-3.5 w-3.5" /> : <Pause className="h-3.5 w-3.5" />}
+            </button>
+          )}
         </div>
 
         {/* Slide Indicators with Backdrop Pill Scrim & 44px Touch Area Hitboxes.
