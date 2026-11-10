@@ -81,6 +81,13 @@ describe('EventCategoryPills', () => {
     expect(src).toContain('20%-0.7rem');
   });
 
+  it('left-aligns the category row instead of centering a short tail', () => {
+    const { container } = render(<EventCategoryPills locale="en" />);
+    const row = container.querySelector('.flex.flex-wrap.justify-start');
+    expect(row).not.toBeNull();
+    expect(container.querySelector('.flex.flex-wrap.justify-center')).toBeNull();
+  });
+
   it('wraps the cluster tabs instead of clipping the last one', () => {
     render(<EventCategoryPills locale="en" />);
 

@@ -3,7 +3,8 @@ import { rowGridClass } from "@/lib/discovery/grids";
 
 describe("grid classes follow inventory", () => {
   it("never leaves empty columns for one or two items", () => {
-    expect(rowGridClass(1)).toContain("max-w-md");
+    expect(rowGridClass(1)).toContain("max-w-none");
+    expect(rowGridClass(1)).not.toContain("mx-auto");
     expect(rowGridClass(1)).not.toContain("lg:grid-cols-3");
     expect(rowGridClass(2)).toContain("md:grid-cols-2");
     expect(rowGridClass(2)).not.toContain("lg:grid-cols-3");

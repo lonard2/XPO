@@ -608,7 +608,9 @@
     "viewAllVenues": "Ver todos los recintos",
     "hallsCountOne": "1 pabellón",
     "directoryTitle": "Directorio de recintos",
-    "viewVenue": "Ver recinto"
+    "viewVenue": "Ver recinto",
+    "showAllVenues": "Mostrar los {count} recintos",
+    "showFewerVenues": "Mostrar menos"
   },
   "calendar": {
     "title": "Calendario Interactivo de Eventos",

@@ -256,6 +256,18 @@ describe('EventCard currency and venue clarity', () => {
     expect(screen.queryByText('HYBRID')).toBeNull();
   });
 
+  it('stacks the horizontal card until lg, then splits it', () => {
+    const { container } = render(
+      <EventCard event={mockEvent} locale="en" variant="horizontal" />
+    );
+
+    const card = container.querySelector('[data-variant="horizontal"]');
+    expect(card?.className).toContain('lg:flex-row');
+    expect(card?.className).not.toContain('md:flex-row');
+    const image = card?.firstElementChild;
+    expect(image?.className).toContain('lg:w-64');
+  });
+
   it('keeps the venue name readable instead of clamping to one line', () => {
     render(<EventCard event={mockEvent} locale="en" />);
 

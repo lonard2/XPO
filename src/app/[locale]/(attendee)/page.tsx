@@ -455,7 +455,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         ) : (
           <ResponsiveRow className="stagger-children" label={tHome('featuredInRegion') || 'Featured events'}>
             {featuredRowEvents.map((event, idx) => (
-              <EventCard key={event.id} event={event} locale={locale} priority={idx < 3} />
+              <EventCard key={event.id} event={event} locale={locale} priority={idx < 3} variant={featuredRowEvents.length <= 2 ? 'horizontal' : 'grid'} />
             ))}
           </ResponsiveRow>
         )}
@@ -502,6 +502,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
                 event={item}
                 locale={locale}
                 priority={index === 0}
+                variant={row.items.length <= 2 ? 'horizontal' : 'grid'}
               />
             ))}
           </ResponsiveRow>

@@ -608,7 +608,9 @@
     "viewAllVenues": "すべての会場を見る",
     "hallsCountOne": "1 ホール",
     "directoryTitle": "会場ディレクトリ",
-    "viewVenue": "会場を見る"
+    "viewVenue": "会場を見る",
+    "showAllVenues": "全 {count} 会場を表示",
+    "showFewerVenues": "表示を減らす"
   },
   "calendar": {
     "title": "イベントカレンダー",

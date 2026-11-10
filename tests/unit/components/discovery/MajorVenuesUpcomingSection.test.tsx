@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import React from 'react';
 import { MajorVenuesUpcomingSection } from '@/components/discovery/MajorVenuesUpcomingSection';
 import { VenueWithEvents } from '@/types/discovery';
@@ -213,6 +213,102 @@ describe('MajorVenuesUpcomingSection', () => {
     expect(screen.getAllByText('ICE BSD City').length).toBeGreaterThan(0);
     expect(screen.getByText('No events announced yet')).toBeDefined();
     expect(screen.queryByText(/0 LISTED/i)).toBeNull();
+  });
+
+  it('keeps the split for one or two active venues', () => {
+    const secondActive: VenueWithEvents = {
+      ...mockVenues[0],
+      id: 'venue-ice',
+      name: 'ICE BSD City',
+      slug: 'ice-bsd-city',
+      city: 'Tangerang',
+      halls: [{ id: 'h3', name: 'Hall 5' }],
+      events: [
+        {
+          id: 'evt-tech',
+          title: 'Tech Expo 2026',
+          slug: 'tech-expo-2026',
+          archetype: 'TECH_DEV_SUMMIT',
+          startDate: '2026-12-10T09:00:00Z',
+          endDate: '2026-12-12T18:00:00Z',
+          venueHallName: 'Hall 5',
+          minPrice: 0,
+        },
+      ],
+    };
+
+    const { container } = render(
+      <MajorVenuesUpcomingSection
+        venues={[mockVenues[0], secondActive]}
+        locale="en"
+        regionCode="id"
+      />
+    );
+
+    const split = container.querySelector('div.grid.grid-cols-1.gap-6');
+    expect(split?.className).toContain('xl:grid-cols-[1.4fr_1fr]');
+  });
+
+  it('drops the split when three or more venues have events', () => {
+    const extra = (id: string, slug: string): VenueWithEvents => ({
+      ...mockVenues[0],
+      id,
+      name: `Venue ${id}`,
+      slug,
+      halls: [{ id: `${id}-hall`, name: 'Hall 1' }],
+      events: [
+        {
+          id: `${id}-event`,
+          title: `Event ${id}`,
+          slug: `${slug}-event`,
+          archetype: 'TECH_DEV_SUMMIT',
+          startDate: '2026-12-10T09:00:00Z',
+          endDate: '2026-12-12T18:00:00Z',
+          venueHallName: 'Hall 1',
+          minPrice: 0,
+        },
+      ],
+    });
+
+    const { container } = render(
+      <MajorVenuesUpcomingSection
+        venues={[
+          mockVenues[0],
+          extra('venue-b', 'venue-b'),
+          extra('venue-c', 'venue-c'),
+        ]}
+        locale="en"
+        regionCode="id"
+      />
+    );
+
+    const split = container.querySelector('div.grid.grid-cols-1.gap-6');
+    expect(split?.className).not.toContain('xl:grid-cols-[1.4fr_1fr]');
+  });
+
+  it('shows six directory rows first and reveals the rest on demand', () => {
+    const manyQuiet: VenueWithEvents[] = Array.from({ length: 9 }, (_, index) => ({
+      ...concludedOnlyVenues[0],
+      id: `quiet-${index}`,
+      name: `Quiet Venue ${index}`,
+      slug: `quiet-venue-${index}`,
+    }));
+
+    const { container } = render(
+      <MajorVenuesUpcomingSection
+        venues={manyQuiet}
+        locale="en"
+        regionCode="id"
+      />
+    );
+
+    expect(
+      container.querySelectorAll('[data-venue-directory] li').length
+    ).toBe(6);
+    fireEvent.click(screen.getByRole('button', { name: /Show all 9 venues/i }));
+    expect(
+      container.querySelectorAll('[data-venue-directory] li').length
+    ).toBe(9);
   });
 
   it('returns null gracefully when empty venues array is provided', () => {

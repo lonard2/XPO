@@ -62,7 +62,7 @@ export function CrossRegionRail({
             event={item}
             locale={locale}
             priority={index === 0}
-            variant={items.length === 1 ? 'horizontal' : 'grid'}
+            variant={items.length <= 2 ? 'horizontal' : 'grid'}
           />
         ))}
       </ResponsiveRow>

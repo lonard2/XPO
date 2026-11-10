@@ -20,7 +20,7 @@ function stubMetrics(width: number, scrollWidth: number) {
 
 describe("rowGridClass", () => {
   it("centres a single item", () => {
-    expect(rowGridClass(1)).toContain("max-w-md");
+    expect(rowGridClass(1)).toContain("max-w-none");
   });
 });
 
@@ -79,27 +79,26 @@ describe("ResponsiveRow", () => {
     }
   });
 
-  it("centres an odd final item at tablet widths", () => {
+  it("keeps an odd final item left-aligned, never centred", () => {
     render(<ResponsiveRow>{items}</ResponsiveRow>);
     const last = screen.getByRole("region").lastElementChild;
-    expect(last?.className).toContain("md:col-span-2");
-    expect(last?.className).toContain("md:mx-auto");
-    expect(last?.className).toContain("md:w-1/2");
-    expect(last?.className).toContain("lg:col-span-1");
-    expect(last?.className).toContain("lg:mx-0");
+    expect(last?.className).not.toContain("md:col-span-2");
+    expect(last?.className).not.toContain("md:mx-auto");
+    expect(last?.className).not.toContain("md:w-1/2");
   });
 
-  it("does not centre an even final item", () => {
+  it("keeps an even final item left-aligned", () => {
     render(<ResponsiveRow>{items.slice(0, 2)}</ResponsiveRow>);
     const last = screen.getByRole("region").lastElementChild;
     expect(last?.className).not.toContain("md:col-span-2");
+    expect(last?.className).not.toContain("md:mx-auto");
   });
 
-  it("caps a one-item row at a compact width", () => {
+  it("keeps a one-item row left-aligned at a readable width", () => {
     render(<ResponsiveRow>{items.slice(0, 1)}</ResponsiveRow>);
     const region = screen.getByRole("region");
-    expect(region.className).toContain("max-w-md");
-    expect(region.className).not.toContain("max-w-3xl");
+    expect(region.className).toContain("max-w-5xl");
+    expect(region.className).not.toContain("mx-auto");
   });
 
   it("lets a caller widen a single item when the card is horizontal", () => {

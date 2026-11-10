@@ -608,7 +608,9 @@
     "viewAllVenues": "查看全部场馆",
     "hallsCountOne": "1 个展馆",
     "directoryTitle": "场馆目录",
-    "viewVenue": "查看场馆"
+    "viewVenue": "查看场馆",
+    "showAllVenues": "显示全部 {count} 个场馆",
+    "showFewerVenues": "显示更少"
   },
   "calendar": {
     "title": "会展交互日历",

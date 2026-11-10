@@ -608,7 +608,9 @@
     "viewAllVenues": "Alle Veranstaltungsorte ansehen",
     "hallsCountOne": "1 Halle",
     "directoryTitle": "Veranstaltungsort-Verzeichnis",
-    "viewVenue": "Veranstaltungsort ansehen"
+    "viewVenue": "Veranstaltungsort ansehen",
+    "showAllVenues": "Alle {count} Veranstaltungsorte anzeigen",
+    "showFewerVenues": "Weniger anzeigen"
   },
   "calendar": {
     "title": "Interaktiver Eventkalender",

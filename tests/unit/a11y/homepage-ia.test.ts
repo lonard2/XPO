@@ -42,6 +42,13 @@ describe("Quality Gate: homepage closing action", () => {
     expect(block).toContain("self-start");
   });
 
+  it("uses horizontal cards for one or two items", () => {
+    expect(page).toContain(
+      "featuredRowEvents.length <= 2 ? 'horizontal' : 'grid'"
+    );
+    expect(page).toContain("row.items.length <= 2 ? 'horizontal' : 'grid'");
+  });
+
   it("does not cap the venue directory at six", () => {
     const idx = page.indexOf("db.venue.findMany");
     expect(idx).toBeGreaterThan(-1);

@@ -388,7 +388,7 @@ export function EventCategoryPills({
           tabIndex={0}
           className="space-y-4 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/40 rounded-2xl"
         >
-          <div className="flex flex-wrap justify-center gap-3 sm:gap-3.5">
+          <div className="flex flex-wrap justify-start gap-3 sm:gap-3.5">
             {(showAllCategories
               ? EVENT_CATEGORIES
               : REPRESENTATIVE_CATEGORIES

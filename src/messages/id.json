@@ -608,7 +608,9 @@
     "viewAllVenues": "Lihat semua venue",
     "hallsCountOne": "1 Hall",
     "directoryTitle": "Direktori venue",
-    "viewVenue": "Lihat venue"
+    "viewVenue": "Lihat venue",
+    "showAllVenues": "Tampilkan semua {count} venue",
+    "showFewerVenues": "Tampilkan lebih sedikit"
   },
   "calendar": {
     "title": "Kalender Acara Interaktif",

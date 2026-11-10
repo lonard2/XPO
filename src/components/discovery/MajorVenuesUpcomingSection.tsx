@@ -48,6 +48,7 @@ export function MajorVenuesUpcomingSection({
 }: MajorVenuesUpcomingProps) {
   const tVen = useTranslations('venues');
   const tArch = useTranslations('archetypes');
+  const [showAllVenues, setShowAllVenues] = React.useState(false);
 
   if (!venues || venues.length === 0) {
     return null;
@@ -79,6 +80,9 @@ export function MajorVenuesUpcomingSection({
     ...activeVenues,
     ...venues.filter((venue) => attendableEventsFor(venue).length === 0),
   ];
+  const visibleVenues = showAllVenues
+    ? orderedVenues
+    : orderedVenues.slice(0, 6);
 
   const renderDirectoryRow = (venue: VenueWithEvents) => {
     const nextEvent = attendableEventsFor(venue)[0];
@@ -175,7 +179,9 @@ export function MajorVenuesUpcomingSection({
       <div
         className={cn(
           'grid grid-cols-1 gap-6',
-          activeVenues.length > 0 && 'xl:grid-cols-[1.4fr_1fr]'
+          activeVenues.length > 0 &&
+            activeVenues.length <= 2 &&
+            'xl:grid-cols-[1.4fr_1fr]'
         )}
       >
         {/* Spotlight: only venues with something attendable */}
@@ -355,7 +361,21 @@ export function MajorVenuesUpcomingSection({
               {orderedVenues.length}
             </span>
           </div>
-          <ul>{orderedVenues.map(renderDirectoryRow)}</ul>
+          <ul>{visibleVenues.map(renderDirectoryRow)}</ul>
+          {orderedVenues.length > 6 && (
+            <div className="border-t border-border/70 p-2">
+              <button
+                type="button"
+                onClick={() => setShowAllVenues((current) => !current)}
+                className="flex min-h-[44px] w-full items-center justify-center gap-1.5 rounded-lg text-xs font-semibold text-primary transition-colors hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+              >
+                {showAllVenues
+                  ? tVen('showFewerVenues') || 'Show fewer venues'
+                  : tVen('showAllVenues', { count: orderedVenues.length }) ||
+                    `Show all ${orderedVenues.length} venues`}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </section>

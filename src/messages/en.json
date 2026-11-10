@@ -608,7 +608,9 @@
     "viewAllVenues": "View all venues",
     "hallsCountOne": "1 Hall",
     "directoryTitle": "Venue directory",
-    "viewVenue": "View venue"
+    "viewVenue": "View venue",
+    "showAllVenues": "Show all {count} venues",
+    "showFewerVenues": "Show fewer venues"
   },
   "calendar": {
     "title": "Interactive Event Calendar",

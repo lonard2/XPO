@@ -184,14 +184,14 @@ export const EventCard = React.memo(function EventCard({
       data-variant={variant}
       className={cn(
         'group relative flex h-full flex-col justify-between overflow-hidden border-border/80 bg-card transition-all duration-300 hover:border-primary/60 hover:shadow-md hover:-translate-y-0.5',
-        variant === 'horizontal' && 'md:flex-row md:items-center',
+        variant === 'horizontal' && 'lg:flex-row lg:items-center',
         className
       )}
     >
       {/* Visual Header / Hero Background Image */}
       <div className={cn(
         'relative w-full overflow-hidden bg-muted aspect-video border-b border-border/60 sheen',
-        variant === 'horizontal' && 'md:w-64 md:aspect-auto md:h-full md:max-h-none md:border-b-0 md:border-r'
+        variant === 'horizontal' && 'lg:w-64 lg:aspect-auto lg:h-full lg:max-h-none lg:border-b-0 lg:border-r'
       )}>
         {event.heroImageUrl ? (
           <img

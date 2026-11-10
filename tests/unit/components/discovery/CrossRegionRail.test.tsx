@@ -66,7 +66,7 @@ describe("CrossRegionRail", () => {
     expect(scroller?.className).toContain("max-w-2xl");
   });
 
-  it("keeps a two-item rail in the grid, where cards stay readable", () => {
+  it("keeps a two-item rail readable with horizontal cards", () => {
     render(
       <CrossRegionRail
         items={[event("a", "Robotics Expo 2026"), event("b", "Cloud Summit 2026")]}
@@ -79,7 +79,7 @@ describe("CrossRegionRail", () => {
     const card = screen
       .getByText("Robotics Expo 2026")
       .closest("[data-variant]");
-    expect(card?.getAttribute("data-variant")).toBe("grid");
+    expect(card?.getAttribute("data-variant")).toBe("horizontal");
   });
 
   it("renders nothing without items", () => {
