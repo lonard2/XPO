@@ -51,7 +51,7 @@ describe("Discreet occupancy stubs", () => {
     };
     render(
       <EventCalendarWidget
-        events={[publicEvent, dated as never]}
+        events={[dated as never]}
         locale="en"
         regionCode="id"
       />
