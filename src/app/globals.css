@@ -379,8 +379,11 @@
 
 
 /* One visible focus treatment across the site. Components may still add
-   their own ring, but the browser default 1px outline is not enough. */
-:where(a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])):focus-visible {
-  outline: 2px solid hsl(var(--primary));
-  outline-offset: 2px;
+   their own ring, but the browser default 1px outline is not enough. The
+   rule lives in the base layer so an explicit outline-none utility wins. */
+@layer base {
+  :where(a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])):focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 2px;
+  }
 }

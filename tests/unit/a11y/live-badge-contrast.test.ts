@@ -33,8 +33,8 @@ function contrast(a: string, b: string): number {
 }
 
 describe("Quality Gate: live-state contrast", () => {
-  it("keeps white text on emerald-700 above the AA floor", () => {
-    expect(contrast("#047857", "#ffffff")).toBeGreaterThanOrEqual(4.5);
+  it("keeps white text on Tailwind v4 emerald-700 above the AA floor", () => {
+    expect(contrast("#007a55", "#ffffff")).toBeGreaterThanOrEqual(4.5);
   });
 
   it("uses emerald-700 for the Happening Now badge", () => {

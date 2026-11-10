@@ -33,6 +33,8 @@ describe('EventCategoryPills', () => {
     expect(
       screen.getAllByText(/Aerospace, Aviation & Defense/i).length
     ).toBeGreaterThan(0);
+    // The tab count follows the visible set.
+    expect(screen.getAllByRole('tab')[0]).toHaveTextContent('22');
   });
 
   it('renders the 6 industry cluster tabs with accessible tablist attributes', () => {
@@ -47,7 +49,7 @@ describe('EventCategoryPills', () => {
     const allTab = tabs[0];
     expect(allTab).toHaveAttribute('aria-selected', 'true');
     expect(allTab).toHaveTextContent(/All Categories/i);
-    expect(allTab).toHaveTextContent('22');
+    expect(allTab).toHaveTextContent('8');
 
     expect(screen.getByRole('tab', { name: /Heavy Industry/i })).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: /Digital & Tech/i })).toBeInTheDocument();
