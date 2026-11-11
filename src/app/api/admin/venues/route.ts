@@ -4,6 +4,7 @@ import { audit } from "@/lib/observability/audit";
 import { normalizeEventSlug } from "@/lib/crawler/venueScraper";
 import { FALLBACK_VENUES } from "@/lib/discovery/fallbackData";
 import { apiError } from "@/lib/api/envelope";
+import { isSpaceKind, isVenueType } from "@/lib/discovery/venueTypes";
 
 /** Parse an optional numeric hall spec; garbage becomes null, never NaN. */
 function numOrNull(v: unknown): number | null {
@@ -76,10 +77,29 @@ export async function POST(req: NextRequest) {
       transitInfo,
       imageUrl,
       halls,
+      type,
+      capacity,
     } = body;
 
     if (!name || !regionId || !city || !address) {
       return apiError("Missing required fields: name, regionId, city, and address are mandatory.", 400);
+    }
+    if (type !== undefined && type !== null && !isVenueType(type)) {
+      return apiError(
+        "Bad Request: type must be CONVENTION_CENTER, EXHIBITION_CENTER, ARENA, STADIUM, MALL, HOTEL, COMMUNITY_HALL, or OUTDOOR.",
+        400
+      );
+    }
+    if (Array.isArray(halls)) {
+      const badKind = halls.find(
+        (h: any) => h?.kind !== undefined && !isSpaceKind(h.kind)
+      );
+      if (badKind) {
+        return apiError(
+          "Bad Request: every space kind must be HALL, MEETING_ROOM, ARENA, FIELD, COURT, ATRIUM, PAVILION, BALLROOM, or OUTDOOR.",
+          400
+        );
+      }
     }
 
     // Ensure valid region exists
@@ -116,11 +136,13 @@ export async function POST(req: NextRequest) {
         longitude: longitude ? parseFloat(longitude) : null,
         transitInfo: transitInfo || "Rapid transit express and airport shuttle bus connection.",
         imageUrl: imageUrl || "/images/venues/convention-center.jpg",
+        type: type ?? "CONVENTION_CENTER",
+        capacity: numOrNull(capacity),
         halls: {
           create: Array.isArray(halls) && halls.length > 0
             ? halls.map((h: any) => ({
                 name: h.name || "Exhibition Hall 1",
-                kind: h.kind === "MEETING_ROOM" ? "MEETING_ROOM" : "HALL",
+                kind: h.kind ?? "HALL",
                 capacity: h.capacity ? parseInt(h.capacity, 10) : 2500,
                 floorAreaSqm: h.floorAreaSqm ? parseFloat(h.floorAreaSqm) : 5000,
                 ceilingHeightM: numOrNull(h.ceilingHeightM),

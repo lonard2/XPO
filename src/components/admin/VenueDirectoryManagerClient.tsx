@@ -26,6 +26,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
 import { useTranslations } from "next-intl";
+import { SPACE_KINDS, VENUE_TYPES } from "@/lib/discovery/venueTypes";
 
 export interface VenueHallItem {
   id?: string;
@@ -46,6 +47,8 @@ export interface VenueItem {
   city: string;
   address: string;
   size?: string | null;
+  type?: string | null;
+  capacity?: number | null;
   latitude?: number | null;
   longitude?: number | null;
   transitInfo: string;
@@ -71,6 +74,8 @@ export function VenueDirectoryManagerClient({
   let tAdmin: any = (k: string) => k;
   let tVen: any = (k: string) => k;
   let tCom: any = (k: string) => k;
+  let tVenueType: any = (k: string) => k;
+  let tSpaceKind: any = (k: string) => k;
   try {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     tAdmin = useTranslations("admin");
@@ -78,6 +83,10 @@ export function VenueDirectoryManagerClient({
     tVen = useTranslations("venues");
     // eslint-disable-next-line react-hooks/rules-of-hooks
     tCom = useTranslations("common");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tVenueType = useTranslations("venueTypes");
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    tSpaceKind = useTranslations("spaceKinds");
   } catch {
     // Fallback
   }
@@ -102,6 +111,8 @@ export function VenueDirectoryManagerClient({
     city: string;
     address: string;
     size: string;
+    type: string;
+    capacity: string;
     latitude: string;
     longitude: string;
     transitInfo: string;
@@ -113,6 +124,8 @@ export function VenueDirectoryManagerClient({
     city: "",
     address: "",
     size: "LARGE",
+    type: "CONVENTION_CENTER",
+    capacity: "",
     latitude: "",
     longitude: "",
     transitInfo: "",
@@ -128,6 +141,8 @@ export function VenueDirectoryManagerClient({
       city: "",
       address: "",
       size: "LARGE",
+      type: "CONVENTION_CENTER",
+      capacity: "",
       latitude: "",
       longitude: "",
       transitInfo: "",
@@ -146,6 +161,8 @@ export function VenueDirectoryManagerClient({
       city: venue.city,
       address: venue.address,
       size: venue.size || "LARGE",
+      type: venue.type || "CONVENTION_CENTER",
+      capacity: venue.capacity != null ? String(venue.capacity) : "",
       latitude: venue.latitude ? String(venue.latitude) : "",
       longitude: venue.longitude ? String(venue.longitude) : "",
       transitInfo: venue.transitInfo || "",
@@ -220,6 +237,8 @@ export function VenueDirectoryManagerClient({
       transitInfo: formData.transitInfo.trim() || "Rapid rail transit and bus connection.",
       imageUrl: formData.imageUrl.trim() || "/images/venues/convention-center.jpg",
       size: ["LARGE", "MEDIUM", "SMALL"].includes(formData.size) ? formData.size : "LARGE",
+      type: formData.type,
+      capacity: formData.capacity ? parseInt(formData.capacity, 10) : null,
       halls: formData.halls.map((h) => ({
         ...(h.id ? { id: h.id } : {}),
         name: h.name.trim(),
@@ -571,6 +590,38 @@ export function VenueDirectoryManagerClient({
 
             <div>
               <label className="block text-muted-foreground font-semibold mb-1">
+                Venue Type
+              </label>
+              <select
+                aria-label="Venue type"
+                value={formData.type}
+                onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                className="w-full h-8 px-2.5 rounded-md border border-input bg-background text-foreground text-xs focus:ring-1 focus:ring-primary"
+              >
+                {VENUE_TYPES.map((type) => (
+                  <option key={type} value={type}>
+                    {tVenueType(type)}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-muted-foreground font-semibold mb-1">
+                Venue Capacity (optional)
+              </label>
+              <Input
+                type="number"
+                aria-label="Venue capacity"
+                placeholder="e.g. 1200"
+                value={formData.capacity}
+                onChange={(e) => setFormData({ ...formData, capacity: e.target.value })}
+                className="h-8 text-xs"
+              />
+            </div>
+
+            <div>
+              <label className="block text-muted-foreground font-semibold mb-1">
                 City *
               </label>
               <Input
@@ -693,8 +744,11 @@ export function VenueDirectoryManagerClient({
                       onChange={(e) => handleHallChange(idx, "kind", e.target.value)}
                       className="h-7 w-full rounded-md border border-input bg-background px-1.5 text-xs"
                     >
-                      <option value="HALL">Hall</option>
-                      <option value="MEETING_ROOM">Meeting Room</option>
+                      {SPACE_KINDS.map((kind) => (
+                        <option key={kind} value={kind}>
+                          {tSpaceKind(kind)}
+                        </option>
+                      ))}
                     </select>
                   </div>
                   <div className="col-span-2">

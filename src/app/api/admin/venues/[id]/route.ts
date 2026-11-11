@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { audit } from "@/lib/observability/audit";
 import { apiError } from "@/lib/api/envelope";
 import { idOrSlugWhere } from "@/lib/api/request";
+import { isSpaceKind, isVenueType } from "@/lib/discovery/venueTypes";
 
 /** Parse an optional numeric hall spec; garbage becomes null, never NaN. */
 function numOrNull(v: unknown): number | null {
@@ -64,6 +65,8 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
       imageUrl,
       halls,
       size,
+      type,
+      capacity,
     } = body;
 
     const existingVenue = await db.venue.findFirst({
@@ -79,6 +82,23 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
     if (size !== undefined && size !== null && !["LARGE", "MEDIUM", "SMALL"].includes(size)) {
       return apiError("Bad Request: size must be LARGE, MEDIUM, or SMALL.", 400);
     }
+    if (type !== undefined && type !== null && !isVenueType(type)) {
+      return apiError(
+        "Bad Request: type must be CONVENTION_CENTER, EXHIBITION_CENTER, ARENA, STADIUM, MALL, HOTEL, COMMUNITY_HALL, or OUTDOOR.",
+        400
+      );
+    }
+    if (Array.isArray(halls)) {
+      const badKind = halls.find(
+        (h: any) => h?.kind !== undefined && !isSpaceKind(h.kind)
+      );
+      if (badKind) {
+        return apiError(
+          "Bad Request: every space kind must be HALL, MEETING_ROOM, ARENA, FIELD, COURT, ATRIUM, PAVILION, BALLROOM, or OUTDOOR.",
+          400
+        );
+      }
+    }
     const updatedVenue = await db.venue.update({
       where: { id: existingVenue.id },
       data: {
@@ -91,6 +111,9 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
         transitInfo: transitInfo !== undefined ? transitInfo : existingVenue.transitInfo,
         imageUrl: imageUrl !== undefined ? imageUrl : existingVenue.imageUrl,
         size: size !== undefined && size !== null ? size : existingVenue.size,
+        type: type !== undefined && type !== null ? type : existingVenue.type,
+        capacity:
+          capacity !== undefined ? numOrNull(capacity) : existingVenue.capacity,
       },
     });
 
@@ -104,9 +127,13 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
       );
 
       for (const h of halls) {
+        const existingHall = h.id
+          ? existingVenue.halls.find((hall) => hall.id === h.id)
+          : undefined;
         const data = {
           name: h.name || "Main Hall",
-          kind: h.kind === "MEETING_ROOM" ? "MEETING_ROOM" : "HALL",
+          // A partial update must not reset an arena, field, or ballroom to HALL.
+          kind: h.kind ?? existingHall?.kind ?? "HALL",
           capacity: h.capacity ? parseInt(h.capacity, 10) : 2000,
           floorAreaSqm: h.floorAreaSqm ? parseFloat(h.floorAreaSqm) : 4000,
           ceilingHeightM: numOrNull(h.ceilingHeightM),
