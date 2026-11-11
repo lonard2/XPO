@@ -1709,5 +1709,29 @@
     "PAVILION": "パビリオン",
     "BALLROOM": "ボールルーム",
     "OUTDOOR": "屋外"
+  },
+  "venueReassignment": {
+    "title": "会場と割り当てスペース",
+    "subtitle": "このイベントを別の会場へ移動し、スペースを再割り当てします。ブランディングは別に保存されます。",
+    "currentVenue": "現在の会場",
+    "venueLabel": "会場",
+    "spacesLabel": "割り当てスペース",
+    "spacesHint": "選択した会場のスペースを1つ以上選んでください。",
+    "save": "会場を保存",
+    "saving": "会場を保存中",
+    "saved": "会場を更新しました。",
+    "confirmTitle": "このイベントを移動しますか？",
+    "confirmBody": "イベントは{venue}へ移動し、スペースは再割り当てされます。",
+    "confirmRegion": "これにより、イベントは{from}版から{to}版へ移動します。",
+    "confirm": "会場を移動",
+    "cancel": "キャンセル",
+    "regionNotice": "これにより、イベントは{from}版から{to}版へ移動します。",
+    "suggestedSize": "この会場は{size}ページサイズを推奨します。選択は変更されません。",
+    "staleTitle": "スペース名が古い可能性があります",
+    "staleBody": "ブースまたはアジェンダの項目に、以前の会場のスペース名が残っています。保存後に更新してください。",
+    "staleBoothsLink": "ブース管理を開く",
+    "staleAgendaLink": "イベント更新を開く",
+    "error": "会場を更新できませんでした。",
+    "loading": "会場を読み込み中"
   }
 }

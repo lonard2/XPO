@@ -1709,5 +1709,29 @@
     "PAVILION": "Pabellón",
     "BALLROOM": "Salón de baile",
     "OUTDOOR": "Exterior"
+  },
+  "venueReassignment": {
+    "title": "Recinto y espacios asignados",
+    "subtitle": "Mueva este evento a otro recinto y reasigne sus espacios. La marca se guarda por separado.",
+    "currentVenue": "Recinto actual",
+    "venueLabel": "Recinto",
+    "spacesLabel": "Espacios asignados",
+    "spacesHint": "Elija al menos un espacio del recinto seleccionado.",
+    "save": "Guardar recinto",
+    "saving": "Guardando recinto",
+    "saved": "Recinto actualizado.",
+    "confirmTitle": "¿Mover este evento?",
+    "confirmBody": "El evento se trasladará a {venue} y sus espacios se reasignarán.",
+    "confirmRegion": "Esto también traslada el evento de la edición {from} a la edición {to}.",
+    "confirm": "Mover recinto",
+    "cancel": "Cancelar",
+    "regionNotice": "Esto traslada el evento de la edición {from} a la edición {to}.",
+    "suggestedSize": "Este recinto sugiere el tamaño de página {size}. Su elección se mantiene.",
+    "staleTitle": "Los nombres de los espacios pueden estar desactualizados",
+    "staleBody": "Las entradas de stands o agenda aún mencionan un espacio del recinto anterior. Actualícelas después de guardar.",
+    "staleBoothsLink": "Abrir el gestor de stands",
+    "staleAgendaLink": "Abrir las novedades del evento",
+    "error": "No se pudo actualizar el recinto.",
+    "loading": "Cargando recintos"
   }
 }

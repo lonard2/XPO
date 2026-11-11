@@ -1709,5 +1709,29 @@
     "PAVILION": "Pavilion",
     "BALLROOM": "Ballroom",
     "OUTDOOR": "Outdoor"
+  },
+  "venueReassignment": {
+    "title": "Venue & Allocated Spaces",
+    "subtitle": "Move this event to another venue and reallocate its spaces. Branding is saved separately.",
+    "currentVenue": "Current venue",
+    "venueLabel": "Venue",
+    "spacesLabel": "Allocated spaces",
+    "spacesHint": "Choose at least one space in the selected venue.",
+    "save": "Save venue",
+    "saving": "Saving venue",
+    "saved": "Venue updated.",
+    "confirmTitle": "Reassign this event?",
+    "confirmBody": "The event will move to {venue} and its spaces will be reallocated.",
+    "confirmRegion": "This also moves the event from the {from} edition to the {to} edition.",
+    "confirm": "Reassign venue",
+    "cancel": "Cancel",
+    "regionNotice": "This moves the event from the {from} edition to the {to} edition.",
+    "suggestedSize": "This venue suggests the {size} page size. Your choice stays as it is.",
+    "staleTitle": "Space names may be stale",
+    "staleBody": "Booth or agenda entries still name a space from the previous venue. Update them after saving.",
+    "staleBoothsLink": "Open the booth manager",
+    "staleAgendaLink": "Open event updates",
+    "error": "Could not update the venue.",
+    "loading": "Loading venues"
   }
 }

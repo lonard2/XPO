@@ -1709,5 +1709,29 @@
     "PAVILION": "Paviliun",
     "BALLROOM": "Ballroom",
     "OUTDOOR": "Area Terbuka"
+  },
+  "venueReassignment": {
+    "title": "Venue & Ruang Teralokasi",
+    "subtitle": "Pindahkan acara ini ke venue lain dan alokasikan ulang ruangnya. Branding disimpan terpisah.",
+    "currentVenue": "Venue saat ini",
+    "venueLabel": "Venue",
+    "spacesLabel": "Ruang teralokasi",
+    "spacesHint": "Pilih setidaknya satu ruang di venue yang dipilih.",
+    "save": "Simpan venue",
+    "saving": "Menyimpan venue",
+    "saved": "Venue diperbarui.",
+    "confirmTitle": "Pindahkan acara ini?",
+    "confirmBody": "Acara akan dipindahkan ke {venue} dan ruangnya akan dialokasikan ulang.",
+    "confirmRegion": "Ini juga memindahkan acara dari edisi {from} ke edisi {to}.",
+    "confirm": "Pindahkan venue",
+    "cancel": "Batal",
+    "regionNotice": "Ini memindahkan acara dari edisi {from} ke edisi {to}.",
+    "suggestedSize": "Venue ini menyarankan ukuran halaman {size}. Pilihan Anda tetap.",
+    "staleTitle": "Nama ruang mungkin sudah tidak sesuai",
+    "staleBody": "Entri booth atau agenda masih menyebut ruang dari venue sebelumnya. Perbarui setelah menyimpan.",
+    "staleBoothsLink": "Buka pengelola booth",
+    "staleAgendaLink": "Buka pembaruan acara",
+    "error": "Tidak dapat memperbarui venue.",
+    "loading": "Memuat venue"
   }
 }

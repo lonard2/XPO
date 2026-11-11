@@ -1709,5 +1709,29 @@
     "PAVILION": "展亭",
     "BALLROOM": "宴会厅",
     "OUTDOOR": "户外"
+  },
+  "venueReassignment": {
+    "title": "场馆与分配空间",
+    "subtitle": "将此活动移至其他场馆并重新分配空间。品牌设置单独保存。",
+    "currentVenue": "当前场馆",
+    "venueLabel": "场馆",
+    "spacesLabel": "已分配空间",
+    "spacesHint": "请在所选场馆中选择至少一个空间。",
+    "save": "保存场馆",
+    "saving": "正在保存场馆",
+    "saved": "场馆已更新。",
+    "confirmTitle": "要移动此活动吗？",
+    "confirmBody": "活动将移至{venue}，其空间将重新分配。",
+    "confirmRegion": "这还会将活动从{from}版移至{to}版。",
+    "confirm": "移动场馆",
+    "cancel": "取消",
+    "regionNotice": "这会将活动从{from}版移至{to}版。",
+    "suggestedSize": "此场馆建议使用{size}页面尺寸。您的选择保持不变。",
+    "staleTitle": "空间名称可能已过时",
+    "staleBody": "展位或议程条目仍引用上一场馆的空间。请在保存后更新。",
+    "staleBoothsLink": "打开展位管理",
+    "staleAgendaLink": "打开活动更新",
+    "error": "无法更新场馆。",
+    "loading": "正在加载场馆"
   }
 }

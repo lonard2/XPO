@@ -23,6 +23,7 @@ import { Card } from "@/components/ui/Card";
 import { Modal } from "@/components/ui/Modal";
 import { LivePreviewFrame } from "@/components/organizer/LivePreviewFrame";
 import { ShowcaseEditor } from "@/components/organizer/ShowcaseEditor";
+import { VenueReassignmentCard } from "@/components/organizer/VenueReassignmentCard";
 import { useTranslations } from "next-intl";
 import {
   ARCHETYPE_DEFAULTS,
@@ -125,6 +126,24 @@ export default function EventCustomizerPage() {
 
   const [showArchetypeModal, setShowArchetypeModal] = React.useState(false);
   const [pendingArchetype, setPendingArchetype] = React.useState<MiceArchetype | null>(null);
+
+  // Hall allocation can arrive as a JSON string or an array. A malformed
+  // value must not break render, so fall back to the primary relation.
+  const currentHallIds = React.useMemo(() => {
+    const raw = eventData?.venueHallIds;
+    if (Array.isArray(raw)) return raw as string[];
+    if (typeof raw === "string" && raw.length > 0) {
+      try {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) {
+          return parsed.filter((id): id is string => typeof id === "string");
+        }
+      } catch {
+        // Fall through to the primary hall relation.
+      }
+    }
+    return eventData?.venueHall?.id ? [eventData.venueHall.id] : [];
+  }, [eventData?.venueHallIds, eventData?.venueHall?.id]);
 
   // Fetch Event Data on Mount
   React.useEffect(() => {
@@ -603,6 +622,34 @@ export default function EventCustomizerPage() {
               />
             </div>
           </Card>
+
+          {/* Card 3b: Venue & Allocated Spaces */}
+          {eventData?.id && eventData?.venue?.id && (
+            <VenueReassignmentCard
+              eventId={eventData.id}
+              locale={locale}
+              eventSlug={eventData.slug}
+              currentVenue={{
+                id: eventData.venue.id,
+                name: eventData.venue.name,
+                regionId: eventData.venue.regionId || eventData.regionId || "id",
+                type: eventData.venue.type,
+              }}
+              currentHallIds={currentHallIds}
+              booths={eventData.booths}
+              agendaItems={eventData.agendaItems}
+              currentPageSize={pageSize}
+              onSaved={(saved) =>
+                setEventData((prev: any) => ({
+                  ...prev,
+                  venue: { ...prev.venue, id: saved.venue.id, name: saved.venue.name },
+                  venueHall: saved.venueHall,
+                  venueHallIds: saved.venueHallIds,
+                  regionId: saved.regionId,
+                }))
+              }
+            />
+          )}
 
           {/* Card 4: Section Visibility Toggles */}
           <Card className="p-5 border-border bg-card space-y-3 shadow-xs">

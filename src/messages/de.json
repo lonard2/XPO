@@ -1709,5 +1709,29 @@
     "PAVILION": "Pavillon",
     "BALLROOM": "Ballsaal",
     "OUTDOOR": "Außenbereich"
+  },
+  "venueReassignment": {
+    "title": "Veranstaltungsort & zugewiesene Bereiche",
+    "subtitle": "Verschieben Sie diese Veranstaltung an einen anderen Ort und weisen Sie die Bereiche neu zu. Das Branding wird separat gespeichert.",
+    "currentVenue": "Aktueller Veranstaltungsort",
+    "venueLabel": "Veranstaltungsort",
+    "spacesLabel": "Zugewiesene Bereiche",
+    "spacesHint": "Wählen Sie mindestens einen Bereich am ausgewählten Veranstaltungsort.",
+    "save": "Ort speichern",
+    "saving": "Ort wird gespeichert",
+    "saved": "Veranstaltungsort aktualisiert.",
+    "confirmTitle": "Diese Veranstaltung verschieben?",
+    "confirmBody": "Die Veranstaltung wird nach {venue} verschoben und ihre Bereiche werden neu zugewiesen.",
+    "confirmRegion": "Dadurch wechselt die Veranstaltung von der Ausgabe {from} zur Ausgabe {to}.",
+    "confirm": "Ort verschieben",
+    "cancel": "Abbrechen",
+    "regionNotice": "Dadurch wechselt die Veranstaltung von der Ausgabe {from} zur Ausgabe {to}.",
+    "suggestedSize": "Dieser Ort empfiehlt die Seitengröße {size}. Ihre Auswahl bleibt unverändert.",
+    "staleTitle": "Bereichsnamen sind möglicherweise veraltet",
+    "staleBody": "Stand- oder Agendaeinträge nennen noch einen Bereich des vorherigen Ortes. Aktualisieren Sie sie nach dem Speichern.",
+    "staleBoothsLink": "Standverwaltung öffnen",
+    "staleAgendaLink": "Veranstaltungsupdates öffnen",
+    "error": "Der Veranstaltungsort konnte nicht aktualisiert werden.",
+    "loading": "Orte werden geladen"
   }
 }
