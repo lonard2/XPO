@@ -26,7 +26,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
 import { useTranslations } from "next-intl";
-import { SPACE_KINDS, VENUE_TYPES } from "@/lib/discovery/venueTypes";
+import { SPACE_KINDS, VENUE_TYPES, normalizeSpaceKind } from "@/lib/discovery/venueTypes";
 
 export interface VenueHallItem {
   id?: string;
@@ -171,7 +171,7 @@ export function VenueDirectoryManagerClient({
         ? venue.halls.map((h) => ({
             id: h.id,
             name: h.name,
-            kind: h.kind || "HALL",
+            kind: normalizeSpaceKind(h.kind),
             capacity: h.capacity ? String(h.capacity) : "",
             floorAreaSqm: h.floorAreaSqm ? String(h.floorAreaSqm) : "",
             ceilingHeightM: h.ceilingHeightM != null ? String(h.ceilingHeightM) : "",
@@ -590,7 +590,7 @@ export function VenueDirectoryManagerClient({
 
             <div>
               <label className="block text-muted-foreground font-semibold mb-1">
-                Venue Type
+                {tAdmin("venueTypeField") || "Venue Type"}
               </label>
               <select
                 aria-label="Venue type"
@@ -608,7 +608,7 @@ export function VenueDirectoryManagerClient({
 
             <div>
               <label className="block text-muted-foreground font-semibold mb-1">
-                Venue Capacity (optional)
+                {tAdmin("venueCapacityField") || "Venue Capacity (optional)"}
               </label>
               <Input
                 type="number"

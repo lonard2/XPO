@@ -305,6 +305,27 @@ describe('MajorVenuesUpcomingSection', () => {
     expect(screen.getByText('1 Space')).toBeDefined();
   });
 
+  it('does not show a zero count when only meeting rooms exist', () => {
+    const meetingOnly: VenueWithEvents = {
+      ...mockVenues[0],
+      id: 'venue-meeting-only',
+      name: 'Meeting Only Venue',
+      slug: 'meeting-only-venue',
+      type: 'CONVENTION_CENTER',
+      halls: [{ id: 'mr-1', name: 'Boardroom', kind: 'MEETING_ROOM' }],
+    };
+
+    render(
+      <MajorVenuesUpcomingSection
+        venues={[meetingOnly]}
+        locale="en"
+        regionCode="id"
+      />
+    );
+
+    expect(screen.queryByText(/0 Halls/i)).toBeNull();
+  });
+
   it('shows six directory rows first and reveals the rest on demand', () => {
     const manyQuiet: VenueWithEvents[] = Array.from({ length: 9 }, (_, index) => ({
       ...concludedOnlyVenues[0],

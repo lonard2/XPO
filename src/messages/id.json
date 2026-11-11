@@ -1592,7 +1592,11 @@
     "wizardPageSizeSmall": "Kecil - esensial ringkas",
     "wizardPageSizeSuggestion": "Disarankan {size} untuk {venue} - konfirmasi secara eksplisit.",
     "openUpdates": "Kirim kabar",
-    "ariaUpdates": "Kelola kabar untuk {title}"
+    "ariaUpdates": "Kelola kabar untuk {title}",
+    "wizardSelectSpace": "Ruang Acara Utama",
+    "wizardCampusSpaceAllocation": "Alokasi Ruang Kampus:",
+    "wizardAllocateAllSpaces": "Alokasikan Semua Ruang Kampus",
+    "wizardAllSpacesAllocated": "Semua Ruang Dialokasikan"
   },
   "admin": {
     "dashboardTitle": "Tata Kelola & Agregator Admin",
@@ -1635,7 +1639,9 @@
     "homepageRowsMoveUp": "Naikkan",
     "homepageRowsMoveDown": "Turunkan",
     "homepageRowsLocalized": "Teks terlokalisasi",
-    "homepageRowsConfirmDelete": "Hapus baris \"{title}\"?"
+    "homepageRowsConfirmDelete": "Hapus baris \"{title}\"?",
+    "venueTypeField": "Tipe Venue",
+    "venueCapacityField": "Kapasitas Venue (opsional)"
   },
   "ai": {
     "conciergeTitle": "Panduan Informasi Acara",

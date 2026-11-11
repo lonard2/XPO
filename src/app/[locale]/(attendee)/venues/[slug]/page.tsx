@@ -210,7 +210,7 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
                     {tVen(metricLabelKey(venueType))}
                   </span>
                   <span className="text-base sm:text-lg font-bold text-foreground mt-0.5 block">
-                    {spaceCount || 4}
+                    {spaceCount > 0 ? spaceCount : '—'}
                   </span>
                 </div>
 

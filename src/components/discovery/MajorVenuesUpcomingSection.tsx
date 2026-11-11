@@ -241,10 +241,12 @@ export function MajorVenuesUpcomingSection({
                         <span className="line-clamp-1">{venue.city}</span>
                       </div>
 
-                      <Badge variant="secondary" className="text-xs font-semibold bg-background/95 text-foreground border-border/70 tabular-nums backdrop-blur-md px-2.5 py-1 flex items-center gap-1">
-                        <Layers className="h-3 w-3 text-primary shrink-0" />
-                        <span>{countLabel}</span>
-                      </Badge>
+                      {spaceCount > 0 && (
+                        <Badge variant="secondary" className="text-xs font-semibold bg-background/95 text-foreground border-border/70 tabular-nums backdrop-blur-md px-2.5 py-1 flex items-center gap-1">
+                          <Layers className="h-3 w-3 text-primary shrink-0" />
+                          <span>{countLabel}</span>
+                        </Badge>
+                      )}
                     </div>
                   </div>
 

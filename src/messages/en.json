@@ -1592,7 +1592,11 @@
     "wizardPageSizeSmall": "Small - compact essentials",
     "wizardPageSizeSuggestion": "Suggested {size} for {venue} - confirm explicitly.",
     "openUpdates": "Post updates",
-    "ariaUpdates": "Manage news updates for {title}"
+    "ariaUpdates": "Manage news updates for {title}",
+    "wizardSelectSpace": "Primary Event Space",
+    "wizardCampusSpaceAllocation": "Campus Space Allocation:",
+    "wizardAllocateAllSpaces": "Allocate All Campus Spaces",
+    "wizardAllSpacesAllocated": "All Spaces Allocated"
   },
   "admin": {
     "dashboardTitle": "Governance & Admin Agregator",
@@ -1635,7 +1639,9 @@
     "homepageRowsMoveUp": "Move up",
     "homepageRowsMoveDown": "Move down",
     "homepageRowsLocalized": "Localized copy",
-    "homepageRowsConfirmDelete": "Delete row \"{title}\"?"
+    "homepageRowsConfirmDelete": "Delete row \"{title}\"?",
+    "venueTypeField": "Venue Type",
+    "venueCapacityField": "Venue Capacity (optional)"
   },
   "ai": {
     "conciergeTitle": "Attendee Event Concierge",

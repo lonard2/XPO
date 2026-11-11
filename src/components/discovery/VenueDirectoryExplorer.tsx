@@ -195,6 +195,9 @@ export function VenueDirectoryExplorer({
       const count = venues.filter((v) => {
         const code = (v.region?.code || v.regionId || '').toLowerCase();
         if (!codeMatch(code)) return false;
+        if (selectedType !== 'all' && normalizeVenueType(v.type) !== selectedType) {
+          return false;
+        }
         return (
           v.name.toLowerCase().includes(q) ||
           v.city.toLowerCase().includes(q) ||
@@ -213,7 +216,7 @@ export function VenueDirectoryExplorer({
     checkRegion((c) => ['gl', 'global'].includes(c), 'global', tReg('global.name') || 'Global Gateways');
 
     return otherMatches;
-  }, [venues, filteredVenues.length, searchQuery, selectedRegion, tReg]);
+  }, [venues, filteredVenues.length, searchQuery, selectedRegion, selectedType, tReg]);
 
   const regionDisplayName =
     selectedRegion === 'id'

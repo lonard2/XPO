@@ -1592,7 +1592,11 @@
     "wizardPageSizeSmall": "Klein - kompakt",
     "wizardPageSizeSuggestion": "{size} für {venue} vorgeschlagen - bitte explizit bestätigen.",
     "openUpdates": "Updates veröffentlichen",
-    "ariaUpdates": "Neuigkeiten für {title} verwalten"
+    "ariaUpdates": "Neuigkeiten für {title} verwalten",
+    "wizardSelectSpace": "Primärer Veranstaltungsbereich",
+    "wizardCampusSpaceAllocation": "Campus-Bereichszuweisung:",
+    "wizardAllocateAllSpaces": "Alle Campus-Bereiche zuweisen",
+    "wizardAllSpacesAllocated": "Alle Bereiche zugewiesen"
   },
   "admin": {
     "dashboardTitle": "Admin-Governance & Aggregator",
@@ -1635,7 +1639,9 @@
     "homepageRowsMoveUp": "Nach oben",
     "homepageRowsMoveDown": "Nach unten",
     "homepageRowsLocalized": "Lokalisierter Text",
-    "homepageRowsConfirmDelete": "Zeile \"{title}\" löschen?"
+    "homepageRowsConfirmDelete": "Zeile \"{title}\" löschen?",
+    "venueTypeField": "Veranstaltungsort-Typ",
+    "venueCapacityField": "Veranstaltungsort-Kapazität (optional)"
   },
   "ai": {
     "conciergeTitle": "Event-Concierge",

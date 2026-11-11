@@ -1592,7 +1592,11 @@
     "wizardPageSizeSmall": "Pequeña - esencial",
     "wizardPageSizeSuggestion": "{size} sugerido para {venue}: confirme explícitamente.",
     "openUpdates": "Publicar novedades",
-    "ariaUpdates": "Gestionar novedades de {title}"
+    "ariaUpdates": "Gestionar novedades de {title}",
+    "wizardSelectSpace": "Espacio principal del evento",
+    "wizardCampusSpaceAllocation": "Asignación de espacios del recinto:",
+    "wizardAllocateAllSpaces": "Asignar todos los espacios",
+    "wizardAllSpacesAllocated": "Todos los espacios asignados"
   },
   "admin": {
     "dashboardTitle": "Gobernanza y Agregador de Administración",
@@ -1635,7 +1639,9 @@
     "homepageRowsMoveUp": "Subir",
     "homepageRowsMoveDown": "Bajar",
     "homepageRowsLocalized": "Texto localizado",
-    "homepageRowsConfirmDelete": "¿Eliminar la fila \"{title}\"?"
+    "homepageRowsConfirmDelete": "¿Eliminar la fila \"{title}\"?",
+    "venueTypeField": "Tipo de recinto",
+    "venueCapacityField": "Capacidad del recinto (opcional)"
   },
   "ai": {
     "conciergeTitle": "Asistente del Asistente",

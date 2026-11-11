@@ -1592,7 +1592,11 @@
     "wizardPageSizeSmall": "小 - コンパクト",
     "wizardPageSizeSuggestion": "{venue}には{size}を推奨 - 明示的に確認してください。",
     "openUpdates": "更新情報を投稿",
-    "ariaUpdates": "{title}の更新情報を管理"
+    "ariaUpdates": "{title}の更新情報を管理",
+    "wizardSelectSpace": "メインイベントスペース",
+    "wizardCampusSpaceAllocation": "キャンパススペース割り当て:",
+    "wizardAllocateAllSpaces": "すべてのキャンパススペースを割り当て",
+    "wizardAllSpacesAllocated": "すべてのスペースを割り当て済み"
   },
   "admin": {
     "dashboardTitle": "管理統括・アグリゲーター",
@@ -1635,7 +1639,9 @@
     "homepageRowsMoveUp": "上へ",
     "homepageRowsMoveDown": "下へ",
     "homepageRowsLocalized": "ローカライズ文言",
-    "homepageRowsConfirmDelete": "行「{title}」を削除しますか？"
+    "homepageRowsConfirmDelete": "行「{title}」を削除しますか？",
+    "venueTypeField": "会場タイプ",
+    "venueCapacityField": "会場キャパシティ（任意）"
   },
   "ai": {
     "conciergeTitle": "来場者AIコンシェルジュ",

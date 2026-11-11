@@ -1592,7 +1592,11 @@
     "wizardPageSizeSmall": "小 - 精简版",
     "wizardPageSizeSuggestion": "建议{venue}使用{size} - 请明确确认。",
     "openUpdates": "发布动态",
-    "ariaUpdates": "管理{title}的动态"
+    "ariaUpdates": "管理{title}的动态",
+    "wizardSelectSpace": "主活动空间",
+    "wizardCampusSpaceAllocation": "园区空间分配：",
+    "wizardAllocateAllSpaces": "分配全部园区空间",
+    "wizardAllSpacesAllocated": "全部分配完毕"
   },
   "admin": {
     "dashboardTitle": "管理统括中心",
@@ -1635,7 +1639,9 @@
     "homepageRowsMoveUp": "上移",
     "homepageRowsMoveDown": "下移",
     "homepageRowsLocalized": "本地化文案",
-    "homepageRowsConfirmDelete": "删除行“{title}”？"
+    "homepageRowsConfirmDelete": "删除行“{title}”？",
+    "venueTypeField": "场馆类型",
+    "venueCapacityField": "场馆容量（可选）"
   },
   "ai": {
     "conciergeTitle": "展会服务助手",
