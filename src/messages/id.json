@@ -614,7 +614,9 @@
     "spacesCount": "{count} Ruang",
     "spacesCountOne": "1 Ruang",
     "venueType": "Tipe venue",
-    "allTypes": "Semua tipe"
+    "allTypes": "Semua tipe",
+    "spacesMetric": "Ruang",
+    "allSpaces": "Semua ruang"
   },
   "calendar": {
     "title": "Kalender Acara Interaktif",

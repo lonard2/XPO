@@ -614,7 +614,9 @@
     "spacesCount": "{count} Bereiche",
     "spacesCountOne": "1 Bereich",
     "venueType": "Veranstaltungsort-Typ",
-    "allTypes": "Alle Typen"
+    "allTypes": "Alle Typen",
+    "spacesMetric": "Bereiche",
+    "allSpaces": "Alle Bereiche"
   },
   "calendar": {
     "title": "Interaktiver Eventkalender",

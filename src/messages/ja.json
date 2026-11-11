@@ -614,7 +614,9 @@
     "spacesCount": "{count} スペース",
     "spacesCountOne": "1 スペース",
     "venueType": "会場タイプ",
-    "allTypes": "すべてのタイプ"
+    "allTypes": "すべてのタイプ",
+    "spacesMetric": "スペース",
+    "allSpaces": "すべてのスペース"
   },
   "calendar": {
     "title": "イベントカレンダー",

@@ -52,6 +52,24 @@ describe('VenueCampusExplorer Component', () => {
     expect(screen.getByText(/Selected Specification/i)).toBeInTheDocument();
   });
 
+  it('groups spaces by kind and filters the directory by kind', () => {
+    render(
+      <VenueCampusExplorer
+        venueName="Grand Indonesia Atrium"
+        halls={[
+          { id: 'atrium', name: 'Atrium Level 3A', kind: 'ATRIUM', capacity: 1200 },
+          { id: 'hall', name: 'Meeting Hall', kind: 'HALL', capacity: 200 },
+        ]}
+      />
+    );
+
+    expect(screen.getAllByText('Atrium').length).toBeGreaterThan(0);
+    fireEvent.click(screen.getByRole('button', { name: /Atrium \(1\)/ }));
+
+    expect(screen.getAllByText('Atrium Level 3A').length).toBeGreaterThan(0);
+    expect(screen.queryByText('Meeting Hall')).toBeNull();
+  });
+
   it('marks synthesized specs as typical and never asserts universal freight access', () => {
     render(
       <VenueCampusExplorer

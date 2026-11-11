@@ -21,7 +21,8 @@ import { VenueScheduleTable } from '@/components/discovery/VenueScheduleTable';
 import { FALLBACK_VENUES, FALLBACK_EVENTS } from '@/lib/discovery/fallbackData';
 import { generatePlaceJsonLd } from '@/lib/seo/jsonLd';
 import { siteBaseUrl } from '@/lib/seo/site';
-import { hallsOnly, meetingRoomsOnly, countHalls } from '@/lib/discovery/venueSpaces';
+import { hallsOnly, meetingRoomsOnly, countSpaces } from '@/lib/discovery/venueSpaces';
+import { metricLabelKey, normalizeVenueType } from '@/lib/discovery/venueTypes';
 import { type VenueSummary, type DiscoveryEvent } from '@/types/discovery';
 import { type ScheduleStub } from '@/lib/discovery/presentation';
 
@@ -75,6 +76,7 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
   const tCom = await getTranslations({ locale, namespace: 'common' });
   const tReg = await getTranslations({ locale, namespace: 'regions' });
   const tFoot = await getTranslations({ locale, namespace: 'footer' });
+  const tVenueType = await getTranslations({ locale, namespace: 'venueTypes' });
 
   let venue: VenueSummary | null = null;
   let upcomingEvents: Array<DiscoveryEvent | ScheduleStub> = [];
@@ -109,9 +111,14 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
   }
 
   const regionCode = (venue.region?.code || venue.regionId || 'ID').toUpperCase();
+  const venueType = normalizeVenueType(venue.type);
   const venueHalls = hallsOnly(venue.halls || []);
   const venueMeetingRooms = meetingRoomsOnly(venue.halls || []);
-  const totalCapacity = venue.halls?.reduce((acc, h) => acc + (h.capacity || 0), 0) || 25000;
+  const spaceCount = countSpaces(venue.halls, venueType);
+  const totalCapacity =
+    venue.capacity ||
+    venue.halls?.reduce((acc, h) => acc + (h.capacity || 0), 0) ||
+    25000;
   const totalFloorArea = venue.halls?.reduce((acc, h) => acc + (h.floorAreaSqm || 0), 0) || 30000;
 
   const crumbs = [
@@ -178,6 +185,9 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
                 <Badge variant="outline" className="text-xs font-mono">
                   {venue.city}
                 </Badge>
+                <Badge variant="secondary" className="text-xs font-semibold">
+                  {tVenueType(venueType)}
+                </Badge>
                 <Badge variant="success" className="text-xs font-semibold gap-1">
                   <CheckCircle2 className="h-3 w-3" />
                   <span>{tFoot('infrastructureBadge') || 'Verified MICE Complex'}</span>
@@ -197,10 +207,10 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
               <div className="grid grid-cols-3 gap-3 pt-2">
                 <div className="rounded-xl border border-border/80 bg-muted/30 p-3 text-center">
                   <span className="text-xs uppercase font-semibold text-muted-foreground block">
-                    {tVen('hallsMetric')}
+                    {tVen(metricLabelKey(venueType))}
                   </span>
                   <span className="text-base sm:text-lg font-bold text-foreground mt-0.5 block">
-                    {countHalls(venue.halls) || 4}
+                    {spaceCount || 4}
                   </span>
                 </div>
 

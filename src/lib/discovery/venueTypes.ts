@@ -87,3 +87,10 @@ export function countLabelOneKey(
 ): "hallsCountOne" | "spacesCountOne" {
   return isHallVenue(type) ? "hallsCountOne" : "spacesCountOne";
 }
+
+/** i18n key for the venue-page headline metric. */
+export function metricLabelKey(
+  type: VenueType
+): "hallsMetric" | "spacesMetric" {
+  return isHallVenue(type) ? "hallsMetric" : "spacesMetric";
+}

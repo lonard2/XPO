@@ -614,7 +614,9 @@
     "spacesCount": "{count} 个空间",
     "spacesCountOne": "1 个空间",
     "venueType": "场馆类型",
-    "allTypes": "全部类型"
+    "allTypes": "全部类型",
+    "spacesMetric": "空间",
+    "allSpaces": "全部空间"
   },
   "calendar": {
     "title": "会展交互日历",

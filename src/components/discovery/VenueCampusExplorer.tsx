@@ -19,6 +19,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { useTranslations } from 'next-intl';
 import { type VenueHallSummary } from '@/types/discovery';
 import { VENUE_WINGS, FALLBACK_WINGS, ruleMatches, type VenueWingRule } from '@/lib/discovery/venueWings';
+import { SPACE_KINDS, normalizeSpaceKind, type SpaceKind } from '@/lib/discovery/venueTypes';
 import { cn } from '@/lib/utils';
 
 export interface VenueCampusExplorerProps {
@@ -35,10 +36,12 @@ export function VenueCampusExplorer({
   className,
 }: VenueCampusExplorerProps) {
   const [selectedWing, setSelectedWing] = React.useState<string>('all');
+  const [selectedKind, setSelectedKind] = React.useState<'all' | SpaceKind>('all');
   const [selectedHallId, setSelectedHallId] = React.useState<string | null>(
     halls.length > 0 ? halls[0].id : null
   );
   const tVen = useTranslations('venues');
+  const tSpaceKind = useTranslations('spaceKinds');
 
   const dossierRef = React.useRef<HTMLDivElement>(null);
 
@@ -71,7 +74,26 @@ export function VenueCampusExplorer({
   }, [halls, venueSlug, tVen]);
 
   const activeWingKeys = Object.keys(wings).filter((k) => k !== 'all');
-  const displayedHalls = wings[selectedWing] || halls;
+
+  const kindCounts = React.useMemo(() => {
+    const counts: Partial<Record<SpaceKind, number>> = {};
+    for (const hall of halls) {
+      const kind = normalizeSpaceKind(hall.kind);
+      counts[kind] = (counts[kind] || 0) + 1;
+    }
+    return counts;
+  }, [halls]);
+  const activeKindKeys = SPACE_KINDS.filter(
+    (kind) => (kindCounts[kind] || 0) > 0
+  );
+
+  const wingHalls = wings[selectedWing] || halls;
+  const displayedHalls =
+    selectedKind === 'all'
+      ? wingHalls
+      : wingHalls.filter(
+          (hall) => normalizeSpaceKind(hall.kind) === selectedKind
+        );
 
   const selectedHall = halls.find((h) => h.id === selectedHallId) || displayedHalls[0] || halls[0];
 
@@ -191,6 +213,43 @@ export function VenueCampusExplorer({
             ))}
           </div>
         )}
+
+        {activeKindKeys.length > 1 && (
+          <div
+            aria-label="Space kinds"
+            className="flex flex-wrap items-center gap-1.5"
+          >
+            <button
+              type="button"
+              aria-pressed={selectedKind === 'all'}
+              onClick={() => setSelectedKind('all')}
+              className={cn(
+                'min-h-[44px] sm:min-h-[36px] px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all whitespace-nowrap cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+                selectedKind === 'all'
+                  ? 'border-primary bg-primary text-primary-foreground shadow-xs'
+                  : 'border-border/80 bg-muted/30 text-muted-foreground hover:bg-muted hover:text-foreground'
+              )}
+            >
+              {tVen('allSpaces') || 'All spaces'} ({halls.length})
+            </button>
+            {activeKindKeys.map((kind) => (
+              <button
+                key={kind}
+                type="button"
+                aria-pressed={selectedKind === kind}
+                onClick={() => setSelectedKind(kind)}
+                className={cn(
+                  'min-h-[44px] sm:min-h-[36px] px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all whitespace-nowrap cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+                  selectedKind === kind
+                    ? 'border-primary bg-primary text-primary-foreground shadow-xs'
+                    : 'border-border/80 bg-muted/30 text-muted-foreground hover:bg-muted hover:text-foreground'
+                )}
+              >
+                {tSpaceKind(kind)} ({kindCounts[kind]})
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Mobile Selected Hall Sticky Feedback Strip */}
@@ -249,6 +308,9 @@ export function VenueCampusExplorer({
                         <span role="heading" aria-level={3} className="text-sm sm:text-base font-bold text-foreground mt-0.5 block">
                           {hall.name}
                         </span>
+                        <Badge variant="outline" className="mt-1 text-[11px] font-semibold">
+                          {tSpaceKind(normalizeSpaceKind(hall.kind))}
+                        </Badge>
                       </div>
 
                       {hall.capacity && (
@@ -310,6 +372,9 @@ export function VenueCampusExplorer({
               <h3 className="text-base font-extrabold text-foreground">
                 {selectedHall.name}
               </h3>
+              <Badge variant="outline" className="text-[11px] font-semibold">
+                {tSpaceKind(normalizeSpaceKind(selectedHall.kind))}
+              </Badge>
               <p className="text-xs text-muted-foreground">
                 {tVen('dossierIntro')}
               </p>

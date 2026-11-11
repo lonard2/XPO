@@ -614,7 +614,9 @@
     "spacesCount": "{count} Spaces",
     "spacesCountOne": "1 Space",
     "venueType": "Venue type",
-    "allTypes": "All types"
+    "allTypes": "All types",
+    "spacesMetric": "Spaces",
+    "allSpaces": "All spaces"
   },
   "calendar": {
     "title": "Interactive Event Calendar",

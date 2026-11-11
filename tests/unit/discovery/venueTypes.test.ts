@@ -9,6 +9,7 @@ import {
   isHallVenue,
   countLabelKey,
   countLabelOneKey,
+  metricLabelKey,
 } from "@/lib/discovery/venueTypes";
 
 describe("Venue type vocabulary", () => {
@@ -73,5 +74,10 @@ describe("Venue type vocabulary", () => {
     expect(countLabelKey("OUTDOOR")).toBe("spacesCount");
     expect(countLabelOneKey("CONVENTION_CENTER")).toBe("hallsCountOne");
     expect(countLabelOneKey("MALL")).toBe("spacesCountOne");
+
+    expect(metricLabelKey("CONVENTION_CENTER")).toBe("hallsMetric");
+    expect(metricLabelKey("EXHIBITION_CENTER")).toBe("hallsMetric");
+    expect(metricLabelKey("MALL")).toBe("spacesMetric");
+    expect(metricLabelKey("OUTDOOR")).toBe("spacesMetric");
   });
 });
