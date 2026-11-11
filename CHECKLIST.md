@@ -230,3 +230,13 @@ This master checklist tracks the development, testing, UX refinements, and educa
 - [x] Author full-platform E2E verification suite (`tests/integration/full-platform-e2e.test.ts`) covering all 8 end-to-end user journeys (Discovery, Passes, Settings, RBAC, Organizer, OpenRouter AI, Admin/Crawler, PWA/SEO).
 - [x] Author educational guide: `docs/guides/phase-12-pwa-seo-hardening-and-e2e.md`.
 - [x] **Verification**: Full test suite passes (60 test files, 439 tests passing with 100% rate), build passes (`npm run build` generates 235 static/dynamic routes), 0 TypeScript errors, zero-emoji audit clean.
+
+---
+
+### Post-Phase 12: Organizer Venue Reassignment (2026-11-11)
+*Focus: move an existing event to another venue and reallocate its spaces from the customizer, with the event's region following the venue.*
+- [x] Add `PUT /api/organizer/events/[id]/venue` with ownership enforcement, venue validation, space membership filtering, a single update, and the `event.venue` audit action.
+- [x] Add `VenueReassignmentCard` to the customizer: venue select, space checkboxes with kinds, edition-move notice, page-size suggestion, stale booth and agenda warning with links, and a confirmation dialog.
+- [x] Keep branding and venue saves independent, and never change page size, archetype, booths, agenda, or tickets from the route.
+- [x] Add the `venueReassignment` namespace in all six locales and document the feature in `docs/guides/venue-reassignment.md`.
+- [x] **Verification**: route integration tests (`tests/integration/venue-reassignment.test.ts`, 5 tests), card tests (`tests/unit/organizer/VenueReassignmentCard.test.tsx`, 5 tests), mount and copy rules (`tests/unit/a11y/customizer-venue-card.test.ts`, 2 tests), and locale parity (`tests/unit/i18n/message-parity.test.ts`). Full suite and production build pass.

@@ -79,6 +79,7 @@ AI analytics and attendee concierge are powered by OpenRouter across 6 specializ
 * **Where it appears**: the venue directory sidebar filter, venue cards, the homepage directory, and the venue detail page.
 * **Backfill**: run `npx tsx scripts/backfill-venue-types.ts --dry-run`, review it, then run without `--dry-run`. The script is idempotent and never overwrites an operator-set type without `--force`.
 * See `docs/guides/venue-types.md` for the vocabulary, count rule, rollout, and verification.
+* See `docs/guides/venue-reassignment.md` for moving an event between venues and reallocating its spaces.
 
 ---
 
