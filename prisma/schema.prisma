@@ -54,9 +54,15 @@ model Venue {
   transitInfo String      // Transit instructions (KRL, MRT, TransJakarta)
   imageUrl    String?
   size        String      @default("LARGE") // Presentation tier suggestion: LARGE | MEDIUM | SMALL. Events choose explicitly; this never auto-applies.
+  // Kind of place. Not the presentation tier above.
+  type        String      @default("CONVENTION_CENTER") // CONVENTION_CENTER | EXHIBITION_CENTER | ARENA | STADIUM | MALL | HOTEL | COMMUNITY_HALL | OUTDOOR
+  // Venue-level capacity when the operator states one; otherwise the UI sums spaces.
+  capacity    Int?
   halls       VenueHall[]
   events      Event[]
   createdAt   DateTime    @default(now())
+
+  @@index([regionId, type])
 }
 
 model VenueHall {
@@ -64,7 +70,7 @@ model VenueHall {
   venueId      String
   venue        Venue    @relation(fields: [venueId], references: [id], onDelete: Cascade)
   name         String   // e.g. "Hall A1", "Nusantara Hall 2", "Plenary Hall"
-  kind         String   @default("HALL") // "HALL" | "MEETING_ROOM": meeting rooms are listed deeper, never counted as halls
+  kind         String   @default("HALL") // HALL | MEETING_ROOM | ARENA | FIELD | COURT | ATRIUM | PAVILION | BALLROOM | OUTDOOR. Meeting rooms are listed deeper, never counted in the headline.
   capacity     Int?
   floorAreaSqm Float?
   ceilingHeightM Float? // Verified clear height in metres; null means unknown (UI shows a Typical estimate)
