@@ -642,7 +642,12 @@ export default function EventCustomizerPage() {
               onSaved={(saved) =>
                 setEventData((prev: any) => ({
                   ...prev,
-                  venue: { ...prev.venue, id: saved.venue.id, name: saved.venue.name },
+                  venue: {
+                    ...prev.venue,
+                    id: saved.venue.id,
+                    name: saved.venue.name,
+                    regionId: saved.regionId,
+                  },
                   venueHall: saved.venueHall,
                   venueHallIds: saved.venueHallIds,
                   regionId: saved.regionId,

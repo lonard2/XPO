@@ -120,4 +120,58 @@ describe("VenueReassignmentCard", () => {
 
     expect(screen.getByRole("button", { name: /save venue/i })).toBeDisabled();
   });
+
+  it("keeps the stale warning and its links after saving", async () => {
+    const bodies: unknown[] = [];
+    mockFetch(bodies);
+    render(
+      <VenueReassignmentCard
+        {...props}
+        booths={[{ hallName: "Hall A1" }]}
+        agendaItems={[{ location: "Main Stage - Hall A1" }]}
+      />
+    );
+
+    fireEvent.change(await screen.findByLabelText(/^venue$/i), { target: { value: "v2" } });
+    fireEvent.click(screen.getByRole("button", { name: /save venue/i }));
+    await act(async () => {
+      fireEvent.click(screen.getByRole("button", { name: /reassign venue/i }));
+    });
+
+    expect(await screen.findByText(/venue updated/i)).toBeInTheDocument();
+    expect(screen.getByText(/space names may be stale/i)).toBeInTheDocument();
+    expect(screen.getByTestId("stale-hall-count")).toHaveTextContent("2");
+    expect(screen.getByRole("link", { name: /open the booth manager/i })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /open event updates/i })).toBeInTheDocument();
+  });
+
+  it("shows the saved venue and region in the summary after saving", async () => {
+    mockFetch();
+    render(<VenueReassignmentCard {...props} />);
+
+    fireEvent.change(await screen.findByLabelText(/^venue$/i), { target: { value: "v2" } });
+    fireEvent.click(screen.getByRole("button", { name: /save venue/i }));
+    await act(async () => {
+      fireEvent.click(screen.getByRole("button", { name: /reassign venue/i }));
+    });
+
+    expect(await screen.findByText(/venue updated/i)).toBeInTheDocument();
+    expect(screen.getByText("Tokyo Big Sight")).toBeInTheDocument();
+    expect(screen.getByText("Japan")).toBeInTheDocument();
+  });
+
+  it("groups venues by region and shows each venue type", async () => {
+    mockFetch();
+    render(<VenueReassignmentCard {...props} />);
+
+    const select = await screen.findByLabelText(/^venue$/i);
+    const groups = select.querySelectorAll("optgroup");
+
+    expect(groups).toHaveLength(2);
+    expect(groups[0].getAttribute("label")).toBe("Indonesia");
+    expect(groups[1].getAttribute("label")).toBe("Japan");
+    expect(
+      screen.getByRole("option", { name: /Tokyo Big Sight.*Exhibition Center/i })
+    ).toBeInTheDocument();
+  });
 });

@@ -23,4 +23,9 @@ describe("Quality Gate: customizer venue reassignment", () => {
     expect(card).not.toMatch(/\p{Extended_Pictographic}/u);
     expect(card).not.toContain("\u2014");
   });
+
+  it("keeps the merged venue region in sync after saving", () => {
+    const page = fs.readFileSync(PAGE, "utf8");
+    expect(page).toContain("regionId: saved.regionId");
+  });
 });

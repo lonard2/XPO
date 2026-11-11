@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
-import { normalizeSpaceKind } from "@/lib/discovery/venueTypes";
+import { normalizeSpaceKind, normalizeVenueType } from "@/lib/discovery/venueTypes";
 
 interface VenueHallOption {
   id: string;
@@ -65,6 +65,7 @@ export function VenueReassignmentCard({
   const t = useTranslations("venueReassignment");
   const tRegions = useTranslations("regions");
   const tSpaceKind = useTranslations("spaceKinds");
+  const tVenueType = useTranslations("venueTypes");
 
   const [venues, setVenues] = React.useState<VenueOption[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
@@ -80,6 +81,9 @@ export function VenueReassignmentCard({
   const [isSaving, setIsSaving] = React.useState(false);
   const [saved, setSaved] = React.useState(false);
   const [saveError, setSaveError] = React.useState("");
+  // Space names from the venue just left, kept after saving so the warning
+  // and its links survive the save that the copy tells the organizer to make.
+  const [staleHallNames, setStaleHallNames] = React.useState<string[]>([]);
 
   React.useEffect(() => {
     let cancelled = false;
@@ -123,6 +127,17 @@ export function VenueReassignmentCard({
     [venues, selectedVenueId]
   );
 
+  const venueGroups = React.useMemo(() => {
+    const groups = new Map<string, VenueOption[]>();
+    for (const venue of venues) {
+      const raw = (venue.regionId || "global").trim().toLowerCase();
+      const code = raw === "gl" ? "global" : raw;
+      if (!groups.has(code)) groups.set(code, []);
+      groups.get(code)!.push(venue);
+    }
+    return [...groups.entries()];
+  }, [venues]);
+
   const baselineVenue = React.useMemo(
     () => venues.find((venue) => venue.id === baseline.venueId) || null,
     [venues, baseline.venueId]
@@ -137,8 +152,13 @@ export function VenueReassignmentCard({
     JSON.stringify(sortIds(selectedHallIds)) !== JSON.stringify(sortIds(baseline.hallIds));
 
   const staleCount = React.useMemo(() => {
-    if (!activeVenue || selectedVenueId === baseline.venueId) return 0;
-    const oldNames = (baselineVenue?.halls || []).map((hall) => hall.name);
+    if (!activeVenue) return 0;
+    const oldNames =
+      staleHallNames.length > 0
+        ? staleHallNames
+        : selectedVenueId === baseline.venueId
+          ? []
+          : (baselineVenue?.halls || []).map((hall) => hall.name);
     const newNames = (activeVenue.halls || []).map((hall) => hall.name);
     if (oldNames.length === 0) return 0;
 
@@ -155,12 +175,21 @@ export function VenueReassignmentCard({
     ).length;
 
     return boothHits + agendaHits;
-  }, [activeVenue, baseline.venueId, baselineVenue, booths, agendaItems, selectedVenueId]);
+  }, [
+    activeVenue,
+    baseline.venueId,
+    baselineVenue,
+    booths,
+    agendaItems,
+    selectedVenueId,
+    staleHallNames,
+  ]);
 
   const handleVenueChange = (venueId: string) => {
     const next = venues.find((venue) => venue.id === venueId);
     setSelectedVenueId(venueId);
     setSelectedHallIds(next?.halls?.[0]?.id ? [next.halls[0].id] : []);
+    setStaleHallNames([]);
     setSaved(false);
     setSaveError("");
   };
@@ -199,6 +228,9 @@ export function VenueReassignmentCard({
       const savedVenueId = savedEvent.venue?.id || activeVenue.id;
       const savedRegionId = savedEvent.regionId || activeVenue.regionId;
 
+      // Keep the names of the venue just left so the stale-space warning
+      // remains actionable after the save the copy asks for.
+      setStaleHallNames((baselineVenue?.halls || []).map((hall) => hall.name));
       setBaseline({
         venueId: savedVenueId,
         hallIds: selectedHallIds,
@@ -235,7 +267,9 @@ export function VenueReassignmentCard({
       <div className="rounded-lg border border-border/60 bg-muted/30 p-3 text-xs space-y-1">
         <div className="font-semibold text-foreground">{t("currentVenue")}</div>
         <div className="text-muted-foreground">
-          <span className="font-medium text-foreground">{currentVenue.name}</span>
+          <span className="font-medium text-foreground">
+            {baselineVenue?.name || currentVenue.name}
+          </span>
           <span className="mx-1.5">·</span>
           <span>{regionLabel(baseline.regionId)}</span>
           <span className="mx-1.5">·</span>
@@ -272,10 +306,15 @@ export function VenueReassignmentCard({
               {!venues.some((venue) => venue.id === selectedVenueId) && (
                 <option value={currentVenue.id}>{currentVenue.name}</option>
               )}
-              {venues.map((venue) => (
-                <option key={venue.id} value={venue.id} data-region={venue.regionId}>
-                  {venue.name} · {venue.city}
-                </option>
+              {venueGroups.map(([code, groupVenues]) => (
+                <optgroup key={code} label={regionLabel(code)}>
+                  {groupVenues.map((venue) => (
+                    <option key={venue.id} value={venue.id} data-region={venue.regionId}>
+                      {venue.name} · {venue.city} ·{" "}
+                      {tVenueType(normalizeVenueType(venue.type))}
+                    </option>
+                  ))}
+                </optgroup>
               ))}
             </select>
           </div>
