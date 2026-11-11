@@ -26,6 +26,7 @@ export async function GET(request: Request) {
           city: true,
           regionId: true,
           size: true,
+          type: true,
           halls: {
             select: { id: true, name: true, capacity: true, kind: true },
             orderBy: { name: "asc" },

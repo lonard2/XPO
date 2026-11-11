@@ -66,6 +66,7 @@ import {
 } from "@/lib/theming";
 import { archTitle, archDescription, clusterLabel } from "@/lib/i18n/categories";
 import { LivePreviewFrame } from "@/components/organizer/LivePreviewFrame";
+import { isHallVenue, normalizeSpaceKind, normalizeVenueType } from "@/lib/discovery/venueTypes";
 import { cn } from "@/lib/utils";
 
 const DRAFT_STORAGE_KEY = "xpo_wizard_draft_v1";
@@ -99,6 +100,7 @@ interface VenueHall {
   id: string;
   name: string;
   capacity?: number;
+  kind?: string;
 }
 
 interface Venue {
@@ -107,6 +109,7 @@ interface Venue {
   regionId?: string;
   city: string;
   size?: string;
+  type?: string;
   halls?: VenueHall[];
 }
 
@@ -263,6 +266,8 @@ export default function NewEventWizardPage() {
   const isAdmin = role === "ADMIN" || user?.role === "ADMIN";
 
   const tOrg = useTranslations("organizer");
+  const tVenueType = useTranslations("venueTypes");
+  const tSpaceKind = useTranslations("spaceKinds");
   const tCom = useTranslations("common");
   const tArch = useTranslations("archetypes");
   const tReg = useTranslations("regions");
@@ -714,6 +719,10 @@ export default function NewEventWizardPage() {
   const selectedVenue = React.useMemo(() => {
     return venuesList.find((v) => v.id === venueId);
   }, [venuesList, venueId]);
+
+  const selectedVenueIsHallVenue = isHallVenue(
+    normalizeVenueType(selectedVenue?.type)
+  );
 
   const selectedHalls = React.useMemo(() => {
     if (!selectedVenue?.halls) return [];
@@ -1957,7 +1966,7 @@ export default function NewEventWizardPage() {
                 >
                   {filteredVenues.map((v) => (
                     <option key={v.id} value={v.id}>
-                      {v.name} ({v.city})
+                      {v.name} ({v.city}) · {tVenueType(normalizeVenueType(v.type))}
                     </option>
                   ))}
                 </select>
@@ -1969,7 +1978,9 @@ export default function NewEventWizardPage() {
               <div>
                 <div className="flex items-center justify-between mb-1.5">
                   <label htmlFor="wizard-hall-select" className="block text-xs font-semibold text-foreground">
-                    {tOrg("wizardSelectHall") || "Primary Exhibition Hall"}
+                    {selectedVenueIsHallVenue
+                      ? tOrg("wizardSelectHall") || "Primary Exhibition Hall"
+                      : tOrg("wizardSelectSpace") || "Primary Event Space"}
                   </label>
                   {selectedVenue?.halls && selectedVenue.halls.length > 1 && (
                     <button
@@ -1978,8 +1989,12 @@ export default function NewEventWizardPage() {
                       className="min-h-[44px] inline-flex items-center text-xs font-semibold text-primary hover:underline cursor-pointer"
                     >
                       {venueHallIds.length === selectedVenue.halls.length
-                        ? "All Halls Allocated"
-                        : "Allocate All Campus Halls"}
+                        ? selectedVenueIsHallVenue
+                          ? "All Halls Allocated"
+                          : tOrg("wizardAllSpacesAllocated") || "All Spaces Allocated"
+                        : selectedVenueIsHallVenue
+                          ? "Allocate All Campus Halls"
+                          : tOrg("wizardAllocateAllSpaces") || "Allocate All Campus Spaces"}
                     </button>
                   )}
                 </div>
@@ -1997,7 +2012,7 @@ export default function NewEventWizardPage() {
                 >
                   {selectedVenue?.halls?.map((h) => (
                     <option key={h.id} value={h.id}>
-                      {h.name} {h.capacity ? `(Capacity: ${h.capacity.toLocaleString()} Attendees)` : ""}
+                      {h.name} · {tSpaceKind(normalizeSpaceKind(h.kind))} {h.capacity ? `(Capacity: ${h.capacity.toLocaleString()} Attendees)` : ""}
                     </option>
                   )) || <option value="">Main Complex Pavilion</option>}
                 </select>
@@ -2009,7 +2024,9 @@ export default function NewEventWizardPage() {
               <div className="pt-2 border-t border-border/50 space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-semibold text-foreground">
-                    Campus Hall Allocation (Multi-Hall Booking):
+                    {selectedVenueIsHallVenue
+                      ? "Campus Hall Allocation (Multi-Hall Booking):"
+                      : tOrg("wizardCampusSpaceAllocation") || "Campus Space Allocation:"}
                   </span>
                   <span className="text-[11px] text-muted-foreground">
                     Select all wings reserved for this exhibition
