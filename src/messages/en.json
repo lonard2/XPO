@@ -610,7 +610,9 @@
     "directoryTitle": "Venue directory",
     "viewVenue": "View venue",
     "showAllVenues": "Show all {count} venues",
-    "showFewerVenues": "Show fewer venues"
+    "showFewerVenues": "Show fewer venues",
+    "spacesCount": "{count} Spaces",
+    "spacesCountOne": "1 Space"
   },
   "calendar": {
     "title": "Interactive Event Calendar",
@@ -1675,5 +1677,26 @@
     "railSubtitle": "Hand-picked by XPO editors",
     "timelineTitle": "Event updates",
     "viewEvent": "View event"
+  },
+  "venueTypes": {
+    "CONVENTION_CENTER": "Convention Center",
+    "EXHIBITION_CENTER": "Exhibition Center",
+    "ARENA": "Arena",
+    "STADIUM": "Stadium",
+    "MALL": "Mall",
+    "HOTEL": "Hotel",
+    "COMMUNITY_HALL": "Community Hall",
+    "OUTDOOR": "Outdoor"
+  },
+  "spaceKinds": {
+    "HALL": "Hall",
+    "MEETING_ROOM": "Meeting Room",
+    "ARENA": "Arena",
+    "FIELD": "Field",
+    "COURT": "Court",
+    "ATRIUM": "Atrium",
+    "PAVILION": "Pavilion",
+    "BALLROOM": "Ballroom",
+    "OUTDOOR": "Outdoor"
   }
 }

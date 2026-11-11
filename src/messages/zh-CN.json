@@ -610,7 +610,9 @@
     "directoryTitle": "场馆目录",
     "viewVenue": "查看场馆",
     "showAllVenues": "显示全部 {count} 个场馆",
-    "showFewerVenues": "显示更少"
+    "showFewerVenues": "显示更少",
+    "spacesCount": "{count} 个空间",
+    "spacesCountOne": "1 个空间"
   },
   "calendar": {
     "title": "会展交互日历",
@@ -1675,5 +1677,26 @@
     "railSubtitle": "XPO编辑精选",
     "timelineTitle": "活动动态",
     "viewEvent": "查看活动"
+  },
+  "venueTypes": {
+    "CONVENTION_CENTER": "会议中心",
+    "EXHIBITION_CENTER": "展览中心",
+    "ARENA": "竞技场",
+    "STADIUM": "体育场",
+    "MALL": "商场",
+    "HOTEL": "酒店",
+    "COMMUNITY_HALL": "社区礼堂",
+    "OUTDOOR": "户外"
+  },
+  "spaceKinds": {
+    "HALL": "展厅",
+    "MEETING_ROOM": "会议室",
+    "ARENA": "竞技场",
+    "FIELD": "运动场",
+    "COURT": "球场",
+    "ATRIUM": "中庭",
+    "PAVILION": "展亭",
+    "BALLROOM": "宴会厅",
+    "OUTDOOR": "户外"
   }
 }

@@ -37,6 +37,8 @@ export interface VenueSummary {
   imageUrl?: string | null;
   latitude?: number | null;
   longitude?: number | null;
+  type?: string | null;
+  capacity?: number | null;
   regionId?: string;
   region?: {
     id: string;
@@ -140,6 +142,8 @@ export interface VenueWithEvents {
   address: string;
   transitInfo: string;
   imageUrl?: string | null;
+  type?: string | null;
+  capacity?: number | null;
   regionCode: string;
   halls?: VenueHallSummary[];
   events: Array<{

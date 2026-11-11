@@ -1,36 +1,37 @@
 import { describe, it, expect } from "vitest";
-import { isMeetingRoom, hallsOnly, meetingRoomsOnly, countHalls } from "@/lib/discovery/venueSpaces";
+import { countHalls, countSpaces } from "@/lib/discovery/venueSpaces";
 
-const HALL_A = { kind: "HALL", name: "Hall A" };
-const THEATRE = { kind: undefined, name: "JIExpo Theatre" };
-const ROOM = { kind: "MEETING_ROOM", name: "Garuda 1" };
-const ROOM_LOWER = { kind: "meeting_room", name: "Nuri Room 1" };
+const space = (kind: string) => ({ id: kind, name: kind, kind });
 
-describe("venueSpaces", () => {
-  it("treats HALL and missing kind as halls, never as meeting rooms", () => {
-    expect(isMeetingRoom(HALL_A)).toBe(false);
-    expect(isMeetingRoom(THEATRE)).toBe(false);
-    expect(isMeetingRoom(ROOM)).toBe(true);
+describe("countSpaces", () => {
+  it("counts only halls for a convention center, not ballrooms or meeting rooms", () => {
+    const halls = [
+      space("HALL"),
+      space("HALL"),
+      space("BALLROOM"),
+      space("MEETING_ROOM"),
+    ];
+    expect(countSpaces(halls, "CONVENTION_CENTER")).toBe(2);
+    expect(countHalls(halls)).toBe(3);
   });
 
-  it("matches the kind case-insensitively", () => {
-    expect(isMeetingRoom(ROOM_LOWER)).toBe(true);
+  it("counts every non-meeting-room space for a mall", () => {
+    expect(countSpaces([space("ATRIUM")], "MALL")).toBe(1);
+    expect(countSpaces([space("ATRIUM"), space("MEETING_ROOM")], "MALL")).toBe(1);
   });
 
-  it("splits halls from meeting rooms", () => {
-    const all = [HALL_A, ROOM, THEATRE, ROOM_LOWER];
-
-    expect(hallsOnly(all).map((h) => h.name)).toEqual(["Hall A", "JIExpo Theatre"]);
-    expect(meetingRoomsOnly(all).map((h) => h.name)).toEqual(["Garuda 1", "Nuri Room 1"]);
+  it("counts fields, arenas, and courts for a stadium", () => {
+    expect(
+      countSpaces([space("FIELD"), space("ARENA"), space("COURT"), space("MEETING_ROOM")], "STADIUM")
+    ).toBe(3);
   });
 
-  it("counts halls without the meeting rooms", () => {
-    expect(countHalls([HALL_A, ROOM, THEATRE, ROOM_LOWER])).toBe(2);
+  it("counts an outdoor ground as one space", () => {
+    expect(countSpaces([space("FIELD")], "OUTDOOR")).toBe(1);
+    expect(countSpaces([space("OUTDOOR")], "OUTDOOR")).toBe(1);
   });
 
-  it("counts an empty or missing list as zero", () => {
-    expect(countHalls([])).toBe(0);
-    expect(countHalls(undefined)).toBe(0);
-    expect(countHalls(null)).toBe(0);
+  it("falls back to the convention-center rule for an unknown type", () => {
+    expect(countSpaces([space("HALL"), space("ATRIUM")], "not-a-type")).toBe(1);
   });
 });

@@ -610,7 +610,9 @@
     "directoryTitle": "Directorio de recintos",
     "viewVenue": "Ver recinto",
     "showAllVenues": "Mostrar los {count} recintos",
-    "showFewerVenues": "Mostrar menos"
+    "showFewerVenues": "Mostrar menos",
+    "spacesCount": "{count} espacios",
+    "spacesCountOne": "1 espacio"
   },
   "calendar": {
     "title": "Calendario Interactivo de Eventos",
@@ -1675,5 +1677,26 @@
     "railSubtitle": "Selección de la redacción de XPO",
     "timelineTitle": "Novedades del evento",
     "viewEvent": "Ver evento"
+  },
+  "venueTypes": {
+    "CONVENTION_CENTER": "Centro de convenciones",
+    "EXHIBITION_CENTER": "Centro de exposiciones",
+    "ARENA": "Arena",
+    "STADIUM": "Estadio",
+    "MALL": "Centro comercial",
+    "HOTEL": "Hotel",
+    "COMMUNITY_HALL": "Salón comunitario",
+    "OUTDOOR": "Exterior"
+  },
+  "spaceKinds": {
+    "HALL": "Sala",
+    "MEETING_ROOM": "Sala de reuniones",
+    "ARENA": "Arena",
+    "FIELD": "Campo",
+    "COURT": "Cancha",
+    "ATRIUM": "Atrio",
+    "PAVILION": "Pabellón",
+    "BALLROOM": "Salón de baile",
+    "OUTDOOR": "Exterior"
   }
 }

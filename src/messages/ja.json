@@ -610,7 +610,9 @@
     "directoryTitle": "会場ディレクトリ",
     "viewVenue": "会場を見る",
     "showAllVenues": "全 {count} 会場を表示",
-    "showFewerVenues": "表示を減らす"
+    "showFewerVenues": "表示を減らす",
+    "spacesCount": "{count} スペース",
+    "spacesCountOne": "1 スペース"
   },
   "calendar": {
     "title": "イベントカレンダー",
@@ -1675,5 +1677,26 @@
     "railSubtitle": "XPO編集部のおすすめ",
     "timelineTitle": "イベントのお知らせ",
     "viewEvent": "イベントを見る"
+  },
+  "venueTypes": {
+    "CONVENTION_CENTER": "コンベンションセンター",
+    "EXHIBITION_CENTER": "展示センター",
+    "ARENA": "アリーナ",
+    "STADIUM": "スタジアム",
+    "MALL": "モール",
+    "HOTEL": "ホテル",
+    "COMMUNITY_HALL": "コミュニティホール",
+    "OUTDOOR": "屋外"
+  },
+  "spaceKinds": {
+    "HALL": "ホール",
+    "MEETING_ROOM": "会議室",
+    "ARENA": "アリーナ",
+    "FIELD": "フィールド",
+    "COURT": "コート",
+    "ATRIUM": "アトリウム",
+    "PAVILION": "パビリオン",
+    "BALLROOM": "ボールルーム",
+    "OUTDOOR": "屋外"
   }
 }

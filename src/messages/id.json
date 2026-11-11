@@ -610,7 +610,9 @@
     "directoryTitle": "Direktori venue",
     "viewVenue": "Lihat venue",
     "showAllVenues": "Tampilkan semua {count} venue",
-    "showFewerVenues": "Tampilkan lebih sedikit"
+    "showFewerVenues": "Tampilkan lebih sedikit",
+    "spacesCount": "{count} Ruang",
+    "spacesCountOne": "1 Ruang"
   },
   "calendar": {
     "title": "Kalender Acara Interaktif",
@@ -1675,5 +1677,26 @@
     "railSubtitle": "Pilihan editor XPO",
     "timelineTitle": "Kabar acara",
     "viewEvent": "Lihat acara"
+  },
+  "venueTypes": {
+    "CONVENTION_CENTER": "Pusat Konvensi",
+    "EXHIBITION_CENTER": "Pusat Pameran",
+    "ARENA": "Arena",
+    "STADIUM": "Stadion",
+    "MALL": "Mal",
+    "HOTEL": "Hotel",
+    "COMMUNITY_HALL": "Balai Komunitas",
+    "OUTDOOR": "Ruang Terbuka"
+  },
+  "spaceKinds": {
+    "HALL": "Hall",
+    "MEETING_ROOM": "Ruang Rapat",
+    "ARENA": "Arena",
+    "FIELD": "Lapangan",
+    "COURT": "Lapangan Pertandingan",
+    "ATRIUM": "Atrium",
+    "PAVILION": "Paviliun",
+    "BALLROOM": "Ballroom",
+    "OUTDOOR": "Area Terbuka"
   }
 }
