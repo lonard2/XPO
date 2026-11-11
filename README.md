@@ -72,6 +72,14 @@ AI analytics and attendee concierge are powered by OpenRouter across 6 specializ
 * **Offline Service Worker (`public/sw.js`)**: Cache-first strategy for assets and offline fallback experience for cached passes.
 * **Schema.org JSON-LD Generator (`src/lib/seo/jsonLd.ts`)**: `ExhibitionEvent`, `BusinessEvent`, `CivicStructure`, `BreadcrumbList`, and `WebSite` rich snippets.
 
+### H. Venue Types & Space Kinds
+* **Venue type** (`Venue.type`): `CONVENTION_CENTER`, `EXHIBITION_CENTER`, `ARENA`, `STADIUM`, `MALL`, `HOTEL`, `COMMUNITY_HALL`, or `OUTDOOR`. This is separate from the event presentation-tier suggestion (`size`).
+* **Space kind** (`VenueHall.kind`): `HALL`, `MEETING_ROOM`, `ARENA`, `FIELD`, `COURT`, `ATRIUM`, `PAVILION`, `BALLROOM`, or `OUTDOOR`.
+* **Count rule**: convention and exhibition centers count "Halls"; every other type counts "Spaces". Meeting rooms are listed deeper and never counted.
+* **Where it appears**: the venue directory sidebar filter, venue cards, the homepage directory, and the venue detail page.
+* **Backfill**: run `npx tsx scripts/backfill-venue-types.ts --dry-run`, review it, then run without `--dry-run`. The script is idempotent and never overwrites an operator-set type without `--force`.
+* See `docs/guides/venue-types.md` for the vocabulary, count rule, rollout, and verification.
+
 ---
 
 ## 2. Technology Stack
