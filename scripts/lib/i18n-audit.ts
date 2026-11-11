@@ -22,6 +22,12 @@ export interface HardcodedAuditResult {
   byFile: Record<string, number>;
 }
 
+export interface UntranslatedHit {
+  locale: string;
+  key: string;
+  value: string;
+}
+
 const COPY_ATTRIBUTES = new Set([
   "aria-label",
   "placeholder",
@@ -191,4 +197,77 @@ export function auditHardcodedUi(options: {
   }
 
   return { hits, total: hits.length, byFile };
+}
+
+function flattenMessages(value: unknown, prefix = ""): Record<string, string> {
+  const out: Record<string, string> = {};
+  if (!value || typeof value !== "object") return out;
+
+  for (const [key, child] of Object.entries(value)) {
+    const qualified = prefix ? `${prefix}.${key}` : key;
+    if (typeof child === "string") {
+      out[qualified] = child;
+    } else if (child && typeof child === "object") {
+      Object.assign(out, flattenMessages(child, qualified));
+    }
+  }
+
+  return out;
+}
+
+export function auditUntranslatedValues(options: {
+  messagesDir?: string;
+  allowlist?: I18nAllowlist;
+  minLength?: number;
+} = {}): UntranslatedHit[] {
+  const messagesDir = path.resolve(
+    options.messagesDir ?? path.join(process.cwd(), "src", "messages")
+  );
+  const minLength = options.minLength ?? 18;
+  const allowlist = options.allowlist ?? loadAllowlist();
+
+  let source: Record<string, string>;
+  try {
+    source = flattenMessages(
+      JSON.parse(fs.readFileSync(path.join(messagesDir, "en.json"), "utf8"))
+    );
+  } catch {
+    return [];
+  }
+
+  let files: string[];
+  try {
+    files = fs.readdirSync(messagesDir).filter((file) => file.endsWith(".json"));
+  } catch {
+    return [];
+  }
+
+  const hits: UntranslatedHit[] = [];
+
+  for (const file of files) {
+    if (file === "en.json") continue;
+    const locale = file.replace(/\.json$/, "");
+
+    let bundle: Record<string, string>;
+    try {
+      bundle = flattenMessages(
+        JSON.parse(fs.readFileSync(path.join(messagesDir, file), "utf8"))
+      );
+    } catch {
+      continue;
+    }
+
+    for (const [key, value] of Object.entries(bundle)) {
+      if (source[key] !== value) continue;
+      if (value.length <= minLength) continue;
+      if (!value.includes(" ")) continue;
+      if (isSuppressed(value, "", allowlist)) continue;
+      hits.push({ locale, key, value });
+    }
+  }
+
+  hits.sort(
+    (a, b) => a.locale.localeCompare(b.locale) || a.key.localeCompare(b.key)
+  );
+  return hits;
 }
