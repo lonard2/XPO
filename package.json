@@ -16,7 +16,9 @@
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "test:e2e": "playwright test",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "i18n:audit": "tsx scripts/audit-i18n.ts",
+    "i18n:audit:update": "tsx scripts/audit-i18n.ts --update-baseline"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.10.1",
