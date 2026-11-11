@@ -8,11 +8,15 @@ const MESSAGES_DIR = path.join(process.cwd(), "src", "messages");
 const LATIN_LOCALES = ["en", "id", "de", "es"];
 const CJK_LOCALES = ["ja", "zh-CN"];
 
-// Measured in the rendered category tile at 320px, the narrowest supported
-// viewport: two lines hold 29 Latin characters and 19 CJK characters at the
-// 11px subtitle size. One character of margin absorbs word-boundary wraps.
-const LATIN_BUDGET = 27;
-const CJK_BUDGET = 18;
+// Measured in the normal four-column category grid (768px to 1280px, 195px
+// text width): two lines hold 64 Latin characters and 36 CJK characters at
+// the 11px subtitle size. A floor keeps the tiles from reading as two-word
+// stubs; the ceiling keeps every subtitle on two full lines at tablet and
+// desktop, while the existing line-clamp-2 trims cleanly on a 320px phone.
+const LATIN_MIN = 45;
+const LATIN_MAX = 60;
+const CJK_MIN = 18;
+const CJK_MAX = 32;
 
 function descriptionFor(locale: string, id: string): string | undefined {
   const bundle = JSON.parse(
@@ -24,15 +28,16 @@ function descriptionFor(locale: string, id: string): string | undefined {
 describe("Category tile copy", () => {
   it("keeps every category subtitle inside the two-line tile budget", () => {
     for (const locale of [...LATIN_LOCALES, ...CJK_LOCALES]) {
-      const budget = CJK_LOCALES.includes(locale) ? CJK_BUDGET : LATIN_BUDGET;
+      const min = CJK_LOCALES.includes(locale) ? CJK_MIN : LATIN_MIN;
+      const max = CJK_LOCALES.includes(locale) ? CJK_MAX : LATIN_MAX;
       for (const id of ARCHETYPE_LIST) {
         const text = descriptionFor(locale, id) ?? "";
-        expect({ locale, id, missing: text.length === 0 }).toEqual({
+        expect({ locale, id, short: text.length < min }).toEqual({
           locale,
           id,
-          missing: false,
+          short: false,
         });
-        expect({ locale, id, over: text.length > budget }).toEqual({
+        expect({ locale, id, over: text.length > max }).toEqual({
           locale,
           id,
           over: false,

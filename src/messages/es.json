@@ -231,112 +231,112 @@
     "INDUSTRIAL_B2B": {
       "title": "Feria Industrial y de Maquinaria B2B",
       "tag": "Maquinaria Pesada y Compras B2B",
-      "description": "Maquinaria y compras B2B."
+      "description": "Maquinaria pesada, automatización CNC y compras B2B."
     },
     "TECH_DEV_SUMMIT": {
       "title": "Conferencia de Tecnología e IA",
       "tag": "Desarrolladores y Cloud",
-      "description": "IA, nube y charlas dev."
+      "description": "Ingeniería de IA, sistemas cloud y charlas de código."
     },
     "MEDICAL_SYMPOSIUM": {
       "title": "Simposio Médico y Sanitario",
       "tag": "Investigación Clínica y Créditos CME",
-      "description": "Clínica y créditos CME."
+      "description": "Investigación clínica, créditos CME y tecnología médica."
     },
     "FINANCE_INVESTOR": {
       "title": "Foro FinTech e Inversión",
       "tag": "Capital Riesgo y Rondas",
-      "description": "Acuerdos e inversión."
+      "description": "Salas de acuerdos, pitch decks y foros de inversión."
     },
     "POP_CULTURE_GAMING": {
       "title": "Feria de Pop Culture y Gaming",
       "tag": "Torneos Esports y Creadores",
-      "description": "eSports, cosplay, creador."
+      "description": "Arenas de eSports, pasarelas cosplay y zona creadores."
     },
     "MUSIC_FESTIVAL": {
       "title": "Festival de Música y Conciertos",
       "tag": "Escenarios en Vivo y Pulseras RFID",
-      "description": "Escenarios y directos."
+      "description": "Carteles multiescenario, sonido en vivo y conciertos."
     },
     "MEGA_EXPO_PAVILION": {
       "title": "Gran Feria y Pabellones Comerciales",
       "tag": "Pabellones de Comercio y Ocio",
-      "description": "Pabellones y ferias."
+      "description": "Pabellones nacionales, recintos feriales y comercio."
     },
     "AUTOMOTIVE_MOBILITY": {
       "title": "Salón del Automóvil y Movilidad EV",
       "tag": "Vehículos Concepto y Pistas de Prueba",
-      "description": "Concept cars y pruebas EV."
+      "description": "Estrenos de prototipos, trenes EV y pruebas en pista."
     },
     "ENERGY_INFRASTRUCTURE": {
       "title": "Feria de Energía, Minería e Infraestructura",
       "tag": "Redes Renovables y Minería Pesada",
-      "description": "Renovables y minería."
+      "description": "Redes renovables, concesiones mineras y equipo pesado."
     },
     "AGRITECH_FOOD": {
       "title": "Feria Agritech y Alimentación",
       "tag": "Agricultura de Precisión y Frío",
-      "description": "Agricultura de precisión."
+      "description": "Agricultura de precisión, cadena de frío y food tech."
     },
     "HOSPITALITY_TOURISM": {
       "title": "Bolsa de Turismo y Hostelería",
       "tag": "Promoción de Destinos y Hotelería",
-      "description": "Compras y hoteles."
+      "description": "Citas con compradores, destinos y cadenas hoteleras."
     },
     "EDUCATION_EDTECH": {
       "title": "Feria de Educación y EdTech",
       "tag": "Universidades y Becas de Estudio",
-      "description": "Universidades y STEM."
+      "description": "Ferias universitarias, becas de estudio y aulas STEM."
     },
     "FASHION_RETAIL": {
       "title": "Feria de Moda, Belleza y Retail",
       "tag": "Desfiles de Pasarela y Fabricación OEM",
-      "description": "Pasarelas y mayoristas."
+      "description": "Pasarelas de moda, cosmética OEM y venta mayorista."
     },
     "GOVERNMENT_DIPLOMATIC": {
       "title": "Cumbre Gubernamental y Diplomática",
       "tag": "Protocolo Diplomático y Salas Bilaterales",
-      "description": "Delegaciones bilaterales."
+      "description": "Sesiones bilaterales, protocolo y delegaciones de estado."
     },
     "INCENTIVE_RETREAT": {
       "title": "Programa de Incentivos y Retiros Corporativos",
       "tag": "Itinerarios de Incentivo y Cenas de Gala",
-      "description": "Retiros y galas."
+      "description": "Retiros ejecutivos, cenas de gala y programas wellness."
     },
     "BUILDING_PROPTECH": {
       "title": "Exposición de Materiales de Construcción, Arquitectura y PropTech",
       "tag": "Materiales y PropTech",
-      "description": "BIM y edificios smart."
+      "description": "Materiales sostenibles, modelos BIM y edificios smart."
     },
     "AEROSPACE_DEFENSE": {
       "title": "Feria Internacional Aeroespacial, de Aviación y Defensa",
       "tag": "Aeroespacial y Defensa",
-      "description": "Demos de vuelo y compras."
+      "description": "Demostraciones de vuelo, aviónica y sistemas de defensa."
     },
     "SUPPLY_CHAIN_LOGISTICS": {
       "title": "Tecnología de Cadena de Suministro, Logística y Empaque",
       "tag": "Logística y Robótica AGV",
-      "description": "Robótica y logística."
+      "description": "Robótica de almacén, carga multimodal y cadena de frío."
     },
     "FRANCHISE_LICENSING": {
       "title": "Franquicias, Comercio Minorista y Oportunidades PyME",
       "tag": "Franquicias y Licencias",
-      "description": "Franquicias y licencias."
+      "description": "Franquicias comerciales, licencias de marca y pymes."
     },
     "FAITH_PILGRIMAGE_CONGRESS": {
       "title": "Congreso de Peregrinación, Comunidad y Normas Halal",
       "tag": "Peregrinación y Halal",
-      "description": "Peregrinación y Halal."
+      "description": "Logística de peregrinación, normas Halal y congresos."
     },
     "SPORTS_OUTDOOR": {
       "title": "Exposición de Deportes, Fitness y Aventura al Aire Libre",
       "tag": "Deportes y Aventura",
-      "description": "Equipamiento y deporte."
+      "description": "Equipo de resistencia, villas de carrera y medicina."
     },
     "MEDIA_BROADCAST": {
       "title": "Tecnología de Medios, Transmisión y Pro-AV",
       "tag": "Transmisión y Pro-AV",
-      "description": "Producción virtual, pro AV."
+      "description": "Producción virtual, transmisión IP y equipos pro-AV."
     },
     "browseByCategory": "Filtrar exposiciones por industria"
   },

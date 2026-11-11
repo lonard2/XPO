@@ -231,112 +231,112 @@
     "INDUSTRIAL_B2B": {
       "title": "Industrie- & Maschinenbau-Fachmesse",
       "tag": "Schwermaschinen & B2B-Einkauf",
-      "description": "Maschinen und B2B-Einkauf."
+      "description": "Schwermaschinen, CNC-Automation und B2B-Beschaffung."
     },
     "TECH_DEV_SUMMIT": {
       "title": "Technologie- & Entwickler-Konferenz",
       "tag": "Entwickler & Cloud-Architektur",
-      "description": "KI, Cloud, Developer-Talks."
+      "description": "KI-Engineering, Cloud-Systeme und Developer-Keynotes."
     },
     "MEDICAL_SYMPOSIUM": {
       "title": "Medizin- & Klinisches Symposium",
       "tag": "Klinische Studien & CME-Punkte",
-      "description": "Klinische Forschung, CME."
+      "description": "Klinische Forschung, CME-Punkte und Medizintechnik."
     },
     "FINANCE_INVESTOR": {
       "title": "FinTech- & Investorenforum",
       "tag": "Venture Capital & Deal-Rooms",
-      "description": "Deal-Rooms und Pitches."
+      "description": "Private Deal-Rooms, Pitch-Decks und Kapitalforen."
     },
     "POP_CULTURE_GAMING": {
       "title": "Popkultur- & Gaming-Messe",
       "tag": "Esports-Turniere & Creator Alley",
-      "description": "E-Sport, Cosplay, Creator."
+      "description": "E-Sport-Arenen, Cosplay-Bühnen und Creator-Meilen."
     },
     "MUSIC_FESTIVAL": {
       "title": "Musikfestival & Arena-Konzert",
       "tag": "Live-Bühnen & RFID-Zutritt",
-      "description": "Mehrbühnen-Liveshows."
+      "description": "Mehrbühnen-Lineups, Live-Sound und Arenakonzerte."
     },
     "MEGA_EXPO_PAVILION": {
       "title": "Großmesse & Multi-Pavillon-Schau",
       "tag": "Messepavillons & Volksfest",
-      "description": "Pavillons und Messen."
+      "description": "Länderpavillons, Messehallen und Publikumsmessen."
     },
     "AUTOMOTIVE_MOBILITY": {
       "title": "Automobil- & E-Mobilitätsmesse",
       "tag": "Konzeptfahrzeuge & Teststrecke",
-      "description": "Konzeptautos und EV-Demos."
+      "description": "Konzeptpremieren, EV-Antriebe und Testfahrten."
     },
     "ENERGY_INFRASTRUCTURE": {
       "title": "Energie-, Bergbau- & Infrastrukturmesse",
       "tag": "Erneuerbare Netze & Schwermaschinen",
-      "description": "Netze und Bergbau."
+      "description": "Erneuerbare Netze, Bergbaulizenzen und Großgerät."
     },
     "AGRITECH_FOOD": {
       "title": "Agrartechnologie- & Lebensmittelmesse",
       "tag": "Smart Farming & Kühlketten",
-      "description": "Präzisionslandwirtschaft."
+      "description": "Präzisionslandwirtschaft, Kühlkette und Food-Tech."
     },
     "HOSPITALITY_TOURISM": {
       "title": "Tourismus- & Hospitality-Börse",
       "tag": "Destinationsmarketing & Hotellerie",
-      "description": "Einkäufertreffen, Hotels."
+      "description": "Reise-Einkäufertreffen, Destinationen und Hotellerie."
     },
     "EDUCATION_EDTECH": {
       "title": "Bildungs- & EdTech-Messe",
       "tag": "Hochschulmessen & Stipendien",
-      "description": "Uni-Messen und MINT."
+      "description": "Hochschulmessen, Stipendien und MINT-Forschungslabore."
     },
     "FASHION_RETAIL": {
       "title": "Mode-, Beauty- & Lifestyle-Messe",
       "tag": "Laufsteg-Shows & Kosmetik-OEM",
-      "description": "Shows und Großhandel."
+      "description": "Laufsteg-Premieren, Kosmetik-OEM und Großhandel."
     },
     "GOVERNMENT_DIPLOMATIC": {
       "title": "Regierungs- & Diplomatiegipfel",
       "tag": "Diplomatisches Protokoll & Bilaterale",
-      "description": "Bilaterale Delegationen."
+      "description": "Bilaterale Briefings, Protokoll und Staatsdelegationen."
     },
     "INCENTIVE_RETREAT": {
       "title": "Incentive-Reisen & Firmenretreat",
       "tag": "Reiserouten & Galadinner",
-      "description": "Executive-Retreats, Galas."
+      "description": "Executive-Retreats, Galadiners und Wellness-Programme."
     },
     "BUILDING_PROPTECH": {
       "title": "Baumaterialien, Architektur & PropTech Messe",
       "tag": "Baustoffe & PropTech",
-      "description": "BIM und smarte Gebäude."
+      "description": "Nachhaltige Baustoffe, BIM-Modelle und Smart Buildings."
     },
     "AEROSPACE_DEFENSE": {
       "title": "Luft- und Raumfahrt & Verteidigungsmesse",
       "tag": "Luftfahrt & Verteidigung",
-      "description": "Flugdemos und Beschaffung."
+      "description": "Flugvorführungen, Avionik und Verteidigungssysteme."
     },
     "SUPPLY_CHAIN_LOGISTICS": {
       "title": "Lieferkette, Logistik & Verpackungstechnik",
       "tag": "Logistik & AGV-Robotik",
-      "description": "Lagerroboter und Fracht."
+      "description": "Lagerrobotik, multimodale Fracht und Kühlketten."
     },
     "FRANCHISE_LICENSING": {
       "title": "Franchise, Einzelhandel & KMU-Geschäftschancen",
       "tag": "Franchise & Lizenzierung",
-      "description": "Franchise, Lizenzierung."
+      "description": "Einzelhandels-Franchise, Markenlizenzen und KMU."
     },
     "FAITH_PILGRIMAGE_CONGRESS": {
       "title": "Pilgerreisen, Halal-Standards & Glaubenskongress",
       "tag": "Pilgerfahrt & Halal-Standards",
-      "description": "Pilgerlogistik und Halal."
+      "description": "Pilgerlogistik, Halal-Standards und Gemeindekongresse."
     },
     "SPORTS_OUTDOOR": {
       "title": "Sport, Fitness & Outdoor-Erlebnismesse",
       "tag": "Sport & Outdoor",
-      "description": "Ausrüstung, Sportmedizin."
+      "description": "Ausdauerausrüstung, Wettkampfdörfer und Sportmedizin."
     },
     "MEDIA_BROADCAST": {
       "title": "Medien-, Broadcast- & Pro-AV-Technologiemesse",
       "tag": "Broadcast & Pro-AV",
-      "description": "Virtuelle Produktion, AV."
+      "description": "Virtuelle Produktion, IP-Broadcast und Pro-AV-Technik."
     },
     "browseByCategory": "Messen nach Branche filtern"
   },

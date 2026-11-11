@@ -231,112 +231,112 @@
     "INDUSTRIAL_B2B": {
       "title": "工业制造与重型装备展",
       "tag": "机械设备与B2B采购",
-      "description": "重型机械与B2B采购"
+      "description": "重型机械工程、CNC精密自动化与B2B工业采购"
     },
     "TECH_DEV_SUMMIT": {
       "title": "科技、AI与开发者大会",
       "tag": "开发者与云原生架构",
-      "description": "AI、云与开发者"
+      "description": "人工智能工程、分布式云系统与开发者主题演讲"
     },
     "MEDICAL_SYMPOSIUM": {
       "title": "医疗健康与临床学术年会",
       "tag": "临床科研与CME学分",
-      "description": "临床研究与CME"
+      "description": "临床研究论文、CME医学继续教育与前沿医疗器械"
     },
     "FINANCE_INVESTOR": {
       "title": "金融科技与投资论坛",
       "tag": "风险投资与商务洽谈",
-      "description": "洽谈室与投资路演"
+      "description": "私密双边洽谈室、创业路演演示与机构资本峰会"
     },
     "POP_CULTURE_GAMING": {
       "title": "流行文化与游戏动漫展",
       "tag": "电竞赛事与创作者街区",
-      "description": "电竞、Cosplay与创作者"
+      "description": "电竞锦标赛场馆、国际Cosplay舞台与创作者市集"
     },
     "MUSIC_FESTIVAL": {
       "title": "音乐节与大型演唱会",
       "tag": "多舞台现场与手环闸机",
-      "description": "多舞台现场演出"
+      "description": "多舞台演出阵容、现场声学工程与大型场馆音乐会"
     },
     "MEGA_EXPO_PAVILION": {
       "title": "大型综合博览会与购物节",
       "tag": "多国展馆与特色夜市",
-      "description": "国家馆与贸易展"
+      "description": "国家主题展馆、综合贸易展厅与大型商业零售博览"
     },
     "AUTOMOTIVE_MOBILITY": {
       "title": "汽车、EV与移动出行展",
       "tag": "概念首发与赛道试驾",
-      "description": "概念车与EV试驾"
+      "description": "概念车全球首发、纯电动力架构与封闭赛道试驾"
     },
     "ENERGY_INFRASTRUCTURE": {
       "title": "能源、矿业与绿色基建展",
       "tag": "清洁电网与重型采矿",
-      "description": "可再生电网与采矿"
+      "description": "可再生能源电网、矿产开发特许与重型工程机械"
     },
     "AGRITECH_FOOD": {
       "title": "农业科技与食品贸易博览会",
       "tag": "智慧农业与冷链物流",
-      "description": "精准农业与食品"
+      "description": "精准数字农业、冷链物流走廊与全球食品科技贸易"
     },
     "HOSPITALITY_TOURISM": {
       "title": "文旅酒店与商旅交易会",
       "tag": "文旅推广与酒店采购",
-      "description": "买家洽谈与酒店"
+      "description": "国际旅游买家配对、目的地展馆与酒店集团采购"
     },
     "EDUCATION_EDTECH": {
       "title": "教育科技与国际院校展",
       "tag": "名校招生与学术交流",
-      "description": "大学展与STEM"
+      "description": "全球大学招生展、高教奖学金咨询与STEM创新实验"
     },
     "FASHION_RETAIL": {
       "title": "时尚美妆与轻奢零售展",
       "tag": "T台走秀与美妆代工OEM",
-      "description": "时装秀与批发"
+      "description": "高级时装T台首发、美妆OEM代工与品牌批发采购"
     },
     "GOVERNMENT_DIPLOMATIC": {
       "title": "政府政策与高层外交峰会",
       "tag": "国宾礼仪与双边会晤",
-      "description": "双边代表团"
+      "description": "高规格双边会谈、外交礼宾协调与国家级代表团"
     },
     "INCENTIVE_RETREAT": {
       "title": "高端奖励旅游与企业年会",
       "tag": "定制考察与海滨晚宴",
-      "description": "高管静修与晚宴"
+      "description": "定制高管静修行程、尊享晚宴坐席与身心健康课程"
     },
     "BUILDING_PROPTECH": {
       "title": "绿色建筑建材与智慧地产科技展",
       "tag": "绿色建材与科技地产",
-      "description": "BIM与智能建筑"
+      "description": "可持续建筑材料、BIM数字设计模型与智慧楼宇系统"
     },
     "AEROSPACE_DEFENSE": {
       "title": "国际航空航天与国防装备博览会",
       "tag": "航空航天与防务系统",
-      "description": "飞行演示与采购"
+      "description": "飞行实况演示、航空电子系统与防务装备采购简报"
     },
     "SUPPLY_CHAIN_LOGISTICS": {
       "title": "供应链物流、仓储机器人与包装技术展",
       "tag": "智慧物流与AGV机器人",
-      "description": "仓储机器人与货运"
+      "description": "无人仓储机器人、多式联运货运与智能冷链包装"
     },
     "FRANCHISE_LICENSING": {
       "title": "连锁加盟、新零售与中小企业创富展",
       "tag": "加盟连锁与品牌授权",
-      "description": "特许经营与授权"
+      "description": "零售特许经营项目、品牌知识产权授权与中小企业"
     },
     "FAITH_PILGRIMAGE_CONGRESS": {
       "title": "朝觐服务、清真产业与信仰社群大会",
       "tag": "朝觐服务与清真标准",
-      "description": "朝觐物流与清真"
+      "description": "朝觐行程后勤、清真产业认证标准与宗教社群大会"
     },
     "SPORTS_OUTDOOR": {
       "title": "体育运动、全民健身与户外探险展",
       "tag": "体育赛事与户外探险",
-      "description": "耐力装备与运动医学"
+      "description": "耐力运动装备测试、赛事选手村与运动医学研讨会"
     },
     "MEDIA_BROADCAST": {
       "title": "影视广播工程与专业音视频技术展",
       "tag": "广播影视与专业AV",
-      "description": "虚拟制作与专业AV"
+      "description": "虚拟制片LED影棚、IP广播路由与专业视听音响设备"
     },
     "browseByCategory": "按行业筛选展会"
   },

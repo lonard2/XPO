@@ -231,112 +231,112 @@
     "INDUSTRIAL_B2B": {
       "title": "産業機械・製造B2B展示会",
       "tag": "産業機械・部材調達",
-      "description": "産業機械とB2B調達"
+      "description": "重機エンジニアリング、CNC自動化、B2B調達"
     },
     "TECH_DEV_SUMMIT": {
       "title": "テクノロジー＆AIカンファレンス",
       "tag": "開発者・クラウド技術",
-      "description": "AI・クラウド・開発者"
+      "description": "AI開発、分散クラウド、開発者キーノート"
     },
     "MEDICAL_SYMPOSIUM": {
       "title": "医療・ヘルスケアシンポジウム",
       "tag": "臨床研究・CME単位",
-      "description": "臨床研究とCME"
+      "description": "臨床研究演題、CME単位認定、医療機器展示"
     },
     "FINANCE_INVESTOR": {
       "title": "フィンテック・投資フォーラム",
       "tag": "ベンチャーキャピタル・投資商談",
-      "description": "商談と投資家ピッチ"
+      "description": "個別商談ルーム、投資家ピッチ、資本フォーラム"
     },
     "POP_CULTURE_GAMING": {
       "title": "ポップカルチャー＆ゲーム展",
       "tag": "eスポーツ・同人クリエイター",
-      "description": "eスポーツとコスプレ"
+      "description": "eスポーツ大会、コスプレステージ、クリエイター"
     },
     "MUSIC_FESTIVAL": {
       "title": "音楽フェスティバル＆アリーナ公演",
       "tag": "ライブステージ・入場管理",
-      "description": "多ステージのライブ"
+      "description": "複数ステージ編成、音響演出、アリーナライブ"
     },
     "MEGA_EXPO_PAVILION": {
       "title": "大規模総合見本市・博覧会",
       "tag": "総合物産パビリオン・花火",
-      "description": "パビリオンと見本市"
+      "description": "各国パビリオン、総合見本市、大規模物産展"
     },
     "AUTOMOTIVE_MOBILITY": {
       "title": "自動車・EVモビリティ展",
       "tag": "コンセプトカー・試乗体験",
-      "description": "コンセプトカーとEV"
+      "description": "コンセプト車初公開、EV技術、試乗体験コース"
     },
     "ENERGY_INFRASTRUCTURE": {
       "title": "エネルギー・資源・グリーンインフラ展",
       "tag": "再生可能エネルギー・重機",
-      "description": "再エネと鉱業"
+      "description": "再生可能送電網、資源開発権益、大型現場機械"
     },
     "AGRITECH_FOOD": {
       "title": "農業・アグリテック＆食品博覧会",
       "tag": "スマート農業・低温物流",
-      "description": "精密農業と食品"
+      "description": "精密スマート農業、コールドチェーン、食品技術"
     },
     "HOSPITALITY_TOURISM": {
       "title": "観光・トラベルマート",
       "tag": "観光地プロモーション・ホテル調達",
-      "description": "バイヤー商談とホテル"
+      "description": "旅行バイヤー商談、観光パビリオン、ホテル調達"
     },
     "EDUCATION_EDTECH": {
       "title": "教育・EdTech展示会",
       "tag": "大学進学・STEM教育",
-      "description": "大学フェアとSTEM"
+      "description": "海外大学フェア、奨学金相談、STEM教育ラボ"
     },
     "FASHION_RETAIL": {
       "title": "ファッション＆ビューティー展",
       "tag": "ランウェイショー・化粧品OEM",
-      "description": "ランウェイと卸売"
+      "description": "ランウェイ新作発表、化粧品OEM、ブランド卸売"
     },
     "GOVERNMENT_DIPLOMATIC": {
       "title": "国際外交・政府サミット",
       "tag": "外交プロトコル・二国間会談",
-      "description": "二国間会談"
+      "description": "二国間政策会合、外交儀礼調整、各国代表団会議"
     },
     "INCENTIVE_RETREAT": {
       "title": "法人インセンティブ＆リトリート",
       "tag": "報奨旅行・祝賀ガラディナー",
-      "description": "役員リトリートとガラ"
+      "description": "役員リトリート日程、ガラ晩餐会、ウェルネス"
     },
     "BUILDING_PROPTECH": {
       "title": "建築建材・設計・プロップテック展",
       "tag": "建築資材＆プロップテック",
-      "description": "BIMとスマート建築"
+      "description": "環境配慮建材、建築BIM設計、スマートビル技術"
     },
     "AEROSPACE_DEFENSE": {
       "title": "国際航空宇宙・防衛装備品エキスポ",
       "tag": "航空宇宙＆防衛技術",
-      "description": "飛行デモと調達"
+      "description": "飛行展示デモ、航空アビオニクス、防衛装備調達"
     },
     "SUPPLY_CHAIN_LOGISTICS": {
       "title": "サプライチェーン・物流自動化・包装技術展",
       "tag": "物流＆AGV搬送ロボット",
-      "description": "倉庫ロボと物流"
+      "description": "自律倉庫ロボット、複合貨物輸送、低温物流網"
     },
     "FRANCHISE_LICENSING": {
       "title": "フランチャイズ・リテール・中小ビジネス機会展",
       "tag": "FC展開＆ライセンス",
-      "description": "フランチャイズと許諾"
+      "description": "小売フランチャイズ、ブランド許諾、SME展開"
     },
     "FAITH_PILGRIMAGE_CONGRESS": {
       "title": "巡礼サービス・ハラール産業・信仰コミュニティ大会",
       "tag": "巡礼＆ハラール標準",
-      "description": "巡礼とハラール"
+      "description": "巡礼運営ロジスティクス、ハラール認証、宗教会議"
     },
     "SPORTS_OUTDOOR": {
       "title": "スポーツ・フィットネス＆アウトドア総合展",
       "tag": "スポーツ＆アウトドア",
-      "description": "耐久装備とスポーツ医学"
+      "description": "耐久競技ギア試走、大会ビレッジ、スポーツ医学"
     },
     "MEDIA_BROADCAST": {
       "title": "放送映像・プロAV技術展",
       "tag": "放送＆プロAV",
-      "description": "バーチャル制作とProAV"
+      "description": "バーチャル制作、IP放送ルーティング、ProAV機材"
     },
     "browseByCategory": "業種別に展示会を絞り込む"
   },

@@ -99,11 +99,19 @@ describe('EventCategoryPills', () => {
   it('renders descriptive subtitles below category titles', () => {
     render(<EventCategoryPills locale="en" />);
 
-    expect(screen.getByText('Machinery and B2B sourcing.')).toBeInTheDocument();
-    expect(screen.getByText('AI, cloud, developer talks.')).toBeInTheDocument();
-    expect(screen.getByText('Esports, cosplay, creators.')).toBeInTheDocument();
+    expect(
+      screen.getByText('Heavy machinery, CNC automation, and B2B procurement.')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('AI engineering, cloud systems, and developer keynotes.')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('Esports arenas, cosplay stages, and creator alleys.')
+    ).toBeInTheDocument();
 
-    const subtitle = screen.getByText('Machinery and B2B sourcing.');
+    const subtitle = screen.getByText(
+      'Heavy machinery, CNC automation, and B2B procurement.'
+    );
     expect(subtitle.className).toContain('line-clamp-2');
   });
 

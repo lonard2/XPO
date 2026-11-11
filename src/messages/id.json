@@ -231,112 +231,112 @@
     "INDUSTRIAL_B2B": {
       "title": "Pameran Industri & Manufaktur",
       "tag": "Permesinan & Pengadaan B2B",
-      "description": "Mesin dan pengadaan B2B."
+      "description": "Mesin berat, otomasi CNC, dan pengadaan B2B industri."
     },
     "TECH_DEV_SUMMIT": {
       "title": "Konferensi Teknologi & AI",
       "tag": "Pengembang & Rekayasa Cloud",
-      "description": "AI, cloud, developer talk."
+      "description": "Rekayasa AI, sistem cloud, dan keynote pengembang."
     },
     "MEDICAL_SYMPOSIUM": {
       "title": "Simposium Medis & Klinis",
       "tag": "Riset Klinis & Kredit SKP",
-      "description": "Riset klinis dan CME."
+      "description": "Riset klinis, akreditasi CME, dan teknologi medis."
     },
     "FINANCE_INVESTOR": {
       "title": "Forum FinTech & Investasi",
       "tag": "Modal Ventura & Pendanaan",
-      "description": "Ruang deal dan pitch."
+      "description": "Ruang kesepakatan, pitch deck, dan forum investor."
     },
     "POP_CULTURE_GAMING": {
       "title": "Pameran Pop Culture & Gaming",
       "tag": "Turnamen Esports & Kreator",
-      "description": "Esports, cosplay, kreator."
+      "description": "Arena esports, panggung cosplay, dan lorong kreator."
     },
     "MUSIC_FESTIVAL": {
       "title": "Festival Musik & Konser",
       "tag": "Konser Multi-Panggung",
-      "description": "Panggung live berganda."
+      "description": "Lineup multi-panggung, tata suara, dan konser arena."
     },
     "MEGA_EXPO_PAVILION": {
       "title": "Pekan Raya & Pameran Terpadu",
       "tag": "Paviliun Dagang & Hiburan Rakyat",
-      "description": "Paviliun dan pameran."
+      "description": "Paviliun negara, balai dagang, dan pekan raya ritel."
     },
     "AUTOMOTIVE_MOBILITY": {
       "title": "Pameran Otomotif & EV",
       "tag": "Mobil Konsep & Uji Kendara",
-      "description": "Mobil konsep dan uji EV."
+      "description": "Mobil konsep, baterai EV, dan sesi test drive resmi."
     },
     "ENERGY_INFRASTRUCTURE": {
       "title": "Pameran Energi & Tambang",
       "tag": "Transisi Energi & Alat Berat",
-      "description": "Energi hijau dan tambang."
+      "description": "Jaringan energi hijau, konsesi tambang, dan alat berat."
     },
     "AGRITECH_FOOD": {
       "title": "Pameran Pertanian & Pangan",
       "tag": "Pertanian Presisi & Rantai Pasok",
-      "description": "Pertanian presisi, pangan."
+      "description": "Pertanian presisi, rantai dingin, dan teknologi pangan."
     },
     "HOSPITALITY_TOURISM": {
       "title": "Bursa Pariwisata & Perhotelan",
       "tag": "Promosi Destinasi & Maskapai",
-      "description": "Pertemuan buyer dan hotel."
+      "description": "Pertemuan buyer wisata, destinasi, dan jaringan hotel."
     },
     "EDUCATION_EDTECH": {
       "title": "Pameran Pendidikan & EdTech",
       "tag": "Pameran Kampus & Beasiswa",
-      "description": "Pameran kampus dan STEM."
+      "description": "Pameran universitas, beasiswa, dan laboratorium STEM."
     },
     "FASHION_RETAIL": {
       "title": "Pameran Fesyen & Kecantikan",
       "tag": "Peragaan Busana & Maklon",
-      "description": "Fashion show dan grosir."
+      "description": "Peragaan busana, OEM kosmetik, dan perdagangan grosir."
     },
     "GOVERNMENT_DIPLOMATIC": {
       "title": "KTT Pemerintahan & Diplomasi",
       "tag": "Protokol Kenegaraan & Bilateral",
-      "description": "Delegasi bilateral."
+      "description": "Pertemuan bilateral, protokol, dan delegasi negara."
     },
     "INCENTIVE_RETREAT": {
       "title": "Program Insentif & Retret Korporat",
       "tag": "Rencana Perjalanan & Jamuan Gala",
-      "description": "Retreat eksekutif, gala."
+      "description": "Retreat eksekutif, jamuan gala, dan program kebugaran."
     },
     "BUILDING_PROPTECH": {
       "title": "Ekspo Material Bangunan, Arsitektur & PropTech",
       "tag": "Material Bangunan & PropTech",
-      "description": "BIM dan bangunan pintar."
+      "description": "Material ramah lingkungan, BIM, dan gedung pintar."
     },
     "AEROSPACE_DEFENSE": {
       "title": "Ekspo Dirgantara, Penerbangan & Pertahanan",
       "tag": "Kedirgantaraan & Pertahanan",
-      "description": "Demo terbang, pengadaan."
+      "description": "Demo penerbangan, avionik, dan pengadaan pertahanan."
     },
     "SUPPLY_CHAIN_LOGISTICS": {
       "title": "Teknologi Rantai Pasok, Logistik & Pengemasan",
       "tag": "Logistik & Pergudangan",
-      "description": "Robot gudang dan kargo."
+      "description": "Robot gudang, kargo multimoda, dan distribusi dingin."
     },
     "FRANCHISE_LICENSING": {
       "title": "Peluang Usaha Waralaba, Ritel & UKM",
       "tag": "Waralaba & Lisensi",
-      "description": "Waralaba dan lisensi."
+      "description": "Waralaba ritel, lisensi merek, dan peluang usaha UKM."
     },
     "FAITH_PILGRIMAGE_CONGRESS": {
       "title": "Kongres Komunitas, Haji, Umrah & Standar Halal",
       "tag": "Haji, Umrah & Halal",
-      "description": "Logistik haji dan halal."
+      "description": "Logistik ibadah haji, standar halal, dan kongres umat."
     },
     "SPORTS_OUTDOOR": {
       "title": "Ekspo Olahraga, Kebugaran & Petualangan Alam",
       "tag": "Olahraga & Alam Terbuka",
-      "description": "Perlengkapan, sport medis."
+      "description": "Perlengkapan ketahanan, desa lomba, dan kedokteran."
     },
     "MEDIA_BROADCAST": {
       "title": "Teknologi Media, Penyiaran & Pro-AV",
       "tag": "Penyiaran & Media",
-      "description": "Produksi virtual, pro AV."
+      "description": "Produksi virtual, penyiaran IP, dan perangkat pro-AV."
     },
     "browseByCategory": "Filter Pameran berdasarkan Vertikal Industri"
   },
