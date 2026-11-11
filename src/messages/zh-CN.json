@@ -231,112 +231,112 @@
     "INDUSTRIAL_B2B": {
       "title": "工业制造与重型装备展",
       "tag": "机械设备与B2B采购",
-      "description": "CNC机床现场切削演示、工业机器人、高精度冶金铸造与B2B采购洽谈室。"
+      "description": "重型机械与B2B采购"
     },
     "TECH_DEV_SUMMIT": {
       "title": "科技、AI与开发者大会",
       "tag": "开发者与云原生架构",
-      "description": "多轨开发者主旨演讲、系统架构实战拆解、API沙箱实验与工程创新黑客松。"
+      "description": "AI、云与开发者"
     },
     "MEDICAL_SYMPOSIUM": {
       "title": "医疗健康与临床学术年会",
       "tag": "临床科研与CME学分",
-      "description": "同行评议医学成果宣读、继续医学教育CME学分认证与专科分会场交流。"
+      "description": "临床研究与CME"
     },
     "FINANCE_INVESTOR": {
       "title": "金融科技与投资论坛",
       "tag": "风险投资与商务洽谈",
-      "description": "创新项目路演舞台、闭门双边洽谈室与机构资本配置高端论坛。"
+      "description": "洽谈室与投资路演"
     },
     "POP_CULTURE_GAMING": {
       "title": "流行文化与游戏动漫展",
       "tag": "电竞赛事与创作者街区",
-      "description": "Cosplay主舞台、同人插画创作者走廊、电竞锦标赛竞技场与粉丝见面会。"
+      "description": "电竞、Cosplay与创作者"
     },
     "MUSIC_FESTIVAL": {
       "title": "音乐节与大型演唱会",
       "tag": "多舞台现场与手环闸机",
-      "description": "实时演出舞台时间表、场馆声学布局指南与RFID智能手环快速检票通道。"
+      "description": "多舞台现场演出"
     },
     "MEGA_EXPO_PAVILION": {
       "title": "大型综合博览会与购物节",
       "tag": "多国展馆与特色夜市",
-      "description": "多主题展馆综合购物、夜间烟花盛典与大规模特色美食品鉴嘉年华。"
+      "description": "国家馆与贸易展"
     },
     "AUTOMOTIVE_MOBILITY": {
       "title": "汽车、EV与移动出行展",
       "tag": "概念首发与赛道试驾",
-      "description": "专业封闭赛道试驾预约、未来概念车全球首发与新能源快充生态技术展。"
+      "description": "概念车与EV试驾"
     },
     "ENERGY_INFRASTRUCTURE": {
       "title": "能源、矿业与绿色基建展",
       "tag": "清洁电网与重型采矿",
-      "description": "可再生能源新型电网、大型采矿机械装备与近海能源开发重点工程。"
+      "description": "可再生电网与采矿"
     },
     "AGRITECH_FOOD": {
       "title": "农业科技与食品贸易博览会",
       "tag": "智慧农业与冷链物流",
-      "description": "智能精准农业科技、生鲜保鲜冷链物流网络与国际农产品大宗贸易。"
+      "description": "精准农业与食品"
     },
     "HOSPITALITY_TOURISM": {
       "title": "文旅酒店与商旅交易会",
       "tag": "文旅推广与酒店采购",
-      "description": "国际旅游买家洽谈会、高端酒店供应链采购对接与文旅目的地推介。"
+      "description": "买家洽谈与酒店"
     },
     "EDUCATION_EDTECH": {
       "title": "教育科技与国际院校展",
       "tag": "名校招生与学术交流",
-      "description": "全球重点大学招生展位、留学与奖学金咨询指导、数字化教学创新成果展示。"
+      "description": "大学展与STEM"
     },
     "FASHION_RETAIL": {
       "title": "时尚美妆与轻奢零售展",
       "tag": "T台走秀与美妆代工OEM",
-      "description": "品牌新品T台时装秀、化妆品配方代工研发(OEM)与大宗批发订货洽谈。"
+      "description": "时装秀与批发"
     },
     "GOVERNMENT_DIPLOMATIC": {
       "title": "政府政策与高层外交峰会",
       "tag": "国宾礼仪与双边会晤",
-      "description": "高安全级别双边会谈室、外交国宾礼仪流程与各国政府代表团参会服务。"
+      "description": "双边代表团"
     },
     "INCENTIVE_RETREAT": {
       "title": "高端奖励旅游与企业年会",
       "tag": "定制考察与海滨晚宴",
-      "description": "企业专属康养考察日程、高管领导力研讨活动与海滨庆祝晚宴盛典。"
+      "description": "高管静修与晚宴"
     },
     "BUILDING_PROPTECH": {
       "title": "绿色建筑建材与智慧地产科技展",
       "tag": "绿色建材与科技地产",
-      "description": "可持续建筑材料、建筑BIM三维建模组件、智慧楼宇物联网与工程采购洽谈。"
+      "description": "BIM与智能建筑"
     },
     "AEROSPACE_DEFENSE": {
       "title": "国际航空航天与国防装备博览会",
       "tag": "航空航天与防务系统",
-      "description": "特技超音速飞行表演、国防电子航电系统、民用客机采购与无人无人机防御系统。"
+      "description": "飞行演示与采购"
     },
     "SUPPLY_CHAIN_LOGISTICS": {
       "title": "供应链物流、仓储机器人与包装技术展",
       "tag": "智慧物流与AGV机器人",
-      "description": "无人仓储搬运AGV机器人、多式联运货运通道、智能自动化包装产线与全程冷链。"
+      "description": "仓储机器人与货运"
     },
     "FRANCHISE_LICENSING": {
       "title": "连锁加盟、新零售与中小企业创富展",
       "tag": "加盟连锁与品牌授权",
-      "description": "成熟零售加盟模式、知识产权IP授权、中小企业合资创业与餐饮多店特许协议。"
+      "description": "特许经营与授权"
     },
     "FAITH_PILGRIMAGE_CONGRESS": {
       "title": "朝觐服务、清真产业与信仰社群大会",
       "tag": "朝觐服务与清真标准",
-      "description": "资质认证朝觐行程组织、国际清真互认标准审计、跨宗教文明研讨与多语种同传全体大会。"
+      "description": "朝觐物流与清真"
     },
     "SPORTS_OUTDOOR": {
       "title": "体育运动、全民健身与户外探险展",
       "tag": "体育赛事与户外探险",
-      "description": "马拉松比赛号码布现场领取、越野装备测试赛道、运动医学机能检测与障碍越野巡回赛。"
+      "description": "耐力装备与运动医学"
     },
     "MEDIA_BROADCAST": {
       "title": "影视广播工程与专业音视频技术展",
       "tag": "广播影视与专业AV",
-      "description": "虚拟拍摄LED立面影棚、SMPTE ST 2110无压缩IP视频分发、大型演唱会线性阵列试听。"
+      "description": "虚拟制作与专业AV"
     },
     "browseByCategory": "按行业筛选展会"
   },

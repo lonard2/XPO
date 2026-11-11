@@ -231,112 +231,112 @@
     "INDUSTRIAL_B2B": {
       "title": "Industrial & Manufacturing B2B",
       "tag": "Industrial & Manufacturing",
-      "description": "Heavy machinery engineering, precision CNC automation, robotics tooling, and global B2B procurement tenders."
+      "description": "Machinery and B2B sourcing."
     },
     "TECH_DEV_SUMMIT": {
       "title": "Technology, AI & Consumer Electronics",
       "tag": "Tech & Electronics",
-      "description": "Autonomous AI engineering, distributed cloud systems, developer keynotes, and consumer electronics showcases."
+      "description": "AI, cloud, developer talks."
     },
     "MEDICAL_SYMPOSIUM": {
       "title": "Medical & Healthcare Congress",
       "tag": "Medical & Health",
-      "description": "Peer-reviewed clinical research abstracts, CME medical accreditation, surgical breakthroughs, and biomedical assemblies."
+      "description": "Clinical research and CME."
     },
     "FINANCE_INVESTOR": {
       "title": "Finance, FinTech & Investor Forums",
       "tag": "Finance & Capital",
-      "description": "Private bilateral deal rooms, institutional capital allocation, fintech venture pitch decks, and sovereign wealth assemblies."
+      "description": "Deal rooms and pitches."
     },
     "POP_CULTURE_GAMING": {
       "title": "Pop Culture & Gaming Expo",
       "tag": "Pop Culture & Gaming",
-      "description": "Esports championship tournament arenas, international cosplay catwalks, creator alley showcases, and premiere fandom stages."
+      "description": "Esports, cosplay, creators."
     },
     "MUSIC_FESTIVAL": {
       "title": "Music, Stage & Performing Arts",
       "tag": "Music & Performing Arts",
-      "description": "Multi-stage acoustic arena schedules, dynamic crowd telemetry, festival lineups, and live stage theatrical productions."
+      "description": "Multi-stage live shows."
     },
     "MEGA_EXPO_PAVILION": {
       "title": "Mega Expo & Multi-Pavilion Fairs",
       "tag": "Mega Expos & Fairs",
-      "description": "Multi-hectare regional trade fairs, global nation pavilions, nocturnal fireworks spectacles, and commercial retail concourses."
+      "description": "Pavilions and trade fairs."
     },
     "AUTOMOTIVE_MOBILITY": {
       "title": "Automotive, EV & Mobility Motor Show",
       "tag": "Automotive & EV",
-      "description": "Concept vehicle world premieres, closed-circuit test drive reservations, EV battery architectures, and autonomous mobility debuts."
+      "description": "Concept cars and EV demos."
     },
     "ENERGY_INFRASTRUCTURE": {
       "title": "Energy, Mining & Green Infrastructure",
       "tag": "Energy & Infrastructure",
-      "description": "Renewable grid distribution, strategic mineral extraction concessions, clean energy transitions, and heavy site machinery."
+      "description": "Renewable grids and mining."
     },
     "AGRITECH_FOOD": {
       "title": "Agriculture, Agritech & Food Expo",
       "tag": "Agritech & Food Trade",
-      "description": "Autonomous farming precision systems, cold-chain logistical corridors, food security symposiums, and global agricultural commodity trade."
+      "description": "Precision farming and food."
     },
     "HOSPITALITY_TOURISM": {
       "title": "Hospitality, Tourism & Travel Mart",
       "tag": "Hospitality & Tourism",
-      "description": "International travel buyer matchmaking, luxury destination pavilions, hotelier procurement networks, and global airline assemblies."
+      "description": "Buyer meetings and hotels."
     },
     "EDUCATION_EDTECH": {
       "title": "Education, EdTech & Academic Summit",
       "tag": "Education & EdTech",
-      "description": "Global university fairs, higher education scholarship counseling, STEM laboratory breakthroughs, and digital curriculum summits."
+      "description": "University fairs and STEM."
     },
     "FASHION_RETAIL": {
       "title": "Fashion, Beauty & Luxury Retail Expo",
       "tag": "Fashion & Luxury",
-      "description": "High-fashion runway premieres, cosmetics contract manufacturing (OEM), luxury brand showrooms, and commercial wholesale procurement."
+      "description": "Runway shows and wholesale."
     },
     "GOVERNMENT_DIPLOMATIC": {
       "title": "Government & Diplomatic Summits",
       "tag": "Diplomatic & Policy",
-      "description": "High-security bilateral conference suites, sovereign policy briefings, diplomatic protocol coordination, and international state delegations."
+      "description": "Bilateral delegations."
     },
     "INCENTIVE_RETREAT": {
       "title": "Corporate Incentive & Luxury Retreats",
       "tag": "Incentive & Retreats",
-      "description": "Curated executive incentive itineraries, bespoke gala banquets, private leadership symposiums, and wellness retreat programming."
+      "description": "Executive retreats, galas."
     },
     "BUILDING_PROPTECH": {
       "title": "Building, Architecture & PropTech Expo",
       "tag": "Building & PropTech",
-      "description": "Sustainable building materials, architectural BIM technology, smart property automation, and civil construction procurement."
+      "description": "BIM and smart buildings."
     },
     "AEROSPACE_DEFENSE": {
       "title": "Aerospace, Aviation & Defense Expo",
       "tag": "Aerospace & Defense",
-      "description": "Supersonic flight demonstrations, military defense systems, commercial aviation procurement, and unmanned drone avionics."
+      "description": "Flight demos, procurement."
     },
     "SUPPLY_CHAIN_LOGISTICS": {
       "title": "Supply Chain, Logistics & Packaging Tech",
       "tag": "Logistics & Packaging",
-      "description": "Autonomous warehouse robotics (AGV/AMR), multimodal freight logistics, smart packaging automation, and cold-chain distribution."
+      "description": "Warehouse robots, freight."
     },
     "FRANCHISE_LICENSING": {
       "title": "Franchise, Retail & SME Business Opportunity",
       "tag": "Franchise & SME",
-      "description": "Turnkey retail franchise concepts, intellectual property licensing, SME business opportunities, and F&B multi-unit agreements."
+      "description": "Franchise and licensing."
     },
     "FAITH_PILGRIMAGE_CONGRESS": {
       "title": "Faith, Pilgrimage & Community Congress",
       "tag": "Faith & Pilgrimage",
-      "description": "Hajj & Umrah pilgrimage logistics, accredited Halal industry standards, international clerical assemblies, and religious community conventions."
+      "description": "Pilgrimage and Halal trade."
     },
     "SPORTS_OUTDOOR": {
       "title": "Sports, Fitness & Outdoor Adventure Expo",
       "tag": "Sports & Outdoor",
-      "description": "Competitive marathon bib collections, endurance equipment testing arenas, high-altitude expedition gear, and sports medicine summits."
+      "description": "Endurance gear and races."
     },
     "MEDIA_BROADCAST": {
       "title": "Media, Broadcast & Pro-AV Technology Mart",
       "tag": "Media & Broadcast",
-      "description": "Virtual production LED walls, SMPTE ST 2110 IP broadcast routing, line-array pro-audio listening, and cinema camera optics."
+      "description": "Virtual production, pro AV."
     },
     "browseByCategory": "Filter Exhibitions by Industry Vertical"
   },

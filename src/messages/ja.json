@@ -231,112 +231,112 @@
     "INDUSTRIAL_B2B": {
       "title": "産業機械・製造B2B展示会",
       "tag": "産業機械・部材調達",
-      "description": "工作機械CNC実演、スマートロボティクス、高精度冶金技術、B2B調達商談ルーム。"
+      "description": "産業機械とB2B調達"
     },
     "TECH_DEV_SUMMIT": {
       "title": "テクノロジー＆AIカンファレンス",
       "tag": "開発者・クラウド技術",
-      "description": "マルチトラック基調講演、ライブコードアーキテクチャ解説、APIサンドボックス、ハッカソン。"
+      "description": "AI・クラウド・開発者"
     },
     "MEDICAL_SYMPOSIUM": {
       "title": "医療・ヘルスケアシンポジウム",
       "tag": "臨床研究・CME単位",
-      "description": "査読付き医学研究発表、生涯教育CME認定単位管理、専門分科会セッション。"
+      "description": "臨床研究とCME"
     },
     "FINANCE_INVESTOR": {
       "title": "フィンテック・投資フォーラム",
       "tag": "ベンチャーキャピタル・投資商談",
-      "description": "スタートアップピッチ、非公開二国間商談室、機関投資家による資本配分フォーラム。"
+      "description": "商談と投資家ピッチ"
     },
     "POP_CULTURE_GAMING": {
       "title": "ポップカルチャー＆ゲーム展",
       "tag": "eスポーツ・同人クリエイター",
-      "description": "コスプレステージ、イラストレーター・同人通り、eスポーツ大会アリーナ、交流ブース。"
+      "description": "eスポーツとコスプレ"
     },
     "MUSIC_FESTIVAL": {
       "title": "音楽フェスティバル＆アリーナ公演",
       "tag": "ライブステージ・入場管理",
-      "description": "リアルタイムタイムテーブル、音響アリーナマップ、RFIDリストバンド入場ゲート。"
+      "description": "多ステージのライブ"
     },
     "MEGA_EXPO_PAVILION": {
       "title": "大規模総合見本市・博覧会",
       "tag": "総合物産パビリオン・花火",
-      "description": "マルチパビリオン物産展、夜間花火ショー、大規模グルメバザール。"
+      "description": "パビリオンと見本市"
     },
     "AUTOMOTIVE_MOBILITY": {
       "title": "自動車・EVモビリティ展",
       "tag": "コンセプトカー・試乗体験",
-      "description": "特設コース試乗予約、次世代コンセプトカー初公開、EV急速充電エコシステム技術展示。"
+      "description": "コンセプトカーとEV"
     },
     "ENERGY_INFRASTRUCTURE": {
       "title": "エネルギー・資源・グリーンインフラ展",
       "tag": "再生可能エネルギー・重機",
-      "description": "再生可能エネルギー送電網、鉱山開発大型重機、洋上エネルギー開発プロジェクト。"
+      "description": "再エネと鉱業"
     },
     "AGRITECH_FOOD": {
       "title": "農業・アグリテック＆食品博覧会",
       "tag": "スマート農業・低温物流",
-      "description": "スマート精密農業技術、低温物流コールドチェーン、国際食品コモディティ取引。"
+      "description": "精密農業と食品"
     },
     "HOSPITALITY_TOURISM": {
       "title": "観光・トラベルマート",
       "tag": "観光地プロモーション・ホテル調達",
-      "description": "国際旅行バイヤー商談会、ホテル業界サプライチェーン調達、観光地デスティネーションプロモーション。"
+      "description": "バイヤー商談とホテル"
     },
     "EDUCATION_EDTECH": {
       "title": "教育・EdTech展示会",
       "tag": "大学進学・STEM教育",
-      "description": "世界主要大学ブース、留学・奨学金カウンセリング、デジタル学習プラットフォームイノベーション。"
+      "description": "大学フェアとSTEM"
     },
     "FASHION_RETAIL": {
       "title": "ファッション＆ビューティー展",
       "tag": "ランウェイショー・化粧品OEM",
-      "description": "デザイナー新作ランウェイショー、化粧品受託製造OEM、大規模アパレル卸売商談。"
+      "description": "ランウェイと卸売"
     },
     "GOVERNMENT_DIPLOMATIC": {
       "title": "国際外交・政府サミット",
       "tag": "外交プロトコル・二国間会談",
-      "description": "高セキュリティ二国間会談室、外交プロトコルブリーフィング、政府代表団フォーラム。"
+      "description": "二国間会談"
     },
     "INCENTIVE_RETREAT": {
       "title": "法人インセンティブ＆リトリート",
       "tag": "報奨旅行・祝賀ガラディナー",
-      "description": "企業報奨ウェルネス日程、役員リーダーシップリトリート、海辺の祝賀ガラディナー。"
+      "description": "役員リトリートとガラ"
     },
     "BUILDING_PROPTECH": {
       "title": "建築建材・設計・プロップテック展",
       "tag": "建築資材＆プロップテック",
-      "description": "持続可能建築材料、建築BIMモデリング技術、スマートビルディング自動化、建設調達商談。"
+      "description": "BIMとスマート建築"
     },
     "AEROSPACE_DEFENSE": {
       "title": "国際航空宇宙・防衛装備品エキスポ",
       "tag": "航空宇宙＆防衛技術",
-      "description": "戦闘機アクロバット飛行展示、防衛電子アビオニクス、民間航空機調達、無人ドローン防衛システム。"
+      "description": "飛行デモと調達"
     },
     "SUPPLY_CHAIN_LOGISTICS": {
       "title": "サプライチェーン・物流自動化・包装技術展",
       "tag": "物流＆AGV搬送ロボット",
-      "description": "自律搬送ロボット(AGV/AMR)、国際複合一貫輸送ルート、スマート包装自動化、定温コールドチェーン。"
+      "description": "倉庫ロボと物流"
     },
     "FRANCHISE_LICENSING": {
       "title": "フランチャイズ・リテール・中小ビジネス機会展",
       "tag": "FC展開＆ライセンス",
-      "description": "パッケージ化FCビジネスモデル、商標知的財産ライセンス、中小企業協業投資、飲食マルチユニット契約。"
+      "description": "フランチャイズと許諾"
     },
     "FAITH_PILGRIMAGE_CONGRESS": {
       "title": "巡礼サービス・ハラール産業・信仰コミュニティ大会",
       "tag": "巡礼＆ハラール標準",
-      "description": "認定巡礼渡航ロジスティクス、国際ハラール基準相互承認、宗教学術会議、多言語同時通訳全体会合。"
+      "description": "巡礼とハラール"
     },
     "SPORTS_OUTDOOR": {
       "title": "スポーツ・フィットネス＆アウトドア総合展",
       "tag": "スポーツ＆アウトドア",
-      "description": "マラソン公式ゼッケン引換、トレイル走行試験コース、スポーツ科学・医学診断、障害物スラローム。"
+      "description": "耐久装備とスポーツ医学"
     },
     "MEDIA_BROADCAST": {
       "title": "放送映像・プロAV技術展",
       "tag": "放送＆プロAV",
-      "description": "インカメラVFXバーチャルプロダクションLED、SMPTE ST 2110非圧縮IP伝送、大型コンサート音響試聴。"
+      "description": "バーチャル制作とProAV"
     },
     "browseByCategory": "業種別に展示会を絞り込む"
   },
