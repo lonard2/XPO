@@ -112,6 +112,10 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
         imageUrl: imageUrl !== undefined ? imageUrl : existingVenue.imageUrl,
         size: size !== undefined && size !== null ? size : existingVenue.size,
         type: type !== undefined && type !== null ? type : existingVenue.type,
+        typeSource:
+          type !== undefined && type !== null
+            ? "OPERATOR"
+            : existingVenue.typeSource,
         capacity:
           capacity !== undefined ? numOrNull(capacity) : existingVenue.capacity,
       },

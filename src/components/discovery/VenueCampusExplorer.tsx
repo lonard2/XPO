@@ -75,19 +75,19 @@ export function VenueCampusExplorer({
 
   const activeWingKeys = Object.keys(wings).filter((k) => k !== 'all');
 
+  const wingHalls = wings[selectedWing] || halls;
   const kindCounts = React.useMemo(() => {
     const counts: Partial<Record<SpaceKind, number>> = {};
-    for (const hall of halls) {
+    for (const hall of wingHalls) {
       const kind = normalizeSpaceKind(hall.kind);
       counts[kind] = (counts[kind] || 0) + 1;
     }
     return counts;
-  }, [halls]);
+  }, [wingHalls]);
   const activeKindKeys = SPACE_KINDS.filter(
     (kind) => (kindCounts[kind] || 0) > 0
   );
 
-  const wingHalls = wings[selectedWing] || halls;
   const displayedHalls =
     selectedKind === 'all'
       ? wingHalls
@@ -95,7 +95,10 @@ export function VenueCampusExplorer({
           (hall) => normalizeSpaceKind(hall.kind) === selectedKind
         );
 
-  const selectedHall = halls.find((h) => h.id === selectedHallId) || displayedHalls[0] || halls[0];
+  const selectedHall =
+    displayedHalls.find((h) => h.id === selectedHallId) ||
+    displayedHalls[0] ||
+    halls[0];
 
   // Verified figures render as-is; everything else falls back to the heuristic with a
   // Typical qualifier so estimates are never presented as surveyed fact.
@@ -185,7 +188,10 @@ export function VenueCampusExplorer({
             <button
               type="button"
               aria-pressed={selectedWing === 'all'}
-              onClick={() => setSelectedWing('all')}
+              onClick={() => {
+                setSelectedWing('all');
+                setSelectedKind('all');
+              }}
               className={cn(
                 'min-h-[44px] sm:min-h-[36px] px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all whitespace-nowrap cursor-pointer flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
                 selectedWing === 'all'
@@ -200,7 +206,10 @@ export function VenueCampusExplorer({
                 key={wingName}
                 type="button"
                 aria-pressed={selectedWing === wingName}
-                onClick={() => setSelectedWing(wingName)}
+                onClick={() => {
+                  setSelectedWing(wingName);
+                  setSelectedKind('all');
+                }}
                 className={cn(
                   'min-h-[44px] sm:min-h-[36px] px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all whitespace-nowrap cursor-pointer flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
                   selectedWing === wingName
@@ -213,6 +222,9 @@ export function VenueCampusExplorer({
             ))}
           </div>
         )}
+
+
+      </div>
 
         {activeKindKeys.length > 1 && (
           <div
@@ -250,7 +262,6 @@ export function VenueCampusExplorer({
             ))}
           </div>
         )}
-      </div>
 
       {/* Mobile Selected Hall Sticky Feedback Strip */}
       {selectedHall && (
@@ -281,6 +292,11 @@ export function VenueCampusExplorer({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Hall Specification Cards Grid (8 cols) */}
         <div className="lg:col-span-8 space-y-4">
+          {displayedHalls.length === 0 ? (
+            <p className="rounded-2xl border border-dashed border-border/80 bg-muted/20 p-6 text-center text-xs text-muted-foreground">
+              {tVen('noSpacesMatch') || 'No spaces match this wing and kind.'}
+            </p>
+          ) : (
           <div id="campus-halls-grid" className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {displayedHalls.map((hall) => {
               const isSelected = selectedHall?.id === hall.id;
@@ -351,6 +367,7 @@ export function VenueCampusExplorer({
               );
             })}
           </div>
+          )}
         </div>
 
         {/* Right: Selected Hall Engineering & Wayfinding Dossier (4 cols) */}

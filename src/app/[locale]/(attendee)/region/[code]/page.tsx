@@ -4,7 +4,8 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Breadcrumbs, BreadcrumbJsonLd } from "@/components/layout/Breadcrumbs";
 import { MapPin, Building2, Calendar, Ticket, Train, Compass, Coins, Clock, ArrowRight, Globe, Layers, Navigation, CheckCircle2 } from "lucide-react";
 import { db } from "@/lib/db";
-import { countHalls, hallsOnly } from "@/lib/discovery/venueSpaces";
+import { countSpaces, hallsOnly } from "@/lib/discovery/venueSpaces";
+import { metricLabelKey, normalizeVenueType } from "@/lib/discovery/venueTypes";
 import {
   formatCurrency,
   formatDateRange,
@@ -34,6 +35,8 @@ interface VenueModel {
   address: string;
   transitInfo: string;
   imageUrl: string | null;
+  type?: string | null;
+  capacity?: number | null;
   halls?: VenueHallModel[];
 }
 
@@ -97,6 +100,7 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
 
   setRequestLocale(locale);
   const t = await getTranslations("regions");
+  const tVen = await getTranslations("venues");
   const tCommon = await getTranslations("common");
 
   const timezone = getTimeZoneForRegion(normalizedCode);
@@ -283,10 +287,15 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {venues.map((venue: VenueModel) => {
-            const totalCapacity = venue.halls?.reduce(
-              (acc: number, h: VenueHallModel) => acc + (h.capacity || 0),
-              0
-            ) || 15000;
+            const venueType = normalizeVenueType(venue.type);
+            const spaceCount = countSpaces(venue.halls, venueType);
+            const totalCapacity =
+              venue.capacity ||
+              venue.halls?.reduce(
+                (acc: number, h: VenueHallModel) => acc + (h.capacity || 0),
+                0
+              ) ||
+              15000;
 
             return (
               <Card key={venue.id} interactive className="flex flex-col justify-between overflow-hidden group">
@@ -312,7 +321,7 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
                       <div className="flex items-center justify-between text-xs font-semibold text-foreground">
                         <span className="flex items-center gap-1">
                           <Layers className="h-3.5 w-3.5 text-primary" />
-                          <span>Halls & Pavilions ({countHalls(venue.halls)})</span>
+                          <span>{tVen(metricLabelKey(venueType))} ({spaceCount})</span>
                         </span>
                         <span className="text-muted-foreground font-mono">
                           Cap: {totalCapacity.toLocaleString()}
@@ -327,9 +336,9 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
                             {hall.name}
                           </span>
                         ))}
-                        {countHalls(venue.halls) > 4 && (
+                        {spaceCount > 4 && (
                           <span className="text-xs text-muted-foreground self-center">
-                            +{countHalls(venue.halls) - 4} more
+                            +{spaceCount - 4} more
                           </span>
                         )}
                       </div>

@@ -60,6 +60,7 @@ export function VenueDirectoryExplorer({
 
   const handleSelectRegion = (region: string) => {
     setSelectedRegion(region);
+    setSelectedType('all');
     if (region !== 'all' && typeof document !== 'undefined') {
       document.cookie = `xpo_region=${region}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
     }
@@ -83,17 +84,28 @@ export function VenueDirectoryExplorer({
     ['gl', 'global'].includes((v.region?.code || v.regionId || '').toLowerCase())
   ).length;
 
-  // Filter venues by region, technical specifications, and search query
-  const filteredVenues = React.useMemo(() => {
-    const results = venues.filter((v) => {
+  const matchesRegion = React.useCallback(
+    (v: VenueSummary) => {
       const code = (v.region?.code || v.regionId || '').toLowerCase();
-      const matchesRegion =
+      return (
         selectedRegion === 'all' ||
         (selectedRegion === 'id' && code === 'id') ||
         (selectedRegion === 'jp' && code === 'jp') ||
-        (selectedRegion === 'global' && ['gl', 'global'].includes(code));
+        (selectedRegion === 'global' && ['gl', 'global'].includes(code))
+      );
+    },
+    [selectedRegion]
+  );
 
-      if (!matchesRegion) return false;
+  const regionScopedVenues = React.useMemo(
+    () => venues.filter(matchesRegion),
+    [venues, matchesRegion]
+  );
+
+  // Filter venues by region, technical specifications, and search query
+  const filteredVenues = React.useMemo(() => {
+    const results = venues.filter((v) => {
+      if (!matchesRegion(v)) return false;
 
       const matchesType =
         selectedType === 'all' || normalizeVenueType(v.type) === selectedType;
@@ -169,7 +181,7 @@ export function VenueDirectoryExplorer({
       }
       return a.name.localeCompare(b.name);
     });
-  }, [venues, selectedRegion, selectedType, specFilter, searchQuery, sortBy]);
+  }, [venues, matchesRegion, selectedType, specFilter, searchQuery, sortBy]);
 
   // Smart cross-region search recovery when 0 results found
   const otherRegionMatches = React.useMemo(() => {
@@ -214,7 +226,7 @@ export function VenueDirectoryExplorer({
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[300px_minmax(0,1fr)] gap-6 items-start animate-fade-in">
-      <aside className="lg:sticky lg:top-20 space-y-4">
+      <aside className="space-y-4">
       {/* Controls Bar: Search, Region Tabs & Sorting */}
       <div className="space-y-4 p-4 rounded-3xl border border-border/80 bg-card shadow-xs">
         <div className="flex flex-col gap-3">
@@ -288,12 +300,17 @@ export function VenueDirectoryExplorer({
 
           {/* Venue type filter: lives in the sidebar, never hides the unfiltered list */}
         <div className="space-y-2 border-t border-border/40 pt-3">
-          <span className="text-xs font-semibold text-muted-foreground">
+          <span id="venue-type-filter-label" className="text-xs font-semibold text-muted-foreground">
             {tVen('venueType') || 'Venue type'}
           </span>
-          <div className="space-y-1">
+          <div
+            role="group"
+            aria-labelledby="venue-type-filter-label"
+            className="space-y-1"
+          >
             <button
               type="button"
+              aria-pressed={selectedType === 'all'}
               onClick={() => setSelectedType('all')}
               className={cn(
                 'flex min-h-[44px] w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-xs transition-colors text-left cursor-pointer',
@@ -303,10 +320,10 @@ export function VenueDirectoryExplorer({
               )}
             >
               <span>{tVen('allTypes') || 'All types'}</span>
-              <span className="font-mono text-[11px] opacity-80">{venues.length}</span>
+              <span className="font-mono text-[11px] opacity-80">{regionScopedVenues.length}</span>
             </button>
             {VENUE_TYPES.map((type) => {
-              const count = venues.filter(
+              const count = regionScopedVenues.filter(
                 (venue) => normalizeVenueType(venue.type) === type
               ).length;
               if (count === 0) return null;
@@ -314,6 +331,7 @@ export function VenueDirectoryExplorer({
                 <button
                   key={type}
                   type="button"
+                  aria-pressed={selectedType === type}
                   onClick={() => setSelectedType(type)}
                   className={cn(
                     'flex min-h-[44px] w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-xs transition-colors text-left cursor-pointer',
@@ -416,7 +434,7 @@ export function VenueDirectoryExplorer({
             </Badge>
           </div>
 
-          {(searchQuery || selectedRegion !== 'all' || specFilter !== 'all') && (
+          {(searchQuery || selectedRegion !== 'all' || specFilter !== 'all' || selectedType !== 'all') && (
             <button
               type="button"
               onClick={() => {

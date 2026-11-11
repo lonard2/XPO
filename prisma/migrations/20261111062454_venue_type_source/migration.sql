@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Venue" ADD COLUMN     "typeSource" TEXT NOT NULL DEFAULT 'DEFAULT';

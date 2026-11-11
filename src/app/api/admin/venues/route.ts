@@ -137,6 +137,7 @@ export async function POST(req: NextRequest) {
         transitInfo: transitInfo || "Rapid transit express and airport shuttle bus connection.",
         imageUrl: imageUrl || "/images/venues/convention-center.jpg",
         type: type ?? "CONVENTION_CENTER",
+        typeSource: type ? "OPERATOR" : "DEFAULT",
         capacity: numOrNull(capacity),
         halls: {
           create: Array.isArray(halls) && halls.length > 0

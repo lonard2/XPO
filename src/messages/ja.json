@@ -616,7 +616,8 @@
     "venueType": "会場タイプ",
     "allTypes": "すべてのタイプ",
     "spacesMetric": "スペース",
-    "allSpaces": "すべてのスペース"
+    "allSpaces": "すべてのスペース",
+    "noSpacesMatch": "このウィングと種類に一致するスペースはありません。"
   },
   "calendar": {
     "title": "イベントカレンダー",

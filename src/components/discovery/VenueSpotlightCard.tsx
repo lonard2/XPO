@@ -85,9 +85,6 @@ export function VenueSpotlightCard({
           <Badge variant="outline" className="text-xs font-mono bg-background/90 backdrop-blur-xs">
             {venue.city}
           </Badge>
-          <Badge variant="secondary" className="text-xs font-semibold bg-background/90 backdrop-blur-xs">
-            {tVenueType(venueType)}
-          </Badge>
         </div>
 
         <div className="absolute bottom-2.5 right-2.5 z-10">
@@ -114,6 +111,9 @@ export function VenueSpotlightCard({
             <MapPin className="h-3.5 w-3.5 text-primary/70 shrink-0" />
             <span>{venue.address}</span>
           </p>
+          <Badge variant="outline" className="mt-1 w-fit text-[11px] font-semibold">
+            {tVenueType(venueType)}
+          </Badge>
         </CardHeader>
 
         <CardContent className="p-0 space-y-3 text-xs text-muted-foreground">

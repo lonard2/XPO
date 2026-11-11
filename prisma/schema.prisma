@@ -56,6 +56,8 @@ model Venue {
   size        String      @default("LARGE") // Presentation tier suggestion: LARGE | MEDIUM | SMALL. Events choose explicitly; this never auto-applies.
   // Kind of place. Not the presentation tier above.
   type        String      @default("CONVENTION_CENTER") // CONVENTION_CENTER | EXHIBITION_CENTER | ARENA | STADIUM | MALL | HOTEL | COMMUNITY_HALL | OUTDOOR
+  // DEFAULT means the backfill may set it; OPERATOR and SEED are authoritative.
+  typeSource  String      @default("DEFAULT")
   // Venue-level capacity when the operator states one; otherwise the UI sums spaces.
   capacity    Int?
   halls       VenueHall[]

@@ -94,3 +94,18 @@ export function metricLabelKey(
 ): "hallsMetric" | "spacesMetric" {
   return isHallVenue(type) ? "hallsMetric" : "spacesMetric";
 }
+
+/**
+ * Whether the backfill may replace the stored type. A DEFAULT row is fair
+ * game; an OPERATOR or SEED row is authoritative unless --force is passed.
+ */
+export function shouldUpdateVenueType(
+  current: string,
+  target: VenueType,
+  source: string | null | undefined,
+  force: boolean
+): boolean {
+  if (current === target) return false;
+  if (force) return true;
+  return (source ?? "DEFAULT") === "DEFAULT";
+}

@@ -616,7 +616,8 @@
     "venueType": "Tipo de recinto",
     "allTypes": "Todos los tipos",
     "spacesMetric": "espacios",
-    "allSpaces": "Todos los espacios"
+    "allSpaces": "Todos los espacios",
+    "noSpacesMatch": "Ningún espacio coincide con esta ala y tipo."
   },
   "calendar": {
     "title": "Calendario Interactivo de Eventos",

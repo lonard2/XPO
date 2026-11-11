@@ -616,7 +616,8 @@
     "venueType": "Venue type",
     "allTypes": "All types",
     "spacesMetric": "Spaces",
-    "allSpaces": "All spaces"
+    "allSpaces": "All spaces",
+    "noSpacesMatch": "No spaces match this wing and kind."
   },
   "calendar": {
     "title": "Interactive Event Calendar",

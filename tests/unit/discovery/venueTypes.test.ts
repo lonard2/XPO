@@ -10,7 +10,9 @@ import {
   countLabelKey,
   countLabelOneKey,
   metricLabelKey,
+  shouldUpdateVenueType,
 } from "@/lib/discovery/venueTypes";
+import { FALLBACK_VENUES } from "@/lib/discovery/fallbackData";
 
 describe("Venue type vocabulary", () => {
   it("contains the agreed venue types and no separate field or plaza type", () => {
@@ -79,5 +81,31 @@ describe("Venue type vocabulary", () => {
     expect(metricLabelKey("EXHIBITION_CENTER")).toBe("hallsMetric");
     expect(metricLabelKey("MALL")).toBe("spacesMetric");
     expect(metricLabelKey("OUTDOOR")).toBe("spacesMetric");
+  });
+});
+
+describe("Backfill and fallback guarantees", () => {
+  it("lets the backfill update defaults but not operator or seed rows", () => {
+    expect(
+      shouldUpdateVenueType("CONVENTION_CENTER", "EXHIBITION_CENTER", "DEFAULT", false)
+    ).toBe(true);
+    expect(
+      shouldUpdateVenueType("CONVENTION_CENTER", "EXHIBITION_CENTER", "OPERATOR", false)
+    ).toBe(false);
+    expect(
+      shouldUpdateVenueType("CONVENTION_CENTER", "EXHIBITION_CENTER", "SEED", false)
+    ).toBe(false);
+    expect(
+      shouldUpdateVenueType("CONVENTION_CENTER", "EXHIBITION_CENTER", "OPERATOR", true)
+    ).toBe(true);
+    expect(shouldUpdateVenueType("MALL", "MALL", "DEFAULT", false)).toBe(false);
+  });
+
+  it("types every fallback venue and the stadium spaces", () => {
+    expect(FALLBACK_VENUES.every((venue) => Boolean(venue.type))).toBe(true);
+    const gbk = FALLBACK_VENUES.find((venue) => venue.slug === "gbk-sports-complex");
+    expect(gbk?.type).toBe("STADIUM");
+    expect(gbk?.halls?.some((hall) => hall.kind === "FIELD")).toBe(true);
+    expect(gbk?.halls?.some((hall) => hall.kind === "ARENA")).toBe(true);
   });
 });

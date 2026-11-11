@@ -11,6 +11,7 @@
 import { db } from "../src/lib/db";
 import {
   isSpaceKind,
+  shouldUpdateVenueType,
   type SpaceKind,
   type VenueType,
 } from "../src/lib/discovery/venueTypes";
@@ -90,10 +91,9 @@ async function main() {
     }
 
     if (venue.type !== targetType) {
-      const isDefault = venue.type === "CONVENTION_CENTER";
-      if (!isDefault && !force) {
+      if (!shouldUpdateVenueType(venue.type, targetType, venue.typeSource, force)) {
         console.log(
-          `${prefix} ${slug}: type already ${venue.type}, kept (use --force to change)`
+          `${prefix} ${slug}: type already ${venue.type} (${venue.typeSource}), kept (use --force to change)`
         );
         skipped += 1;
       } else {

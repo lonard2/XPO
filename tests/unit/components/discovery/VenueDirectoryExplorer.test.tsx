@@ -95,6 +95,22 @@ describe('VenueDirectoryExplorer Component', () => {
     expect(screen.getByText('JIExpo Kemayoran')).toBeInTheDocument();
   });
 
+  it('resets the type filter when the region changes', () => {
+    render(
+      <VenueDirectoryExplorer venues={mockVenues} locale="en" initialRegion="all" />
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: /^Mall/ }));
+    expect(screen.getByText('Grand Indonesia Atrium')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /Japan \(JP\)/ }));
+
+    expect(screen.getByText('Tokyo Big Sight')).toBeInTheDocument();
+    expect(screen.queryByText('Grand Indonesia Atrium')).toBeNull();
+    // The region has no malls, so the type option disappears with its count.
+    expect(screen.queryByRole('button', { name: /^Mall/ })).toBeNull();
+  });
+
   it('filters venues in real-time when searching by city or venue name', () => {
     render(
       <VenueDirectoryExplorer

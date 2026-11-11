@@ -616,7 +616,8 @@
     "venueType": "Veranstaltungsort-Typ",
     "allTypes": "Alle Typen",
     "spacesMetric": "Bereiche",
-    "allSpaces": "Alle Bereiche"
+    "allSpaces": "Alle Bereiche",
+    "noSpacesMatch": "Keine Bereiche passen zu diesem Flügel und Typ."
   },
   "calendar": {
     "title": "Interaktiver Eventkalender",

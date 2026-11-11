@@ -68,6 +68,8 @@ describe('VenueCampusExplorer Component', () => {
 
     expect(screen.getAllByText('Atrium Level 3A').length).toBeGreaterThan(0);
     expect(screen.queryByText('Meeting Hall')).toBeNull();
+    // The dossier follows the visible list, not a hidden hall.
+    expect(screen.getAllByText('Atrium Level 3A').length).toBeGreaterThan(1);
   });
 
   it('marks synthesized specs as typical and never asserts universal freight access', () => {

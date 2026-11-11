@@ -616,7 +616,8 @@
     "venueType": "Tipe venue",
     "allTypes": "Semua tipe",
     "spacesMetric": "Ruang",
-    "allSpaces": "Semua ruang"
+    "allSpaces": "Semua ruang",
+    "noSpacesMatch": "Tidak ada ruang yang cocok dengan sayap dan jenis ini."
   },
   "calendar": {
     "title": "Kalender Acara Interaktif",
