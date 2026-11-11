@@ -64,7 +64,8 @@
   - `gbk-sports-complex`, `jis-jakarta` -> `STADIUM`
   - `grand-indonesia-atrium` -> `MALL`
   - `yoyogi-park-events-ground`, `battersea-riverside-plaza` -> `OUTDOOR`
-  - Tokyo Big Sight, Makuhari Messe, Pacifico Yokohama, Marina Bay Sands, Messe Frankfurt, ExCeL London -> `EXHIBITION_CENTER`
+  - Tokyo Big Sight, Makuhari Messe, Marina Bay Sands, Messe Frankfurt, ExCeL London -> `EXHIBITION_CENTER`
+  - Pacifico Yokohama -> `CONVENTION_CENTER`
 - [ ] **Step 5: Backfill space kinds.** Match by venue slug and space name, idempotent:
   - Grand Indonesia "Atrium Level 3A" -> `ATRIUM`
   - Yoyogi "Keyaki Plaza Lawn" -> `FIELD`
