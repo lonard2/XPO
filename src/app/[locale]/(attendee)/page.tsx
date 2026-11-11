@@ -32,7 +32,7 @@ import { resolveEditorialBlurb } from '@/lib/discovery/editorial';
 import { selectRailItems } from '@/lib/news/feed';
 import { ResponsiveRow } from '@/components/discovery/ResponsiveRow';
 import { CrossRegionRail } from '@/components/discovery/CrossRegionRail';
-import { pickRailRegion, rankRailEvents, mergeRows, withoutHeroLead } from '@/lib/homepage/rows';
+import { pickRailRegion, chooseRailRegion, railCandidates, rankRailEvents, mergeRows, withoutHeroLead } from '@/lib/homepage/rows';
 import { resolveEditorRows } from '@/lib/homepage/editorRows';
 import { type BannerSlide, type DiscoveryEvent, type VenueWithEvents } from '@/types/discovery';
 
@@ -274,15 +274,17 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
   );
 
   // Cross-region rail: one other region per UTC day, ranked by real demand
-  // (confirmed or checked-in bookings) with a featured fallback. Empty means
-  // no section, never a placeholder.
+  // (confirmed or checked-in bookings) with a featured fallback. The daily
+  // pick yields to the other candidate when it has no upcoming events, so a
+  // quiet edition never hides events that are actually happening elsewhere.
   let railItems: DiscoveryEvent[] = [];
   let railRegion = "";
   try {
-    railRegion = pickRailRegion(activeRegionCode, now);
+    const preferredRailRegion = pickRailRegion(activeRegionCode, now);
+    const railRegionCandidates = railCandidates(activeRegionCode);
     const railRows = await db.event.findMany({
       where: {
-        regionId: railRegion,
+        regionId: { in: railRegionCandidates },
         ...listingWhere(),
         endDate: { gte: now },
       },
@@ -299,13 +301,27 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
       },
       orderBy: { startDate: "asc" },
     });
-    const ranked = rankRailEvents(
-      railRows.map((row) => ({
-        ...row,
-        bookingCount: row._count?.bookings ?? 0,
-      }))
+    const upcomingCounts: Record<string, number> = {};
+    for (const region of railRegionCandidates) {
+      upcomingCounts[region] = railRows.filter((row) => row.regionId === region).length;
+    }
+    const chosenRailRegion = chooseRailRegion(
+      preferredRailRegion,
+      railRegionCandidates,
+      upcomingCounts
     );
-    railItems = ranked as unknown as DiscoveryEvent[];
+    if (chosenRailRegion) {
+      railRegion = chosenRailRegion;
+      const ranked = rankRailEvents(
+        railRows
+          .filter((row) => row.regionId === chosenRailRegion)
+          .map((row) => ({
+            ...row,
+            bookingCount: row._count?.bookings ?? 0,
+          }))
+      );
+      railItems = ranked as unknown as DiscoveryEvent[];
+    }
   } catch {
     railItems = [];
   }

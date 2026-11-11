@@ -35,6 +35,25 @@ export function pickRailRegion(activeRegion: string, date: Date): string {
   return candidates[hash % candidates.length];
 }
 
+/**
+ * Pick the rail region from real inventory. The daily pick keeps the slot
+ * when it has upcoming events; otherwise the other candidate carries the
+ * rail, so a quiet day in one edition never hides events in another.
+ * Returns null only when every candidate is empty.
+ */
+export function chooseRailRegion(
+  preferred: string,
+  candidates: string[],
+  upcomingCounts: Record<string, number>
+): string | null {
+  if ((upcomingCounts[preferred] ?? 0) > 0) return preferred;
+  return (
+    candidates.find(
+      (region) => region !== preferred && (upcomingCounts[region] ?? 0) > 0
+    ) ?? null
+  );
+}
+
 export interface RankableRailEvent {
   isFeatured: boolean;
   startDate: Date | string;

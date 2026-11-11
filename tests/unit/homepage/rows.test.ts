@@ -3,6 +3,7 @@ import {
   RAIL_SIZE,
   railCandidates,
   pickRailRegion,
+  chooseRailRegion,
   rankRailEvents,
   mergeRows,
   resolveRowCopy,
@@ -46,6 +47,28 @@ describe("Homepage row resolvers", () => {
       picks.add(pick);
     }
     expect(picks.size).toBeGreaterThan(1);
+  });
+
+  it("keeps the daily rail pick when that region has upcoming events", () => {
+    expect(chooseRailRegion("global", ["jp", "global"], { jp: 1, global: 2 })).toBe(
+      "global"
+    );
+  });
+
+  it("falls back to the other candidate when the daily pick is empty", () => {
+    expect(chooseRailRegion("global", ["jp", "global"], { jp: 1, global: 0 })).toBe(
+      "jp"
+    );
+  });
+
+  it("returns null only when every other region is empty", () => {
+    expect(chooseRailRegion("global", ["jp", "global"], { jp: 0, global: 0 })).toBeNull();
+  });
+
+  it("never returns the active region even when it has events", () => {
+    expect(
+      chooseRailRegion("global", ["jp"], { global: 0, jp: 0, id: 5 })
+    ).toBeNull();
   });
 
   it("ranks featured events by bookings before lower-volume ones", () => {
