@@ -21,7 +21,7 @@
 
 ## Vocabulary
 
-**Venue types:** `CONVENTION_CENTER`, `EXHIBITION_CENTER`, `ARENA`, `STADIUM`, `FIELD`, `MALL`, `HOTEL`, `COMMUNITY_HALL`, `OUTDOOR_PLAZA`.
+**Venue types:** `CONVENTION_CENTER`, `EXHIBITION_CENTER`, `ARENA`, `STADIUM`, `MALL`, `HOTEL`, `COMMUNITY_HALL`, `OUTDOOR`.
 
 **Space kinds:** `HALL`, `MEETING_ROOM`, `ARENA`, `FIELD`, `COURT`, `ATRIUM`, `PAVILION`, `BALLROOM`, `OUTDOOR`.
 
@@ -35,6 +35,7 @@
 - The backfill overwriting a type an operator already set.
 - A new space kind accepted by the UI but rejected by the API, or the reverse.
 - A locale that has the type labels but not the space-kind labels.
+- A hotel ballroom and a convention-center ballroom not both mapping to `BALLROOM` spaces.
 
 ---
 
@@ -62,8 +63,7 @@
   - `jcc-senayan`, `nice-pik-2` -> `CONVENTION_CENTER`
   - `gbk-sports-complex`, `jis-jakarta` -> `STADIUM`
   - `grand-indonesia-atrium` -> `MALL`
-  - `yoyogi-park-events-ground` -> `FIELD`
-  - `battersea-riverside-plaza` -> `OUTDOOR_PLAZA`
+  - `yoyogi-park-events-ground`, `battersea-riverside-plaza` -> `OUTDOOR`
   - Tokyo Big Sight, Makuhari Messe, Pacifico Yokohama, Marina Bay Sands, Messe Frankfurt, ExCeL London -> `EXHIBITION_CENTER`
 - [ ] **Step 5: Backfill space kinds.** Match by venue slug and space name, idempotent:
   - Grand Indonesia "Atrium Level 3A" -> `ATRIUM`
@@ -121,13 +121,13 @@
 - Test: `tests/unit/components/discovery/MajorVenuesUpcomingSection.test.tsx`
 
 **Interfaces:**
-- The directory gains a type filter with an "All types" option and a type badge on each card.
+- The directory's existing sidebar gains a type filter with an "All types" option and a type badge on each card. Chip rows may be used on other surfaces where they are the better control, but the directory filter lives in the sidebar.
 - Cards and homepage rows show the type-aware count: "2 Halls" for a convention center, "1 Space" for a mall or field.
 - The homepage directory rows show the type label next to the city.
 - The type filter never removes a venue from the unfiltered view.
 
 - [ ] **Step 1: Write the failing component tests.** A mall card shows "Mall" and "1 Space"; a convention center shows "Convention Center" and "2 Halls"; the type filter narrows the list and "All types" restores it.
-- [ ] **Step 2: Implement the filter, badges, and labels.**
+- [ ] **Step 2: Implement the sidebar filter, badges, and labels.**
 - [ ] **Step 3: Run the tests, `tsc`, eslint, commit, push.**
 
 ### Task 5: Venue detail page
@@ -141,7 +141,7 @@
 **Interfaces:**
 - The hero shows the venue type badge.
 - The headline metric reads "Halls" for convention/exhibition centers and "Spaces" otherwise.
-- The campus explorer groups spaces by kind: Halls, Arenas, Fields, Courts, Atriums, Pavilions, Ballrooms, Outdoor.
+- The campus explorer groups spaces by kind: Halls, Arenas, Fields, Courts, Atriums, Pavilions, Ballrooms, Outdoor. A ballroom is a space kind, not a venue type; hotels and convention centers can both have `BALLROOM` spaces.
 - Meeting rooms remain in their own deeper section and never appear in the headline count.
 
 - [ ] **Step 1: Write the failing tests.** A mall page shows "Mall", "1 Space", and an "Atrium" group; a convention center shows "2 Halls" and a "Halls" group; a meeting room is not counted in the headline.
@@ -173,8 +173,8 @@
 4. Verify the directory, a convention center, a mall, a field, and an outdoor plaza.
 5. Rollback is the previous image. The columns are additive; the backfill is idempotent and can be re-run.
 
-## Open Decisions
+## Resolved Decisions
 
-- Should `FIELD` and `OUTDOOR_PLAZA` be separate venue types, or one `OUTDOOR` type with space kinds? The plan keeps them separate so a park and a paved plaza read differently.
-- Should the type filter live in the directory sidebar or as a compact chip row above the results? The plan uses a compact chip row to avoid adding another sidebar decision point.
-- Should hotel ballrooms be a venue type `HOTEL` with `BALLROOM` spaces, or a `BALLROOM` venue type? The plan uses `HOTEL` plus `BALLROOM` spaces, which matches how delegates search.
+- **One `OUTDOOR` venue type.** Parks, plazas, and open grounds are `OUTDOOR`. The space kind distinguishes a lawn or field (`FIELD`) from a paved deck (`OUTDOOR`). `FIELD` and `OUTDOOR_PLAZA` are not venue types.
+- **The directory type filter lives in the existing sidebar.** Chip rows remain available for other surfaces where they are the better control, but the directory filter is a sidebar section.
+- **A ballroom is a `BALLROOM` space kind, not a venue type.** Hotels and convention centers can both have ballrooms, and the same kind renders on both.
