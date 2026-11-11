@@ -20,6 +20,20 @@ const mockVenues: VenueSummary[] = [
     ],
   },
   {
+    id: 'venue-3',
+    name: 'Grand Indonesia Atrium',
+    slug: 'grand-indonesia-atrium',
+    city: 'Central Jakarta',
+    address: 'Jl. M.H. Thamrin No. 1',
+    transitInfo: 'MRT Bundaran HI Station',
+    regionId: 'id',
+    type: 'MALL',
+    region: { id: 'id', code: 'ID', name: 'Indonesia', currency: 'IDR' },
+    halls: [
+      { id: 'h4', name: 'Atrium Level 3A', kind: 'ATRIUM', capacity: 1200 },
+    ],
+  },
+  {
     id: 'venue-2',
     name: 'Tokyo Big Sight',
     slug: 'tokyo-big-sight',
@@ -64,6 +78,21 @@ describe('VenueDirectoryExplorer Component', () => {
     expect(screen.getAllByText('JIExpo Kemayoran').length).toBeGreaterThan(0);
     expect(screen.getAllByText('Tokyo Big Sight').length).toBeGreaterThan(0);
     expect(screen.getByText(/verified convention complexes/i)).toBeInTheDocument();
+  });
+
+  it('filters by venue type from the sidebar and restores all types', () => {
+    render(
+      <VenueDirectoryExplorer venues={mockVenues} locale="en" initialRegion="all" />
+    );
+
+    expect(screen.getByText('Grand Indonesia Atrium')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /^Mall/ }));
+
+    expect(screen.getByText('Grand Indonesia Atrium')).toBeInTheDocument();
+    expect(screen.queryByText('JIExpo Kemayoran')).toBeNull();
+
+    fireEvent.click(screen.getByRole('button', { name: /All types/i }));
+    expect(screen.getByText('JIExpo Kemayoran')).toBeInTheDocument();
   });
 
   it('filters venues in real-time when searching by city or venue name', () => {

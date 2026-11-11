@@ -48,6 +48,25 @@ describe('Discovery Component: VenueSpotlight', () => {
     expect(screen.getByText(/TransJakarta Corridor 2C/i)).toBeInTheDocument();
   });
 
+  it('T1.1b: shows the venue type and counts spaces for a mall', () => {
+    const mall: VenueSummary = {
+      ...mockVenues[0],
+      id: 'venue-mall',
+      name: 'Grand Indonesia Atrium',
+      slug: 'grand-indonesia-atrium',
+      type: 'MALL',
+      halls: [
+        { id: 'a1', name: 'Atrium Level 3A', kind: 'ATRIUM', capacity: 1200 },
+      ],
+    };
+
+    render(<VenueSpotlightCard venue={mall} locale="en" />);
+
+    expect(screen.getByText('Mall')).toBeInTheDocument();
+    expect(screen.getByText('1 Space')).toBeInTheDocument();
+    expect(screen.queryByText('1 Hall')).toBeNull();
+  });
+
   it('T1.2: VenueSpotlightCard contains link pointing to venue detail slug', () => {
     render(<VenueSpotlightCard venue={mockVenues[0]} locale="en" />);
     const links = screen.getAllByRole('link', { name: /jiexpo kemayoran|view venue/i });

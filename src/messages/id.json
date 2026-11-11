@@ -612,7 +612,9 @@
     "showAllVenues": "Tampilkan semua {count} venue",
     "showFewerVenues": "Tampilkan lebih sedikit",
     "spacesCount": "{count} Ruang",
-    "spacesCountOne": "1 Ruang"
+    "spacesCountOne": "1 Ruang",
+    "venueType": "Tipe venue",
+    "allTypes": "Semua tipe"
   },
   "calendar": {
     "title": "Kalender Acara Interaktif",

@@ -612,7 +612,9 @@
     "showAllVenues": "全 {count} 会場を表示",
     "showFewerVenues": "表示を減らす",
     "spacesCount": "{count} スペース",
-    "spacesCountOne": "1 スペース"
+    "spacesCountOne": "1 スペース",
+    "venueType": "会場タイプ",
+    "allTypes": "すべてのタイプ"
   },
   "calendar": {
     "title": "イベントカレンダー",

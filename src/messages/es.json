@@ -612,7 +612,9 @@
     "showAllVenues": "Mostrar los {count} recintos",
     "showFewerVenues": "Mostrar menos",
     "spacesCount": "{count} espacios",
-    "spacesCountOne": "1 espacio"
+    "spacesCountOne": "1 espacio",
+    "venueType": "Tipo de recinto",
+    "allTypes": "Todos los tipos"
   },
   "calendar": {
     "title": "Calendario Interactivo de Eventos",

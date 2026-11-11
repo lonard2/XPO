@@ -112,6 +112,8 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
     address: v.address,
     transitInfo: v.transitInfo,
     imageUrl: v.imageUrl,
+    type: (v as any).type ?? null,
+    capacity: (v as any).capacity ?? null,
     regionCode: activeRegionCode,
     halls: v.halls || [],
     events: sortUpcomingFirst(
@@ -213,6 +215,8 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
         address: v.address,
         transitInfo: v.transitInfo,
         imageUrl: v.imageUrl,
+        type: v.type,
+        capacity: v.capacity,
         regionCode: activeRegionCode,
         halls: v.halls.map((h) => ({ id: h.id, name: h.name, kind: h.kind, capacity: h.capacity, floorAreaSqm: h.floorAreaSqm })),
         events: sortUpcomingFirst(

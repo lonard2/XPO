@@ -18,7 +18,8 @@ import { formatDateRange, getTimeZoneForRegion, getEventTemporalStatus } from '@
 import { getArchetypeTokens, getReadableBadgeColors } from '@/lib/theming';
 import { ResponsiveRow } from '@/components/discovery/ResponsiveRow';
 import { archTitle } from '@/lib/i18n/categories';
-import { countHalls } from '@/lib/discovery/venueSpaces';
+import { countSpaces } from '@/lib/discovery/venueSpaces';
+import { countLabelKey, countLabelOneKey, normalizeVenueType } from '@/lib/discovery/venueTypes';
 import { type VenueWithEvents } from '@/types/discovery';
 import { cn } from '@/lib/utils';
 
@@ -48,6 +49,7 @@ export function MajorVenuesUpcomingSection({
 }: MajorVenuesUpcomingProps) {
   const tVen = useTranslations('venues');
   const tArch = useTranslations('archetypes');
+  const tVenueType = useTranslations('venueTypes');
   const [showAllVenues, setShowAllVenues] = React.useState(false);
 
   if (!venues || venues.length === 0) {
@@ -86,7 +88,12 @@ export function MajorVenuesUpcomingSection({
 
   const renderDirectoryRow = (venue: VenueWithEvents) => {
     const nextEvent = attendableEventsFor(venue)[0];
-    const hallCount = countHalls(venue.halls);
+    const venueType = normalizeVenueType(venue.type);
+    const spaceCount = countSpaces(venue.halls, venueType);
+    const countLabel =
+      spaceCount === 1
+        ? tVen(countLabelOneKey(venueType))
+        : tVen(countLabelKey(venueType), { count: spaceCount });
     const venueName = splitVenueName(venue.name);
     const dates = nextEvent
       ? formatDateRange(nextEvent.startDate, nextEvent.endDate, locale, timezone)
@@ -112,12 +119,14 @@ export function MajorVenuesUpcomingSection({
                 <MapPin className="h-3 w-3 shrink-0 text-primary" />
                 {venue.city}
               </span>
-              {hallCount > 0 && (
+              <span className="inline-flex items-center gap-1">
+                <Building2 className="h-3 w-3 shrink-0 text-primary" />
+                {tVenueType(venueType)}
+              </span>
+              {spaceCount > 0 && (
                 <span className="inline-flex items-center gap-1">
                   <Layers className="h-3 w-3 shrink-0 text-primary" />
-                  {hallCount === 1
-                    ? tVen('hallsCountOne')
-                    : tVen('hallsCount', { count: hallCount })}
+                  {countLabel}
                 </span>
               )}
             </p>
@@ -193,7 +202,12 @@ export function MajorVenuesUpcomingSection({
           >
             {activeVenues.map((venue) => {
               const upcomingEvents = attendableEventsFor(venue).slice(0, 3);
-              const hallCount = countHalls(venue.halls);
+              const venueType = normalizeVenueType(venue.type);
+              const spaceCount = countSpaces(venue.halls, venueType);
+              const countLabel =
+                spaceCount === 1
+                  ? tVen(countLabelOneKey(venueType))
+                  : tVen(countLabelKey(venueType), { count: spaceCount });
               const venueName = splitVenueName(venue.name);
 
               return (
@@ -227,16 +241,10 @@ export function MajorVenuesUpcomingSection({
                         <span className="line-clamp-1">{venue.city}</span>
                       </div>
 
-                      {hallCount > 0 && (
-                        <Badge variant="secondary" className="text-xs font-semibold bg-background/95 text-foreground border-border/70 tabular-nums backdrop-blur-md px-2.5 py-1 flex items-center gap-1">
-                          <Layers className="h-3 w-3 text-primary shrink-0" />
-                          <span>
-                            {hallCount === 1
-                              ? tVen('hallsCountOne')
-                              : tVen('hallsCount', { count: hallCount })}
-                          </span>
-                        </Badge>
-                      )}
+                      <Badge variant="secondary" className="text-xs font-semibold bg-background/95 text-foreground border-border/70 tabular-nums backdrop-blur-md px-2.5 py-1 flex items-center gap-1">
+                        <Layers className="h-3 w-3 text-primary shrink-0" />
+                        <span>{countLabel}</span>
+                      </Badge>
                     </div>
                   </div>
 
@@ -256,6 +264,10 @@ export function MajorVenuesUpcomingSection({
                         </p>
                       )}
                     </Link>
+                    <p className="mt-1 inline-flex items-center gap-1 rounded-md border border-border/60 bg-muted/40 px-2 py-0.5 text-[11px] font-semibold text-muted-foreground">
+                      <Building2 className="h-3 w-3 text-primary" />
+                      {tVenueType(venueType)}
+                    </p>
                     {venue.transitInfo && (
                       <p className="text-xs text-muted-foreground line-clamp-2 mt-1 flex items-start gap-1.5">
                         <MapPin className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />

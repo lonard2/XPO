@@ -19,6 +19,7 @@ import { Badge } from '@/components/ui/Badge';
 import { useTranslations } from 'next-intl';
 import { type VenueSummary } from '@/types/discovery';
 import { countHalls } from '@/lib/discovery/venueSpaces';
+import { VENUE_TYPES, normalizeVenueType, type VenueType } from '@/lib/discovery/venueTypes';
 import { cn } from '@/lib/utils';
 
 export interface VenueDirectoryExplorerProps {
@@ -39,6 +40,7 @@ export function VenueDirectoryExplorer({
   const tReg = useTranslations('regions');
   const tCom = useTranslations('common');
   const tVen = useTranslations('venues');
+  const tVenueType = useTranslations('venueTypes');
 
   const [selectedRegion, setSelectedRegion] = React.useState<string>(() => {
     return searchParams.get('region') || initialRegion || 'id';
@@ -46,6 +48,7 @@ export function VenueDirectoryExplorer({
   const [searchQuery, setSearchQuery] = React.useState<string>('');
   const [sortBy, setSortBy] = React.useState<'alpha' | 'capacity' | 'area'>('alpha');
   const [specFilter, setSpecFilter] = React.useState<'all' | 'column_free' | 'high_clearance' | 'heavy_load' | 'mega_complex'>('all');
+  const [selectedType, setSelectedType] = React.useState<'all' | VenueType>('all');
 
   // Synchronize when URL searchParams change externally
   React.useEffect(() => {
@@ -91,6 +94,10 @@ export function VenueDirectoryExplorer({
         (selectedRegion === 'global' && ['gl', 'global'].includes(code));
 
       if (!matchesRegion) return false;
+
+      const matchesType =
+        selectedType === 'all' || normalizeVenueType(v.type) === selectedType;
+      if (!matchesType) return false;
 
       // Technical MICE spec filtering
       if (specFilter === 'column_free') {
@@ -162,7 +169,7 @@ export function VenueDirectoryExplorer({
       }
       return a.name.localeCompare(b.name);
     });
-  }, [venues, selectedRegion, specFilter, searchQuery, sortBy]);
+  }, [venues, selectedRegion, selectedType, specFilter, searchQuery, sortBy]);
 
   // Smart cross-region search recovery when 0 results found
   const otherRegionMatches = React.useMemo(() => {
@@ -206,10 +213,11 @@ export function VenueDirectoryExplorer({
       : (tVen('allRegions') || tCom('all') || 'All Regions');
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="grid grid-cols-1 lg:grid-cols-[300px_minmax(0,1fr)] gap-6 items-start animate-fade-in">
+      <aside className="lg:sticky lg:top-20 space-y-4">
       {/* Controls Bar: Search, Region Tabs & Sorting */}
       <div className="space-y-4 p-4 rounded-3xl border border-border/80 bg-card shadow-xs">
-        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+        <div className="flex flex-col gap-3">
           {/* Region Filter Tabs */}
           <div className="flex flex-wrap items-center gap-1.5 bg-muted/50 p-1.5 rounded-2xl border border-border/60">
             <button
@@ -278,8 +286,52 @@ export function VenueDirectoryExplorer({
             </button>
           </div>
 
-          {/* Search Input & Sort Controls */}
-          <div className="flex flex-col sm:flex-row items-center gap-2.5">
+          {/* Venue type filter: lives in the sidebar, never hides the unfiltered list */}
+        <div className="space-y-2 border-t border-border/40 pt-3">
+          <span className="text-xs font-semibold text-muted-foreground">
+            {tVen('venueType') || 'Venue type'}
+          </span>
+          <div className="space-y-1">
+            <button
+              type="button"
+              onClick={() => setSelectedType('all')}
+              className={cn(
+                'flex min-h-[44px] w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-xs transition-colors text-left cursor-pointer',
+                selectedType === 'all'
+                  ? 'bg-primary/10 text-primary font-semibold'
+                  : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+              )}
+            >
+              <span>{tVen('allTypes') || 'All types'}</span>
+              <span className="font-mono text-[11px] opacity-80">{venues.length}</span>
+            </button>
+            {VENUE_TYPES.map((type) => {
+              const count = venues.filter(
+                (venue) => normalizeVenueType(venue.type) === type
+              ).length;
+              if (count === 0) return null;
+              return (
+                <button
+                  key={type}
+                  type="button"
+                  onClick={() => setSelectedType(type)}
+                  className={cn(
+                    'flex min-h-[44px] w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-xs transition-colors text-left cursor-pointer',
+                    selectedType === type
+                      ? 'bg-primary/10 text-primary font-semibold'
+                      : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                  )}
+                >
+                  <span>{tVenueType(type)}</span>
+                  <span className="font-mono text-[11px] opacity-80">{count}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Search Input & Sort Controls */}
+          <div className="flex flex-col gap-2.5">
             <div className="relative w-full sm:w-72">
               <Input
                 aria-label={tVen('searchVenuesPlaceholder') || 'Search venues, cities, or halls'}
@@ -321,7 +373,7 @@ export function VenueDirectoryExplorer({
         </div>
 
         {/* Technical MICE Spec Filter Chips (P2 Enhancement for Organizers) */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none pt-1 border-t border-border/40">
+        <div className="flex flex-wrap items-center gap-1.5 pt-3 border-t border-border/40">
           <span className="text-xs font-semibold text-muted-foreground whitespace-nowrap mr-1">
             Technical Filter:
           </span>
@@ -353,7 +405,7 @@ export function VenueDirectoryExplorer({
         </div>
 
         {/* Dynamic Result Tally Bar */}
-        <div className="flex items-center justify-between border-t border-border/60 pt-3 text-xs text-muted-foreground">
+        <div className="flex flex-col items-start gap-2 border-t border-border/60 pt-3 text-xs text-muted-foreground">
           <div className="flex items-center gap-2">
             <span>
               {tVen('showing') || 'Showing'} <strong className="text-foreground">{filteredVenues.length}</strong> {tVen('of') || 'of'}{' '}
@@ -372,6 +424,7 @@ export function VenueDirectoryExplorer({
                 setSearchQuery('');
                 setSortBy('alpha');
                 setSpecFilter('all');
+                setSelectedType('all');
               }}
               className="text-primary hover:underline text-xs font-semibold cursor-pointer"
             >
@@ -380,10 +433,12 @@ export function VenueDirectoryExplorer({
           )}
         </div>
       </div>
+      </aside>
 
+      <div className="space-y-6">
       {/* Venues Grid Display */}
       {filteredVenues.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6">
           {filteredVenues.map((venue) => (
             <VenueSpotlightCard key={venue.id} venue={venue} locale={locale} />
           ))}
@@ -433,6 +488,7 @@ export function VenueDirectoryExplorer({
               handleSelectRegion('all');
               setSearchQuery('');
               setSpecFilter('all');
+              setSelectedType('all');
             }}
             className="text-xs cursor-pointer min-h-[44px] sm:min-h-[36px] px-4"
           >
@@ -440,6 +496,7 @@ export function VenueDirectoryExplorer({
           </Button>
         </div>
       )}
+      </div>
     </div>
   );
 }

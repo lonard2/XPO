@@ -612,7 +612,9 @@
     "showAllVenues": "显示全部 {count} 个场馆",
     "showFewerVenues": "显示更少",
     "spacesCount": "{count} 个空间",
-    "spacesCountOne": "1 个空间"
+    "spacesCountOne": "1 个空间",
+    "venueType": "场馆类型",
+    "allTypes": "全部类型"
   },
   "calendar": {
     "title": "会展交互日历",

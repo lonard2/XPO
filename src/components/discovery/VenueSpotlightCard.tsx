@@ -16,7 +16,8 @@ import { buttonVariants } from '@/components/ui/Button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/Card';
 import { useTranslations } from 'next-intl';
 import { type VenueSummary } from '@/types/discovery';
-import { countHalls } from '@/lib/discovery/venueSpaces';
+import { countSpaces } from '@/lib/discovery/venueSpaces';
+import { countLabelKey, countLabelOneKey, normalizeVenueType } from '@/lib/discovery/venueTypes';
 import { cn } from '@/lib/utils';
 
 export interface VenueSpotlightCardProps {
@@ -33,10 +34,20 @@ export function VenueSpotlightCard({
   const tReg = useTranslations('regions');
   const tCom = useTranslations('common');
   const tVen = useTranslations('venues');
+  const tVenueType = useTranslations('venueTypes');
   const tFoot = useTranslations('footer');
 
-  const hallCount = venue.halls ? countHalls(venue.halls) : (venue._count?.halls ?? (venue as any).hallCount ?? 0);
-  const calculatedCapacity = venue.halls?.reduce((sum, h) => sum + (h.capacity || 0), 0) || (venue as any).capacity || 0;
+  const venueType = normalizeVenueType(venue.type);
+  const spaceCount = venue.halls
+    ? countSpaces(venue.halls, venueType)
+    : (venue._count?.halls ?? (venue as any).hallCount ?? 0);
+  const countLabel =
+    spaceCount > 0
+      ? spaceCount === 1
+        ? tVen(countLabelOneKey(venueType))
+        : tVen(countLabelKey(venueType), { count: spaceCount })
+      : tVen("multiHallComplex") || "Multi-Space Complex";
+  const calculatedCapacity = venue.capacity || venue.halls?.reduce((sum, h) => sum + (h.capacity || 0), 0) || (venue as any).capacity || 0;
   const calculatedFloorArea = venue.halls?.reduce((sum, h) => sum + (h.floorAreaSqm || 0), 0) || (venue as any).floorAreaSqm || 0;
 
   const regionCode = (venue.region?.code || venue.regionId || 'ID').toUpperCase();
@@ -74,12 +85,15 @@ export function VenueSpotlightCard({
           <Badge variant="outline" className="text-xs font-mono bg-background/90 backdrop-blur-xs">
             {venue.city}
           </Badge>
+          <Badge variant="secondary" className="text-xs font-semibold bg-background/90 backdrop-blur-xs">
+            {tVenueType(venueType)}
+          </Badge>
         </div>
 
         <div className="absolute bottom-2.5 right-2.5 z-10">
           <Badge variant="outline" className="text-xs font-semibold bg-background/90 backdrop-blur-xs">
             <Layers className="h-3.5 w-3.5 mr-1 inline text-primary" />
-            {hallCount > 0 ? (tVen('hallsCount', { count: hallCount }) || `${hallCount} Halls`) : (tVen('multiHallComplex') || 'Multi-Hall Complex')}
+            {countLabel}
           </Badge>
         </div>
       </div>

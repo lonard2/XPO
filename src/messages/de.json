@@ -612,7 +612,9 @@
     "showAllVenues": "Alle {count} Veranstaltungsorte anzeigen",
     "showFewerVenues": "Weniger anzeigen",
     "spacesCount": "{count} Bereiche",
-    "spacesCountOne": "1 Bereich"
+    "spacesCountOne": "1 Bereich",
+    "venueType": "Veranstaltungsort-Typ",
+    "allTypes": "Alle Typen"
   },
   "calendar": {
     "title": "Interaktiver Eventkalender",

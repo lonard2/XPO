@@ -286,6 +286,25 @@ describe('MajorVenuesUpcomingSection', () => {
     expect(split?.className).not.toContain('xl:grid-cols-[1.4fr_1fr]');
   });
 
+  it('labels a mall as a venue type and counts its atrium as a space', () => {
+    const mall: VenueWithEvents = {
+      ...concludedOnlyVenues[0],
+      id: 'venue-mall',
+      name: 'Grand Indonesia Atrium',
+      slug: 'grand-indonesia-atrium',
+      type: 'MALL',
+      halls: [{ id: 'atrium-1', name: 'Atrium Level 3A', kind: 'ATRIUM', capacity: 1200 }],
+      events: [],
+    };
+
+    render(
+      <MajorVenuesUpcomingSection venues={[mall]} locale="en" regionCode="id" />
+    );
+
+    expect(screen.getAllByText('Mall').length).toBeGreaterThan(0);
+    expect(screen.getByText('1 Space')).toBeDefined();
+  });
+
   it('shows six directory rows first and reveals the rest on demand', () => {
     const manyQuiet: VenueWithEvents[] = Array.from({ length: 9 }, (_, index) => ({
       ...concludedOnlyVenues[0],
