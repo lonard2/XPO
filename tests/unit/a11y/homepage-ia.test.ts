@@ -42,11 +42,10 @@ describe("Quality Gate: homepage closing action", () => {
     expect(block).toContain("self-start");
   });
 
-  it("uses horizontal cards for one or two items", () => {
-    expect(page).toContain(
-      "featuredRowEvents.length <= 2 ? 'horizontal' : 'grid'"
-    );
-    expect(page).toContain("row.items.length <= 2 ? 'horizontal' : 'grid'");
+  it("keeps main event rows on the normal grid card", () => {
+    expect(page).not.toContain("featuredRowEvents.length <= 2 ? 'horizontal' : 'grid'");
+    expect(page).not.toContain("row.items.length <= 2 ? 'horizontal' : 'grid'");
+    expect(page).toContain('singleClassName="max-w-sm"');
   });
 
   it("does not cap the venue directory at six", () => {

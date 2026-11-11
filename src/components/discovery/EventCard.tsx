@@ -183,7 +183,7 @@ export const EventCard = React.memo(function EventCard({
       data-tilt
       data-variant={variant}
       className={cn(
-        'group relative flex h-full flex-col justify-between overflow-hidden border-border/80 bg-card transition-all duration-300 hover:border-primary/60 hover:shadow-md hover:-translate-y-0.5',
+        'group relative flex h-full flex-col justify-between overflow-hidden border-border/80 bg-card card-interactive-3d transition-all duration-300 hover:border-primary/60 hover:shadow-md',
         variant === 'horizontal' && 'lg:flex-row lg:items-center',
         className
       )}

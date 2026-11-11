@@ -457,9 +457,13 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
             </div>
           </div>
         ) : (
-          <ResponsiveRow className="stagger-children" label={tHome('featuredInRegion') || 'Featured events'}>
+          <ResponsiveRow
+            className="stagger-children"
+            label={tHome('featuredInRegion') || 'Featured events'}
+            singleClassName="max-w-sm"
+          >
             {featuredRowEvents.map((event, idx) => (
-              <EventCard key={event.id} event={event} locale={locale} priority={idx < 3} variant={featuredRowEvents.length <= 2 ? 'horizontal' : 'grid'} />
+              <EventCard key={event.id} event={event} locale={locale} priority={idx < 3} />
             ))}
           </ResponsiveRow>
         )}
@@ -499,14 +503,17 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
               </p>
             )}
           </div>
-          <ResponsiveRow className="stagger-children" label={row.title}>
+          <ResponsiveRow
+            className="stagger-children"
+            label={row.title}
+            singleClassName="max-w-sm"
+          >
             {row.items.map((item, index) => (
               <EventCard
                 key={item.id}
                 event={item}
                 locale={locale}
                 priority={index === 0}
-                variant={row.items.length <= 2 ? 'horizontal' : 'grid'}
               />
             ))}
           </ResponsiveRow>

@@ -256,6 +256,14 @@ describe('EventCard currency and venue clarity', () => {
     expect(screen.queryByText('HYBRID')).toBeNull();
   });
 
+  it('carries the expressive 3D press hook on the normal card', () => {
+    const { container } = render(<EventCard event={mockEvent} locale="en" />);
+    const card = container.querySelector('[data-variant="grid"]');
+
+    expect(card?.className).toContain('card-interactive-3d');
+    expect(card?.hasAttribute('data-tilt')).toBe(true);
+  });
+
   it('stacks the horizontal card until lg, then splits it', () => {
     const { container } = render(
       <EventCard event={mockEvent} locale="en" variant="horizontal" />
