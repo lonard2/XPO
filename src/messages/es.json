@@ -1917,6 +1917,31 @@
       "leftCount": "Quedan {count}",
       "cta": "Obtener Pase de Pulsera",
       "complimentary": "Cortesía"
+    },
+    "EDUCATION_EDTECH": {
+      "heroBadge": "Educación, EdTech y Cumbre Académica",
+      "heroTitle": "Ferias Universitarias Mundiales, Becas e Innovación STEM",
+      "heroDescription": "Explore rankings universitarios globales, consulte directamente con los equipos de admisiones, calcule la elegibilidad de becas y descubra tecnologías de aprendizaje de nueva generación.",
+      "calcCta": "Calcular Beca",
+      "verifiedNote": "Fondos de becas y subvenciones institucionales verificados",
+      "institutionsBadge": "Instituciones Académicas",
+      "directoryTitle": "Stands Universitarios Destacados y Pabellones de Investigación",
+      "applyCta": "Solicitar Entrevista con la Facultad",
+      "drawerTitle": "Calculadora de Becas y Subvenciones Institucionales",
+      "drawerDescription": "Estime la subvención de matrícula por mérito y la elegibilidad de estipendio de investigación en las universidades participantes.",
+      "gpaLabel": "GPA Académico Actual (Escala de 4.0)",
+      "degreeLabel": "Programa de Título Objetivo",
+      "degreeBachelor": "Grado en Ciencias (Ingeniería / Robótica)",
+      "degreeMaster": "Máster en Ciencias (STEM / Inteligencia Artificial)",
+      "degreeDoctoral": "Beca Doctoral Ph.D. (Energía Limpia y Cuántica)",
+      "calcCoverageCta": "Calcular Cobertura de Subvención",
+      "eligibilityTier": "ELEGIBILIDAD DE BECA: NIVEL 1",
+      "meritVerified": "Mérito Verificado",
+      "tuitionWaiverLabel": "Exención de Matrícula",
+      "tuitionWaiverValue": "75% - 100% Exención Total",
+      "stipendLabel": "Estipendio de Investigación",
+      "stipendValue": "Equivalente a $1,800/mes",
+      "loungeNote": "Visite el Lounge de Admisiones Académicas en el Pabellón 1 con sus expedientes oficiales para la validación inmediata en el lugar."
     }
   }
 }

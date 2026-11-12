@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import {
   GraduationCap,
   BookOpen,
@@ -24,6 +25,7 @@ import { Drawer } from "@/components/ui/Drawer";
 import { type ArchetypeViewProps } from "./IndustrialB2BView";
 
 export function EducationEdTechView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
+  const t = useTranslations("archetypeViews.EDUCATION_EDTECH");
   const [scholarshipDrawerOpen, setScholarshipDrawerOpen] = React.useState(false);
   const [gpa, setGpa] = React.useState("3.8");
   const [targetDegree, setTargetDegree] = React.useState("Master of Science (STEM)");
@@ -71,14 +73,14 @@ export function EducationEdTechView({ event, locale = "en", onSelectTier }: Arch
                 <GraduationCap className="h-4 w-4" />
               </span>
               <span className="text-xs font-bold uppercase tracking-wider text-violet-500">
-                Education, EdTech & Academic Summit
+                {t("heroBadge")}
               </span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-              World University Fairs, Scholarship Grants & STEM Innovation
+              {t("heroTitle")}
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-              Explore global university rankings, consult directly with academic faculty admissions teams, calculate scholarship grant eligibility, and discover next-generation learning technologies.
+              {t("heroDescription")}
             </p>
           </div>
 
@@ -92,10 +94,10 @@ export function EducationEdTechView({ event, locale = "en", onSelectTier }: Arch
               className="bg-violet-600 hover:bg-violet-700 text-white font-semibold shadow-md min-h-[44px]"
             >
               <Calculator className="h-4 w-4 mr-2" />
-              Calculate Scholarship Grant
+              {t("calcCta")}
             </Button>
             <div className="text-xs text-muted-foreground text-center lg:text-right">
-              Verified scholarship endowments & institutional grants
+              {t("verifiedNote")}
             </div>
           </div>
         </div>
@@ -106,10 +108,10 @@ export function EducationEdTechView({ event, locale = "en", onSelectTier }: Arch
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-violet-500 uppercase tracking-wider mb-1">
             <BookOpen className="h-4 w-4" />
-            <span>Academic Institutions</span>
+            <span>{t("institutionsBadge")}</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-            Featured University Stalls & Research Pavilions
+            {t("directoryTitle")}
           </h3>
         </div>
 
@@ -148,7 +150,7 @@ export function EducationEdTechView({ event, locale = "en", onSelectTier }: Arch
                   className="w-full border-violet-500/30 hover:bg-violet-500/10 text-foreground font-semibold min-h-[40px]"
                 >
                   <Award className="h-3.5 w-3.5 mr-1.5 text-violet-500" />
-                  Apply for Faculty Interview
+                  {t("applyCta")}
                 </Button>
               </CardContent>
             </Card>
@@ -160,14 +162,14 @@ export function EducationEdTechView({ event, locale = "en", onSelectTier }: Arch
       <Drawer
         open={scholarshipDrawerOpen}
         onClose={() => setScholarshipDrawerOpen(false)}
-        title="Institutional Scholarship & Grant Calculator"
-        description="Estimate merit-based tuition subsidy and research stipend eligibility across participating universities."
+        title={t("drawerTitle")}
+        description={t("drawerDescription")}
       >
         <div className="p-6 space-y-6">
           <div className="space-y-4">
             <div>
               <label className="text-xs font-semibold text-foreground block mb-1.5">
-                Current Academic GPA (Scale of 4.0)
+                {t("gpaLabel")}
               </label>
               <input
                 type="text"
@@ -179,16 +181,16 @@ export function EducationEdTechView({ event, locale = "en", onSelectTier }: Arch
 
             <div>
               <label className="text-xs font-semibold text-foreground block mb-1.5">
-                Target Degree Program
+                {t("degreeLabel")}
               </label>
               <select
                 value={targetDegree}
                 onChange={(e) => setTargetDegree(e.target.value)}
                 className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-background text-foreground font-medium"
               >
-                <option>Bachelor of Science (Engineering / Robotics)</option>
-                <option>Master of Science (STEM / Artificial Intelligence)</option>
-                <option>Doctoral Ph.D. Fellowship (Clean Energy & Quantum)</option>
+                <option>{t("degreeBachelor")}</option>
+                <option>{t("degreeMaster")}</option>
+                <option>{t("degreeDoctoral")}</option>
               </select>
             </div>
 
@@ -196,31 +198,31 @@ export function EducationEdTechView({ event, locale = "en", onSelectTier }: Arch
               onClick={() => setCalcResult(true)}
               className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold"
             >
-              Calculate Grant Coverage
+              {t("calcCoverageCta")}
             </Button>
           </div>
 
           {calcResult && (
             <div className="p-4 rounded-xl border border-violet-500/30 bg-violet-950/10 space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold text-violet-500">SCHOLARSHIP ELIGIBILITY: TIER 1</span>
+                <span className="text-xs font-mono font-bold text-violet-500">{t("eligibilityTier")}</span>
                 <Badge variant="outline" className="border-violet-500/30 text-violet-500 bg-violet-500/10 text-xs">
-                  Merit Verified
+                  {t("meritVerified")}
                 </Badge>
               </div>
 
               <div className="grid grid-cols-2 gap-3 text-xs">
                 <div className="p-2.5 rounded-lg bg-card border border-border/60">
-                  <span className="text-muted-foreground block text-[11px]">Tuition Waiver</span>
-                  <span className="font-semibold text-foreground">75% - 100% Full Waiver</span>
+                  <span className="text-muted-foreground block text-[11px]">{t("tuitionWaiverLabel")}</span>
+                  <span className="font-semibold text-foreground">{t("tuitionWaiverValue")}</span>
                 </div>
                 <div className="p-2.5 rounded-lg bg-card border border-border/60">
-                  <span className="text-muted-foreground block text-[11px]">Research Stipend</span>
-                  <span className="font-semibold text-foreground">Equivalent to $1,800/mo</span>
+                  <span className="text-muted-foreground block text-[11px]">{t("stipendLabel")}</span>
+                  <span className="font-semibold text-foreground">{t("stipendValue")}</span>
                 </div>
               </div>
               <p className="text-xs text-muted-foreground">
-                Visit the Academic Admissions Lounge at Hall 1 with your official transcripts for immediate on-site endorsement.
+                {t("loungeNote")}
               </p>
             </div>
           )}

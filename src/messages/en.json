@@ -1917,6 +1917,31 @@
       "leftCount": "{count} Left",
       "cta": "Grab Wristband Pass",
       "complimentary": "Complimentary"
+    },
+    "EDUCATION_EDTECH": {
+      "heroBadge": "Education, EdTech & Academic Summit",
+      "heroTitle": "World University Fairs, Scholarship Grants & STEM Innovation",
+      "heroDescription": "Explore global university rankings, consult directly with academic faculty admissions teams, calculate scholarship grant eligibility, and discover next-generation learning technologies.",
+      "calcCta": "Calculate Scholarship Grant",
+      "verifiedNote": "Verified scholarship endowments & institutional grants",
+      "institutionsBadge": "Academic Institutions",
+      "directoryTitle": "Featured University Stalls & Research Pavilions",
+      "applyCta": "Apply for Faculty Interview",
+      "drawerTitle": "Institutional Scholarship & Grant Calculator",
+      "drawerDescription": "Estimate merit-based tuition subsidy and research stipend eligibility across participating universities.",
+      "gpaLabel": "Current Academic GPA (Scale of 4.0)",
+      "degreeLabel": "Target Degree Program",
+      "degreeBachelor": "Bachelor of Science (Engineering / Robotics)",
+      "degreeMaster": "Master of Science (STEM / Artificial Intelligence)",
+      "degreeDoctoral": "Doctoral Ph.D. Fellowship (Clean Energy & Quantum)",
+      "calcCoverageCta": "Calculate Grant Coverage",
+      "eligibilityTier": "SCHOLARSHIP ELIGIBILITY: TIER 1",
+      "meritVerified": "Merit Verified",
+      "tuitionWaiverLabel": "Tuition Waiver",
+      "tuitionWaiverValue": "75% - 100% Full Waiver",
+      "stipendLabel": "Research Stipend",
+      "stipendValue": "Equivalent to $1,800/mo",
+      "loungeNote": "Visit the Academic Admissions Lounge at Hall 1 with your official transcripts for immediate on-site endorsement."
     }
   }
 }

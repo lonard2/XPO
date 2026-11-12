@@ -1917,6 +1917,31 @@
       "leftCount": "剩余 {count} 张",
       "cta": "领取手环通行证",
       "complimentary": "免费"
+    },
+    "EDUCATION_EDTECH": {
+      "heroBadge": "教育、EdTech 与学术峰会",
+      "heroTitle": "世界大学展、奖学金与 STEM 创新",
+      "heroDescription": "浏览全球大学排名，直接咨询学术招生团队，计算奖学金资格，并发现下一代学习技术。",
+      "calcCta": "计算奖学金",
+      "verifiedNote": "已认证的奖学金基金与机构资助",
+      "institutionsBadge": "学术机构",
+      "directoryTitle": "精选大学展位与研究展馆",
+      "applyCta": "申请教师面谈",
+      "drawerTitle": "机构奖学金与资助计算器",
+      "drawerDescription": "估算参与大学的择优学费补贴与研究津贴资格。",
+      "gpaLabel": "当前学业 GPA（4.0 制）",
+      "degreeLabel": "目标学位项目",
+      "degreeBachelor": "理学学士（工程 / 机器人）",
+      "degreeMaster": "理学硕士（STEM / 人工智能）",
+      "degreeDoctoral": "博士研究金（清洁能源与量子）",
+      "calcCoverageCta": "计算资助覆盖",
+      "eligibilityTier": "奖学金资格：一级",
+      "meritVerified": "成绩已认证",
+      "tuitionWaiverLabel": "学费减免",
+      "tuitionWaiverValue": "75% - 100% 全额减免",
+      "stipendLabel": "研究津贴",
+      "stipendValue": "相当于每月 1,800 美元",
+      "loungeNote": "请携带官方成绩单前往 1 号馆学术招生休息室，现场即可获得认证。"
     }
   }
 }

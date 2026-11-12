@@ -1917,6 +1917,31 @@
       "leftCount": "Sisa {count}",
       "cta": "Ambil Pass Gelang",
       "complimentary": "Gratis"
+    },
+    "EDUCATION_EDTECH": {
+      "heroBadge": "Pendidikan, EdTech & Summit Akademik",
+      "heroTitle": "Pameran Universitas Dunia, Beasiswa & Inovasi STEM",
+      "heroDescription": "Jelajahi peringkat universitas global, konsultasi langsung dengan tim penerimaan fakultas, hitung kelayakan beasiswa, dan temukan teknologi pembelajaran generasi berikutnya.",
+      "calcCta": "Hitung Beasiswa",
+      "verifiedNote": "Endowmen beasiswa & hibah institusi terverifikasi",
+      "institutionsBadge": "Institusi Akademik",
+      "directoryTitle": "Stan Universitas Unggulan & Paviliun Riset",
+      "applyCta": "Ajukan Wawancara Fakultas",
+      "drawerTitle": "Kalkulator Beasiswa & Hibah Institusi",
+      "drawerDescription": "Perkirakan subsidi kuliah berbasis prestasi dan kelayakan stipend riset di universitas peserta.",
+      "gpaLabel": "IPK Akademik Saat Ini (Skala 4.0)",
+      "degreeLabel": "Program Gelar Tujuan",
+      "degreeBachelor": "Sarjana Sains (Teknik / Robotika)",
+      "degreeMaster": "Magister Sains (STEM / Kecerdasan Buatan)",
+      "degreeDoctoral": "Fellowship Doktoral Ph.D. (Energi Bersih & Kuantum)",
+      "calcCoverageCta": "Hitung Cakupan Hibah",
+      "eligibilityTier": "KELAYAKAN BEASISWA: TIER 1",
+      "meritVerified": "Prestasi Terverifikasi",
+      "tuitionWaiverLabel": "Keringanan Kuliah",
+      "tuitionWaiverValue": "75% - 100% Keringanan Penuh",
+      "stipendLabel": "Stipend Riset",
+      "stipendValue": "Setara $1.800/bulan",
+      "loungeNote": "Kunjungi Lounge Penerimaan Akademik di Hall 1 dengan transkrip resmi Anda untuk pengesahan langsung di lokasi."
     }
   }
 }

@@ -1917,6 +1917,31 @@
       "leftCount": "Noch {count}",
       "cta": "Armband-Pass sichern",
       "complimentary": "Kostenlos"
+    },
+    "EDUCATION_EDTECH": {
+      "heroBadge": "Bildung, EdTech & Akademischer Gipfel",
+      "heroTitle": "Weltweite Universitätsmessen, Stipendien & STEM-Innovation",
+      "heroDescription": "Globale Universitätsrankings erkunden, direkt mit akademischen Zulassungsteams sprechen, Stipendienansprüche berechnen und Lerntechnologien der nächsten Generation entdecken.",
+      "calcCta": "Stipendium berechnen",
+      "verifiedNote": "Verifizierte Stipendienfonds & institutionelle Zuschüsse",
+      "institutionsBadge": "Akademische Institutionen",
+      "directoryTitle": "Ausgewählte Universitätsstände & Forschungs-Pavillons",
+      "applyCta": "Fakultätsgespräch beantragen",
+      "drawerTitle": "Rechner für institutionelle Stipendien & Zuschüsse",
+      "drawerDescription": "Schätzen Sie leistungsbasierte Studienzuschüsse und Forschungsstipendien an teilnehmenden Universitäten.",
+      "gpaLabel": "Aktueller akademischer GPA (Skala 4,0)",
+      "degreeLabel": "Zielstudiengang",
+      "degreeBachelor": "Bachelor of Science (Ingenieurwesen / Robotik)",
+      "degreeMaster": "Master of Science (STEM / Künstliche Intelligenz)",
+      "degreeDoctoral": "Doktoranden-Stipendium (Saubere Energie & Quanten)",
+      "calcCoverageCta": "Zuschussabdeckung berechnen",
+      "eligibilityTier": "STIPENDIENBERECHTIGUNG: STUFE 1",
+      "meritVerified": "Leistung verifiziert",
+      "tuitionWaiverLabel": "Studiengebührenerlass",
+      "tuitionWaiverValue": "75% - 100% vollständiger Erlass",
+      "stipendLabel": "Forschungsstipendium",
+      "stipendValue": "Entspricht 1.800 $/Monat",
+      "loungeNote": "Besuchen Sie die akademische Zulassungslounge in Halle 1 mit Ihren offiziellen Zeugnissen für die sofortige Vor-Ort-Bestätigung."
     }
   }
 }

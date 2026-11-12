@@ -1917,6 +1917,31 @@
       "leftCount": "残り{count}枚",
       "cta": "リストバンドパスを取得",
       "complimentary": "無料"
+    },
+    "EDUCATION_EDTECH": {
+      "heroBadge": "教育・EdTech・学術サミット",
+      "heroTitle": "世界大学フェア、奨学金、STEMイノベーション",
+      "heroDescription": "世界の大学ランキングを調べ、大学教員の入学担当チームと直接相談し、奨学金の受給資格を計算し、次世代の学習技術を発見できます。",
+      "calcCta": "奨学金を計算",
+      "verifiedNote": "認証済みの奨学基金と機関助成",
+      "institutionsBadge": "学術機関",
+      "directoryTitle": "注目の大学ブースと研究パビリオン",
+      "applyCta": "教員面談を申し込む",
+      "drawerTitle": "機関奨学金・助成計算ツール",
+      "drawerDescription": "参加大学の成績基準の授業料補助と研究手当の受給資格を概算します。",
+      "gpaLabel": "現在の学業GPA（4.0スケール）",
+      "degreeLabel": "希望学位プログラム",
+      "degreeBachelor": "理学士（工学 / ロボティクス）",
+      "degreeMaster": "理学修士（STEM / 人工知能）",
+      "degreeDoctoral": "博士課程フェローシップ（クリーンエネルギー & 量子）",
+      "calcCoverageCta": "助成範囲を計算",
+      "eligibilityTier": "奨学金資格: ティア1",
+      "meritVerified": "成績認証済み",
+      "tuitionWaiverLabel": "授業料免除",
+      "tuitionWaiverValue": "75% - 100% 全額免除",
+      "stipendLabel": "研究手当",
+      "stipendValue": "月額$1,800相当",
+      "loungeNote": "公式成績証明書を持ってHall 1の学術入学ラウンジへお越しください。その場で承認を受けられます。"
     }
   }
 }
