@@ -2128,6 +2128,33 @@
       "sessionNote": "Broadcast-Tech-Sessions bieten Hands-on-Konsolenbedienung unter Aufsicht erfahrener Ingenieure.",
       "cancelCta": "Abbrechen",
       "confirmCta": "Hands-on-Pass bestätigen"
+    },
+    "SUPPLY_CHAIN_LOGISTICS": {
+      "heroBadge": "Supply-Chain-, Logistik- & Verpackungstechnik",
+      "heroTitle": "AGV-Lagerrobotik, Frachtkorridore & Verpackungsautomatisierung",
+      "heroDescription": "Erleben Sie live Sortierarenen autonomer mobiler Roboter (AMR), verhandeln Sie multimodale Containerversand-Ausschreibungen und auditieren Sie Kühlketten-Temperaturtelemetrie mit internationalen 3PL- und 4PL-Betreibern.",
+      "rfpCta": "Fracht-RFP / Tarifanfrage einreichen",
+      "verifiedNote": "Direkte B2B-Angebote von verifizierten Reedereien",
+      "corridorsBadge": "Robotik & Frachtkorridore",
+      "corridorsTitle": "Ausgewählte AGV-Flotten & Transportnetze",
+      "fleetLabel": "Flottendurchsatz & Spezifikationen",
+      "tenderCta": "Routenausschreibung anfordern",
+      "drawerTitle": "Multimodale Fracht- & AGV-Automatisierungsausschreibung",
+      "drawerDescription": "Fordern Sie Frachttarifvorschläge für Unternehmen, AGV-Lagerflottenspezifikationen oder temperaturkontrollierte Pharmaslots an.",
+      "transmittedTitle": "RFP-Ausschreibung übermittelt",
+      "transmittedBody": "Ihre Frachtanfrage für {route} wurde sicher an das Logistikteam des Frachtführers übermittelt. Die offizielle Tarifkarte erhalten Sie am Tisch C-04 in der Logistics Hub Lounge.",
+      "doneCta": "Fertig",
+      "targetLabel": "Ziel-Logistiksystem oder Frachtkorridor",
+      "volumeLabel": "Versand- oder Automatisierungsvolumen",
+      "volumeOption1": "Ganzcontainer (FCL: 20ft / 40ft High Cube)",
+      "volumeOption2": "Air Cargo Express (Charter & dedizierte Paletten)",
+      "volumeOption3": "Automatisierte Lager-AGV-Flotte (10 - 50 AMRs)",
+      "volumeOption4": "Gekühlter Kühlkettenkorridor (-20°C Reefer)",
+      "complianceLabel": "Handelscompliance",
+      "complianceValue": "Authorized Economic Operator (AEO)-Standards",
+      "complianceNote": "Alle teilnehmenden Logistikfrachtführer halten internationale Zoll-Sicherheitsakkreditierungen und WCO-Safe-Framework-Protokolle ein.",
+      "cancelCta": "Abbrechen",
+      "confirmCta": "Tarifanfrage einreichen"
     }
   }
 }

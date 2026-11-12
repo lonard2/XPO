@@ -2128,6 +2128,33 @@
       "sessionNote": "Sesi teknologi broadcast menampilkan manipulasi konsol hands-on di bawah pengawasan insinyur ahli.",
       "cancelCta": "Batal",
       "confirmCta": "Konfirmasi Pass Hands-On"
+    },
+    "SUPPLY_CHAIN_LOGISTICS": {
+      "heroBadge": "Rantai Pasok, Logistik & Teknologi Kemasan",
+      "heroTitle": "Robotika Gudang AGV, Koridor Kargo & Otomasi Kemasan",
+      "heroDescription": "Saksikan arena sortasi robot mobile otonom (AMR) langsung, negosiasikan tender pengiriman kontainer multimoda, dan audit telemetri suhu rantai dingin bersama operator 3PL dan 4PL internasional.",
+      "rfpCta": "Ajukan RFP Kargo / Permintaan Tarif",
+      "verifiedNote": "Kutipan B2B langsung dari jalur pelayaran terverifikasi",
+      "corridorsBadge": "Robotika & Koridor Kargo",
+      "corridorsTitle": "Armada AGV & Jaringan Transportasi Unggulan",
+      "fleetLabel": "Throughput & Spesifikasi Armada",
+      "tenderCta": "Minta Tender Rute",
+      "drawerTitle": "Tender Kargo Multimoda & Otomasi AGV",
+      "drawerDescription": "Minta proposal tarif kargo enterprise, spesifikasi armada gudang AGV, atau slot farmasi berpendingin.",
+      "transmittedTitle": "Tender RFP Terkirim",
+      "transmittedBody": "Permintaan kargo Anda untuk {route} telah terkirim dengan aman ke tim logistik pengangkut. Anda dapat mengambil kartu tarif resmi di Meja C-04 Lounge Logistics Hub.",
+      "doneCta": "Selesai",
+      "targetLabel": "Sistem Logistik atau Koridor Kargo Target",
+      "volumeLabel": "Volume Pengiriman atau Otomasi",
+      "volumeOption1": "Muat Penuh Kontainer (FCL: 20ft / 40ft High Cube)",
+      "volumeOption2": "Air Cargo Express (Charter & Palet Khusus)",
+      "volumeOption3": "Armada AGV Gudang Otomatis (10 - 50 AMR)",
+      "volumeOption4": "Koridor Rantai Dingin Berpendingin (-20°C Reefer)",
+      "complianceLabel": "Kepatuhan Perdagangan",
+      "complianceValue": "Standar Authorized Economic Operator (AEO)",
+      "complianceNote": "Semua pengangkut logistik peserta mematuhi akreditasi keamanan pabean internasional dan protokol kerangka aman WCO.",
+      "cancelCta": "Batal",
+      "confirmCta": "Ajukan Permintaan Tarif"
     }
   }
 }

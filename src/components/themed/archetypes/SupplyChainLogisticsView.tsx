@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import {
   Truck,
   Boxes,
@@ -24,6 +25,7 @@ import { Drawer } from "@/components/ui/Drawer";
 import { type ArchetypeViewProps } from "./IndustrialB2BView";
 
 export function SupplyChainLogisticsView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
+  const t = useTranslations("archetypeViews.SUPPLY_CHAIN_LOGISTICS");
   const [rfqDrawerOpen, setRfqDrawerOpen] = React.useState(false);
   const [selectedRoute, setSelectedRoute] = React.useState<string | null>(null);
   const [rfqSubmitted, setRfqSubmitted] = React.useState(false);
@@ -73,14 +75,14 @@ export function SupplyChainLogisticsView({ event, locale = "en", onSelectTier }:
                 <Truck className="h-4 w-4" />
               </span>
               <span className="text-xs font-bold uppercase tracking-wider text-teal-500">
-                Supply Chain, Logistics & Packaging Tech
+                {t("heroBadge")}
               </span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-              AGV Warehouse Robotics, Freight Corridors & Packaging Automation
+              {t("heroTitle")}
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-              Witness live autonomous mobile robot (AMR) sortation arenas, negotiate multimodal container shipping tenders, and audit cold-chain temperature telemetry with international 3PL and 4PL operators.
+              {t("heroDescription")}
             </p>
           </div>
 
@@ -94,10 +96,10 @@ export function SupplyChainLogisticsView({ event, locale = "en", onSelectTier }:
               className="bg-teal-600 hover:bg-teal-700 text-white font-semibold shadow-md min-h-[44px]"
             >
               <FileSpreadsheet className="h-4 w-4 mr-2" />
-              Submit Freight RFP / Rate Request
+              {t("rfpCta")}
             </Button>
             <div className="text-xs text-muted-foreground text-center lg:text-right">
-              Direct B2B quotes from verified shipping lines
+              {t("verifiedNote")}
             </div>
           </div>
         </div>
@@ -108,10 +110,10 @@ export function SupplyChainLogisticsView({ event, locale = "en", onSelectTier }:
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-teal-500 uppercase tracking-wider mb-1">
             <Boxes className="h-4 w-4" />
-            <span>Robotics & Freight Corridors</span>
+            <span>{t("corridorsBadge")}</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-            Featured AGV Fleets & Transport Networks
+            {t("corridorsTitle")}
           </h3>
         </div>
 
@@ -131,7 +133,7 @@ export function SupplyChainLogisticsView({ event, locale = "en", onSelectTier }:
               <CardContent className="space-y-4 pt-0">
                 <div className="p-3 rounded-lg bg-muted/40 border border-border/60 text-xs font-mono text-foreground space-y-1">
                   <div className="font-semibold text-teal-500 flex items-center gap-1">
-                    <Cpu className="h-3 w-3" /> Fleet Throughput & Specs
+                    <Cpu className="h-3 w-3" /> {t("fleetLabel")}
                   </div>
                   <div>{sys.specs}</div>
                 </div>
@@ -157,7 +159,7 @@ export function SupplyChainLogisticsView({ event, locale = "en", onSelectTier }:
                   className="w-full border-teal-500/30 hover:bg-teal-500/10 text-foreground font-semibold min-h-[40px]"
                 >
                   <Container className="h-3.5 w-3.5 mr-1.5 text-teal-500" />
-                  Request Route Tender
+                  {t("tenderCta")}
                 </Button>
               </CardContent>
             </Card>
@@ -172,8 +174,8 @@ export function SupplyChainLogisticsView({ event, locale = "en", onSelectTier }:
           setRfqDrawerOpen(false);
           setRfqSubmitted(false);
         }}
-        title="Multimodal Freight & AGV Automation Tender"
-        description="Request enterprise freight tariff proposals, AGV warehouse fleet specs, or temperature-controlled pharma slots."
+        title={t("drawerTitle")}
+        description={t("drawerDescription")}
       >
         <div className="p-6 space-y-6">
           {rfqSubmitted ? (
@@ -182,9 +184,9 @@ export function SupplyChainLogisticsView({ event, locale = "en", onSelectTier }:
                 <CheckCircle2 className="h-8 w-8" />
               </div>
               <div className="space-y-1">
-                <h4 className="text-lg font-bold text-foreground">RFP Tender Transmitted</h4>
+                <h4 className="text-lg font-bold text-foreground">{t("transmittedTitle")}</h4>
                 <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-                  Your freight inquiry for <span className="font-semibold text-foreground">{selectedRoute}</span> has been securely delivered to the carrier logistics team. You can pick up the official rate card at Logistics Hub Lounge Table C-04.
+                  {t("transmittedBody", { route: selectedRoute ?? "" })}
                 </p>
               </div>
               <Button
@@ -194,7 +196,7 @@ export function SupplyChainLogisticsView({ event, locale = "en", onSelectTier }:
                 }}
                 className="mt-4"
               >
-                Done
+                {t("doneCta")}
               </Button>
             </div>
           ) : (
@@ -207,7 +209,7 @@ export function SupplyChainLogisticsView({ event, locale = "en", onSelectTier }:
             >
               <div>
                 <label className="text-xs font-semibold text-foreground block mb-1.5">
-                  Target Logistics System or Freight Corridor
+                  {t("targetLabel")}
                 </label>
                 <input
                   type="text"
@@ -219,26 +221,26 @@ export function SupplyChainLogisticsView({ event, locale = "en", onSelectTier }:
 
               <div>
                 <label className="text-xs font-semibold text-foreground block mb-1.5">
-                  Shipment or Automation Volume
+                  {t("volumeLabel")}
                 </label>
                 <select className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-background text-foreground font-medium">
-                  <option>Full Container Load (FCL: 20ft / 40ft High Cube)</option>
-                  <option>Air Cargo Express (Charter & Dedicated Pallets)</option>
-                  <option>Automated Warehouse AGV Fleet (10 - 50 AMRs)</option>
-                  <option>Refrigerated Cold-Chain Corridor (-20°C Reefer)</option>
+                  <option>{t("volumeOption1")}</option>
+                  <option>{t("volumeOption2")}</option>
+                  <option>{t("volumeOption3")}</option>
+                  <option>{t("volumeOption4")}</option>
                 </select>
               </div>
 
               <div>
                 <label className="text-xs font-semibold text-foreground block mb-1.5">
-                  Trade Compliance
+                  {t("complianceLabel")}
                 </label>
                 <div className="p-3 rounded-lg border border-border/80 bg-muted/20 text-xs text-muted-foreground space-y-2">
                   <div className="flex items-center gap-2 text-foreground font-medium">
                     <ShieldCheck className="h-4 w-4 text-emerald-500" />
-                    <span>Authorized Economic Operator (AEO) Standards</span>
+                    <span>{t("complianceValue")}</span>
                   </div>
-                  <p>All participating logistics carriers adhere to international customs security accreditation and WCO safe framework protocols.</p>
+                  <p>{t("complianceNote")}</p>
                 </div>
               </div>
 
@@ -248,13 +250,13 @@ export function SupplyChainLogisticsView({ event, locale = "en", onSelectTier }:
                   variant="outline"
                   onClick={() => setRfqDrawerOpen(false)}
                 >
-                  Cancel
+                  {t("cancelCta")}
                 </Button>
                 <Button
                   type="submit"
                   className="bg-teal-600 hover:bg-teal-700 text-white font-semibold"
                 >
-                  Submit Rate Inquiry
+                  {t("confirmCta")}
                 </Button>
               </div>
             </form>

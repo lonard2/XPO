@@ -2128,6 +2128,33 @@
       "sessionNote": "放送技術セッションでは、専門エンジニアの監督のもとでコンソールを実際に操作できます。",
       "cancelCta": "キャンセル",
       "confirmCta": "ハンズオンパスを確定"
+    },
+    "SUPPLY_CHAIN_LOGISTICS": {
+      "heroBadge": "サプライチェーン・物流・パッケージング技術",
+      "heroTitle": "AGV倉庫ロボティクス、貨物回廊、包装自動化",
+      "heroDescription": "自律移動ロボット（AMR）仕分けアリーナをライブで見学し、マルチモーダルコンテナ輸送入札を交渉し、国際3PL・4PL事業者とコールドチェーン温度テレメトリーを監査できます。",
+      "rfpCta": "貨物RFP / 料率リクエストを提出",
+      "verifiedNote": "認証済み船社からの直接B2B見積",
+      "corridorsBadge": "ロボティクス & 貨物回廊",
+      "corridorsTitle": "注目のAGVフリートと輸送ネットワーク",
+      "fleetLabel": "フリート処理能力 & 仕様",
+      "tenderCta": "ルート入札を依頼",
+      "drawerTitle": "マルチモーダル貨物 & AGV自動化入札",
+      "drawerDescription": "企業向け貨物料率提案、AGV倉庫フリート仕様、温度管理医薬品スロットを依頼します。",
+      "transmittedTitle": "RFP入札を送信しました",
+      "transmittedBody": "{route}の貨物照会が運送会社の物流チームへ安全に届けられました。Logistics Hub LoungeのテーブルC-04で公式料率表を受け取れます。",
+      "doneCta": "完了",
+      "targetLabel": "対象の物流システムまたは貨物回廊",
+      "volumeLabel": "出荷または自動化ボリューム",
+      "volumeOption1": "フルコンテナロード（FCL: 20ft / 40ft High Cube）",
+      "volumeOption2": "航空貨物エクスプレス（チャーター & 専用パレット）",
+      "volumeOption3": "自動倉庫AGVフリート（10〜50台のAMR）",
+      "volumeOption4": "冷蔵コールドチェーン回廊（-20°Cリーファー）",
+      "complianceLabel": "貿易コンプライアンス",
+      "complianceValue": "Authorized Economic Operator（AEO）基準",
+      "complianceNote": "参加するすべての物流運送会社は、国際税関セキュリティ認証とWCOセーフフレームワーク議定書を遵守しています。",
+      "cancelCta": "キャンセル",
+      "confirmCta": "料率照会を送信"
     }
   }
 }

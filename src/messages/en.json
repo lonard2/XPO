@@ -2128,6 +2128,33 @@
       "sessionNote": "Broadcast tech sessions feature hands-on console manipulation under expert engineer supervision.",
       "cancelCta": "Cancel",
       "confirmCta": "Confirm Hands-On Pass"
+    },
+    "SUPPLY_CHAIN_LOGISTICS": {
+      "heroBadge": "Supply Chain, Logistics & Packaging Tech",
+      "heroTitle": "AGV Warehouse Robotics, Freight Corridors & Packaging Automation",
+      "heroDescription": "Witness live autonomous mobile robot (AMR) sortation arenas, negotiate multimodal container shipping tenders, and audit cold-chain temperature telemetry with international 3PL and 4PL operators.",
+      "rfpCta": "Submit Freight RFP / Rate Request",
+      "verifiedNote": "Direct B2B quotes from verified shipping lines",
+      "corridorsBadge": "Robotics & Freight Corridors",
+      "corridorsTitle": "Featured AGV Fleets & Transport Networks",
+      "fleetLabel": "Fleet Throughput & Specs",
+      "tenderCta": "Request Route Tender",
+      "drawerTitle": "Multimodal Freight & AGV Automation Tender",
+      "drawerDescription": "Request enterprise freight tariff proposals, AGV warehouse fleet specs, or temperature-controlled pharma slots.",
+      "transmittedTitle": "RFP Tender Transmitted",
+      "transmittedBody": "Your freight inquiry for {route} has been securely delivered to the carrier logistics team. You can pick up the official rate card at Logistics Hub Lounge Table C-04.",
+      "doneCta": "Done",
+      "targetLabel": "Target Logistics System or Freight Corridor",
+      "volumeLabel": "Shipment or Automation Volume",
+      "volumeOption1": "Full Container Load (FCL: 20ft / 40ft High Cube)",
+      "volumeOption2": "Air Cargo Express (Charter & Dedicated Pallets)",
+      "volumeOption3": "Automated Warehouse AGV Fleet (10 - 50 AMRs)",
+      "volumeOption4": "Refrigerated Cold-Chain Corridor (-20°C Reefer)",
+      "complianceLabel": "Trade Compliance",
+      "complianceValue": "Authorized Economic Operator (AEO) Standards",
+      "complianceNote": "All participating logistics carriers adhere to international customs security accreditation and WCO safe framework protocols.",
+      "cancelCta": "Cancel",
+      "confirmCta": "Submit Rate Inquiry"
     }
   }
 }

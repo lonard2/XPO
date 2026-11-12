@@ -2128,6 +2128,33 @@
       "sessionNote": "Las sesiones de tecnología broadcast incluyen manipulación práctica de consolas bajo supervisión de ingenieros expertos.",
       "cancelCta": "Cancelar",
       "confirmCta": "Confirmar Pase Práctico"
+    },
+    "SUPPLY_CHAIN_LOGISTICS": {
+      "heroBadge": "Cadena de Suministro, Logística y Tecnología de Envases",
+      "heroTitle": "Robótica de Almacén AGV, Corredores de Carga y Automatización de Envases",
+      "heroDescription": "Presencie arenas de clasificación con robots móviles autónomos (AMR) en vivo, negocie licitaciones de transporte marítimo multimodal y audite la telemetría de temperatura de la cadena de frío con operadores 3PL y 4PL internacionales.",
+      "rfpCta": "Enviar RFP de Carga / Solicitud de Tarifa",
+      "verifiedNote": "Cotizaciones B2B directas de navieras verificadas",
+      "corridorsBadge": "Robótica y Corredores de Carga",
+      "corridorsTitle": "Flotas AGV y Redes de Transporte Destacadas",
+      "fleetLabel": "Rendimiento y Especificaciones de Flota",
+      "tenderCta": "Solicitar Licitación de Ruta",
+      "drawerTitle": "Licitación de Carga Multimodal y Automatización AGV",
+      "drawerDescription": "Solicite propuestas de tarifas de carga empresarial, especificaciones de flotas AGV de almacén o franjas farmacéuticas con temperatura controlada.",
+      "transmittedTitle": "Licitación RFP Transmitida",
+      "transmittedBody": "Su consulta de carga para {route} se ha entregado de forma segura al equipo logístico del transportista. Puede recoger la tarjeta de tarifas oficial en la Mesa C-04 del Logistics Hub Lounge.",
+      "doneCta": "Hecho",
+      "targetLabel": "Sistema Logístico o Corredor de Carga Objetivo",
+      "volumeLabel": "Volumen de Envío o Automatización",
+      "volumeOption1": "Contenedor Completo (FCL: 20ft / 40ft High Cube)",
+      "volumeOption2": "Carga Aérea Exprés (Chárter y Palés Dedicados)",
+      "volumeOption3": "Flota AGV de Almacén Automatizada (10 - 50 AMR)",
+      "volumeOption4": "Corredor de Cadena de Frío Refrigerada (-20°C Reefer)",
+      "complianceLabel": "Cumplimiento Comercial",
+      "complianceValue": "Estándares de Operador Económico Autorizado (AEO)",
+      "complianceNote": "Todos los transportistas logísticos participantes cumplen con las acreditaciones internacionales de seguridad aduanera y los protocolos del marco seguro de la OMA.",
+      "cancelCta": "Cancelar",
+      "confirmCta": "Enviar Consulta de Tarifa"
     }
   }
 }

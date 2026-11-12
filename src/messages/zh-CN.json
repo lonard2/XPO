@@ -2128,6 +2128,33 @@
       "sessionNote": "广播技术时段包含在专家工程师监督下的控制台动手操作。",
       "cancelCta": "取消",
       "confirmCta": "确认动手体验通行证"
+    },
+    "SUPPLY_CHAIN_LOGISTICS": {
+      "heroBadge": "供应链、物流与包装技术",
+      "heroTitle": "AGV 仓储机器人、货运通道与包装自动化",
+      "heroDescription": "现场观看自主移动机器人（AMR）分拣场馆，洽谈多式联运集装箱运输招标，并与国际 3PL 与 4PL 运营商审核冷链温度遥测。",
+      "rfpCta": "提交货运 RFP / 费率请求",
+      "verifiedNote": "来自认证船公司的直接 B2B 报价",
+      "corridorsBadge": "机器人与货运通道",
+      "corridorsTitle": "精选 AGV 车队与运输网络",
+      "fleetLabel": "车队吞吐量与规格",
+      "tenderCta": "申请线路招标",
+      "drawerTitle": "多式联运货运与 AGV 自动化招标",
+      "drawerDescription": "申请企业货运费率方案、AGV 仓储车队规格或温控药品时段。",
+      "transmittedTitle": "RFP 招标已发送",
+      "transmittedBody": "您对 {route} 的货运询价已安全送达承运物流团队。您可在 Logistics Hub Lounge C-04 桌领取官方费率卡。",
+      "doneCta": "完成",
+      "targetLabel": "目标物流系统或货运通道",
+      "volumeLabel": "货运或自动化规模",
+      "volumeOption1": "整箱装载（FCL：20 英尺 / 40 英尺高柜）",
+      "volumeOption2": "航空货运快线（包机与专用托盘）",
+      "volumeOption3": "自动化仓库 AGV 车队（10 - 50 台 AMR）",
+      "volumeOption4": "冷藏冷链通道（-20°C 冷柜）",
+      "complianceLabel": "贸易合规",
+      "complianceValue": "经认证经营者（AEO）标准",
+      "complianceNote": "所有参展物流承运商均遵守国际海关安全认证与 WCO 安全框架协议。",
+      "cancelCta": "取消",
+      "confirmCta": "提交费率询价"
     }
   }
 }
