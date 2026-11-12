@@ -2213,6 +2213,38 @@
       "cancelCta": "Cancel",
       "submitCta": "Confirm Appointment",
       "sendingCta": "Sending..."
+    },
+    "GOVERNMENT_DIPLOMATIC": {
+      "heroBadge": "Intergovernmental Summit & Multilateral Treaty Assembly",
+      "heroTitle": "Bilateral Accords, Climate Compacts & Sovereign Dialogue",
+      "delegationsCta": "Sovereign Delegations ({count})",
+      "protocolCta": "Diplomatic Protocol & Security Briefing",
+      "protocolBadge": "Diplomatic Protocol",
+      "securityTitle": "Summit Security Briefing",
+      "securityDesc": "Strict protocol mandates for ministerial delegates and registered observers.",
+      "suitesTitle": "Sovereign Delegation Suites & Lounges",
+      "suitesDesc": "Official diplomatic mission representations and scheduled bilateral meeting slots.",
+      "capacityNote": "Bilateral slot capacity: 4 accredited diplomatic attachés per session.",
+      "bilateralCta": "Request Bilateral Dialogue Slot",
+      "assemblyTitle": "Plenary Assembly & Treaty Working Sessions",
+      "chairLabel": "Session Presiding Chair:",
+      "credentialsTitle": "Delegation Credentials & Official Observers",
+      "credentialsDesc": "All passes require government email domain verification and official diplomatic accreditation clearance.",
+      "credentialsLeft": "{count} Credentials Left",
+      "selectTierCta": "Select Credential Tier",
+      "drawerTitle": "Diplomatic Bilateral Request",
+      "drawerDescription": "Formal bilateral audience scheduling with the delegation of {delegation}",
+      "recordedTitle": "Audience Request Recorded",
+      "recordedBody": "The diplomatic secretariat has your bilateral memorandum and contact details, and will respond directly.",
+      "referenceLabel": "Reference: {reference}",
+      "emailLabel": "Contact Email",
+      "missionLabel": "Target Sovereign Mission",
+      "ministryLabel": "Requesting Ministry / Institution",
+      "ministryPlaceholder": "e.g. Ministry of Foreign Affairs & Trade",
+      "leadLabel": "Lead Minister / Ambassador",
+      "leadPlaceholder": "Full Name and Diplomatic Rank",
+      "agendaLabel": "Proposed Agenda Topics",
+      "agendaPlaceholder": "Bilateral trade agreements, clean energy transition partnerships, or joint diplomatic communiques..."
     }
   }
 }

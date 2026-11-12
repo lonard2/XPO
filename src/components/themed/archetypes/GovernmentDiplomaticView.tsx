@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import {
   Building2,
   Shield,
@@ -25,6 +26,7 @@ import type { ArchetypeViewProps } from "./IndustrialB2BView";
 import { submitMeetingRequest } from "@/lib/meetings/client";
 
 export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, pageSize = "LARGE" }: ArchetypeViewProps) {
+  const t = useTranslations("archetypeViews.GOVERNMENT_DIPLOMATIC");
   const [bilateralDrawerOpen, setBilateralDrawerOpen] = React.useState(false);
   const [selectedDelegation, setSelectedDelegation] = React.useState<string | null>(null);
   const [scheduled, setScheduled] = React.useState(false);
@@ -83,10 +85,10 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, p
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center gap-2 text-xs font-sans font-bold text-sky-400 uppercase tracking-wider">
             <Landmark className="h-4 w-4" aria-hidden="true" />
-            <span>Intergovernmental Summit & Multilateral Treaty Assembly</span>
+            <span>{t("heroBadge")}</span>
           </div>
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground">
-            Bilateral Accords, Climate Compacts & Sovereign Dialogue
+            {t("heroTitle")}
           </h2>
           <p className="text-muted-foreground text-sm leading-relaxed font-sans">
             {event.description}
@@ -102,7 +104,7 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, p
               className="gap-2 text-xs font-semibold shadow-md"
             >
               <Globe2 className="h-4 w-4" />
-              Sovereign Delegations ({delegations.length})
+              {t("delegationsCta", { count: delegations.length })}
             </Button>
 
             <Button
@@ -114,7 +116,7 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, p
               className="gap-2 text-xs"
             >
               <Shield className="h-4 w-4 text-sky-400" />
-              Diplomatic Protocol & Security Briefing
+              {t("protocolCta")}
             </Button>
           </div>
         </div>
@@ -124,13 +126,13 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, p
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
               <Badge variant="outline" size="sm" className="font-sans text-xs font-semibold text-sky-400 border-sky-400/30">
-                Diplomatic Protocol
+                {t("protocolBadge")}
               </Badge>
               <Lock className="h-4 w-4 text-sky-400" />
             </div>
-            <CardTitle className="text-base font-sans">Summit Security Briefing</CardTitle>
+            <CardTitle className="text-base font-sans">{t("securityTitle")}</CardTitle>
             <CardDescription className="text-xs font-sans">
-              Strict protocol mandates for ministerial delegates and registered observers.
+              {t("securityDesc")}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2 text-xs font-sans text-muted-foreground">
@@ -149,10 +151,10 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, p
         <div>
           <h3 className="text-xl font-bold text-foreground flex items-center gap-2 font-sans">
             <Building2 className="h-5 w-5 text-sky-400" />
-            Sovereign Delegation Suites & Lounges
+            {t("suitesTitle")}
           </h3>
           <p className="text-xs font-sans text-muted-foreground">
-            Official diplomatic mission representations and scheduled bilateral meeting slots.
+            {t("suitesDesc")}
           </p>
         </div>
 
@@ -170,7 +172,7 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, p
               </CardHeader>
               <CardContent className="space-y-3 text-xs">
                 <div className="p-2.5 rounded bg-muted/40 text-muted-foreground">
-                  Bilateral slot capacity: 4 accredited diplomatic attachés per session.
+                  {t("capacityNote")}
                 </div>
                 <div className="pt-2">
                   {pageSize !== "SMALL" && (
@@ -181,7 +183,7 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, p
                     className="w-full gap-2 text-xs min-h-[40px] cursor-pointer"
                   >
                     <FileCheck className="h-3.5 w-3.5" />
-                    Request Bilateral Dialogue Slot
+                    {t("bilateralCta")}
                   </Button>
                   )}
                 </div>
@@ -196,7 +198,7 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, p
         <section className="space-y-4">
           <h3 className="text-xl font-bold text-foreground flex items-center gap-2 font-sans">
             <Clock className="h-5 w-5 text-[var(--archetype-primary)]" />
-            Plenary Assembly & Treaty Working Sessions
+            {t("assemblyTitle")}
           </h3>
           <div className="space-y-3 font-sans">
             {event.agendaItems.map((agenda) => (
@@ -217,7 +219,7 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, p
                   <h4 className="text-base font-bold text-foreground">{agenda.title}</h4>
                   {agenda.speakerName && (
                     <p className="text-xs text-muted-foreground">
-                      Session Presiding Chair: <span className="font-semibold text-foreground">{agenda.speakerName}</span>
+                      {t("chairLabel")} <span className="font-semibold text-foreground">{agenda.speakerName}</span>
                     </p>
                   )}
                 </div>
@@ -238,10 +240,10 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, p
         <div>
           <h3 className="text-xl font-bold text-foreground flex items-center gap-2 font-sans">
             <Ticket className="h-5 w-5 text-[var(--archetype-primary)]" />
-            Delegation Credentials & Official Observers
+            {t("credentialsTitle")}
           </h3>
           <p className="text-xs font-sans text-muted-foreground">
-            All passes require government email domain verification and official diplomatic accreditation clearance.
+            {t("credentialsDesc")}
           </p>
         </div>
 
@@ -260,7 +262,7 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, p
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg">{tier.name}</CardTitle>
                     <Badge variant="secondary" size="sm">
-                      {tier.capacity - tier.soldCount} Credentials Left
+                      {t("credentialsLeft", { count: tier.capacity - tier.soldCount })}
                     </Badge>
                   </div>
                   <div className="mt-2">
@@ -287,7 +289,7 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, p
                       onClick={() => onSelectTier?.(tier.id)}
                     >
                       <Ticket className="h-4 w-4" />
-                      Select Credential Tier
+                      {t("selectTierCta")}
                     </Button>
                   </div>
                 </CardContent>
@@ -301,26 +303,28 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, p
       <Drawer
         isOpen={bilateralDrawerOpen}
         onClose={() => setBilateralDrawerOpen(false)}
-        title="Diplomatic Bilateral Request"
-        description={`Formal bilateral audience scheduling with the delegation of ${selectedDelegation}`}
+        title={t("drawerTitle")}
+        description={t("drawerDescription", { delegation: selectedDelegation ?? "" })}
       >
         {scheduled ? (
           <div className="py-12 text-center space-y-3 font-sans animate-fade-in">
             <div className="h-12 w-12 rounded-full bg-sky-500/20 text-sky-400 flex items-center justify-center mx-auto">
               <CheckCircle2 className="h-6 w-6" />
             </div>
-            <h4 className="text-base font-semibold text-foreground">Audience Request Recorded</h4>
+            <h4 className="text-base font-semibold text-foreground">{t("recordedTitle")}</h4>
             <p className="text-xs text-muted-foreground max-w-xs mx-auto">
-              The diplomatic secretariat has your bilateral memorandum and contact details, and will respond directly.
+              {t("recordedBody")}
               {scheduleReference && (
-                <span className="block mt-1 font-mono">Reference: {scheduleReference}</span>
+                <span className="block mt-1 font-mono">
+                  {t("referenceLabel", { reference: scheduleReference })}
+                </span>
               )}
             </p>
           </div>
         ) : (
           <form onSubmit={handleScheduleSubmit} className="space-y-4 text-xs font-sans">
             <div className="space-y-1">
-              <label className="font-semibold text-foreground">Contact Email *</label>
+              <label className="font-semibold text-foreground">{t("emailLabel")} *</label>
               <input
                 required
                 name="email"
@@ -331,7 +335,7 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, p
               />
             </div>
             <div className="space-y-1">
-              <label className="font-semibold text-foreground">Target Sovereign Mission</label>
+              <label className="font-semibold text-foreground">{t("missionLabel")}</label>
               <input
                 type="text"
                 readOnly
@@ -340,31 +344,31 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, p
               />
             </div>
             <div className="space-y-1">
-              <label className="font-semibold text-foreground">Requesting Ministry / Institution *</label>
+              <label className="font-semibold text-foreground">{t("ministryLabel")} *</label>
               <input
                 required
                 name="ministry"
                 type="text"
-                placeholder="e.g. Ministry of Foreign Affairs & Trade"
+                placeholder={t("ministryPlaceholder")}
                 className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary"
               />
             </div>
             <div className="space-y-1">
-              <label className="font-semibold text-foreground">Lead Minister / Ambassador *</label>
+              <label className="font-semibold text-foreground">{t("leadLabel")} *</label>
               <input
                 required
                 name="minister"
                 type="text"
-                placeholder="Full Name and Diplomatic Rank"
+                placeholder={t("leadPlaceholder")}
                 className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary"
               />
             </div>
             <div className="space-y-1">
-              <label className="font-semibold text-foreground">Proposed Agenda Topics</label>
+              <label className="font-semibold text-foreground">{t("agendaLabel")}</label>
               <textarea
                 name="agenda"
                 rows={3}
-                placeholder="Bilateral trade agreements, clean energy transition partnerships, or joint diplomatic communiques..."
+                placeholder={t("agendaPlaceholder")}
                 className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary"
               />
             </div>

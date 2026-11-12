@@ -2213,6 +2213,38 @@
       "cancelCta": "取消",
       "submitCta": "确认会面",
       "sendingCta": "发送中..."
+    },
+    "GOVERNMENT_DIPLOMATIC": {
+      "heroBadge": "政府间峰会与多边条约大会",
+      "heroTitle": "双边协定、气候契约与主权对话",
+      "delegationsCta": "主权代表团（{count}）",
+      "protocolCta": "外交礼宾与安全简报",
+      "protocolBadge": "外交礼宾",
+      "securityTitle": "峰会安全简报",
+      "securityDesc": "对部长级代表与注册观察员的严格礼宾要求。",
+      "suitesTitle": "主权代表团套房与休息室",
+      "suitesDesc": "官方外交使团代表与已排期双边会议时段。",
+      "capacityNote": "双边时段容量：每场会议 4 名认证外交随员。",
+      "bilateralCta": "申请双边对话时段",
+      "assemblyTitle": "全体会议与条约工作组",
+      "chairLabel": "会议主持：",
+      "credentialsTitle": "代表团证件与官方观察员",
+      "credentialsDesc": "所有通行证均需政府邮箱域名验证与官方外交认证许可。",
+      "credentialsLeft": "剩余 {count} 张证件",
+      "selectTierCta": "选择证件层级",
+      "drawerTitle": "外交双边请求",
+      "drawerDescription": "与 {delegation} 代表团安排正式双边会晤",
+      "recordedTitle": "会晤请求已记录",
+      "recordedBody": "外交秘书处已收到您的双边备忘录与联系方式，并将直接回复。",
+      "referenceLabel": "参考编号：{reference}",
+      "emailLabel": "联系邮箱",
+      "missionLabel": "目标主权使团",
+      "ministryLabel": "申请部委 / 机构",
+      "ministryPlaceholder": "例如：外交与贸易部",
+      "leadLabel": "首席部长 / 大使",
+      "leadPlaceholder": "全名与外交职衔",
+      "agendaLabel": "拟议议程议题",
+      "agendaPlaceholder": "双边贸易协定、清洁能源转型伙伴关系或联合外交公报..."
     }
   }
 }

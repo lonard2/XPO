@@ -2213,6 +2213,38 @@
       "cancelCta": "キャンセル",
       "submitCta": "面談を確定",
       "sendingCta": "送信中..."
+    },
+    "GOVERNMENT_DIPLOMATIC": {
+      "heroBadge": "政府間サミット & 多国間条約会議",
+      "heroTitle": "二国間協定、気候協定、主権対話",
+      "delegationsCta": "主権代表団（{count}）",
+      "protocolCta": "外交プロトコル & セキュリティブリーフィング",
+      "protocolBadge": "外交プロトコル",
+      "securityTitle": "サミットセキュリティブリーフィング",
+      "securityDesc": "閣僚代表団と登録オブザーバーに対する厳格なプロトコル要件。",
+      "suitesTitle": "主権代表団スイート & ラウンジ",
+      "suitesDesc": "公式外交ミッションの代表と予定された二国間会合枠。",
+      "capacityNote": "二国間枠の定員: 1セッションあたり認定外交アタッシェ4名。",
+      "bilateralCta": "二国間対話枠を依頼",
+      "assemblyTitle": "本会議 & 条約作業セッション",
+      "chairLabel": "議長:",
+      "credentialsTitle": "代表団資格 & 公式オブザーバー",
+      "credentialsDesc": "すべてのパスには政府メールドメインの確認と公式外交認定クリアランスが必要です。",
+      "credentialsLeft": "残り{count}枚の資格",
+      "selectTierCta": "資格ティアを選択",
+      "drawerTitle": "外交二国間リクエスト",
+      "drawerDescription": "{delegation}代表団との正式な二国間会見の日程調整",
+      "recordedTitle": "会見リクエストを記録しました",
+      "recordedBody": "外交事務局が二国間覚書と連絡先を受理し、直接ご連絡します。",
+      "referenceLabel": "参照番号: {reference}",
+      "emailLabel": "連絡先メール",
+      "missionLabel": "対象の主権ミッション",
+      "ministryLabel": "申請省庁 / 機関",
+      "ministryPlaceholder": "例: 外務貿易省",
+      "leadLabel": "首席大臣 / 大使",
+      "leadPlaceholder": "氏名と外交階級",
+      "agendaLabel": "提案議題",
+      "agendaPlaceholder": "二国間貿易協定、クリーンエネルギー移行パートナーシップ、共同外交コミュニケ..."
     }
   }
 }

@@ -2213,6 +2213,38 @@
       "cancelCta": "Batal",
       "submitCta": "Konfirmasi Janji",
       "sendingCta": "Mengirim..."
+    },
+    "GOVERNMENT_DIPLOMATIC": {
+      "heroBadge": "KTT Antarpemerintah & Majelis Perjanjian Multilateral",
+      "heroTitle": "Kesepakatan Bilateral, Pakta Iklim & Dialog Berdaulat",
+      "delegationsCta": "Delegasi Berdaulat ({count})",
+      "protocolCta": "Protokol Diplomatik & Briefing Keamanan",
+      "protocolBadge": "Protokol Diplomatik",
+      "securityTitle": "Briefing Keamanan KTT",
+      "securityDesc": "Mandat protokol ketat untuk delegasi menteri dan pengamat terdaftar.",
+      "suitesTitle": "Suite & Lounge Delegasi Berdaulat",
+      "suitesDesc": "Representasi misi diplomatik resmi dan slot pertemuan bilateral terjadwal.",
+      "capacityNote": "Kapasitas slot bilateral: 4 atase diplomatik terakreditasi per sesi.",
+      "bilateralCta": "Minta Slot Dialog Bilateral",
+      "assemblyTitle": "Majelis Pleno & Sesi Kerja Perjanjian",
+      "chairLabel": "Ketua Sidang:",
+      "credentialsTitle": "Kredensial Delegasi & Pengamat Resmi",
+      "credentialsDesc": "Semua pass memerlukan verifikasi domain email pemerintah dan izin akreditasi diplomatik resmi.",
+      "credentialsLeft": "Sisa {count} Kredensial",
+      "selectTierCta": "Pilih Tingkat Kredensial",
+      "drawerTitle": "Permintaan Bilateral Diplomatik",
+      "drawerDescription": "Penjadwalan audiensi bilateral formal dengan delegasi {delegation}",
+      "recordedTitle": "Permintaan Audiensi Tercatat",
+      "recordedBody": "Sekretariat diplomatik telah menerima memorandum bilateral dan detail kontak Anda, dan akan merespons langsung.",
+      "referenceLabel": "Referensi: {reference}",
+      "emailLabel": "Email Kontak",
+      "missionLabel": "Misi Berdaulat Target",
+      "ministryLabel": "Kementerian / Institusi Pemohon",
+      "ministryPlaceholder": "mis. Kementerian Luar Negeri & Perdagangan",
+      "leadLabel": "Menteri / Duta Besar Utama",
+      "leadPlaceholder": "Nama Lengkap dan Pangkat Diplomatik",
+      "agendaLabel": "Topik Agenda yang Diusulkan",
+      "agendaPlaceholder": "Perjanjian perdagangan bilateral, kemitraan transisi energi bersih, atau komunike diplomatik bersama..."
     }
   }
 }

@@ -2213,6 +2213,38 @@
       "cancelCta": "Abbrechen",
       "submitCta": "Termin bestätigen",
       "sendingCta": "Wird gesendet..."
+    },
+    "GOVERNMENT_DIPLOMATIC": {
+      "heroBadge": "Zwischenstaatlicher Gipfel & Multilaterale Vertragsversammlung",
+      "heroTitle": "Bilaterale Abkommen, Klimapakte & Souveräner Dialog",
+      "delegationsCta": "Souveräne Delegationen ({count})",
+      "protocolCta": "Diplomatisches Protokoll & Sicherheitsbriefing",
+      "protocolBadge": "Diplomatisches Protokoll",
+      "securityTitle": "Gipfel-Sicherheitsbriefing",
+      "securityDesc": "Strikte Protokollvorgaben für Ministerdelegationen und registrierte Beobachter.",
+      "suitesTitle": "Souveräne Delegations-Suiten & Lounges",
+      "suitesDesc": "Offizielle diplomatische Missionsvertretungen und geplante bilaterale Meeting-Slots.",
+      "capacityNote": "Bilaterale Slot-Kapazität: 4 akkreditierte diplomatische Attachés pro Session.",
+      "bilateralCta": "Bilateralen Dialogslot anfordern",
+      "assemblyTitle": "Plenarversammlung & Vertragsarbeitssitzungen",
+      "chairLabel": "Sitzungsvorsitz:",
+      "credentialsTitle": "Delegationsnachweise & Offizielle Beobachter",
+      "credentialsDesc": "Alle Pässe erfordern eine Verifizierung der Regierungs-E-Mail-Domain und eine offizielle diplomatische Akkreditierungsfreigabe.",
+      "credentialsLeft": "Noch {count} Nachweise",
+      "selectTierCta": "Nachweisstufe wählen",
+      "drawerTitle": "Diplomatische Bilateralanfrage",
+      "drawerDescription": "Formelle bilaterale Audienzplanung mit der Delegation von {delegation}",
+      "recordedTitle": "Audienzanfrage erfasst",
+      "recordedBody": "Das diplomatische Sekretariat hat Ihr bilaterales Memorandum und Ihre Kontaktdaten und wird direkt antworten.",
+      "referenceLabel": "Referenz: {reference}",
+      "emailLabel": "Kontakt-E-Mail",
+      "missionLabel": "Ziel-Souveräne Mission",
+      "ministryLabel": "Anfragendes Ministerium / Institution",
+      "ministryPlaceholder": "z. B. Ministerium für Auswärtige Angelegenheiten & Handel",
+      "leadLabel": "Leitender Minister / Botschafter",
+      "leadPlaceholder": "Vollständiger Name und diplomatischer Rang",
+      "agendaLabel": "Vorgeschlagene Agendathemen",
+      "agendaPlaceholder": "Bilaterale Handelsabkommen, Partnerschaften für saubere Energiewende oder gemeinsame diplomatische Kommuniqués..."
     }
   }
 }

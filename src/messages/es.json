@@ -2213,6 +2213,38 @@
       "cancelCta": "Cancelar",
       "submitCta": "Confirmar Cita",
       "sendingCta": "Enviando..."
+    },
+    "GOVERNMENT_DIPLOMATIC": {
+      "heroBadge": "Cumbre Intergubernamental y Asamblea de Tratados Multilaterales",
+      "heroTitle": "Acuerdos Bilaterales, Pactos Climáticos y Diálogo Soberano",
+      "delegationsCta": "Delegaciones Soberanas ({count})",
+      "protocolCta": "Protocolo Diplomático y Briefing de Seguridad",
+      "protocolBadge": "Protocolo Diplomático",
+      "securityTitle": "Briefing de Seguridad de la Cumbre",
+      "securityDesc": "Mandatos de protocolo estrictos para delegados ministeriales y observadores registrados.",
+      "suitesTitle": "Suites y Lounges de Delegaciones Soberanas",
+      "suitesDesc": "Representaciones oficiales de misiones diplomáticas y franjas de reuniones bilaterales programadas.",
+      "capacityNote": "Capacidad de franja bilateral: 4 agregados diplomáticos acreditados por sesión.",
+      "bilateralCta": "Solicitar Franja de Diálogo Bilateral",
+      "assemblyTitle": "Asamblea Plenaria y Sesiones de Trabajo del Tratado",
+      "chairLabel": "Presidente de Sesión:",
+      "credentialsTitle": "Credenciales de Delegación y Observadores Oficiales",
+      "credentialsDesc": "Todos los pases requieren verificación del dominio de correo gubernamental y autorización de acreditación diplomática oficial.",
+      "credentialsLeft": "Quedan {count} credenciales",
+      "selectTierCta": "Seleccionar Nivel de Credencial",
+      "drawerTitle": "Solicitud Bilateral Diplomática",
+      "drawerDescription": "Programación formal de audiencia bilateral con la delegación de {delegation}",
+      "recordedTitle": "Solicitud de Audiencia Registrada",
+      "recordedBody": "La secretaría diplomática tiene su memorando bilateral y datos de contacto, y responderá directamente.",
+      "referenceLabel": "Referencia: {reference}",
+      "emailLabel": "Email de Contacto",
+      "missionLabel": "Misión Soberana Objetivo",
+      "ministryLabel": "Ministerio / Institución Solicitante",
+      "ministryPlaceholder": "p. ej., Ministerio de Asuntos Exteriores y Comercio",
+      "leadLabel": "Ministro / Embajador Principal",
+      "leadPlaceholder": "Nombre Completo y Rango Diplomático",
+      "agendaLabel": "Temas de Agenda Propuestos",
+      "agendaPlaceholder": "Acuerdos comerciales bilaterales, alianzas de transición energética limpia o comunicados diplomáticos conjuntos..."
     }
   }
 }
