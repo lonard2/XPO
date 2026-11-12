@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import {
   Store,
   DollarSign,
@@ -24,6 +25,7 @@ import { Drawer } from "@/components/ui/Drawer";
 import { type ArchetypeViewProps } from "./IndustrialB2BView";
 
 export function FranchiseLicensingView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
+  const t = useTranslations("archetypeViews.FRANCHISE_LICENSING");
   const [calcDrawerOpen, setCalcDrawerOpen] = React.useState(false);
   const [selectedBrand, setSelectedBrand] = React.useState<string | null>(null);
   const [investBudget, setInvestBudget] = React.useState("500000000");
@@ -77,14 +79,14 @@ export function FranchiseLicensingView({ event, locale = "en", onSelectTier }: A
                 <Store className="h-4 w-4" />
               </span>
               <span className="text-xs font-bold uppercase tracking-wider text-amber-500">
-                Franchise, Retail & SME Business Opportunity
+                {t("heroBadge")}
               </span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-              Master Franchise Concepts, Retail Growth & SME Investment
+              {t("heroTitle")}
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-              Explore proven turnkey retail models, calculate initial capital payback periods, and schedule private 1-on-1 discovery room sessions with master franchise brand owners.
+              {t("heroDescription")}
             </p>
           </div>
 
@@ -99,10 +101,10 @@ export function FranchiseLicensingView({ event, locale = "en", onSelectTier }: A
               className="bg-amber-600 hover:bg-amber-700 text-white font-semibold shadow-md min-h-[44px]"
             >
               <Calculator className="h-4 w-4 mr-2" />
-              Calculate Franchise ROI & Payback
+              {t("roiCta")}
             </Button>
             <div className="text-xs text-muted-foreground text-center lg:text-right">
-              Verified Indonesian & international franchise disclosure documents (FDD)
+              {t("verifiedNote")}
             </div>
           </div>
         </div>
@@ -113,10 +115,10 @@ export function FranchiseLicensingView({ event, locale = "en", onSelectTier }: A
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-amber-500 uppercase tracking-wider mb-1">
             <TrendingUp className="h-4 w-4" />
-            <span>Investment Concepts</span>
+            <span>{t("conceptsBadge")}</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-            Featured Franchise Brands & Business Opportunities
+            {t("conceptsTitle")}
           </h3>
         </div>
 
@@ -136,15 +138,15 @@ export function FranchiseLicensingView({ event, locale = "en", onSelectTier }: A
               <CardContent className="space-y-4 pt-0">
                 <div className="p-3 rounded-lg bg-muted/40 border border-border/60 text-xs font-mono text-foreground space-y-1.5">
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Initial Capital:</span>
+                    <span className="text-muted-foreground">{t("initialCapital")}</span>
                     <span className="font-semibold text-foreground">{brand.initialCapital}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Estimated Payback:</span>
+                    <span className="text-muted-foreground">{t("payback")}</span>
                     <span className="font-semibold text-emerald-500">{brand.payback}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Royalty Rate:</span>
+                    <span className="text-muted-foreground">{t("royalty")}</span>
                     <span className="font-semibold text-foreground">{brand.royalty}</span>
                   </div>
                 </div>
@@ -167,7 +169,7 @@ export function FranchiseLicensingView({ event, locale = "en", onSelectTier }: A
                   className="w-full border-amber-500/30 hover:bg-amber-500/10 text-foreground font-semibold min-h-[40px]"
                 >
                   <Handshake className="h-3.5 w-3.5 mr-1.5 text-amber-500" />
-                  Request Franchise Discovery
+                  {t("discoveryCta")}
                 </Button>
               </CardContent>
             </Card>
@@ -179,14 +181,14 @@ export function FranchiseLicensingView({ event, locale = "en", onSelectTier }: A
       <Drawer
         open={calcDrawerOpen}
         onClose={() => setCalcDrawerOpen(false)}
-        title="Franchise ROI & Feasibility Modeler"
-        description="Estimate break-even timeline, gross profit margins, and territory exclusivity availability."
+        title={t("drawerTitle")}
+        description={t("drawerDescription")}
       >
         <div className="p-6 space-y-6">
           <div className="space-y-4">
             <div>
               <label className="text-xs font-semibold text-foreground block mb-1.5">
-                Target Franchise Concept
+                {t("conceptLabel")}
               </label>
               <input
                 type="text"
@@ -198,7 +200,7 @@ export function FranchiseLicensingView({ event, locale = "en", onSelectTier }: A
 
             <div>
               <label className="text-xs font-semibold text-foreground block mb-1.5">
-                Target Investment Allocation (IDR / Currency Equiv)
+                {t("budgetLabel")}
               </label>
               <input
                 type="text"
@@ -210,13 +212,13 @@ export function FranchiseLicensingView({ event, locale = "en", onSelectTier }: A
 
             <div>
               <label className="text-xs font-semibold text-foreground block mb-1.5">
-                Intended Store Format
+                {t("formatLabel")}
               </label>
               <select className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-background text-foreground font-medium">
-                <option>Compact Kiosk / Express Counter (15 - 30 sqm)</option>
-                <option>Standard High-Street Store / Ruko (60 - 120 sqm)</option>
-                <option>Drive-Thru Flagship Standalone (150+ sqm)</option>
-                <option>Master Regional Multi-Unit Territory Franchise</option>
+                <option>{t("formatOption1")}</option>
+                <option>{t("formatOption2")}</option>
+                <option>{t("formatOption3")}</option>
+                <option>{t("formatOption4")}</option>
               </select>
             </div>
 
@@ -224,40 +226,40 @@ export function FranchiseLicensingView({ event, locale = "en", onSelectTier }: A
               onClick={() => setCalcDone(true)}
               className="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold"
             >
-              Simulate Financial Returns
+              {t("simulateCta")}
             </Button>
           </div>
 
           {calcDone && (
             <div className="p-4 rounded-xl border border-amber-500/30 bg-amber-950/10 space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold text-amber-500">FEASIBILITY REPORT: STRONG CANDIDATE</span>
+                <span className="text-xs font-mono font-bold text-amber-500">{t("reportTitle")}</span>
                 <Badge variant="outline" className="border-amber-500/30 text-amber-500 bg-amber-500/10 text-xs">
-                  AFI Verified
+                  {t("afiVerified")}
                 </Badge>
               </div>
 
               <div className="grid grid-cols-2 gap-3 text-xs">
                 <div className="p-2.5 rounded-lg bg-card border border-border/60">
-                  <span className="text-muted-foreground block text-[11px]">Break-Even Timeline</span>
-                  <span className="font-semibold text-emerald-500">13.2 Months</span>
+                  <span className="text-muted-foreground block text-[11px]">{t("breakEvenLabel")}</span>
+                  <span className="font-semibold text-emerald-500">{t("breakEvenValue")}</span>
                 </div>
                 <div className="p-2.5 rounded-lg bg-card border border-border/60">
-                  <span className="text-muted-foreground block text-[11px]">Projected Gross Margin</span>
+                  <span className="text-muted-foreground block text-[11px]">{t("marginLabel")}</span>
                   <span className="font-semibold text-foreground">62.5%</span>
                 </div>
                 <div className="p-2.5 rounded-lg bg-card border border-border/60">
-                  <span className="text-muted-foreground block text-[11px]">Est. Monthly Net Cashflow</span>
-                  <span className="font-semibold text-foreground">Rp 38.5M - 45M / mo</span>
+                  <span className="text-muted-foreground block text-[11px]">{t("cashflowLabel")}</span>
+                  <span className="font-semibold text-foreground">{t("cashflowValue")}</span>
                 </div>
                 <div className="p-2.5 rounded-lg bg-card border border-border/60">
-                  <span className="text-muted-foreground block text-[11px]">Territory Status</span>
-                  <span className="font-semibold text-emerald-500">Exclusivity Available</span>
+                  <span className="text-muted-foreground block text-[11px]">{t("territoryLabel")}</span>
+                  <span className="font-semibold text-emerald-500">{t("territoryValue")}</span>
                 </div>
               </div>
 
               <p className="text-xs text-muted-foreground">
-                Visit Franchise Discovery Room 102 to meet the Franchisor Chief Development Officer for territory locking.
+                {t("visitNote")}
               </p>
             </div>
           )}
