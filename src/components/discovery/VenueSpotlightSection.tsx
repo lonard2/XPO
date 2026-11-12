@@ -106,7 +106,7 @@ export function VenueSpotlightSection({
       </div>
 
       {/* Region Filter Switcher Pills */}
-      <div className="flex flex-wrap items-center gap-2" role="tablist" aria-label="Filter venues by region">
+      <div className="flex flex-wrap items-center gap-2" role="tablist" aria-label={tVen('filterByRegionAria') || 'Filter venues by region'}>
         {regionTabs.map((tab) => (
           <button
             key={tab.id}
@@ -139,8 +139,8 @@ export function VenueSpotlightSection({
       {filteredVenues.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-border p-8 text-center space-y-3">
           <Building2 className="h-8 w-8 text-muted-foreground mx-auto" />
-          <h3 className="text-sm font-bold text-foreground">No venues listed for this region yet</h3>
-          <p className="text-xs text-muted-foreground">Select another region or view all international venues.</p>
+          <h3 className="text-sm font-bold text-foreground">{tVen('noVenuesRegion')}</h3>
+          <p className="text-xs text-muted-foreground">{tVen('selectAnotherRegion')}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 stagger-children">

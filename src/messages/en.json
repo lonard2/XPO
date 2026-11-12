@@ -640,7 +640,22 @@
     "spacesMetric": "Spaces",
     "allSpaces": "All spaces",
     "noSpacesMatch": "No spaces match this wing and kind.",
-    "hub": "{region} Hub"
+    "hub": "{region} Hub",
+    "campusWingsAria": "Campus architectural wings",
+    "allWings": "All Wings ({count})",
+    "spaceKindsAria": "Space kinds",
+    "paxCount": "{count} pax",
+    "ceilingValue": "{value} from floor to lighting trusses.",
+    "floorLoadValue": "{value} for heavy machinery and modular booths.",
+    "utilityTrenches": "Utility Trenches & Power ({typical})",
+    "freightDock": "Freight & Loading Dock",
+    "technicalFilter": "Technical Filter:",
+    "noConventionCenters": "No convention centers in {region} match \"{query}\".",
+    "filterByRegionAria": "Filter venues by region",
+    "noVenuesRegion": "No venues listed for this region yet",
+    "selectAnotherRegion": "Select another region or view all international venues.",
+    "scrollLeftAria": "Scroll venues left",
+    "scrollRightAria": "Scroll venues right"
   },
   "calendar": {
     "title": "Interactive Event Calendar",

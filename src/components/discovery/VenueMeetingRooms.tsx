@@ -118,7 +118,7 @@ export function VenueMeetingRooms({ rooms, title, className }: VenueMeetingRooms
                   <div className="flex flex-col items-end gap-1 shrink-0 text-xs">
                     {room.capacity != null && (
                       <span className="font-mono font-semibold text-foreground tabular-nums">
-                        {room.capacity.toLocaleString()} pax
+                        {tVen('paxCount', { count: room.capacity.toLocaleString() })}
                       </span>
                     )}
                     {room.floorAreaSqm != null && (

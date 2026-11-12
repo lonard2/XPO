@@ -640,7 +640,22 @@
     "spacesMetric": "espacios",
     "allSpaces": "Todos los espacios",
     "noSpacesMatch": "Ningún espacio coincide con esta ala y tipo.",
-    "hub": "Hub {region}"
+    "hub": "Hub {region}",
+    "campusWingsAria": "Alas arquitectónicas del recinto",
+    "allWings": "Todas las alas ({count})",
+    "spaceKindsAria": "Tipos de espacio",
+    "paxCount": "{count} pers.",
+    "ceilingValue": "{value} desde el suelo hasta las cerchas de iluminación.",
+    "floorLoadValue": "{value} para maquinaria pesada y stands modulares.",
+    "utilityTrenches": "Zanjas de servicios y energía ({typical})",
+    "freightDock": "Zona de carga y descarga",
+    "technicalFilter": "Filtro técnico:",
+    "noConventionCenters": "No hay centros de convenciones en {region} que coincidan con \"{query}\".",
+    "filterByRegionAria": "Filtrar recintos por región",
+    "noVenuesRegion": "Aún no hay recintos listados para esta región",
+    "selectAnotherRegion": "Elija otra región o vea todos los recintos internacionales.",
+    "scrollLeftAria": "Desplazar recintos a la izquierda",
+    "scrollRightAria": "Desplazar recintos a la derecha"
   },
   "calendar": {
     "title": "Calendario Interactivo de Eventos",

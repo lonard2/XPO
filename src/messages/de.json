@@ -640,7 +640,22 @@
     "spacesMetric": "Bereiche",
     "allSpaces": "Alle Bereiche",
     "noSpacesMatch": "Keine Bereiche passen zu diesem Flügel und Typ.",
-    "hub": "{region}-Hub"
+    "hub": "{region}-Hub",
+    "campusWingsAria": "Architektonische Campus-Bereiche",
+    "allWings": "Alle Bereiche ({count})",
+    "spaceKindsAria": "Raumarten",
+    "paxCount": "{count} Pers.",
+    "ceilingValue": "{value} vom Boden bis zu den Lichtträgern.",
+    "floorLoadValue": "{value} für Schwermaschinen und modulare Stände.",
+    "utilityTrenches": "Versorgungskanäle & Strom ({typical})",
+    "freightDock": "Fracht- und Ladebereich",
+    "technicalFilter": "Technischer Filter:",
+    "noConventionCenters": "Keine Kongresszentren in {region} passen zu \"{query}\".",
+    "filterByRegionAria": "Veranstaltungsorte nach Region filtern",
+    "noVenuesRegion": "Für diese Region sind noch keine Orte gelistet",
+    "selectAnotherRegion": "Wählen Sie eine andere Region oder alle internationalen Orte.",
+    "scrollLeftAria": "Orte nach links scrollen",
+    "scrollRightAria": "Orte nach rechts scrollen"
   },
   "calendar": {
     "title": "Interaktiver Eventkalender",

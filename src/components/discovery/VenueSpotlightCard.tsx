@@ -80,7 +80,7 @@ export function VenueSpotlightCard({
         <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 z-10">
           <Badge variant="default" className="text-xs uppercase font-bold tracking-wider shadow-sm">
             <Globe className="h-3 w-3 mr-1 inline" />
-            {regionCode} Hub
+            {tVen('hub', { region: regionCode })}
           </Badge>
           <Badge variant="outline" className="text-xs font-mono bg-background/90 backdrop-blur-xs">
             {venue.city}

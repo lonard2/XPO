@@ -396,7 +396,7 @@ export function VenueDirectoryExplorer({
         {/* Technical MICE Spec Filter Chips (P2 Enhancement for Organizers) */}
         <div className="flex flex-wrap items-center gap-1.5 pt-3 border-t border-border/40">
           <span className="text-xs font-semibold text-muted-foreground whitespace-nowrap mr-1">
-            Technical Filter:
+            {tVen('technicalFilter')}
           </span>
           {[
             { id: 'all', label: 'All Complex Types' },
@@ -471,9 +471,10 @@ export function VenueDirectoryExplorer({
             <h3 className="text-base font-bold text-foreground">{tVen('noVenuesFound') || 'No Venues Found'}</h3>
             <p className="text-xs text-muted-foreground max-w-md mx-auto leading-relaxed">
               {searchQuery ? (
-                <>
-                  No convention centers in <strong className="text-foreground">{regionDisplayName}</strong> match &ldquo;{searchQuery}&rdquo;.
-                </>
+                tVen('noConventionCenters', {
+                  region: regionDisplayName,
+                  query: searchQuery,
+                })
               ) : (
                 (tVen('noVenuesMatch') || 'No convention centers match your search criteria in this edition.')
               )}

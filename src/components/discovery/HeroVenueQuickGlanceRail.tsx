@@ -145,7 +145,7 @@ export function HeroVenueQuickGlanceRail({
             className="h-9 w-9 sm:h-8 sm:w-8 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 rounded-lg text-muted-foreground hover:text-foreground disabled:opacity-30 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
             disabled={!canScrollLeft}
             onClick={() => scroll('left')}
-            aria-label="Scroll venues left"
+            aria-label={tVen('scrollLeftAria') || 'Scroll venues left'}
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
@@ -155,7 +155,7 @@ export function HeroVenueQuickGlanceRail({
             className="h-9 w-9 sm:h-8 sm:w-8 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 rounded-lg text-muted-foreground hover:text-foreground disabled:opacity-30 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
             disabled={!canScrollRight}
             onClick={() => scroll('right')}
-            aria-label="Scroll venues right"
+            aria-label={tVen('scrollRightAria') || 'Scroll venues right'}
           >
             <ChevronRight className="h-4 w-4" />
           </Button>
@@ -201,7 +201,7 @@ export function HeroVenueQuickGlanceRail({
 
                 {hallCount > 0 && (
                   <span className="text-xs font-semibold text-muted-foreground bg-muted/80 px-2 py-0.5 rounded shrink-0 whitespace-nowrap tabular-nums">
-                    {hallCount} Halls
+                    {tVen('hallsCount', { count: hallCount })}
                   </span>
                 )}
               </div>

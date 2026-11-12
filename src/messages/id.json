@@ -640,7 +640,22 @@
     "spacesMetric": "Ruang",
     "allSpaces": "Semua ruang",
     "noSpacesMatch": "Tidak ada ruang yang cocok dengan sayap dan jenis ini.",
-    "hub": "Hub {region}"
+    "hub": "Hub {region}",
+    "campusWingsAria": "Sayap arsitektur kampus",
+    "allWings": "Semua Sayap ({count})",
+    "spaceKindsAria": "Jenis ruang",
+    "paxCount": "{count} pax",
+    "ceilingValue": "{value} dari lantai ke rangka lampu.",
+    "floorLoadValue": "{value} untuk mesin berat dan booth modular.",
+    "utilityTrenches": "Parit Utilitas & Daya ({typical})",
+    "freightDock": "Dermaga Kargo & Bongkar Muat",
+    "technicalFilter": "Filter Teknis:",
+    "noConventionCenters": "Tidak ada pusat konvensi di {region} yang cocok dengan \"{query}\".",
+    "filterByRegionAria": "Filter venue berdasarkan wilayah",
+    "noVenuesRegion": "Belum ada venue terdaftar untuk wilayah ini",
+    "selectAnotherRegion": "Pilih wilayah lain atau lihat semua venue internasional.",
+    "scrollLeftAria": "Geser venue ke kiri",
+    "scrollRightAria": "Geser venue ke kanan"
   },
   "calendar": {
     "title": "Kalender Acara Interaktif",

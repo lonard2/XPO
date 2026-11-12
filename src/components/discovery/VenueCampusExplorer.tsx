@@ -182,7 +182,7 @@ export function VenueCampusExplorer({
         {/* Wing Filter Tabs */}
         {activeWingKeys.length > 1 && (
           <div
-            aria-label="Campus architectural wings"
+            aria-label={tVen('campusWingsAria') || 'Campus architectural wings'}
             className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none"
           >
             <button
@@ -199,7 +199,7 @@ export function VenueCampusExplorer({
                   : 'border-border/80 bg-muted/30 text-muted-foreground hover:bg-muted hover:text-foreground'
               )}
             >
-              All Wings ({halls.length})
+              {tVen('allWings', { count: halls.length })}
             </button>
             {activeWingKeys.map((wingName) => (
               <button
@@ -228,7 +228,7 @@ export function VenueCampusExplorer({
 
         {activeKindKeys.length > 1 && (
           <div
-            aria-label="Space kinds"
+            aria-label={tVen('spaceKindsAria') || 'Space kinds'}
             className="flex flex-wrap items-center gap-1.5"
           >
             <button
@@ -331,7 +331,7 @@ export function VenueCampusExplorer({
 
                       {hall.capacity && (
                         <Badge variant="outline" className="text-xs font-mono shrink-0">
-                          {hall.capacity.toLocaleString()} Pax
+                          {tVen('paxCount', { count: hall.capacity.toLocaleString() })}
                         </Badge>
                       )}
                     </div>
@@ -426,7 +426,7 @@ export function VenueCampusExplorer({
                     <Maximize2 className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                     <div>
                       <strong className="text-foreground block">{tVen('ceilingLabel')} ({ceilingFor(selectedHall).tag})</strong>
-                      <span>{ceilingFor(selectedHall).value} from floor to lighting trusses.</span>
+                      <span>{tVen('ceilingValue', { value: ceilingFor(selectedHall).value })}</span>
                     </div>
                   </div>
 
@@ -434,14 +434,14 @@ export function VenueCampusExplorer({
                     <Shield className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                     <div>
                       <strong className="text-foreground block">{tVen('floorLoadLabel')} ({loadFor(selectedHall).tag})</strong>
-                      <span>{loadFor(selectedHall).value} for heavy machinery and modular booths.</span>
+                      <span>{tVen('floorLoadValue', { value: loadFor(selectedHall).value })}</span>
                     </div>
                   </div>
 
                   <div className="flex items-start gap-2 rounded-lg border border-border/60 p-2.5 bg-muted/20">
                     <Zap className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                     <div>
-                      <strong className="text-foreground block">Utility Trenches & Power ({tVen('specsTypical')})</strong>
+                      <strong className="text-foreground block">{tVen('utilityTrenches', { typical: tVen('specsTypical') })}</strong>
                       <span>{specs.utilities}</span>
                     </div>
                   </div>
@@ -449,7 +449,7 @@ export function VenueCampusExplorer({
                   <div className="flex items-start gap-2 rounded-lg border border-border/60 p-2.5 bg-muted/20">
                     <Truck className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                     <div>
-                      <strong className="text-foreground block">Freight & Loading Dock</strong>
+                      <strong className="text-foreground block">{tVen('freightDock')}</strong>
                       <span>{tVen('specsFreightVaries')}</span>
                     </div>
                   </div>

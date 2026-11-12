@@ -49,7 +49,12 @@
     "(JIExpo, ICE, JICC)",
     "(Tokyo Big Sight, Makuhari)",
     "(MBS, Messe Frankfurt)",
-    "© {year} XPO MICE Digital Ecosystem."
+    "© {year} XPO MICE Digital Ecosystem.",
+    "Google Maps",
+    "Apple Maps",
+    "Waze",
+    "(ID)",
+    "(JP)"
   ],
   "patterns": [
     "^https?://",
