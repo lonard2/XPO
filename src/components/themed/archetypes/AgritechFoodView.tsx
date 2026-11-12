@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import {
   Sprout,
   ScanLine,
@@ -23,6 +24,7 @@ import { Drawer } from "@/components/ui/Drawer";
 import { type ArchetypeViewProps } from "./IndustrialB2BView";
 
 export function AgritechFoodView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
+  const t = useTranslations("archetypeViews.AGRITECH_FOOD");
   const [traceDrawerOpen, setTraceDrawerOpen] = React.useState(false);
   const [batchCode, setBatchCode] = React.useState("LOT-ORGANIC-2026-904");
   const [traceResult, setTraceResult] = React.useState(false);
@@ -69,14 +71,14 @@ export function AgritechFoodView({ event, locale = "en", onSelectTier }: Archety
                 <Sprout className="h-4 w-4" />
               </span>
               <span className="text-xs font-bold uppercase tracking-wider text-green-500">
-                Agriculture, Agritech & Food Processing
+                {t("heroBadge")}
               </span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-              Precision Farming, Cold-Chain Logistics & Culinary Innovation
+              {t("heroTitle")}
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-              Discover autonomous agricultural robotics, verifiable farm-to-table batch traceability, smart soil analytics, and global commodity export corridors.
+              {t("heroDescription")}
             </p>
           </div>
 
@@ -90,10 +92,10 @@ export function AgritechFoodView({ event, locale = "en", onSelectTier }: Archety
               className="bg-green-600 hover:bg-green-700 text-white font-semibold shadow-md min-h-[44px]"
             >
               <ScanLine className="h-4 w-4 mr-2" />
-              Inspect Batch Traceability
+              {t("inspectCta")}
             </Button>
             <div className="text-xs text-muted-foreground text-center lg:text-right">
-              Verified organic & food safety credentials
+              {t("verifiedNote")}
             </div>
           </div>
         </div>
@@ -104,10 +106,10 @@ export function AgritechFoodView({ event, locale = "en", onSelectTier }: Archety
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-green-500 uppercase tracking-wider mb-1">
             <ThermometerSnowflake className="h-4 w-4" />
-            <span>Smart Agritech Demos</span>
+            <span>{t("demosBadge")}</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-            Featured Agriculture Technology & Cold-Chain Systems
+            {t("demosTitle")}
           </h3>
         </div>
 
@@ -126,7 +128,7 @@ export function AgritechFoodView({ event, locale = "en", onSelectTier }: Archety
               <CardContent className="space-y-4 pt-0">
                 <div className="p-3 rounded-lg bg-muted/40 border border-border/60 text-xs font-mono text-foreground space-y-1">
                   <div className="font-semibold text-green-500 flex items-center gap-1">
-                    <Sprout className="h-3 w-3" /> Technical Architecture
+                    <Sprout className="h-3 w-3" /> {t("techArchitecture")}
                   </div>
                   <div>{agri.tech}</div>
                 </div>
@@ -152,7 +154,7 @@ export function AgritechFoodView({ event, locale = "en", onSelectTier }: Archety
                   className="w-full border-green-500/30 hover:bg-green-500/10 text-foreground font-semibold min-h-[40px]"
                 >
                   <ScanLine className="h-3.5 w-3.5 mr-1.5 text-green-500" />
-                  View Harvest Verification
+                  {t("viewHarvestCta")}
                 </Button>
               </CardContent>
             </Card>
@@ -164,13 +166,13 @@ export function AgritechFoodView({ event, locale = "en", onSelectTier }: Archety
       <Drawer
         open={traceDrawerOpen}
         onClose={() => setTraceDrawerOpen(false)}
-        title="Farm-to-Table Batch Traceability Inspector"
-        description="Verify origin harvest altitude, cold-chain temperature telemetry, and laboratory phytosanitary certificates."
+        title={t("drawerTitle")}
+        description={t("drawerDescription")}
       >
         <div className="p-6 space-y-6">
           <div className="space-y-3">
             <label className="text-xs font-semibold text-foreground block">
-              Enter or Select Agricultural Batch Lot Code
+              {t("batchLabel")}
             </label>
             <div className="flex gap-2">
               <input
@@ -183,7 +185,7 @@ export function AgritechFoodView({ event, locale = "en", onSelectTier }: Archety
                 onClick={() => setTraceResult(true)}
                 className="bg-green-600 hover:bg-green-700 text-white font-semibold"
               >
-                Verify Batch
+                {t("verifyCta")}
               </Button>
             </div>
           </div>
@@ -191,34 +193,34 @@ export function AgritechFoodView({ event, locale = "en", onSelectTier }: Archety
           {traceResult ? (
             <div className="p-4 rounded-xl border border-green-500/30 bg-green-950/10 space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold text-green-500">LOT STATUS: VERIFIED AUTHENTIC</span>
+                <span className="text-xs font-mono font-bold text-green-500">{t("lotStatus")}</span>
                 <Badge variant="outline" className="border-green-500/30 text-green-500 bg-green-500/10 text-xs">
-                  Phytosanitary Passed
+                  {t("phytoPassed")}
                 </Badge>
               </div>
 
               <div className="grid grid-cols-2 gap-3 text-xs">
                 <div className="p-2.5 rounded-lg bg-card border border-border/60">
-                  <span className="text-muted-foreground block text-[11px]">Harvest Origin</span>
-                  <span className="font-semibold text-foreground">Gayo Highlands, Aceh (1,450m ASL)</span>
+                  <span className="text-muted-foreground block text-[11px]">{t("harvestLabel")}</span>
+                  <span className="font-semibold text-foreground">{t("harvestValue")}</span>
                 </div>
                 <div className="p-2.5 rounded-lg bg-card border border-border/60">
-                  <span className="text-muted-foreground block text-[11px]">Cold Chain Transit</span>
-                  <span className="font-semibold text-foreground">Continuous 3.8°C Monitored</span>
+                  <span className="text-muted-foreground block text-[11px]">{t("coldChainLabel")}</span>
+                  <span className="font-semibold text-foreground">{t("coldChainValue")}</span>
                 </div>
                 <div className="p-2.5 rounded-lg bg-card border border-border/60">
-                  <span className="text-muted-foreground block text-[11px]">Residue Screen</span>
-                  <span className="font-semibold text-foreground">0.00 ppm Synthetic Pesticides</span>
+                  <span className="text-muted-foreground block text-[11px]">{t("residueLabel")}</span>
+                  <span className="font-semibold text-foreground">{t("residueValue")}</span>
                 </div>
                 <div className="p-2.5 rounded-lg bg-card border border-border/60">
-                  <span className="text-muted-foreground block text-[11px]">Export Certificate</span>
-                  <span className="font-semibold text-foreground">Indonesian Agricultural Quarantine</span>
+                  <span className="text-muted-foreground block text-[11px]">{t("exportLabel")}</span>
+                  <span className="font-semibold text-foreground">{t("exportValue")}</span>
                 </div>
               </div>
             </div>
           ) : (
             <div className="p-4 rounded-xl border border-dashed border-border text-center text-xs text-muted-foreground">
-              Click &quot;Verify Batch&quot; to inspect digital ledger records for this agricultural shipment.
+              {t("emptyHint")}
             </div>
           )}
         </div>

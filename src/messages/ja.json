@@ -1942,6 +1942,32 @@
       "stipendLabel": "研究手当",
       "stipendValue": "月額$1,800相当",
       "loungeNote": "公式成績証明書を持ってHall 1の学術入学ラウンジへお越しください。その場で承認を受けられます。"
+    },
+    "AGRITECH_FOOD": {
+      "heroBadge": "農業・アグリテック・食品加工",
+      "heroTitle": "精密農業、コールドチェーン物流、食のイノベーション",
+      "heroDescription": "自律型農業ロボティクス、検証可能なファーム・トゥ・テーブルのバッチ追跡、スマート土壌分析、世界のコモディティ輸出回廊を発見できます。",
+      "inspectCta": "バッチ追跡を検査",
+      "verifiedNote": "認証済みの有機・食品安全資格",
+      "demosBadge": "スマートアグリテックデモ",
+      "demosTitle": "注目の農業技術とコールドチェーンシステム",
+      "techArchitecture": "技術アーキテクチャ",
+      "viewHarvestCta": "収穫検証を見る",
+      "drawerTitle": "ファーム・トゥ・テーブル・バッチ追跡インスペクター",
+      "drawerDescription": "原産地の収穫標高、コールドチェーンの温度テレメトリー、研究所の植物検疫証明書を検証します。",
+      "batchLabel": "農産物バッチロットコードを入力または選択",
+      "verifyCta": "バッチを検証",
+      "lotStatus": "ロット状態: 正規品認証済み",
+      "phytoPassed": "植物検疫合格",
+      "harvestLabel": "収穫原産地",
+      "harvestValue": "アチェ州ガヨ高地（標高1,450m）",
+      "coldChainLabel": "コールドチェーン輸送",
+      "coldChainValue": "3.8°Cで継続監視",
+      "residueLabel": "残留検査",
+      "residueValue": "合成農薬 0.00 ppm",
+      "exportLabel": "輸出証明書",
+      "exportValue": "インドネシア農業検疫",
+      "emptyHint": "「バッチを検証」をクリックして、この農産物出荷のデジタル台帳記録を確認してください。"
     }
   }
 }

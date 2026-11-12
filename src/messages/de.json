@@ -1942,6 +1942,32 @@
       "stipendLabel": "Forschungsstipendium",
       "stipendValue": "Entspricht 1.800 $/Monat",
       "loungeNote": "Besuchen Sie die akademische Zulassungslounge in Halle 1 mit Ihren offiziellen Zeugnissen für die sofortige Vor-Ort-Bestätigung."
+    },
+    "AGRITECH_FOOD": {
+      "heroBadge": "Landwirtschaft, Agritech & Lebensmittelverarbeitung",
+      "heroTitle": "Präzisionslandwirtschaft, Kühlkettenlogistik & kulinarische Innovation",
+      "heroDescription": "Autonome Landwirtschaftsrobotik, nachweisbare Farm-to-Table-Chargenrückverfolgung, intelligente Bodenanalytik und globale Rohstoff-Exportkorridore entdecken.",
+      "inspectCta": "Chargenrückverfolgung prüfen",
+      "verifiedNote": "Verifizierte Bio- und Lebensmittelsicherheitsnachweise",
+      "demosBadge": "Smart-Agritech-Demos",
+      "demosTitle": "Ausgewählte Agrartechnik & Kühlkettensysteme",
+      "techArchitecture": "Technische Architektur",
+      "viewHarvestCta": "Ernteverifizierung ansehen",
+      "drawerTitle": "Farm-to-Table-Chargenprüfer",
+      "drawerDescription": "Prüfen Sie Ernteherkunft, Höhenlage, Kühlketten-Temperaturtelemetrie und phytosanitäre Laborzertifikate.",
+      "batchLabel": "Landwirtschaftlichen Chargencode eingeben oder auswählen",
+      "verifyCta": "Charge verifizieren",
+      "lotStatus": "CHARGENSTATUS: ECHTHEIT VERIFIZIERT",
+      "phytoPassed": "Phytosanitär bestanden",
+      "harvestLabel": "Ernteherkunft",
+      "harvestValue": "Gayo-Hochland, Aceh (1.450 m ü. M.)",
+      "coldChainLabel": "Kühlkettentransit",
+      "coldChainValue": "Kontinuierlich bei 3,8 °C überwacht",
+      "residueLabel": "Rückstandsprüfung",
+      "residueValue": "0,00 ppm synthetische Pestizide",
+      "exportLabel": "Exportzertifikat",
+      "exportValue": "Indonesische Agrarquarantäne",
+      "emptyHint": "Klicken Sie auf \"Charge verifizieren\", um die digitalen Ledger-Datensätze dieser Agrarlieferung zu prüfen."
     }
   }
 }

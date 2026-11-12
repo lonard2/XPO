@@ -1942,6 +1942,32 @@
       "stipendLabel": "研究津贴",
       "stipendValue": "相当于每月 1,800 美元",
       "loungeNote": "请携带官方成绩单前往 1 号馆学术招生休息室，现场即可获得认证。"
+    },
+    "AGRITECH_FOOD": {
+      "heroBadge": "农业、农业科技与食品加工",
+      "heroTitle": "精准农业、冷链物流与烹饪创新",
+      "heroDescription": "探索自主农业机器人、可验证的从农场到餐桌批次追溯、智能土壤分析与全球大宗商品出口通道。",
+      "inspectCta": "检查批次追溯",
+      "verifiedNote": "已认证的有机与食品安全资质",
+      "demosBadge": "智能农业科技演示",
+      "demosTitle": "精选农业技术与冷链系统",
+      "techArchitecture": "技术架构",
+      "viewHarvestCta": "查看收获验证",
+      "drawerTitle": "从农场到餐桌批次追溯检查器",
+      "drawerDescription": "核验原产地收获海拔、冷链温度遥测与实验室植物检疫证书。",
+      "batchLabel": "输入或选择农产品批次代码",
+      "verifyCta": "验证批次",
+      "lotStatus": "批次状态：正品已验证",
+      "phytoPassed": "植物检疫通过",
+      "harvestLabel": "收获原产地",
+      "harvestValue": "亚齐加约高地（海拔 1,450 米）",
+      "coldChainLabel": "冷链运输",
+      "coldChainValue": "持续监控 3.8°C",
+      "residueLabel": "残留检测",
+      "residueValue": "合成农药 0.00 ppm",
+      "exportLabel": "出口证书",
+      "exportValue": "印度尼西亚农业检疫",
+      "emptyHint": "点击“验证批次”查看该农产品货运的数字账本记录。"
     }
   }
 }

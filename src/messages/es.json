@@ -1942,6 +1942,32 @@
       "stipendLabel": "Estipendio de Investigación",
       "stipendValue": "Equivalente a $1,800/mes",
       "loungeNote": "Visite el Lounge de Admisiones Académicas en el Pabellón 1 con sus expedientes oficiales para la validación inmediata en el lugar."
+    },
+    "AGRITECH_FOOD": {
+      "heroBadge": "Agricultura, Agritech y Procesamiento de Alimentos",
+      "heroTitle": "Agricultura de Precisión, Logística de Cadena de Frío e Innovación Culinaria",
+      "heroDescription": "Descubra robótica agrícola autónoma, trazabilidad de lotes de la granja a la mesa, analítica inteligente de suelos y corredores globales de exportación de commodities.",
+      "inspectCta": "Inspeccionar Trazabilidad de Lote",
+      "verifiedNote": "Credenciales orgánicas y de seguridad alimentaria verificadas",
+      "demosBadge": "Demos de Agritech Inteligente",
+      "demosTitle": "Tecnología Agrícola y Sistemas de Cadena de Frío Destacados",
+      "techArchitecture": "Arquitectura Técnica",
+      "viewHarvestCta": "Ver Verificación de Cosecha",
+      "drawerTitle": "Inspector de Trazabilidad de Lotes de la Granja a la Mesa",
+      "drawerDescription": "Verifique la altitud de cosecha de origen, la telemetría de temperatura de la cadena de frío y los certificados fitosanitarios de laboratorio.",
+      "batchLabel": "Introduzca o seleccione el código de lote agrícola",
+      "verifyCta": "Verificar Lote",
+      "lotStatus": "ESTADO DEL LOTE: AUTENTICIDAD VERIFICADA",
+      "phytoPassed": "Fitosanitario Aprobado",
+      "harvestLabel": "Origen de Cosecha",
+      "harvestValue": "Tierras Altas de Gayo, Aceh (1.450 m s. n. m.)",
+      "coldChainLabel": "Tránsito en Cadena de Frío",
+      "coldChainValue": "Monitoreado continuamente a 3,8 °C",
+      "residueLabel": "Análisis de Residuos",
+      "residueValue": "0,00 ppm de pesticidas sintéticos",
+      "exportLabel": "Certificado de Exportación",
+      "exportValue": "Cuarentena Agrícola de Indonesia",
+      "emptyHint": "Haga clic en \"Verificar Lote\" para inspeccionar los registros del libro digital de este envío agrícola."
     }
   }
 }

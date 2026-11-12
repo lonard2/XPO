@@ -1942,6 +1942,32 @@
       "stipendLabel": "Research Stipend",
       "stipendValue": "Equivalent to $1,800/mo",
       "loungeNote": "Visit the Academic Admissions Lounge at Hall 1 with your official transcripts for immediate on-site endorsement."
+    },
+    "AGRITECH_FOOD": {
+      "heroBadge": "Agriculture, Agritech & Food Processing",
+      "heroTitle": "Precision Farming, Cold-Chain Logistics & Culinary Innovation",
+      "heroDescription": "Discover autonomous agricultural robotics, verifiable farm-to-table batch traceability, smart soil analytics, and global commodity export corridors.",
+      "inspectCta": "Inspect Batch Traceability",
+      "verifiedNote": "Verified organic & food safety credentials",
+      "demosBadge": "Smart Agritech Demos",
+      "demosTitle": "Featured Agriculture Technology & Cold-Chain Systems",
+      "techArchitecture": "Technical Architecture",
+      "viewHarvestCta": "View Harvest Verification",
+      "drawerTitle": "Farm-to-Table Batch Traceability Inspector",
+      "drawerDescription": "Verify origin harvest altitude, cold-chain temperature telemetry, and laboratory phytosanitary certificates.",
+      "batchLabel": "Enter or Select Agricultural Batch Lot Code",
+      "verifyCta": "Verify Batch",
+      "lotStatus": "LOT STATUS: VERIFIED AUTHENTIC",
+      "phytoPassed": "Phytosanitary Passed",
+      "harvestLabel": "Harvest Origin",
+      "harvestValue": "Gayo Highlands, Aceh (1,450m ASL)",
+      "coldChainLabel": "Cold Chain Transit",
+      "coldChainValue": "Continuous 3.8°C Monitored",
+      "residueLabel": "Residue Screen",
+      "residueValue": "0.00 ppm Synthetic Pesticides",
+      "exportLabel": "Export Certificate",
+      "exportValue": "Indonesian Agricultural Quarantine",
+      "emptyHint": "Click \"Verify Batch\" to inspect digital ledger records for this agricultural shipment."
     }
   }
 }

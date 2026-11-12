@@ -1942,6 +1942,32 @@
       "stipendLabel": "Stipend Riset",
       "stipendValue": "Setara $1.800/bulan",
       "loungeNote": "Kunjungi Lounge Penerimaan Akademik di Hall 1 dengan transkrip resmi Anda untuk pengesahan langsung di lokasi."
+    },
+    "AGRITECH_FOOD": {
+      "heroBadge": "Pertanian, Agritech & Pengolahan Pangan",
+      "heroTitle": "Pertanian Presisi, Logistik Rantai Dingin & Inovasi Kuliner",
+      "heroDescription": "Temukan robotika pertanian otonom, ketertelusuran batch farm-to-table yang terverifikasi, analitik tanah pintar, dan koridor ekspor komoditas global.",
+      "inspectCta": "Periksa Ketertelusuran Batch",
+      "verifiedNote": "Kredensial organik & keamanan pangan terverifikasi",
+      "demosBadge": "Demo Agritech Pintar",
+      "demosTitle": "Teknologi Pertanian & Sistem Rantai Dingin Unggulan",
+      "techArchitecture": "Arsitektur Teknis",
+      "viewHarvestCta": "Lihat Verifikasi Panen",
+      "drawerTitle": "Inspektur Ketertelusuran Batch Farm-to-Table",
+      "drawerDescription": "Verifikasi ketinggian panen asal, telemetri suhu rantai dingin, dan sertifikat fitosanitari laboratorium.",
+      "batchLabel": "Masukkan atau Pilih Kode Lot Pertanian",
+      "verifyCta": "Verifikasi Batch",
+      "lotStatus": "STATUS LOT: TERVERIFIKASI ASLI",
+      "phytoPassed": "Lolos Fitosanitari",
+      "harvestLabel": "Asal Panen",
+      "harvestValue": "Dataran Tinggi Gayo, Aceh (1.450m dpl)",
+      "coldChainLabel": "Transit Rantai Dingin",
+      "coldChainValue": "Terpantau 3,8°C Secara Berkelanjutan",
+      "residueLabel": "Uji Residu",
+      "residueValue": "0,00 ppm Pestisida Sintetis",
+      "exportLabel": "Sertifikat Ekspor",
+      "exportValue": "Karantina Pertanian Indonesia",
+      "emptyHint": "Klik \"Verifikasi Batch\" untuk memeriksa catatan ledger digital pengiriman pertanian ini."
     }
   }
 }
