@@ -30,7 +30,11 @@ vi.mock("next-intl", () => {
         if (!obj) return undefined;
         return path.split(".").reduce((acc, part) => (acc ? acc[part] : undefined), obj);
       };
-      const nsMessages = namespace ? (enMessages as any)[namespace] || {} : enMessages;
+      const nsMessages = namespace
+        ? namespace
+            .split(".")
+            .reduce((acc: any, part) => (acc ? acc[part] : undefined), enMessages as any) || {}
+        : enMessages;
 
       const t = (key: string, values?: Record<string, any>) => {
         let val = getNested(nsMessages, key);

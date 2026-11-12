@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import {
   Compass,
   Headphones,
@@ -23,6 +24,8 @@ import { type ArchetypeViewProps } from "./IndustrialB2BView";
 import { parseShowcase, showcaseAgeDays, showcaseDateLabel, SHOWCASE_STALE_DAYS } from "@/lib/showcase";
 
 export function FaithPilgrimageCongressView({ event, locale = "en", onSelectTier, pageSize = "LARGE" }: ArchetypeViewProps) {
+  const t = useTranslations("archetypeViews.FAITH_PILGRIMAGE_CONGRESS");
+  const tEvents = useTranslations("events");
 
   // Organizer-authored showcase: channels render only with backing data.
   const showcase = React.useMemo(
@@ -41,20 +44,20 @@ export function FaithPilgrimageCongressView({ event, locale = "en", onSelectTier
                 <Compass className="h-4 w-4" />
               </span>
               <span className="text-xs font-bold uppercase tracking-wider text-emerald-500">
-                Faith, Pilgrimage & Community Congress
+                {t("heroBadge")}
               </span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-              Pilgrimage Services, Accredited Halal Standards & Plenary Assemblies
+              {t("heroTitle")}
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-              Verify licensed Hajj and Umrah travel operators, access simultaneous multi-language interpretation audio feeds for plenary congress addresses, and audit global Halal compliance standards.
+              {t("heroDescription")}
             </p>
           </div>
 
           <div className="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0">
             <div className="text-xs text-muted-foreground text-center lg:text-right">
-              Operator accreditation checks open with the organizer program.
+              {t("accreditationNote")}
             </div>
           </div>
         </div>
@@ -67,8 +70,8 @@ export function FaithPilgrimageCongressView({ event, locale = "en", onSelectTier
           <div className="flex items-center gap-2.5">
             <Headphones className="h-5 w-5 text-emerald-500" />
             <div>
-              <h3 className="text-base font-bold text-foreground">Congress Simultaneous Interpretation Channels</h3>
-              <p className="text-xs text-muted-foreground">Channel lineup published by the organizer before the congress</p>
+              <h3 className="text-base font-bold text-foreground">{t("channelsTitle")}</h3>
+              <p className="text-xs text-muted-foreground">{t("channelsDescription")}</p>
             </div>
           </div>
         </div>
@@ -90,8 +93,8 @@ export function FaithPilgrimageCongressView({ event, locale = "en", onSelectTier
           const stale = (showcaseAgeDays(showcase) || 0) > SHOWCASE_STALE_DAYS;
           return (
             <p className="text-[11px] text-muted-foreground mt-3">
-              Organizer content · updated {dateLabel}
-              {stale && " · may be outdated — verify with the organizer"}
+              {tEvents("showcaseUpdated", { date: dateLabel })}
+              {stale && ` · ${tEvents("showcaseStale")}`}
             </p>
           );
         })()}

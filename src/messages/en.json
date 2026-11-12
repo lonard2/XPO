@@ -1808,5 +1808,23 @@
     "staleAgendaLink": "Open event updates",
     "error": "Could not update the venue.",
     "loading": "Loading venues"
+  },
+  "archetypeViews": {
+    "SPORTS_OUTDOOR": {
+      "heroBadge": "Sports, Fitness & Outdoor Adventure Expo",
+      "heroTitle": "Race Bib Collections, Trail Testing & Sports Science Arenas",
+      "heroDescription": "Retrieve official marathon race packets, test high-performance trail equipment on indoor obstacle circuits, and measure athletic physiological metrics with certified sports medicine clinicians.",
+      "featuredEyebrow": "Competition Program",
+      "featuredTitle": "Featured Competitions & Trial Circuits",
+      "featuredDescription": "Competitions and trial circuits published by the organizer."
+    },
+    "FAITH_PILGRIMAGE_CONGRESS": {
+      "heroBadge": "Faith, Pilgrimage & Community Congress",
+      "heroTitle": "Pilgrimage Services, Accredited Halal Standards & Plenary Assemblies",
+      "heroDescription": "Verify licensed Hajj and Umrah travel operators, access simultaneous multi-language interpretation audio feeds for plenary congress addresses, and audit global Halal compliance standards.",
+      "accreditationNote": "Operator accreditation checks open with the organizer program.",
+      "channelsTitle": "Congress Simultaneous Interpretation Channels",
+      "channelsDescription": "Channel lineup published by the organizer before the congress"
+    }
   }
 }

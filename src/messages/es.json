@@ -1808,5 +1808,23 @@
     "staleAgendaLink": "Abrir las novedades del evento",
     "error": "No se pudo actualizar el recinto.",
     "loading": "Cargando recintos"
+  },
+  "archetypeViews": {
+    "SPORTS_OUTDOOR": {
+      "heroBadge": "Expo de Deporte, Fitness y Aventura al Aire Libre",
+      "heroTitle": "Entrega de Dorsales, Pruebas de Senderos y Arenas de Ciencia Deportiva",
+      "heroDescription": "Recoja los paquetes oficiales de maratón, pruebe equipamiento de trail de alto rendimiento en circuitos de obstáculos indoor y mida métricas fisiológicas con médicos deportivos certificados.",
+      "featuredEyebrow": "Programa de Competición",
+      "featuredTitle": "Competiciones y Circuitos de Prueba Destacados",
+      "featuredDescription": "Competiciones y circuitos de prueba publicados por el organizador."
+    },
+    "FAITH_PILGRIMAGE_CONGRESS": {
+      "heroBadge": "Congreso de Fe, Peregrinación y Comunidad",
+      "heroTitle": "Servicios de Peregrinación, Estándares Halal Acreditados y Asambleas Plenarias",
+      "heroDescription": "Verifique operadores de viajes de Hach y Umra con licencia, acceda a audio de interpretación simultánea multilingüe para las ponencias plenarias y audite los estándares globales de cumplimiento Halal.",
+      "accreditationNote": "Las comprobaciones de acreditación de operadores se abren con el programa del organizador.",
+      "channelsTitle": "Canales de Interpretación Simultánea del Congreso",
+      "channelsDescription": "Programación de canales publicada por el organizador antes del congreso"
+    }
   }
 }

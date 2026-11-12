@@ -1808,5 +1808,23 @@
     "staleAgendaLink": "Buka pembaruan acara",
     "error": "Tidak dapat memperbarui venue.",
     "loading": "Memuat venue"
+  },
+  "archetypeViews": {
+    "SPORTS_OUTDOOR": {
+      "heroBadge": "Expo Olahraga, Kebugaran & Petualangan Alam",
+      "heroTitle": "Pengambilan Bib Lomba, Uji Jalur & Arena Sains Olahraga",
+      "heroDescription": "Ambil paket lomba maraton resmi, uji perlengkapan jalur berperforma tinggi di lintasan rintangan dalam ruang, dan ukur metrik fisiologis atlet bersama dokter kedokteran olahraga bersertifikat.",
+      "featuredEyebrow": "Program Kompetisi",
+      "featuredTitle": "Kompetisi & Sirkuit Uji Unggulan",
+      "featuredDescription": "Kompetisi dan sirkuit uji yang diterbitkan penyelenggara."
+    },
+    "FAITH_PILGRIMAGE_CONGRESS": {
+      "heroBadge": "Kongres Iman, Ziarah & Komunitas",
+      "heroTitle": "Layanan Ziarah, Standar Halal Terakreditasi & Sidang Paripurna",
+      "heroDescription": "Verifikasi operator perjalanan haji dan umrah berlisensi, akses siaran audio interpretasi multibahasa simultan untuk pidato kongres paripurna, dan audit standar kepatuhan Halal global.",
+      "accreditationNote": "Pemeriksaan akreditasi operator dibuka bersama program penyelenggara.",
+      "channelsTitle": "Kanal Interpretasi Simultan Kongres",
+      "channelsDescription": "Susunan kanal diterbitkan penyelenggara sebelum kongres"
+    }
   }
 }

@@ -1808,5 +1808,23 @@
     "staleAgendaLink": "Veranstaltungsupdates öffnen",
     "error": "Der Veranstaltungsort konnte nicht aktualisiert werden.",
     "loading": "Orte werden geladen"
+  },
+  "archetypeViews": {
+    "SPORTS_OUTDOOR": {
+      "heroBadge": "Sport-, Fitness- und Outdoor-Messe",
+      "heroTitle": "Startnummernausgabe, Trail-Tests und Sportwissenschafts-Arenen",
+      "heroDescription": "Offizielle Marathon-Pakete abholen, Hochleistungs-Trailausrüstung auf Indoor-Hindernisparcours testen und sportphysiologische Werte mit zertifizierten Sportmedizinern messen.",
+      "featuredEyebrow": "Wettkampfprogramm",
+      "featuredTitle": "Ausgewählte Wettkämpfe und Teststrecken",
+      "featuredDescription": "Vom Veranstalter veröffentlichte Wettkämpfe und Teststrecken."
+    },
+    "FAITH_PILGRIMAGE_CONGRESS": {
+      "heroBadge": "Glaubens-, Pilger- und Gemeindekongress",
+      "heroTitle": "Pilgerdienste, zertifizierte Halal-Standards und Plenarversammlungen",
+      "heroDescription": "Lizenzierte Hadsch- und Umra-Reiseveranstalter prüfen, simultane mehrsprachige Dolmetsch-Audiofeeds für Plenarreden nutzen und globale Halal-Konformitätsstandards auditieren.",
+      "accreditationNote": "Die Prüfung der Veranstalterzertifizierung öffnet mit dem Organisatorprogramm.",
+      "channelsTitle": "Simultandolmetsch-Kanäle des Kongresses",
+      "channelsDescription": "Vom Veranstalter vor dem Kongress veröffentlichte Kanalbelegung"
+    }
   }
 }

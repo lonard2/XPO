@@ -1808,5 +1808,23 @@
     "staleAgendaLink": "打开活动更新",
     "error": "无法更新场馆。",
     "loading": "正在加载场馆"
+  },
+  "archetypeViews": {
+    "SPORTS_OUTDOOR": {
+      "heroBadge": "运动、健身与户外探险博览会",
+      "heroTitle": "赛事领物、越野测试与运动科学场馆",
+      "heroDescription": "领取官方马拉松参赛包，在室内障碍赛道测试高性能越野装备，并与认证运动医学专家一起测量运动生理指标。",
+      "featuredEyebrow": "竞赛日程",
+      "featuredTitle": "精选赛事与测试赛道",
+      "featuredDescription": "主办方发布的赛事与测试赛道。"
+    },
+    "FAITH_PILGRIMAGE_CONGRESS": {
+      "heroBadge": "信仰、朝觐与社区大会",
+      "heroTitle": "朝觐服务、认证清真标准与全体会议",
+      "heroDescription": "核验持牌朝觐与副朝旅行运营商，获取全体会议演讲的同声多语种音频，并审核全球清真合规标准。",
+      "accreditationNote": "运营商认证核查随主办方日程开放。",
+      "channelsTitle": "大会同声传译频道",
+      "channelsDescription": "主办方在大会前发布的频道安排"
+    }
   }
 }

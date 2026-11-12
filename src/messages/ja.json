@@ -1808,5 +1808,23 @@
     "staleAgendaLink": "イベント更新を開く",
     "error": "会場を更新できませんでした。",
     "loading": "会場を読み込み中"
+  },
+  "archetypeViews": {
+    "SPORTS_OUTDOOR": {
+      "heroBadge": "スポーツ・フィットネス・アウトドア展示会",
+      "heroTitle": "レース受付、トレイル試走、スポーツ科学アリーナ",
+      "heroDescription": "公式マラソンの参加パケットを受け取り、屋内障害コースで高性能トレイル装備を試し、認定スポーツ医学の専門家と共に運動生理指標を測定します。",
+      "featuredEyebrow": "競技プログラム",
+      "featuredTitle": "注目の競技と試走コース",
+      "featuredDescription": "主催者が公開する競技と試走コース。"
+    },
+    "FAITH_PILGRIMAGE_CONGRESS": {
+      "heroBadge": "信仰・巡礼・コミュニティ会議",
+      "heroTitle": "巡礼サービス、認証ハラール基準、本会議",
+      "heroDescription": "認可されたハッジ・ウムラ旅行会社を確認し、本会議演説の同時多言語通訳音声を聴取し、世界のハラール遵守基準を監査します。",
+      "accreditationNote": "運営者認証の確認は主催者プログラムと共に開始されます。",
+      "channelsTitle": "会議の同時通訳チャンネル",
+      "channelsDescription": "会議前に主催者が公開するチャンネル編成"
+    }
   }
 }

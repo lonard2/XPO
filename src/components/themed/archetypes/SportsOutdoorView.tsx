@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import {
   Trophy,
   Flame,
@@ -26,6 +27,7 @@ import { parseShowcase } from "@/lib/showcase";
 import { ShowcaseProgramGrid } from "@/components/themed/ShowcaseProgramGrid";
 
 export function SportsOutdoorView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
+  const t = useTranslations("archetypeViews.SPORTS_OUTDOOR");
 
   // Organizer-authored showcase: sections render only with backing data.
   const showcase = React.useMemo(
@@ -47,14 +49,14 @@ export function SportsOutdoorView({ event, locale = "en", onSelectTier }: Archet
                 <Trophy className="h-4 w-4" />
               </span>
               <span className="text-xs font-bold uppercase tracking-wider text-orange-500">
-                Sports, Fitness & Outdoor Adventure Expo
+                {t("heroBadge")}
               </span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-              Race Bib Collections, Trail Testing & Sports Science Arenas
+              {t("heroTitle")}
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-              Retrieve official marathon race packets, test high-performance trail equipment on indoor obstacle circuits, and measure athletic physiological metrics with certified sports medicine clinicians.
+              {t("heroDescription")}
             </p>
           </div>
         </div>
@@ -63,9 +65,9 @@ export function SportsOutdoorView({ event, locale = "en", onSelectTier }: Archet
 
       {showcasePrograms.length > 0 && (
         <ShowcaseProgramGrid
-          eyebrow="Competition Program"
-          title="Featured Competitions & Trial Circuits"
-          description="Competitions and trial circuits published by the organizer."
+          eyebrow={t("featuredEyebrow")}
+          title={t("featuredTitle")}
+          description={t("featuredDescription")}
           programs={showcasePrograms}
           locale={locale}
           stampedAt={showcase.attestedAt}
