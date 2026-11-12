@@ -2101,6 +2101,33 @@
       "badgesLeft": "{count} Badges Left",
       "cta": "Select Delegate Pass",
       "complimentaryPass": "Complimentary Pass"
+    },
+    "MEDIA_BROADCAST": {
+      "heroBadge": "Media, Broadcast & Pro-AV Technology Mart",
+      "heroTitle": "Virtual Production Stages, SMPTE IP Broadcast & Pro-Audio",
+      "heroDescription": "Experience real-time in-camera VFX virtual production LED volumes, evaluate uncompressed SMPTE ST 2110 IP broadcast routing fabrics, and audition concert line-array sound reinforcement systems.",
+      "bookCta": "Book Virtual Production Demo",
+      "accreditedNote": "Accredited studio directors, DITs & broadcast engineers",
+      "stagesBadge": "Stages & Audio Arenas",
+      "stagesTitle": "Featured LED Stages & Sound Arenas",
+      "technicalSpecs": "Technical Specs",
+      "reserveCta": "Reserve Hands-On Session",
+      "drawerTitle": "Virtual Production & Broadcast Audio Shootout",
+      "drawerDescription": "Reserve an interactive hands-on demo session with cinema camera tracking operators and sound engineers.",
+      "confirmedTitle": "Production Demo Confirmed",
+      "confirmedBody": "Your reservation for {stage} has been provisioned. Report to Stage Operator Console 10 mins before slot start.",
+      "doneCta": "Done",
+      "studioLabel": "Selected Studio / Production Arena",
+      "specialtyLabel": "Production Specialty",
+      "specialtyOption1": "In-Camera Visual Effects (ICVFX) Virtual Production",
+      "specialtyOption2": "SMPTE ST 2110 Live Multi-Cam Studio Routing",
+      "specialtyOption3": "Dolby Atmos Pro-Audio Acoustic Shootout",
+      "specialtyOption4": "Cinema Optics & Large Format Sensor Evaluation",
+      "accreditationLabel": "Industry Accreditation",
+      "accreditationValue": "SMPTE / AES / BSC Member Verification",
+      "sessionNote": "Broadcast tech sessions feature hands-on console manipulation under expert engineer supervision.",
+      "cancelCta": "Cancel",
+      "confirmCta": "Confirm Hands-On Pass"
     }
   }
 }

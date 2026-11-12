@@ -2101,6 +2101,33 @@
       "badgesLeft": "剩余 {count} 张证件",
       "cta": "选择代表通行证",
       "complimentaryPass": "免费通行证"
+    },
+    "MEDIA_BROADCAST": {
+      "heroBadge": "媒体、广播与专业 AV 技术展",
+      "heroTitle": "虚拟制作舞台、SMPTE IP 广播与专业音频",
+      "heroDescription": "体验实时机内 VFX 虚拟制作 LED  volumes，评估未压缩 SMPTE ST 2110 IP 广播路由矩阵，并试听演唱会线阵列扩声系统。",
+      "bookCta": "预订虚拟制作演示",
+      "accreditedNote": "已认证的 studio 导演、DIT 与广播工程师",
+      "stagesBadge": "舞台与音频场馆",
+      "stagesTitle": "精选 LED 舞台与音响场馆",
+      "technicalSpecs": "技术规格",
+      "reserveCta": "预订动手体验时段",
+      "drawerTitle": "虚拟制作与广播音频对比体验",
+      "drawerDescription": "与电影摄影机跟踪操作员和音响工程师预订互动动手演示时段。",
+      "confirmedTitle": "制作演示已确认",
+      "confirmedBody": "您对 {stage} 的预订已配置。请在时段开始前 10 分钟到舞台操作台报到。",
+      "doneCta": "完成",
+      "studioLabel": "已选工作室 / 制作场馆",
+      "specialtyLabel": "制作专长",
+      "specialtyOption1": "机内视觉特效（ICVFX）虚拟制作",
+      "specialtyOption2": "SMPTE ST 2110 现场多机位演播室路由",
+      "specialtyOption3": "Dolby Atmos 专业音频声学对比",
+      "specialtyOption4": "电影光学与大画幅传感器评估",
+      "accreditationLabel": "行业认证",
+      "accreditationValue": "SMPTE / AES / BSC 会员验证",
+      "sessionNote": "广播技术时段包含在专家工程师监督下的控制台动手操作。",
+      "cancelCta": "取消",
+      "confirmCta": "确认动手体验通行证"
     }
   }
 }

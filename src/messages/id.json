@@ -2101,6 +2101,33 @@
       "badgesLeft": "Sisa {count} Badge",
       "cta": "Pilih Pass Delegasi",
       "complimentaryPass": "Pass Gratis"
+    },
+    "MEDIA_BROADCAST": {
+      "heroBadge": "Mart Teknologi Media, Broadcast & Pro-AV",
+      "heroTitle": "Panggung Produksi Virtual, Broadcast IP SMPTE & Pro-Audio",
+      "heroDescription": "Nikmati volume LED produksi virtual VFX in-camera real-time, evaluasi fabric routing broadcast IP SMPTE ST 2110 tanpa kompresi, dan audisi sistem sound reinforcement line-array konser.",
+      "bookCta": "Pesan Demo Produksi Virtual",
+      "accreditedNote": "Sutradara studio, DIT & insinyur broadcast terakreditasi",
+      "stagesBadge": "Panggung & Arena Audio",
+      "stagesTitle": "Panggung LED & Arena Suara Unggulan",
+      "technicalSpecs": "Spesifikasi Teknis",
+      "reserveCta": "Reservasi Sesi Hands-On",
+      "drawerTitle": "Shootout Produksi Virtual & Audio Broadcast",
+      "drawerDescription": "Reservasi sesi demo hands-on interaktif dengan operator tracking kamera sinema dan insinyur suara.",
+      "confirmedTitle": "Demo Produksi Terkonfirmasi",
+      "confirmedBody": "Reservasi Anda untuk {stage} telah disiapkan. Laporkan ke Konsol Operator Panggung 10 menit sebelum sesi dimulai.",
+      "doneCta": "Selesai",
+      "studioLabel": "Studio / Arena Produksi Terpilih",
+      "specialtyLabel": "Spesialisasi Produksi",
+      "specialtyOption1": "Produksi Virtual In-Camera Visual Effects (ICVFX)",
+      "specialtyOption2": "Routing Studio Multi-Cam Live SMPTE ST 2110",
+      "specialtyOption3": "Shootout Akustik Pro-Audio Dolby Atmos",
+      "specialtyOption4": "Optik Sinema & Evaluasi Sensor Format Besar",
+      "accreditationLabel": "Akreditasi Industri",
+      "accreditationValue": "Verifikasi Anggota SMPTE / AES / BSC",
+      "sessionNote": "Sesi teknologi broadcast menampilkan manipulasi konsol hands-on di bawah pengawasan insinyur ahli.",
+      "cancelCta": "Batal",
+      "confirmCta": "Konfirmasi Pass Hands-On"
     }
   }
 }

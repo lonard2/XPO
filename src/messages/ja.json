@@ -2101,6 +2101,33 @@
       "badgesLeft": "残り{count}枚",
       "cta": "代表者パスを選択",
       "complimentaryPass": "無料パス"
+    },
+    "MEDIA_BROADCAST": {
+      "heroBadge": "メディア・放送・Pro-AVテクノロジーマート",
+      "heroTitle": "バーチャルプロダクションステージ、SMPTE IP放送、プロオーディオ",
+      "heroDescription": "リアルタイムのインカメラVFXバーチャルプロダクションLEDボリュームを体験し、非圧縮SMPTE ST 2110 IP放送ルーティングファブリックを評価し、コンサート用ラインアレイ音響システムを試聴できます。",
+      "bookCta": "バーチャルプロダクションデモを予約",
+      "accreditedNote": "認定スタジオディレクター、DIT、放送エンジニア",
+      "stagesBadge": "ステージ & オーディオアリーナ",
+      "stagesTitle": "注目のLEDステージ & サウンドアリーナ",
+      "technicalSpecs": "技術仕様",
+      "reserveCta": "ハンズオンセッションを予約",
+      "drawerTitle": "バーチャルプロダクション & 放送オーディオシュートアウト",
+      "drawerDescription": "シネマカメラトラッキングオペレーターとサウンドエンジニアによるインタラクティブなハンズオンデモセッションを予約します。",
+      "confirmedTitle": "プロダクションデモ確定",
+      "confirmedBody": "{stage}の予約がプロビジョニングされました。スロット開始10分前にステージオペレーターコンソールへお越しください。",
+      "doneCta": "完了",
+      "studioLabel": "選択したスタジオ / プロダクションアリーナ",
+      "specialtyLabel": "制作専門分野",
+      "specialtyOption1": "インカメラビジュアルエフェクト（ICVFX）バーチャルプロダクション",
+      "specialtyOption2": "SMPTE ST 2110 ライブマルチカムスタジオルーティング",
+      "specialtyOption3": "Dolby Atmos プロオーディオ音響シュートアウト",
+      "specialtyOption4": "シネマ光学 & ラージフォーマットセンサー評価",
+      "accreditationLabel": "業界認定",
+      "accreditationValue": "SMPTE / AES / BSC 会員認証",
+      "sessionNote": "放送技術セッションでは、専門エンジニアの監督のもとでコンソールを実際に操作できます。",
+      "cancelCta": "キャンセル",
+      "confirmCta": "ハンズオンパスを確定"
     }
   }
 }

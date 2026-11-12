@@ -2101,6 +2101,33 @@
       "badgesLeft": "Noch {count} Badges",
       "cta": "Delegiertenpass wählen",
       "complimentaryPass": "Kostenloser Pass"
+    },
+    "MEDIA_BROADCAST": {
+      "heroBadge": "Medien-, Broadcast- & Pro-AV-Technologiemesse",
+      "heroTitle": "Virtual-Production-Bühnen, SMPTE-IP-Broadcast & Pro-Audio",
+      "heroDescription": "Erleben Sie Echtzeit-In-Camera-VFX-Virtual-Production-LED-Volumes, bewerten Sie unkomprimierte SMPTE-ST-2110-IP-Broadcast-Routing-Fabrics und hören Sie Konzert-Line-Array-Beschallungssysteme.",
+      "bookCta": "Virtual-Production-Demo buchen",
+      "accreditedNote": "Akkreditierte Studio-Regisseure, DITs & Broadcast-Ingenieure",
+      "stagesBadge": "Bühnen & Audio-Arenen",
+      "stagesTitle": "Ausgewählte LED-Bühnen & Sound-Arenen",
+      "technicalSpecs": "Technische Daten",
+      "reserveCta": "Hands-on-Session reservieren",
+      "drawerTitle": "Virtual-Production- & Broadcast-Audio-Shootout",
+      "drawerDescription": "Reservieren Sie eine interaktive Hands-on-Demo-Session mit Cinema-Kamera-Tracking-Operatoren und Toningenieuren.",
+      "confirmedTitle": "Produktionsdemo bestätigt",
+      "confirmedBody": "Ihre Reservierung für {stage} wurde bereitgestellt. Melden Sie sich 10 Minuten vor Slotbeginn am Stage-Operator-Console.",
+      "doneCta": "Fertig",
+      "studioLabel": "Ausgewähltes Studio / Produktionsarena",
+      "specialtyLabel": "Produktionsspezialität",
+      "specialtyOption1": "In-Camera-VFX (ICVFX) Virtual Production",
+      "specialtyOption2": "SMPTE ST 2110 Live-Multi-Cam-Studio-Routing",
+      "specialtyOption3": "Dolby Atmos Pro-Audio-Akustik-Shootout",
+      "specialtyOption4": "Kinooptik & Großformat-Sensor-Evaluierung",
+      "accreditationLabel": "Branchenakkreditierung",
+      "accreditationValue": "SMPTE / AES / BSC-Mitgliedsverifizierung",
+      "sessionNote": "Broadcast-Tech-Sessions bieten Hands-on-Konsolenbedienung unter Aufsicht erfahrener Ingenieure.",
+      "cancelCta": "Abbrechen",
+      "confirmCta": "Hands-on-Pass bestätigen"
     }
   }
 }

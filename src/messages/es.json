@@ -2101,6 +2101,33 @@
       "badgesLeft": "Quedan {count} acreditaciones",
       "cta": "Seleccionar Pase de Delegado",
       "complimentaryPass": "Pase de Cortesía"
+    },
+    "MEDIA_BROADCAST": {
+      "heroBadge": "Mart de Tecnología de Medios, Broadcast y Pro-AV",
+      "heroTitle": "Escenarios de Producción Virtual, Broadcast IP SMPTE y Pro-Audio",
+      "heroDescription": "Experimente volúmenes LED de producción virtual VFX en cámara en tiempo real, evalúe fabrics de enrutamiento broadcast IP SMPTE ST 2110 sin comprimir y audicione sistemas de refuerzo sonoro line-array para conciertos.",
+      "bookCta": "Reservar Demo de Producción Virtual",
+      "accreditedNote": "Directores de estudio, DITs e ingenieros de broadcast acreditados",
+      "stagesBadge": "Escenarios y Arenas de Audio",
+      "stagesTitle": "Escenarios LED y Arenas de Sonido Destacados",
+      "technicalSpecs": "Especificaciones Técnicas",
+      "reserveCta": "Reservar Sesión Práctica",
+      "drawerTitle": "Shootout de Producción Virtual y Audio Broadcast",
+      "drawerDescription": "Reserve una sesión de demostración práctica e interactiva con operadores de tracking de cámara de cine e ingenieros de sonido.",
+      "confirmedTitle": "Demo de Producción Confirmada",
+      "confirmedBody": "Su reserva para {stage} ha sido aprovisionada. Preséntese en la Consola del Operador de Escenario 10 minutos antes del inicio.",
+      "doneCta": "Hecho",
+      "studioLabel": "Estudio / Arena de Producción Seleccionado",
+      "specialtyLabel": "Especialidad de Producción",
+      "specialtyOption1": "Producción Virtual con Efectos Visuales en Cámara (ICVFX)",
+      "specialtyOption2": "Enrutamiento de Estudio Multicámara en Vivo SMPTE ST 2110",
+      "specialtyOption3": "Shootout Acústico Pro-Audio Dolby Atmos",
+      "specialtyOption4": "Óptica de Cine y Evaluación de Sensores de Gran Formato",
+      "accreditationLabel": "Acreditación de la Industria",
+      "accreditationValue": "Verificación de Miembro SMPTE / AES / BSC",
+      "sessionNote": "Las sesiones de tecnología broadcast incluyen manipulación práctica de consolas bajo supervisión de ingenieros expertos.",
+      "cancelCta": "Cancelar",
+      "confirmCta": "Confirmar Pase Práctico"
     }
   }
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import {
   Video,
   Radio,
@@ -24,6 +25,7 @@ import { Drawer } from "@/components/ui/Drawer";
 import { type ArchetypeViewProps } from "./IndustrialB2BView";
 
 export function MediaBroadcastView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
+  const t = useTranslations("archetypeViews.MEDIA_BROADCAST");
   const [stageDrawerOpen, setStageDrawerOpen] = React.useState(false);
   const [selectedStage, setSelectedStage] = React.useState<string | null>(null);
   const [stageReserved, setStageReserved] = React.useState(false);
@@ -73,14 +75,14 @@ export function MediaBroadcastView({ event, locale = "en", onSelectTier }: Arche
                 <Video className="h-4 w-4" />
               </span>
               <span className="text-xs font-bold uppercase tracking-wider text-violet-500">
-                Media, Broadcast & Pro-AV Technology Mart
+                {t("heroBadge")}
               </span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-              Virtual Production Stages, SMPTE IP Broadcast & Pro-Audio
+              {t("heroTitle")}
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-              Experience real-time in-camera VFX virtual production LED volumes, evaluate uncompressed SMPTE ST 2110 IP broadcast routing fabrics, and audition concert line-array sound reinforcement systems.
+              {t("heroDescription")}
             </p>
           </div>
 
@@ -95,10 +97,10 @@ export function MediaBroadcastView({ event, locale = "en", onSelectTier }: Arche
               className="bg-violet-600 hover:bg-violet-700 text-white font-semibold shadow-md min-h-[44px]"
             >
               <Radio className="h-4 w-4 mr-2" />
-              Book Virtual Production Demo
+              {t("bookCta")}
             </Button>
             <div className="text-xs text-muted-foreground text-center lg:text-right">
-              Accredited studio directors, DITs & broadcast engineers
+              {t("accreditedNote")}
             </div>
           </div>
         </div>
@@ -109,10 +111,10 @@ export function MediaBroadcastView({ event, locale = "en", onSelectTier }: Arche
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-violet-500 uppercase tracking-wider mb-1">
             <Tv className="h-4 w-4" />
-            <span>Stages & Audio Arenas</span>
+            <span>{t("stagesBadge")}</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-            Featured LED Stages & Sound Arenas
+            {t("stagesTitle")}
           </h3>
         </div>
 
@@ -132,7 +134,7 @@ export function MediaBroadcastView({ event, locale = "en", onSelectTier }: Arche
               <CardContent className="space-y-4 pt-0">
                 <div className="p-3 rounded-lg bg-muted/40 border border-border/60 text-xs font-mono text-foreground space-y-1">
                   <div className="font-semibold text-violet-500 flex items-center gap-1">
-                    <Sliders className="h-3 w-3" /> Technical Specs
+                    <Sliders className="h-3 w-3" /> {t("technicalSpecs")}
                   </div>
                   <div>{stage.specs}</div>
                 </div>
@@ -159,7 +161,7 @@ export function MediaBroadcastView({ event, locale = "en", onSelectTier }: Arche
                   className="w-full border-violet-500/30 hover:bg-violet-500/10 text-foreground font-semibold min-h-[40px]"
                 >
                   <Video className="h-3.5 w-3.5 mr-1.5 text-violet-500" />
-                  Reserve Hands-On Session
+                  {t("reserveCta")}
                 </Button>
               </CardContent>
             </Card>
@@ -171,8 +173,8 @@ export function MediaBroadcastView({ event, locale = "en", onSelectTier }: Arche
       <Drawer
         open={stageDrawerOpen}
         onClose={() => setStageDrawerOpen(false)}
-        title="Virtual Production & Broadcast Audio Shootout"
-        description="Reserve an interactive hands-on demo session with cinema camera tracking operators and sound engineers."
+        title={t("drawerTitle")}
+        description={t("drawerDescription")}
       >
         <div className="p-6 space-y-6">
           {stageReserved ? (
@@ -181,9 +183,9 @@ export function MediaBroadcastView({ event, locale = "en", onSelectTier }: Arche
                 <CheckCircle2 className="h-8 w-8" />
               </div>
               <div className="space-y-1">
-                <h4 className="text-lg font-bold text-foreground">Production Demo Confirmed</h4>
+                <h4 className="text-lg font-bold text-foreground">{t("confirmedTitle")}</h4>
                 <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-                  Your reservation for <span className="font-semibold text-foreground">{selectedStage}</span> has been provisioned. Report to Stage Operator Console 10 mins before slot start.
+                  {t("confirmedBody", { stage: selectedStage ?? "" })}
                 </p>
               </div>
               <Button
@@ -193,7 +195,7 @@ export function MediaBroadcastView({ event, locale = "en", onSelectTier }: Arche
                 }}
                 className="mt-4"
               >
-                Done
+                {t("doneCta")}
               </Button>
             </div>
           ) : (
@@ -206,7 +208,7 @@ export function MediaBroadcastView({ event, locale = "en", onSelectTier }: Arche
             >
               <div>
                 <label className="text-xs font-semibold text-foreground block mb-1.5">
-                  Selected Studio / Production Arena
+                  {t("studioLabel")}
                 </label>
                 <input
                   type="text"
@@ -218,26 +220,26 @@ export function MediaBroadcastView({ event, locale = "en", onSelectTier }: Arche
 
               <div>
                 <label className="text-xs font-semibold text-foreground block mb-1.5">
-                  Production Specialty
+                  {t("specialtyLabel")}
                 </label>
                 <select className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-background text-foreground font-medium">
-                  <option>In-Camera Visual Effects (ICVFX) Virtual Production</option>
-                  <option>SMPTE ST 2110 Live Multi-Cam Studio Routing</option>
-                  <option>Dolby Atmos Pro-Audio Acoustic Shootout</option>
-                  <option>Cinema Optics & Large Format Sensor Evaluation</option>
+                  <option>{t("specialtyOption1")}</option>
+                  <option>{t("specialtyOption2")}</option>
+                  <option>{t("specialtyOption3")}</option>
+                  <option>{t("specialtyOption4")}</option>
                 </select>
               </div>
 
               <div>
                 <label className="text-xs font-semibold text-foreground block mb-1.5">
-                  Industry Accreditation
+                  {t("accreditationLabel")}
                 </label>
                 <div className="p-3 rounded-lg border border-border/80 bg-muted/20 text-xs text-muted-foreground space-y-2">
                   <div className="flex items-center gap-2 text-foreground font-medium">
                     <ShieldCheck className="h-4 w-4 text-emerald-500" />
-                    <span>SMPTE / AES / BSC Member Verification</span>
+                    <span>{t("accreditationValue")}</span>
                   </div>
-                  <p>Broadcast tech sessions feature hands-on console manipulation under expert engineer supervision.</p>
+                  <p>{t("sessionNote")}</p>
                 </div>
               </div>
 
@@ -247,13 +249,13 @@ export function MediaBroadcastView({ event, locale = "en", onSelectTier }: Arche
                   variant="outline"
                   onClick={() => setStageDrawerOpen(false)}
                 >
-                  Cancel
+                  {t("cancelCta")}
                 </Button>
                 <Button
                   type="submit"
                   className="bg-violet-600 hover:bg-violet-700 text-white font-semibold"
                 >
-                  Confirm Hands-On Pass
+                  {t("confirmCta")}
                 </Button>
               </div>
             </form>
