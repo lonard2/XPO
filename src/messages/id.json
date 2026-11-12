@@ -831,7 +831,16 @@
     "gateFaith": "Interpretasi: Ambil headset penerima multi-bahasa di gerbang pleno.",
     "gateSports": "Pengambilan Bib: Tunjukkan QR di meja timing.",
     "gateMedia": "Pers & Kru: Izin peralatan di panggung produksi.",
-    "vipFrom": "VIP mulai {price}"
+    "vipFrom": "VIP mulai {price}",
+    "tierOptionsAria": "Opsi tiket",
+    "priority": "Prioritas",
+    "soldOut": "Habis",
+    "onlyRemaining": "Tersisa {count} tiket",
+    "availableCount": "{remaining} dari {total} tiket tersedia",
+    "namePlaceholder": "mis. Alex Pratama",
+    "emailPlaceholder": "mis. alex@company.com",
+    "companyPlaceholder": "mis. Nusantara Technologies",
+    "rolePlaceholder": "mis. VP Engineering"
   },
   "myTickets": {
     "title": "Pas Masuk & Pesanan Saya",
@@ -885,7 +894,11 @@
     "demoPreviewNote": "Pratinjau demo: pass contoh untuk ilustrasi, bukan kredensial asli.",
     "offlineFailed": "Gagal simpan offline: penyimpanan tidak tersedia.",
     "offlineCachedAt": "Tersimpan offline pukul {time}",
-    "breadcrumbWallet": "Dompet Pass"
+    "breadcrumbWallet": "Dompet Pass",
+    "statusFiltersAria": "Filter status tiket",
+    "searchPassesAria": "Cari tiket berdasarkan acara, venue, atau hall",
+    "searchPassesPlaceholder": "Cari acara, venue, atau hall...",
+    "clearSearchAria": "Hapus pencarian"
   },
   "perks": {
     "treatsTitle": "Fasilitas & Buku Panduan Interaktif",

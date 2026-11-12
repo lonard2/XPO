@@ -831,7 +831,16 @@
     "gateFaith": "Interpretation: Collect a multi-language receiver headset at the plenary gate.",
     "gateSports": "Bib Collection: Present your QR code at the timing desk.",
     "gateMedia": "Press & Crew: Equipment clearance at the production stage.",
-    "vipFrom": "VIP from {price}"
+    "vipFrom": "VIP from {price}",
+    "tierOptionsAria": "Ticket tier options",
+    "priority": "Priority",
+    "soldOut": "Sold Out",
+    "onlyRemaining": "Only {count} passes remaining",
+    "availableCount": "{remaining} of {total} passes available",
+    "namePlaceholder": "e.g. Alex Pratama",
+    "emailPlaceholder": "e.g. alex@company.com",
+    "companyPlaceholder": "e.g. Nusantara Technologies",
+    "rolePlaceholder": "e.g. VP Engineering"
   },
   "myTickets": {
     "title": "My Passes & Bookings",
@@ -885,7 +894,11 @@
     "demoPreviewNote": "Demo preview: sample pass for illustration, not a real credential.",
     "offlineFailed": "Offline save failed: storage unavailable.",
     "offlineCachedAt": "Saved offline at {time}",
-    "breadcrumbWallet": "Pass Wallet"
+    "breadcrumbWallet": "Pass Wallet",
+    "statusFiltersAria": "Pass status filters",
+    "searchPassesAria": "Search passes by event, venue, or hall",
+    "searchPassesPlaceholder": "Search event, venue, or hall...",
+    "clearSearchAria": "Clear search"
   },
   "perks": {
     "treatsTitle": "Interactive Perks & Guidebook",

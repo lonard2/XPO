@@ -831,7 +831,16 @@
     "gateFaith": "Interpretación: recoja receptor multilingüe en plenario.",
     "gateSports": "Dorsal: muestre su QR en cronometraje.",
     "gateMedia": "Prensa: permiso de equipos en producción.",
-    "vipFrom": "VIP desde {price}"
+    "vipFrom": "VIP desde {price}",
+    "tierOptionsAria": "Opciones de tarifa",
+    "priority": "Prioridad",
+    "soldOut": "Agotado",
+    "onlyRemaining": "Solo quedan {count} pases",
+    "availableCount": "{remaining} de {total} pases disponibles",
+    "namePlaceholder": "p. ej., Alex Pratama",
+    "emailPlaceholder": "p. ej., alex@company.com",
+    "companyPlaceholder": "p. ej., Nusantara Technologies",
+    "rolePlaceholder": "p. ej., VP Engineering"
   },
   "myTickets": {
     "title": "Mis Pases y Reservas",
@@ -885,7 +894,11 @@
     "demoPreviewNote": "Vista demo: pase de muestra ilustrativo, no una credencial real.",
     "offlineFailed": "Error al guardar sin conexión.",
     "offlineCachedAt": "Guardado sin conexión a las {time}",
-    "breadcrumbWallet": "Billetera de pases"
+    "breadcrumbWallet": "Billetera de pases",
+    "statusFiltersAria": "Filtros de estado de pases",
+    "searchPassesAria": "Buscar pases por evento, recinto o pabellón",
+    "searchPassesPlaceholder": "Buscar evento, recinto o pabellón...",
+    "clearSearchAria": "Borrar búsqueda"
   },
   "perks": {
     "treatsTitle": "Ventajas Interactivas y Guía",

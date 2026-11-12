@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { CheckCircle2, Sparkles, AlertCircle } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
@@ -35,10 +36,11 @@ export function TierSelector({
   compact = false,
   archetype,
 }: TierSelectorProps) {
+  const t = useTranslations("tickets");
   return (
     <div
       role="radiogroup"
-      aria-label="Ticket tier options"
+      aria-label={t("tierOptionsAria")}
       className={cn("space-y-3", compact ? "space-y-2" : "space-y-3.5")}
     >
       {tiers.map((tier) => {
@@ -109,7 +111,7 @@ export function TierSelector({
                     {isVip && (
                       <Badge variant="archetype" size="sm" className="gap-1 font-semibold">
                         <Sparkles className="h-3 w-3 text-amber-500" />
-                        Priority
+                        {t("priority")}
                       </Badge>
                     )}
                   </div>
@@ -117,15 +119,15 @@ export function TierSelector({
                     {isSoldOut ? (
                       <span className="text-destructive font-medium flex items-center gap-1">
                         <AlertCircle className="h-3.5 w-3.5" />
-                        Sold Out
+                        {t("soldOut")}
                       </span>
                     ) : isLowCapacity ? (
                       <span className="text-amber-700 dark:text-amber-400 font-medium">
-                        Only {remaining} passes remaining
+                        {t("onlyRemaining", { count: remaining })}
                       </span>
                     ) : (
                       <span className="text-muted-foreground">
-                        {remaining} of {tier.capacity} passes available
+                        {t("availableCount", { remaining, total: tier.capacity })}
                       </span>
                     )}
                   </div>

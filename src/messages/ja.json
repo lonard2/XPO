@@ -831,7 +831,16 @@
     "gateFaith": "通訳:本会議ゲートで多言語レシーバーを受け取ってください。",
     "gateSports": "ゼッケン受取:タイミングデスクでQRを提示してください。",
     "gateMedia": "プレス:制作ステージで機材許可を受けてください。",
-    "vipFrom": "VIP {price}から"
+    "vipFrom": "VIP {price}から",
+    "tierOptionsAria": "チケット区分のオプション",
+    "priority": "優先",
+    "soldOut": "完売",
+    "onlyRemaining": "残り{count}枚",
+    "availableCount": "{total}枚中{remaining}枚が利用可能",
+    "namePlaceholder": "例: Alex Pratama",
+    "emailPlaceholder": "例: alex@company.com",
+    "companyPlaceholder": "例: Nusantara Technologies",
+    "rolePlaceholder": "例: VP Engineering"
   },
   "myTickets": {
     "title": "マイパス＆予約一覧",
@@ -885,7 +894,11 @@
     "demoPreviewNote": "デモプレビュー:説明用のサンプルパスであり、正式な証明ではありません。",
     "offlineFailed": "オフライン保存に失敗しました。",
     "offlineCachedAt": "オフライン保存済み {time}",
-    "breadcrumbWallet": "パスウォレット"
+    "breadcrumbWallet": "パスウォレット",
+    "statusFiltersAria": "チケット状態のフィルター",
+    "searchPassesAria": "イベント、会場、ホールでチケットを検索",
+    "searchPassesPlaceholder": "イベント、会場、ホールを検索...",
+    "clearSearchAria": "検索を消去"
   },
   "perks": {
     "treatsTitle": "来場特典＆デジタルガイドブック",

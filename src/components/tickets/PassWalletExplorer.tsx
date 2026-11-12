@@ -150,7 +150,7 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
           {/* Triage Tabs (Upcoming vs Past) */}
           <div
-            aria-label="Pass status filters"
+            aria-label={tMy("statusFiltersAria")}
             className="flex items-center gap-1.5 bg-muted/60 p-1 rounded-2xl border border-border/60"
           >
             <button
@@ -259,8 +259,8 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
             {/* Live Search Input */}
             <div className="relative w-full sm:w-64">
               <Input
-                aria-label="Search passes by event, venue, or hall"
-                placeholder="Search event, venue, or hall..."
+                aria-label={tMy("searchPassesAria")}
+                placeholder={tMy("searchPassesPlaceholder")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 iconPrefix={<Search className="h-4 w-4 text-muted-foreground" />}
@@ -270,7 +270,7 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
                 <button
                   type="button"
                   onClick={() => setSearchQuery('')}
-                  aria-label="Clear search"
+                  aria-label={tMy("clearSearchAria")}
                   className="absolute right-1.5 top-1/2 -translate-y-1/2 h-8 w-8 min-h-[36px] min-w-[36px] inline-flex items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/80 cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 >
                   <X className="h-4 w-4" />

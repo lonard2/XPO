@@ -451,7 +451,7 @@ export function TicketCheckoutDrawer({
                 autoComplete="name"
                 value={attendeeName}
                 onChange={(e) => setAttendeeName(e.target.value)}
-                placeholder="e.g. Alex Pratama"
+                placeholder={tTickets("namePlaceholder")}
                 className="w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-xl bg-background border border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:border-primary min-h-[44px]"
               />
             </div>
@@ -468,7 +468,7 @@ export function TicketCheckoutDrawer({
                 autoComplete="email"
                 value={attendeeEmail}
                 onChange={(e) => setAttendeeEmail(e.target.value)}
-                placeholder="e.g. alex@company.com"
+                placeholder={tTickets("emailPlaceholder")}
                 className="w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-xl bg-background border border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:border-primary min-h-[44px]"
               />
             </div>
@@ -485,7 +485,7 @@ export function TicketCheckoutDrawer({
                   autoComplete="organization"
                   value={organization}
                   onChange={(e) => setOrganization(e.target.value)}
-                  placeholder="e.g. Nusantara Technologies"
+                  placeholder={tTickets("companyPlaceholder")}
                   className="w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-xl bg-background border border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:border-primary min-h-[44px]"
                 />
               </div>
@@ -500,7 +500,7 @@ export function TicketCheckoutDrawer({
                   autoComplete="organization-title"
                   value={jobTitle}
                   onChange={(e) => setJobTitle(e.target.value)}
-                  placeholder="e.g. VP Engineering"
+                  placeholder={tTickets("rolePlaceholder")}
                   className="w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-xl bg-background border border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:border-primary min-h-[44px]"
                 />
               </div>

@@ -831,7 +831,16 @@
     "gateFaith": "Dolmetschen: Mehrsprachen-Empfänger am Plenumstor abholen.",
     "gateSports": "Startnummer: QR am Zeitmesstisch zeigen.",
     "gateMedia": "Presse: Gerätefreigabe an der Produktionsbühne.",
-    "vipFrom": "VIP ab {price}"
+    "vipFrom": "VIP ab {price}",
+    "tierOptionsAria": "Ticketkategorien",
+    "priority": "Priorität",
+    "soldOut": "Ausverkauft",
+    "onlyRemaining": "Nur noch {count} Pässe verfügbar",
+    "availableCount": "{remaining} von {total} Pässen verfügbar",
+    "namePlaceholder": "z. B. Alex Pratama",
+    "emailPlaceholder": "z. B. alex@company.com",
+    "companyPlaceholder": "z. B. Nusantara Technologies",
+    "rolePlaceholder": "z. B. VP Engineering"
   },
   "myTickets": {
     "title": "Meine Pässe & Buchungen",
@@ -885,7 +894,11 @@
     "demoPreviewNote": "Demo-Vorschau: Beispielpass zur Veranschaulichung, keine echte Berechtigung.",
     "offlineFailed": "Offline-Speichern fehlgeschlagen.",
     "offlineCachedAt": "Offline gespeichert um {time}",
-    "breadcrumbWallet": "Pass-Wallet"
+    "breadcrumbWallet": "Pass-Wallet",
+    "statusFiltersAria": "Passstatus-Filter",
+    "searchPassesAria": "Pässe nach Veranstaltung, Ort oder Halle suchen",
+    "searchPassesPlaceholder": "Veranstaltung, Ort oder Halle suchen...",
+    "clearSearchAria": "Suche löschen"
   },
   "perks": {
     "treatsTitle": "Interaktive Vorteile & Leitfaden",

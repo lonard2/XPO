@@ -831,7 +831,16 @@
     "gateFaith": "口译:请在全体会议门领取多语接收器。",
     "gateSports": "号码布领取:请在计时处出示QR码。",
     "gateMedia": "媒体:请在制作舞台办理器材许可。",
-    "vipFrom": "VIP {price} 起"
+    "vipFrom": "VIP {price} 起",
+    "tierOptionsAria": "门票档位选项",
+    "priority": "优先",
+    "soldOut": "售罄",
+    "onlyRemaining": "仅剩 {count} 张通行证",
+    "availableCount": "共 {total} 张，剩余 {remaining} 张",
+    "namePlaceholder": "例如：Alex Pratama",
+    "emailPlaceholder": "例如：alex@company.com",
+    "companyPlaceholder": "例如：Nusantara Technologies",
+    "rolePlaceholder": "例如：VP Engineering"
   },
   "myTickets": {
     "title": "我的通行证与订单",
@@ -885,7 +894,11 @@
     "demoPreviewNote": "演示预览:仅用于说明的示例通行证，非真实凭证。",
     "offlineFailed": "离线保存失败:存储不可用。",
     "offlineCachedAt": "已于{time}离线保存",
-    "breadcrumbWallet": "通行证钱包"
+    "breadcrumbWallet": "通行证钱包",
+    "statusFiltersAria": "通行证状态筛选",
+    "searchPassesAria": "按活动、场馆或展厅搜索通行证",
+    "searchPassesPlaceholder": "搜索活动、场馆或展厅...",
+    "clearSearchAria": "清除搜索"
   },
   "perks": {
     "treatsTitle": "参会专属权益与数字指南",
