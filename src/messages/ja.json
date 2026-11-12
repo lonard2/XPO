@@ -2073,6 +2073,34 @@
       "complianceNote": "すべての鉱区データは国のクリーンエネルギー目標と地域送電計画に同期されています。",
       "cancelCta": "キャンセル",
       "confirmCta": "技術資料を依頼"
+    },
+    "MEDICAL_SYMPOSIUM": {
+      "heroBadge": "臨床会議 & 科学研究会議",
+      "heroTitle": "エビデンスに基づく医療と臨床実践の推進",
+      "abstractsCta": "査読済み抄録を読む（{count}件）",
+      "cmeCertCta": "CME証明書（最大18.5単位）",
+      "accreditedBadge": "認定会議",
+      "eligibilityTitle": "CME単位の受給資格",
+      "eligibilityDesc": "IDI（インドネシア医師会）& ACCME認定。",
+      "totalCreditsLabel": "会議の合計単位:",
+      "totalCreditsValue": "18.5 SKP / CME",
+      "attendanceNote": "本会議シンポジウムとワークショップモジュールの80%以上への出席スキャンが必要です。",
+      "cmeRegistered": "CME認証を登録しました。修了後に証明書を取得できます。",
+      "registerCmeCta": "CME医師免許IDを登録",
+      "abstractsTitle": "科学抄録 & 臨床試験",
+      "abstractsDesc": "口頭発表とポスターセッションで発表された査読済み論文を検索します。",
+      "searchPlaceholder": "トピック、著者、機関で検索...",
+      "cmeCreditsBadge": "{count} CME単位",
+      "doiLabel": "DOI: {doi}",
+      "toggleDetailsAria": "詳細を切り替え",
+      "peerReviewedNote": "会議科学諮問委員会による査読済み",
+      "downloadPdf": "完全版PDFをダウンロード",
+      "scheduleTitle": "シンポジウム日程 & 本会議講演",
+      "ticketsTitle": "医療登録 & 代表者資格",
+      "ticketsDesc": "医療専門医、フェロー、レジデント、関連医療従事者向けの資格別料金。",
+      "badgesLeft": "残り{count}枚",
+      "cta": "代表者パスを選択",
+      "complimentaryPass": "無料パス"
     }
   }
 }

@@ -2073,6 +2073,34 @@
       "complianceNote": "所有特许区数据均与国家清洁能源目标及区域输电蓝图同步。",
       "cancelCta": "取消",
       "confirmCta": "申请技术资料"
+    },
+    "MEDICAL_SYMPOSIUM": {
+      "heroBadge": "临床大会与科学研究大会",
+      "heroTitle": "推动循证医学与临床实践",
+      "abstractsCta": "阅读同行评审摘要（{count}）",
+      "cmeCertCta": "CME 证书（最多 18.5 学分）",
+      "accreditedBadge": "认证大会",
+      "eligibilityTitle": "CME 学分资格",
+      "eligibilityDesc": "由 IDI（印度尼西亚医学会）与 ACCME 认证。",
+      "totalCreditsLabel": "大会总学分：",
+      "totalCreditsValue": "18.5 SKP / CME",
+      "attendanceNote": "需在 80% 或以上的全体会议与工作坊模块中完成签到扫描。",
+      "cmeRegistered": "CME 验证已登记。完成课程后可获得证书。",
+      "registerCmeCta": "登记 CME 医师执照 ID",
+      "abstractsTitle": "科学摘要与临床试验",
+      "abstractsDesc": "搜索在口头与海报分会中展示的同行评审论文。",
+      "searchPlaceholder": "按主题、作者或机构搜索...",
+      "cmeCreditsBadge": "{count} CME 学分",
+      "doiLabel": "DOI：{doi}",
+      "toggleDetailsAria": "切换详情",
+      "peerReviewedNote": "由大会科学咨询委员会同行评审",
+      "downloadPdf": "下载完整 PDF",
+      "scheduleTitle": "研讨会日程与全体讲座",
+      "ticketsTitle": "医疗注册与代表资格",
+      "ticketsDesc": "面向医学专家、研究员、住院医师与相关医疗专业人员的资格费率。",
+      "badgesLeft": "剩余 {count} 张证件",
+      "cta": "选择代表通行证",
+      "complimentaryPass": "免费通行证"
     }
   }
 }

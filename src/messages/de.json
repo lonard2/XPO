@@ -2073,6 +2073,34 @@
       "complianceNote": "Alle Konzessionsdaten sind mit nationalen Saubere-Energie-Zielen und regionalen Übertragungsplänen synchronisiert.",
       "cancelCta": "Abbrechen",
       "confirmCta": "Technisches Dossier anfordern"
+    },
+    "MEDICAL_SYMPOSIUM": {
+      "heroBadge": "Klinischer Kongress & Wissenschaftlicher Forschungskongress",
+      "heroTitle": "Evidenzbasierte Medizin & klinische Praxis voranbringen",
+      "abstractsCta": "Peer-Review-Abstracts lesen ({count})",
+      "cmeCertCta": "CME-Zertifikat (bis zu 18,5 Punkte)",
+      "accreditedBadge": "Akkreditierter Kongress",
+      "eligibilityTitle": "CME-Punkteberechtigung",
+      "eligibilityDesc": "Akkreditiert von IDI (Ikatan Dokter Indonesia) & ACCME.",
+      "totalCreditsLabel": "Gesamtpunkte des Kongresses:",
+      "totalCreditsValue": "18,5 SKP / CME",
+      "attendanceNote": "Erfordert Anwesenheitsscan bei 80% oder mehr der Plenarsymposien und Workshop-Module.",
+      "cmeRegistered": "CME-Verifizierung registriert. Zertifikat nach Abschluss verfügbar.",
+      "registerCmeCta": "CME-Arztlizenz-ID registrieren",
+      "abstractsTitle": "Wissenschaftliche Abstracts & klinische Studien",
+      "abstractsDesc": "Durchsuchen Sie peer-reviewte Arbeiten aus Vortrags- und Postersitzungen.",
+      "searchPlaceholder": "Nach Thema, Autor, Institution suchen...",
+      "cmeCreditsBadge": "{count} CME-Punkte",
+      "doiLabel": "DOI: {doi}",
+      "toggleDetailsAria": "Details umschalten",
+      "peerReviewedNote": "Peer-reviewt vom wissenschaftlichen Beirat des Kongresses",
+      "downloadPdf": "Vollständiges PDF herunterladen",
+      "scheduleTitle": "Symposiumsplan & Plenarvorträge",
+      "ticketsTitle": "Medizinische Registrierung & Delegierten-Nachweise",
+      "ticketsDesc": "Qualifikationsbezogene Tarife für medizinische Fachärzte, Fellows, Assistenzärzte und allied health professionals.",
+      "badgesLeft": "Noch {count} Badges",
+      "cta": "Delegiertenpass wählen",
+      "complimentaryPass": "Kostenloser Pass"
     }
   }
 }

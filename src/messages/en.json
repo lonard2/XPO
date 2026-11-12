@@ -2073,6 +2073,34 @@
       "complianceNote": "All concession data is synchronized with national clean energy targets and regional transmission blueprints.",
       "cancelCta": "Cancel",
       "confirmCta": "Request Technical Dossier"
+    },
+    "MEDICAL_SYMPOSIUM": {
+      "heroBadge": "Clinical Congress & Scientific Research Congress",
+      "heroTitle": "Advancing Evidence-Based Medicine & Clinical Practice",
+      "abstractsCta": "Read Peer-Reviewed Abstracts ({count})",
+      "cmeCertCta": "CME Certificate (Up to 18.5 Credits)",
+      "accreditedBadge": "Accredited Congress",
+      "eligibilityTitle": "CME Credit Eligibility",
+      "eligibilityDesc": "Accredited by IDI (Ikatan Dokter Indonesia) & ACCME.",
+      "totalCreditsLabel": "Total Congress Credits:",
+      "totalCreditsValue": "18.5 SKP / CME",
+      "attendanceNote": "Requires attendance scan at 80% or more plenary symposiums and workshop modules.",
+      "cmeRegistered": "CME Verification registered. Certificate available upon completion.",
+      "registerCmeCta": "Register CME Physician License ID",
+      "abstractsTitle": "Scientific Abstracts & Clinical Trials",
+      "abstractsDesc": "Search peer-reviewed papers presented during oral and poster breakout sessions.",
+      "searchPlaceholder": "Search by topic, author, institution...",
+      "cmeCreditsBadge": "{count} CME Credits",
+      "doiLabel": "DOI: {doi}",
+      "toggleDetailsAria": "Toggle details",
+      "peerReviewedNote": "Peer-reviewed by Congress Scientific Advisory Committee",
+      "downloadPdf": "Download Full PDF",
+      "scheduleTitle": "Symposium Schedule & Plenary Lectures",
+      "ticketsTitle": "Medical Registration & Delegate Credentials",
+      "ticketsDesc": "Credentialed rates for medical specialists, fellows, residents, and allied healthcare professionals.",
+      "badgesLeft": "{count} Badges Left",
+      "cta": "Select Delegate Pass",
+      "complimentaryPass": "Complimentary Pass"
     }
   }
 }

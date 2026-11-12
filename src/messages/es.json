@@ -2073,6 +2073,34 @@
       "complianceNote": "Todos los datos de concesión se sincronizan con los objetivos nacionales de energía limpia y los planos regionales de transmisión.",
       "cancelCta": "Cancelar",
       "confirmCta": "Solicitar Dossier Técnico"
+    },
+    "MEDICAL_SYMPOSIUM": {
+      "heroBadge": "Congreso Clínico y Congreso de Investigación Científica",
+      "heroTitle": "Impulsar la Medicina Basada en Evidencia y la Práctica Clínica",
+      "abstractsCta": "Leer Resúmenes Revisados por Pares ({count})",
+      "cmeCertCta": "Certificado CME (Hasta 18,5 Créditos)",
+      "accreditedBadge": "Congreso Acreditado",
+      "eligibilityTitle": "Elegibilidad de Créditos CME",
+      "eligibilityDesc": "Acreditado por IDI (Ikatan Dokter Indonesia) y ACCME.",
+      "totalCreditsLabel": "Créditos Totales del Congreso:",
+      "totalCreditsValue": "18,5 SKP / CME",
+      "attendanceNote": "Requiere escaneo de asistencia en el 80% o más de los simposios plenarios y módulos de taller.",
+      "cmeRegistered": "Verificación CME registrada. Certificado disponible al finalizar.",
+      "registerCmeCta": "Registrar ID de Licencia Médica CME",
+      "abstractsTitle": "Resúmenes Científicos y Ensayos Clínicos",
+      "abstractsDesc": "Busque trabajos revisados por pares presentados en sesiones orales y de póster.",
+      "searchPlaceholder": "Buscar por tema, autor, institución...",
+      "cmeCreditsBadge": "{count} Créditos CME",
+      "doiLabel": "DOI: {doi}",
+      "toggleDetailsAria": "Alternar detalles",
+      "peerReviewedNote": "Revisado por pares por el Comité Asesor Científico del Congreso",
+      "downloadPdf": "Descargar PDF Completo",
+      "scheduleTitle": "Programa del Simposio y Conferencias Plenarias",
+      "ticketsTitle": "Registro Médico y Credenciales de Delegado",
+      "ticketsDesc": "Tarifas acreditadas para especialistas médicos, fellows, residentes y profesionales de la salud afines.",
+      "badgesLeft": "Quedan {count} acreditaciones",
+      "cta": "Seleccionar Pase de Delegado",
+      "complimentaryPass": "Pase de Cortesía"
     }
   }
 }

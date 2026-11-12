@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import {
   Stethoscope,
   Award,
@@ -26,6 +27,7 @@ import { formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
 import type { ArchetypeViewProps } from "./IndustrialB2BView";
 
 export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
+  const t = useTranslations("archetypeViews.MEDICAL_SYMPOSIUM");
   const [expandedAbstract, setExpandedAbstract] = React.useState<number | null>(0);
   const [abstractFilter, setAbstractFilter] = React.useState("");
   const [claimedCme, setClaimedCme] = React.useState(false);
@@ -78,10 +80,10 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center gap-2 text-xs font-sans font-bold text-[var(--archetype-primary)] tracking-wide uppercase">
             <Stethoscope className="h-4 w-4" aria-hidden="true" />
-            <span>Clinical Congress & Scientific Research Congress</span>
+            <span>{t("heroBadge")}</span>
           </div>
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground">
-            Advancing Evidence-Based Medicine & Clinical Practice
+            {t("heroTitle")}
           </h2>
           <p className="text-muted-foreground text-sm leading-relaxed font-sans">
             {event.description}
@@ -97,7 +99,7 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
               className="gap-2 text-xs font-sans font-semibold shadow-md"
             >
               <BookOpen className="h-4 w-4" />
-              Read Peer-Reviewed Abstracts ({abstracts.length})
+              {t("abstractsCta", { count: abstracts.length })}
             </Button>
 
             <Button
@@ -109,7 +111,7 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
               className="gap-2 text-xs font-sans"
             >
               <Award className="h-4 w-4 text-[var(--archetype-accent)]" />
-              CME Certificate (Up to 18.5 Credits)
+              {t("cmeCertCta")}
             </Button>
           </div>
         </div>
@@ -120,32 +122,32 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
             <div className="flex items-center justify-between gap-2">
               <div className="flex flex-wrap items-center gap-1.5">
                 <Badge variant="outline" size="sm" className="font-sans text-xs font-semibold text-emerald-600 border-emerald-500/30 bg-emerald-500/10">
-                  Accredited Congress
+                  {t("accreditedBadge")}
                 </Badge>
                 <DemonstrationBadge />
               </div>
               <Award className="h-5 w-5 text-amber-500" />
             </div>
-            <CardTitle className="text-lg font-sans">CME Credit Eligibility</CardTitle>
+            <CardTitle className="text-lg font-sans">{t("eligibilityTitle")}</CardTitle>
             <CardDescription className="text-xs font-sans">
-              Accredited by IDI (Ikatan Dokter Indonesia) & ACCME.
+              {t("eligibilityDesc")}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 text-xs font-sans">
             <div className="p-3 rounded-lg bg-muted/40 border border-border space-y-1">
               <div className="flex justify-between items-center font-semibold">
-                <span>Total Congress Credits:</span>
-                <span className="text-sm font-bold text-foreground">18.5 SKP / CME</span>
+                <span>{t("totalCreditsLabel")}</span>
+                <span className="text-sm font-bold text-foreground">{t("totalCreditsValue")}</span>
               </div>
               <p className="text-xs text-muted-foreground">
-                Requires attendance scan at 80% or more plenary symposiums and workshop modules.
+                {t("attendanceNote")}
               </p>
             </div>
 
             {claimedCme ? (
               <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-lg text-emerald-700 dark:text-emerald-300 flex items-center gap-2">
                 <CheckCircle2 className="h-4 w-4 shrink-0" />
-                <span>CME Verification registered. Certificate available upon completion.</span>
+                <span>{t("cmeRegistered")}</span>
               </div>
             ) : (
               <Button
@@ -155,7 +157,7 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
                 className="w-full text-xs gap-1.5 min-h-[40px] cursor-pointer"
               >
                 <FileCheck className="h-3.5 w-3.5" />
-                Register CME Physician License ID
+                {t("registerCmeCta")}
               </Button>
             )}
           </CardContent>
@@ -168,17 +170,17 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
           <div>
             <h3 className="text-xl font-bold text-foreground flex items-center gap-2 font-sans">
               <BookOpen className="h-5 w-5 text-[var(--archetype-primary)]" />
-              Scientific Abstracts & Clinical Trials
+              {t("abstractsTitle")}
             </h3>
             <p className="text-xs font-sans text-muted-foreground">
-              Search peer-reviewed papers presented during oral and poster breakout sessions.
+              {t("abstractsDesc")}
             </p>
           </div>
           <div className="relative w-full sm:w-72 font-sans">
             <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
             <input
               type="text"
-              placeholder="Search by topic, author, institution..."
+              placeholder={t("searchPlaceholder")}
               value={abstractFilter}
               onChange={(e) => setAbstractFilter(e.target.value)}
               className="w-full pl-9 pr-3 py-1.5 text-xs rounded-md bg-background border border-border focus:ring-1 focus:ring-primary min-h-[38px]"
@@ -198,10 +200,10 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
                   <div className="space-y-1.5 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <Badge variant="archetype" size="sm" className="font-sans text-xs font-semibold">
-                        {abs.cmeCredits} CME Credits
+                        {t("cmeCreditsBadge", { count: abs.cmeCredits })}
                       </Badge>
                       <span className="text-xs font-sans text-muted-foreground font-mono">
-                        DOI: {abs.doi}
+                        {t("doiLabel", { doi: abs.doi })}
                       </span>
                     </div>
                     <h4 className="text-base font-bold text-foreground">{abs.title}</h4>
@@ -210,7 +212,7 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
                       {abs.institution}
                     </p>
                   </div>
-                  <button className="p-1 rounded-md text-muted-foreground cursor-pointer" aria-label="Toggle details">
+                  <button className="p-1 rounded-md text-muted-foreground cursor-pointer" aria-label={t("toggleDetailsAria")}>
                     {isExpanded ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
                   </button>
                 </div>
@@ -221,9 +223,9 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
                       {abs.abstractText}
                     </div>
                     <div className="flex items-center justify-between text-xs text-muted-foreground">
-                      <span>Peer-reviewed by Congress Scientific Advisory Committee</span>
+                      <span>{t("peerReviewedNote")}</span>
                       <span className="text-[var(--archetype-primary)] hover:underline cursor-pointer flex items-center gap-1 font-semibold">
-                        Download Full PDF <ExternalLink className="h-3 w-3" />
+                        {t("downloadPdf")} <ExternalLink className="h-3 w-3" />
                       </span>
                     </div>
                   </div>
@@ -239,7 +241,7 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
         <section className="space-y-4">
           <h3 className="text-xl font-bold text-foreground flex items-center gap-2 font-sans">
             <Clock className="h-5 w-5 text-[var(--archetype-primary)]" />
-            Symposium Schedule & Plenary Lectures
+            {t("scheduleTitle")}
           </h3>
           <div className="space-y-3 font-sans">
             {event.agendaItems.map((agenda) => (
@@ -283,10 +285,10 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
         <div>
           <h3 className="text-xl font-bold text-foreground flex items-center gap-2 font-sans">
             <Ticket className="h-5 w-5 text-[var(--archetype-primary)]" />
-            Medical Registration & Delegate Credentials
+            {t("ticketsTitle")}
           </h3>
           <p className="text-xs font-sans text-muted-foreground">
-            Credentialed rates for medical specialists, fellows, residents, and allied healthcare professionals.
+            {t("ticketsDesc")}
           </p>
         </div>
 
@@ -305,14 +307,14 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg">{tier.name}</CardTitle>
                     <Badge variant="secondary" size="sm">
-                      {tier.capacity - tier.soldCount} Badges Left
+                      {t("badgesLeft", { count: tier.capacity - tier.soldCount })}
                     </Badge>
                   </div>
                   <div className="mt-2">
                     <span className="text-2xl font-bold text-foreground">
                       {tier.price > 0
                         ? formatCurrency(tier.price, (tier.currency as SupportedCurrency) || "IDR", locale)
-                        : "Complimentary Pass"}
+                        : t("complimentaryPass")}
                     </span>
                   </div>
                 </CardHeader>
@@ -332,7 +334,7 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
                       onClick={() => onSelectTier?.(tier.id)}
                     >
                       <Ticket className="h-4 w-4" />
-                      Select Delegate Pass
+                      {t("cta")}
                     </Button>
                   </div>
                 </CardContent>

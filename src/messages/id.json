@@ -2073,6 +2073,34 @@
       "complianceNote": "Semua data konsesi disinkronkan dengan target energi bersih nasional dan blueprint transmisi regional.",
       "cancelCta": "Batal",
       "confirmCta": "Minta Dossier Teknis"
+    },
+    "MEDICAL_SYMPOSIUM": {
+      "heroBadge": "Kongres Klinis & Kongres Riset Ilmiah",
+      "heroTitle": "Memajukan Kedokteran Berbasis Bukti & Praktik Klinis",
+      "abstractsCta": "Baca Abstrak Peer-Review ({count})",
+      "cmeCertCta": "Sertifikat CME (Hingga 18,5 Kredit)",
+      "accreditedBadge": "Kongres Terakreditasi",
+      "eligibilityTitle": "Kelayakan Kredit CME",
+      "eligibilityDesc": "Terakreditasi oleh IDI (Ikatan Dokter Indonesia) & ACCME.",
+      "totalCreditsLabel": "Total Kredit Kongres:",
+      "totalCreditsValue": "18,5 SKP / CME",
+      "attendanceNote": "Memerlukan pemindaian kehadiran pada 80% atau lebih simposium pleno dan modul workshop.",
+      "cmeRegistered": "Verifikasi CME terdaftar. Sertifikat tersedia setelah selesai.",
+      "registerCmeCta": "Daftarkan ID Lisensi Dokter CME",
+      "abstractsTitle": "Abstrak Ilmiah & Uji Klinis",
+      "abstractsDesc": "Cari makalah peer-review yang dipresentasikan dalam sesi oral dan poster.",
+      "searchPlaceholder": "Cari berdasarkan topik, penulis, institusi...",
+      "cmeCreditsBadge": "{count} Kredit CME",
+      "doiLabel": "DOI: {doi}",
+      "toggleDetailsAria": "Buka detail",
+      "peerReviewedNote": "Peer-review oleh Komite Penasihat Ilmiah Kongres",
+      "downloadPdf": "Unduh PDF Lengkap",
+      "scheduleTitle": "Jadwal Simposium & Kuliah Pleno",
+      "ticketsTitle": "Registrasi Medis & Kredensial Delegasi",
+      "ticketsDesc": "Tarif kredensial untuk spesialis medis, fellow, residen, dan tenaga kesehatan terkait.",
+      "badgesLeft": "Sisa {count} Badge",
+      "cta": "Pilih Pass Delegasi",
+      "complimentaryPass": "Pass Gratis"
     }
   }
 }
