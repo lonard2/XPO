@@ -1871,6 +1871,28 @@
       "availableCount": "{count} verfügbar",
       "freeTicket": "Kostenloses Ticket",
       "selectPass": "Pass wählen"
+    },
+    "MEGA_EXPO_PAVILION": {
+      "heroBadge": "Nationale Handelsmesse, Mehrhallen-Pavillons & Karneval",
+      "heroTitle": "Multi-Pavillon-Mega-Messe, nächtliches Feuerwerk & Flash-Angebote",
+      "exploreCta": "Alle Pavillons & Hallen erkunden",
+      "promoRadarCta": "Promo-Radar & Gutscheine",
+      "nightlyBadge": "Nächtliches Spektakel",
+      "fireworksTitle": "Feuerwerk in der Grand Arena",
+      "fireworksDescription": "Pyrotechnik, die während der gesamten Messe den Nachthimmel erleuchtet.",
+      "directoryTitle": "Mehrhallen-Pavillon-Verzeichnis",
+      "directoryDescription": "Über mehrere verbundene Ausstellungsflügel, Außenarenen und Gourmetpromenaden.",
+      "brandsCount": "{count}+ Marken",
+      "airConditioned": "Klimatisierte Halle",
+      "viewBoothMap": "Standplan ansehen",
+      "promoTitle": "Expo-Promo-Radar & exklusive Angebote",
+      "livePromos": "Live verifizierte Promos",
+      "presentPass": "XPO-Pass am Counter vorzeigen",
+      "ticketsTitle": "Messe-Eintrittspässe & Mehrtages-Familienpakete",
+      "ticketsDescription": "Kinder unter 100 cm haben freien Eintritt. Pässe gelten für alle kommerziellen Pavillons und Abendkonzerte.",
+      "availableCount": "{count} verfügbar",
+      "cta": "Eintrittspass erhalten",
+      "freeEntry": "Freier Eintritt"
     }
   }
 }

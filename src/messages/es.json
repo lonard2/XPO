@@ -1871,6 +1871,28 @@
       "availableCount": "{count} disponibles",
       "freeTicket": "Entrada gratuita",
       "selectPass": "Seleccionar pase"
+    },
+    "MEGA_EXPO_PAVILION": {
+      "heroBadge": "Feria Nacional de Comercio, Pabellones Multihall y Carnaval",
+      "heroTitle": "Macroferia Multipabellón, Fuegos Artificiales Nocturnos y Promos Flash",
+      "exploreCta": "Explorar Todos los Pabellones y Salas",
+      "promoRadarCta": "Radar de Promos y Cupones",
+      "nightlyBadge": "Espectáculo Nocturno",
+      "fireworksTitle": "Fuegos Artificiales de la Arena Principal",
+      "fireworksDescription": "Espectáculos pirotécnicos que iluminan el cielo nocturno durante toda la feria.",
+      "directoryTitle": "Directorio de Salas Multipabellón",
+      "directoryDescription": "Abarca varias alas de exposición conectadas, arenas exteriores y paseos gastronómicos.",
+      "brandsCount": "{count}+ Marcas",
+      "airConditioned": "Sala Climatizada",
+      "viewBoothMap": "Ver Mapa de Stands",
+      "promoTitle": "Radar de Promos de la Expo y Ofertas Exclusivas",
+      "livePromos": "Promos Verificadas en Vivo",
+      "presentPass": "Muestre el pase XPO en el mostrador",
+      "ticketsTitle": "Pases de Entrada a la Feria y Paquetes Familiares Multi-Día",
+      "ticketsDescription": "Los menores de 100 cm entran gratis. Los pases dan acceso a todos los pabellones comerciales y conciertos nocturnos.",
+      "availableCount": "{count} disponibles",
+      "cta": "Obtener Pase de Entrada",
+      "freeEntry": "Entrada gratuita"
     }
   }
 }

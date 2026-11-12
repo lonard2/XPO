@@ -1871,6 +1871,28 @@
       "availableCount": "剩余 {count} 张",
       "freeTicket": "免费门票",
       "selectPass": "选择通行证"
+    },
+    "MEGA_EXPO_PAVILION": {
+      "heroBadge": "全国贸易博览会、多展厅展馆与嘉年华",
+      "heroTitle": "多展馆大型博览会、夜间烟花与限时促销",
+      "exploreCta": "浏览所有展馆与展厅",
+      "promoRadarCta": "促销雷达与优惠券",
+      "nightlyBadge": "夜间盛典",
+      "fireworksTitle": "主竞技场烟花",
+      "fireworksDescription": "博览会期间点亮夜空的烟火表演。",
+      "directoryTitle": "多展馆展厅指南",
+      "directoryDescription": "横跨多个相连的展览区、户外场馆与美食长廊。",
+      "brandsCount": "{count}+ 品牌",
+      "airConditioned": "空调展厅",
+      "viewBoothMap": "查看展位地图",
+      "promoTitle": "博览会促销雷达与专属优惠",
+      "livePromos": "实时认证促销",
+      "presentPass": "在柜台出示 XPO 通行证",
+      "ticketsTitle": "博览会入场通行证与多日家庭套票",
+      "ticketsDescription": "身高 100 厘米以下儿童免费入场。通行证可进入所有商业展馆与夜间音乐会。",
+      "availableCount": "剩余 {count} 张",
+      "cta": "获取入场通行证",
+      "freeEntry": "免费入场"
     }
   }
 }

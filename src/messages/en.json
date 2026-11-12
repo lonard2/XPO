@@ -1871,6 +1871,28 @@
       "availableCount": "{count} Available",
       "freeTicket": "Free Ticket",
       "selectPass": "Select Pass"
+    },
+    "MEGA_EXPO_PAVILION": {
+      "heroBadge": "National Trade Fair, Multi-Hall Pavilions & Carnival",
+      "heroTitle": "Multi-Pavilion Mega Fair, Nightly Fireworks & Flash Promos",
+      "exploreCta": "Explore All Pavilions & Halls",
+      "promoRadarCta": "Promo Radar & Coupons",
+      "nightlyBadge": "Nightly Spectacle",
+      "fireworksTitle": "Grand Arena Fireworks",
+      "fireworksDescription": "Pyrotechnic displays lighting up the night sky throughout the fair duration.",
+      "directoryTitle": "Multi-Pavilion Hall Directory",
+      "directoryDescription": "Spanning multiple connected exhibition wings, outdoor arenas, and gourmet dining promenades.",
+      "brandsCount": "{count}+ Brands",
+      "airConditioned": "Air-Conditioned Hall",
+      "viewBoothMap": "View Booth Map",
+      "promoTitle": "Expo Promo Radar & Exclusive Deals",
+      "livePromos": "Live Verified Promos",
+      "presentPass": "Present XPO pass at counter",
+      "ticketsTitle": "Fair Admission Passes & Multi-Day Family Bundles",
+      "ticketsDescription": "Children under 100cm enter free. Passes grant admission to all commercial pavilions and nightly concerts.",
+      "availableCount": "{count} Available",
+      "cta": "Get Admission Pass",
+      "freeEntry": "Free Entry"
     }
   }
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import {
   Store,
   Sparkles,
@@ -24,6 +25,7 @@ import { formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
 import type { ArchetypeViewProps } from "./IndustrialB2BView";
 
 export function MegaExpoPavilionView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
+  const t = useTranslations("archetypeViews.MEGA_EXPO_PAVILION");
   const [selectedPavilion, setSelectedPavilion] = React.useState("ALL");
 
   // Pavilions directory
@@ -55,10 +57,10 @@ export function MegaExpoPavilionView({ event, locale = "en", onSelectTier }: Arc
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center gap-2 text-xs font-bold text-orange-500 uppercase tracking-wider">
             <Store className="h-4 w-4" aria-hidden="true" />
-            <span>National Trade Fair, Multi-Hall Pavilions & Carnival</span>
+            <span>{t("heroBadge")}</span>
           </div>
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground">
-            Multi-Pavilion Mega Fair, Nightly Fireworks & Flash Promos
+            {t("heroTitle")}
           </h2>
           <p className="text-muted-foreground text-sm leading-relaxed">
             {event.description}
@@ -74,7 +76,7 @@ export function MegaExpoPavilionView({ event, locale = "en", onSelectTier }: Arc
               className="gap-2 text-xs font-semibold shadow-md"
             >
               <Store className="h-4 w-4" />
-              Explore All Pavilions & Halls
+              {t("exploreCta")}
             </Button>
 
             <Button
@@ -86,7 +88,7 @@ export function MegaExpoPavilionView({ event, locale = "en", onSelectTier }: Arc
               className="gap-2 text-xs"
             >
               <Tag className="h-4 w-4 text-orange-500" />
-              Promo Radar & Coupons
+              {t("promoRadarCta")}
             </Button>
           </div>
         </div>
@@ -97,13 +99,13 @@ export function MegaExpoPavilionView({ event, locale = "en", onSelectTier }: Arc
             <div className="flex items-center justify-between">
               <Badge variant="warning" size="sm" className="gap-1">
                 <Sparkles className="h-3.5 w-3.5" />
-                Nightly Spectacle
+                {t("nightlyBadge")}
               </Badge>
               <Flame className="h-4 w-4 text-orange-500" />
             </div>
-            <CardTitle className="text-base">Grand Arena Fireworks</CardTitle>
+            <CardTitle className="text-base">{t("fireworksTitle")}</CardTitle>
             <CardDescription className="text-xs">
-              Pyrotechnic displays lighting up the night sky throughout the fair duration.
+              {t("fireworksDescription")}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3 text-xs">
@@ -128,10 +130,10 @@ export function MegaExpoPavilionView({ event, locale = "en", onSelectTier }: Arc
         <div>
           <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
             <Layers className="h-5 w-5 text-orange-500" />
-            Multi-Pavilion Hall Directory
+            {t("directoryTitle")}
           </h3>
           <p className="text-xs sm:text-sm text-muted-foreground">
-            Spanning multiple connected exhibition wings, outdoor arenas, and gourmet dining promenades.
+            {t("directoryDescription")}
           </p>
         </div>
 
@@ -140,7 +142,7 @@ export function MegaExpoPavilionView({ event, locale = "en", onSelectTier }: Arc
             <Card key={pavilion.id} className="border-border hover:border-orange-500 transition-all flex flex-col justify-between">
               <CardHeader className="p-4 pb-2">
                 <Badge variant="archetype" size="sm" className="w-fit mb-2 font-mono">
-                  {pavilion.tenantsCount}+ Brands
+                  {t("brandsCount", { count: pavilion.tenantsCount })}
                 </Badge>
                 <CardTitle className="text-sm font-bold">{pavilion.name}</CardTitle>
                 <CardDescription className="text-xs text-muted-foreground mt-1">
@@ -149,9 +151,9 @@ export function MegaExpoPavilionView({ event, locale = "en", onSelectTier }: Arc
               </CardHeader>
               <CardContent className="p-4 pt-2">
                 <div className="pt-2 border-t border-border/40 flex justify-between items-center text-xs text-muted-foreground">
-                  <span>Air-Conditioned Hall</span>
+                  <span>{t("airConditioned")}</span>
                   <span className="text-orange-500 font-semibold cursor-pointer hover:underline">
-                    View Booth Map
+                    {t("viewBoothMap")}
                   </span>
                 </div>
               </CardContent>
@@ -165,10 +167,10 @@ export function MegaExpoPavilionView({ event, locale = "en", onSelectTier }: Arc
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Tag className="h-5 w-5 text-orange-500" />
-            <h3 className="text-lg font-bold text-foreground">Expo Promo Radar & Exclusive Deals</h3>
+            <h3 className="text-lg font-bold text-foreground">{t("promoTitle")}</h3>
           </div>
           <Badge variant="success" size="sm">
-            Live Verified Promos
+            {t("livePromos")}
           </Badge>
         </div>
 
@@ -181,7 +183,7 @@ export function MegaExpoPavilionView({ event, locale = "en", onSelectTier }: Arc
               </div>
               <p className="text-xs font-bold text-orange-500">{promo.discount}</p>
               <div className="pt-1 flex items-center justify-between text-xs text-muted-foreground">
-                <span>Present XPO pass at counter</span>
+                <span>{t("presentPass")}</span>
                 <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
               </div>
             </div>
@@ -194,10 +196,10 @@ export function MegaExpoPavilionView({ event, locale = "en", onSelectTier }: Arc
         <div>
           <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
             <Ticket className="h-5 w-5 text-[var(--archetype-primary)]" />
-            Fair Admission Passes & Multi-Day Family Bundles
+            {t("ticketsTitle")}
           </h3>
           <p className="text-xs text-muted-foreground">
-            Children under 100cm enter free. Passes grant admission to all commercial pavilions and nightly concerts.
+            {t("ticketsDescription")}
           </p>
         </div>
 
@@ -216,14 +218,14 @@ export function MegaExpoPavilionView({ event, locale = "en", onSelectTier }: Arc
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg">{tier.name}</CardTitle>
                     <Badge variant="secondary" size="sm">
-                      {tier.capacity - tier.soldCount} Available
+                      {t("availableCount", { count: tier.capacity - tier.soldCount })}
                     </Badge>
                   </div>
                   <div className="mt-2">
                     <span className="text-2xl font-bold text-foreground">
                       {tier.price > 0
                         ? formatCurrency(tier.price, (tier.currency as SupportedCurrency) || "IDR", locale)
-                        : "Free Entry"}
+                        : t("freeEntry")}
                     </span>
                   </div>
                 </CardHeader>
@@ -243,7 +245,7 @@ export function MegaExpoPavilionView({ event, locale = "en", onSelectTier }: Arc
                       onClick={() => onSelectTier?.(tier.id)}
                     >
                       <Ticket className="h-4 w-4" />
-                      Get Admission Pass
+                      {t("cta")}
                     </Button>
                   </div>
                 </CardContent>

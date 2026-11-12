@@ -1871,6 +1871,28 @@
       "availableCount": "残り{count}枚",
       "freeTicket": "無料チケット",
       "selectPass": "パスを選択"
+    },
+    "MEGA_EXPO_PAVILION": {
+      "heroBadge": "全国貿易フェア、マルチホールパビリオン、カーニバル",
+      "heroTitle": "マルチパビリオンのメガフェア、夜の花火、フラッシュセール",
+      "exploreCta": "すべてのパビリオンとホールを見る",
+      "promoRadarCta": "プロモレーダーとクーポン",
+      "nightlyBadge": "ナイトスペクタクル",
+      "fireworksTitle": "グランドアリーナ花火",
+      "fireworksDescription": "フェア期間中、夜空を彩る花火演出。",
+      "directoryTitle": "マルチパビリオンホール案内",
+      "directoryDescription": "接続された複数の展示ウィング、屋外アリーナ、グルメプロムナードにまたがります。",
+      "brandsCount": "{count}+ ブランド",
+      "airConditioned": "空調完備ホール",
+      "viewBoothMap": "ブースマップを見る",
+      "promoTitle": "エキスポプロモレーダーと限定特典",
+      "livePromos": "ライブ認証プロモ",
+      "presentPass": "カウンターでXPOパスを提示",
+      "ticketsTitle": "フェア入場パスと複数日ファミリーバンドル",
+      "ticketsDescription": "身長100cm未満の子供は無料。パスはすべての商業パビリオンと夜のコンサートに入場できます。",
+      "availableCount": "残り{count}枚",
+      "cta": "入場パスを取得",
+      "freeEntry": "無料入場"
     }
   }
 }
