@@ -400,7 +400,20 @@
     "next90Days": "Próximos 90 días",
     "thisWeek": "Esta semana",
     "thisYear": "Este año",
-    "showAllCategories": "Mostrar las 22 categorías"
+    "showAllCategories": "Mostrar las 22 categorías",
+    "searchToolbarAria": "Barra de búsqueda y filtros",
+    "searchEventsAria": "Buscar eventos",
+    "clearSearchAria": "Borrar la búsqueda",
+    "sortEventsAria": "Ordenar eventos",
+    "viewModeAria": "Cambiar modo de vista",
+    "gridViewAria": "Vista de cuadrícula",
+    "denseTableAria": "Vista de tabla compacta",
+    "openFiltersAria": "Abrir panel de filtros",
+    "facetedFilterAria": "Controles de filtros facetados",
+    "selectedCount": "{count} seleccionados",
+    "activeFiltersAria": "Filtros activos",
+    "showingCount": "Mostrando {shown} de {total} exposiciones",
+    "loadMore": "Cargar más exposiciones"
   },
   "events": {
     "title": "Directorio de Eventos y Calendario",

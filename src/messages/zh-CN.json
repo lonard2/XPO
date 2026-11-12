@@ -400,7 +400,20 @@
     "next90Days": "未来 90 天",
     "thisWeek": "本周",
     "thisYear": "今年",
-    "showAllCategories": "显示全部 22 个类别"
+    "showAllCategories": "显示全部 22 个类别",
+    "searchToolbarAria": "搜索与筛选工具栏",
+    "searchEventsAria": "搜索活动",
+    "clearSearchAria": "清除搜索关键词",
+    "sortEventsAria": "排序活动",
+    "viewModeAria": "切换视图模式",
+    "gridViewAria": "网格视图",
+    "denseTableAria": "紧凑表格视图",
+    "openFiltersAria": "打开筛选面板",
+    "facetedFilterAria": "分面筛选控件",
+    "selectedCount": "已选 {count} 项",
+    "activeFiltersAria": "已启用筛选",
+    "showingCount": "显示 {shown} / {total} 场展览",
+    "loadMore": "加载更多展览"
   },
   "events": {
     "title": "展会名录与日程",

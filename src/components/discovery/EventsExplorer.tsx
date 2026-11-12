@@ -347,15 +347,17 @@ export function EventsExplorer({
                 {visibleCount < filteredAndSortedEvents.length && (
                   <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-border/60">
                     <p className="text-xs text-muted-foreground font-mono">
-                      Showing <span className="font-semibold text-foreground">{displayedEvents.length}</span> of{' '}
-                      <span className="font-semibold text-foreground">{filteredAndSortedEvents.length}</span> exhibitions
+                      {tDisc('showingCount', {
+                        shown: displayedEvents.length,
+                        total: filteredAndSortedEvents.length,
+                      })}
                     </p>
                     <Button
                       variant="outline"
                       onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE_INCREMENT)}
                       className="gap-2 text-xs font-semibold cursor-pointer w-full sm:w-auto"
                     >
-                      <span>Load More Exhibitions</span>
+                      <span>{tDisc('loadMore')}</span>
                       <span className="text-[11px] font-mono text-muted-foreground">
                         (+{Math.min(PAGE_SIZE_INCREMENT, filteredAndSortedEvents.length - visibleCount)})
                       </span>
@@ -381,15 +383,17 @@ export function EventsExplorer({
                 {visibleCount < filteredAndSortedEvents.length && (
                   <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-border/60">
                     <p className="text-xs text-muted-foreground font-mono">
-                      Showing <span className="font-semibold text-foreground">{displayedEvents.length}</span> of{' '}
-                      <span className="font-semibold text-foreground">{filteredAndSortedEvents.length}</span> exhibitions
+                      {tDisc('showingCount', {
+                        shown: displayedEvents.length,
+                        total: filteredAndSortedEvents.length,
+                      })}
                     </p>
                     <Button
                       variant="outline"
                       onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE_INCREMENT)}
                       className="gap-2 text-xs font-semibold cursor-pointer w-full sm:w-auto"
                     >
-                      <span>Load More Exhibitions</span>
+                      <span>{tDisc('loadMore')}</span>
                       <span className="text-[11px] font-mono text-muted-foreground">
                         (+{Math.min(PAGE_SIZE_INCREMENT, filteredAndSortedEvents.length - visibleCount)})
                       </span>

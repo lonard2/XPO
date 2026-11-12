@@ -400,7 +400,20 @@
     "next90Days": "Next 90 Days",
     "thisWeek": "This Week",
     "thisYear": "This Year",
-    "showAllCategories": "Show all 22 categories"
+    "showAllCategories": "Show all 22 categories",
+    "searchToolbarAria": "Search and filter toolbar",
+    "searchEventsAria": "Search events",
+    "clearSearchAria": "Clear search query",
+    "sortEventsAria": "Sort events",
+    "viewModeAria": "View mode toggle",
+    "gridViewAria": "Grid view",
+    "denseTableAria": "Dense table view",
+    "openFiltersAria": "Open filter sidebar drawer",
+    "facetedFilterAria": "Faceted Filter Controls",
+    "selectedCount": "{count} selected",
+    "activeFiltersAria": "Active filters",
+    "showingCount": "Showing {shown} of {total} exhibitions",
+    "loadMore": "Load More Exhibitions"
   },
   "events": {
     "title": "Event Directory & Timetable",

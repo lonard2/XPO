@@ -154,7 +154,7 @@ export function FilterSidebar({
     (filters.keyword && filters.keyword.trim().length > 0);
 
   return (
-    <div className={cn('space-y-6', className)} aria-label="Faceted Filter Controls">
+    <div className={cn('space-y-6', className)} aria-label={tDisc('facetedFilterAria') || 'Faceted Filter Controls'}>
       {/* Header with Title and Reset */}
       <div className="flex items-center justify-between border-b border-border/80 pb-3">
         <div className="flex items-center gap-2 text-foreground font-bold text-sm">
@@ -271,7 +271,7 @@ export function FilterSidebar({
           </label>
           {selectedArchetypes.length > 0 && (
             <span className="text-xs text-primary font-semibold font-mono">
-              {selectedArchetypes.length} selected
+              {tDisc('selectedCount', { count: selectedArchetypes.length })}
             </span>
           )}
         </div>

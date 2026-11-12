@@ -400,7 +400,20 @@
     "next90Days": "今後90日間",
     "thisWeek": "今週",
     "thisYear": "今年",
-    "showAllCategories": "22 カテゴリをすべて表示"
+    "showAllCategories": "22 カテゴリをすべて表示",
+    "searchToolbarAria": "検索とフィルターのツールバー",
+    "searchEventsAria": "イベントを検索",
+    "clearSearchAria": "検索キーワードを消去",
+    "sortEventsAria": "イベントを並べ替え",
+    "viewModeAria": "表示モードの切り替え",
+    "gridViewAria": "グリッド表示",
+    "denseTableAria": "高密度テーブル表示",
+    "openFiltersAria": "フィルターパネルを開く",
+    "facetedFilterAria": "ファセットフィルター",
+    "selectedCount": "{count}件選択",
+    "activeFiltersAria": "有効なフィルター",
+    "showingCount": "{total}件中{shown}件の展示会を表示",
+    "loadMore": "さらに展示会を読み込む"
   },
   "events": {
     "title": "イベント一覧＆スケジュール",
@@ -682,7 +695,7 @@
     "jumpTo": "{title}へ移動",
     "eventsCountZero": "予定なし",
     "eventsCountOne": "1件",
-    "eventsCount": "{count}件"
+    "eventsCount": "{count}件のイベント"
   },
   "tickets": {
     "bookPass": "入場パスを予約",

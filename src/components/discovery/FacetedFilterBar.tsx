@@ -135,7 +135,7 @@ export function FacetedFilterBar({
     (filters.dateRange !== 'all' ? 1 : 0);
 
   return (
-    <div role="toolbar" className={cn('space-y-3', className)} aria-label="Search and filter toolbar">
+    <div role="toolbar" className={cn('space-y-3', className)} aria-label={tDisc('searchToolbarAria') || 'Search and filter toolbar'}>
       {/* Top Search and Sort Bar */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
         {/* Search Input with Keyboard Shortcut */}
@@ -148,14 +148,14 @@ export function FacetedFilterBar({
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder={tDisc('searchPlaceholder') || 'Search exhibitions by title, keyword, city, or venue...'}
             className="h-10 w-full rounded-xl border border-border bg-card pl-10 pr-16 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-xs"
-            aria-label="Search events"
+            aria-label={tDisc('searchEventsAria') || 'Search events'}
           />
           {searchTerm ? (
             <button
               type="button"
               onClick={handleClearSearch}
               className="absolute right-2 top-1/2 -translate-y-1/2 flex h-7 w-7 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors cursor-pointer after:absolute after:-inset-2 after:content-['']"
-              aria-label="Clear search query"
+              aria-label={tDisc('clearSearchAria') || 'Clear search query'}
             >
               <X className="h-3.5 w-3.5" />
             </button>
@@ -175,7 +175,7 @@ export function FacetedFilterBar({
               value={sortBy}
               onChange={(e) => onSortChange(e.target.value)}
               className="h-10 w-full sm:w-auto rounded-xl border border-border bg-card pl-3 pr-8 text-xs font-medium text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-xs cursor-pointer"
-              aria-label="Sort events"
+              aria-label={tDisc('sortEventsAria') || 'Sort events'}
             >
               <option value="date_asc">{tEvents('sortUpcoming') || 'Date: Upcoming First'}</option>
               <option value="date_desc">{tEvents('sortLatest') || 'Date: Latest First'}</option>
@@ -193,7 +193,7 @@ export function FacetedFilterBar({
             <div
               className="hidden sm:inline-flex items-center rounded-xl border border-border bg-card p-0.5 shadow-xs"
               role="group"
-              aria-label="View mode toggle"
+              aria-label={tDisc('viewModeAria') || 'View mode toggle'}
             >
               <button
                 type="button"
@@ -204,8 +204,8 @@ export function FacetedFilterBar({
                     ? 'bg-primary text-primary-foreground shadow-xs font-bold'
                     : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                 )}
-                aria-label="Grid view"
-                title="Grid view"
+                aria-label={tDisc('gridViewAria') || 'Grid view'}
+                title={tDisc('gridViewAria') || 'Grid view'}
                 aria-pressed={viewMode === 'grid'}
               >
                 <LayoutGrid className="h-4 w-4" />
@@ -219,8 +219,8 @@ export function FacetedFilterBar({
                     ? 'bg-primary text-primary-foreground shadow-xs font-bold'
                     : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                 )}
-                aria-label="Dense table view"
-                title="Dense table view"
+                aria-label={tDisc('denseTableAria') || 'Dense table view'}
+                title={tDisc('denseTableAria') || 'Dense table view'}
                 aria-pressed={viewMode === 'table'}
               >
                 <List className="h-4 w-4" />
@@ -233,7 +233,7 @@ export function FacetedFilterBar({
             variant="outline"
             onClick={onOpenMobileFilters}
             className="lg:hidden h-10 min-h-[44px] gap-2 px-3 text-xs font-semibold shrink-0"
-            aria-label="Open filter sidebar drawer"
+            aria-label={tDisc('openFiltersAria') || 'Open filter sidebar drawer'}
           >
             <SlidersHorizontal className="h-4 w-4 text-primary" />
             <span>{tCom('filters') || 'Filters'}</span>

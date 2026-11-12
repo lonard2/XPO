@@ -400,7 +400,20 @@
     "next90Days": "90 Hari Ke Depan",
     "thisWeek": "Minggu Ini",
     "thisYear": "Tahun Ini",
-    "showAllCategories": "Tampilkan semua 22 kategori"
+    "showAllCategories": "Tampilkan semua 22 kategori",
+    "searchToolbarAria": "Bilah pencarian dan filter",
+    "searchEventsAria": "Cari acara",
+    "clearSearchAria": "Hapus kata kunci pencarian",
+    "sortEventsAria": "Urutkan acara",
+    "viewModeAria": "Pilih mode tampilan",
+    "gridViewAria": "Tampilan kisi",
+    "denseTableAria": "Tampilan tabel padat",
+    "openFiltersAria": "Buka panel filter",
+    "facetedFilterAria": "Kontrol filter berfaset",
+    "selectedCount": "{count} dipilih",
+    "activeFiltersAria": "Filter aktif",
+    "showingCount": "Menampilkan {shown} dari {total} pameran",
+    "loadMore": "Muat Pameran Lainnya"
   },
   "events": {
     "title": "Direktori Acara & Jadwal",

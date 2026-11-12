@@ -500,7 +500,7 @@ export function CalendarInteractiveView({
                       {isExporting ? (tCal('generatingICal') || 'Generating iCalendar...') : (tCal('icalFile') || 'iCalendar File (.ics)')}
                     </div>
                     <p className="text-[11px] text-muted-foreground line-clamp-1">
-                      {(tCal('icalApps') || 'Apple Calendar, Outlook, Thunderbird')} · {filteredEvents.length} events
+                      {(tCal('icalApps') || 'Apple Calendar, Outlook, Thunderbird')} · {tCal('eventsCount', { count: filteredEvents.length })}
                     </p>
                   </div>
                 </button>
@@ -577,7 +577,7 @@ export function CalendarInteractiveView({
                       {tCal('csvFile') || 'CSV Spreadsheet (.csv)'}
                     </div>
                     <p className="text-[11px] text-muted-foreground line-clamp-1">
-                      {(tCal('csvDesc') || 'RFC 4180 format for Excel and Sheets')} · {filteredEvents.length} events
+                      {(tCal('csvDesc') || 'RFC 4180 format for Excel and Sheets')} · {tCal('eventsCount', { count: filteredEvents.length })}
                     </p>
                   </div>
                 </button>

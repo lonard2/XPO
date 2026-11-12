@@ -130,7 +130,7 @@ export function ActiveFilterChips({
   }
 
   return (
-    <div className={cn('flex flex-wrap items-center gap-2 pt-1', className)} aria-label="Active filters">
+    <div className={cn('flex flex-wrap items-center gap-2 pt-1', className)} aria-label={tDisc('activeFiltersAria') || 'Active filters'}>
       <span className="text-xs font-semibold text-muted-foreground">
         {tDisc('activeFilters') || 'Active Filters'} ({activeChips.length}):
       </span>

@@ -400,7 +400,20 @@
     "next90Days": "Nächste 90 Tage",
     "thisWeek": "Diese Woche",
     "thisYear": "Dieses Jahr",
-    "showAllCategories": "Alle 22 Kategorien anzeigen"
+    "showAllCategories": "Alle 22 Kategorien anzeigen",
+    "searchToolbarAria": "Such- und Filterleiste",
+    "searchEventsAria": "Veranstaltungen suchen",
+    "clearSearchAria": "Suchbegriff löschen",
+    "sortEventsAria": "Veranstaltungen sortieren",
+    "viewModeAria": "Ansichtsmodus wechseln",
+    "gridViewAria": "Rasteransicht",
+    "denseTableAria": "Kompakte Tabellenansicht",
+    "openFiltersAria": "Filterleiste öffnen",
+    "facetedFilterAria": "Facettenfilter",
+    "selectedCount": "{count} ausgewählt",
+    "activeFiltersAria": "Aktive Filter",
+    "showingCount": "{shown} von {total} Ausstellungen",
+    "loadMore": "Weitere Ausstellungen laden"
   },
   "events": {
     "title": "Messeverzeichnis & Kalender",
@@ -682,7 +695,7 @@
     "jumpTo": "Springen zu {title}",
     "eventsCountZero": "Keine Events",
     "eventsCountOne": "1 Event",
-    "eventsCount": "{count} Events"
+    "eventsCount": "{count} Veranstaltungen"
   },
   "tickets": {
     "bookPass": "Einlasspass buchen",
