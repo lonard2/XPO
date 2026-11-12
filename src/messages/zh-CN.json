@@ -1893,6 +1893,30 @@
       "availableCount": "剩余 {count} 张",
       "cta": "获取入场通行证",
       "freeEntry": "免费入场"
+    },
+    "MUSIC_FESTIVAL": {
+      "heroBadge": "多舞台现场音乐节与视觉制作",
+      "heroTitle": "沉浸式视听舞台与主打艺人阵容",
+      "timetableCta": "查看舞台时间表",
+      "wristbandCta": "RFID 手环与无现金指南",
+      "liveTelemetry": "实时传感器遥测",
+      "crowdTitle": "舞台人群密度",
+      "crowdDescription": "实时监测户外区域与室内展厅的人流。",
+      "ecosystemTitle": "RFID 手环与无现金生态",
+      "step1Title": "1. 手环领取",
+      "step1Body": "在 1-4 号门出示数字通行证二维码，兑换官方防水 NFC 布质手环。",
+      "step2Title": "2. 无现金餐饮",
+      "step2Body": "在音乐节酒吧和餐车轻触手环，即可完成 100% 无现金支付。",
+      "step3Title": "3. 自动退款",
+      "step3Body": "未使用余额将在音乐节结束后 48 小时内自动退回原支付方式。",
+      "scheduleTitle": "舞台时间表与演出曲目",
+      "scheduleDescription": "按舞台和展馆筛选艺人演出时段。",
+      "featuredArtist": "主打艺人：",
+      "ticketsTitle": "音乐节通行证与 VIP 天空露台证件",
+      "ticketsDescription": "VIP 通行证包含音乐节快速入场、天空露台观景平台与私人空调洗手间。",
+      "leftCount": "剩余 {count} 张",
+      "cta": "领取手环通行证",
+      "complimentary": "免费"
     }
   }
 }

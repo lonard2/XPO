@@ -1893,6 +1893,30 @@
       "availableCount": "{count} disponibles",
       "cta": "Obtener Pase de Entrada",
       "freeEntry": "Entrada gratuita"
+    },
+    "MUSIC_FESTIVAL": {
+      "heroBadge": "Festival en Vivo Multi-Escenario y Producción Visual",
+      "heroTitle": "Escenarios Audiovisuales Inmersivos y Carteles de Headliners",
+      "timetableCta": "Ver Horario de Escenarios",
+      "wristbandCta": "Guía de Pulsera RFID y Pago Sin Efectivo",
+      "liveTelemetry": "Telemetría de Sensores en Vivo",
+      "crowdTitle": "Densidad de Público por Escenario",
+      "crowdDescription": "Monitoreo de flujo de visitantes en zonas exteriores y salas interiores.",
+      "ecosystemTitle": "Ecosistema de Pulsera RFID y Pago Sin Efectivo",
+      "step1Title": "1. Canje de Pulsera",
+      "step1Body": "Canjee el código QR de su pase digital en las Puertas 1-4 por su pulsera oficial de tela NFC resistente al agua.",
+      "step2Title": "2. Comida y Bebida Sin Efectivo",
+      "step2Body": "Toque su pulsera en todos los bares del festival y food trucks para un pago 100% sin efectivo al instante.",
+      "step3Title": "3. Reembolso Automático",
+      "step3Body": "Los saldos no utilizados se devuelven automáticamente a su método de pago original en las 48 horas posteriores al festival.",
+      "scheduleTitle": "Horario de Escenarios y Setlist",
+      "scheduleDescription": "Filtre las actuaciones por escenario y pabellón.",
+      "featuredArtist": "Artista Destacado:",
+      "ticketsTitle": "Pases de Festival y Acreditaciones VIP Skydeck",
+      "ticketsDescription": "Los pases VIP incluyen entrada rápida al festival, plataformas de observación Skydeck y baños privados climatizados.",
+      "leftCount": "Quedan {count}",
+      "cta": "Obtener Pase de Pulsera",
+      "complimentary": "Cortesía"
     }
   }
 }

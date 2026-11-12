@@ -1893,6 +1893,30 @@
       "availableCount": "{count} Tersedia",
       "cta": "Dapatkan Pass Masuk",
       "freeEntry": "Masuk Gratis"
+    },
+    "MUSIC_FESTIVAL": {
+      "heroBadge": "Festival Live Multi-Panggung & Produksi Visual",
+      "heroTitle": "Panggung Audio-Visual Imersif & Lineup Headliner",
+      "timetableCta": "Lihat Jadwal Panggung",
+      "wristbandCta": "Panduan Gelang RFID & Nontunai",
+      "liveTelemetry": "Telemetri Sensor Langsung",
+      "crowdTitle": "Kepadatan Penonton Panggung",
+      "crowdDescription": "Pemantauan lalu lintas pengunjung langsung di zona luar dan hall dalam.",
+      "ecosystemTitle": "Ekosistem Gelang RFID & Nontunai",
+      "step1Title": "1. Penukaran Gelang",
+      "step1Body": "Tukarkan kode QR pass digital Anda di Gerbang 1-4 untuk gelang kain NFC anti-air resmi.",
+      "step2Title": "2. Makanan & Minuman Nontunai",
+      "step2Body": "Tap gelang Anda di semua bar minuman festival dan food truck untuk pembayaran nontunai instan 100%.",
+      "step3Title": "3. Pengembalian Dana Otomatis",
+      "step3Body": "Saldo yang tidak terpakai otomatis dikembalikan ke metode pembayaran asal dalam 48 jam setelah festival.",
+      "scheduleTitle": "Jadwal Panggung & Rincian Setlist",
+      "scheduleDescription": "Filter slot penampilan artis berdasarkan panggung dan paviliun.",
+      "featuredArtist": "Artis Unggulan:",
+      "ticketsTitle": "Pass Festival & Badge Skydeck VIP",
+      "ticketsDescription": "Pass VIP mencakup jalur cepat masuk gerbang festival, platform pandang Skydeck, dan toilet berpendingin pribadi.",
+      "leftCount": "Sisa {count}",
+      "cta": "Ambil Pass Gelang",
+      "complimentary": "Gratis"
     }
   }
 }

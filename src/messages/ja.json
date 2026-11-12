@@ -1893,6 +1893,30 @@
       "availableCount": "残り{count}枚",
       "cta": "入場パスを取得",
       "freeEntry": "無料入場"
+    },
+    "MUSIC_FESTIVAL": {
+      "heroBadge": "マルチステージ・ライブフェスティバル & ビジュアル制作",
+      "heroTitle": "没入型オーディオビジュアルステージ & ヘッドライナー",
+      "timetableCta": "ステージタイムテーブルを見る",
+      "wristbandCta": "RFIDリストバンド & キャッシュレスガイド",
+      "liveTelemetry": "ライブセンサーテレメトリー",
+      "crowdTitle": "ステージ混雑度",
+      "crowdDescription": "屋外ゾーンと屋内ホールのライブ人流モニタリング。",
+      "ecosystemTitle": "RFIDリストバンド & キャッシュレス環境",
+      "step1Title": "1. リストバンド引き換え",
+      "step1Body": "デジタルパスのQRコードをゲート1〜4で提示し、公式の防水NFCリストバンドと交換してください。",
+      "step2Title": "2. キャッシュレス飲食",
+      "step2Body": "フェスティバルのバーやフードトラックでリストバンドをタッチして、100%キャッシュレスで支払えます。",
+      "step3Title": "3. 自動返金",
+      "step3Body": "未使用残高はフェスティバル後48時間以内に元の支払い方法へ自動返金されます。",
+      "scheduleTitle": "ステージタイムテーブル & セットリスト",
+      "scheduleDescription": "ステージとパビリオンでアーティスト出演枠を絞り込みます。",
+      "featuredArtist": "注目アーティスト:",
+      "ticketsTitle": "フェスティバルパス & VIPスカイデッキバッジ",
+      "ticketsDescription": "VIPパスにはフェスティバルゲートのファストトラック入場、スカイデッキ展望台、専用空調トイレが含まれます。",
+      "leftCount": "残り{count}枚",
+      "cta": "リストバンドパスを取得",
+      "complimentary": "無料"
     }
   }
 }

@@ -1893,6 +1893,30 @@
       "availableCount": "{count} Available",
       "cta": "Get Admission Pass",
       "freeEntry": "Free Entry"
+    },
+    "MUSIC_FESTIVAL": {
+      "heroBadge": "Multi-Stage Live Festival & Visual Production",
+      "heroTitle": "Immersive Audio-Visual Stages & Headliner Lineups",
+      "timetableCta": "View Stage Timetable",
+      "wristbandCta": "RFID Wristband & Cashless Guide",
+      "liveTelemetry": "Live Sensor Telemetry",
+      "crowdTitle": "Stage Crowd Density",
+      "crowdDescription": "Live foot-traffic monitoring across outdoor zones and indoor halls.",
+      "ecosystemTitle": "RFID Wristband & Cashless Ecosystem",
+      "step1Title": "1. Wristband Redemption",
+      "step1Body": "Exchange your digital pass QR code at Gates 1-4 for your official waterproof NFC fabric wristband.",
+      "step2Title": "2. Cashless Food & Drinks",
+      "step2Body": "Tap your wristband at all festival beverage bars and food truck villages for instant 100% cashless payment.",
+      "step3Title": "3. Automatic Refund",
+      "step3Body": "Unused balances are automatically credited back to your original payment method within 48 hours post-festival.",
+      "scheduleTitle": "Stage Timetable & Setlist Breakdown",
+      "scheduleDescription": "Filter artist performance slots by stage and pavilion.",
+      "featuredArtist": "Featured Artist:",
+      "ticketsTitle": "Festival Passes & VIP Skydeck Badges",
+      "ticketsDescription": "VIP passes include fast-track festival gate entry, elevated Skydeck viewing platforms, and private air-conditioned restrooms.",
+      "leftCount": "{count} Left",
+      "cta": "Grab Wristband Pass",
+      "complimentary": "Complimentary"
     }
   }
 }

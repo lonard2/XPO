@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import {
   Music2,
   Radio,
@@ -23,6 +24,7 @@ import { formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
 import type { ArchetypeViewProps } from "./IndustrialB2BView";
 
 export function MusicFestivalView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
+  const t = useTranslations("archetypeViews.MUSIC_FESTIVAL");
   const [selectedStage, setSelectedStage] = React.useState("ALL");
 
   // Stages crowd density
@@ -49,10 +51,10 @@ export function MusicFestivalView({ event, locale = "en", onSelectTier }: Archet
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center gap-2 text-xs font-bold text-rose-500 uppercase tracking-wider">
             <Music2 className="h-4 w-4" aria-hidden="true" />
-            <span>Multi-Stage Live Festival & Visual Production</span>
+            <span>{t("heroBadge")}</span>
           </div>
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground">
-            Immersive Audio-Visual Stages & Headliner Lineups
+            {t("heroTitle")}
           </h2>
           <p className="text-muted-foreground text-sm leading-relaxed">
             {event.description}
@@ -68,7 +70,7 @@ export function MusicFestivalView({ event, locale = "en", onSelectTier }: Archet
               className="gap-2 text-xs font-semibold shadow-md"
             >
               <Clock className="h-4 w-4" />
-              View Stage Timetable
+              {t("timetableCta")}
             </Button>
 
             <Button
@@ -80,7 +82,7 @@ export function MusicFestivalView({ event, locale = "en", onSelectTier }: Archet
               className="gap-2 text-xs"
             >
               <CreditCard className="h-4 w-4 text-[var(--archetype-accent)]" />
-              RFID Wristband & Cashless Guide
+              {t("wristbandCta")}
             </Button>
           </div>
         </div>
@@ -91,13 +93,13 @@ export function MusicFestivalView({ event, locale = "en", onSelectTier }: Archet
             <div className="flex items-center justify-between">
               <Badge variant="archetype" size="sm" className="gap-1">
                 <Radio className="h-3.5 w-3.5 text-rose-400" />
-                Live Sensor Telemetry
+                {t("liveTelemetry")}
               </Badge>
               <Users className="h-4 w-4 text-muted-foreground" />
             </div>
-            <CardTitle className="text-base">Stage Crowd Density</CardTitle>
+            <CardTitle className="text-base">{t("crowdTitle")}</CardTitle>
             <CardDescription className="text-xs">
-              Live foot-traffic monitoring across outdoor zones and indoor halls.
+              {t("crowdDescription")}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3 text-xs">
@@ -123,29 +125,29 @@ export function MusicFestivalView({ event, locale = "en", onSelectTier }: Archet
       <section id="wristband-guide" className="p-6 rounded-xl bg-card border border-border space-y-4">
         <div className="flex items-center gap-2">
           <CreditCard className="h-5 w-5 text-[var(--archetype-accent)]" />
-          <h3 className="text-lg font-bold text-foreground">RFID Wristband & Cashless Ecosystem</h3>
+          <h3 className="text-lg font-bold text-foreground">{t("ecosystemTitle")}</h3>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-muted-foreground">
           <div className="p-4 rounded-lg bg-muted/40 border border-border/60 space-y-1.5">
             <h4 className="font-semibold text-foreground flex items-center gap-1.5">
               <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-              1. Wristband Redemption
+              {t("step1Title")}
             </h4>
-            <p>Exchange your digital pass QR code at Gates 1-4 for your official waterproof NFC fabric wristband.</p>
+            <p>{t("step1Body")}</p>
           </div>
           <div className="p-4 rounded-lg bg-muted/40 border border-border/60 space-y-1.5">
             <h4 className="font-semibold text-foreground flex items-center gap-1.5">
               <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-              2. Cashless Food & Drinks
+              {t("step2Title")}
             </h4>
-            <p>Tap your wristband at all festival beverage bars and food truck villages for instant 100% cashless payment.</p>
+            <p>{t("step2Body")}</p>
           </div>
           <div className="p-4 rounded-lg bg-muted/40 border border-border/60 space-y-1.5">
             <h4 className="font-semibold text-foreground flex items-center gap-1.5">
               <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-              3. Automatic Refund
+              {t("step3Title")}
             </h4>
-            <p>Unused balances are automatically credited back to your original payment method within 48 hours post-festival.</p>
+            <p>{t("step3Body")}</p>
           </div>
         </div>
       </section>
@@ -156,10 +158,10 @@ export function MusicFestivalView({ event, locale = "en", onSelectTier }: Archet
           <div>
             <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
               <Volume2 className="h-5 w-5 text-rose-500" />
-              Stage Timetable & Setlist Breakdown
+              {t("scheduleTitle")}
             </h3>
             <p className="text-xs text-muted-foreground">
-              Filter artist performance slots by stage and pavilion.
+              {t("scheduleDescription")}
             </p>
           </div>
 
@@ -198,7 +200,7 @@ export function MusicFestivalView({ event, locale = "en", onSelectTier }: Archet
                   <h4 className="text-base font-bold text-foreground">{act.title}</h4>
                   {act.speakerName && (
                     <p className="text-xs text-muted-foreground">
-                      Featured Artist: <span className="font-semibold text-foreground">{act.speakerName}</span>
+                      {t("featuredArtist")} <span className="font-semibold text-foreground">{act.speakerName}</span>
                     </p>
                   )}
                 </div>
@@ -220,10 +222,10 @@ export function MusicFestivalView({ event, locale = "en", onSelectTier }: Archet
         <div>
           <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
             <Ticket className="h-5 w-5 text-[var(--archetype-primary)]" />
-            Festival Passes & VIP Skydeck Badges
+            {t("ticketsTitle")}
           </h3>
           <p className="text-xs text-muted-foreground">
-            VIP passes include fast-track festival gate entry, elevated Skydeck viewing platforms, and private air-conditioned restrooms.
+            {t("ticketsDescription")}
           </p>
         </div>
 
@@ -242,14 +244,14 @@ export function MusicFestivalView({ event, locale = "en", onSelectTier }: Archet
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg">{tier.name}</CardTitle>
                     <Badge variant="secondary" size="sm">
-                      {tier.capacity - tier.soldCount} Left
+                      {t("leftCount", { count: tier.capacity - tier.soldCount })}
                     </Badge>
                   </div>
                   <div className="mt-2">
                     <span className="text-2xl font-bold text-foreground">
                       {tier.price > 0
                         ? formatCurrency(tier.price, (tier.currency as SupportedCurrency) || "IDR", locale)
-                        : "Complimentary"}
+                        : t("complimentary")}
                     </span>
                   </div>
                 </CardHeader>
@@ -269,7 +271,7 @@ export function MusicFestivalView({ event, locale = "en", onSelectTier }: Archet
                       onClick={() => onSelectTier?.(tier.id)}
                     >
                       <Ticket className="h-4 w-4" />
-                      Grab Wristband Pass
+                      {t("cta")}
                     </Button>
                   </div>
                 </CardContent>

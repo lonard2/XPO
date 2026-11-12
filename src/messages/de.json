@@ -1893,6 +1893,30 @@
       "availableCount": "{count} verfügbar",
       "cta": "Eintrittspass erhalten",
       "freeEntry": "Freier Eintritt"
+    },
+    "MUSIC_FESTIVAL": {
+      "heroBadge": "Mehrbühnen-Live-Festival & visuelle Produktion",
+      "heroTitle": "Immersive Audio-Visual-Bühnen & Headliner-Lineups",
+      "timetableCta": "Bühnenzeitplan ansehen",
+      "wristbandCta": "RFID-Armband & Cashless-Guide",
+      "liveTelemetry": "Live-Sensor-Telemetrie",
+      "crowdTitle": "Bühnendichte",
+      "crowdDescription": "Live-Besucherstromüberwachung in Außenbereichen und Innenhallen.",
+      "ecosystemTitle": "RFID-Armband & Cashless-Ökosystem",
+      "step1Title": "1. Armband-Ausgabe",
+      "step1Body": "Tauschen Sie den QR-Code Ihres digitalen Passes an den Toren 1-4 gegen ein offizielles wasserfestes NFC-Stoffarmband.",
+      "step2Title": "2. Bargeldloses Essen & Trinken",
+      "step2Body": "Tippen Sie Ihr Armband an allen Festival-Bars und Foodtrucks für sofortige 100% bargeldlose Zahlung.",
+      "step3Title": "3. Automatische Rückerstattung",
+      "step3Body": "Ungenutzte Guthaben werden innerhalb von 48 Stunden nach dem Festival automatisch auf Ihr ursprüngliches Zahlungsmittel zurückgebucht.",
+      "scheduleTitle": "Bühnenzeitplan & Setlist",
+      "scheduleDescription": "Filtern Sie Künstlerauftritte nach Bühne und Pavillon.",
+      "featuredArtist": "Featured Artist:",
+      "ticketsTitle": "Festival-Pässe & VIP-Skydeck-Badges",
+      "ticketsDescription": "VIP-Pässe umfassen schnellen Festival-Einlass, erhöhte Skydeck-Plattformen und private klimatisierte Toiletten.",
+      "leftCount": "Noch {count}",
+      "cta": "Armband-Pass sichern",
+      "complimentary": "Kostenlos"
     }
   }
 }
