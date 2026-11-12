@@ -110,7 +110,7 @@ export function FashionRetailView({ event, locale = "en", onSelectTier }: Archet
               <div className="space-y-1">
                 <h4 className="text-lg font-bold text-foreground">{t("dispatchedTitle")}</h4>
                 <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-                  {t("dispatchedBody", { brand: selectedBrand })}
+                  {t("dispatchedBody", { brand: selectedBrand ?? "" })}
                 </p>
               </div>
               <Button
