@@ -202,7 +202,7 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
               <div className="flex flex-wrap items-center gap-2">
                 <Badge variant="archetype" className="px-3 py-1 text-xs uppercase font-bold tracking-wider">
                   <Globe className="h-3 w-3 mr-1 inline" />
-                  {activeMeta.code} Hub
+                  {t('hubBadge', { code: activeMeta.code })}
                 </Badge>
                 <Badge variant="outline" className="text-xs bg-background/80">
                   <Coins className="h-3 w-3 mr-1 inline text-primary" />
@@ -215,7 +215,7 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
               </div>
 
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground">
-                {activeMeta.name} <span className="text-primary">MICE Ecosystem</span>
+                {activeMeta.name} <span className="text-primary">{t("miceEcosystem")}</span>
               </h1>
 
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
@@ -244,7 +244,7 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
                 </div>
                 <div className="flex items-center gap-2">
                   <Train className="h-4 w-4 text-primary" />
-                  <span>Verified Rapid Transit</span>
+                  <span>{t('verifiedTransit')}</span>
                 </div>
               </div>
             </div>
@@ -253,7 +253,7 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
             <div className="w-full lg:w-auto flex flex-col gap-2 rounded-2xl border border-border/80 bg-card p-4 shadow-sm">
               <span className="text-[11px] font-semibold uppercase text-muted-foreground tracking-wider flex items-center gap-1.5">
                 <Compass className="h-3.5 w-3.5 text-primary" />
-                <span>Switch Regional Hub</span>
+                <span>{t('switchRegionalHub')}</span>
               </span>
               <RegionSwitcher
                 currentLocale={locale}
@@ -274,7 +274,7 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
               <span>{t("venueSpotlights") || "Convention Complexes & Mega Exhibition Halls"}</span>
             </h2>
             <p className="text-xs text-muted-foreground">
-              Primary event infrastructure and multi-hall exhibition centers in this region.
+              {t('venueSpotlightsSubtitle')}
             </p>
           </div>
           <Link href={`/${locale}/venues`}>
@@ -324,7 +324,7 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
                           <span>{tVen(metricLabelKey(venueType))} ({spaceCount})</span>
                         </span>
                         <span className="text-muted-foreground font-mono">
-                          Cap: {totalCapacity.toLocaleString()}
+                          {t('capacityLabel', { capacity: totalCapacity.toLocaleString() })}
                         </span>
                       </div>
                       <div className="flex flex-wrap gap-1">
@@ -338,7 +338,7 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
                         ))}
                         {spaceCount > 4 && (
                           <span className="text-xs text-muted-foreground self-center">
-                            +{spaceCount - 4} more
+                            {t('moreSpaces', { count: spaceCount - 4 })}
                           </span>
                         )}
                       </div>
@@ -359,7 +359,7 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
 
                 <CardFooter className="p-5 pt-0 border-t border-border/50 flex items-center justify-between bg-muted/10">
                   <span className="text-[11px] font-medium text-muted-foreground">
-                    Verified Infrastructure
+                    {t('verifiedInfrastructure')}
                   </span>
                   <Link href={`/${locale}/venues/${venue.slug}`}>
                     <Button size="sm" variant="ghost" className="gap-1 text-xs text-primary font-semibold hover:bg-primary/10">
@@ -383,7 +383,7 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
               <span>{t("upcomingEvents") || "Scheduled Conventions & Trade Assemblies"}</span>
             </h2>
             <p className="text-xs text-muted-foreground">
-              Confirmed expos, keynotes, and summits taking place across regional halls.
+              {t('upcomingEventsSubtitle')}
             </p>
           </div>
           <Link href={`/${locale}/events`}>
@@ -397,8 +397,8 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
         {events.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border p-8 text-center space-y-3">
             <Calendar className="h-8 w-8 text-muted-foreground mx-auto" />
-            <h3 className="text-sm font-bold text-foreground">No events currently scheduled</h3>
-            <p className="text-xs text-muted-foreground">Check back soon for new trade exhibitions in this region.</p>
+            <h3 className="text-sm font-bold text-foreground">{t('noEventsScheduled')}</h3>
+            <p className="text-xs text-muted-foreground">{t('noEventsHint')}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -482,7 +482,7 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
               <span>{t("transitGuide")}</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-              Getting to {activeMeta.name} Convention Venues
+              {t('gettingTo', { region: activeMeta.name })}
             </h2>
             <p className="text-xs sm:text-sm text-muted-foreground max-w-2xl leading-relaxed">
               {activeMeta.transitSummary}

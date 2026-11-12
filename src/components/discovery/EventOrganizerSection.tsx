@@ -1,5 +1,6 @@
 import * as React from "react";
 import { ShieldCheck, Building2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 
@@ -10,10 +11,11 @@ export function EventOrganizerSection({
   event: any;
   locale?: string;
 }) {
+  const t = useTranslations("events");
   const isCurated = Boolean(event.isPlatformCurated || !event.organizer);
   const promoterName = isCurated
-    ? (event.organizerName || event.venue?.name || "Official Listing")
-    : (event.organizer?.organization || event.organizer?.name || event.organizerName || "Registered Organizer");
+    ? (event.organizerName || event.venue?.name || t("officialListingBadge"))
+    : (event.organizer?.organization || event.organizer?.name || event.organizerName || t("registeredOrganizer"));
 
   return (
     <section className="pt-8 border-t border-border/80" data-testid="event-organizer-section">
@@ -27,7 +29,7 @@ export function EventOrganizerSection({
                   className="border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 font-semibold gap-1 text-xs"
                 >
                   <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-                  <span>Official Listing</span>
+                  <span>{t("officialListingBadge")}</span>
                 </Badge>
               ) : (
                 <Badge
@@ -35,11 +37,11 @@ export function EventOrganizerSection({
                   className="border-primary/40 bg-primary/10 text-primary font-semibold gap-1 text-xs"
                 >
                   <ShieldCheck className="h-3.5 w-3.5 text-primary" />
-                  <span>Verified Organizer</span>
+                  <span>{t("verifiedOrganizer")}</span>
                 </Badge>
               )}
               <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                {isCurated ? "Platform Curation" : "Event Host"}
+                {isCurated ? t("platformCuration") : t("eventHost")}
               </span>
             </div>
 
@@ -49,8 +51,8 @@ export function EventOrganizerSection({
 
             <p className="text-xs text-muted-foreground">
               {isCurated
-                ? "Curated MICE Directory Listing - Verified by XPO Platform Administration"
-                : "Registered Event Organizer on XPO MICE Ecosystem"}
+                ? t("curatedListingBody")
+                : t("registeredOrganizer")}
             </p>
           </div>
         </div>
@@ -59,13 +61,13 @@ export function EventOrganizerSection({
           {event.venue?.name && (
             <span className="flex items-center gap-1.5">
               <Building2 className="h-3.5 w-3.5 text-primary shrink-0" />
-              <span>Venue: {event.venue.name}</span>
+              <span>{t("venueLabel", { venue: event.venue.name })}</span>
             </span>
           )}
           <span className="flex items-center gap-1.5">
             <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
             <span>
-              {isCurated ? "Governance: Curated Directory" : "Account Status: Active Organizer Tenant"}
+              {isCurated ? t("governanceCurated") : t("accountActive")}
             </span>
           </span>
         </div>

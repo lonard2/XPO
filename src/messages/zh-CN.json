@@ -230,7 +230,19 @@
     "viewVenue": "查看场馆",
     "venueCountN": "{count}个场馆",
     "currencyLabel": "货币：{currency}",
-    "timezoneLabel": "时区：{timezone}"
+    "timezoneLabel": "时区：{timezone}",
+    "hubBadge": "{code} 枢纽",
+    "miceEcosystem": "MICE 生态",
+    "verifiedTransit": "已认证快速交通",
+    "switchRegionalHub": "切换区域枢纽",
+    "venueSpotlightsSubtitle": "本地区的主要活动基础设施与多展厅会展中心。",
+    "capacityLabel": "容量：{capacity}",
+    "moreSpaces": "另有 {count} 个",
+    "verifiedInfrastructure": "已认证基础设施",
+    "upcomingEventsSubtitle": "在区域展厅举办的已确认展览、主题演讲与峰会。",
+    "noEventsScheduled": "目前没有已排期活动",
+    "noEventsHint": "请稍后查看本地区的新贸易展览。",
+    "gettingTo": "前往{region}会展场馆"
   },
   "archetypes": {
     "INDUSTRIAL_B2B": {
@@ -501,7 +513,16 @@
     "sectionsAria": "活动版块",
     "startingFrom": "{price} 起。",
     "showcaseUpdated": "主办方内容，更新于 {date}",
-    "showcaseStale": "可能已过时，请与主办方核实"
+    "showcaseStale": "可能已过时，请与主办方核实",
+    "officialListingBadge": "官方收录",
+    "verifiedOrganizer": "已认证主办方",
+    "venueLabel": "场馆：{venue}",
+    "platformCuration": "平台精选",
+    "eventHost": "活动主办方",
+    "curatedListingBody": "由 XPO 平台管理团队认证的 MICE 精选目录",
+    "registeredOrganizer": "XPO MICE 生态注册活动主办方",
+    "governanceCurated": "治理：精选目录",
+    "accountActive": "账户状态：活跃主办方租户"
   },
   "venues": {
     "title": "会展中心与展厅名录",

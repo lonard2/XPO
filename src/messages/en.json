@@ -230,7 +230,19 @@
     "viewVenue": "Explore Venue",
     "venueCountN": "{count} Venues",
     "currencyLabel": "Currency: {currency}",
-    "timezoneLabel": "Timezone: {timezone}"
+    "timezoneLabel": "Timezone: {timezone}",
+    "hubBadge": "{code} Hub",
+    "miceEcosystem": "MICE Ecosystem",
+    "verifiedTransit": "Verified Rapid Transit",
+    "switchRegionalHub": "Switch Regional Hub",
+    "venueSpotlightsSubtitle": "Primary event infrastructure and multi-hall exhibition centers in this region.",
+    "capacityLabel": "Cap: {capacity}",
+    "moreSpaces": "+{count} more",
+    "verifiedInfrastructure": "Verified Infrastructure",
+    "upcomingEventsSubtitle": "Confirmed expos, keynotes, and summits taking place across regional halls.",
+    "noEventsScheduled": "No events currently scheduled",
+    "noEventsHint": "Check back soon for new trade exhibitions in this region.",
+    "gettingTo": "Getting to {region} Convention Venues"
   },
   "archetypes": {
     "INDUSTRIAL_B2B": {
@@ -501,7 +513,16 @@
     "sectionsAria": "Event Sections",
     "startingFrom": "Starting from {price}.",
     "showcaseUpdated": "Organizer content, updated {date}",
-    "showcaseStale": "may be outdated, verify with the organizer"
+    "showcaseStale": "may be outdated, verify with the organizer",
+    "officialListingBadge": "Official Listing",
+    "verifiedOrganizer": "Verified Organizer",
+    "venueLabel": "Venue: {venue}",
+    "platformCuration": "Platform Curation",
+    "eventHost": "Event Host",
+    "curatedListingBody": "Curated MICE Directory Listing - Verified by XPO Platform Administration",
+    "registeredOrganizer": "Registered Event Organizer on XPO MICE Ecosystem",
+    "governanceCurated": "Governance: Curated Directory",
+    "accountActive": "Account Status: Active Organizer Tenant"
   },
   "venues": {
     "title": "Convention Centers & Hall Directory",

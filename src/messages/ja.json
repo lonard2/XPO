@@ -230,7 +230,19 @@
     "viewVenue": "会場詳細を見る",
     "venueCountN": "{count}会場",
     "currencyLabel": "通貨: {currency}",
-    "timezoneLabel": "タイムゾーン: {timezone}"
+    "timezoneLabel": "タイムゾーン: {timezone}",
+    "hubBadge": "{code}ハブ",
+    "miceEcosystem": "MICEエコシステム",
+    "verifiedTransit": "認証済み高速交通",
+    "switchRegionalHub": "地域ハブを切り替え",
+    "venueSpotlightsSubtitle": "この地域の主要イベント施設と複数ホールの展示センター。",
+    "capacityLabel": "収容: {capacity}",
+    "moreSpaces": "他{count}件",
+    "verifiedInfrastructure": "認証済みインフラ",
+    "upcomingEventsSubtitle": "地域のホールで開催される展示会、基調講演、サミット。",
+    "noEventsScheduled": "現在予定されているイベントはありません",
+    "noEventsHint": "この地域の新しい見本市を近日公開予定です。",
+    "gettingTo": "{region}コンベンション会場へのアクセス"
   },
   "archetypes": {
     "INDUSTRIAL_B2B": {
@@ -501,7 +513,16 @@
     "sectionsAria": "イベントセクション",
     "startingFrom": "{price}から。",
     "showcaseUpdated": "主催者コンテンツ、更新日 {date}",
-    "showcaseStale": "古い可能性があります。主催者にご確認ください"
+    "showcaseStale": "古い可能性があります。主催者にご確認ください",
+    "officialListingBadge": "公式掲載",
+    "verifiedOrganizer": "認証済み主催者",
+    "venueLabel": "会場: {venue}",
+    "platformCuration": "プラットフォーム選定",
+    "eventHost": "イベント主催者",
+    "curatedListingBody": "XPOプラットフォーム管理者が認証したMICEディレクトリ掲載",
+    "registeredOrganizer": "XPO MICEエコシステム登録主催者",
+    "governanceCurated": "ガバナンス: 選定ディレクトリ",
+    "accountActive": "アカウント状態: 有効な主催者テナント"
   },
   "venues": {
     "title": "コンベンションセンター＆ホール一覧",

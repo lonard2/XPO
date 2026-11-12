@@ -230,7 +230,19 @@
     "viewVenue": "Zentrum Anzeigen",
     "venueCountN": "{count} Venues",
     "currencyLabel": "Währung: {currency}",
-    "timezoneLabel": "Zeitzone: {timezone}"
+    "timezoneLabel": "Zeitzone: {timezone}",
+    "hubBadge": "{code}-Hub",
+    "miceEcosystem": "MICE-Ökosystem",
+    "verifiedTransit": "Verifizierter Schnellverkehr",
+    "switchRegionalHub": "Regionalen Hub wechseln",
+    "venueSpotlightsSubtitle": "Primäre Veranstaltungsinfrastruktur und Mehrhallen-Ausstellungszentren in dieser Region.",
+    "capacityLabel": "Kap.: {capacity}",
+    "moreSpaces": "+{count} weitere",
+    "verifiedInfrastructure": "Verifizierte Infrastruktur",
+    "upcomingEventsSubtitle": "Bestätigte Messen, Keynotes und Gipfel in den regionalen Hallen.",
+    "noEventsScheduled": "Derzeit keine Veranstaltungen geplant",
+    "noEventsHint": "Schauen Sie bald nach neuen Fachmessen in dieser Region.",
+    "gettingTo": "Anreise zu den Kongresszentren {region}"
   },
   "archetypes": {
     "INDUSTRIAL_B2B": {
@@ -501,7 +513,16 @@
     "sectionsAria": "Veranstaltungsbereiche",
     "startingFrom": "Ab {price}.",
     "showcaseUpdated": "Organisator-Inhalt, aktualisiert {date}",
-    "showcaseStale": "möglicherweise veraltet, beim Veranstalter prüfen"
+    "showcaseStale": "möglicherweise veraltet, beim Veranstalter prüfen",
+    "officialListingBadge": "Offizieller Eintrag",
+    "verifiedOrganizer": "Verifizierter Veranstalter",
+    "venueLabel": "Ort: {venue}",
+    "platformCuration": "Plattform-Kuration",
+    "eventHost": "Veranstalter",
+    "curatedListingBody": "Kuratierter MICE-Verzeichniseintrag - von der XPO-Plattformadministration verifiziert",
+    "registeredOrganizer": "Registrierter Veranstalter im XPO MICE-Ökosystem",
+    "governanceCurated": "Governance: Kuratiertes Verzeichnis",
+    "accountActive": "Kontostatus: Aktiver Veranstalter-Mandant"
   },
   "venues": {
     "title": "Kongresszentren & Hallenverzeichnis",

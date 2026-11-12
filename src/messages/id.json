@@ -230,7 +230,19 @@
     "viewVenue": "Jelajahi Lokasi",
     "venueCountN": "{count} Venue",
     "currencyLabel": "Mata uang: {currency}",
-    "timezoneLabel": "Zona waktu: {timezone}"
+    "timezoneLabel": "Zona waktu: {timezone}",
+    "hubBadge": "Hub {code}",
+    "miceEcosystem": "Ekosistem MICE",
+    "verifiedTransit": "Transit Cepat Terverifikasi",
+    "switchRegionalHub": "Ganti Hub Regional",
+    "venueSpotlightsSubtitle": "Infrastruktur acara utama dan pusat pameran multi-hall di wilayah ini.",
+    "capacityLabel": "Kap: {capacity}",
+    "moreSpaces": "+{count} lagi",
+    "verifiedInfrastructure": "Infrastruktur Terverifikasi",
+    "upcomingEventsSubtitle": "Pameran, keynote, dan summit terkonfirmasi di seluruh hall regional.",
+    "noEventsScheduled": "Belum ada acara terjadwal",
+    "noEventsHint": "Periksa kembali untuk pameran dagang baru di wilayah ini.",
+    "gettingTo": "Menuju Venue Konvensi {region}"
   },
   "archetypes": {
     "INDUSTRIAL_B2B": {
@@ -501,7 +513,16 @@
     "sectionsAria": "Bagian acara",
     "startingFrom": "Mulai dari {price}.",
     "showcaseUpdated": "Konten penyelenggara, diperbarui {date}",
-    "showcaseStale": "mungkin sudah usang, verifikasi dengan penyelenggara"
+    "showcaseStale": "mungkin sudah usang, verifikasi dengan penyelenggara",
+    "officialListingBadge": "Daftar Resmi",
+    "verifiedOrganizer": "Penyelenggara Terverifikasi",
+    "venueLabel": "Venue: {venue}",
+    "platformCuration": "Kurasi Platform",
+    "eventHost": "Tuan Acara",
+    "curatedListingBody": "Daftar Direktori MICE Terkurasi - Diverifikasi oleh Administrasi Platform XPO",
+    "registeredOrganizer": "Penyelenggara Acara Terdaftar di Ekosistem XPO MICE",
+    "governanceCurated": "Tata kelola: Direktori Terkurasi",
+    "accountActive": "Status akun: Penyewa Penyelenggara Aktif"
   },
   "venues": {
     "title": "Pusat Konvensi & Direktori Hall",
