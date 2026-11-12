@@ -1,6 +1,9 @@
+"use client";
+
 import * as React from "react";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { generateBreadcrumbJsonLd } from "@/lib/seo/jsonLd";
 
@@ -38,9 +41,11 @@ export function Breadcrumbs({
   className,
   listClassName,
 }: BreadcrumbsProps) {
+  const t = useTranslations("common");
+
   return (
     <nav
-      aria-label="Breadcrumb"
+      aria-label={t("breadcrumbAria")}
       className={cn(variant === "strip" && "border-b border-border bg-muted/30 py-3", className)}
     >
       <ol

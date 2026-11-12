@@ -517,7 +517,7 @@ export function EventPageShell({
       {/* 3. Sub-Navigation Tabs Bar (outside the header: sticky works) */}
       <div className="border-t border-white/10 bg-black/40 backdrop-blur-md sticky top-0 z-30">
         <div className="container">
-          <nav className="flex items-center gap-1 sm:gap-2 overflow-x-auto py-2.5 scrollbar-none" aria-label="Event Sections">
+          <nav className="flex items-center gap-1 sm:gap-2 overflow-x-auto py-2.5 scrollbar-none" aria-label={tEvents("sectionsAria")}>
             <button
               type="button"
               onClick={() => setActiveTab("overview")}
@@ -627,7 +627,8 @@ export function EventPageShell({
                       {tTickets("checkoutTitle") || "Select Your Admission Tier"}
                     </h3>
                     <p className="text-xs sm:text-sm text-muted-foreground">
-                      {tTickets("digitalPassSubtitle") || "Cryptographically verified QR passes issued immediately upon reservation."} Starting from <span className="font-bold text-foreground">{formattedPrice}</span>.
+                      {tTickets("digitalPassSubtitle") || "Cryptographically verified QR passes issued immediately upon reservation."}{" "}
+                      {tTickets("startingFrom", { price: formattedPrice })}
                     </p>
                   </div>
                   <div className="flex flex-wrap items-center gap-3 shrink-0">

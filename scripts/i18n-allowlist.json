@@ -43,7 +43,13 @@
     "USD ($) / EUR (€) / SGD (S$)",
     "WIB (Asia/Jakarta, UTC+7)",
     "JST (Asia/Tokyo, UTC+9)",
-    "Apple Calendar, Outlook, Thunderbird"
+    "Apple Calendar, Outlook, Thunderbird",
+    "XPO Digital MICE",
+    "MICE Digital",
+    "(JIExpo, ICE, JICC)",
+    "(Tokyo Big Sight, Makuhari)",
+    "(MBS, Messe Frankfurt)",
+    "© {year} XPO MICE Digital Ecosystem."
   ],
   "patterns": [
     "^https?://",

@@ -46,7 +46,8 @@
     "discreetEventLabel": "Private event",
     "discreetEventDesc": "Reserved for a private booking.",
     "previousItems": "Previous items",
-    "nextItems": "Next items"
+    "nextItems": "Next items",
+    "breadcrumbAria": "Breadcrumb"
   },
   "nav": {
     "brand": "XPO",
@@ -182,7 +183,9 @@
     "perksCta": "Browse events",
     "alsoHappeningIn": "Also happening in {region}",
     "alsoHappeningSubtitle": "Flagship events outside your edition",
-    "exploreRegion": "Explore region"
+    "exploreRegion": "Explore region",
+    "hallWayfindingBadge": "Hall Wayfinding",
+    "instantTurnstileBadge": "Instant Turnstile"
   },
   "regions": {
     "title": "Country Editions",
@@ -225,7 +228,9 @@
     "all": "All Regional Hubs",
     "bookNow": "Book Pass",
     "viewVenue": "Explore Venue",
-    "venueCountN": "{count} Venues"
+    "venueCountN": "{count} Venues",
+    "currencyLabel": "Currency: {currency}",
+    "timezoneLabel": "Timezone: {timezone}"
   },
   "archetypes": {
     "INDUSTRIAL_B2B": {
@@ -479,7 +484,11 @@
     "scaleGlobalMega": "Global Mega",
     "scaleLarge": "Large",
     "scaleMedium": "Medium",
-    "scaleExecutive": "Executive"
+    "scaleExecutive": "Executive",
+    "sectionsAria": "Event Sections",
+    "startingFrom": "Starting from {price}.",
+    "showcaseUpdated": "Organizer content, updated {date}",
+    "showcaseStale": "may be outdated, verify with the organizer"
   },
   "venues": {
     "title": "Convention Centers & Hall Directory",
@@ -617,7 +626,8 @@
     "allTypes": "All types",
     "spacesMetric": "Spaces",
     "allSpaces": "All spaces",
-    "noSpacesMatch": "No spaces match this wing and kind."
+    "noSpacesMatch": "No spaces match this wing and kind.",
+    "hub": "{region} Hub"
   },
   "calendar": {
     "title": "Interactive Event Calendar",
@@ -787,7 +797,7 @@
     "of": "of",
     "registeredPasses": "registered passes",
     "resetView": "Reset view",
-    "passRef": "Pass Ref:",
+    "passRef": "Pass Ref: {ref}",
     "happeningToday": "Happening Today",
     "startsTomorrow": "Starts Tomorrow",
     "concludedExpo": "Concluded Expo",
@@ -914,7 +924,8 @@
     "termsOfService": "Terms of Service",
     "infrastructureBadge": "Enterprise MICE Infrastructure",
     "accessibleBadge": "Accessible Multi-Device Architecture",
-    "dataSource": "Hall data from venue operator listings"
+    "dataSource": "Hall data from venue operator listings",
+    "copyright": "© {year} XPO MICE Digital Ecosystem."
   },
   "settings": {
     "title": "System & Display Preferences",

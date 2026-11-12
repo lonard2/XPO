@@ -46,7 +46,8 @@
     "discreetEventLabel": "Private Veranstaltung",
     "discreetEventDesc": "Für eine private Buchung reserviert.",
     "previousItems": "Vorherige Einträge",
-    "nextItems": "Nächste Einträge"
+    "nextItems": "Nächste Einträge",
+    "breadcrumbAria": "Brotkrümelnavigation"
   },
   "nav": {
     "brand": "XPO",
@@ -182,7 +183,9 @@
     "perksCta": "Events ansehen",
     "alsoHappeningIn": "Auch in {region}",
     "alsoHappeningSubtitle": "Flaggschiff-Events außerhalb Ihrer Edition",
-    "exploreRegion": "Region erkunden"
+    "exploreRegion": "Region erkunden",
+    "hallWayfindingBadge": "Hallen-Navigation",
+    "instantTurnstileBadge": "Sofortiger Einlass"
   },
   "regions": {
     "title": "Länderausgaben",
@@ -225,7 +228,9 @@
     "all": "Alle Regionen",
     "bookNow": "Pass Buchen",
     "viewVenue": "Zentrum Anzeigen",
-    "venueCountN": "{count} Venues"
+    "venueCountN": "{count} Venues",
+    "currencyLabel": "Währung: {currency}",
+    "timezoneLabel": "Zeitzone: {timezone}"
   },
   "archetypes": {
     "INDUSTRIAL_B2B": {
@@ -479,7 +484,11 @@
     "scaleGlobalMega": "Global Mega",
     "scaleLarge": "Groß",
     "scaleMedium": "Mittel",
-    "scaleExecutive": "Exklusiv"
+    "scaleExecutive": "Exklusiv",
+    "sectionsAria": "Veranstaltungsbereiche",
+    "startingFrom": "Ab {price}.",
+    "showcaseUpdated": "Organisator-Inhalt, aktualisiert {date}",
+    "showcaseStale": "möglicherweise veraltet, beim Veranstalter prüfen"
   },
   "venues": {
     "title": "Kongresszentren & Hallenverzeichnis",
@@ -617,7 +626,8 @@
     "allTypes": "Alle Typen",
     "spacesMetric": "Bereiche",
     "allSpaces": "Alle Bereiche",
-    "noSpacesMatch": "Keine Bereiche passen zu diesem Flügel und Typ."
+    "noSpacesMatch": "Keine Bereiche passen zu diesem Flügel und Typ.",
+    "hub": "{region}-Hub"
   },
   "calendar": {
     "title": "Interaktiver Eventkalender",
@@ -787,7 +797,7 @@
     "of": "von",
     "registeredPasses": "registrierten Pässen",
     "resetView": "Ansicht zurücksetzen",
-    "passRef": "Pass-Ref:",
+    "passRef": "Pass-Ref.: {ref}",
     "happeningToday": "Findet heute statt",
     "startsTomorrow": "Beginnt morgen",
     "concludedExpo": "Messe beendet",
@@ -914,7 +924,8 @@
     "termsOfService": "Nutzungsbedingungen",
     "infrastructureBadge": "Enterprise MICE-Infrastruktur",
     "accessibleBadge": "Barrierefreie Multi-Device-Architektur",
-    "dataSource": "Hallendaten aus Betreiberangaben"
+    "dataSource": "Hallendaten aus Betreiberangaben",
+    "copyright": "© {year} XPO MICE Digital Ecosystem."
   },
   "settings": {
     "title": "System- & Anzeigeeinstellungen",

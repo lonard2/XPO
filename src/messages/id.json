@@ -46,7 +46,8 @@
     "discreetEventLabel": "Acara privat",
     "discreetEventDesc": "Dipesan untuk acara privat.",
     "previousItems": "Item sebelumnya",
-    "nextItems": "Item berikutnya"
+    "nextItems": "Item berikutnya",
+    "breadcrumbAria": "Navigasi remah"
   },
   "nav": {
     "brand": "XPO",
@@ -182,7 +183,9 @@
     "perksCta": "Jelajahi acara",
     "alsoHappeningIn": "Juga berlangsung di {region}",
     "alsoHappeningSubtitle": "Acara unggulan di luar edisi Anda",
-    "exploreRegion": "Jelajahi wilayah"
+    "exploreRegion": "Jelajahi wilayah",
+    "hallWayfindingBadge": "Navigasi Hall",
+    "instantTurnstileBadge": "Gerbang Instan"
   },
   "regions": {
     "title": "Edisi Negara",
@@ -225,7 +228,9 @@
     "all": "Semua Wilayah",
     "bookNow": "Pesan Tiket",
     "viewVenue": "Jelajahi Lokasi",
-    "venueCountN": "{count} Venue"
+    "venueCountN": "{count} Venue",
+    "currencyLabel": "Mata uang: {currency}",
+    "timezoneLabel": "Zona waktu: {timezone}"
   },
   "archetypes": {
     "INDUSTRIAL_B2B": {
@@ -479,7 +484,11 @@
     "scaleGlobalMega": "Mega Global",
     "scaleLarge": "Besar",
     "scaleMedium": "Sedang",
-    "scaleExecutive": "Eksekutif"
+    "scaleExecutive": "Eksekutif",
+    "sectionsAria": "Bagian acara",
+    "startingFrom": "Mulai dari {price}.",
+    "showcaseUpdated": "Konten penyelenggara, diperbarui {date}",
+    "showcaseStale": "mungkin sudah usang, verifikasi dengan penyelenggara"
   },
   "venues": {
     "title": "Pusat Konvensi & Direktori Hall",
@@ -617,7 +626,8 @@
     "allTypes": "Semua tipe",
     "spacesMetric": "Ruang",
     "allSpaces": "Semua ruang",
-    "noSpacesMatch": "Tidak ada ruang yang cocok dengan sayap dan jenis ini."
+    "noSpacesMatch": "Tidak ada ruang yang cocok dengan sayap dan jenis ini.",
+    "hub": "Hub {region}"
   },
   "calendar": {
     "title": "Kalender Acara Interaktif",
@@ -787,7 +797,7 @@
     "of": "dari",
     "registeredPasses": "pas terdaftar",
     "resetView": "Reset tampilan",
-    "passRef": "Ref Pas:",
+    "passRef": "Ref Pass: {ref}",
     "happeningToday": "Berlangsung Hari Ini",
     "startsTomorrow": "Mulai Besok",
     "concludedExpo": "Pameran Selesai",
@@ -914,7 +924,8 @@
     "termsOfService": "Syarat & Ketentuan Layanan",
     "infrastructureBadge": "Infrastruktur MICE Terpercaya",
     "accessibleBadge": "Arsitektur Aksesibel Lintas Perangkat",
-    "dataSource": "Data hall dari pengelola venue"
+    "dataSource": "Data hall dari pengelola venue",
+    "copyright": "© {year} XPO MICE Digital Ecosystem."
   },
   "settings": {
     "title": "Pengaturan Akun & Tampilan UI/UX",

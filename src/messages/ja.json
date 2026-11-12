@@ -46,7 +46,8 @@
     "discreetEventLabel": "非公開イベント",
     "discreetEventDesc": "貸切予約のため利用中。",
     "previousItems": "前の項目",
-    "nextItems": "次の項目"
+    "nextItems": "次の項目",
+    "breadcrumbAria": "パンくずリスト"
   },
   "nav": {
     "brand": "XPO",
@@ -182,7 +183,9 @@
     "perksCta": "イベントを見る",
     "alsoHappeningIn": "{region}でも開催中",
     "alsoHappeningSubtitle": "このエディション以外の注目イベント",
-    "exploreRegion": "地域を見る"
+    "exploreRegion": "地域を見る",
+    "hallWayfindingBadge": "ホール案内",
+    "instantTurnstileBadge": "即時入場"
   },
   "regions": {
     "title": "国・地域版エディション",
@@ -225,7 +228,9 @@
     "all": "全地域",
     "bookNow": "パスを予約",
     "viewVenue": "会場詳細を見る",
-    "venueCountN": "{count}会場"
+    "venueCountN": "{count}会場",
+    "currencyLabel": "通貨: {currency}",
+    "timezoneLabel": "タイムゾーン: {timezone}"
   },
   "archetypes": {
     "INDUSTRIAL_B2B": {
@@ -479,7 +484,11 @@
     "scaleGlobalMega": "グローバルメガ",
     "scaleLarge": "大規模",
     "scaleMedium": "中規模",
-    "scaleExecutive": "エグゼクティブ"
+    "scaleExecutive": "エグゼクティブ",
+    "sectionsAria": "イベントセクション",
+    "startingFrom": "{price}から。",
+    "showcaseUpdated": "主催者コンテンツ、更新日 {date}",
+    "showcaseStale": "古い可能性があります。主催者にご確認ください"
   },
   "venues": {
     "title": "コンベンションセンター＆ホール一覧",
@@ -617,7 +626,8 @@
     "allTypes": "すべてのタイプ",
     "spacesMetric": "スペース",
     "allSpaces": "すべてのスペース",
-    "noSpacesMatch": "このウィングと種類に一致するスペースはありません。"
+    "noSpacesMatch": "このウィングと種類に一致するスペースはありません。",
+    "hub": "{region}ハブ"
   },
   "calendar": {
     "title": "イベントカレンダー",
@@ -787,7 +797,7 @@
     "of": "/",
     "registeredPasses": "件の登録パス",
     "resetView": "表示をリセット",
-    "passRef": "パス参照ID:",
+    "passRef": "パス番号: {ref}",
     "happeningToday": "本日開催中",
     "startsTomorrow": "明日開幕",
     "concludedExpo": "会期終了",
@@ -914,7 +924,8 @@
     "termsOfService": "利用規約",
     "infrastructureBadge": "エンタープライズMICEインフラ",
     "accessibleBadge": "マルチデバイス対応アクセシビリティ",
-    "dataSource": "ホール情報は会場の公開資料より"
+    "dataSource": "ホール情報は会場の公開資料より",
+    "copyright": "© {year} XPO MICE Digital Ecosystem."
   },
   "settings": {
     "title": "表示設定＆システム環境設定",

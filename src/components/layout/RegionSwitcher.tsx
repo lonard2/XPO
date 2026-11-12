@@ -225,11 +225,11 @@ export function RegionSwitcher({
               <CardContent className="space-y-1.5 pt-0 text-xs text-muted-foreground">
                 <div className="flex items-center gap-2 text-[11px]">
                   <Coins className="h-3 w-3 text-primary/70" />
-                  <span>Currency: {region.currency}</span>
+                  <span>{tReg("currencyLabel", { currency: region.currency })}</span>
                 </div>
                 <div className="flex items-center gap-2 text-[11px]">
                   <Clock className="h-3 w-3 text-primary/70" />
-                  <span>Timezone: {region.timezoneName}</span>
+                  <span>{tReg("timezoneLabel", { timezone: region.timezoneName })}</span>
                 </div>
                 <div className="flex items-center gap-2 text-[11px]">
                   <Building2 className="h-3 w-3 text-primary/70" />

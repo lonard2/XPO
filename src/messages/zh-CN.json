@@ -46,7 +46,8 @@
     "discreetEventLabel": "私人活动",
     "discreetEventDesc": "已为私人预订保留。",
     "previousItems": "上一组",
-    "nextItems": "下一组"
+    "nextItems": "下一组",
+    "breadcrumbAria": "面包屑导航"
   },
   "nav": {
     "brand": "XPO",
@@ -182,7 +183,9 @@
     "perksCta": "浏览活动",
     "alsoHappeningIn": "{region}同期活动",
     "alsoHappeningSubtitle": "本版本之外的旗舰活动",
-    "exploreRegion": "探索地区"
+    "exploreRegion": "探索地区",
+    "hallWayfindingBadge": "展厅导航",
+    "instantTurnstileBadge": "快速入场"
   },
   "regions": {
     "title": "国家/地区版本",
@@ -225,7 +228,9 @@
     "all": "全部地区",
     "bookNow": "预订通行证",
     "viewVenue": "查看场馆",
-    "venueCountN": "{count}个场馆"
+    "venueCountN": "{count}个场馆",
+    "currencyLabel": "货币：{currency}",
+    "timezoneLabel": "时区：{timezone}"
   },
   "archetypes": {
     "INDUSTRIAL_B2B": {
@@ -479,7 +484,11 @@
     "scaleGlobalMega": "全球盛会",
     "scaleLarge": "大型",
     "scaleMedium": "中型",
-    "scaleExecutive": "高管级"
+    "scaleExecutive": "高管级",
+    "sectionsAria": "活动版块",
+    "startingFrom": "{price} 起。",
+    "showcaseUpdated": "主办方内容，更新于 {date}",
+    "showcaseStale": "可能已过时，请与主办方核实"
   },
   "venues": {
     "title": "会展中心与展厅名录",
@@ -617,7 +626,8 @@
     "allTypes": "全部类型",
     "spacesMetric": "空间",
     "allSpaces": "全部空间",
-    "noSpacesMatch": "此区域和类型没有匹配的空间。"
+    "noSpacesMatch": "此区域和类型没有匹配的空间。",
+    "hub": "{region} 枢纽"
   },
   "calendar": {
     "title": "会展交互日历",
@@ -787,7 +797,7 @@
     "of": "/",
     "registeredPasses": "张已注册通行证",
     "resetView": "重置视图",
-    "passRef": "通行证编号:",
+    "passRef": "通行证编号：{ref}",
     "happeningToday": "今日正在举办",
     "startsTomorrow": "明日开幕",
     "concludedExpo": "展会已闭幕",
@@ -914,7 +924,8 @@
     "termsOfService": "服务条款",
     "infrastructureBadge": "企业级会展基础设施",
     "accessibleBadge": "多端自适应无障碍架构",
-    "dataSource": "展厅数据来自场馆公开资料"
+    "dataSource": "展厅数据来自场馆公开资料",
+    "copyright": "© {year} XPO MICE Digital Ecosystem."
   },
   "settings": {
     "title": "界面偏好与账户设置",

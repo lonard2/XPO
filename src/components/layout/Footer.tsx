@@ -29,10 +29,10 @@ export function Footer({ locale = "en" }: { locale?: string }) {
     // Fallback if rendered outside provider in tests
   }
 
-  const getSafe = (tFn: any, key: string, fallback: string): string => {
+  const getSafe = (tFn: any, key: string, fallback: string, values?: Record<string, string>): string => {
     if (!tFn) return fallback;
     try {
-      const val = tFn(key);
+      const val = tFn(key, values);
       if (!val || val === key || (typeof val === "string" && val.includes(".") && !val.includes(" "))) {
         return fallback;
       }
@@ -149,7 +149,7 @@ export function Footer({ locale = "en" }: { locale?: string }) {
       </div>
 
       <div className="container border-t border-border/60 pt-6 flex flex-col md:flex-row items-center justify-between text-xs text-muted-foreground gap-4">
-        <p>© 2026 XPO MICE Digital Ecosystem. {getSafe(tFoot, "allRightsReserved", "All rights reserved.")}</p>
+        <p>{getSafe(tFoot, "copyright", "© {year} XPO MICE Digital Ecosystem.", { year: "2026" })} {getSafe(tFoot, "allRightsReserved", "All rights reserved.")}</p>
         <div className="flex items-center gap-3">
           <Link
             href={`/${locale}/privacy`}

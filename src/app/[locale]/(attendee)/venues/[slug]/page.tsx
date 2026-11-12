@@ -180,7 +180,7 @@ export default async function VenueDetailPage({ params }: VenueDetailPageProps) 
               <div className="flex flex-wrap items-center gap-2">
                 <Badge variant="default" className="text-xs uppercase font-bold tracking-wider">
                   <Globe className="h-3 w-3 mr-1 inline" />
-                  {regionCode} Hub
+                  {tVen("hub", { region: regionCode })}
                 </Badge>
                 <Badge variant="outline" className="text-xs font-mono">
                   {venue.city}

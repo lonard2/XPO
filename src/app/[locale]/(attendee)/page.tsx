@@ -590,7 +590,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
                   <Building2 className="h-6 w-6" />
                 </div>
                 <span className="text-xs font-semibold px-3 py-1 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400">
-                  Hall Wayfinding
+                  {tHome('hallWayfindingBadge') || 'Hall Wayfinding'}
                 </span>
               </div>
 
@@ -640,7 +640,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
                   <Ticket className="h-6 w-6" />
                 </div>
                 <span className="text-xs font-semibold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
-                  Instant Turnstile
+                  {tHome('instantTurnstileBadge') || 'Instant Turnstile'}
                 </span>
               </div>
 

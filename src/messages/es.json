@@ -46,7 +46,8 @@
     "discreetEventLabel": "Evento privado",
     "discreetEventDesc": "Reservado para un evento privado.",
     "previousItems": "Elementos anteriores",
-    "nextItems": "Elementos siguientes"
+    "nextItems": "Elementos siguientes",
+    "breadcrumbAria": "Migas de pan"
   },
   "nav": {
     "brand": "XPO",
@@ -182,7 +183,9 @@
     "perksCta": "Ver eventos",
     "alsoHappeningIn": "También en {region}",
     "alsoHappeningSubtitle": "Eventos destacados fuera de su edición",
-    "exploreRegion": "Explorar región"
+    "exploreRegion": "Explorar región",
+    "hallWayfindingBadge": "Navegación de pabellones",
+    "instantTurnstileBadge": "Acceso inmediato"
   },
   "regions": {
     "title": "Ediciones Nacionales",
@@ -225,7 +228,9 @@
     "all": "Todas las Regiones",
     "bookNow": "Reservar Pase",
     "viewVenue": "Ver Recinto",
-    "venueCountN": "{count} sedes"
+    "venueCountN": "{count} sedes",
+    "currencyLabel": "Moneda: {currency}",
+    "timezoneLabel": "Zona horaria: {timezone}"
   },
   "archetypes": {
     "INDUSTRIAL_B2B": {
@@ -479,7 +484,11 @@
     "scaleGlobalMega": "Mega global",
     "scaleLarge": "Grande",
     "scaleMedium": "Mediano",
-    "scaleExecutive": "Ejecutivo"
+    "scaleExecutive": "Ejecutivo",
+    "sectionsAria": "Secciones del evento",
+    "startingFrom": "Desde {price}.",
+    "showcaseUpdated": "Contenido del organizador, actualizado {date}",
+    "showcaseStale": "puede estar desactualizado, confirme con el organizador"
   },
   "venues": {
     "title": "Recintos Feriales y Directorio de Pabellones",
@@ -617,7 +626,8 @@
     "allTypes": "Todos los tipos",
     "spacesMetric": "espacios",
     "allSpaces": "Todos los espacios",
-    "noSpacesMatch": "Ningún espacio coincide con esta ala y tipo."
+    "noSpacesMatch": "Ningún espacio coincide con esta ala y tipo.",
+    "hub": "Hub {region}"
   },
   "calendar": {
     "title": "Calendario Interactivo de Eventos",
@@ -787,7 +797,7 @@
     "of": "de",
     "registeredPasses": "pases registrados",
     "resetView": "Restablecer vista",
-    "passRef": "Ref. de Pase:",
+    "passRef": "Ref. de pase: {ref}",
     "happeningToday": "En Curso Hoy",
     "startsTomorrow": "Comienza Mañana",
     "concludedExpo": "Feria Finalizada",
@@ -914,7 +924,8 @@
     "termsOfService": "Términos del Servicio",
     "infrastructureBadge": "Infraestructura MICE Empresarial",
     "accessibleBadge": "Arquitectura Accesible Multidispositivo",
-    "dataSource": "Datos de pabellón de los recintos"
+    "dataSource": "Datos de pabellón de los recintos",
+    "copyright": "© {year} XPO MICE Digital Ecosystem."
   },
   "settings": {
     "title": "Ajustes de Sistema y Visualización",

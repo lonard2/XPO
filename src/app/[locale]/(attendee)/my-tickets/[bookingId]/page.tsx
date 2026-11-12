@@ -178,7 +178,7 @@ export default async function DigitalPassDetailPage({ params }: DigitalPassPageP
 
           <div className="flex items-center gap-2">
             <span className="text-xs font-mono text-muted-foreground hidden sm:inline">
-              Pass Ref: {booking.id}
+              {tMy("passRef", { ref: booking.id })}
             </span>
             <Badge variant="secondary" size="sm" className="font-semibold uppercase tracking-wider">
               {booking.ticketTier.name}

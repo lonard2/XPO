@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import type { ShowcaseProgram } from "@/lib/showcase";
@@ -33,6 +34,7 @@ export function ShowcaseProgramGrid({
   locale = "en",
   stampedAt,
 }: ShowcaseProgramGridProps) {
+  const t = useTranslations("events");
   if (!programs || programs.length === 0) return null;
 
   const ageDays = stampedAt ? showcaseAgeDays({ attestedAt: stampedAt }) : null;
@@ -51,8 +53,8 @@ export function ShowcaseProgramGrid({
         )}
         {dateLabel && (
           <p className="text-[11px] text-muted-foreground mt-1">
-            Organizer content · updated {dateLabel}
-            {stale && " · may be outdated — verify with the organizer"}
+            {t("showcaseUpdated", { date: dateLabel })}
+            {stale && ` · ${t("showcaseStale")}`}
           </p>
         )}
       </div>
