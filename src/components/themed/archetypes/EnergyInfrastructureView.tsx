@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import {
   Zap,
   Activity,
@@ -25,6 +26,7 @@ import { Drawer } from "@/components/ui/Drawer";
 import { type ArchetypeViewProps } from "./IndustrialB2BView";
 
 export function EnergyInfrastructureView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
+  const t = useTranslations("archetypeViews.ENERGY_INFRASTRUCTURE");
   const [auditDrawerOpen, setAuditDrawerOpen] = React.useState(false);
   const [selectedConcession, setSelectedConcession] = React.useState<string | null>(null);
   const [auditRequested, setAuditRequested] = React.useState(false);
@@ -74,14 +76,14 @@ export function EnergyInfrastructureView({ event, locale = "en", onSelectTier }:
                 <Zap className="h-4 w-4" />
               </span>
               <span className="text-xs font-bold uppercase tracking-wider text-amber-500">
-                Energy & Mining Infrastructure
+                {t("heroBadge")}
               </span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-              Renewable Power Grids, Heavy Extraction Tech & Decarbonization
+              {t("heroTitle")}
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-              Explore critical concession topographies, heavy plant machinery, high-voltage transmission lines, and institutional decarbonization partnerships.
+              {t("heroDescription")}
             </p>
           </div>
 
@@ -95,10 +97,10 @@ export function EnergyInfrastructureView({ event, locale = "en", onSelectTier }:
               className="bg-amber-600 hover:bg-amber-700 text-white font-semibold shadow-md min-h-[44px]"
             >
               <FileCheck2 className="h-4 w-4 mr-2" />
-              Request ESG & Grid Dossier
+              {t("requestCta")}
             </Button>
             <div className="text-xs text-muted-foreground text-center lg:text-right">
-              Verified energy delegates and compliance officers
+              {t("verifiedNote")}
             </div>
           </div>
         </div>
@@ -109,10 +111,10 @@ export function EnergyInfrastructureView({ event, locale = "en", onSelectTier }:
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-amber-500 uppercase tracking-wider mb-1">
             <Activity className="h-4 w-4" />
-            <span>Concessions & Grids</span>
+            <span>{t("gridsBadge")}</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-            Featured Energy Blocks & Heavy Plants
+            {t("rosterTitle")}
           </h3>
         </div>
 
@@ -132,7 +134,7 @@ export function EnergyInfrastructureView({ event, locale = "en", onSelectTier }:
               <CardContent className="space-y-4 pt-0">
                 <div className="p-3 rounded-lg bg-muted/40 border border-border/60 text-xs font-mono text-foreground space-y-1">
                   <div className="font-semibold text-amber-500 flex items-center gap-1">
-                    <Zap className="h-3 w-3" /> Output & Capacity
+                    <Zap className="h-3 w-3" /> {t("outputLabel")}
                   </div>
                   <div>{blk.capacity}</div>
                 </div>
@@ -158,7 +160,7 @@ export function EnergyInfrastructureView({ event, locale = "en", onSelectTier }:
                   className="w-full border-amber-500/30 hover:bg-amber-500/10 text-foreground font-semibold min-h-[40px]"
                 >
                   <FileCheck2 className="h-3.5 w-3.5 mr-1.5 text-amber-500" />
-                  View Concession Prospectus
+                  {t("prospectusCta")}
                 </Button>
               </CardContent>
             </Card>
@@ -173,8 +175,8 @@ export function EnergyInfrastructureView({ event, locale = "en", onSelectTier }:
           setAuditDrawerOpen(false);
           setAuditRequested(false);
         }}
-        title="Energy Concession & Decarbonization Dossier"
-        description="Access technical grid interconnect studies, carbon accounting baselines, and concession rights documentation."
+        title={t("drawerTitle")}
+        description={t("drawerDescription")}
       >
         <div className="p-6 space-y-6">
           {auditRequested ? (
@@ -183,9 +185,9 @@ export function EnergyInfrastructureView({ event, locale = "en", onSelectTier }:
                 <CheckCircle2 className="h-8 w-8" />
               </div>
               <div className="space-y-1">
-                <h4 className="text-lg font-bold text-foreground">Dossier Access Granted</h4>
+                <h4 className="text-lg font-bold text-foreground">{t("grantedTitle")}</h4>
                 <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-                  Technical filings for <span className="font-semibold text-foreground">{selectedConcession}</span> have been unlocked. Download the encrypted PPA brief or visit the energy lounge.
+                  {t("grantedBody", { concession: selectedConcession ?? "" })}
                 </p>
               </div>
               <Button
@@ -195,7 +197,7 @@ export function EnergyInfrastructureView({ event, locale = "en", onSelectTier }:
                 }}
                 className="mt-4"
               >
-                Done
+                {t("doneCta")}
               </Button>
             </div>
           ) : (
@@ -208,7 +210,7 @@ export function EnergyInfrastructureView({ event, locale = "en", onSelectTier }:
             >
               <div>
                 <label className="text-xs font-semibold text-foreground block mb-1.5">
-                  Concession Block
+                  {t("blockLabel")}
                 </label>
                 <input
                   type="text"
@@ -220,25 +222,25 @@ export function EnergyInfrastructureView({ event, locale = "en", onSelectTier }:
 
               <div>
                 <label className="text-xs font-semibold text-foreground block mb-1.5">
-                  Requested Information Scope
+                  {t("scopeLabel")}
                 </label>
                 <select className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-background text-foreground font-medium">
-                  <option>Power Purchase Agreement (PPA) Framework</option>
-                  <option>High-Voltage Grid Interconnection Feasibility</option>
-                  <option>Scope 1/2/3 Decarbonization Audit & Carbon Credits</option>
+                  <option>{t("scopeOption1")}</option>
+                  <option>{t("scopeOption2")}</option>
+                  <option>{t("scopeOption3")}</option>
                 </select>
               </div>
 
               <div>
                 <label className="text-xs font-semibold text-foreground block mb-1.5">
-                  Regulatory Compliance Assurance
+                  {t("complianceLabel")}
                 </label>
                 <div className="p-3 rounded-lg border border-border/80 bg-muted/20 text-xs text-muted-foreground space-y-2">
                   <div className="flex items-center gap-2 text-foreground font-medium">
                     <ShieldCheck className="h-4 w-4 text-emerald-500" />
-                    <span>Ministry of Energy & Mineral Resources Verified</span>
+                    <span>{t("complianceValue")}</span>
                   </div>
-                  <p>All concession data is synchronized with national clean energy targets and regional transmission blueprints.</p>
+                  <p>{t("complianceNote")}</p>
                 </div>
               </div>
 
@@ -248,13 +250,13 @@ export function EnergyInfrastructureView({ event, locale = "en", onSelectTier }:
                   variant="outline"
                   onClick={() => setAuditDrawerOpen(false)}
                 >
-                  Cancel
+                  {t("cancelCta")}
                 </Button>
                 <Button
                   type="submit"
                   className="bg-amber-600 hover:bg-amber-700 text-white font-semibold"
                 >
-                  Request Technical Dossier
+                  {t("confirmCta")}
                 </Button>
               </div>
             </form>

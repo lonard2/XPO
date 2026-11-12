@@ -2047,6 +2047,32 @@
       "dispatchDefault": "在 IndoBuildTech 展览 1 号馆样品中心自提",
       "cancelCta": "取消",
       "confirmCta": "确认寄送申请"
+    },
+    "ENERGY_INFRASTRUCTURE": {
+      "heroBadge": "能源与矿业基础设施",
+      "heroTitle": "可再生电网、重型开采技术与脱碳",
+      "heroDescription": "探索关键特许区地形、重型工厂机械、高压输电线路与机构脱碳合作。",
+      "requestCta": "申请 ESG 与电网资料",
+      "verifiedNote": "已认证的能源代表与合规官",
+      "gridsBadge": "特许区与电网",
+      "rosterTitle": "精选能源区块与重型工厂",
+      "outputLabel": "输出与容量",
+      "prospectusCta": "查看特许区说明书",
+      "drawerTitle": "能源特许区与脱碳资料",
+      "drawerDescription": "获取技术电网互联研究、碳核算基线与特许权文件。",
+      "grantedTitle": "资料访问已授权",
+      "grantedBody": "{concession} 的技术申报文件已解锁。请下载加密 PPA 简报或前往能源休息室。",
+      "doneCta": "完成",
+      "blockLabel": "特许区块",
+      "scopeLabel": "申请信息范围",
+      "scopeOption1": "购电协议（PPA）框架",
+      "scopeOption2": "高压电网互联可行性",
+      "scopeOption3": "范围 1/2/3 脱碳审计与碳信用",
+      "complianceLabel": "监管合规保证",
+      "complianceValue": "能源与矿产资源部已认证",
+      "complianceNote": "所有特许区数据均与国家清洁能源目标及区域输电蓝图同步。",
+      "cancelCta": "取消",
+      "confirmCta": "申请技术资料"
     }
   }
 }

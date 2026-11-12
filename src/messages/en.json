@@ -2047,6 +2047,32 @@
       "dispatchDefault": "Pick up at IndoBuildTech Exhibition Hall 1 Sample Hub",
       "cancelCta": "Cancel",
       "confirmCta": "Confirm Dispatch Request"
+    },
+    "ENERGY_INFRASTRUCTURE": {
+      "heroBadge": "Energy & Mining Infrastructure",
+      "heroTitle": "Renewable Power Grids, Heavy Extraction Tech & Decarbonization",
+      "heroDescription": "Explore critical concession topographies, heavy plant machinery, high-voltage transmission lines, and institutional decarbonization partnerships.",
+      "requestCta": "Request ESG & Grid Dossier",
+      "verifiedNote": "Verified energy delegates and compliance officers",
+      "gridsBadge": "Concessions & Grids",
+      "rosterTitle": "Featured Energy Blocks & Heavy Plants",
+      "outputLabel": "Output & Capacity",
+      "prospectusCta": "View Concession Prospectus",
+      "drawerTitle": "Energy Concession & Decarbonization Dossier",
+      "drawerDescription": "Access technical grid interconnect studies, carbon accounting baselines, and concession rights documentation.",
+      "grantedTitle": "Dossier Access Granted",
+      "grantedBody": "Technical filings for {concession} have been unlocked. Download the encrypted PPA brief or visit the energy lounge.",
+      "doneCta": "Done",
+      "blockLabel": "Concession Block",
+      "scopeLabel": "Requested Information Scope",
+      "scopeOption1": "Power Purchase Agreement (PPA) Framework",
+      "scopeOption2": "High-Voltage Grid Interconnection Feasibility",
+      "scopeOption3": "Scope 1/2/3 Decarbonization Audit & Carbon Credits",
+      "complianceLabel": "Regulatory Compliance Assurance",
+      "complianceValue": "Ministry of Energy & Mineral Resources Verified",
+      "complianceNote": "All concession data is synchronized with national clean energy targets and regional transmission blueprints.",
+      "cancelCta": "Cancel",
+      "confirmCta": "Request Technical Dossier"
     }
   }
 }

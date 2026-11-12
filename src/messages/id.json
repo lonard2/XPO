@@ -2047,6 +2047,32 @@
       "dispatchDefault": "Ambil di Sample Hub Hall 1 Pameran IndoBuildTech",
       "cancelCta": "Batal",
       "confirmCta": "Konfirmasi Permintaan Pengiriman"
+    },
+    "ENERGY_INFRASTRUCTURE": {
+      "heroBadge": "Infrastruktur Energi & Pertambangan",
+      "heroTitle": "Jaringan Energi Terbarukan, Teknologi Ekstraksi Berat & Dekarbonisasi",
+      "heroDescription": "Jelajahi topografi konsesi kritis, mesin pabrik berat, saluran transmisi tegangan tinggi, dan kemitraan dekarbonisasi institusional.",
+      "requestCta": "Minta Dossier ESG & Grid",
+      "verifiedNote": "Delegasi energi & petugas kepatuhan terverifikasi",
+      "gridsBadge": "Konsesi & Grid",
+      "rosterTitle": "Blok Energi & Pabrik Berat Unggulan",
+      "outputLabel": "Output & Kapasitas",
+      "prospectusCta": "Lihat Prospektus Konsesi",
+      "drawerTitle": "Dossier Konsesi Energi & Dekarbonisasi",
+      "drawerDescription": "Akses studi interkoneksi grid teknis, baseline akuntansi karbon, dan dokumentasi hak konsesi.",
+      "grantedTitle": "Akses Dossier Diberikan",
+      "grantedBody": "Dokumen teknis untuk {concession} telah dibuka. Unduh brief PPA terenkripsi atau kunjungi lounge energi.",
+      "doneCta": "Selesai",
+      "blockLabel": "Blok Konsesi",
+      "scopeLabel": "Cakupan Informasi yang Diminta",
+      "scopeOption1": "Kerangka Power Purchase Agreement (PPA)",
+      "scopeOption2": "Kelayakan Interkoneksi Grid Tegangan Tinggi",
+      "scopeOption3": "Audit Dekarbonisasi Scope 1/2/3 & Kredit Karbon",
+      "complianceLabel": "Jaminan Kepatuhan Regulasi",
+      "complianceValue": "Terverifikasi Kementerian Energi & Sumber Daya Mineral",
+      "complianceNote": "Semua data konsesi disinkronkan dengan target energi bersih nasional dan blueprint transmisi regional.",
+      "cancelCta": "Batal",
+      "confirmCta": "Minta Dossier Teknis"
     }
   }
 }

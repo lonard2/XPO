@@ -2047,6 +2047,32 @@
       "dispatchDefault": "Recogida en el Sample Hub del Pabellón 1 de IndoBuildTech",
       "cancelCta": "Cancelar",
       "confirmCta": "Confirmar Solicitud de Envío"
+    },
+    "ENERGY_INFRASTRUCTURE": {
+      "heroBadge": "Infraestructura Energética y Minera",
+      "heroTitle": "Redes Eléctricas Renovables, Tecnología de Extracción Pesada y Descarbonización",
+      "heroDescription": "Explore topografías de concesiones críticas, maquinaria pesada de planta, líneas de transmisión de alta tensión y alianzas institucionales de descarbonización.",
+      "requestCta": "Solicitar Dossier ESG y de Red",
+      "verifiedNote": "Delegados energéticos y oficiales de cumplimiento verificados",
+      "gridsBadge": "Concesiones y Redes",
+      "rosterTitle": "Bloques Energéticos y Plantas Pesadas Destacadas",
+      "outputLabel": "Producción y Capacidad",
+      "prospectusCta": "Ver Prospecto de Concesión",
+      "drawerTitle": "Dossier de Concesión Energética y Descarbonización",
+      "drawerDescription": "Acceda a estudios técnicos de interconexión de red, bases de contabilidad de carbono y documentación de derechos de concesión.",
+      "grantedTitle": "Acceso al Dossier Concedido",
+      "grantedBody": "Los expedientes técnicos de {concession} se han desbloqueado. Descargue el brief PPA cifrado o visite el lounge energético.",
+      "doneCta": "Hecho",
+      "blockLabel": "Bloque de Concesión",
+      "scopeLabel": "Alcance de Información Solicitado",
+      "scopeOption1": "Marco de Contrato de Compra de Energía (PPA)",
+      "scopeOption2": "Viabilidad de Interconexión de Red de Alta Tensión",
+      "scopeOption3": "Auditoría de Descarbonización Alcance 1/2/3 y Créditos de Carbono",
+      "complianceLabel": "Garantía de Cumplimiento Normativo",
+      "complianceValue": "Verificado por el Ministerio de Energía y Recursos Minerales",
+      "complianceNote": "Todos los datos de concesión se sincronizan con los objetivos nacionales de energía limpia y los planos regionales de transmisión.",
+      "cancelCta": "Cancelar",
+      "confirmCta": "Solicitar Dossier Técnico"
     }
   }
 }

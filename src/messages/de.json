@@ -2047,6 +2047,32 @@
       "dispatchDefault": "Abholung am Sample Hub, Halle 1, IndoBuildTech",
       "cancelCta": "Abbrechen",
       "confirmCta": "Versandanfrage bestätigen"
+    },
+    "ENERGY_INFRASTRUCTURE": {
+      "heroBadge": "Energie- & Bergbauinfrastruktur",
+      "heroTitle": "Erneuerbare Stromnetze, Schwermaschinen-Technik & Dekarbonisierung",
+      "heroDescription": "Kritische Konzessionsgebiete, schwere Anlagenmaschinen, Hochspannungsleitungen und institutionelle Dekarbonisierungspartnerschaften erkunden.",
+      "requestCta": "ESG- & Netz-Dossier anfordern",
+      "verifiedNote": "Verifizierte Energie-Delegierte und Compliance-Beauftragte",
+      "gridsBadge": "Konzessionen & Netze",
+      "rosterTitle": "Ausgewählte Energieblöcke & Schweranlagen",
+      "outputLabel": "Leistung & Kapazität",
+      "prospectusCta": "Konzessionsprospekt ansehen",
+      "drawerTitle": "Energie-Konzessions- & Dekarbonisierungsdossier",
+      "drawerDescription": "Zugang zu technischen Netzanschlussstudien, CO2-Bilanzierungsgrundlagen und Konzessionsrechtsdokumenten.",
+      "grantedTitle": "Dossier-Zugriff gewährt",
+      "grantedBody": "Technische Unterlagen für {concession} wurden freigeschaltet. Laden Sie das verschlüsselte PPA-Briefing herunter oder besuchen Sie die Energielounge.",
+      "doneCta": "Fertig",
+      "blockLabel": "Konzessionsblock",
+      "scopeLabel": "Angeforderter Informationsumfang",
+      "scopeOption1": "Stromabnahmevertrag (PPA)-Rahmenwerk",
+      "scopeOption2": "Machbarkeit des Hochspannungsnetzanschlusses",
+      "scopeOption3": "Scope-1/2/3-Dekarbonisierungsaudit & CO2-Zertifikate",
+      "complianceLabel": "Regulatorische Compliance-Zusicherung",
+      "complianceValue": "Vom Ministerium für Energie und Bodenschätze verifiziert",
+      "complianceNote": "Alle Konzessionsdaten sind mit nationalen Saubere-Energie-Zielen und regionalen Übertragungsplänen synchronisiert.",
+      "cancelCta": "Abbrechen",
+      "confirmCta": "Technisches Dossier anfordern"
     }
   }
 }

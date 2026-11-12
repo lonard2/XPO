@@ -2047,6 +2047,32 @@
       "dispatchDefault": "IndoBuildTech展示会ホール1サンプルハブで受け取り",
       "cancelCta": "キャンセル",
       "confirmCta": "発送依頼を確定"
+    },
+    "ENERGY_INFRASTRUCTURE": {
+      "heroBadge": "エネルギー・鉱業インフラ",
+      "heroTitle": "再生可能電力網、大型採掘技術、脱炭素化",
+      "heroDescription": "重要鉱区の地形、大型プラント機械、高圧送電線、機関投資家向け脱炭素パートナーシップを探索できます。",
+      "requestCta": "ESG & グリッド資料を依頼",
+      "verifiedNote": "認証済みのエネルギー代表とコンプライアンス責任者",
+      "gridsBadge": "鉱区 & グリッド",
+      "rosterTitle": "注目のエネルギーブロックと大型プラント",
+      "outputLabel": "出力 & 容量",
+      "prospectusCta": "鉱区目論見書を見る",
+      "drawerTitle": "エネルギー鉱区 & 脱炭素化資料",
+      "drawerDescription": "技術的なグリッド連系調査、カーボン会計基準、鉱区権利文書にアクセスします。",
+      "grantedTitle": "資料アクセスが許可されました",
+      "grantedBody": "{concession}の技術提出書類が解除されました。暗号化されたPPAブリーフをダウンロードするか、エネルギーラウンジへお越しください。",
+      "doneCta": "完了",
+      "blockLabel": "鉱区ブロック",
+      "scopeLabel": "希望情報範囲",
+      "scopeOption1": "電力購入契約（PPA）フレームワーク",
+      "scopeOption2": "高圧グリッド連系の実現可能性",
+      "scopeOption3": "Scope 1/2/3 脱炭素監査 & カーボンクレジット",
+      "complianceLabel": "規制コンプライアンス保証",
+      "complianceValue": "エネルギー鉱物資源省認証済み",
+      "complianceNote": "すべての鉱区データは国のクリーンエネルギー目標と地域送電計画に同期されています。",
+      "cancelCta": "キャンセル",
+      "confirmCta": "技術資料を依頼"
     }
   }
 }
