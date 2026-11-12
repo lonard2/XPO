@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import {
   Shield,
   Plane,
@@ -25,6 +26,7 @@ import { Drawer } from "@/components/ui/Drawer";
 import { type ArchetypeViewProps } from "./IndustrialB2BView";
 
 export function AerospaceDefenseView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
+  const t = useTranslations("archetypeViews.AEROSPACE_DEFENSE");
   const [briefingDrawerOpen, setBriefingDrawerOpen] = React.useState(false);
   const [selectedAsset, setSelectedAsset] = React.useState<string | null>(null);
   const [briefingRequested, setBriefingRequested] = React.useState(false);
@@ -74,14 +76,14 @@ export function AerospaceDefenseView({ event, locale = "en", onSelectTier }: Arc
                 <Shield className="h-4 w-4" />
               </span>
               <span className="text-xs font-bold uppercase tracking-wider text-blue-500">
-                Aerospace, Aviation & Defense Expo
+                {t("heroBadge")}
               </span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-              Airshow Flight Demos, Tactical Avionics & Defense Briefings
+              {t("heroTitle")}
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-              Inspect static tarmac fighter aircraft, autonomous unmanned aerial systems (UAS), multi-domain C4ISR defense networks, and schedule accredited military protocol briefings.
+              {t("heroDescription")}
             </p>
           </div>
 
@@ -95,10 +97,10 @@ export function AerospaceDefenseView({ event, locale = "en", onSelectTier }: Arc
               className="bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-md min-h-[44px]"
             >
               <Lock className="h-4 w-4 mr-2" />
-              Request Defense Briefing Access
+              {t("requestCta")}
             </Button>
             <div className="text-xs text-muted-foreground text-center lg:text-right">
-              Government credentials & security clearance required
+              {t("credentialsNote")}
             </div>
           </div>
         </div>
@@ -109,10 +111,10 @@ export function AerospaceDefenseView({ event, locale = "en", onSelectTier }: Arc
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-blue-500 uppercase tracking-wider mb-1">
             <Radar className="h-4 w-4" />
-            <span>Flight Operations & Static Line</span>
+            <span>{t("opsBadge")}</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-            Featured Aircraft & Tactical Systems
+            {t("opsTitle")}
           </h3>
         </div>
 
@@ -132,7 +134,7 @@ export function AerospaceDefenseView({ event, locale = "en", onSelectTier }: Arc
               <CardContent className="space-y-4 pt-0">
                 <div className="p-3 rounded-lg bg-muted/40 border border-border/60 text-xs font-mono text-foreground space-y-1">
                   <div className="font-semibold text-blue-500 flex items-center gap-1">
-                    <Plane className="h-3 w-3" /> Avionics & Payload Specs
+                    <Plane className="h-3 w-3" /> {t("avionicsLabel")}
                   </div>
                   <div>{demo.specs}</div>
                 </div>
@@ -158,7 +160,7 @@ export function AerospaceDefenseView({ event, locale = "en", onSelectTier }: Arc
                   className="w-full border-blue-500/30 hover:bg-blue-500/10 text-foreground font-semibold min-h-[40px]"
                 >
                   <FileText className="h-3.5 w-3.5 mr-1.5 text-blue-500" />
-                  View Tactical Technical Brief
+                  {t("briefCta")}
                 </Button>
               </CardContent>
             </Card>
@@ -173,8 +175,8 @@ export function AerospaceDefenseView({ event, locale = "en", onSelectTier }: Arc
           setBriefingDrawerOpen(false);
           setBriefingRequested(false);
         }}
-        title="Defense Delegation & Tactical Briefing Clearance"
-        description="Verify security credentials for restricted flight line tarmac access and classified bilateral briefings."
+        title={t("drawerTitle")}
+        description={t("drawerDescription")}
       >
         <div className="p-6 space-y-6">
           {briefingRequested ? (
@@ -183,9 +185,9 @@ export function AerospaceDefenseView({ event, locale = "en", onSelectTier }: Arc
                 <CheckCircle2 className="h-8 w-8" />
               </div>
               <div className="space-y-1">
-                <h4 className="text-lg font-bold text-foreground">Security Clearance Verified</h4>
+                <h4 className="text-lg font-bold text-foreground">{t("clearanceTitle")}</h4>
                 <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-                  Access pass for <span className="font-semibold text-foreground">{selectedAsset}</span> has been provisioned. Proceed to Security Checkpoint Gate C for Flight Line Tarmac Escort.
+                  {t("clearanceBody", { asset: selectedAsset ?? "" })}
                 </p>
               </div>
               <Button
@@ -195,7 +197,7 @@ export function AerospaceDefenseView({ event, locale = "en", onSelectTier }: Arc
                 }}
                 className="mt-4"
               >
-                Done
+                {t("doneCta")}
               </Button>
             </div>
           ) : (
@@ -208,7 +210,7 @@ export function AerospaceDefenseView({ event, locale = "en", onSelectTier }: Arc
             >
               <div>
                 <label className="text-xs font-semibold text-foreground block mb-1.5">
-                  Aerospace / Defense Asset
+                  {t("assetLabel")}
                 </label>
                 <input
                   type="text"
@@ -220,26 +222,26 @@ export function AerospaceDefenseView({ event, locale = "en", onSelectTier }: Arc
 
               <div>
                 <label className="text-xs font-semibold text-foreground block mb-1.5">
-                  Delegation Credential Level
+                  {t("credentialLabel")}
                 </label>
                 <select className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-background text-foreground font-medium">
-                  <option>Accredited Defense Contractor (Level 2)</option>
-                  <option>Military / Naval / Air Force Official Attache</option>
-                  <option>Civil Aviation & Airport Infrastructure Executive</option>
-                  <option>Aerospace Engineering Faculty / R&D Institute</option>
+                  <option>{t("credentialOption1")}</option>
+                  <option>{t("credentialOption2")}</option>
+                  <option>{t("credentialOption3")}</option>
+                  <option>{t("credentialOption4")}</option>
                 </select>
               </div>
 
               <div>
                 <label className="text-xs font-semibold text-foreground block mb-1.5">
-                  Tarmac Security Requirement
+                  {t("securityLabel")}
                 </label>
                 <div className="p-3 rounded-lg border border-border/80 bg-muted/20 text-xs text-muted-foreground space-y-2">
                   <div className="flex items-center gap-2 text-foreground font-medium">
                     <ShieldCheck className="h-4 w-4 text-emerald-500" />
-                    <span>Flight Line Safety Regulations Enforced</span>
+                    <span>{t("securityValue")}</span>
                   </div>
-                  <p>All tarmac visitors must wear official high-visibility credentials and present photographic identification at Flight Line Gate 4.</p>
+                  <p>{t("securityNote")}</p>
                 </div>
               </div>
 
@@ -249,13 +251,13 @@ export function AerospaceDefenseView({ event, locale = "en", onSelectTier }: Arc
                   variant="outline"
                   onClick={() => setBriefingDrawerOpen(false)}
                 >
-                  Cancel
+                  {t("cancelCta")}
                 </Button>
                 <Button
                   type="submit"
                   className="bg-blue-600 hover:bg-blue-700 text-white font-semibold"
                 >
-                  Validate Credentials
+                  {t("confirmCta")}
                 </Button>
               </div>
             </form>

@@ -2155,6 +2155,33 @@
       "complianceNote": "所有参展物流承运商均遵守国际海关安全认证与 WCO 安全框架协议。",
       "cancelCta": "取消",
       "confirmCta": "提交费率询价"
+    },
+    "AEROSPACE_DEFENSE": {
+      "heroBadge": "航空航天、航空与国防博览会",
+      "heroTitle": "航展飞行表演、战术航电与国防简报",
+      "heroDescription": "视察停机坪静态战斗机、自主无人航空系统（UAS）、多域 C4ISR 防御网络，并预约认证军事礼宾简报。",
+      "requestCta": "申请国防简报访问",
+      "credentialsNote": "需政府证件与安全许可",
+      "opsBadge": "飞行运营与静态展线",
+      "opsTitle": "精选飞机与战术系统",
+      "avionicsLabel": "航电与载荷规格",
+      "briefCta": "查看战术技术简报",
+      "drawerTitle": "国防代表团与战术简报许可",
+      "drawerDescription": "核验受限飞行线停机坪访问与机密双边简报的安全证件。",
+      "clearanceTitle": "安全许可已验证",
+      "clearanceBody": "{asset} 的访问通行证已配置。请前往 C 号安全检查站接受飞行线停机坪护送。",
+      "doneCta": "完成",
+      "assetLabel": "航空航天 / 国防资产",
+      "credentialLabel": "代表团证件级别",
+      "credentialOption1": "认证国防承包商（二级）",
+      "credentialOption2": "军事 / 海军 / 空军官方武官",
+      "credentialOption3": "民航与机场基础设施高管",
+      "credentialOption4": "航空航天工程学院 / 研发机构",
+      "securityLabel": "停机坪安全要求",
+      "securityValue": "执行飞行线安全法规",
+      "securityNote": "所有停机坪访客必须佩戴官方高可视证件，并在飞行线 4 号门出示带照片的身份证明。",
+      "cancelCta": "取消",
+      "confirmCta": "验证证件"
     }
   }
 }

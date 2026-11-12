@@ -2155,6 +2155,33 @@
       "complianceNote": "参加するすべての物流運送会社は、国際税関セキュリティ認証とWCOセーフフレームワーク議定書を遵守しています。",
       "cancelCta": "キャンセル",
       "confirmCta": "料率照会を送信"
+    },
+    "AEROSPACE_DEFENSE": {
+      "heroBadge": "航空宇宙・航空・防衛展示会",
+      "heroTitle": "エアショー飛行デモ、戦術アビオニクス、防衛ブリーフィング",
+      "heroDescription": "駐機中の戦闘機、自律型無人航空システム（UAS）、マルチドメインC4ISR防衛ネットワークを視察し、認定された軍務プロトコルブリーフィングを予約できます。",
+      "requestCta": "防衛ブリーフィングアクセスを依頼",
+      "credentialsNote": "政府資格とセキュリティクリアランスが必要です",
+      "opsBadge": "飛行運用 & 静的ライン",
+      "opsTitle": "注目の航空機と戦術システム",
+      "avionicsLabel": "アビオニクス & ペイロード仕様",
+      "briefCta": "戦術技術ブリーフを見る",
+      "drawerTitle": "防衛代表団 & 戦術ブリーフィング許可",
+      "drawerDescription": "制限されたフライトラインパドックアクセスと機密二国間ブリーフィングのセキュリティ資格を確認します。",
+      "clearanceTitle": "セキュリティクリアランス認証済み",
+      "clearanceBody": "{asset}のアクセスパスがプロビジョニングされました。フライトラインパドックエスコートのためセキュリティチェックポイントゲートCへお進みください。",
+      "doneCta": "完了",
+      "assetLabel": "航空宇宙 / 防衛アセット",
+      "credentialLabel": "代表団資格レベル",
+      "credentialOption1": "認定防衛請負業者（レベル2）",
+      "credentialOption2": "軍 / 海軍 / 空軍公式アタッシェ",
+      "credentialOption3": "民間航空 & 空港インフラ幹部",
+      "credentialOption4": "航空宇宙工学部 / R&D研究所",
+      "securityLabel": "パドックセキュリティ要件",
+      "securityValue": "フライトライン安全規制を適用",
+      "securityNote": "すべてのパドック訪問者は公式の高視認性資格を着用し、フライトラインゲート4で写真付き身分証明書を提示する必要があります。",
+      "cancelCta": "キャンセル",
+      "confirmCta": "資格を検証"
     }
   }
 }

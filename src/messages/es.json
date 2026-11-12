@@ -2155,6 +2155,33 @@
       "complianceNote": "Todos los transportistas logísticos participantes cumplen con las acreditaciones internacionales de seguridad aduanera y los protocolos del marco seguro de la OMA.",
       "cancelCta": "Cancelar",
       "confirmCta": "Enviar Consulta de Tarifa"
+    },
+    "AEROSPACE_DEFENSE": {
+      "heroBadge": "Expo Aeroespacial, de Aviación y Defensa",
+      "heroTitle": "Demos de Vuelo Airshow, Aviónica Táctica y Briefings de Defensa",
+      "heroDescription": "Inspeccione cazas estáticos en plataforma, sistemas aéreos no tripulados autónomos (UAS), redes de defensa C4ISR multidominio y programe briefings de protocolo militar acreditados.",
+      "requestCta": "Solicitar Acceso a Briefing de Defensa",
+      "credentialsNote": "Se requieren credenciales gubernamentales y autorización de seguridad",
+      "opsBadge": "Operaciones de Vuelo y Línea Estática",
+      "opsTitle": "Aeronaves y Sistemas Tácticos Destacados",
+      "avionicsLabel": "Aviónica y Especificaciones de Carga",
+      "briefCta": "Ver Brief Técnico Táctico",
+      "drawerTitle": "Delegación de Defensa y Autorización de Briefing Táctico",
+      "drawerDescription": "Verifique credenciales de seguridad para acceso restringido a la plataforma de línea de vuelo y briefings bilaterales clasificados.",
+      "clearanceTitle": "Autorización de Seguridad Verificada",
+      "clearanceBody": "El pase de acceso para {asset} ha sido aprovisionado. Diríjase al Punto de Control de Seguridad Puerta C para el Escoltaje en Plataforma de Línea de Vuelo.",
+      "doneCta": "Hecho",
+      "assetLabel": "Activo Aeroespacial / de Defensa",
+      "credentialLabel": "Nivel de Credencial de la Delegación",
+      "credentialOption1": "Contratista de Defensa Acreditado (Nivel 2)",
+      "credentialOption2": "Agregado Oficial Militar / Naval / Aéreo",
+      "credentialOption3": "Ejecutivo de Aviación Civil e Infraestructura Aeroportuaria",
+      "credentialOption4": "Facultad de Ingeniería Aeroespacial / Instituto de I+D",
+      "securityLabel": "Requisito de Seguridad en Plataforma",
+      "securityValue": "Normas de Seguridad de Línea de Vuelo Aplicadas",
+      "securityNote": "Todos los visitantes de plataforma deben llevar credenciales oficiales de alta visibilidad y presentar identificación fotográfica en la Puerta 4 de la Línea de Vuelo.",
+      "cancelCta": "Cancelar",
+      "confirmCta": "Validar Credenciales"
     }
   }
 }

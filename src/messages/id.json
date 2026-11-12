@@ -2155,6 +2155,33 @@
       "complianceNote": "Semua pengangkut logistik peserta mematuhi akreditasi keamanan pabean internasional dan protokol kerangka aman WCO.",
       "cancelCta": "Batal",
       "confirmCta": "Ajukan Permintaan Tarif"
+    },
+    "AEROSPACE_DEFENSE": {
+      "heroBadge": "Expo Dirgantara, Penerbangan & Pertahanan",
+      "heroTitle": "Demo Terbang Airshow, Avionik Taktis & Briefing Pertahanan",
+      "heroDescription": "Periksa pesawat tempur statis di tarmac, sistem udara tak berawak otonom (UAS), jaringan pertahanan C4ISR multi-domain, dan jadwalkan briefing protokol militer terakreditasi.",
+      "requestCta": "Minta Akses Briefing Pertahanan",
+      "credentialsNote": "Kredensial pemerintah & izin keamanan diperlukan",
+      "opsBadge": "Operasi Terbang & Jalur Statis",
+      "opsTitle": "Pesawat & Sistem Taktis Unggulan",
+      "avionicsLabel": "Avionik & Spesifikasi Muatan",
+      "briefCta": "Lihat Brief Teknis Taktis",
+      "drawerTitle": "Delegasi Pertahanan & Izin Briefing Taktis",
+      "drawerDescription": "Verifikasi kredensial keamanan untuk akses tarmac jalur terbang terbatas dan briefing bilateral terklasifikasi.",
+      "clearanceTitle": "Izin Keamanan Terverifikasi",
+      "clearanceBody": "Pass akses untuk {asset} telah disiapkan. Lanjut ke Pos Pemeriksaan Keamanan Gate C untuk Pendampingan Tarmac Jalur Terbang.",
+      "doneCta": "Selesai",
+      "assetLabel": "Aset Dirgantara / Pertahanan",
+      "credentialLabel": "Tingkat Kredensial Delegasi",
+      "credentialOption1": "Kontraktor Pertahanan Terakreditasi (Level 2)",
+      "credentialOption2": "Atase Resmi Militer / Angkatan Laut / Udara",
+      "credentialOption3": "Eksekutif Penerbangan Sipil & Infrastruktur Bandara",
+      "credentialOption4": "Fakultas Teknik Dirgantara / Institut R&D",
+      "securityLabel": "Persyaratan Keamanan Tarmac",
+      "securityValue": "Regulasi Keselamatan Jalur Terbang Ditegakkan",
+      "securityNote": "Semua pengunjung tarmac wajib memakai kredensial visibilitas tinggi resmi dan menunjukkan identifikasi foto di Gate 4 Jalur Terbang.",
+      "cancelCta": "Batal",
+      "confirmCta": "Validasi Kredensial"
     }
   }
 }

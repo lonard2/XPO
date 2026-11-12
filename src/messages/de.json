@@ -2155,6 +2155,33 @@
       "complianceNote": "Alle teilnehmenden Logistikfrachtführer halten internationale Zoll-Sicherheitsakkreditierungen und WCO-Safe-Framework-Protokolle ein.",
       "cancelCta": "Abbrechen",
       "confirmCta": "Tarifanfrage einreichen"
+    },
+    "AEROSPACE_DEFENSE": {
+      "heroBadge": "Luft- und Raumfahrt-, Aviation- & Verteidigungsmesse",
+      "heroTitle": "Airshow-Flugdemos, taktische Avionik & Verteidigungsbriefings",
+      "heroDescription": "Besichtigen Sie statische Kampfflugzeuge auf dem Vorfeld, autonome unbemannte Luftfahrtsysteme (UAS), Multi-Domain-C4ISR-Verteidigungsnetzwerke und buchen Sie akkreditierte militärische Protokollbriefings.",
+      "requestCta": "Zugang zum Verteidigungsbriefing anfordern",
+      "credentialsNote": "Regierungsnachweise & Sicherheitsfreigabe erforderlich",
+      "opsBadge": "Flugbetrieb & Static Line",
+      "opsTitle": "Ausgewählte Flugzeuge & taktische Systeme",
+      "avionicsLabel": "Avionik- & Nutzlastdaten",
+      "briefCta": "Taktisches technisches Briefing ansehen",
+      "drawerTitle": "Verteidigungsdelegation & taktische Briefing-Freigabe",
+      "drawerDescription": "Überprüfen Sie Sicherheitsnachweise für restricted Flight-Line-Vorfeldzugang und klassifizierte bilaterale Briefings.",
+      "clearanceTitle": "Sicherheitsfreigabe verifiziert",
+      "clearanceBody": "Der Zugangspass für {asset} wurde bereitgestellt. Begeben Sie sich zum Sicherheitskontrollpunkt Tor C für die Flight-Line-Vorfeldbegleitung.",
+      "doneCta": "Fertig",
+      "assetLabel": "Luft- und Raumfahrt- / Verteidigungsasset",
+      "credentialLabel": "Delegationsnachweis-Stufe",
+      "credentialOption1": "Akkreditierter Verteidigungsauftragnehmer (Stufe 2)",
+      "credentialOption2": "Offizieller Militär- / Marine- / Luftwaffenattaché",
+      "credentialOption3": "Führungskraft Zivilluftfahrt & Flughafeninfrastruktur",
+      "credentialOption4": "Fakultät für Luft- und Raumfahrttechnik / F&E-Institut",
+      "securityLabel": "Vorfeld-Sicherheitsanforderung",
+      "securityValue": "Flight-Line-Sicherheitsvorschriften durchgesetzt",
+      "securityNote": "Alle Vorfeldbesucher müssen offizielle hochsichtbare Nachweise tragen und am Flight-Line-Tor 4 einen Lichtbildausweis vorlegen.",
+      "cancelCta": "Abbrechen",
+      "confirmCta": "Nachweise validieren"
     }
   }
 }

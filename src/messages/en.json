@@ -2155,6 +2155,33 @@
       "complianceNote": "All participating logistics carriers adhere to international customs security accreditation and WCO safe framework protocols.",
       "cancelCta": "Cancel",
       "confirmCta": "Submit Rate Inquiry"
+    },
+    "AEROSPACE_DEFENSE": {
+      "heroBadge": "Aerospace, Aviation & Defense Expo",
+      "heroTitle": "Airshow Flight Demos, Tactical Avionics & Defense Briefings",
+      "heroDescription": "Inspect static tarmac fighter aircraft, autonomous unmanned aerial systems (UAS), multi-domain C4ISR defense networks, and schedule accredited military protocol briefings.",
+      "requestCta": "Request Defense Briefing Access",
+      "credentialsNote": "Government credentials & security clearance required",
+      "opsBadge": "Flight Operations & Static Line",
+      "opsTitle": "Featured Aircraft & Tactical Systems",
+      "avionicsLabel": "Avionics & Payload Specs",
+      "briefCta": "View Tactical Technical Brief",
+      "drawerTitle": "Defense Delegation & Tactical Briefing Clearance",
+      "drawerDescription": "Verify security credentials for restricted flight line tarmac access and classified bilateral briefings.",
+      "clearanceTitle": "Security Clearance Verified",
+      "clearanceBody": "Access pass for {asset} has been provisioned. Proceed to Security Checkpoint Gate C for Flight Line Tarmac Escort.",
+      "doneCta": "Done",
+      "assetLabel": "Aerospace / Defense Asset",
+      "credentialLabel": "Delegation Credential Level",
+      "credentialOption1": "Accredited Defense Contractor (Level 2)",
+      "credentialOption2": "Military / Naval / Air Force Official Attache",
+      "credentialOption3": "Civil Aviation & Airport Infrastructure Executive",
+      "credentialOption4": "Aerospace Engineering Faculty / R&D Institute",
+      "securityLabel": "Tarmac Security Requirement",
+      "securityValue": "Flight Line Safety Regulations Enforced",
+      "securityNote": "All tarmac visitors must wear official high-visibility credentials and present photographic identification at Flight Line Gate 4.",
+      "cancelCta": "Cancel",
+      "confirmCta": "Validate Credentials"
     }
   }
 }
