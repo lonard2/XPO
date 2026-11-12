@@ -2182,6 +2182,37 @@
       "securityNote": "すべてのパドック訪問者は公式の高視認性資格を着用し、フライトラインゲート4で写真付き身分証明書を提示する必要があります。",
       "cancelCta": "キャンセル",
       "confirmCta": "資格を検証"
+    },
+    "HOSPITALITY_TOURISM": {
+      "heroBadge": "ホスピタリティ・観光・トラベルマート",
+      "heroTitle": "デスティネーションパビリオン、ホステッドバイヤー、ホテル調達",
+      "heroDescription": "国際旅行卸売業者、ラグジュアリーリゾート運営者、コンベンションビューロー、航空会社アライアンスを事前調整された二国間マッチング会議で結びつけます。",
+      "scheduleCta": "ホステッドバイヤーセッションを予約",
+      "qualifiedNote": "事前審査済みのアウトバウンド旅行代理店と法人バイヤー",
+      "showcasesBadge": "デスティネーションショーケース",
+      "showcasesTitle": "旗艦パビリオン & 調達コリドー",
+      "requestCta": "バイヤー面談を依頼",
+      "drawerTitle": "B2Bホステッドバイヤー スピードマッチング",
+      "drawerDescription": "公式デスティネーション代表とホテル幹部による20分の専用調達セッションを予約します。",
+      "requestedTitle": "バイヤー面談をリクエストしました",
+      "requestedBody": "{pavilion}との調達会議リクエストが記録され、主催者が連絡先を把握しています。",
+      "referenceLabel": "参照番号: {reference}",
+      "doneCta": "完了",
+      "nameLabel": "氏名",
+      "namePlaceholder": "例: Alex Pratama",
+      "emailLabel": "連絡先メール",
+      "pavilionLabel": "デスティネーション / ホスピタリティパビリオン",
+      "categoryLabel": "バイヤー調達カテゴリ",
+      "categoryOption1": "MICE法人リトリート & インセンティブ旅行",
+      "categoryOption2": "ラグジュアリーホテル & リゾートアメニティ卸売",
+      "categoryOption3": "航空会社グループチケット & チャーターサービス",
+      "categoryOption4": "インバウンドDMC & ツアーオペレーター契約",
+      "credentialLabel": "ホステッドバイヤー資格確認",
+      "credentialValue": "認証済み旅行業プロフェッショナル",
+      "credentialNote": "ホステッドバイヤー会議は商用旅行代理店、法人調達責任者、イベント主催者に限定されます。",
+      "cancelCta": "キャンセル",
+      "submitCta": "面談を確定",
+      "sendingCta": "送信中..."
     }
   }
 }

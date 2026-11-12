@@ -2182,6 +2182,37 @@
       "securityNote": "所有停机坪访客必须佩戴官方高可视证件，并在飞行线 4 号门出示带照片的身份证明。",
       "cancelCta": "取消",
       "confirmCta": "验证证件"
+    },
+    "HOSPITALITY_TOURISM": {
+      "heroBadge": "酒店、旅游与旅行交易会",
+      "heroTitle": "目的地展馆、特邀买家与酒店采购",
+      "heroDescription": "通过预先安排的双边配对会议，连接国际旅行批发商、豪华度假村运营商、会议局与航空联盟。",
+      "scheduleCta": "预约特邀买家时段",
+      "qualifiedNote": "已预审的出境旅行社与 corporate 买家",
+      "showcasesBadge": "目的地展示",
+      "showcasesTitle": "旗舰展馆与采购通道",
+      "requestCta": "申请买家会面",
+      "drawerTitle": "B2B 特邀买家快速配对",
+      "drawerDescription": "与官方目的地代表和酒店高管预约 20 分钟专属采购时段。",
+      "requestedTitle": "买家会面已申请",
+      "requestedBody": "您与 {pavilion} 的采购会议申请已记录，主办方已获取您的联系方式。",
+      "referenceLabel": "参考编号：{reference}",
+      "doneCta": "完成",
+      "nameLabel": "姓名",
+      "namePlaceholder": "例如：Alex Pratama",
+      "emailLabel": "联系邮箱",
+      "pavilionLabel": "目的地 / 酒店展馆",
+      "categoryLabel": "买家采购类别",
+      "categoryOption1": "MICE 企业静修与奖励旅游",
+      "categoryOption2": "豪华酒店与度假村用品批发",
+      "categoryOption3": "航空团体票务与包机服务",
+      "categoryOption4": "入境 DMC 与旅行社合作",
+      "credentialLabel": "特邀买家资格核查",
+      "credentialValue": "已认证旅游行业专业人士",
+      "credentialNote": "特邀买家会议仅限商业旅行社、企业采购负责人与活动主办方。",
+      "cancelCta": "取消",
+      "submitCta": "确认会面",
+      "sendingCta": "发送中..."
     }
   }
 }

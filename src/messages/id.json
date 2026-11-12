@@ -2182,6 +2182,37 @@
       "securityNote": "Semua pengunjung tarmac wajib memakai kredensial visibilitas tinggi resmi dan menunjukkan identifikasi foto di Gate 4 Jalur Terbang.",
       "cancelCta": "Batal",
       "confirmCta": "Validasi Kredensial"
+    },
+    "HOSPITALITY_TOURISM": {
+      "heroBadge": "Mart Perhotelan, Pariwisata & Perjalanan",
+      "heroTitle": "Paviliun Destinasi, Hosted Buyer & Pengadaan Hotelier",
+      "heroDescription": "Hubungkan grosir perjalanan internasional, operator resor mewah, biro konvensi, dan aliansi maskapai melalui pertemuan matchmaking bilateral yang telah dijadwalkan.",
+      "scheduleCta": "Jadwalkan Sesi Hosted Buyer",
+      "qualifiedNote": "Agen perjalanan outbound & buyer korporat yang telah memenuhi kualifikasi",
+      "showcasesBadge": "Etalase Destinasi",
+      "showcasesTitle": "Paviliun Utama & Koridor Pengadaan",
+      "requestCta": "Minta Janji Buyer",
+      "drawerTitle": "Speed-Matchmaking Hosted Buyer B2B",
+      "drawerDescription": "Pesan sesi pengadaan 20 menit khusus dengan delegasi destinasi resmi dan eksekutif hotelier.",
+      "requestedTitle": "Janji Buyer Diminta",
+      "requestedBody": "Permintaan pertemuan pengadaan Anda dengan {pavilion} telah tercatat dan penyelenggara memiliki detail kontak Anda.",
+      "referenceLabel": "Referensi: {reference}",
+      "doneCta": "Selesai",
+      "nameLabel": "Nama Lengkap",
+      "namePlaceholder": "mis. Alex Pratama",
+      "emailLabel": "Email Kontak",
+      "pavilionLabel": "Paviliun Destinasi / Perhotelan",
+      "categoryLabel": "Kategori Pengadaan Buyer",
+      "categoryOption1": "Retreat Korporat MICE & Perjalanan Insentif",
+      "categoryOption2": "Grosir Amenitas Hotel & Resor Mewah",
+      "categoryOption3": "Tiket Grup Maskapai & Layanan Charter",
+      "categoryOption4": "Kontrak DMC Inbound & Operator Tur",
+      "credentialLabel": "Pemeriksaan Kredensial Hosted Buyer",
+      "credentialValue": "Profesional Industri Perjalanan Terverifikasi",
+      "credentialNote": "Pertemuan hosted buyer hanya untuk agen perjalanan komersial, kepala pengadaan korporat, dan penyelenggara acara.",
+      "cancelCta": "Batal",
+      "submitCta": "Konfirmasi Janji",
+      "sendingCta": "Mengirim..."
     }
   }
 }

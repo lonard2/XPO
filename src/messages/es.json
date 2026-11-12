@@ -2182,6 +2182,37 @@
       "securityNote": "Todos los visitantes de plataforma deben llevar credenciales oficiales de alta visibilidad y presentar identificación fotográfica en la Puerta 4 de la Línea de Vuelo.",
       "cancelCta": "Cancelar",
       "confirmCta": "Validar Credenciales"
+    },
+    "HOSPITALITY_TOURISM": {
+      "heroBadge": "Mart de Hospitalidad, Turismo y Viajes",
+      "heroTitle": "Pabellones de Destino, Compradores Invitados y Compras Hoteleras",
+      "heroDescription": "Conecte mayoristas de viajes internacionales, operadores de resorts de lujo, convention bureaus y alianzas aéreas mediante reuniones de matchmaking bilateral programadas.",
+      "scheduleCta": "Programar Sesión de Comprador Invitado",
+      "qualifiedNote": "Agencias de viajes emisoras y compradores corporativos precalificados",
+      "showcasesBadge": "Escaparates de Destino",
+      "showcasesTitle": "Pabellones Insignia y Corredores de Compras",
+      "requestCta": "Solicitar Cita con Comprador",
+      "drawerTitle": "Speed-Matchmaking de Compradores Invitados B2B",
+      "drawerDescription": "Reserve una sesión de compras dedicada de 20 minutos con delegados oficiales de destino y ejecutivos hoteleros.",
+      "requestedTitle": "Cita con Comprador Solicitada",
+      "requestedBody": "Su solicitud de reunión de compras con {pavilion} ha quedado registrada y el organizador tiene sus datos de contacto.",
+      "referenceLabel": "Referencia: {reference}",
+      "doneCta": "Hecho",
+      "nameLabel": "Nombre Completo",
+      "namePlaceholder": "p. ej., Alex Pratama",
+      "emailLabel": "Email de Contacto",
+      "pavilionLabel": "Pabellón de Destino / Hospitalidad",
+      "categoryLabel": "Categoría de Compras del Comprador",
+      "categoryOption1": "Retiros Corporativos MICE y Viajes de Incentivo",
+      "categoryOption2": "Mayorista de Amenidades de Hoteles y Resorts de Lujo",
+      "categoryOption3": "Ticketing Grupal y Servicios Chárter de Aerolíneas",
+      "categoryOption4": "Contratación de DMC Receptivo y Tour Operadores",
+      "credentialLabel": "Verificación de Credencial de Comprador Invitado",
+      "credentialValue": "Profesional del Sector Viajes Verificado",
+      "credentialNote": "Las reuniones de compradores invitados están estrictamente reservadas a agencias de viajes comerciales, jefes de compras corporativas y organizadores de eventos.",
+      "cancelCta": "Cancelar",
+      "submitCta": "Confirmar Cita",
+      "sendingCta": "Enviando..."
     }
   }
 }

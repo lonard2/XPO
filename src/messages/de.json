@@ -2182,6 +2182,37 @@
       "securityNote": "Alle Vorfeldbesucher müssen offizielle hochsichtbare Nachweise tragen und am Flight-Line-Tor 4 einen Lichtbildausweis vorlegen.",
       "cancelCta": "Abbrechen",
       "confirmCta": "Nachweise validieren"
+    },
+    "HOSPITALITY_TOURISM": {
+      "heroBadge": "Hospitality-, Tourismus- & Reisemesse",
+      "heroTitle": "Destination-Pavillons, Hosted Buyer & Hotelier-Beschaffung",
+      "heroDescription": "Verbinden Sie internationale Reisegroßhändler, Luxusresort-Betreiber, Convention Bureaus und Airline-Allianzen durch vorab geplante bilaterale Matchmaking-Meetings.",
+      "scheduleCta": "Hosted-Buyer-Session planen",
+      "qualifiedNote": "Vorqualifizierte Outbound-Reiseagenturen & Unternehmenseinkäufer",
+      "showcasesBadge": "Destination-Showcases",
+      "showcasesTitle": "Flaggschiff-Pavillons & Beschaffungskorridore",
+      "requestCta": "Buyer-Termin anfordern",
+      "drawerTitle": "B2B Hosted-Buyer-Speed-Matchmaking",
+      "drawerDescription": "Buchen Sie eine dedizierte 20-minütige Beschaffungssession mit offiziellen Destination-Delegierten und Hotelmanager.",
+      "requestedTitle": "Buyer-Termin angefordert",
+      "requestedBody": "Ihre Beschaffungsanfrage bei {pavilion} ist erfasst und der Veranstalter hat Ihre Kontaktdaten.",
+      "referenceLabel": "Referenz: {reference}",
+      "doneCta": "Fertig",
+      "nameLabel": "Vollständiger Name",
+      "namePlaceholder": "z. B. Alex Pratama",
+      "emailLabel": "Kontakt-E-Mail",
+      "pavilionLabel": "Destination- / Hospitality-Pavillon",
+      "categoryLabel": "Buyer-Beschaffungskategorie",
+      "categoryOption1": "MICE-Unternehmensretreats & Incentive-Reisen",
+      "categoryOption2": "Luxushotel- & Resort-Amenities-Großhandel",
+      "categoryOption3": "Airline-Gruppenticketing & Charter-Services",
+      "categoryOption4": "Inbound-DMC- & Reiseveranstalter-Verträge",
+      "credentialLabel": "Hosted-Buyer-Nachweisprüfung",
+      "credentialValue": "Verifizierter Reisebranchenprofi",
+      "credentialNote": "Hosted-Buyer-Meetings sind strikt kommerziellen Reiseagenturen, Unternehmensbeschaffungsleitern und Veranstaltern vorbehalten.",
+      "cancelCta": "Abbrechen",
+      "submitCta": "Termin bestätigen",
+      "sendingCta": "Wird gesendet..."
     }
   }
 }

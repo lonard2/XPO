@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import {
   Plane,
   Building2,
@@ -24,6 +25,7 @@ import { type ArchetypeViewProps } from "./IndustrialB2BView";
 import { submitMeetingRequest } from "@/lib/meetings/client";
 
 export function HospitalityTourismView({ event, locale = "en", onSelectTier, pageSize = "LARGE" }: ArchetypeViewProps) {
+  const t = useTranslations("archetypeViews.HOSPITALITY_TOURISM");
   const [buyerDrawerOpen, setBuyerDrawerOpen] = React.useState(false);
   const [selectedPavilion, setSelectedPavilion] = React.useState<string | null>(null);
   const [appointmentBooked, setAppointmentBooked] = React.useState(false);
@@ -96,14 +98,14 @@ export function HospitalityTourismView({ event, locale = "en", onSelectTier, pag
                 <Plane className="h-4 w-4" />
               </span>
               <span className="text-xs font-bold uppercase tracking-wider text-cyan-500">
-                Hospitality, Tourism & Travel Mart
+                {t("heroBadge")}
               </span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-              Destination Pavilions, Hosted Buyers & Hotelier Procurement
+              {t("heroTitle")}
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-              Connect international travel wholesalers, luxury resort operators, convention bureaus, and airline alliances through pre-scheduled bilateral matchmaking meetings.
+              {t("heroDescription")}
             </p>
           </div>
 
@@ -117,10 +119,10 @@ export function HospitalityTourismView({ event, locale = "en", onSelectTier, pag
               className="bg-cyan-600 hover:bg-cyan-700 text-white font-semibold shadow-md min-h-[44px]"
             >
               <CalendarCheck className="h-4 w-4 mr-2" />
-              Schedule Hosted Buyer Session
+              {t("scheduleCta")}
             </Button>
             <div className="text-xs text-muted-foreground text-center lg:text-right">
-              Pre-qualified outbound travel agents & corporate buyers
+              {t("qualifiedNote")}
             </div>
           </div>
         </div>
@@ -131,10 +133,10 @@ export function HospitalityTourismView({ event, locale = "en", onSelectTier, pag
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-cyan-500 uppercase tracking-wider mb-1">
             <Globe2 className="h-4 w-4" />
-            <span>Destination Showcases</span>
+            <span>{t("showcasesBadge")}</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-            Flagship Pavilions & Procurement Corridors
+            {t("showcasesTitle")}
           </h3>
         </div>
 
@@ -174,7 +176,7 @@ export function HospitalityTourismView({ event, locale = "en", onSelectTier, pag
                   className="w-full border-cyan-500/30 hover:bg-cyan-500/10 text-foreground font-semibold min-h-[40px]"
                 >
                   <Handshake className="h-3.5 w-3.5 mr-1.5 text-cyan-500" />
-                  Request Buyer Appointment
+                  {t("requestCta")}
                 </Button>
                 )}
               </CardContent>
@@ -190,8 +192,8 @@ export function HospitalityTourismView({ event, locale = "en", onSelectTier, pag
           setBuyerDrawerOpen(false);
           setAppointmentBooked(false);
         }}
-        title="B2B Hosted Buyer Speed-Matchmaking"
-        description="Book a dedicated 20-minute procurement session with official destination delegates and hotelier executives."
+        title={t("drawerTitle")}
+        description={t("drawerDescription")}
       >
         <div className="p-6 space-y-6">
           {appointmentBooked ? (
@@ -200,12 +202,13 @@ export function HospitalityTourismView({ event, locale = "en", onSelectTier, pag
                 <CheckCircle2 className="h-8 w-8" />
               </div>
               <div className="space-y-1">
-                <h4 className="text-lg font-bold text-foreground">Buyer Appointment Requested</h4>
+                <h4 className="text-lg font-bold text-foreground">{t("requestedTitle")}</h4>
                 <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-                  Your procurement meeting request with <span className="font-semibold text-foreground">{selectedPavilion}</span> is
-                  recorded and the organizer has your contact details.
+                  {t("requestedBody", { pavilion: selectedPavilion ?? "" })}
                   {appointmentReference && (
-                    <span className="block mt-1 font-mono">Reference: {appointmentReference}</span>
+                    <span className="block mt-1 font-mono">
+                      {t("referenceLabel", { reference: appointmentReference })}
+                    </span>
                   )}
                 </p>
               </div>
@@ -216,7 +219,7 @@ export function HospitalityTourismView({ event, locale = "en", onSelectTier, pag
                 }}
                 className="mt-4"
               >
-                Done
+                {t("doneCta")}
               </Button>
             </div>
           ) : (
@@ -224,20 +227,20 @@ export function HospitalityTourismView({ event, locale = "en", onSelectTier, pag
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs font-semibold text-foreground block mb-1.5">
-                    Full Name *
+                    {t("nameLabel")} *
                   </label>
                   <input
                     required
                     name="name"
                     type="text"
                     autoComplete="name"
-                    placeholder="e.g. Alex Pratama"
+                    placeholder={t("namePlaceholder")}
                     className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-background text-foreground font-medium min-h-[44px]"
                   />
                 </div>
                 <div>
                   <label className="text-xs font-semibold text-foreground block mb-1.5">
-                    Contact Email *
+                    {t("emailLabel")} *
                   </label>
                   <input
                     required
@@ -251,7 +254,7 @@ export function HospitalityTourismView({ event, locale = "en", onSelectTier, pag
               </div>
               <div>
                 <label className="text-xs font-semibold text-foreground block mb-1.5">
-                  Destination / Hospitality Pavilion
+                  {t("pavilionLabel")}
                 </label>
                 <input
                   type="text"
@@ -263,26 +266,26 @@ export function HospitalityTourismView({ event, locale = "en", onSelectTier, pag
 
               <div>
                 <label className="text-xs font-semibold text-foreground block mb-1.5">
-                  Buyer Procurement Category
+                  {t("categoryLabel")}
                 </label>
                 <select name="category" className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-background text-foreground font-medium">
-                  <option>MICE Corporate Retreats & Incentive Trips</option>
-                  <option>Luxury Hotel & Resort Amenities Wholesale</option>
-                  <option>Airline Group Ticketing & Charter Services</option>
-                  <option>Inbound DMC & Tour Operator Contracting</option>
+                  <option>{t("categoryOption1")}</option>
+                  <option>{t("categoryOption2")}</option>
+                  <option>{t("categoryOption3")}</option>
+                  <option>{t("categoryOption4")}</option>
                 </select>
               </div>
 
               <div>
                 <label className="text-xs font-semibold text-foreground block mb-1.5">
-                  Hosted Buyer Credential Check
+                  {t("credentialLabel")}
                 </label>
                 <div className="p-3 rounded-lg border border-border/80 bg-muted/20 text-xs text-muted-foreground space-y-2">
                   <div className="flex items-center gap-2 text-foreground font-medium">
                     <ShieldCheck className="h-4 w-4 text-emerald-500" />
-                    <span>Verified Travel Industry Professional</span>
+                    <span>{t("credentialValue")}</span>
                   </div>
-                  <p>Hosted buyer meetings are strictly reserved for commercial travel agencies, corporate procurement heads, and event organizers.</p>
+                  <p>{t("credentialNote")}</p>
                 </div>
               </div>
 
@@ -297,14 +300,14 @@ export function HospitalityTourismView({ event, locale = "en", onSelectTier, pag
                   variant="outline"
                   onClick={() => setBuyerDrawerOpen(false)}
                 >
-                  Cancel
+                  {t("cancelCta")}
                 </Button>
                 <Button
                   type="submit"
                   disabled={appointmentSending}
                   className="bg-cyan-600 hover:bg-cyan-700 text-white font-semibold"
                 >
-                  {appointmentSending ? "Sending…" : "Confirm Appointment"}
+                  {appointmentSending ? t("sendingCta") : t("submitCta")}
                 </Button>
               </div>
             </form>

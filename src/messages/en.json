@@ -2182,6 +2182,37 @@
       "securityNote": "All tarmac visitors must wear official high-visibility credentials and present photographic identification at Flight Line Gate 4.",
       "cancelCta": "Cancel",
       "confirmCta": "Validate Credentials"
+    },
+    "HOSPITALITY_TOURISM": {
+      "heroBadge": "Hospitality, Tourism & Travel Mart",
+      "heroTitle": "Destination Pavilions, Hosted Buyers & Hotelier Procurement",
+      "heroDescription": "Connect international travel wholesalers, luxury resort operators, convention bureaus, and airline alliances through pre-scheduled bilateral matchmaking meetings.",
+      "scheduleCta": "Schedule Hosted Buyer Session",
+      "qualifiedNote": "Pre-qualified outbound travel agents & corporate buyers",
+      "showcasesBadge": "Destination Showcases",
+      "showcasesTitle": "Flagship Pavilions & Procurement Corridors",
+      "requestCta": "Request Buyer Appointment",
+      "drawerTitle": "B2B Hosted Buyer Speed-Matchmaking",
+      "drawerDescription": "Book a dedicated 20-minute procurement session with official destination delegates and hotelier executives.",
+      "requestedTitle": "Buyer Appointment Requested",
+      "requestedBody": "Your procurement meeting request with {pavilion} is recorded and the organizer has your contact details.",
+      "referenceLabel": "Reference: {reference}",
+      "doneCta": "Done",
+      "nameLabel": "Full Name",
+      "namePlaceholder": "e.g. Alex Pratama",
+      "emailLabel": "Contact Email",
+      "pavilionLabel": "Destination / Hospitality Pavilion",
+      "categoryLabel": "Buyer Procurement Category",
+      "categoryOption1": "MICE Corporate Retreats & Incentive Trips",
+      "categoryOption2": "Luxury Hotel & Resort Amenities Wholesale",
+      "categoryOption3": "Airline Group Ticketing & Charter Services",
+      "categoryOption4": "Inbound DMC & Tour Operator Contracting",
+      "credentialLabel": "Hosted Buyer Credential Check",
+      "credentialValue": "Verified Travel Industry Professional",
+      "credentialNote": "Hosted buyer meetings are strictly reserved for commercial travel agencies, corporate procurement heads, and event organizers.",
+      "cancelCta": "Cancel",
+      "submitCta": "Confirm Appointment",
+      "sendingCta": "Sending..."
     }
   }
 }
