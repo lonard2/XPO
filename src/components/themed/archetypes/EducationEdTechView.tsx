@@ -28,7 +28,7 @@ export function EducationEdTechView({ event, locale = "en", onSelectTier }: Arch
   const t = useTranslations("archetypeViews.EDUCATION_EDTECH");
   const [scholarshipDrawerOpen, setScholarshipDrawerOpen] = React.useState(false);
   const [gpa, setGpa] = React.useState("3.8");
-  const [targetDegree, setTargetDegree] = React.useState("Master of Science (STEM)");
+  const [targetDegree, setTargetDegree] = React.useState("master");
   const [calcResult, setCalcResult] = React.useState(false);
 
   // University Stalls & Academic Innovation Hub
@@ -180,17 +180,18 @@ export function EducationEdTechView({ event, locale = "en", onSelectTier }: Arch
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-foreground block mb-1.5">
+              <label htmlFor="scholarship-degree" className="text-xs font-semibold text-foreground block mb-1.5">
                 {t("degreeLabel")}
               </label>
               <select
+                id="scholarship-degree"
                 value={targetDegree}
                 onChange={(e) => setTargetDegree(e.target.value)}
                 className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-background text-foreground font-medium"
               >
-                <option>{t("degreeBachelor")}</option>
-                <option>{t("degreeMaster")}</option>
-                <option>{t("degreeDoctoral")}</option>
+                <option value="bachelor">{t("degreeBachelor")}</option>
+                <option value="master">{t("degreeMaster")}</option>
+                <option value="doctoral">{t("degreeDoctoral")}</option>
               </select>
             </div>
 

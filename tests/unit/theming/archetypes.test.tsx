@@ -12,6 +12,7 @@ import {
   MegaExpoPavilionView,
   GovernmentDiplomaticView,
   IncentiveRetreatView,
+  EducationEdTechView,
 } from "@/components/themed/archetypes";
 
 const mockBaseEvent = {
@@ -216,6 +217,35 @@ describe("Phase 5: 9 Archetype Specialized Views & EventPageShell", () => {
     expect(screen.getByText("Summit Security Briefing")).toBeInTheDocument();
     expect(screen.getByText("Republic of Indonesia")).toBeInTheDocument();
     expect(screen.getByText("Bilateral Suite Alpha")).toBeInTheDocument();
+  });
+
+  it("keeps untracked agenda items visible when the fallback track is selected", () => {
+    const event = {
+      ...mockBaseEvent,
+      agendaItems: [{ ...mockBaseEvent.agendaItems[0], track: null }],
+    };
+    render(<TechDevSummitView event={event} locale="en" />);
+
+    fireEvent.click(screen.getByRole("button", { name: "General Engineering" }));
+
+    expect(
+      screen.getByText("Keynote: Smart Automation Architecture")
+    ).toBeInTheDocument();
+  });
+
+  it("keeps the degree select in sync with its option values", () => {
+    render(<EducationEdTechView event={mockBaseEvent} locale="en" />);
+
+    fireEvent.click(
+      screen.getByRole("button", { name: /Calculate Scholarship Grant/i })
+    );
+    const select = document.querySelector(
+      "#scholarship-degree"
+    ) as HTMLSelectElement;
+
+    expect(select.value).toBe("master");
+    fireEvent.change(select, { target: { value: "doctoral" } });
+    expect(select.value).toBe("doctoral");
   });
 
   it("renders IncentiveRetreatView with excursion itinerary, wellness spa treatments, and VIP chauffeur notes", () => {

@@ -32,7 +32,9 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier, pageSize
   ];
 
   const filteredAgendas = event.agendaItems.filter(
-    (item) => activeTrack === "ALL" || item.track === activeTrack
+    (item) =>
+      activeTrack === "ALL" ||
+      (item.track || t("generalEngineering")) === activeTrack
   );
 
   // Organizer-authored showcase: sections render only with backing data.
@@ -145,7 +147,7 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier, pageSize
                 <div className="space-y-1.5">
                   <div className="flex flex-wrap items-center gap-2">
                     <Badge variant="archetype" size="sm" className="font-mono text-xs font-semibold">
-                      {agenda.track || "General Track"}
+                      {agenda.track || t("generalEngineering")}
                     </Badge>
                     <span className="text-xs font-semibold text-muted-foreground flex items-center gap-1">
                       <MapPin className="h-3 w-3 text-muted-foreground" />
