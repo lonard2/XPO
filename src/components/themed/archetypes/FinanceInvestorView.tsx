@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import {
   TrendingUp,
   Lock,
@@ -30,6 +31,7 @@ import { parseShowcase } from "@/lib/showcase";
 import { ShowcaseProgramGrid } from "@/components/themed/ShowcaseProgramGrid";
 
 export function FinanceInvestorView({ event, locale = "en", onSelectTier, pageSize = "LARGE" }: ArchetypeViewProps) {
+  const t = useTranslations("archetypeViews.FINANCE_INVESTOR");
   const [dealRoomOpen, setDealRoomOpen] = React.useState(false);
   const [selectedDeal, setSelectedDeal] = React.useState<string | null>(null);
   const [bookingConfirmed, setBookingConfirmed] = React.useState(false);
@@ -84,10 +86,10 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier, pageSi
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center gap-2 text-xs font-bold text-emerald-500 uppercase tracking-wider">
             <TrendingUp className="h-4 w-4" aria-hidden="true" />
-            <span>Private Equity, Venture Capital & Sovereign Forum</span>
+            <span>{t("heroBadge")}</span>
           </div>
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground">
-            Capital Allocation, Deal Structuring & Liquidity Horizons
+            {t("heroTitle")}
           </h2>
           <p className="text-muted-foreground text-sm leading-relaxed">
             {event.description}
@@ -103,7 +105,7 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier, pageSi
               className="gap-2 text-xs"
             >
               <Lock className="h-4 w-4 text-amber-500" />
-              Book Private 1-on-1 Deal Suite
+              {t("dealCta")}
             </Button>
             )}
           </div>
@@ -116,20 +118,20 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier, pageSi
               <div className="flex flex-wrap items-center gap-1.5">
                 <Badge variant="success" size="sm" className="gap-1">
                   <ShieldCheck className="h-3.5 w-3.5" />
-                  KYC Level 3
+                  {t("kycBadge")}
                 </Badge>
                 <DemonstrationBadge />
               </div>
               <Lock className="h-4 w-4 text-[var(--archetype-accent)]" />
             </div>
-            <CardTitle className="text-base">Chatham House Rule</CardTitle>
+            <CardTitle className="text-base">{t("chathamTitle")}</CardTitle>
             <CardDescription className="text-xs">
-              All discussions within closed-door plenary halls and bilateral rooms are non-attributable.
+              {t("chathamDesc")}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3 text-xs text-muted-foreground">
             <div className="p-2.5 rounded-md bg-muted/40 border border-border/80 flex items-center justify-between">
-              <span>Encrypted Pass Verification:</span>
+              <span>{t("encryptedLabel")}</span>
               <span className="font-mono text-emerald-400 font-semibold">
                 {kycVerified ? "SEC-VERIFIED-PASS" : "PENDING-CONFIRMATION"}
               </span>
@@ -142,7 +144,7 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier, pageSi
                 className="w-full text-xs gap-1.5"
               >
                 <KeyRound className="h-3.5 w-3.5" />
-                Verify Institutional Accreditation
+                {t("verifyCta")}
               </Button>
             )}
           </CardContent>
@@ -154,7 +156,7 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier, pageSi
         <section className="space-y-4">
           <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
             <Coins className="h-5 w-5 text-emerald-400" />
-            Keynote Sessions & Deal-Making Panels
+            {t("panelsTitle")}
           </h3>
           <div className="space-y-3">
             {event.agendaItems.map((agenda) => (
@@ -170,7 +172,7 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier, pageSi
                     <h4 className="text-base font-bold text-foreground">{agenda.title}</h4>
                     {agenda.speakerName && (
                       <p className="text-xs text-muted-foreground">
-                        Keynote: <span className="font-semibold text-foreground">{agenda.speakerName}</span>{" "}
+                        {t("keynoteLabel")} <span className="font-semibold text-foreground">{agenda.speakerName}</span>{" "}
                         {agenda.speakerRole && `(${agenda.speakerRole})`}
                       </p>
                     )}
@@ -190,9 +192,9 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier, pageSi
 
       {showcasePrograms.length > 0 && (
         <ShowcaseProgramGrid
-          eyebrow="Deal Pipeline"
-          title="Curated Pitch Decks & Venture Pipeline"
-          description="Founder decks published by the organizer for accredited investors."
+          eyebrow={t("showcaseEyebrow")}
+          title={t("showcaseTitle")}
+          description={t("showcaseDesc")}
           programs={showcasePrograms}
           locale={locale}
           stampedAt={showcase.attestedAt}
@@ -204,10 +206,10 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier, pageSi
         <div>
           <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
             <Ticket className="h-5 w-5 text-[var(--archetype-primary)]" />
-            Institutional Delegate Credentials
+            {t("credentialsTitle")}
           </h3>
           <p className="text-xs text-muted-foreground">
-            All passes include encrypted deal-room reservation tokens and post-event pitch deck repository access.
+            {t("credentialsDesc")}
           </p>
           <div className="mt-2">
             <DemonstrationBadge />
@@ -250,7 +252,7 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier, pageSi
                   <div className="pt-2">
                     <Button variant="archetype" className="w-full gap-2 font-semibold min-h-[44px] cursor-pointer">
                       <Ticket className="h-4 w-4" />
-                      Select {tier.name}
+                      {t("selectTier", { tier: tier.name })}
                     </Button>
                   </div>
                 </CardContent>
@@ -264,26 +266,28 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier, pageSi
       <Drawer
         isOpen={dealRoomOpen}
         onClose={() => setDealRoomOpen(false)}
-        title="Schedule Private Bilateral Deal Room"
-        description={`Direct investor meeting suite booking for ${selectedDeal}`}
+        title={t("drawerTitle")}
+        description={t("drawerDescription", { deal: selectedDeal ?? "" })}
       >
         {bookingConfirmed ? (
           <div className="py-12 text-center space-y-3 animate-fade-in">
             <div className="h-12 w-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
               <CheckCircle2 className="h-6 w-6" />
             </div>
-            <h4 className="text-base font-semibold text-foreground">Deal Room Requested</h4>
+            <h4 className="text-base font-semibold text-foreground">{t("requestedTitle")}</h4>
             <p className="text-xs text-muted-foreground max-w-xs mx-auto">
-              The founder/fund team has your request and contact details, and will respond directly.
+              {t("requestedBody")}
               {bookingReference && (
-                <span className="block mt-1 font-mono">Reference: {bookingReference}</span>
+                <span className="block mt-1 font-mono">
+                  {t("referenceLabel", { reference: bookingReference })}
+                </span>
               )}
             </p>
           </div>
         ) : (
           <form onSubmit={handleDealSubmit} className="space-y-4 text-xs">
             <div className="space-y-1">
-              <label className="font-semibold text-foreground">Contact Email *</label>
+              <label className="font-semibold text-foreground">{t("emailLabel")} *</label>
               <input
                 required
                 name="email"
@@ -294,7 +298,7 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier, pageSi
               />
             </div>
             <div className="space-y-1">
-              <label className="font-semibold text-foreground">Target Opportunity</label>
+              <label className="font-semibold text-foreground">{t("targetLabel")}</label>
               <input
                 type="text"
                 readOnly
@@ -303,41 +307,41 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier, pageSi
               />
             </div>
             <div className="space-y-1">
-              <label className="font-semibold text-foreground">Fund / Institution Name *</label>
+              <label className="font-semibold text-foreground">{t("fundLabel")} *</label>
               <input
                 required
                 name="fund"
                 type="text"
                 autoComplete="organization"
-                placeholder="e.g. Apex Global Ventures"
+                placeholder={t("fundPlaceholder")}
                 className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary min-h-[40px]"
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
-                <label className="font-semibold text-foreground">Preferred Time Slot *</label>
+                <label className="font-semibold text-foreground">{t("slotLabel")} *</label>
                 <select name="slot" className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary min-h-[40px]">
-                  <option>Day 1: 14:00 - 14:45</option>
-                  <option>Day 1: 15:30 - 16:15</option>
-                  <option>Day 2: 10:00 - 10:45</option>
-                  <option>Day 2: 11:30 - 12:15</option>
+                  <option>{t("slotOption1")}</option>
+                  <option>{t("slotOption2")}</option>
+                  <option>{t("slotOption3")}</option>
+                  <option>{t("slotOption4")}</option>
                 </select>
               </div>
               <div className="space-y-1">
-                <label className="font-semibold text-foreground">Investment Horizon / Check Size</label>
+                <label className="font-semibold text-foreground">{t("horizonLabel")}</label>
                 <select name="horizon" className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary min-h-[40px]">
-                  <option>$1M - $5M USD</option>
-                  <option>$5M - $15M USD</option>
-                  <option>$15M+ Growth Equity</option>
+                  <option>{t("horizonOption1")}</option>
+                  <option>{t("horizonOption2")}</option>
+                  <option>{t("horizonOption3")}</option>
                 </select>
               </div>
             </div>
             <div className="space-y-1">
-              <label className="font-semibold text-foreground">Discussion Agenda / Due Diligence Topics</label>
+              <label className="font-semibold text-foreground">{t("agendaLabel")}</label>
               <textarea
                 name="agenda"
                 rows={3}
-                placeholder="Briefly state your investment thesis, current portfolio synergy, or specific questions regarding financial metrics..."
+                placeholder={t("agendaPlaceholder")}
                 className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary"
               />
             </div>
