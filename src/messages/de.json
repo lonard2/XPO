@@ -2020,6 +2020,33 @@
       "safetyNote": "Alle Fahrer müssen vor der Einfahrt in die Strecke das Standard-Sicherheitsbriefing im Paddock-Briefingraum B absolvieren.",
       "cancelCta": "Abbrechen",
       "confirmCta": "Reservierung bestätigen"
+    },
+    "BUILDING_PROPTECH": {
+      "heroBadge": "Bau-, Architektur- & PropTech-Messe",
+      "heroTitle": "BIM-Architekturmodelle, smarte Fassaden & CPD-Zertifizierung",
+      "heroDescription": "Zertifizierte BIM/CAD-Baukomponenten herunterladen, kuratierte physische Materialmusterkits direkt ins Studio bestellen und CPD-Punkte sammeln.",
+      "requestCta": "Materialmusterkit anfordern",
+      "courierNote": "Kostenloser Kurierversand an lizenzierte Architekten & Entwickler",
+      "systemsBadge": "Architektonische Systeme",
+      "rosterTitle": "Spezifizierte Baumaterialien & BIM-Assets",
+      "specificationLabel": "Spezifikation & BIM",
+      "formatLabel": "Format: {format}",
+      "orderSampleCta": "Muster bestellen",
+      "drawerTitle": "Versand physischer Architekturmaterialmuster",
+      "drawerDescription": "Erhalten Sie verifizierte physische Muster, Strukturtestberichte und Umweltproduktdeklarationen (EPD).",
+      "sampleTitle": "Muster-Kurierauftrag erstellt",
+      "sampleBody": "Ihre physische Materialanfrage für {material} wurde an den Herstellerstand versandt. Die Sendungsverfolgung wird an Ihre registrierte E-Mail gesendet.",
+      "doneCta": "Fertig",
+      "materialLabel": "Ausgewählte Materialspezifikation",
+      "accreditationLabel": "Architekten- / Studio-Akkreditierung",
+      "accreditOption1": "Lizenzierter Hauptarchitekt (IAI / AIA / RIBA)",
+      "accreditOption2": "Tragwerks- / MEP-Beratungsingenieur",
+      "accreditOption3": "Immobilienentwickler & Beschaffungsdirektor",
+      "accreditOption4": "Innenarchitekt / Raumplaner",
+      "dispatchLabel": "Lieferadresse oder Abholung auf der Messe",
+      "dispatchDefault": "Abholung am Sample Hub, Halle 1, IndoBuildTech",
+      "cancelCta": "Abbrechen",
+      "confirmCta": "Versandanfrage bestätigen"
     }
   }
 }

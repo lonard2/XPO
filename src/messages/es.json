@@ -2020,6 +2020,33 @@
       "safetyNote": "Todos los conductores deben completar el briefing de seguridad estándar en la Sala de Briefing B del Paddock antes de entrar al circuito.",
       "cancelCta": "Cancelar",
       "confirmCta": "Confirmar Reserva"
+    },
+    "BUILDING_PROPTECH": {
+      "heroBadge": "Expo de Construcción, Arquitectura y PropTech",
+      "heroTitle": "Modelos BIM, Fachadas Inteligentes y Certificación CPD",
+      "heroDescription": "Descargue componentes de construcción BIM/CAD certificados, pida kits de muestras físicas de materiales directamente a su estudio y acumule créditos de Desarrollo Profesional Continuo (CPD).",
+      "requestCta": "Solicitar Kit de Muestras",
+      "courierNote": "Envío gratuito por mensajería a arquitectos y promotores con licencia",
+      "systemsBadge": "Sistemas Arquitectónicos",
+      "rosterTitle": "Materiales de Construcción y Activos BIM Especificados",
+      "specificationLabel": "Especificación y BIM",
+      "formatLabel": "Formato: {format}",
+      "orderSampleCta": "Pedir Muestra",
+      "drawerTitle": "Envío de Muestras Físicas de Materiales Arquitectónicos",
+      "drawerDescription": "Reciba muestras físicas verificadas, informes de pruebas estructurales y declaraciones ambientales de producto (EPD).",
+      "sampleTitle": "Pedido de Mensajería de Muestras Creado",
+      "sampleBody": "Su solicitud de material físico para {material} se ha enviado al stand del fabricante. El seguimiento de entrega se enviará a su correo registrado.",
+      "doneCta": "Hecho",
+      "materialLabel": "Especificación de Material Seleccionada",
+      "accreditationLabel": "Acreditación de Arquitecto / Estudio",
+      "accreditOption1": "Arquitecto Principal con Licencia (IAI / AIA / RIBA)",
+      "accreditOption2": "Ingeniero Consultor Estructural / MEP",
+      "accreditOption3": "Promotor Inmobiliario y Director de Compras",
+      "accreditOption4": "Diseñador de Interiores / Planificador Espacial",
+      "dispatchLabel": "Dirección de Envío o Recogida en la Feria",
+      "dispatchDefault": "Recogida en el Sample Hub del Pabellón 1 de IndoBuildTech",
+      "cancelCta": "Cancelar",
+      "confirmCta": "Confirmar Solicitud de Envío"
     }
   }
 }

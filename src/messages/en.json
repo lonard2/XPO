@@ -2020,6 +2020,33 @@
       "safetyNote": "All drivers must complete the standard safety briefing at Paddock Briefing Room B prior to circuit entry.",
       "cancelCta": "Cancel",
       "confirmCta": "Confirm Reservation"
+    },
+    "BUILDING_PROPTECH": {
+      "heroBadge": "Building, Architecture & PropTech Expo",
+      "heroTitle": "BIM Architecture Models, Smart Facades & CPD Certification",
+      "heroDescription": "Download certified BIM/CAD building components, order curated physical material sample kits directly to your studio, and accumulate Continuing Professional Development (CPD) credits.",
+      "requestCta": "Request Material Sample Kit",
+      "courierNote": "Free courier dispatch to licensed architects & developers",
+      "systemsBadge": "Architectural Systems",
+      "rosterTitle": "Specified Building Materials & BIM Assets",
+      "specificationLabel": "Specification & BIM",
+      "formatLabel": "Format: {format}",
+      "orderSampleCta": "Order Sample",
+      "drawerTitle": "Physical Architectural Material Sample Dispatch",
+      "drawerDescription": "Receive verified physical sample swatches, structural test reports, and environmental product declarations (EPD).",
+      "sampleTitle": "Sample Courier Order Created",
+      "sampleBody": "Your physical material request for {material} has been dispatched to the manufacturer booth. Delivery tracking will be delivered to your registered email.",
+      "doneCta": "Done",
+      "materialLabel": "Selected Material Specification",
+      "accreditationLabel": "Architect / Studio Accreditation",
+      "accreditOption1": "Licensed Principal Architect (IAI / AIA / RIBA)",
+      "accreditOption2": "Structural / MEP Consulting Engineer",
+      "accreditOption3": "Real Estate Developer & Procurement Director",
+      "accreditOption4": "Interior Designer / Spatial Planner",
+      "dispatchLabel": "Dispatch Address or Exhibition Pick-up",
+      "dispatchDefault": "Pick up at IndoBuildTech Exhibition Hall 1 Sample Hub",
+      "cancelCta": "Cancel",
+      "confirmCta": "Confirm Dispatch Request"
     }
   }
 }

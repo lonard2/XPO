@@ -2020,6 +2020,33 @@
       "safetyNote": "所有车手必须在进入赛道前于维修区 B 简报室完成标准安全简报。",
       "cancelCta": "取消",
       "confirmCta": "确认预订"
+    },
+    "BUILDING_PROPTECH": {
+      "heroBadge": "建筑、建筑设计与 PropTech 博览会",
+      "heroTitle": "BIM 建筑模型、智能幕墙与 CPD 认证",
+      "heroDescription": "下载认证 BIM/CAD 建筑构件，将精选实体材料样品套件直接订购到您的工作室，并累积继续专业发展（CPD）学分。",
+      "requestCta": "申请材料样品套件",
+      "courierNote": "向持牌建筑师与开发商免费快递",
+      "systemsBadge": "建筑系统",
+      "rosterTitle": "指定建筑材料与 BIM 资产",
+      "specificationLabel": "规格与 BIM",
+      "formatLabel": "格式：{format}",
+      "orderSampleCta": "订购样品",
+      "drawerTitle": "实体建筑材料样品寄送",
+      "drawerDescription": "接收已认证的实体样品色卡、结构测试报告与环境产品声明（EPD）。",
+      "sampleTitle": "样品快递订单已创建",
+      "sampleBody": "您对 {material} 的实体材料申请已发送至制造商展位。物流跟踪信息将发送至您的注册邮箱。",
+      "doneCta": "完成",
+      "materialLabel": "已选材料规格",
+      "accreditationLabel": "建筑师 / 工作室认证",
+      "accreditOption1": "持牌首席建筑师（IAI / AIA / RIBA）",
+      "accreditOption2": "结构 / MEP 咨询工程师",
+      "accreditOption3": "房地产开发商与采购总监",
+      "accreditOption4": "室内设计师 / 空间规划师",
+      "dispatchLabel": "寄送地址或展会自提",
+      "dispatchDefault": "在 IndoBuildTech 展览 1 号馆样品中心自提",
+      "cancelCta": "取消",
+      "confirmCta": "确认寄送申请"
     }
   }
 }

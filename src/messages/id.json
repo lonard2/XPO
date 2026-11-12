@@ -2020,6 +2020,33 @@
       "safetyNote": "Semua pengemudi wajib menyelesaikan briefing keselamatan standar di Paddock Briefing Room B sebelum masuk sirkuit.",
       "cancelCta": "Batal",
       "confirmCta": "Konfirmasi Reservasi"
+    },
+    "BUILDING_PROPTECH": {
+      "heroBadge": "Expo Bangunan, Arsitektur & PropTech",
+      "heroTitle": "Model Arsitektur BIM, Fasad Pintar & Sertifikasi CPD",
+      "heroDescription": "Unduh komponen bangunan BIM/CAD bersertifikat, pesan kit sampel material fisik terkurasi langsung ke studio Anda, dan kumpulkan kredit Continuing Professional Development (CPD).",
+      "requestCta": "Minta Kit Sampel Material",
+      "courierNote": "Pengiriman kurir gratis untuk arsitek & pengembang berlisensi",
+      "systemsBadge": "Sistem Arsitektural",
+      "rosterTitle": "Material Bangunan & Aset BIM yang Ditentukan",
+      "specificationLabel": "Spesifikasi & BIM",
+      "formatLabel": "Format: {format}",
+      "orderSampleCta": "Pesan Sampel",
+      "drawerTitle": "Pengiriman Sampel Material Arsitektural Fisik",
+      "drawerDescription": "Terima swatch sampel fisik terverifikasi, laporan uji struktural, dan deklarasi produk lingkungan (EPD).",
+      "sampleTitle": "Pesanan Kurir Sampel Dibuat",
+      "sampleBody": "Permintaan material fisik Anda untuk {material} telah dikirim ke booth produsen. Pelacakan pengiriman akan dikirim ke email terdaftar Anda.",
+      "doneCta": "Selesai",
+      "materialLabel": "Spesifikasi Material Terpilih",
+      "accreditationLabel": "Akreditasi Arsitek / Studio",
+      "accreditOption1": "Arsitek Utama Berlisensi (IAI / AIA / RIBA)",
+      "accreditOption2": "Insinyur Konsultan Struktural / MEP",
+      "accreditOption3": "Pengembang Real Estat & Direktur Pengadaan",
+      "accreditOption4": "Desainer Interior / Perencana Spasial",
+      "dispatchLabel": "Alamat Pengiriman atau Pengambilan di Pameran",
+      "dispatchDefault": "Ambil di Sample Hub Hall 1 Pameran IndoBuildTech",
+      "cancelCta": "Batal",
+      "confirmCta": "Konfirmasi Permintaan Pengiriman"
     }
   }
 }

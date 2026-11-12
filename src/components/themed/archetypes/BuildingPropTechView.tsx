@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import {
   Building2,
   Layers,
@@ -23,6 +24,7 @@ import { Drawer } from "@/components/ui/Drawer";
 import { type ArchetypeViewProps } from "./IndustrialB2BView";
 
 export function BuildingPropTechView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
+  const t = useTranslations("archetypeViews.BUILDING_PROPTECH");
   const [sampleDrawerOpen, setSampleDrawerOpen] = React.useState(false);
   const [selectedMaterial, setSelectedMaterial] = React.useState<string | null>(null);
   const [sampleRequested, setSampleRequested] = React.useState(false);
@@ -72,14 +74,14 @@ export function BuildingPropTechView({ event, locale = "en", onSelectTier }: Arc
                 <Building2 className="h-4 w-4" />
               </span>
               <span className="text-xs font-bold uppercase tracking-wider text-sky-500">
-                Building, Architecture & PropTech Expo
+                {t("heroBadge")}
               </span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-              BIM Architecture Models, Smart Facades & CPD Certification
+              {t("heroTitle")}
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-              Download certified BIM/CAD building components, order curated physical material sample kits directly to your studio, and accumulate Continuing Professional Development (CPD) credits.
+              {t("heroDescription")}
             </p>
           </div>
 
@@ -93,10 +95,10 @@ export function BuildingPropTechView({ event, locale = "en", onSelectTier }: Arc
               className="bg-sky-600 hover:bg-sky-700 text-white font-semibold shadow-md min-h-[44px]"
             >
               <Package className="h-4 w-4 mr-2" />
-              Request Material Sample Kit
+              {t("requestCta")}
             </Button>
             <div className="text-xs text-muted-foreground text-center lg:text-right">
-              Free courier dispatch to licensed architects & developers
+              {t("courierNote")}
             </div>
           </div>
         </div>
@@ -107,10 +109,10 @@ export function BuildingPropTechView({ event, locale = "en", onSelectTier }: Arc
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-sky-500 uppercase tracking-wider mb-1">
             <Layers className="h-4 w-4" />
-            <span>Architectural Systems</span>
+            <span>{t("systemsBadge")}</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-            Specified Building Materials & BIM Assets
+            {t("rosterTitle")}
           </h3>
         </div>
 
@@ -130,10 +132,10 @@ export function BuildingPropTechView({ event, locale = "en", onSelectTier }: Arc
               <CardContent className="space-y-4 pt-0">
                 <div className="p-3 rounded-lg bg-muted/40 border border-border/60 text-xs font-mono text-foreground space-y-1">
                   <div className="font-semibold text-sky-500 flex items-center gap-1">
-                    <FileCode className="h-3 w-3" /> Specification & BIM
+                    <FileCode className="h-3 w-3" /> {t("specificationLabel")}
                   </div>
                   <div>{mat.specs}</div>
-                  <div className="text-muted-foreground pt-1">Format: {mat.bimFormat}</div>
+                  <div className="text-muted-foreground pt-1">{t("formatLabel", { format: mat.bimFormat })}</div>
                 </div>
 
                 <div className="text-xs text-muted-foreground space-y-1">
@@ -154,7 +156,7 @@ export function BuildingPropTechView({ event, locale = "en", onSelectTier }: Arc
                     className="flex-1 border-sky-500/30 hover:bg-sky-500/10 text-foreground font-semibold min-h-[40px]"
                   >
                     <Package className="h-3.5 w-3.5 mr-1.5 text-sky-500" />
-                    Order Sample
+                    {t("orderSampleCta")}
                   </Button>
                   <Button
                     variant="outline"
@@ -180,8 +182,8 @@ export function BuildingPropTechView({ event, locale = "en", onSelectTier }: Arc
           setSampleDrawerOpen(false);
           setSampleRequested(false);
         }}
-        title="Physical Architectural Material Sample Dispatch"
-        description="Receive verified physical sample swatches, structural test reports, and environmental product declarations (EPD)."
+        title={t("drawerTitle")}
+        description={t("drawerDescription")}
       >
         <div className="p-6 space-y-6">
           {sampleRequested ? (
@@ -190,9 +192,9 @@ export function BuildingPropTechView({ event, locale = "en", onSelectTier }: Arc
                 <CheckCircle2 className="h-8 w-8" />
               </div>
               <div className="space-y-1">
-                <h4 className="text-lg font-bold text-foreground">Sample Courier Order Created</h4>
+                <h4 className="text-lg font-bold text-foreground">{t("sampleTitle")}</h4>
                 <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-                  Your physical material request for <span className="font-semibold text-foreground">{selectedMaterial}</span> has been dispatched to the manufacturer booth. Delivery tracking will be delivered to your registered email.
+                  {t("sampleBody", { material: selectedMaterial ?? "" })}
                 </p>
               </div>
               <Button
@@ -202,7 +204,7 @@ export function BuildingPropTechView({ event, locale = "en", onSelectTier }: Arc
                 }}
                 className="mt-4"
               >
-                Done
+                {t("doneCta")}
               </Button>
             </div>
           ) : (
@@ -215,7 +217,7 @@ export function BuildingPropTechView({ event, locale = "en", onSelectTier }: Arc
             >
               <div>
                 <label className="text-xs font-semibold text-foreground block mb-1.5">
-                  Selected Material Specification
+                  {t("materialLabel")}
                 </label>
                 <input
                   type="text"
@@ -227,23 +229,23 @@ export function BuildingPropTechView({ event, locale = "en", onSelectTier }: Arc
 
               <div>
                 <label className="text-xs font-semibold text-foreground block mb-1.5">
-                  Architect / Studio Accreditation
+                  {t("accreditationLabel")}
                 </label>
                 <select className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-background text-foreground font-medium">
-                  <option>Licensed Principal Architect (IAI / AIA / RIBA)</option>
-                  <option>Structural / MEP Consulting Engineer</option>
-                  <option>Real Estate Developer & Procurement Director</option>
-                  <option>Interior Designer / Spatial Planner</option>
+                  <option>{t("accreditOption1")}</option>
+                  <option>{t("accreditOption2")}</option>
+                  <option>{t("accreditOption3")}</option>
+                  <option>{t("accreditOption4")}</option>
                 </select>
               </div>
 
               <div>
                 <label className="text-xs font-semibold text-foreground block mb-1.5">
-                  Dispatch Address or Exhibition Pick-up
+                  {t("dispatchLabel")}
                 </label>
                 <input
                   type="text"
-                  defaultValue="Pick up at IndoBuildTech Exhibition Hall 1 Sample Hub"
+                  defaultValue={t("dispatchDefault")}
                   className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-background text-foreground font-medium"
                 />
               </div>
@@ -254,13 +256,13 @@ export function BuildingPropTechView({ event, locale = "en", onSelectTier }: Arc
                   variant="outline"
                   onClick={() => setSampleDrawerOpen(false)}
                 >
-                  Cancel
+                  {t("cancelCta")}
                 </Button>
                 <Button
                   type="submit"
                   className="bg-sky-600 hover:bg-sky-700 text-white font-semibold"
                 >
-                  Confirm Dispatch Request
+                  {t("confirmCta")}
                 </Button>
               </div>
             </form>

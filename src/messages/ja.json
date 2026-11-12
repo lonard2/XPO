@@ -2020,6 +2020,33 @@
       "safetyNote": "すべてのドライバーはサーキット入場前にパドックブリーフィングルームBで標準安全ブリーフィングを完了する必要があります。",
       "cancelCta": "キャンセル",
       "confirmCta": "予約を確定"
+    },
+    "BUILDING_PROPTECH": {
+      "heroBadge": "建築・アーキテクチャ・PropTech展示会",
+      "heroTitle": "BIM建築モデル、スマートファサード、CPD認定",
+      "heroDescription": "認定BIM/CAD建築コンポーネントをダウンロードし、厳選された物理材料サンプルキットをスタジオへ直接注文し、継続専門開発（CPD）単位を取得できます。",
+      "requestCta": "材料サンプルキットを依頼",
+      "courierNote": "認可建築士・デベロッパーへの無料クーリエ配送",
+      "systemsBadge": "建築システム",
+      "rosterTitle": "指定建築材料 & BIMアセット",
+      "specificationLabel": "仕様 & BIM",
+      "formatLabel": "形式: {format}",
+      "orderSampleCta": "サンプルを注文",
+      "drawerTitle": "建築材料の物理サンプル発送",
+      "drawerDescription": "検証済みの物理サンプル見本、構造試験報告書、環境製品宣言（EPD）を受け取ります。",
+      "sampleTitle": "サンプル配送注文を作成しました",
+      "sampleBody": "{material}の物理材料リクエストがメーカーブースへ発送されました。配送追跡情報は登録メールアドレスに送信されます。",
+      "doneCta": "完了",
+      "materialLabel": "選択した材料仕様",
+      "accreditationLabel": "建築士 / スタジオ認定",
+      "accreditOption1": "認可主任建築士（IAI / AIA / RIBA）",
+      "accreditOption2": "構造 / MEPコンサルティングエンジニア",
+      "accreditOption3": "不動産デベロッパー & 調達ディレクター",
+      "accreditOption4": "インテリアデザイナー / 空間プランナー",
+      "dispatchLabel": "配送先または展示会場での受け取り",
+      "dispatchDefault": "IndoBuildTech展示会ホール1サンプルハブで受け取り",
+      "cancelCta": "キャンセル",
+      "confirmCta": "発送依頼を確定"
     }
   }
 }
