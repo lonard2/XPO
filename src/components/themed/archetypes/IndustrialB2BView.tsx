@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import {
   Factory,
   FileText,
@@ -95,6 +96,7 @@ export interface ArchetypeViewProps {
 }
 
 export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize = "LARGE" }: ArchetypeViewProps) {
+  const t = useTranslations("archetypeViews.INDUSTRIAL_B2B");
   const [rfqDrawerOpen, setRfqDrawerOpen] = React.useState(false);
   const [selectedBooth, setSelectedBooth] = React.useState<string | null>(null);
   const [rfqSubmitted, setRfqSubmitted] = React.useState(false);
@@ -135,7 +137,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
         type: "RFQ",
         requesterName: String(form.get("company") || ""),
         requesterEmail: String(form.get("email") || ""),
-        target: selectedBooth || "All Matching Heavy Equipment Exhibitors",
+        target: selectedBooth || t("targetDefault"),
         slot: String(form.get("quantity") || ""),
         message: String(form.get("specs") || ""),
       });
@@ -170,10 +172,10 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center gap-2 text-sm font-semibold text-[var(--archetype-primary)]">
             <Factory className="h-5 w-5" aria-hidden="true" />
-            <span>Industrial & Manufacturing Trade Floor</span>
+            <span>{t("heroBadge")}</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-            Procurement, Heavy Machinery & B2B Matchmaking
+            {t("heroTitle")}
           </h2>
           <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
             {event.description}
@@ -186,7 +188,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
               className="gap-2 font-semibold shadow-md"
             >
               <FileText className="h-4 w-4" />
-              Submit RFQ / Procurement Tender
+              {t("rfqCta")}
             </Button>
             )}
             <Button
@@ -198,7 +200,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
               className="gap-2"
             >
               <Search className="h-4 w-4" />
-              Browse {event.booths.length} Exhibitor Booths
+              {t("browseCta", { count: event.booths.length })}
             </Button>
           </div>
         </div>
@@ -208,24 +210,24 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
           <CardHeader className="pb-3">
             <CardTitle className="text-base flex items-center gap-2">
               <ShieldCheck className="h-4 w-4 text-[var(--archetype-primary)]" />
-              B2B Deal-Room Facilitation
+              {t("dealRoomTitle")}
             </CardTitle>
             <CardDescription className="text-xs">
-              Verified buyers and procurement executives receive VIP trade lounge access.
+              {t("dealRoomDesc")}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3 text-xs text-muted-foreground">
             <div className="flex items-start gap-2">
               <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
-              <span>Direct factory-floor quote negotiations with certified manufacturers</span>
+              <span>{t("highlight1")}</span>
             </div>
             <div className="flex items-start gap-2">
               <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
-              <span>Escrow contract support & customs tariff consulting desks</span>
+              <span>{t("highlight2")}</span>
             </div>
             <div className="flex items-start gap-2">
               <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
-              <span>ISO standard validation and CE conformity certificates</span>
+              <span>{t("highlight3")}</span>
             </div>
           </CardContent>
         </Card>
@@ -233,9 +235,9 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
 
       {showcasePrograms.length > 0 && (
         <ShowcaseProgramGrid
-          eyebrow="Exhibitor Highlights"
-          title="Featured Exhibits & Demonstrations"
-          description="Demonstrations and highlights published by the organizer."
+          eyebrow={t("showcaseEyebrow")}
+          title={t("showcaseTitle")}
+          description={t("showcaseDesc")}
           programs={showcasePrograms}
           locale={locale}
           stampedAt={showcase.attestedAt}
@@ -248,10 +250,10 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
           <div>
             <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
               <Building className="h-5 w-5 text-[var(--archetype-primary)]" />
-              Exhibitor Booth Directory ({filteredBooths.length})
+              {t("directoryTitle", { count: filteredBooths.length })}
             </h3>
             <p className="text-xs sm:text-sm text-muted-foreground">
-              Search by equipment manufacturer, supply chain category, or hall allocation.
+              {t("directoryDesc")}
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-3">
@@ -259,7 +261,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
               <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
               <input
                 type="text"
-                placeholder="Search exhibitors or booth..."
+                placeholder={t("searchPlaceholder")}
                 value={boothSearch}
                 onChange={(e) => setBoothSearch(e.target.value)}
                 className="w-full pl-9 pr-3 py-1.5 text-xs rounded-md bg-background border border-border focus:outline-none focus:ring-1 focus:ring-primary min-h-[38px]"
@@ -269,7 +271,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
               value={selectedIndustry}
               onChange={(e) => setSelectedIndustry(e.target.value)}
               className="py-1.5 px-3 text-xs rounded-md bg-background border border-border focus:outline-none focus:ring-1 focus:ring-primary min-h-[38px]"
-              aria-label="Filter by industry"
+              aria-label={t("filterAria")}
             >
               {industries.map((ind) => (
                 <option key={ind} value={ind}>
@@ -336,7 +338,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
                     className="h-8 text-xs gap-1.5 min-h-[36px] cursor-pointer"
                   >
                     <FileText className="h-3.5 w-3.5" />
-                    Request RFQ
+                    {t("requestRfq")}
                   </Button>
                   <Button
                     variant="ghost"
@@ -344,7 +346,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
                     onClick={() => handleBookSlot(booth.companyName)}
                     className="h-8 text-xs text-muted-foreground hover:text-foreground"
                   >
-                    Book Slot
+                    {t("bookSlot")}
                   </Button>
                 </div>
               </CardContent>
@@ -359,7 +361,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
         <section className="space-y-4">
           <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
             <Clock className="h-5 w-5 text-[var(--archetype-primary)]" />
-            Machinery Demonstrations & Technical Seminars
+            {t("demosTitle")}
           </h3>
           <div className="space-y-3">
             {event.agendaItems.map((agenda) => (
@@ -380,7 +382,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
                   <h4 className="text-sm sm:text-base font-semibold text-foreground">{agenda.title}</h4>
                   {agenda.speakerName && (
                     <p className="text-xs text-muted-foreground">
-                      Demonstrator: <span className="font-medium text-foreground">{agenda.speakerName}</span>{" "}
+                      {t("demonstratorLabel")} <span className="font-medium text-foreground">{agenda.speakerName}</span>{" "}
                       {agenda.speakerRole && `(${agenda.speakerRole})`}
                     </p>
                   )}
@@ -402,10 +404,10 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
         <div>
           <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
             <Ticket className="h-5 w-5 text-[var(--archetype-primary)]" />
-            Trade Passes & VIP Procurement Badges
+            {t("tradePassesTitle")}
           </h3>
           <p className="text-xs sm:text-sm text-muted-foreground">
-            Select your credential tier for verified access to exhibition halls and B2B lounges.
+            {t("tradePassesDesc")}
           </p>
         </div>
 
@@ -424,14 +426,14 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg">{tier.name}</CardTitle>
                     <Badge variant="secondary" size="sm">
-                      {tier.capacity - tier.soldCount} Passes Left
+                      {t("passesLeft", { count: tier.capacity - tier.soldCount })}
                     </Badge>
                   </div>
                   <div className="mt-2">
                     <span className="text-2xl font-bold text-foreground">
                       {tier.price > 0
                         ? formatCurrency(tier.price, (tier.currency as SupportedCurrency) || "IDR", locale)
-                        : "Complimentary"}
+                        : t("complimentary")}
                     </span>
                   </div>
                 </CardHeader>
@@ -451,7 +453,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
                       onClick={() => onSelectTier?.(tier.id)}
                     >
                       <Ticket className="h-4 w-4" />
-                      Select {tier.name}
+                      {t("selectTier", { tier: tier.name })}
                     </Button>
                   </div>
                 </CardContent>
@@ -465,11 +467,11 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
       <Drawer
         isOpen={rfqDrawerOpen}
         onClose={() => setRfqDrawerOpen(false)}
-        title="Submit Request for Quotation (RFQ)"
+        title={t("drawerTitle")}
         description={
           selectedBooth
-            ? `Direct tender inquiry for ${selectedBooth}`
-            : "Broadcast RFQ to verified industrial exhibitors"
+            ? t("drawerDescDirect", { booth: selectedBooth })
+            : t("drawerDescBroadcast")
         }
       >
         {rfqSubmitted ? (
@@ -477,50 +479,52 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
             <div className="h-12 w-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
               <CheckCircle2 className="h-6 w-6" />
             </div>
-            <h4 className="text-base font-semibold text-foreground">RFQ Submitted Successfully</h4>
+            <h4 className="text-base font-semibold text-foreground">{t("rfqSubmittedTitle")}</h4>
             <p className="text-xs text-muted-foreground max-w-xs mx-auto">
-              Your technical specification inquiry is recorded and the exhibitor has your contact details.
+              {t("rfqSubmittedBody")}
               {rfqReference && (
-                <span className="block mt-1 font-mono">Reference: {rfqReference}</span>
+                <span className="block mt-1 font-mono">
+                  {t("referenceLabel", { reference: rfqReference })}
+                </span>
               )}
             </p>
           </div>
         ) : (
           <form onSubmit={handleRfqSubmit} className="space-y-4">
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-foreground">Target Exhibitor / Machine</label>
+              <label className="text-xs font-semibold text-foreground">{t("targetLabel")}</label>
               <input
                 type="text"
                 readOnly
-                value={selectedBooth || "All Matching Heavy Equipment Exhibitors"}
+                value={selectedBooth || t("targetDefault")}
                 className="w-full px-3 py-2 text-xs rounded-md bg-muted/50 border border-border text-muted-foreground"
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-foreground">Company Name *</label>
+                <label className="text-xs font-semibold text-foreground">{t("companyLabel")} *</label>
                 <input
                   required
                   name="company"
                   type="text"
                   autoComplete="organization"
-                  placeholder="e.g. PT Industri Prima"
+                  placeholder={t("companyPlaceholder")}
                   className="w-full px-3 py-2 text-xs rounded-md bg-background border border-border focus:ring-1 focus:ring-primary min-h-[40px]"
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-foreground">Estimated Quantity / Units *</label>
+                <label className="text-xs font-semibold text-foreground">{t("quantityLabel")} *</label>
                 <input
                   required
                   name="quantity"
                   type="text"
-                  placeholder="e.g. 5 Units / Annual"
+                  placeholder={t("quantityPlaceholder")}
                   className="w-full px-3 py-2 text-xs rounded-md bg-background border border-border focus:ring-1 focus:ring-primary min-h-[40px]"
                 />
               </div>
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-foreground">Contact Email *</label>
+              <label className="text-xs font-semibold text-foreground">{t("emailLabel")} *</label>
               <input
                 required
                 name="email"
@@ -531,12 +535,12 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
               />
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-foreground">Technical Specifications / RFQ Scope *</label>
+              <label className="text-xs font-semibold text-foreground">{t("specsLabel")} *</label>
               <textarea
                 required
                 name="specs"
                 rows={4}
-                placeholder="Detail your machinery requirements, precision tolerance, voltage standards, and expected delivery timeline..."
+                placeholder={t("specsPlaceholder")}
                 className="w-full px-3 py-2 text-xs rounded-md bg-background border border-border focus:ring-1 focus:ring-primary"
               />
             </div>
