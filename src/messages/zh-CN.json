@@ -1825,6 +1825,28 @@
       "accreditationNote": "运营商认证核查随主办方日程开放。",
       "channelsTitle": "大会同声传译频道",
       "channelsDescription": "主办方在大会前发布的频道安排"
+    },
+    "POP_CULTURE_GAMING": {
+      "heroBadge": "游戏锦标赛、Cosplay 竞技场与创作者市集",
+      "heroTitle": "电竞场馆、明星见面会与周边发售",
+      "propRulesCta": "Cosplay 道具安全规则",
+      "propCheckDesk": "道具检查台",
+      "securityTitle": "Cosplay 安全指南",
+      "securityDescription": "所有武器道具必须在 A 馆入口检查台通过安全检查。",
+      "ruleMaterials": "允许使用泡沫、EVA、塑料和轻量 3D 打印道具。",
+      "ruleWeapons": "禁止金属刀刃、真钢、气枪或爆炸效果。",
+      "ruleRepair": "C 馆设有 Cosplay 维修休息室与更衣室。",
+      "scheduleTitle": "主舞台与电竞比赛日程",
+      "hostLabel": "主持/解说：",
+      "featuredEyebrow": "嘉宾阵容",
+      "featuredTitle": "创作者、嘉宾与阵容",
+      "featuredDescription": "主办方发布的出席信息。",
+      "ticketsTitle": "大会证件与 VIP 快速通行证",
+      "ticketsDescription": "VIP 通行证包含提前 30 分钟入场、周边快速通道和主舞台预留座位。",
+      "badgesLeft": "剩余 {count} 张证件",
+      "cta": "获取大会通行证",
+      "freeTicket": "免费门票",
+      "esportsStage": "电竞舞台"
     }
   }
 }

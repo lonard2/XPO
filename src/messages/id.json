@@ -1825,6 +1825,28 @@
       "accreditationNote": "Pemeriksaan akreditasi operator dibuka bersama program penyelenggara.",
       "channelsTitle": "Kanal Interpretasi Simultan Kongres",
       "channelsDescription": "Susunan kanal diterbitkan penyelenggara sebelum kongres"
+    },
+    "POP_CULTURE_GAMING": {
+      "heroBadge": "Kejuaraan Gaming, Arena Cosplay & Lorong Kreator",
+      "heroTitle": "Arena Esports, Meet & Greet Selebriti & Merch Drops",
+      "propRulesCta": "Aturan Keamanan Properti Cosplay",
+      "propCheckDesk": "Meja Pemeriksaan Properti",
+      "securityTitle": "Pedoman Keamanan Cosplay",
+      "securityDescription": "Semua properti senjata wajib lolos inspeksi keselamatan di Meja Inspeksi Pintu Masuk Hall A.",
+      "ruleMaterials": "Busa, EVA, plastik, dan cetakan 3D ringan diperbolehkan.",
+      "ruleWeapons": "Tanpa bilah logam, baja tajam, airsoft, atau efek peledak.",
+      "ruleRepair": "Lounge perbaikan cosplay & ruang ganti khusus di Hall C.",
+      "scheduleTitle": "Jadwal Panggung Utama & Turnamen Esports",
+      "hostLabel": "Host/Caster:",
+      "featuredEyebrow": "Lineup Tamu",
+      "featuredTitle": "Kreator, Tamu & Lineup",
+      "featuredDescription": "Penampilan yang diterbitkan penyelenggara.",
+      "ticketsTitle": "Badge Konvensi & Pass Ekspres VIP",
+      "ticketsDescription": "Pass VIP mencakup akses lantai pameran 30 menit lebih awal, jalur cepat antrean merch, dan tempat duduk panggung utama yang dipesan.",
+      "badgesLeft": "Sisa {count} Badge",
+      "cta": "Dapatkan Pass Konvensi",
+      "freeTicket": "Tiket Gratis",
+      "esportsStage": "Panggung Esports"
     }
   }
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import {
   Gamepad2,
   Sparkles,
@@ -26,6 +27,7 @@ import { parseShowcase } from "@/lib/showcase";
 import { ShowcaseProgramGrid } from "@/components/themed/ShowcaseProgramGrid";
 
 export function PopCultureGamingView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
+  const t = useTranslations("archetypeViews.POP_CULTURE_GAMING");
 
   // Organizer-authored showcase: sections render only with backing data.
   const showcase = React.useMemo(
@@ -43,10 +45,10 @@ export function PopCultureGamingView({ event, locale = "en", onSelectTier }: Arc
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center gap-2 text-xs font-bold text-fuchsia-400 uppercase tracking-wider">
             <Gamepad2 className="h-4 w-4" aria-hidden="true" />
-            <span>Gaming Championship, Cosplay Arena & Creator Alley</span>
+            <span>{t("heroBadge")}</span>
           </div>
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground">
-            Esports Arena, Celebrity Meet & Greets & Merch Drops
+            {t("heroTitle")}
           </h2>
           <p className="text-muted-foreground text-sm leading-relaxed">
             {event.description}
@@ -64,7 +66,7 @@ export function PopCultureGamingView({ event, locale = "en", onSelectTier }: Arc
               className="gap-2 text-xs"
             >
               <ShieldAlert className="h-4 w-4 text-pink-400" />
-              Cosplay Prop Safety Rules
+              {t("propRulesCta")}
             </Button>
           </div>
         </div>
@@ -75,27 +77,27 @@ export function PopCultureGamingView({ event, locale = "en", onSelectTier }: Arc
             <div className="flex items-center justify-between">
               <Badge variant="warning" size="sm" className="gap-1">
                 <ShieldAlert className="h-3.5 w-3.5" />
-                Prop Check Desk
+                {t("propCheckDesk")}
               </Badge>
               <Swords className="h-4 w-4 text-purple-400" />
             </div>
-            <CardTitle className="text-base">Cosplay Security Guidelines</CardTitle>
+            <CardTitle className="text-base">{t("securityTitle")}</CardTitle>
             <CardDescription className="text-xs">
-              All weapon props must pass safety inspection at Hall A Entrance Inspection Desk.
+              {t("securityDescription")}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2 text-xs text-muted-foreground">
             <div className="flex items-start gap-2">
               <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0 mt-0.5" />
-              <span>Foam, EVA, plastic, and lightweight 3D prints permitted.</span>
+              <span>{t("ruleMaterials")}</span>
             </div>
             <div className="flex items-start gap-2">
               <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0 mt-0.5" />
-              <span>Zero metal blades, live steel, airsoft, or explosive effects.</span>
+              <span>{t("ruleWeapons")}</span>
             </div>
             <div className="flex items-start gap-2">
               <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0 mt-0.5" />
-              <span>Dedicated cosplay repair lounge & changing rooms at Hall C.</span>
+              <span>{t("ruleRepair")}</span>
             </div>
           </CardContent>
         </Card>
@@ -106,7 +108,7 @@ export function PopCultureGamingView({ event, locale = "en", onSelectTier }: Arc
         <section className="space-y-4">
           <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
             <Clock className="h-5 w-5 text-[var(--archetype-primary)]" />
-            Main Stage & Esports Tournament Schedule
+            {t("scheduleTitle")}
           </h3>
           <div className="space-y-3">
             {event.agendaItems.map((agenda) => (
@@ -117,7 +119,7 @@ export function PopCultureGamingView({ event, locale = "en", onSelectTier }: Arc
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <Badge variant="warning" size="sm">
-                      {agenda.track || "Esports Stage"}
+                      {agenda.track || t("esportsStage")}
                     </Badge>
                     <span className="text-xs text-muted-foreground flex items-center gap-1">
                       <MapPin className="h-3 w-3" />
@@ -127,7 +129,7 @@ export function PopCultureGamingView({ event, locale = "en", onSelectTier }: Arc
                   <h4 className="text-base font-bold text-foreground">{agenda.title}</h4>
                   {agenda.speakerName && (
                     <p className="text-xs text-muted-foreground">
-                      Host/Caster: <span className="font-semibold text-foreground">{agenda.speakerName}</span>
+                      {t("hostLabel")} <span className="font-semibold text-foreground">{agenda.speakerName}</span>
                     </p>
                   )}
                 </div>
@@ -146,9 +148,9 @@ export function PopCultureGamingView({ event, locale = "en", onSelectTier }: Arc
       {/* 5. Ticket Tiers & Cosplay Passes */}
       {showcasePrograms.length > 0 && (
         <ShowcaseProgramGrid
-          eyebrow="Guest Lineup"
-          title="Creators, Guests & Lineup"
-          description="Appearances published by the organizer."
+          eyebrow={t("featuredEyebrow")}
+          title={t("featuredTitle")}
+          description={t("featuredDescription")}
           programs={showcasePrograms}
           locale={locale}
           stampedAt={showcase.attestedAt}
@@ -159,11 +161,10 @@ export function PopCultureGamingView({ event, locale = "en", onSelectTier }: Arc
         <div>
           <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
             <Ticket className="h-5 w-5 text-[var(--archetype-primary)]" />
-            Convention Badges & VIP Express Passes
+            {t("ticketsTitle")}
           </h3>
           <p className="text-xs text-muted-foreground">
-            VIP passes include 30-minute early exhibition floor entry, fast-lane merch queues, and reserved main stage
-            seating.
+{t("ticketsDescription")}
           </p>
         </div>
 
@@ -182,14 +183,14 @@ export function PopCultureGamingView({ event, locale = "en", onSelectTier }: Arc
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg">{tier.name}</CardTitle>
                     <Badge variant="secondary" size="sm">
-                      {tier.capacity - tier.soldCount} Badges Left
+                      {t("badgesLeft", { count: tier.capacity - tier.soldCount })}
                     </Badge>
                   </div>
                   <div className="mt-2">
                     <span className="text-2xl font-bold text-foreground">
                       {tier.price > 0
                         ? formatCurrency(tier.price, (tier.currency as SupportedCurrency) || "IDR", locale)
-                        : "Free Ticket"}
+                        : t("freeTicket")}
                     </span>
                   </div>
                 </CardHeader>
@@ -209,7 +210,7 @@ export function PopCultureGamingView({ event, locale = "en", onSelectTier }: Arc
                       onClick={() => onSelectTier?.(tier.id)}
                     >
                       <Ticket className="h-4 w-4" />
-                      Get Convention Pass
+                      {t("cta")}
                     </Button>
                   </div>
                 </CardContent>

@@ -1825,6 +1825,28 @@
       "accreditationNote": "運営者認証の確認は主催者プログラムと共に開始されます。",
       "channelsTitle": "会議の同時通訳チャンネル",
       "channelsDescription": "会議前に主催者が公開するチャンネル編成"
+    },
+    "POP_CULTURE_GAMING": {
+      "heroBadge": "ゲーム選手権、コスプレアリーナ、クリエイターアレー",
+      "heroTitle": "eスポーツアリーナ、セレブ meet & greet、グッズ販売",
+      "propRulesCta": "コスプレ小道具の安全規則",
+      "propCheckDesk": "小道具検査デスク",
+      "securityTitle": "コスプレ保安ガイドライン",
+      "securityDescription": "武器小道具はすべてAホール入口の検査デスクで安全検査に合格する必要があります。",
+      "ruleMaterials": "フォーム、EVA、プラスチック、軽量3Dプリントは使用可能です。",
+      "ruleWeapons": "金属刃、真剣、エアソフト、爆発効果は禁止です。",
+      "ruleRepair": "Cホールにコスプレ修復ラウンジと更衣室を用意しています。",
+      "scheduleTitle": "メインステージ & eスポーツ大会スケジュール",
+      "hostLabel": "ホスト/実況:",
+      "featuredEyebrow": "ゲストラインナップ",
+      "featuredTitle": "クリエイター、ゲスト、ラインナップ",
+      "featuredDescription": "主催者が公開する出演情報。",
+      "ticketsTitle": "大会バッジ & VIPエクスプレスパス",
+      "ticketsDescription": "VIPパスには30分早い展示フロア入場、グッズ列のファストレーン、メインステージ予約席が含まれます。",
+      "badgesLeft": "残り{count}枚",
+      "cta": "大会パスを取得",
+      "freeTicket": "無料チケット",
+      "esportsStage": "eスポーツステージ"
     }
   }
 }

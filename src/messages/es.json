@@ -1825,6 +1825,28 @@
       "accreditationNote": "Las comprobaciones de acreditación de operadores se abren con el programa del organizador.",
       "channelsTitle": "Canales de Interpretación Simultánea del Congreso",
       "channelsDescription": "Programación de canales publicada por el organizador antes del congreso"
+    },
+    "POP_CULTURE_GAMING": {
+      "heroBadge": "Campeonato Gaming, Arena Cosplay y Pasillo de Creadores",
+      "heroTitle": "Arena de eSports, Encuentros con Celebridades y Lanzamientos de Merch",
+      "propRulesCta": "Normas de Seguridad para Props de Cosplay",
+      "propCheckDesk": "Mostrador de Revisión de Props",
+      "securityTitle": "Directrices de Seguridad Cosplay",
+      "securityDescription": "Todos los props de armas deben pasar la inspección de seguridad en el mostrador de entrada del Pabellón A.",
+      "ruleMaterials": "Se permiten espuma, EVA, plástico e impresiones 3D ligeras.",
+      "ruleWeapons": "Prohibidas las hojas metálicas, acero real, airsoft o efectos explosivos.",
+      "ruleRepair": "Sala de reparación de cosplay y vestuarios en el Pabellón C.",
+      "scheduleTitle": "Programa del Escenario Principal y Torneos de eSports",
+      "hostLabel": "Presentador/Caster:",
+      "featuredEyebrow": "Reparto de Invitados",
+      "featuredTitle": "Creadores, Invitados y Reparto",
+      "featuredDescription": "Apariciones publicadas por el organizador.",
+      "ticketsTitle": "Acreditaciones de Convención y Pases Exprés VIP",
+      "ticketsDescription": "Los pases VIP incluyen entrada 30 minutos antes al recinto, colas rápidas de merch y asientos reservados en el escenario principal.",
+      "badgesLeft": "Quedan {count} acreditaciones",
+      "cta": "Obtener Pase de Convención",
+      "freeTicket": "Entrada gratuita",
+      "esportsStage": "Escenario de eSports"
     }
   }
 }

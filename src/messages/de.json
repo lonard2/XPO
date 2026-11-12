@@ -1825,6 +1825,28 @@
       "accreditationNote": "Die Prüfung der Veranstalterzertifizierung öffnet mit dem Organisatorprogramm.",
       "channelsTitle": "Simultandolmetsch-Kanäle des Kongresses",
       "channelsDescription": "Vom Veranstalter vor dem Kongress veröffentlichte Kanalbelegung"
+    },
+    "POP_CULTURE_GAMING": {
+      "heroBadge": "Gaming-Meisterschaft, Cosplay-Arena & Creator-Allee",
+      "heroTitle": "E-Sport-Arena, Celebrity Meet & Greets & Merch-Drops",
+      "propRulesCta": "Sicherheitsregeln für Cosplay-Requisiten",
+      "propCheckDesk": "Requisiten-Prüfstand",
+      "securityTitle": "Cosplay-Sicherheitsrichtlinien",
+      "securityDescription": "Alle Waffenrequisiten müssen die Sicherheitsprüfung am Eingangs-Prüfstand von Halle A bestehen.",
+      "ruleMaterials": "Schaumstoff, EVA, Kunststoff und leichte 3D-Drucke sind erlaubt.",
+      "ruleWeapons": "Keine Metallklingen, Echstahl, Airsoft oder Explosiv-Effekte.",
+      "ruleRepair": "Cosplay-Reparaturlounge & Umkleiden in Halle C.",
+      "scheduleTitle": "Hauptbühne & E-Sport-Turnierplan",
+      "hostLabel": "Host/Caster:",
+      "featuredEyebrow": "Gast-Lineup",
+      "featuredTitle": "Creator, Gäste & Lineup",
+      "featuredDescription": "Vom Veranstalter veröffentlichte Auftritte.",
+      "ticketsTitle": "Convention-Badges & VIP-Express-Pässe",
+      "ticketsDescription": "VIP-Pässe umfassen 30 Minuten früheren Messeeinlass, Fast-Lane-Merch-Schlangen und reservierte Hauptbühnenplätze.",
+      "badgesLeft": "Noch {count} Badges",
+      "cta": "Convention-Pass erhalten",
+      "freeTicket": "Kostenloses Ticket",
+      "esportsStage": "E-Sport-Bühne"
     }
   }
 }

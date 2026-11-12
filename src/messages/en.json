@@ -1825,6 +1825,28 @@
       "accreditationNote": "Operator accreditation checks open with the organizer program.",
       "channelsTitle": "Congress Simultaneous Interpretation Channels",
       "channelsDescription": "Channel lineup published by the organizer before the congress"
+    },
+    "POP_CULTURE_GAMING": {
+      "heroBadge": "Gaming Championship, Cosplay Arena & Creator Alley",
+      "heroTitle": "Esports Arena, Celebrity Meet & Greets & Merch Drops",
+      "propRulesCta": "Cosplay Prop Safety Rules",
+      "propCheckDesk": "Prop Check Desk",
+      "securityTitle": "Cosplay Security Guidelines",
+      "securityDescription": "All weapon props must pass safety inspection at Hall A Entrance Inspection Desk.",
+      "ruleMaterials": "Foam, EVA, plastic, and lightweight 3D prints permitted.",
+      "ruleWeapons": "Zero metal blades, live steel, airsoft, or explosive effects.",
+      "ruleRepair": "Dedicated cosplay repair lounge & changing rooms at Hall C.",
+      "scheduleTitle": "Main Stage & Esports Tournament Schedule",
+      "hostLabel": "Host/Caster:",
+      "featuredEyebrow": "Guest Lineup",
+      "featuredTitle": "Creators, Guests & Lineup",
+      "featuredDescription": "Appearances published by the organizer.",
+      "ticketsTitle": "Convention Badges & VIP Express Passes",
+      "ticketsDescription": "VIP passes include 30-minute early exhibition floor entry, fast-lane merch queues, and reserved main stage seating.",
+      "badgesLeft": "{count} Badges Left",
+      "cta": "Get Convention Pass",
+      "freeTicket": "Free Ticket",
+      "esportsStage": "Esports Stage"
     }
   }
 }
