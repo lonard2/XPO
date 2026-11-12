@@ -1847,6 +1847,30 @@
       "cta": "获取大会通行证",
       "freeTicket": "免费门票",
       "esportsStage": "电竞舞台"
+    },
+    "TECH_DEV_SUMMIT": {
+      "heroBadge": "开发者主题演讲、代码实验室与 2026 黑客松",
+      "heroTitle": "构建下一代分布式系统与自主 AI",
+      "hackathonCta": "黑客松日程",
+      "openStream": "打开直播",
+      "liveStreamActive": "直播进行中",
+      "eventLivestream": "活动直播",
+      "scheduleTitle": "多轨道日程与分组会议",
+      "scheduleDescription": "按轨道筛选主题演讲、代码讲解与闪电演讲。",
+      "generalEngineering": "通用工程",
+      "hackathonBadge": "全球开发者黑客松",
+      "hackathonTitle": "48 小时自主系统黑客松",
+      "hackathonDescription": "构建可投入生产的多模型智能体或高吞吐分布式引擎。获得首席架构师指导，决赛团队还可获得直接面向 VC 的路演机会。",
+      "rsvpConfirmed": "报名已确认",
+      "rsvpCta": "报名黑客松",
+      "bountiesEyebrow": "黑客松赏金",
+      "bountiesTitle": "赏金赛道",
+      "bountiesDescription": "主办方发布的奖项与挑战。",
+      "ticketsTitle": "开发者通行证与工作坊证件",
+      "ticketsDescription": "包含所有舞台录像、黑客松工位以及演讲嘉宾 VIP 交流酒会。",
+      "availableCount": "剩余 {count} 张",
+      "freeTicket": "免费门票",
+      "selectPass": "选择通行证"
     }
   }
 }

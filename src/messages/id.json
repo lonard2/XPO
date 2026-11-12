@@ -1847,6 +1847,30 @@
       "cta": "Dapatkan Pass Konvensi",
       "freeTicket": "Tiket Gratis",
       "esportsStage": "Panggung Esports"
+    },
+    "TECH_DEV_SUMMIT": {
+      "heroBadge": "Keynote Developer, Code Lab & Hackathon 2026",
+      "heroTitle": "Membangun Sistem Terdistribusi Generasi Berikutnya & AI Otonom",
+      "hackathonCta": "Program Hackathon",
+      "openStream": "Buka Stream",
+      "liveStreamActive": "Live Stream Aktif",
+      "eventLivestream": "Livestream Acara",
+      "scheduleTitle": "Jadwal Multi-Track & Breakout",
+      "scheduleDescription": "Filter keynote, walk-through kode, dan lightning talk berdasarkan track.",
+      "generalEngineering": "Rekayasa Umum",
+      "hackathonBadge": "Hackathon Developer Global",
+      "hackathonTitle": "Hackathon Sistem Otonom 48 Jam",
+      "hackathonDescription": "Bangun agen multi-model siap produksi atau mesin terdistribusi berthroughput tinggi. Mentorship dari arsitek utama dan slot pitch VC langsung untuk finalis.",
+      "rsvpConfirmed": "RSVP Terkonfirmasi",
+      "rsvpCta": "RSVP Hackathon",
+      "bountiesEyebrow": "Bounty Hackathon",
+      "bountiesTitle": "Track Bounty",
+      "bountiesDescription": "Hadiah dan tantangan yang diterbitkan penyelenggara.",
+      "ticketsTitle": "Pass Developer & Badge Workshop",
+      "ticketsDescription": "Termasuk akses ke semua rekaman panggung, meja hackathon, dan resepsi networking VIP pembicara.",
+      "availableCount": "{count} Tersedia",
+      "freeTicket": "Tiket Gratis",
+      "selectPass": "Pilih Pass"
     }
   }
 }

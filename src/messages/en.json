@@ -1847,6 +1847,30 @@
       "cta": "Get Convention Pass",
       "freeTicket": "Free Ticket",
       "esportsStage": "Esports Stage"
+    },
+    "TECH_DEV_SUMMIT": {
+      "heroBadge": "Developer Keynotes, Code Labs & Hackathon 2026",
+      "heroTitle": "Building Next-Generation Distributed Systems & Autonomous AI",
+      "hackathonCta": "Hackathon Program",
+      "openStream": "Open Stream",
+      "liveStreamActive": "Live Stream Active",
+      "eventLivestream": "Event Livestream",
+      "scheduleTitle": "Multi-Track Schedule & Breakouts",
+      "scheduleDescription": "Filter keynotes, code walk-throughs, and lightning talks by track.",
+      "generalEngineering": "General Engineering",
+      "hackathonBadge": "Global Developer Hackathon",
+      "hackathonTitle": "48-Hour Autonomous Systems Hackathon",
+      "hackathonDescription": "Build production-ready multi-model agents or high-throughput distributed engines. Mentorship from lead architects and direct VC pitch slots for finalists.",
+      "rsvpConfirmed": "RSVP Confirmed",
+      "rsvpCta": "RSVP for Hackathon",
+      "bountiesEyebrow": "Hackathon Bounties",
+      "bountiesTitle": "Bounty Tracks",
+      "bountiesDescription": "Prizes and challenges published by the organizer.",
+      "ticketsTitle": "Developer Passes & Workshop Badges",
+      "ticketsDescription": "Includes access to all stage recordings, hackathon desks, and speaker VIP networking receptions.",
+      "availableCount": "{count} Available",
+      "freeTicket": "Free Ticket",
+      "selectPass": "Select Pass"
     }
   }
 }

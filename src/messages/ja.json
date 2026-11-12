@@ -1847,6 +1847,30 @@
       "cta": "大会パスを取得",
       "freeTicket": "無料チケット",
       "esportsStage": "eスポーツステージ"
+    },
+    "TECH_DEV_SUMMIT": {
+      "heroBadge": "開発者キーノート、コードラボ、ハッカソン2026",
+      "heroTitle": "次世代分散システムと自律AIの構築",
+      "hackathonCta": "ハッカソンプログラム",
+      "openStream": "ストリームを開く",
+      "liveStreamActive": "ライブ配信中",
+      "eventLivestream": "イベントライブ配信",
+      "scheduleTitle": "マルチトラック日程と分科会",
+      "scheduleDescription": "キーノート、コード解説、ライトニングトークをトラックで絞り込みます。",
+      "generalEngineering": "一般エンジニアリング",
+      "hackathonBadge": "グローバル開発者ハッカソン",
+      "hackathonTitle": "48時間自律システムハッカソン",
+      "hackathonDescription": "本番運用可能なマルチモデルエージェントや高スループット分散エンジンを構築します。リードアーキテクトによるメンタリングと、最終選考者向けVCピッチ枠を提供します。",
+      "rsvpConfirmed": "RSVP確定",
+      "rsvpCta": "ハッカソンにRSVP",
+      "bountiesEyebrow": "ハッカソンバウンティ",
+      "bountiesTitle": "バウンティトラック",
+      "bountiesDescription": "主催者が公開する賞金と課題。",
+      "ticketsTitle": "開発者パス & ワークショップバッジ",
+      "ticketsDescription": "全ステージ録画、ハッカソンデスク、登壇者VIPネットワーキングレセプションへのアクセスを含みます。",
+      "availableCount": "残り{count}枚",
+      "freeTicket": "無料チケット",
+      "selectPass": "パスを選択"
     }
   }
 }

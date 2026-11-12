@@ -1847,6 +1847,30 @@
       "cta": "Obtener Pase de Convención",
       "freeTicket": "Entrada gratuita",
       "esportsStage": "Escenario de eSports"
+    },
+    "TECH_DEV_SUMMIT": {
+      "heroBadge": "Keynotes para Desarrolladores, Code Labs y Hackathon 2026",
+      "heroTitle": "Construir Sistemas Distribuidos de Nueva Generación e IA Autónoma",
+      "hackathonCta": "Programa del Hackathon",
+      "openStream": "Abrir Stream",
+      "liveStreamActive": "Stream en directo",
+      "eventLivestream": "Stream del evento",
+      "scheduleTitle": "Agenda Multi-Track y Sesiones",
+      "scheduleDescription": "Filtre keynotes, recorridos de código y charlas relámpago por track.",
+      "generalEngineering": "Ingeniería General",
+      "hackathonBadge": "Hackathon Global de Desarrolladores",
+      "hackathonTitle": "Hackathon de Sistemas Autónomos de 48 Horas",
+      "hackathonDescription": "Cree agentes multimodelo listos para producción o motores distribuidos de alto rendimiento. Mentoría de arquitectos líderes y espacios de pitch directo con VC para finalistas.",
+      "rsvpConfirmed": "RSVP confirmado",
+      "rsvpCta": "Confirmar asistencia al Hackathon",
+      "bountiesEyebrow": "Recompensas del Hackathon",
+      "bountiesTitle": "Tracks de Recompensas",
+      "bountiesDescription": "Premios y retos publicados por el organizador.",
+      "ticketsTitle": "Pases para Desarrolladores y Acreditaciones de Talleres",
+      "ticketsDescription": "Incluye acceso a todas las grabaciones de escenario, mesas del hackathon y recepciones VIP de networking con ponentes.",
+      "availableCount": "{count} disponibles",
+      "freeTicket": "Entrada gratuita",
+      "selectPass": "Seleccionar pase"
     }
   }
 }

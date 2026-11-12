@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import {
   Code2,
   Terminal,
@@ -20,13 +21,14 @@ import { ShowcaseProgramGrid } from "@/components/themed/ShowcaseProgramGrid";
 import type { ArchetypeViewProps } from "./IndustrialB2BView";
 
 export function TechDevSummitView({ event, locale = "en", onSelectTier, pageSize = "LARGE" }: ArchetypeViewProps) {
+  const t = useTranslations("archetypeViews.TECH_DEV_SUMMIT");
   const [activeTrack, setActiveTrack] = React.useState("ALL");
   const [hackathonRsvp, setHackathonRsvp] = React.useState(false);
 
   // Extract all tracks
   const tracks = [
     "ALL",
-    ...Array.from(new Set(event.agendaItems.map((a) => a.track || "General Engineering").filter(Boolean))),
+    ...Array.from(new Set(event.agendaItems.map((a) => a.track || t("generalEngineering")).filter(Boolean))),
   ];
 
   const filteredAgendas = event.agendaItems.filter(
@@ -49,10 +51,10 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier, pageSize
         <div className="space-y-4">
           <div className="flex items-center gap-2 text-xs font-semibold text-[var(--archetype-accent)] uppercase tracking-wider">
             <Terminal className="h-4 w-4" aria-hidden="true" />
-            <span>Developer Keynotes, Code Labs & Hackathon 2026</span>
+            <span>{t("heroBadge")}</span>
           </div>
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground font-sans">
-            Building Next-Generation Distributed Systems & Autonomous AI
+            {t("heroTitle")}
           </h2>
           <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed font-sans">
             {event.description}
@@ -68,7 +70,7 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier, pageSize
               className="gap-2 text-xs font-sans"
             >
               <Trophy className="h-4 w-4 text-amber-400" />
-              Hackathon Program
+              {t("hackathonCta")}
             </Button>
           </div>
         </div>
@@ -86,7 +88,7 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier, pageSize
             </span>
             <div className="min-w-0">
               <p className="text-sm font-bold text-foreground">
-                {showcase.livestreamLive ? "Live Stream Active" : "Event Livestream"}
+                {showcase.livestreamLive ? t("liveStreamActive") : t("eventLivestream")}
               </p>
               <p className="text-xs text-muted-foreground truncate">
                 {showcase.livestreamUrl.replace(/^https?:\/\//, "").split("/")[0]}
@@ -100,7 +102,7 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier, pageSize
             className="sm:ml-auto inline-flex items-center justify-center gap-1.5 rounded-lg bg-primary px-4 text-xs font-semibold text-primary-foreground hover:bg-primary/90 min-h-[44px] cursor-pointer"
           >
             <ExternalLink className="h-3.5 w-3.5" />
-            Open Stream
+            {t("openStream")}
           </a>
         </section>
       )}
@@ -111,10 +113,10 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier, pageSize
           <div>
             <h3 className="text-xl font-bold text-foreground flex items-center gap-2 font-sans">
               <Code2 className="h-5 w-5 text-[var(--archetype-primary)]" />
-              Multi-Track Schedule & Breakouts
+              {t("scheduleTitle")}
             </h3>
             <p className="text-xs font-semibold text-muted-foreground font-sans">
-              Filter keynotes, code walk-throughs, and lightning talks by track.
+              {t("scheduleDescription")}
             </p>
           </div>
 
@@ -181,21 +183,20 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier, pageSize
           <div className="space-y-1">
             <Badge variant="warning" size="sm" className="gap-1 font-semibold text-xs font-semibold">
               <Trophy className="h-3 w-3" />
-              Global Developer Hackathon
+              {t("hackathonBadge")}
             </Badge>
             <h3 className="text-2xl font-bold text-foreground font-sans">
-              48-Hour Autonomous Systems Hackathon
+              {t("hackathonTitle")}
             </h3>
             <p className="text-xs font-semibold sm:text-sm text-muted-foreground font-sans max-w-2xl">
-              Build production-ready multi-model agents or high-throughput distributed engines. Mentorship from lead
-              architects and direct VC pitch slots for finalists.
+{t("hackathonDescription")}
             </p>
           </div>
           <div className="shrink-0">
             {hackathonRsvp ? (
               <Badge variant="success" size="lg" className="gap-1.5 py-2 px-3 text-xs font-semibold">
                 <CheckCircle2 className="h-4 w-4" />
-                RSVP Confirmed
+                {t("rsvpConfirmed")}
               </Badge>
             ) : (
               <Button
@@ -204,7 +205,7 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier, pageSize
                 className="gap-2 font-semibold font-sans"
               >
                 <Terminal className="h-4 w-4" />
-                RSVP for Hackathon
+                {t("rsvpCta")}
               </Button>
             )}
           </div>
@@ -212,9 +213,9 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier, pageSize
 
         {bountyPrograms.length > 0 && (
           <ShowcaseProgramGrid
-            eyebrow="Hackathon Bounties"
-            title="Bounty Tracks"
-            description="Prizes and challenges published by the organizer."
+            eyebrow={t("bountiesEyebrow")}
+            title={t("bountiesTitle")}
+            description={t("bountiesDescription")}
             programs={bountyPrograms}
             locale={locale}
             stampedAt={showcase.attestedAt}
@@ -227,10 +228,10 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier, pageSize
         <div>
           <h3 className="text-xl font-bold text-foreground flex items-center gap-2 font-sans">
             <Ticket className="h-5 w-5 text-[var(--archetype-primary)]" />
-            Developer Passes & Workshop Badges
+            {t("ticketsTitle")}
           </h3>
           <p className="text-xs text-muted-foreground font-sans">
-            Includes access to all stage recordings, hackathon desks, and speaker VIP networking receptions.
+            {t("ticketsDescription")}
           </p>
         </div>
 
@@ -249,14 +250,14 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier, pageSize
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg font-sans">{tier.name}</CardTitle>
                     <Badge variant="secondary" size="sm">
-                      {tier.capacity - tier.soldCount} Available
+                      {t("availableCount", { count: tier.capacity - tier.soldCount })}
                     </Badge>
                   </div>
                   <div className="mt-2">
                     <span className="text-2xl font-bold text-foreground font-sans">
                       {tier.price > 0
                         ? formatCurrency(tier.price, (tier.currency as SupportedCurrency) || "IDR", locale)
-                        : "Free Ticket"}
+                        : t("freeTicket")}
                     </span>
                   </div>
                 </CardHeader>
@@ -276,7 +277,7 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier, pageSize
                       onClick={() => onSelectTier?.(tier.id)}
                     >
                       <Ticket className="h-4 w-4" />
-                      Select Pass
+                      {t("selectPass")}
                     </Button>
                   </div>
                 </CardContent>
