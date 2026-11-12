@@ -731,7 +731,7 @@
     "jumpTo": "{title}へ移動",
     "eventsCountZero": "予定なし",
     "eventsCountOne": "1件",
-    "eventsCount": "{count}件のイベント"
+    "eventsCount": "{count, plural, other {#}}件のイベント"
   },
   "tickets": {
     "bookPass": "入場パスを予約",

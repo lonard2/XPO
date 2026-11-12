@@ -731,7 +731,7 @@
     "jumpTo": "Springen zu {title}",
     "eventsCountZero": "Keine Events",
     "eventsCountOne": "1 Event",
-    "eventsCount": "{count} Veranstaltungen"
+    "eventsCount": "{count, plural, one {# Veranstaltung} other {# Veranstaltungen}}"
   },
   "tickets": {
     "bookPass": "Einlasspass buchen",
