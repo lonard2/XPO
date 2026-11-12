@@ -425,7 +425,8 @@
     "selectedCount": "{count}件選択",
     "activeFiltersAria": "有効なフィルター",
     "showingCount": "{total}件中{shown}件の展示会を表示",
-    "loadMore": "さらに展示会を読み込む"
+    "loadMore": "さらに展示会を読み込む",
+    "selectedCountOne": "1件選択"
   },
   "events": {
     "title": "イベント一覧＆スケジュール",
@@ -840,7 +841,8 @@
     "namePlaceholder": "例: Alex Pratama",
     "emailPlaceholder": "例: alex@company.com",
     "companyPlaceholder": "例: Nusantara Technologies",
-    "rolePlaceholder": "例: VP Engineering"
+    "rolePlaceholder": "例: VP Engineering",
+    "onlyRemainingOne": "残り1枚"
   },
   "myTickets": {
     "title": "マイパス＆予約一覧",

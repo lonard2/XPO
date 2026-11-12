@@ -62,6 +62,21 @@ describe("Phase 6 Unit: Ticket & Event Treats Component System", () => {
       expect(screen.getByText("Exhibition floor access")).toBeDefined();
     });
 
+    it("uses the singular form when one pass remains", () => {
+      const lastPass = [
+        { ...sampleTiers[0], id: "tier-last", capacity: 1, soldCount: 0 },
+      ];
+      render(
+        <TierSelector
+          tiers={lastPass}
+          selectedTierId={null}
+          onSelectTier={vi.fn()}
+        />
+      );
+
+      expect(screen.getByText("Only 1 pass remaining")).toBeDefined();
+    });
+
     it("triggers onSelectTier callback when clicking an available tier", () => {
       const onSelectMock = vi.fn();
       render(

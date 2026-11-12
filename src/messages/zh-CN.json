@@ -425,7 +425,8 @@
     "selectedCount": "已选 {count} 项",
     "activeFiltersAria": "已启用筛选",
     "showingCount": "显示 {shown} / {total} 场展览",
-    "loadMore": "加载更多展览"
+    "loadMore": "加载更多展览",
+    "selectedCountOne": "已选 1 项"
   },
   "events": {
     "title": "展会名录与日程",
@@ -840,7 +841,8 @@
     "namePlaceholder": "例如：Alex Pratama",
     "emailPlaceholder": "例如：alex@company.com",
     "companyPlaceholder": "例如：Nusantara Technologies",
-    "rolePlaceholder": "例如：VP Engineering"
+    "rolePlaceholder": "例如：VP Engineering",
+    "onlyRemainingOne": "仅剩 1 张通行证"
   },
   "myTickets": {
     "title": "我的通行证与订单",

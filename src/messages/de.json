@@ -425,7 +425,8 @@
     "selectedCount": "{count} ausgewählt",
     "activeFiltersAria": "Aktive Filter",
     "showingCount": "{shown} von {total} Ausstellungen",
-    "loadMore": "Weitere Ausstellungen laden"
+    "loadMore": "Weitere Ausstellungen laden",
+    "selectedCountOne": "1 ausgewählt"
   },
   "events": {
     "title": "Messeverzeichnis & Kalender",
@@ -840,7 +841,8 @@
     "namePlaceholder": "z. B. Alex Pratama",
     "emailPlaceholder": "z. B. alex@company.com",
     "companyPlaceholder": "z. B. Nusantara Technologies",
-    "rolePlaceholder": "z. B. VP Engineering"
+    "rolePlaceholder": "z. B. VP Engineering",
+    "onlyRemainingOne": "Nur noch 1 Pass verfügbar"
   },
   "myTickets": {
     "title": "Meine Pässe & Buchungen",

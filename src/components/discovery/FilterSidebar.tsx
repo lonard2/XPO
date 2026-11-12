@@ -271,7 +271,9 @@ export function FilterSidebar({
           </label>
           {selectedArchetypes.length > 0 && (
             <span className="text-xs text-primary font-semibold font-mono">
-              {tDisc('selectedCount', { count: selectedArchetypes.length })}
+              {selectedArchetypes.length === 1
+                ? tDisc('selectedCountOne')
+                : tDisc('selectedCount', { count: selectedArchetypes.length })}
             </span>
           )}
         </div>

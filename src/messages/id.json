@@ -425,7 +425,8 @@
     "selectedCount": "{count} dipilih",
     "activeFiltersAria": "Filter aktif",
     "showingCount": "Menampilkan {shown} dari {total} pameran",
-    "loadMore": "Muat Pameran Lainnya"
+    "loadMore": "Muat Pameran Lainnya",
+    "selectedCountOne": "1 dipilih"
   },
   "events": {
     "title": "Direktori Acara & Jadwal",
@@ -840,7 +841,8 @@
     "namePlaceholder": "mis. Alex Pratama",
     "emailPlaceholder": "mis. alex@company.com",
     "companyPlaceholder": "mis. Nusantara Technologies",
-    "rolePlaceholder": "mis. VP Engineering"
+    "rolePlaceholder": "mis. VP Engineering",
+    "onlyRemainingOne": "Tersisa 1 tiket"
   },
   "myTickets": {
     "title": "Pas Masuk & Pesanan Saya",

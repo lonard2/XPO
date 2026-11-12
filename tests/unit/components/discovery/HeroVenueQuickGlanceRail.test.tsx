@@ -62,6 +62,18 @@ describe('HeroVenueQuickGlanceRail & HeroSection', () => {
     expect(screen.getByText('Hall A1')).toBeDefined();
   });
 
+  it('uses the singular hall label for a single hall', () => {
+    render(
+      <HeroVenueQuickGlanceRail
+        venues={mockVenues}
+        locale="en"
+        regionCode="id"
+      />
+    );
+
+    expect(screen.getByText('1 Hall')).toBeDefined();
+  });
+
   it('renders unified HeroSection combining carousel and attached rail', () => {
     render(
       <HeroSection

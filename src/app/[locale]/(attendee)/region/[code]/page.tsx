@@ -99,9 +99,9 @@ export default async function RegionalHubPage({ params }: RegionPageProps) {
   }
 
   setRequestLocale(locale);
-  const t = await getTranslations("regions");
-  const tVen = await getTranslations("venues");
-  const tCommon = await getTranslations("common");
+  const t = await getTranslations({ locale, namespace: "regions" });
+  const tVen = await getTranslations({ locale, namespace: "venues" });
+  const tCommon = await getTranslations({ locale, namespace: "common" });
 
   const timezone = getTimeZoneForRegion(normalizedCode);
   const defaultCurrency = getCurrencyForRegion(normalizedCode);

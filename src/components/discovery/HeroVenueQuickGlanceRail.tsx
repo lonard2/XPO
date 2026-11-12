@@ -201,7 +201,9 @@ export function HeroVenueQuickGlanceRail({
 
                 {hallCount > 0 && (
                   <span className="text-xs font-semibold text-muted-foreground bg-muted/80 px-2 py-0.5 rounded shrink-0 whitespace-nowrap tabular-nums">
-                    {tVen('hallsCount', { count: hallCount })}
+                    {hallCount === 1
+                      ? tVen('hallsCountOne')
+                      : tVen('hallsCount', { count: hallCount })}
                   </span>
                 )}
               </div>

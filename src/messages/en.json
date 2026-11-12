@@ -425,7 +425,8 @@
     "selectedCount": "{count} selected",
     "activeFiltersAria": "Active filters",
     "showingCount": "Showing {shown} of {total} exhibitions",
-    "loadMore": "Load More Exhibitions"
+    "loadMore": "Load More Exhibitions",
+    "selectedCountOne": "1 selected"
   },
   "events": {
     "title": "Event Directory & Timetable",
@@ -840,7 +841,8 @@
     "namePlaceholder": "e.g. Alex Pratama",
     "emailPlaceholder": "e.g. alex@company.com",
     "companyPlaceholder": "e.g. Nusantara Technologies",
-    "rolePlaceholder": "e.g. VP Engineering"
+    "rolePlaceholder": "e.g. VP Engineering",
+    "onlyRemainingOne": "Only 1 pass remaining"
   },
   "myTickets": {
     "title": "My Passes & Bookings",

@@ -24,6 +24,11 @@ describe("Quality Gate: Event-detail expressive wiring", () => {
   const shell = fs.readFileSync(SHELL, "utf8");
   const programs = fs.readFileSync(PROGRAMS, "utf8");
 
+  it("uses the events namespace for the starting-from label", () => {
+    expect(shell).toContain('tEvents("startingFrom"');
+    expect(shell).not.toContain('tTickets("startingFrom"');
+  });
+
   const lineWith = (src: string, needle: string) =>
     src.split("\n").find((line) => line.includes(needle)) ?? "";
 

@@ -14,4 +14,11 @@ describe("Quality Gate: region edition venue labels", () => {
     expect(src).toContain("metricLabelKey");
     expect(src).not.toContain("countHalls");
   });
+
+  it("passes the active locale to every server translation", () => {
+    const src = fs.readFileSync(REGION_PAGE, "utf8");
+    expect(src).toContain('getTranslations({ locale, namespace: "regions" })');
+    expect(src).toContain('getTranslations({ locale, namespace: "venues" })');
+    expect(src).toContain('getTranslations({ locale, namespace: "common" })');
+  });
 });

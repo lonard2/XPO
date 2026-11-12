@@ -80,6 +80,12 @@ describe('PassWalletExplorer Component', () => {
     expect(screen.queryByText('Tokyo AI Summit 2025')).not.toBeInTheDocument();
   });
 
+  it('renders the pass reference with the booking id and no placeholder', () => {
+    render(<PassWalletExplorer bookings={mockBookings} locale="en" />);
+
+    expect(screen.getByText('Pass Ref: bk-mfg-001')).toBeInTheDocument();
+  });
+
   it('switches to Past Expos tab and shows past concluded passes', () => {
     render(<PassWalletExplorer bookings={mockBookings} locale="en" />);
 

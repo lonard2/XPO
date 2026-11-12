@@ -628,7 +628,7 @@ export function EventPageShell({
                     </h3>
                     <p className="text-xs sm:text-sm text-muted-foreground">
                       {tTickets("digitalPassSubtitle") || "Cryptographically verified QR passes issued immediately upon reservation."}{" "}
-                      {tTickets("startingFrom", { price: formattedPrice })}
+                      {tEvents("startingFrom", { price: formattedPrice })}
                     </p>
                   </div>
                   <div className="flex flex-wrap items-center gap-3 shrink-0">

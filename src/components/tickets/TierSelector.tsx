@@ -123,7 +123,7 @@ export function TierSelector({
                       </span>
                     ) : isLowCapacity ? (
                       <span className="text-amber-700 dark:text-amber-400 font-medium">
-                        {t("onlyRemaining", { count: remaining })}
+                        {remaining === 1 ? t("onlyRemainingOne") : t("onlyRemaining", { count: remaining })}
                       </span>
                     ) : (
                       <span className="text-muted-foreground">

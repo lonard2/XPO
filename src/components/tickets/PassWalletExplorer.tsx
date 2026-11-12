@@ -416,7 +416,7 @@ export function PassWalletExplorer({ bookings, locale }: PassWalletExplorerProps
                         {booking.attendeeName}
                       </p>
                       <p className="text-xs font-mono text-muted-foreground truncate">
-                        {tMy('passRef') || 'Pass Ref:'} {booking.id}
+                        {tMy('passRef', { ref: booking.id })}
                       </p>
                     </div>
                   </div>
