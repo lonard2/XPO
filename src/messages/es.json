@@ -1968,6 +1968,32 @@
       "exportLabel": "Certificado de Exportación",
       "exportValue": "Cuarentena Agrícola de Indonesia",
       "emptyHint": "Haga clic en \"Verificar Lote\" para inspeccionar los registros del libro digital de este envío agrícola."
+    },
+    "FASHION_RETAIL": {
+      "heroBadge": "Expo de Moda, Belleza y Retail de Lujo",
+      "heroTitle": "Estrenos en Pasarela, OEM de Cosmética y Showrooms Mayoristas",
+      "heroDescription": "Viva colecciones de pasarela de diseñadores, envíe briefs de formulación cosmética de marca propia y negocie listas de precios mayoristas con casas de moda acreditadas.",
+      "submitCta": "Enviar Brief OEM de Cosmética",
+      "verifiedNote": "Compradores minoristas y marcas propias verificadas",
+      "featuredEyebrow": "Programa de Pasarela",
+      "featuredTitle": "Colecciones y Presentaciones Destacadas",
+      "featuredDescription": "Franjas de pasarela y programas de showroom publicados por el organizador.",
+      "drawerTitle": "Centro de Compras OEM de Cosmética y Mayorista",
+      "drawerDescription": "Envíe briefs de formulación de marca propia o solicite precios mayoristas por cantidad mínima de pedido (MOQ).",
+      "dispatchedTitle": "Consulta OEM Enviada",
+      "dispatchedBody": "Su brief de fabricación para {brand} se ha transmitido de forma segura. El organizador se pondrá en contacto con los siguientes pasos.",
+      "doneCta": "Hecho",
+      "brandLabel": "Casa de Diseño / Fabricante OEM",
+      "channelLabel": "Canal de Compras",
+      "channelOption1": "Fabricación por Contrato de Cosmética de Marca Propia",
+      "channelOption2": "Pedido Mayorista de Boutique de Prêt-à-Porter de Lujo",
+      "channelOption3": "Licitación de Abastecimiento de Textiles y Tejidos",
+      "moqLabel": "Cantidad Mínima de Pedido (MOQ) Objetivo",
+      "moqOption1": "Lote Pequeño / Piloto (500 - 2,000 unidades)",
+      "moqOption2": "Producción Comercial (5,000 - 25,000 unidades)",
+      "moqOption3": "Distribución Minorista Empresarial (50,000+ unidades)",
+      "cancelCta": "Cancelar",
+      "submitBriefCta": "Enviar Brief"
     }
   }
 }

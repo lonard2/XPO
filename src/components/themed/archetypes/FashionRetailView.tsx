@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import {
   Sparkles,
   ShoppingBag,
@@ -24,6 +25,7 @@ import { parseShowcase } from "@/lib/showcase";
 import { ShowcaseProgramGrid } from "@/components/themed/ShowcaseProgramGrid";
 
 export function FashionRetailView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
+  const t = useTranslations("archetypeViews.FASHION_RETAIL");
   const [oemDrawerOpen, setOemDrawerOpen] = React.useState(false);
   const [selectedBrand, setSelectedBrand] = React.useState<string | null>(null);
   const [rfqSubmitted, setRfqSubmitted] = React.useState(false);
@@ -48,14 +50,14 @@ export function FashionRetailView({ event, locale = "en", onSelectTier }: Archet
                 <Sparkles className="h-4 w-4" />
               </span>
               <span className="text-xs font-bold uppercase tracking-wider text-pink-500">
-                Fashion, Beauty & Luxury Retail Expo
+                {t("heroBadge")}
               </span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-              Catwalk Premieres, Cosmetics OEM & Wholesale Showrooms
+              {t("heroTitle")}
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-              Experience live designer runway collections, submit private-label cosmetics formulation briefs, and negotiate wholesale buyer price sheets with accredited fashion houses.
+              {t("heroDescription")}
             </p>
           </div>
 
@@ -69,10 +71,10 @@ export function FashionRetailView({ event, locale = "en", onSelectTier }: Archet
               className="bg-pink-600 hover:bg-pink-700 text-white font-semibold shadow-md min-h-[44px]"
             >
               <FileSpreadsheet className="h-4 w-4 mr-2" />
-              Submit Cosmetics OEM Brief
+              {t("submitCta")}
             </Button>
             <div className="text-xs text-muted-foreground text-center lg:text-right">
-              Verified retail buyers & private-label brands
+              {t("verifiedNote")}
             </div>
           </div>
         </div>
@@ -80,9 +82,9 @@ export function FashionRetailView({ event, locale = "en", onSelectTier }: Archet
 
       {showcasePrograms.length > 0 && (
         <ShowcaseProgramGrid
-          eyebrow="Runway Program"
-          title="Featured Collections & Presentations"
-          description="Runway slots and showroom programs published by the organizer."
+          eyebrow={t("featuredEyebrow")}
+          title={t("featuredTitle")}
+          description={t("featuredDescription")}
           programs={showcasePrograms}
           locale={locale}
           stampedAt={showcase.attestedAt}
@@ -96,8 +98,8 @@ export function FashionRetailView({ event, locale = "en", onSelectTier }: Archet
           setOemDrawerOpen(false);
           setRfqSubmitted(false);
         }}
-        title="Cosmetics OEM & Wholesale Procurement Hub"
-        description="Submit private-label formulation briefs or request minimum order quantity (MOQ) wholesale pricing."
+        title={t("drawerTitle")}
+        description={t("drawerDescription")}
       >
         <div className="p-6 space-y-6">
           {rfqSubmitted ? (
@@ -106,9 +108,9 @@ export function FashionRetailView({ event, locale = "en", onSelectTier }: Archet
                 <CheckCircle2 className="h-8 w-8" />
               </div>
               <div className="space-y-1">
-                <h4 className="text-lg font-bold text-foreground">OEM Inquiry Dispatched</h4>
+                <h4 className="text-lg font-bold text-foreground">{t("dispatchedTitle")}</h4>
                 <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-                  Your manufacturing brief for <span className="font-semibold text-foreground">{selectedBrand}</span> has been securely transmitted. The organizer will follow up with next steps.
+                  {t("dispatchedBody", { brand: selectedBrand })}
                 </p>
               </div>
               <Button
@@ -118,7 +120,7 @@ export function FashionRetailView({ event, locale = "en", onSelectTier }: Archet
                 }}
                 className="mt-4"
               >
-                Done
+                {t("doneCta")}
               </Button>
             </div>
           ) : (
@@ -131,7 +133,7 @@ export function FashionRetailView({ event, locale = "en", onSelectTier }: Archet
             >
               <div>
                 <label className="text-xs font-semibold text-foreground block mb-1.5">
-                  Design House / OEM Manufacturer
+                  {t("brandLabel")}
                 </label>
                 <input
                   type="text"
@@ -143,23 +145,23 @@ export function FashionRetailView({ event, locale = "en", onSelectTier }: Archet
 
               <div>
                 <label className="text-xs font-semibold text-foreground block mb-1.5">
-                  Procurement Channel
+                  {t("channelLabel")}
                 </label>
                 <select className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-background text-foreground font-medium">
-                  <option>Private Label Cosmetics Contract Manufacturing</option>
-                  <option>Luxury Ready-to-Wear Wholesale Boutique Order</option>
-                  <option>Textile & Fabric Sourcing Tender</option>
+                  <option>{t("channelOption1")}</option>
+                  <option>{t("channelOption2")}</option>
+                  <option>{t("channelOption3")}</option>
                 </select>
               </div>
 
               <div>
                 <label className="text-xs font-semibold text-foreground block mb-1.5">
-                  Target Minimum Order Quantity (MOQ)
+                  {t("moqLabel")}
                 </label>
                 <select className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-background text-foreground font-medium">
-                  <option>Small Batch / Pilot (500 - 2,000 units)</option>
-                  <option>Commercial Production (5,000 - 25,000 units)</option>
-                  <option>Enterprise Retail Distribution (50,000+ units)</option>
+                  <option>{t("moqOption1")}</option>
+                  <option>{t("moqOption2")}</option>
+                  <option>{t("moqOption3")}</option>
                 </select>
               </div>
 
@@ -169,13 +171,13 @@ export function FashionRetailView({ event, locale = "en", onSelectTier }: Archet
                   variant="outline"
                   onClick={() => setOemDrawerOpen(false)}
                 >
-                  Cancel
+                  {t("cancelCta")}
                 </Button>
                 <Button
                   type="submit"
                   className="bg-pink-600 hover:bg-pink-700 text-white font-semibold"
                 >
-                  Submit Brief
+                  {t("submitBriefCta")}
                 </Button>
               </div>
             </form>

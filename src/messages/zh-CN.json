@@ -1968,6 +1968,32 @@
       "exportLabel": "出口证书",
       "exportValue": "印度尼西亚农业检疫",
       "emptyHint": "点击“验证批次”查看该农产品货运的数字账本记录。"
+    },
+    "FASHION_RETAIL": {
+      "heroBadge": "时尚、美妆与奢侈品零售博览会",
+      "heroTitle": "T 台首发、化妆品 OEM 与批发展厅",
+      "heroDescription": "体验设计师现场 runway 系列，提交自有品牌化妆品配方简报，并与认证时尚品牌洽谈批发价格表。",
+      "submitCta": "提交化妆品 OEM 简报",
+      "verifiedNote": "已认证的零售买家与自有品牌",
+      "featuredEyebrow": "Runway 日程",
+      "featuredTitle": "精选系列与展示",
+      "featuredDescription": "主办方发布的 runway 时段与展厅日程。",
+      "drawerTitle": "化妆品 OEM 与批发采购中心",
+      "drawerDescription": "提交自有品牌配方简报，或申请最小起订量（MOQ）批发价格。",
+      "dispatchedTitle": "OEM 询价已发送",
+      "dispatchedBody": "您为 {brand} 提交的制造简报已安全发送。主办方将跟进后续步骤。",
+      "doneCta": "完成",
+      "brandLabel": "设计品牌 / OEM 制造商",
+      "channelLabel": "采购渠道",
+      "channelOption1": "自有品牌化妆品代工制造",
+      "channelOption2": "奢侈成衣批发精品店订单",
+      "channelOption3": "纺织与面料采购招标",
+      "moqLabel": "目标最小起订量（MOQ）",
+      "moqOption1": "小批量 / 试产（500 - 2,000 件）",
+      "moqOption2": "商业生产（5,000 - 25,000 件）",
+      "moqOption3": "企业零售分销（50,000+ 件）",
+      "cancelCta": "取消",
+      "submitBriefCta": "提交简报"
     }
   }
 }

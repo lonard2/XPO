@@ -1968,6 +1968,32 @@
       "exportLabel": "Exportzertifikat",
       "exportValue": "Indonesische Agrarquarantäne",
       "emptyHint": "Klicken Sie auf \"Charge verifizieren\", um die digitalen Ledger-Datensätze dieser Agrarlieferung zu prüfen."
+    },
+    "FASHION_RETAIL": {
+      "heroBadge": "Mode-, Beauty- & Luxus-Einzelhandelsmesse",
+      "heroTitle": "Catwalk-Premieren, Kosmetik-OEM & Großhandels-Showrooms",
+      "heroDescription": "Live-Designer-Runway-Kollektionen erleben, Private-Label-Kosmetik-Briefings einreichen und Großhandelspreislisten mit akkreditierten Modehäusern verhandeln.",
+      "submitCta": "Kosmetik-OEM-Briefing einreichen",
+      "verifiedNote": "Verifizierte Einzelhandels-Einkäufer & Private-Label-Marken",
+      "featuredEyebrow": "Runway-Programm",
+      "featuredTitle": "Ausgewählte Kollektionen & Präsentationen",
+      "featuredDescription": "Vom Veranstalter veröffentlichte Runway-Slots und Showroom-Programme.",
+      "drawerTitle": "Kosmetik-OEM- & Großhandelsbeschaffung",
+      "drawerDescription": "Reichen Sie Private-Label-Formulierungsbriefings ein oder fordern Sie Großhandelspreise für Mindestbestellmengen (MOQ) an.",
+      "dispatchedTitle": "OEM-Anfrage gesendet",
+      "dispatchedBody": "Ihr Fertigungsbriefing für {brand} wurde sicher übermittelt. Der Veranstalter meldet sich mit den nächsten Schritten.",
+      "doneCta": "Fertig",
+      "brandLabel": "Designhaus / OEM-Hersteller",
+      "channelLabel": "Beschaffungskanal",
+      "channelOption1": "Private-Label-Kosmetik-Auftragsfertigung",
+      "channelOption2": "Luxus-Ready-to-Wear-Großhandels-Boutique-Bestellung",
+      "channelOption3": "Textil- & Stoffbeschaffungsausschreibung",
+      "moqLabel": "Ziel-Mindestbestellmenge (MOQ)",
+      "moqOption1": "Kleine Charge / Pilot (500 - 2.000 Stück)",
+      "moqOption2": "Kommerzielle Produktion (5.000 - 25.000 Stück)",
+      "moqOption3": "Enterprise-Einzelhandelsdistribution (50.000+ Stück)",
+      "cancelCta": "Abbrechen",
+      "submitBriefCta": "Briefing einreichen"
     }
   }
 }

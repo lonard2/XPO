@@ -1968,6 +1968,32 @@
       "exportLabel": "Export Certificate",
       "exportValue": "Indonesian Agricultural Quarantine",
       "emptyHint": "Click \"Verify Batch\" to inspect digital ledger records for this agricultural shipment."
+    },
+    "FASHION_RETAIL": {
+      "heroBadge": "Fashion, Beauty & Luxury Retail Expo",
+      "heroTitle": "Catwalk Premieres, Cosmetics OEM & Wholesale Showrooms",
+      "heroDescription": "Experience live designer runway collections, submit private-label cosmetics formulation briefs, and negotiate wholesale buyer price sheets with accredited fashion houses.",
+      "submitCta": "Submit Cosmetics OEM Brief",
+      "verifiedNote": "Verified retail buyers & private-label brands",
+      "featuredEyebrow": "Runway Program",
+      "featuredTitle": "Featured Collections & Presentations",
+      "featuredDescription": "Runway slots and showroom programs published by the organizer.",
+      "drawerTitle": "Cosmetics OEM & Wholesale Procurement Hub",
+      "drawerDescription": "Submit private-label formulation briefs or request minimum order quantity (MOQ) wholesale pricing.",
+      "dispatchedTitle": "OEM Inquiry Dispatched",
+      "dispatchedBody": "Your manufacturing brief for {brand} has been securely transmitted. The organizer will follow up with next steps.",
+      "doneCta": "Done",
+      "brandLabel": "Design House / OEM Manufacturer",
+      "channelLabel": "Procurement Channel",
+      "channelOption1": "Private Label Cosmetics Contract Manufacturing",
+      "channelOption2": "Luxury Ready-to-Wear Wholesale Boutique Order",
+      "channelOption3": "Textile & Fabric Sourcing Tender",
+      "moqLabel": "Target Minimum Order Quantity (MOQ)",
+      "moqOption1": "Small Batch / Pilot (500 - 2,000 units)",
+      "moqOption2": "Commercial Production (5,000 - 25,000 units)",
+      "moqOption3": "Enterprise Retail Distribution (50,000+ units)",
+      "cancelCta": "Cancel",
+      "submitBriefCta": "Submit Brief"
     }
   }
 }

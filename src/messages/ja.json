@@ -1968,6 +1968,32 @@
       "exportLabel": "輸出証明書",
       "exportValue": "インドネシア農業検疫",
       "emptyHint": "「バッチを検証」をクリックして、この農産物出荷のデジタル台帳記録を確認してください。"
+    },
+    "FASHION_RETAIL": {
+      "heroBadge": "ファッション・ビューティー・ラグジュアリー小売展",
+      "heroTitle": "キャットウォーク新作発表、化粧品OEM、卸売ショールーム",
+      "heroDescription": "デザイナーのランウェイコレクションを体験し、プライベートブランド化粧品の処方ブリーフを提出し、認定ファッションハウスと卸売価格表を交渉できます。",
+      "submitCta": "化粧品OEMブリーフを提出",
+      "verifiedNote": "認証済みの小売バイヤーとプライベートブランド",
+      "featuredEyebrow": "ランウェイプログラム",
+      "featuredTitle": "注目のコレクションとプレゼンテーション",
+      "featuredDescription": "主催者が公開するランウェイ枠とショールームプログラム。",
+      "drawerTitle": "化粧品OEM・卸売調達ハブ",
+      "drawerDescription": "プライベートブランド処方ブリーフを提出するか、最小発注数量（MOQ）の卸売価格を依頼してください。",
+      "dispatchedTitle": "OEM問い合わせを送信しました",
+      "dispatchedBody": "{brand}の製造ブリーフが安全に送信されました。主催者から次のステップをご連絡します。",
+      "doneCta": "完了",
+      "brandLabel": "デザインハウス / OEMメーカー",
+      "channelLabel": "調達チャネル",
+      "channelOption1": "プライベートブランド化粧品受託製造",
+      "channelOption2": "ラグジュアリー・レディトゥウェア卸売ブティック発注",
+      "channelOption3": "テキスタイル・生地調達入札",
+      "moqLabel": "目標最小発注数量（MOQ）",
+      "moqOption1": "小ロット / パイロット（500〜2,000個）",
+      "moqOption2": "商業生産（5,000〜25,000個）",
+      "moqOption3": "エンタープライズ小売流通（50,000個以上）",
+      "cancelCta": "キャンセル",
+      "submitBriefCta": "ブリーフを提出"
     }
   }
 }

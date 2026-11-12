@@ -1968,6 +1968,32 @@
       "exportLabel": "Sertifikat Ekspor",
       "exportValue": "Karantina Pertanian Indonesia",
       "emptyHint": "Klik \"Verifikasi Batch\" untuk memeriksa catatan ledger digital pengiriman pertanian ini."
+    },
+    "FASHION_RETAIL": {
+      "heroBadge": "Expo Mode, Kecantikan & Ritel Mewah",
+      "heroTitle": "Premiere Catwalk, OEM Kosmetik & Showroom Grosir",
+      "heroDescription": "Nikmati koleksi runway desainer langsung, ajukan brief formulasi kosmetik private-label, dan negosiasikan daftar harga grosir dengan rumah mode terakreditasi.",
+      "submitCta": "Ajukan Brief OEM Kosmetik",
+      "verifiedNote": "Buyer ritel & merek private-label terverifikasi",
+      "featuredEyebrow": "Program Runway",
+      "featuredTitle": "Koleksi & Presentasi Unggulan",
+      "featuredDescription": "Slot runway dan program showroom yang diterbitkan penyelenggara.",
+      "drawerTitle": "Hub Pengadaan OEM Kosmetik & Grosir",
+      "drawerDescription": "Ajukan brief formulasi private-label atau minta harga grosir kuantitas pesanan minimum (MOQ).",
+      "dispatchedTitle": "Inquiry OEM Terkirim",
+      "dispatchedBody": "Brief manufaktur Anda untuk {brand} telah terkirim dengan aman. Penyelenggara akan menindaklanjuti dengan langkah berikutnya.",
+      "doneCta": "Selesai",
+      "brandLabel": "Rumah Desain / Produsen OEM",
+      "channelLabel": "Saluran Pengadaan",
+      "channelOption1": "Manufaktur Kontrak Kosmetik Private Label",
+      "channelOption2": "Pesanan Butik Grosir Ready-to-Wear Mewah",
+      "channelOption3": "Tender Sumber Tekstil & Kain",
+      "moqLabel": "Kuantitas Pesanan Minimum (MOQ) Target",
+      "moqOption1": "Batch Kecil / Pilot (500 - 2.000 unit)",
+      "moqOption2": "Produksi Komersial (5.000 - 25.000 unit)",
+      "moqOption3": "Distribusi Ritel Enterprise (50.000+ unit)",
+      "cancelCta": "Batal",
+      "submitBriefCta": "Ajukan Brief"
     }
   }
 }
