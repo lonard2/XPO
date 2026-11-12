@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import {
   Palmtree,
   Compass,
@@ -25,6 +26,7 @@ import { formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
 import type { ArchetypeViewProps } from "./IndustrialB2BView";
 
 export function IncentiveRetreatView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
+  const t = useTranslations("archetypeViews.INCENTIVE_RETREAT");
   const [wellnessDrawerOpen, setWellnessDrawerOpen] = React.useState(false);
   const [selectedService, setSelectedService] = React.useState<string | null>(null);
   const [booked, setBooked] = React.useState(false);
@@ -74,10 +76,10 @@ export function IncentiveRetreatView({ event, locale = "en", onSelectTier }: Arc
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center gap-2 text-xs font-bold text-emerald-400 uppercase tracking-wider">
             <Palmtree className="h-4 w-4" aria-hidden="true" />
-            <span>Executive Reward Retreat, Wellness & Luxury Excursions</span>
+            <span>{t("heroBadge")}</span>
           </div>
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground">
-            Curated Horizon Retreat, Private Excursions & Gala Banquets
+            {t("heroTitle")}
           </h2>
           <p className="text-muted-foreground text-sm leading-relaxed">
             {event.description}
@@ -93,7 +95,7 @@ export function IncentiveRetreatView({ event, locale = "en", onSelectTier }: Arc
               className="gap-2 text-xs font-semibold shadow-md"
             >
               <Compass className="h-4 w-4" />
-              View Excursion Itinerary ({excursions.length})
+              {t("itineraryCta", { count: excursions.length })}
             </Button>
 
             <Button
@@ -102,7 +104,7 @@ export function IncentiveRetreatView({ event, locale = "en", onSelectTier }: Arc
               className="gap-2 text-xs"
             >
               <Sparkles className="h-4 w-4 text-emerald-400" />
-              Reserve Wellness & Spa Slot
+              {t("wellnessCta")}
             </Button>
           </div>
         </div>
@@ -113,23 +115,23 @@ export function IncentiveRetreatView({ event, locale = "en", onSelectTier }: Arc
             <div className="flex items-center justify-between">
               <Badge variant="outline" size="sm" className="gap-1 text-emerald-400 border-emerald-400/30">
                 <Car className="h-3.5 w-3.5" />
-                VIP Chauffeur Included
+                {t("chauffeurBadge")}
               </Badge>
               <HeartHandshake className="h-4 w-4 text-emerald-400" />
             </div>
-            <CardTitle className="text-base">Private Airport Transfers</CardTitle>
+            <CardTitle className="text-base">{t("transfersTitle")}</CardTitle>
             <CardDescription className="text-xs">
-              Dedicated luxury fleet with personal chauffeur tracking your flight arrival.
+              {t("transfersDesc")}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2 text-xs text-muted-foreground">
             <div className="flex items-start gap-2">
               <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0 mt-0.5" />
-              <span>Mercedes-Benz V-Class tarmac escort & luggage handling.</span>
+              <span>{t("escortNote")}</span>
             </div>
             <div className="flex items-start gap-2">
               <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0 mt-0.5" />
-              <span>Complimentary in-vehicle Wi-Fi and chilled refreshments.</span>
+              <span>{t("wifiNote")}</span>
             </div>
           </CardContent>
         </Card>
@@ -140,10 +142,10 @@ export function IncentiveRetreatView({ event, locale = "en", onSelectTier }: Arc
         <div>
           <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
             <Compass className="h-5 w-5 text-emerald-400" />
-            Curated Executive Excursion Itinerary
+            {t("itineraryTitle")}
           </h3>
           <p className="text-xs sm:text-sm text-muted-foreground">
-            All-inclusive private expeditions guided by local cultural custodians and private yachts.
+            {t("itineraryDesc")}
           </p>
         </div>
 
@@ -165,7 +167,7 @@ export function IncentiveRetreatView({ event, locale = "en", onSelectTier }: Arc
               </CardHeader>
               <CardContent className="space-y-3 text-xs">
                 <div className="p-2.5 rounded bg-muted/40 text-muted-foreground text-xs">
-                  <span className="font-semibold text-emerald-400">Included Perk:</span> {item.perks}
+                  <span className="font-semibold text-emerald-400">{t("includedPerk")}</span> {item.perks}
                 </div>
               </CardContent>
             </Card>
@@ -177,7 +179,7 @@ export function IncentiveRetreatView({ event, locale = "en", onSelectTier }: Arc
       <section className="space-y-4">
         <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-emerald-400" />
-          Retreat Wellness & Holistic Spa Suites
+          {t("spaTitle")}
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {wellnessTreatments.map((w, i) => (
@@ -187,7 +189,7 @@ export function IncentiveRetreatView({ event, locale = "en", onSelectTier }: Arc
                   <Badge variant="outline" size="sm">
                     {w.duration}
                   </Badge>
-                  <span className="text-emerald-400 text-xs font-semibold">Complimentary</span>
+                  <span className="text-emerald-400 text-xs font-semibold">{t("complimentary")}</span>
                 </div>
                 <CardTitle className="text-base mt-2">{w.name}</CardTitle>
                 <CardDescription className="text-xs">{w.therapist}</CardDescription>
@@ -200,7 +202,7 @@ export function IncentiveRetreatView({ event, locale = "en", onSelectTier }: Arc
                   className="w-full text-xs gap-1.5 min-h-[38px] cursor-pointer"
                 >
                   <Sparkles className="h-3.5 w-3.5" />
-                  Schedule Appointment
+                  {t("scheduleCta")}
                 </Button>
               </CardContent>
             </Card>
@@ -213,11 +215,10 @@ export function IncentiveRetreatView({ event, locale = "en", onSelectTier }: Arc
         <div>
           <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
             <Ticket className="h-5 w-5 text-[var(--archetype-primary)]" />
-            Executive Retreat Packages & Villa Suites
+            {t("packagesTitle")}
           </h3>
           <p className="text-xs text-muted-foreground">
-            Packages include private ocean-view villa accommodation, all-day dining, private excursions, and chauffeur
-            services.
+{t("packagesDesc")}
           </p>
         </div>
 
@@ -236,14 +237,14 @@ export function IncentiveRetreatView({ event, locale = "en", onSelectTier }: Arc
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg">{tier.name}</CardTitle>
                     <Badge variant="success" size="sm">
-                      {tier.capacity - tier.soldCount} Suites Remaining
+                      {t("suitesRemaining", { count: tier.capacity - tier.soldCount })}
                     </Badge>
                   </div>
                   <div className="mt-2">
                     <span className="text-2xl font-bold text-foreground">
                       {tier.price > 0
                         ? formatCurrency(tier.price, (tier.currency as SupportedCurrency) || "IDR", locale)
-                        : "Corporate Invitation"}
+                        : t("corporateInvitation")}
                     </span>
                   </div>
                 </CardHeader>
@@ -263,7 +264,7 @@ export function IncentiveRetreatView({ event, locale = "en", onSelectTier }: Arc
                       onClick={() => onSelectTier?.(tier.id)}
                     >
                       <Ticket className="h-4 w-4" />
-                      Reserve Retreat Suite
+                      {t("reserveCta")}
                     </Button>
                   </div>
                 </CardContent>
@@ -277,17 +278,17 @@ export function IncentiveRetreatView({ event, locale = "en", onSelectTier }: Arc
       <Drawer
         isOpen={wellnessDrawerOpen}
         onClose={() => setWellnessDrawerOpen(false)}
-        title="Schedule Spa & Wellness Appointment"
-        description={`Personal holistic treatment booking for ${selectedService}`}
+        title={t("drawerTitle")}
+        description={t("drawerDescription", { service: selectedService ?? "" })}
       >
         {booked ? (
           <div className="py-12 text-center space-y-3 animate-fade-in">
             <div className="h-12 w-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
               <CheckCircle2 className="h-6 w-6" />
             </div>
-            <h4 className="text-base font-semibold text-foreground">Wellness Slot Reserved</h4>
+            <h4 className="text-base font-semibold text-foreground">{t("reservedTitle")}</h4>
             <p className="text-xs text-muted-foreground max-w-xs mx-auto">
-              Your retreat wellness therapist will prepare your private sanctuary suite at the requested time.
+              {t("reservedBody")}
             </p>
           </div>
         ) : (
@@ -303,7 +304,7 @@ export function IncentiveRetreatView({ event, locale = "en", onSelectTier }: Arc
             className="space-y-4 text-xs"
           >
             <div className="space-y-1">
-              <label className="font-semibold text-foreground">Selected Treatment</label>
+              <label className="font-semibold text-foreground">{t("treatmentLabel")}</label>
               <input
                 type="text"
                 readOnly
@@ -312,35 +313,35 @@ export function IncentiveRetreatView({ event, locale = "en", onSelectTier }: Arc
               />
             </div>
             <div className="space-y-1">
-              <label className="font-semibold text-foreground">Guest Villa Number *</label>
+              <label className="font-semibold text-foreground">{t("villaLabel")} *</label>
               <input
                 required
                 type="text"
                 autoComplete="address-line1"
-                placeholder="e.g. Oceanfront Villa 14"
+                placeholder={t("villaPlaceholder")}
                 className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary min-h-[40px]"
               />
             </div>
             <div className="space-y-1">
-              <label className="font-semibold text-foreground">Preferred Appointment Window *</label>
+              <label className="font-semibold text-foreground">{t("windowLabel")} *</label>
               <select className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary min-h-[40px]">
-                <option>Morning Sanctuary (09:00 - 10:30)</option>
-                <option>Afternoon Hydrotherapy (14:30 - 16:00)</option>
-                <option>Sunset Holistic (17:30 - 19:00)</option>
+                <option>{t("windowOption1")}</option>
+                <option>{t("windowOption2")}</option>
+                <option>{t("windowOption3")}</option>
               </select>
             </div>
             <div className="space-y-1">
-              <label className="font-semibold text-foreground">Special Pressure & Essential Oil Preferences</label>
+              <label className="font-semibold text-foreground">{t("oilLabel")}</label>
               <textarea
                 rows={3}
-                placeholder="Indicate your preferred pressure, lavender/eucalyptus aromatherapy oils, or target focus areas..."
+                placeholder={t("oilPlaceholder")}
                 className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary"
               />
             </div>
             <div className="pt-2">
               <Button type="submit" variant="archetype" className="w-full gap-2 font-semibold min-h-[44px] cursor-pointer">
                 <Sparkles className="h-4 w-4" />
-                Confirm Appointment
+                {t("confirmCta")}
               </Button>
             </div>
           </form>
