@@ -1994,6 +1994,32 @@
       "moqOption3": "Enterprise Retail Distribution (50,000+ units)",
       "cancelCta": "Cancel",
       "submitBriefCta": "Submit Brief"
+    },
+    "AUTOMOTIVE_MOBILITY": {
+      "heroBadge": "Automotive & Mobility Experience",
+      "heroTitle": "Concept Vehicles, EV Ecosystems & Closed-Circuit Track Drives",
+      "heroDescription": "Explore premier automotive premieres, cutting-edge battery chemistries, autonomous vehicle telemetry, and book real-time track slots directly with exhibition factory engineers.",
+      "bookCta": "Book Test Drive Slot",
+      "licenseNote": "Valid driver license required at Paddock Gate",
+      "premieresBadge": "Premieres & Demos",
+      "premieresTitle": "Featured Concepts & Track Roster",
+      "technicalSpecs": "Technical Specs",
+      "reserveCta": "Reserve Track Demo",
+      "drawerTitle": "Automotive Test Drive & Paddock Registration",
+      "drawerDescription": "Reserve a closed-circuit demo drive or ride-along session with accredited factory drivers.",
+      "reservedTitle": "Track Session Reserved",
+      "reservedBody": "Your reservation for {vehicle} has been issued. Present your digital pass and driver license at Pit Lane Gate 2.",
+      "doneCta": "Done",
+      "vehicleLabel": "Selected Vehicle",
+      "sessionLabel": "Preferred Track Session",
+      "sessionOption1": "Morning Slalom Track Session (10:30 - 11:30)",
+      "sessionOption2": "Afternoon Closed-Circuit Acceleration (14:00 - 15:00)",
+      "sessionOption3": "Evening Autonomous Fleet Ride-Along (16:30 - 17:30)",
+      "licenseCertLabel": "Driver License Certification",
+      "licenseCertValue": "Valid National or International Driver License Required",
+      "safetyNote": "All drivers must complete the standard safety briefing at Paddock Briefing Room B prior to circuit entry.",
+      "cancelCta": "Cancel",
+      "confirmCta": "Confirm Reservation"
     }
   }
 }

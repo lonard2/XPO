@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import {
   Car,
   Gauge,
@@ -29,6 +30,7 @@ import { formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
 import { type ArchetypeViewProps } from "./IndustrialB2BView";
 
 export function AutomotiveMobilityView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
+  const t = useTranslations("archetypeViews.AUTOMOTIVE_MOBILITY");
   const [testDriveDrawerOpen, setTestDriveDrawerOpen] = React.useState(false);
   const [selectedVehicle, setSelectedVehicle] = React.useState<string | null>(null);
   const [testDriveBooked, setTestDriveBooked] = React.useState(false);
@@ -84,14 +86,14 @@ export function AutomotiveMobilityView({ event, locale = "en", onSelectTier }: A
                 <Car className="h-4 w-4" />
               </span>
               <span className="text-xs font-bold uppercase tracking-wider text-red-500">
-                Automotive & Mobility Experience
+                {t("heroBadge")}
               </span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-              Concept Vehicles, EV Ecosystems & Closed-Circuit Track Drives
+              {t("heroTitle")}
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-              Explore premier automotive premieres, cutting-edge battery chemistries, autonomous vehicle telemetry, and book real-time track slots directly with exhibition factory engineers.
+              {t("heroDescription")}
             </p>
           </div>
 
@@ -105,10 +107,10 @@ export function AutomotiveMobilityView({ event, locale = "en", onSelectTier }: A
               className="bg-red-600 hover:bg-red-700 text-white font-semibold shadow-md min-h-[44px]"
             >
               <Gauge className="h-4 w-4 mr-2" />
-              Book Test Drive Slot
+              {t("bookCta")}
             </Button>
             <div className="text-xs text-muted-foreground text-center lg:text-right">
-              Valid driver license required at Paddock Gate
+              {t("licenseNote")}
             </div>
           </div>
         </div>
@@ -120,10 +122,10 @@ export function AutomotiveMobilityView({ event, locale = "en", onSelectTier }: A
           <div>
             <div className="flex items-center gap-2 text-xs font-semibold text-red-500 uppercase tracking-wider mb-1">
               <BatteryCharging className="h-4 w-4" />
-              <span>Premieres & Demos</span>
+              <span>{t("premieresBadge")}</span>
             </div>
             <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-              Featured Concepts & Track Roster
+              {t("premieresTitle")}
             </h3>
           </div>
 
@@ -161,7 +163,7 @@ export function AutomotiveMobilityView({ event, locale = "en", onSelectTier }: A
               <CardContent className="space-y-4 pt-0">
                 <div className="p-3 rounded-lg bg-muted/40 border border-border/60 text-xs font-mono text-foreground space-y-1">
                   <div className="font-semibold text-red-500/90 flex items-center gap-1">
-                    <Zap className="h-3 w-3" /> Technical Specs
+                    <Zap className="h-3 w-3" /> {t("technicalSpecs")}
                   </div>
                   <div>{vehicle.specs}</div>
                 </div>
@@ -187,7 +189,7 @@ export function AutomotiveMobilityView({ event, locale = "en", onSelectTier }: A
                   className="w-full border-red-500/30 hover:bg-red-500/10 text-foreground font-semibold min-h-[40px]"
                 >
                   <Gauge className="h-3.5 w-3.5 mr-1.5 text-red-500" />
-                  Reserve Track Demo
+                  {t("reserveCta")}
                 </Button>
               </CardContent>
             </Card>
@@ -202,8 +204,8 @@ export function AutomotiveMobilityView({ event, locale = "en", onSelectTier }: A
           setTestDriveDrawerOpen(false);
           setTestDriveBooked(false);
         }}
-        title="Automotive Test Drive & Paddock Registration"
-        description="Reserve a closed-circuit demo drive or ride-along session with accredited factory drivers."
+        title={t("drawerTitle")}
+        description={t("drawerDescription")}
       >
         <div className="p-6 space-y-6">
           {testDriveBooked ? (
@@ -212,9 +214,9 @@ export function AutomotiveMobilityView({ event, locale = "en", onSelectTier }: A
                 <CheckCircle2 className="h-8 w-8" />
               </div>
               <div className="space-y-1">
-                <h4 className="text-lg font-bold text-foreground">Track Session Reserved</h4>
+                <h4 className="text-lg font-bold text-foreground">{t("reservedTitle")}</h4>
                 <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-                  Your reservation for <span className="font-semibold text-foreground">{selectedVehicle}</span> has been issued. Present your digital pass and driver license at Pit Lane Gate 2.
+                  {t("reservedBody", { vehicle: selectedVehicle ?? "" })}
                 </p>
               </div>
               <Button
@@ -224,7 +226,7 @@ export function AutomotiveMobilityView({ event, locale = "en", onSelectTier }: A
                 }}
                 className="mt-4"
               >
-                Done
+                {t("doneCta")}
               </Button>
             </div>
           ) : (
@@ -237,7 +239,7 @@ export function AutomotiveMobilityView({ event, locale = "en", onSelectTier }: A
             >
               <div>
                 <label className="text-xs font-semibold text-foreground block mb-1.5">
-                  Selected Vehicle
+                  {t("vehicleLabel")}
                 </label>
                 <input
                   type="text"
@@ -249,25 +251,25 @@ export function AutomotiveMobilityView({ event, locale = "en", onSelectTier }: A
 
               <div>
                 <label className="text-xs font-semibold text-foreground block mb-1.5">
-                  Preferred Track Session
+                  {t("sessionLabel")}
                 </label>
                 <select className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-background text-foreground font-medium">
-                  <option>Morning Slalom Track Session (10:30 - 11:30)</option>
-                  <option>Afternoon Closed-Circuit Acceleration (14:00 - 15:00)</option>
-                  <option>Evening Autonomous Fleet Ride-Along (16:30 - 17:30)</option>
+                  <option>{t("sessionOption1")}</option>
+                  <option>{t("sessionOption2")}</option>
+                  <option>{t("sessionOption3")}</option>
                 </select>
               </div>
 
               <div>
                 <label className="text-xs font-semibold text-foreground block mb-1.5">
-                  Driver License Certification
+                  {t("licenseCertLabel")}
                 </label>
                 <div className="p-3 rounded-lg border border-border/80 bg-muted/20 text-xs text-muted-foreground space-y-2">
                   <div className="flex items-center gap-2 text-foreground font-medium">
                     <ShieldCheck className="h-4 w-4 text-emerald-500" />
-                    <span>Valid National or International Driver License Required</span>
+                    <span>{t("licenseCertValue")}</span>
                   </div>
-                  <p>All drivers must complete the standard safety briefing at Paddock Briefing Room B prior to circuit entry.</p>
+                  <p>{t("safetyNote")}</p>
                 </div>
               </div>
 
@@ -277,13 +279,13 @@ export function AutomotiveMobilityView({ event, locale = "en", onSelectTier }: A
                   variant="outline"
                   onClick={() => setTestDriveDrawerOpen(false)}
                 >
-                  Cancel
+                  {t("cancelCta")}
                 </Button>
                 <Button
                   type="submit"
                   className="bg-red-600 hover:bg-red-700 text-white font-semibold"
                 >
-                  Confirm Reservation
+                  {t("confirmCta")}
                 </Button>
               </div>
             </form>

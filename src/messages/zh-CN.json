@@ -1994,6 +1994,32 @@
       "moqOption3": "企业零售分销（50,000+ 件）",
       "cancelCta": "取消",
       "submitBriefCta": "提交简报"
+    },
+    "AUTOMOTIVE_MOBILITY": {
+      "heroBadge": "汽车与出行体验",
+      "heroTitle": "概念车、EV 生态与封闭赛道试驾",
+      "heroDescription": "探索顶级汽车首发、前沿电池化学、自动驾驶遥测，并直接与展会工厂工程师预订实时赛道时段。",
+      "bookCta": "预订试驾时段",
+      "licenseNote": "维修区入口需出示有效驾照",
+      "premieresBadge": "首发与演示",
+      "premieresTitle": "精选概念车与赛道阵容",
+      "technicalSpecs": "技术规格",
+      "reserveCta": "预订赛道演示",
+      "drawerTitle": "汽车试驾与维修区登记",
+      "drawerDescription": "与认证工厂车手预订封闭赛道演示驾驶或同乘体验。",
+      "reservedTitle": "赛道时段已预订",
+      "reservedBody": "您对 {vehicle} 的预订已签发。请在 2 号维修区入口出示数字通行证与驾照。",
+      "doneCta": "完成",
+      "vehicleLabel": "已选车辆",
+      "sessionLabel": "首选赛道时段",
+      "sessionOption1": "上午绕桩赛道时段（10:30 - 11:30）",
+      "sessionOption2": "下午封闭赛道加速（14:00 - 15:00）",
+      "sessionOption3": "傍晚自动驾驶车队同乘（16:30 - 17:30）",
+      "licenseCertLabel": "驾照认证",
+      "licenseCertValue": "需持有效国内或国际驾照",
+      "safetyNote": "所有车手必须在进入赛道前于维修区 B 简报室完成标准安全简报。",
+      "cancelCta": "取消",
+      "confirmCta": "确认预订"
     }
   }
 }

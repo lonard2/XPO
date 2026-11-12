@@ -1994,6 +1994,32 @@
       "moqOption3": "Distribusi Ritel Enterprise (50.000+ unit)",
       "cancelCta": "Batal",
       "submitBriefCta": "Ajukan Brief"
+    },
+    "AUTOMOTIVE_MOBILITY": {
+      "heroBadge": "Pengalaman Otomotif & Mobilitas",
+      "heroTitle": "Kendaraan Konsep, Ekosistem EV & Uji Trek Sirkuit Tertutup",
+      "heroDescription": "Jelajahi premiere otomotif utama, kimia baterai terdepan, telemetri kendaraan otonom, dan pesan slot trek langsung dengan insinyur pabrik pameran.",
+      "bookCta": "Pesan Slot Test Drive",
+      "licenseNote": "SIM berlaku wajib di Paddock Gate",
+      "premieresBadge": "Premiere & Demo",
+      "premieresTitle": "Konsep Unggulan & Daftar Trek",
+      "technicalSpecs": "Spesifikasi Teknis",
+      "reserveCta": "Reservasi Demo Trek",
+      "drawerTitle": "Registrasi Test Drive Otomotif & Paddock",
+      "drawerDescription": "Reservasi demo drive sirkuit tertutup atau sesi ride-along bersama pengemudi pabrik terakreditasi.",
+      "reservedTitle": "Sesi Trek Direservasi",
+      "reservedBody": "Reservasi Anda untuk {vehicle} telah diterbitkan. Tunjukkan pass digital dan SIM Anda di Pit Lane Gate 2.",
+      "doneCta": "Selesai",
+      "vehicleLabel": "Kendaraan Terpilih",
+      "sessionLabel": "Sesi Trek Pilihan",
+      "sessionOption1": "Sesi Trek Slalom Pagi (10.30 - 11.30)",
+      "sessionOption2": "Akselerasi Sirkuit Tertutup Siang (14.00 - 15.00)",
+      "sessionOption3": "Ride-Along Armada Otonom Malam (16.30 - 17.30)",
+      "licenseCertLabel": "Sertifikasi SIM Pengemudi",
+      "licenseCertValue": "Wajib SIM Nasional atau Internasional yang Berlaku",
+      "safetyNote": "Semua pengemudi wajib menyelesaikan briefing keselamatan standar di Paddock Briefing Room B sebelum masuk sirkuit.",
+      "cancelCta": "Batal",
+      "confirmCta": "Konfirmasi Reservasi"
     }
   }
 }

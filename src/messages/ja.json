@@ -1994,6 +1994,32 @@
       "moqOption3": "エンタープライズ小売流通（50,000個以上）",
       "cancelCta": "キャンセル",
       "submitBriefCta": "ブリーフを提出"
+    },
+    "AUTOMOTIVE_MOBILITY": {
+      "heroBadge": "自動車・モビリティ体験",
+      "heroTitle": "コンセプト車、EVエコシステム、クローズドサーキット試乗",
+      "heroDescription": "最新の自動車プレミア、最先端のバッテリー化学、自動運転テレメトリーを探索し、展示工場のエンジニアと直接トラック枠を予約できます。",
+      "bookCta": "試乗枠を予約",
+      "licenseNote": "パドックゲートで有効な運転免許証が必要です",
+      "premieresBadge": "プレミア & デモ",
+      "premieresTitle": "注目のコンセプト & トラックロスター",
+      "technicalSpecs": "技術仕様",
+      "reserveCta": "トラックデモを予約",
+      "drawerTitle": "自動車試乗 & パドック登録",
+      "drawerDescription": "認定ファクトリードライバーによるクローズドサーキットデモ走行または同乗セッションを予約します。",
+      "reservedTitle": "トラックセッション予約済み",
+      "reservedBody": "{vehicle}の予約が発行されました。ピットレーンゲート2でデジタルパスと運転免許証をご提示ください。",
+      "doneCta": "完了",
+      "vehicleLabel": "選択した車両",
+      "sessionLabel": "希望トラックセッション",
+      "sessionOption1": "午前スラロームトラックセッション（10:30 - 11:30）",
+      "sessionOption2": "午後クローズドサーキット加速（14:00 - 15:00）",
+      "sessionOption3": "夕方自動運転フリート同乗（16:30 - 17:30）",
+      "licenseCertLabel": "運転免許証認証",
+      "licenseCertValue": "有効な国内または国際運転免許証が必要",
+      "safetyNote": "すべてのドライバーはサーキット入場前にパドックブリーフィングルームBで標準安全ブリーフィングを完了する必要があります。",
+      "cancelCta": "キャンセル",
+      "confirmCta": "予約を確定"
     }
   }
 }

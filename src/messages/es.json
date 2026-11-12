@@ -1994,6 +1994,32 @@
       "moqOption3": "Distribución Minorista Empresarial (50,000+ unidades)",
       "cancelCta": "Cancelar",
       "submitBriefCta": "Enviar Brief"
+    },
+    "AUTOMOTIVE_MOBILITY": {
+      "heroBadge": "Experiencia Automotriz y de Movilidad",
+      "heroTitle": "Vehículos Conceptuales, Ecosistemas EV y Pruebas en Circuito Cerrado",
+      "heroDescription": "Explore los estrenos automotrices, las químicas de batería de vanguardia, la telemetría de vehículos autónomos y reserve franjas de pista en tiempo real con los ingenieros de fábrica.",
+      "bookCta": "Reservar Franja de Prueba",
+      "licenseNote": "Se requiere licencia de conducir válida en la Puerta del Paddock",
+      "premieresBadge": "Estrenos y Demos",
+      "premieresTitle": "Conceptos Destacados y Lista de Pista",
+      "technicalSpecs": "Especificaciones Técnicas",
+      "reserveCta": "Reservar Demo en Pista",
+      "drawerTitle": "Registro de Prueba de Conducción y Paddock",
+      "drawerDescription": "Reserve una prueba de conducción en circuito cerrado o una sesión de acompañamiento con pilotos de fábrica acreditados.",
+      "reservedTitle": "Sesión de Pista Reservada",
+      "reservedBody": "Su reserva para {vehicle} ha sido emitida. Muestre su pase digital y licencia de conducir en la Puerta 2 del Pit Lane.",
+      "doneCta": "Hecho",
+      "vehicleLabel": "Vehículo Seleccionado",
+      "sessionLabel": "Sesión de Pista Preferida",
+      "sessionOption1": "Sesión de Slalom Matutina (10:30 - 11:30)",
+      "sessionOption2": "Aceleración en Circuito Cerrado Vespertina (14:00 - 15:00)",
+      "sessionOption3": "Acompañamiento en Flota Autónoma Nocturna (16:30 - 17:30)",
+      "licenseCertLabel": "Certificación de Licencia de Conducir",
+      "licenseCertValue": "Se Requiere Licencia Nacional o Internacional Válida",
+      "safetyNote": "Todos los conductores deben completar el briefing de seguridad estándar en la Sala de Briefing B del Paddock antes de entrar al circuito.",
+      "cancelCta": "Cancelar",
+      "confirmCta": "Confirmar Reserva"
     }
   }
 }

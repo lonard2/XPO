@@ -1994,6 +1994,32 @@
       "moqOption3": "Enterprise-Einzelhandelsdistribution (50.000+ Stück)",
       "cancelCta": "Abbrechen",
       "submitBriefCta": "Briefing einreichen"
+    },
+    "AUTOMOTIVE_MOBILITY": {
+      "heroBadge": "Automobil- & Mobilitätserlebnis",
+      "heroTitle": "Konzeptfahrzeuge, EV-Ökosysteme & Testfahrten auf abgesperrter Strecke",
+      "heroDescription": "Premieren der Automobilwelt, modernste Batteriechemie, Telemetrie autonomer Fahrzeuge erkunden und Track-Slots direkt bei den Werksingenieuren buchen.",
+      "bookCta": "Testfahrtslot buchen",
+      "licenseNote": "Gültiger Führerschein am Paddock-Tor erforderlich",
+      "premieresBadge": "Premieren & Demos",
+      "premieresTitle": "Ausgewählte Konzepte & Track-Roster",
+      "technicalSpecs": "Technische Daten",
+      "reserveCta": "Track-Demo reservieren",
+      "drawerTitle": "Automobil-Testfahrt & Paddock-Registrierung",
+      "drawerDescription": "Reservieren Sie eine Demo-Fahrt auf abgesperrter Strecke oder eine Mitfahr-Session mit akkreditierten Werksfahrern.",
+      "reservedTitle": "Track-Session reserviert",
+      "reservedBody": "Ihre Reservierung für {vehicle} wurde ausgestellt. Zeigen Sie Ihren digitalen Pass und Führerschein am Pit-Lane-Tor 2 vor.",
+      "doneCta": "Fertig",
+      "vehicleLabel": "Ausgewähltes Fahrzeug",
+      "sessionLabel": "Bevorzugte Track-Session",
+      "sessionOption1": "Morgen-Slalom-Track-Session (10:30 - 11:30)",
+      "sessionOption2": "Nachmittag Beschleunigung auf abgesperrter Strecke (14:00 - 15:00)",
+      "sessionOption3": "Abendliche Mitfahrt autonomer Flotten (16:30 - 17:30)",
+      "licenseCertLabel": "Führerschein-Zertifizierung",
+      "licenseCertValue": "Gültiger nationaler oder internationaler Führerschein erforderlich",
+      "safetyNote": "Alle Fahrer müssen vor der Einfahrt in die Strecke das Standard-Sicherheitsbriefing im Paddock-Briefingraum B absolvieren.",
+      "cancelCta": "Abbrechen",
+      "confirmCta": "Reservierung bestätigen"
     }
   }
 }
