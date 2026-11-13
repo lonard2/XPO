@@ -122,10 +122,10 @@ export function CrawlerConsoleClient({
             <div>
               <CardTitle className="text-lg flex items-center gap-2">
                 <RefreshCw className="h-5 w-5 text-amber-500" />
-                Configure & Execute Scheduled Scraper Run
+                {tAdmin("crawlerConfigTitle")}
               </CardTitle>
               <CardDescription className="text-xs mt-1">
-                Select target international venue feeds and execution mode (Dry Run test vs Database persistence).
+                {tAdmin("crawlerConfigDesc")}
               </CardDescription>
             </div>
 
@@ -136,7 +136,7 @@ export function CrawlerConsoleClient({
                 className="h-8 text-xs"
                 onClick={selectedVenues.length === registeredVenues.length ? deselectAll : selectAll}
               >
-                {selectedVenues.length === registeredVenues.length ? "Deselect All" : "Select All Feeds"}
+                {selectedVenues.length === registeredVenues.length ? tAdmin("deselectAll") : tAdmin("selectAllFeeds")}
               </Button>
               <Button
                 variant="primary"
@@ -146,7 +146,7 @@ export function CrawlerConsoleClient({
                 className="h-8 gap-1.5 text-xs font-semibold"
               >
                 <RefreshCw className={`h-3.5 w-3.5 ${isRunning ? "animate-spin" : ""}`} />
-                {isRunning ? "Running Scraper..." : "Execute Crawler Batch"}
+                {isRunning ? tAdmin("runningScraper") : tAdmin("executeBatch")}
               </Button>
             </div>
           </div>
@@ -156,7 +156,7 @@ export function CrawlerConsoleClient({
           {/* Target Venues Grid */}
           <div>
             <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground block mb-2">
-              Target Venue Feeds ({selectedVenues.length}/{registeredVenues.length} Selected):
+              {tAdmin("targetFeeds", { selected: selectedVenues.length, total: registeredVenues.length })}
             </span>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5">
               {registeredVenues.map((venue) => {
@@ -175,7 +175,7 @@ export function CrawlerConsoleClient({
                     <div>
                       <div className="leading-tight">{venue.venueName}</div>
                       <div className="text-xs font-normal text-muted-foreground mt-0.5">
-                        {venue.regionCode.toUpperCase()} • {venue.eventCount} Scheduled Feeds
+                        {venue.regionCode.toUpperCase()} • {tAdmin("scheduledFeeds", { count: venue.eventCount })}
                       </div>
                     </div>
                     {isSelected ? (
@@ -198,7 +198,7 @@ export function CrawlerConsoleClient({
                 onChange={(e) => setDryRun(e.target.checked)}
                 className="rounded border-input text-primary focus:ring-primary h-4 w-4"
               />
-              <span className="text-foreground">Dry Run Mode (Simulate normalization without DB writes)</span>
+              <span className="text-foreground">{tAdmin("dryRunMode")}</span>
             </label>
 
             <label className="flex items-center gap-2 cursor-pointer">
@@ -210,7 +210,7 @@ export function CrawlerConsoleClient({
                 className="rounded border-input text-primary focus:ring-primary h-4 w-4"
               />
               <span className={dryRun ? "text-muted-foreground" : "text-foreground"}>
-                Persist New Events into Prisma Relational Database
+                {tAdmin("persistMode")}
               </span>
             </label>
           </div>
@@ -225,22 +225,22 @@ export function CrawlerConsoleClient({
               <div>
                 <div className="flex items-center gap-2">
                   <Badge variant={activeResult.status === "COMPLETED" ? "success" : "warning"} size="sm">
-                    {activeResult.status}
+                    {activeResult.status === "COMPLETED" ? tAdmin("statusCompleted") : tAdmin("statusPartial")}
                   </Badge>
-                  <CardTitle className="text-base">Batch Ingestion Run: {activeResult.runId}</CardTitle>
+                  <CardTitle className="text-base">{tAdmin("batchRun", { id: activeResult.runId })}</CardTitle>
                 </div>
                 <CardDescription className="text-xs mt-0.5">
-                  Executed at {activeResult.timestamp} • Duration: {activeResult.durationMs}ms
+                  {tAdmin("executedAt", { timestamp: activeResult.timestamp, ms: activeResult.durationMs })}
                 </CardDescription>
               </div>
 
               {/* Stats Counters */}
               <div className="flex items-center gap-2 text-xs">
                 <div className="px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-800 dark:text-emerald-300 font-semibold">
-                  {activeResult.insertedCount} Inserted / Normalized
+                  {tAdmin("insertedNormalized", { count: activeResult.insertedCount })}
                 </div>
                 <div className="px-3 py-1.5 rounded-lg bg-muted/60 border border-border/80 text-muted-foreground font-medium">
-                  {activeResult.skippedDuplicatesCount} Duplicate Fingerprints Skipped
+                  {tAdmin("duplicatesSkipped", { count: activeResult.skippedDuplicatesCount })}
                 </div>
               </div>
             </div>
@@ -253,10 +253,10 @@ export function CrawlerConsoleClient({
                 <table className="w-full text-left text-xs border-collapse">
                   <thead className="bg-muted/50 text-xs font-bold uppercase tracking-wider text-muted-foreground border-b border-border sticky top-0">
                     <tr>
-                      <th className="p-3">Event Title</th>
-                      <th className="p-3">Venue</th>
-                      <th className="p-3">Action</th>
-                      <th className="p-3">SHA-256 Fingerprint</th>
+                      <th className="p-3">{tAdmin("eventTitleHeader")}</th>
+                      <th className="p-3">{tAdmin("venueHeader")}</th>
+                      <th className="p-3">{tAdmin("actionHeader")}</th>
+                      <th className="p-3">{tAdmin("fingerprintHeader")}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border/60 font-sans">
@@ -271,11 +271,11 @@ export function CrawlerConsoleClient({
                         <td className="p-3">
                           {evt.action === "INSERTED" ? (
                             <Badge variant="success" size="sm">
-                              INSERTED
+                              {tAdmin("actionInserted")}
                             </Badge>
                           ) : (
                             <Badge variant="neutral" size="sm">
-                              SKIPPED (DUPLICATE)
+                              {tAdmin("actionSkipped")}
                             </Badge>
                           )}
                         </td>
@@ -298,15 +298,15 @@ export function CrawlerConsoleClient({
           <div className="flex items-center justify-between">
             <CardTitle className="text-base flex items-center gap-2">
               <Clock className="h-4 w-4 text-primary" />
-              Ingestion Execution History Registry
+              {tAdmin("historyTitle")}
             </CardTitle>
-            <span className="text-xs text-muted-foreground">{history.length} Runs Logged</span>
+            <span className="text-xs text-muted-foreground">{tAdmin("runsLogged", { count: history.length })}</span>
           </div>
         </CardHeader>
         <CardContent className="pt-0">
           {history.length === 0 ? (
             <div className="text-center py-8 text-xs text-muted-foreground border border-dashed border-border rounded-xl">
-              No crawler runs executed yet. Trigger a batch ingestion run above.
+              {tAdmin("historyEmpty")}
             </div>
           ) : (
             <div className="space-y-2">
@@ -322,7 +322,7 @@ export function CrawlerConsoleClient({
                 >
                   <div className="flex items-center gap-2.5">
                     <Badge variant={rec.status === "COMPLETED" ? "success" : "warning"} size="sm">
-                      {rec.status}
+                      {rec.status === "COMPLETED" ? tAdmin("statusCompleted") : tAdmin("statusPartial")}
                     </Badge>
                     <span className="font-mono font-bold text-foreground">{rec.runId}</span>
                     <span className="text-muted-foreground text-xs">{rec.timestamp}</span>
@@ -330,13 +330,13 @@ export function CrawlerConsoleClient({
 
                   <div className="flex items-center gap-3 text-xs">
                     <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
-                      +{rec.insertedCount} new
+                      {tAdmin("newCount", { count: rec.insertedCount })}
                     </span>
                     <span className="text-muted-foreground">
-                      {rec.skippedDuplicatesCount} skipped
+                      {tAdmin("skippedCount", { count: rec.skippedDuplicatesCount })}
                     </span>
                     <span className="text-muted-foreground font-mono">
-                      {rec.durationMs}ms
+                      {tAdmin("durationMs", { ms: rec.durationMs })}
                     </span>
                   </div>
                 </div>
