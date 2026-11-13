@@ -256,3 +256,19 @@ This master checklist tracks the development, testing, UX refinements, and educa
 - [x] Localize showcase editor (`579e029`).
 - [x] Localize event updates editor (`0dce8c5`).
 - [x] **Verification**: audit baseline 640 to 456 hardcoded strings, untranslated held at 20, zero hardcoded UI strings in organizer files; `tests/unit/i18n` 94 tests and `tests/unit/organizer` plus `tests/unit/components` 538 tests pass; full unit suite 1,027 passed with only the five DB-dependent admin tests and the pre-existing crawler test failing because Postgres and the Docker daemon are down; `npx tsc --noEmit` clean; `npm run build` succeeds.
+
+---
+
+### Localization Coverage Program: Phase 4 Admin, Settings, AI & Legal (2026-11-13)
+*Focus: close the remaining hardcoded and untranslated surface across admin, settings, AI, legal, and attendee leftovers.*
+- [x] Localize admin shell, sidebar, page headers, and dashboard KPIs (`6cad5cd`).
+- [x] Localize admin dashboard verification queue and audit viewer (`5378514`).
+- [x] Localize admin events console (`96d7901`).
+- [x] Localize venue directory manager (`d8c14af`).
+- [x] Localize crawler console (`9a96afa`).
+- [x] Localize AI reports hub and attendee AI concierge (`341d8e2`).
+- [x] Localize settings suite, model cards, motion test, typography, theme, density, and profile placeholders (`c4046fe`).
+- [x] Localize privacy and terms pages; flag legal copy for counsel review (`2c0ff03`).
+- [x] Localize not-found pages, auth modal, digital pass, floor map, guidebook, subnavigation, and shared close labels (`9262532`).
+- [x] Close the final 20 untranslated English values in home, nav, organizer, and settings bundles (`9262532`).
+- [x] **Verification**: audit reports 0 hardcoded UI strings and 0 untranslated values; `tests/unit/i18n` plus a11y and component suites pass 522 tests; full unit suite passes 1,033 tests across 159 files; `npx tsc --noEmit` clean; `npm run build` succeeds. Legal copy remains pending counsel review.

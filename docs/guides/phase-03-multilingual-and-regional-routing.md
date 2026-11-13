@@ -219,7 +219,7 @@ runs as five phases documented in `docs/guides/localization.md`:
 | 1 | Attendee chrome | 1,259 to 1,165 |
 | 2 | 22 themed category views | 1,165 to 640 |
 | 3 | Organizer portal | 640 to 456 |
-| 4 | Admin, settings, AI, legal | Pending |
+| 4 | Admin, settings, AI, legal | 0 hardcoded, 0 untranslated |
 
 The organizer pass localized the event wizard, publication authority, live
 customizer, preview frame, showcase editor, event updates editor, dashboard

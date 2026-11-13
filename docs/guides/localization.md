@@ -122,7 +122,7 @@ spec would present fabricated content as localized fact.
 | 1 | Attendee chrome | `npm run i18n:audit:update` |
 | 2 | Themed views, one cluster at a time | Update per cluster |
 | 3 | Organizer portal | Update |
-| 4 | Admin, settings, AI, legal | Update |
+| 4 | Admin, settings, AI, legal | Complete: 0 hardcoded, 0 untranslated |
 
 Each phase translates its keys into all six locales in the same commit. The
 message parity test enforces the key sets; the ratchet enforces that the
@@ -162,4 +162,37 @@ Rules learned in this phase:
   per surface.
 - The parity test parses each bundle once. Re-reading six JSON files inside a
   per-key loop pushed the test past its timeout as the bundles grew.
+
+## Phase 4: admin, settings, AI, and legal
+
+Phase 4 closed the remaining surface: the admin shell, dashboard, events
+console, venue directory, crawler console, audit viewer, AI reports hub,
+attendee AI concierge, settings suite, privacy and terms pages, and the
+attendee leftovers (not-found pages, auth modal, digital pass, floor map,
+guidebook, subnavigation, and the shared drawer and modal close labels).
+
+The audit now reports:
+
+- Hardcoded UI strings: 0
+- Untranslated values: 0
+
+Rules learned in this phase:
+
+- Localize metadata titles and descriptions, not only the visible body.
+- A global `app/not-found.tsx` sits outside the locale provider. Its three
+  fallback strings stay in the allowlist; the localized `[locale]/not-found.tsx`
+  carries the translated copy.
+- Keep technical values literal but make their labels local: `Algorithm:` is a
+  key, `HMAC-SHA256 (256-bit)` is a value.
+- Severity and status codes (`SUCCESS`, `WARN`, `ALERT`, `INFO`) keep their raw
+  values in logic and gain label keys for display.
+- Legal prose is translated in all six locales but remains pending legal review.
+  Keep the English source as the reference until that review signs off.
+
+## Legal review status
+
+The privacy and terms copy in `src/messages/*.json` under the `legal` namespace
+is translated but not yet reviewed by counsel. Treat the English source as the
+authoritative text until the review is recorded.
+
 
