@@ -27,6 +27,7 @@ import { type ArchetypeViewProps } from "./IndustrialB2BView";
 
 export function AerospaceDefenseView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
   const t = useTranslations("archetypeViews.AEROSPACE_DEFENSE");
+  const tCommon = useTranslations("archetypeViews.common");
   const [briefingDrawerOpen, setBriefingDrawerOpen] = React.useState(false);
   const [selectedAsset, setSelectedAsset] = React.useState<string | null>(null);
   const [briefingRequested, setBriefingRequested] = React.useState(false);
@@ -197,7 +198,7 @@ export function AerospaceDefenseView({ event, locale = "en", onSelectTier }: Arc
                 }}
                 className="mt-4"
               >
-                {t("doneCta")}
+                {tCommon("doneCta")}
               </Button>
             </div>
           ) : (
@@ -251,7 +252,7 @@ export function AerospaceDefenseView({ event, locale = "en", onSelectTier }: Arc
                   variant="outline"
                   onClick={() => setBriefingDrawerOpen(false)}
                 >
-                  {t("cancelCta")}
+                  {tCommon("cancelCta")}
                 </Button>
                 <Button
                   type="submit"

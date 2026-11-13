@@ -1988,7 +1988,6 @@
       "drawerDescription": "Ajukan brief formulasi private-label atau minta harga grosir kuantitas pesanan minimum (MOQ).",
       "dispatchedTitle": "Inquiry OEM Terkirim",
       "dispatchedBody": "Brief manufaktur Anda untuk {brand} telah terkirim dengan aman. Penyelenggara akan menindaklanjuti dengan langkah berikutnya.",
-      "doneCta": "Selesai",
       "brandLabel": "Rumah Desain / Produsen OEM",
       "channelLabel": "Saluran Pengadaan",
       "channelOption1": "Manufaktur Kontrak Kosmetik Private Label",
@@ -1998,7 +1997,6 @@
       "moqOption1": "Batch Kecil / Pilot (500 - 2.000 unit)",
       "moqOption2": "Produksi Komersial (5.000 - 25.000 unit)",
       "moqOption3": "Distribusi Ritel Enterprise (50.000+ unit)",
-      "cancelCta": "Batal",
       "submitBriefCta": "Ajukan Brief"
     },
     "AUTOMOTIVE_MOBILITY": {
@@ -2015,7 +2013,6 @@
       "drawerDescription": "Reservasi demo drive sirkuit tertutup atau sesi ride-along bersama pengemudi pabrik terakreditasi.",
       "reservedTitle": "Sesi Trek Direservasi",
       "reservedBody": "Reservasi Anda untuk {vehicle} telah diterbitkan. Tunjukkan pass digital dan SIM Anda di Pit Lane Gate 2.",
-      "doneCta": "Selesai",
       "vehicleLabel": "Kendaraan Terpilih",
       "sessionLabel": "Sesi Trek Pilihan",
       "sessionOption1": "Sesi Trek Slalom Pagi (10.30 - 11.30)",
@@ -2024,7 +2021,6 @@
       "licenseCertLabel": "Sertifikasi SIM Pengemudi",
       "licenseCertValue": "Wajib SIM Nasional atau Internasional yang Berlaku",
       "safetyNote": "Semua pengemudi wajib menyelesaikan briefing keselamatan standar di Paddock Briefing Room B sebelum masuk sirkuit.",
-      "cancelCta": "Batal",
       "confirmCta": "Konfirmasi Reservasi",
       "filterAll": "Semua",
       "powertrainHybrid": "Hibrida"
@@ -2044,7 +2040,6 @@
       "drawerDescription": "Terima swatch sampel fisik terverifikasi, laporan uji struktural, dan deklarasi produk lingkungan (EPD).",
       "sampleTitle": "Pesanan Kurir Sampel Dibuat",
       "sampleBody": "Permintaan material fisik Anda untuk {material} telah dikirim ke booth produsen. Pelacakan pengiriman akan dikirim ke email terdaftar Anda.",
-      "doneCta": "Selesai",
       "materialLabel": "Spesifikasi Material Terpilih",
       "accreditationLabel": "Akreditasi Arsitek / Studio",
       "accreditOption1": "Arsitek Utama Berlisensi (IAI / AIA / RIBA)",
@@ -2053,7 +2048,6 @@
       "accreditOption4": "Desainer Interior / Perencana Spasial",
       "dispatchLabel": "Alamat Pengiriman atau Pengambilan di Pameran",
       "dispatchDefault": "Ambil di Sample Hub Hall 1 Pameran IndoBuildTech",
-      "cancelCta": "Batal",
       "confirmCta": "Konfirmasi Permintaan Pengiriman"
     },
     "ENERGY_INFRASTRUCTURE": {
@@ -2070,7 +2064,6 @@
       "drawerDescription": "Akses studi interkoneksi grid teknis, baseline akuntansi karbon, dan dokumentasi hak konsesi.",
       "grantedTitle": "Akses Dossier Diberikan",
       "grantedBody": "Dokumen teknis untuk {concession} telah dibuka. Unduh brief PPA terenkripsi atau kunjungi lounge energi.",
-      "doneCta": "Selesai",
       "blockLabel": "Blok Konsesi",
       "scopeLabel": "Cakupan Informasi yang Diminta",
       "scopeOption1": "Kerangka Power Purchase Agreement (PPA)",
@@ -2079,7 +2072,6 @@
       "complianceLabel": "Jaminan Kepatuhan Regulasi",
       "complianceValue": "Terverifikasi Kementerian Energi & Sumber Daya Mineral",
       "complianceNote": "Semua data konsesi disinkronkan dengan target energi bersih nasional dan blueprint transmisi regional.",
-      "cancelCta": "Batal",
       "confirmCta": "Minta Dossier Teknis"
     },
     "MEDICAL_SYMPOSIUM": {
@@ -2128,7 +2120,6 @@
       "drawerDescription": "Reservasi sesi demo hands-on interaktif dengan operator tracking kamera sinema dan insinyur suara.",
       "confirmedTitle": "Demo Produksi Terkonfirmasi",
       "confirmedBody": "Reservasi Anda untuk {stage} telah disiapkan. Laporkan ke Konsol Operator Panggung 10 menit sebelum sesi dimulai.",
-      "doneCta": "Selesai",
       "studioLabel": "Studio / Arena Produksi Terpilih",
       "specialtyLabel": "Spesialisasi Produksi",
       "specialtyOption1": "Produksi Virtual In-Camera Visual Effects (ICVFX)",
@@ -2138,7 +2129,6 @@
       "accreditationLabel": "Akreditasi Industri",
       "accreditationValue": "Verifikasi Anggota SMPTE / AES / BSC",
       "sessionNote": "Sesi teknologi broadcast menampilkan manipulasi konsol hands-on di bawah pengawasan insinyur ahli.",
-      "cancelCta": "Batal",
       "confirmCta": "Konfirmasi Pass Hands-On"
     },
     "SUPPLY_CHAIN_LOGISTICS": {
@@ -2155,7 +2145,6 @@
       "drawerDescription": "Minta proposal tarif kargo enterprise, spesifikasi armada gudang AGV, atau slot farmasi berpendingin.",
       "transmittedTitle": "Tender RFP Terkirim",
       "transmittedBody": "Permintaan kargo Anda untuk {route} telah terkirim dengan aman ke tim logistik pengangkut. Anda dapat mengambil kartu tarif resmi di Meja C-04 Lounge Logistics Hub.",
-      "doneCta": "Selesai",
       "targetLabel": "Sistem Logistik atau Koridor Kargo Target",
       "volumeLabel": "Volume Pengiriman atau Otomasi",
       "volumeOption1": "Muat Penuh Kontainer (FCL: 20ft / 40ft High Cube)",
@@ -2165,7 +2154,6 @@
       "complianceLabel": "Kepatuhan Perdagangan",
       "complianceValue": "Standar Authorized Economic Operator (AEO)",
       "complianceNote": "Semua pengangkut logistik peserta mematuhi akreditasi keamanan pabean internasional dan protokol kerangka aman WCO.",
-      "cancelCta": "Batal",
       "confirmCta": "Ajukan Permintaan Tarif"
     },
     "AEROSPACE_DEFENSE": {
@@ -2182,7 +2170,6 @@
       "drawerDescription": "Verifikasi kredensial keamanan untuk akses tarmac jalur terbang terbatas dan briefing bilateral terklasifikasi.",
       "clearanceTitle": "Izin Keamanan Terverifikasi",
       "clearanceBody": "Pass akses untuk {asset} telah disiapkan. Lanjut ke Pos Pemeriksaan Keamanan Gate C untuk Pendampingan Tarmac Jalur Terbang.",
-      "doneCta": "Selesai",
       "assetLabel": "Aset Dirgantara / Pertahanan",
       "credentialLabel": "Tingkat Kredensial Delegasi",
       "credentialOption1": "Kontraktor Pertahanan Terakreditasi (Level 2)",
@@ -2192,7 +2179,6 @@
       "securityLabel": "Persyaratan Keamanan Tarmac",
       "securityValue": "Regulasi Keselamatan Jalur Terbang Ditegakkan",
       "securityNote": "Semua pengunjung tarmac wajib memakai kredensial visibilitas tinggi resmi dan menunjukkan identifikasi foto di Gate 4 Jalur Terbang.",
-      "cancelCta": "Batal",
       "confirmCta": "Validasi Kredensial"
     },
     "HOSPITALITY_TOURISM": {
@@ -2208,11 +2194,8 @@
       "drawerDescription": "Pesan sesi pengadaan 20 menit khusus dengan delegasi destinasi resmi dan eksekutif hotelier.",
       "requestedTitle": "Janji Buyer Diminta",
       "requestedBody": "Permintaan pertemuan pengadaan Anda dengan {pavilion} telah tercatat dan penyelenggara memiliki detail kontak Anda.",
-      "referenceLabel": "Referensi: {reference}",
-      "doneCta": "Selesai",
       "nameLabel": "Nama Lengkap",
       "namePlaceholder": "mis. Alex Pratama",
-      "emailLabel": "Email Kontak",
       "pavilionLabel": "Paviliun Destinasi / Perhotelan",
       "categoryLabel": "Kategori Pengadaan Buyer",
       "categoryOption1": "Retreat Korporat MICE & Perjalanan Insentif",
@@ -2222,7 +2205,6 @@
       "credentialLabel": "Pemeriksaan Kredensial Hosted Buyer",
       "credentialValue": "Profesional Industri Perjalanan Terverifikasi",
       "credentialNote": "Pertemuan hosted buyer hanya untuk agen perjalanan komersial, kepala pengadaan korporat, dan penyelenggara acara.",
-      "cancelCta": "Batal",
       "submitCta": "Konfirmasi Janji",
       "sendingCta": "Mengirim..."
     },
@@ -2248,8 +2230,6 @@
       "drawerDescription": "Penjadwalan audiensi bilateral formal dengan delegasi {delegation}",
       "recordedTitle": "Permintaan Audiensi Tercatat",
       "recordedBody": "Sekretariat diplomatik telah menerima memorandum bilateral dan detail kontak Anda, dan akan merespons langsung.",
-      "referenceLabel": "Referensi: {reference}",
-      "emailLabel": "Email Kontak",
       "missionLabel": "Misi Berdaulat Target",
       "ministryLabel": "Kementerian / Institusi Pemohon",
       "ministryPlaceholder": "mis. Kementerian Luar Negeri & Perdagangan",
@@ -2356,8 +2336,6 @@
       "drawerDescription": "Pemesanan suite pertemuan investor langsung untuk {deal}",
       "requestedTitle": "Ruang Kesepakatan Diminta",
       "requestedBody": "Tim pendiri/fund telah menerima permintaan dan detail kontak Anda, dan akan merespons langsung.",
-      "referenceLabel": "Referensi: {reference}",
-      "emailLabel": "Email Kontak",
       "targetLabel": "Peluang Target",
       "fundLabel": "Nama Fund / Institusi",
       "fundPlaceholder": "mis. Apex Global Ventures",
@@ -2412,14 +2390,12 @@
       "drawerDescBroadcast": "Siarkan RFQ ke pameran industri terverifikasi",
       "rfqSubmittedTitle": "RFQ Berhasil Dikirim",
       "rfqSubmittedBody": "Inquiry spesifikasi teknis Anda telah tercatat dan pameran memiliki detail kontak Anda.",
-      "referenceLabel": "Referensi: {reference}",
       "targetLabel": "Pameran / Mesin Target",
       "targetDefault": "Semua Pameran Peralatan Berat yang Cocok",
       "companyLabel": "Nama Perusahaan",
       "companyPlaceholder": "mis. PT Industri Prima",
       "quantityLabel": "Perkiraan Kuantitas / Unit",
       "quantityPlaceholder": "mis. 5 Unit / Tahun",
-      "emailLabel": "Email Kontak",
       "specsLabel": "Spesifikasi Teknis / Lingkup RFQ",
       "specsPlaceholder": "Jelaskan kebutuhan mesin Anda, toleransi presisi, standar tegangan, dan perkiraan jadwal pengiriman...",
       "browseCtaOne": "Jelajahi 1 Booth Pameran",
@@ -2429,6 +2405,12 @@
       "submitting": "Mengirim…",
       "submitCta": "Kirim RFQ ke Peserta Pameran",
       "filterAll": "Semua Industri"
+    },
+    "common": {
+      "doneCta": "Selesai",
+      "cancelCta": "Batal",
+      "referenceLabel": "Referensi: {reference}",
+      "emailLabel": "Email Kontak"
     }
   }
 }

@@ -1988,7 +1988,6 @@
       "drawerDescription": "Reichen Sie Private-Label-Formulierungsbriefings ein oder fordern Sie Großhandelspreise für Mindestbestellmengen (MOQ) an.",
       "dispatchedTitle": "OEM-Anfrage gesendet",
       "dispatchedBody": "Ihr Fertigungsbriefing für {brand} wurde sicher übermittelt. Der Veranstalter meldet sich mit den nächsten Schritten.",
-      "doneCta": "Fertig",
       "brandLabel": "Designhaus / OEM-Hersteller",
       "channelLabel": "Beschaffungskanal",
       "channelOption1": "Private-Label-Kosmetik-Auftragsfertigung",
@@ -1998,7 +1997,6 @@
       "moqOption1": "Kleine Charge / Pilot (500 - 2.000 Stück)",
       "moqOption2": "Kommerzielle Produktion (5.000 - 25.000 Stück)",
       "moqOption3": "Enterprise-Einzelhandelsdistribution (50.000+ Stück)",
-      "cancelCta": "Abbrechen",
       "submitBriefCta": "Briefing einreichen"
     },
     "AUTOMOTIVE_MOBILITY": {
@@ -2015,7 +2013,6 @@
       "drawerDescription": "Reservieren Sie eine Demo-Fahrt auf abgesperrter Strecke oder eine Mitfahr-Session mit akkreditierten Werksfahrern.",
       "reservedTitle": "Track-Session reserviert",
       "reservedBody": "Ihre Reservierung für {vehicle} wurde ausgestellt. Zeigen Sie Ihren digitalen Pass und Führerschein am Pit-Lane-Tor 2 vor.",
-      "doneCta": "Fertig",
       "vehicleLabel": "Ausgewähltes Fahrzeug",
       "sessionLabel": "Bevorzugte Track-Session",
       "sessionOption1": "Morgen-Slalom-Track-Session (10:30 - 11:30)",
@@ -2024,7 +2021,6 @@
       "licenseCertLabel": "Führerschein-Zertifizierung",
       "licenseCertValue": "Gültiger nationaler oder internationaler Führerschein erforderlich",
       "safetyNote": "Alle Fahrer müssen vor der Einfahrt in die Strecke das Standard-Sicherheitsbriefing im Paddock-Briefingraum B absolvieren.",
-      "cancelCta": "Abbrechen",
       "confirmCta": "Reservierung bestätigen",
       "filterAll": "Alle",
       "powertrainHybrid": "Hybrid"
@@ -2044,7 +2040,6 @@
       "drawerDescription": "Erhalten Sie verifizierte physische Muster, Strukturtestberichte und Umweltproduktdeklarationen (EPD).",
       "sampleTitle": "Muster-Kurierauftrag erstellt",
       "sampleBody": "Ihre physische Materialanfrage für {material} wurde an den Herstellerstand versandt. Die Sendungsverfolgung wird an Ihre registrierte E-Mail gesendet.",
-      "doneCta": "Fertig",
       "materialLabel": "Ausgewählte Materialspezifikation",
       "accreditationLabel": "Architekten- / Studio-Akkreditierung",
       "accreditOption1": "Lizenzierter Hauptarchitekt (IAI / AIA / RIBA)",
@@ -2053,7 +2048,6 @@
       "accreditOption4": "Innenarchitekt / Raumplaner",
       "dispatchLabel": "Lieferadresse oder Abholung auf der Messe",
       "dispatchDefault": "Abholung am Sample Hub, Halle 1, IndoBuildTech",
-      "cancelCta": "Abbrechen",
       "confirmCta": "Versandanfrage bestätigen"
     },
     "ENERGY_INFRASTRUCTURE": {
@@ -2070,7 +2064,6 @@
       "drawerDescription": "Zugang zu technischen Netzanschlussstudien, CO2-Bilanzierungsgrundlagen und Konzessionsrechtsdokumenten.",
       "grantedTitle": "Dossier-Zugriff gewährt",
       "grantedBody": "Technische Unterlagen für {concession} wurden freigeschaltet. Laden Sie das verschlüsselte PPA-Briefing herunter oder besuchen Sie die Energielounge.",
-      "doneCta": "Fertig",
       "blockLabel": "Konzessionsblock",
       "scopeLabel": "Angeforderter Informationsumfang",
       "scopeOption1": "Stromabnahmevertrag (PPA)-Rahmenwerk",
@@ -2079,7 +2072,6 @@
       "complianceLabel": "Regulatorische Compliance-Zusicherung",
       "complianceValue": "Vom Ministerium für Energie und Bodenschätze verifiziert",
       "complianceNote": "Alle Konzessionsdaten sind mit nationalen Saubere-Energie-Zielen und regionalen Übertragungsplänen synchronisiert.",
-      "cancelCta": "Abbrechen",
       "confirmCta": "Technisches Dossier anfordern"
     },
     "MEDICAL_SYMPOSIUM": {
@@ -2105,7 +2097,7 @@
       "downloadPdf": "Vollständiges PDF herunterladen",
       "scheduleTitle": "Symposiumsplan & Plenarvorträge",
       "ticketsTitle": "Medizinische Registrierung & Delegierten-Nachweise",
-      "ticketsDesc": "Qualifikationsbezogene Tarife für medizinische Fachärzte, Fellows, Assistenzärzte und allied health professionals.",
+      "ticketsDesc": "Qualifikationsbezogene Tarife für medizinische Fachärzte, Fellows, Assistenzärzte und Angehörige der Gesundheitsfachberufe.",
       "badgesLeft": "Noch {count} Badges",
       "cta": "Delegiertenpass wählen",
       "complimentaryPass": "Kostenloser Pass",
@@ -2128,7 +2120,6 @@
       "drawerDescription": "Reservieren Sie eine interaktive Hands-on-Demo-Session mit Cinema-Kamera-Tracking-Operatoren und Toningenieuren.",
       "confirmedTitle": "Produktionsdemo bestätigt",
       "confirmedBody": "Ihre Reservierung für {stage} wurde bereitgestellt. Melden Sie sich 10 Minuten vor Slotbeginn am Stage-Operator-Console.",
-      "doneCta": "Fertig",
       "studioLabel": "Ausgewähltes Studio / Produktionsarena",
       "specialtyLabel": "Produktionsspezialität",
       "specialtyOption1": "In-Camera-VFX (ICVFX) Virtual Production",
@@ -2138,7 +2129,6 @@
       "accreditationLabel": "Branchenakkreditierung",
       "accreditationValue": "SMPTE / AES / BSC-Mitgliedsverifizierung",
       "sessionNote": "Broadcast-Tech-Sessions bieten Hands-on-Konsolenbedienung unter Aufsicht erfahrener Ingenieure.",
-      "cancelCta": "Abbrechen",
       "confirmCta": "Hands-on-Pass bestätigen"
     },
     "SUPPLY_CHAIN_LOGISTICS": {
@@ -2155,7 +2145,6 @@
       "drawerDescription": "Fordern Sie Frachttarifvorschläge für Unternehmen, AGV-Lagerflottenspezifikationen oder temperaturkontrollierte Pharmaslots an.",
       "transmittedTitle": "RFP-Ausschreibung übermittelt",
       "transmittedBody": "Ihre Frachtanfrage für {route} wurde sicher an das Logistikteam des Frachtführers übermittelt. Die offizielle Tarifkarte erhalten Sie am Tisch C-04 in der Logistics Hub Lounge.",
-      "doneCta": "Fertig",
       "targetLabel": "Ziel-Logistiksystem oder Frachtkorridor",
       "volumeLabel": "Versand- oder Automatisierungsvolumen",
       "volumeOption1": "Ganzcontainer (FCL: 20ft / 40ft High Cube)",
@@ -2165,7 +2154,6 @@
       "complianceLabel": "Handelscompliance",
       "complianceValue": "Authorized Economic Operator (AEO)-Standards",
       "complianceNote": "Alle teilnehmenden Logistikfrachtführer halten internationale Zoll-Sicherheitsakkreditierungen und WCO-Safe-Framework-Protokolle ein.",
-      "cancelCta": "Abbrechen",
       "confirmCta": "Tarifanfrage einreichen"
     },
     "AEROSPACE_DEFENSE": {
@@ -2179,10 +2167,9 @@
       "avionicsLabel": "Avionik- & Nutzlastdaten",
       "briefCta": "Taktisches technisches Briefing ansehen",
       "drawerTitle": "Verteidigungsdelegation & taktische Briefing-Freigabe",
-      "drawerDescription": "Überprüfen Sie Sicherheitsnachweise für restricted Flight-Line-Vorfeldzugang und klassifizierte bilaterale Briefings.",
+      "drawerDescription": "Überprüfen Sie Sicherheitsnachweise für eingeschränkten Vorfeldzugang zur Flight Line und klassifizierte bilaterale Briefings.",
       "clearanceTitle": "Sicherheitsfreigabe verifiziert",
-      "clearanceBody": "Der Zugangspass für {asset} wurde bereitgestellt. Begeben Sie sich zum Sicherheitskontrollpunkt Tor C für die Flight-Line-Vorfeldbegleitung.",
-      "doneCta": "Fertig",
+      "clearanceBody": "Der Zugangspass für {asset} wurde bereitgestellt. Begeben Sie sich zum Sicherheitskontrollpunkt Tor C für die Vorfeldbegleitung der Flight Line.",
       "assetLabel": "Luft- und Raumfahrt- / Verteidigungsasset",
       "credentialLabel": "Delegationsnachweis-Stufe",
       "credentialOption1": "Akkreditierter Verteidigungsauftragnehmer (Stufe 2)",
@@ -2190,9 +2177,8 @@
       "credentialOption3": "Führungskraft Zivilluftfahrt & Flughafeninfrastruktur",
       "credentialOption4": "Fakultät für Luft- und Raumfahrttechnik / F&E-Institut",
       "securityLabel": "Vorfeld-Sicherheitsanforderung",
-      "securityValue": "Flight-Line-Sicherheitsvorschriften durchgesetzt",
-      "securityNote": "Alle Vorfeldbesucher müssen offizielle hochsichtbare Nachweise tragen und am Flight-Line-Tor 4 einen Lichtbildausweis vorlegen.",
-      "cancelCta": "Abbrechen",
+      "securityValue": "Sicherheitsvorschriften der Flight Line durchgesetzt",
+      "securityNote": "Alle Vorfeldbesucher müssen offizielle hochsichtbare Nachweise tragen und am Tor 4 der Flight Line einen Lichtbildausweis vorlegen.",
       "confirmCta": "Nachweise validieren"
     },
     "HOSPITALITY_TOURISM": {
@@ -2208,11 +2194,8 @@
       "drawerDescription": "Buchen Sie eine dedizierte 20-minütige Beschaffungssession mit offiziellen Destination-Delegierten und Hotelmanager.",
       "requestedTitle": "Buyer-Termin angefordert",
       "requestedBody": "Ihre Beschaffungsanfrage bei {pavilion} ist erfasst und der Veranstalter hat Ihre Kontaktdaten.",
-      "referenceLabel": "Referenz: {reference}",
-      "doneCta": "Fertig",
       "nameLabel": "Vollständiger Name",
       "namePlaceholder": "z. B. Alex Pratama",
-      "emailLabel": "Kontakt-E-Mail",
       "pavilionLabel": "Destination- / Hospitality-Pavillon",
       "categoryLabel": "Buyer-Beschaffungskategorie",
       "categoryOption1": "MICE-Unternehmensretreats & Incentive-Reisen",
@@ -2222,7 +2205,6 @@
       "credentialLabel": "Hosted-Buyer-Nachweisprüfung",
       "credentialValue": "Verifizierter Reisebranchenprofi",
       "credentialNote": "Hosted-Buyer-Meetings sind strikt kommerziellen Reiseagenturen, Unternehmensbeschaffungsleitern und Veranstaltern vorbehalten.",
-      "cancelCta": "Abbrechen",
       "submitCta": "Termin bestätigen",
       "sendingCta": "Wird gesendet..."
     },
@@ -2248,8 +2230,6 @@
       "drawerDescription": "Formelle bilaterale Audienzplanung mit der Delegation von {delegation}",
       "recordedTitle": "Audienzanfrage erfasst",
       "recordedBody": "Das diplomatische Sekretariat hat Ihr bilaterales Memorandum und Ihre Kontaktdaten und wird direkt antworten.",
-      "referenceLabel": "Referenz: {reference}",
-      "emailLabel": "Kontakt-E-Mail",
       "missionLabel": "Ziel-Souveräne Mission",
       "ministryLabel": "Anfragendes Ministerium / Institution",
       "ministryPlaceholder": "z. B. Ministerium für Auswärtige Angelegenheiten & Handel",
@@ -2356,8 +2336,6 @@
       "drawerDescription": "Direkte Investorengesprächs-Suite-Buchung für {deal}",
       "requestedTitle": "Deal-Room angefragt",
       "requestedBody": "Das Gründer-/Fonds-Team hat Ihre Anfrage und Kontaktdaten und wird direkt antworten.",
-      "referenceLabel": "Referenz: {reference}",
-      "emailLabel": "Kontakt-E-Mail",
       "targetLabel": "Zielchance",
       "fundLabel": "Fonds- / Institutionsname",
       "fundPlaceholder": "z. B. Apex Global Ventures",
@@ -2412,14 +2390,12 @@
       "drawerDescBroadcast": "RFQ an verifizierte Industrieaussteller senden",
       "rfqSubmittedTitle": "RFQ erfolgreich eingereicht",
       "rfqSubmittedBody": "Ihre technische Spezifikationsanfrage ist erfasst und der Aussteller hat Ihre Kontaktdaten.",
-      "referenceLabel": "Referenz: {reference}",
       "targetLabel": "Ziel-Aussteller / Maschine",
       "targetDefault": "Alle passenden Schwermaschinen-Aussteller",
       "companyLabel": "Firmenname",
       "companyPlaceholder": "z. B. PT Industri Prima",
       "quantityLabel": "Geschätzte Menge / Einheiten",
       "quantityPlaceholder": "z. B. 5 Einheiten / Jahr",
-      "emailLabel": "Kontakt-E-Mail",
       "specsLabel": "Technische Spezifikationen / RFQ-Umfang",
       "specsPlaceholder": "Beschreiben Sie Ihre Maschinenanforderungen, Präzisionstoleranzen, Spannungsstandards und den erwarteten Lieferzeitplan...",
       "browseCtaOne": "1 Ausstellerstand durchsuchen",
@@ -2429,6 +2405,12 @@
       "submitting": "Wird übermittelt…",
       "submitCta": "RFQ an Aussteller senden",
       "filterAll": "Alle Branchen"
+    },
+    "common": {
+      "doneCta": "Fertig",
+      "cancelCta": "Abbrechen",
+      "referenceLabel": "Referenz: {reference}",
+      "emailLabel": "Kontakt-E-Mail"
     }
   }
 }

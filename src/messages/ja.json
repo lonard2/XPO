@@ -1828,7 +1828,7 @@
     },
     "POP_CULTURE_GAMING": {
       "heroBadge": "ゲーム選手権、コスプレアリーナ、クリエイターアレー",
-      "heroTitle": "eスポーツアリーナ、セレブ meet & greet、グッズ販売",
+      "heroTitle": "eスポーツアリーナ、セレブ・ミート＆グリート、グッズ販売",
       "propRulesCta": "コスプレ小道具の安全規則",
       "propCheckDesk": "小道具検査デスク",
       "securityTitle": "コスプレ保安ガイドライン",
@@ -1988,7 +1988,6 @@
       "drawerDescription": "プライベートブランド処方ブリーフを提出するか、最小発注数量（MOQ）の卸売価格を依頼してください。",
       "dispatchedTitle": "OEM問い合わせを送信しました",
       "dispatchedBody": "{brand}の製造ブリーフが安全に送信されました。主催者から次のステップをご連絡します。",
-      "doneCta": "完了",
       "brandLabel": "デザインハウス / OEMメーカー",
       "channelLabel": "調達チャネル",
       "channelOption1": "プライベートブランド化粧品受託製造",
@@ -1998,7 +1997,6 @@
       "moqOption1": "小ロット / パイロット（500〜2,000個）",
       "moqOption2": "商業生産（5,000〜25,000個）",
       "moqOption3": "エンタープライズ小売流通（50,000個以上）",
-      "cancelCta": "キャンセル",
       "submitBriefCta": "ブリーフを提出"
     },
     "AUTOMOTIVE_MOBILITY": {
@@ -2015,7 +2013,6 @@
       "drawerDescription": "認定ファクトリードライバーによるクローズドサーキットデモ走行または同乗セッションを予約します。",
       "reservedTitle": "トラックセッション予約済み",
       "reservedBody": "{vehicle}の予約が発行されました。ピットレーンゲート2でデジタルパスと運転免許証をご提示ください。",
-      "doneCta": "完了",
       "vehicleLabel": "選択した車両",
       "sessionLabel": "希望トラックセッション",
       "sessionOption1": "午前スラロームトラックセッション（10:30 - 11:30）",
@@ -2024,7 +2021,6 @@
       "licenseCertLabel": "運転免許証認証",
       "licenseCertValue": "有効な国内または国際運転免許証が必要",
       "safetyNote": "すべてのドライバーはサーキット入場前にパドックブリーフィングルームBで標準安全ブリーフィングを完了する必要があります。",
-      "cancelCta": "キャンセル",
       "confirmCta": "予約を確定",
       "filterAll": "すべて",
       "powertrainHybrid": "ハイブリッド"
@@ -2044,7 +2040,6 @@
       "drawerDescription": "検証済みの物理サンプル見本、構造試験報告書、環境製品宣言（EPD）を受け取ります。",
       "sampleTitle": "サンプル配送注文を作成しました",
       "sampleBody": "{material}の物理材料リクエストがメーカーブースへ発送されました。配送追跡情報は登録メールアドレスに送信されます。",
-      "doneCta": "完了",
       "materialLabel": "選択した材料仕様",
       "accreditationLabel": "建築士 / スタジオ認定",
       "accreditOption1": "認可主任建築士（IAI / AIA / RIBA）",
@@ -2053,7 +2048,6 @@
       "accreditOption4": "インテリアデザイナー / 空間プランナー",
       "dispatchLabel": "配送先または展示会場での受け取り",
       "dispatchDefault": "IndoBuildTech展示会ホール1サンプルハブで受け取り",
-      "cancelCta": "キャンセル",
       "confirmCta": "発送依頼を確定"
     },
     "ENERGY_INFRASTRUCTURE": {
@@ -2070,7 +2064,6 @@
       "drawerDescription": "技術的なグリッド連系調査、カーボン会計基準、鉱区権利文書にアクセスします。",
       "grantedTitle": "資料アクセスが許可されました",
       "grantedBody": "{concession}の技術提出書類が解除されました。暗号化されたPPAブリーフをダウンロードするか、エネルギーラウンジへお越しください。",
-      "doneCta": "完了",
       "blockLabel": "鉱区ブロック",
       "scopeLabel": "希望情報範囲",
       "scopeOption1": "電力購入契約（PPA）フレームワーク",
@@ -2079,7 +2072,6 @@
       "complianceLabel": "規制コンプライアンス保証",
       "complianceValue": "エネルギー鉱物資源省認証済み",
       "complianceNote": "すべての鉱区データは国のクリーンエネルギー目標と地域送電計画に同期されています。",
-      "cancelCta": "キャンセル",
       "confirmCta": "技術資料を依頼"
     },
     "MEDICAL_SYMPOSIUM": {
@@ -2128,7 +2120,6 @@
       "drawerDescription": "シネマカメラトラッキングオペレーターとサウンドエンジニアによるインタラクティブなハンズオンデモセッションを予約します。",
       "confirmedTitle": "プロダクションデモ確定",
       "confirmedBody": "{stage}の予約がプロビジョニングされました。スロット開始10分前にステージオペレーターコンソールへお越しください。",
-      "doneCta": "完了",
       "studioLabel": "選択したスタジオ / プロダクションアリーナ",
       "specialtyLabel": "制作専門分野",
       "specialtyOption1": "インカメラビジュアルエフェクト（ICVFX）バーチャルプロダクション",
@@ -2138,7 +2129,6 @@
       "accreditationLabel": "業界認定",
       "accreditationValue": "SMPTE / AES / BSC 会員認証",
       "sessionNote": "放送技術セッションでは、専門エンジニアの監督のもとでコンソールを実際に操作できます。",
-      "cancelCta": "キャンセル",
       "confirmCta": "ハンズオンパスを確定"
     },
     "SUPPLY_CHAIN_LOGISTICS": {
@@ -2155,7 +2145,6 @@
       "drawerDescription": "企業向け貨物料率提案、AGV倉庫フリート仕様、温度管理医薬品スロットを依頼します。",
       "transmittedTitle": "RFP入札を送信しました",
       "transmittedBody": "{route}の貨物照会が運送会社の物流チームへ安全に届けられました。Logistics Hub LoungeのテーブルC-04で公式料率表を受け取れます。",
-      "doneCta": "完了",
       "targetLabel": "対象の物流システムまたは貨物回廊",
       "volumeLabel": "出荷または自動化ボリューム",
       "volumeOption1": "フルコンテナロード（FCL: 20ft / 40ft High Cube）",
@@ -2165,7 +2154,6 @@
       "complianceLabel": "貿易コンプライアンス",
       "complianceValue": "Authorized Economic Operator（AEO）基準",
       "complianceNote": "参加するすべての物流運送会社は、国際税関セキュリティ認証とWCOセーフフレームワーク議定書を遵守しています。",
-      "cancelCta": "キャンセル",
       "confirmCta": "料率照会を送信"
     },
     "AEROSPACE_DEFENSE": {
@@ -2182,7 +2170,6 @@
       "drawerDescription": "制限されたフライトラインパドックアクセスと機密二国間ブリーフィングのセキュリティ資格を確認します。",
       "clearanceTitle": "セキュリティクリアランス認証済み",
       "clearanceBody": "{asset}のアクセスパスがプロビジョニングされました。フライトラインパドックエスコートのためセキュリティチェックポイントゲートCへお進みください。",
-      "doneCta": "完了",
       "assetLabel": "航空宇宙 / 防衛アセット",
       "credentialLabel": "代表団資格レベル",
       "credentialOption1": "認定防衛請負業者（レベル2）",
@@ -2192,7 +2179,6 @@
       "securityLabel": "パドックセキュリティ要件",
       "securityValue": "フライトライン安全規制を適用",
       "securityNote": "すべてのパドック訪問者は公式の高視認性資格を着用し、フライトラインゲート4で写真付き身分証明書を提示する必要があります。",
-      "cancelCta": "キャンセル",
       "confirmCta": "資格を検証"
     },
     "HOSPITALITY_TOURISM": {
@@ -2208,11 +2194,8 @@
       "drawerDescription": "公式デスティネーション代表とホテル幹部による20分の専用調達セッションを予約します。",
       "requestedTitle": "バイヤー面談をリクエストしました",
       "requestedBody": "{pavilion}との調達会議リクエストが記録され、主催者が連絡先を把握しています。",
-      "referenceLabel": "参照番号: {reference}",
-      "doneCta": "完了",
       "nameLabel": "氏名",
       "namePlaceholder": "例: Alex Pratama",
-      "emailLabel": "連絡先メール",
       "pavilionLabel": "デスティネーション / ホスピタリティパビリオン",
       "categoryLabel": "バイヤー調達カテゴリ",
       "categoryOption1": "MICE法人リトリート & インセンティブ旅行",
@@ -2222,7 +2205,6 @@
       "credentialLabel": "ホステッドバイヤー資格確認",
       "credentialValue": "認証済み旅行業プロフェッショナル",
       "credentialNote": "ホステッドバイヤー会議は商用旅行代理店、法人調達責任者、イベント主催者に限定されます。",
-      "cancelCta": "キャンセル",
       "submitCta": "面談を確定",
       "sendingCta": "送信中..."
     },
@@ -2248,8 +2230,6 @@
       "drawerDescription": "{delegation}代表団との正式な二国間会見の日程調整",
       "recordedTitle": "会見リクエストを記録しました",
       "recordedBody": "外交事務局が二国間覚書と連絡先を受理し、直接ご連絡します。",
-      "referenceLabel": "参照番号: {reference}",
-      "emailLabel": "連絡先メール",
       "missionLabel": "対象の主権ミッション",
       "ministryLabel": "申請省庁 / 機関",
       "ministryPlaceholder": "例: 外務貿易省",
@@ -2298,8 +2278,8 @@
       "visitNote": "フランチャイズディスカバリールーム102へお越しになり、フランチャイザーの最高開発責任者とテリトリー固定についてお話しください。"
     },
     "INCENTIVE_RETREAT": {
-      "heroBadge": "エグゼクティブ・リワードリトリート、ウェルネス、ラグジュアリーexcursion",
-      "heroTitle": "キュレーションされたホライズンリトリート、プライベートexcursion、ガラ晩餐会",
+      "heroBadge": "エグゼクティブ・リワードリトリート、ウェルネス、ラグジュアリー・エクスカーション",
+      "heroTitle": "キュレーションされたホライズンリトリート、プライベート・エクスカーション、ガラ晩餐会",
       "itineraryCta": "エクスカーション旅程を見る（{count}）",
       "wellnessCta": "ウェルネス & スパ枠を予約",
       "chauffeurBadge": "VIP専用運転手付き",
@@ -2314,7 +2294,7 @@
       "complimentary": "無料",
       "scheduleCta": "予約を取る",
       "packagesTitle": "エグゼクティブ・リトリートパッケージ & ヴィラスイート",
-      "packagesDesc": "パッケージにはオーシャンビューのプライベートヴィラ宿泊、終日ダイニング、プライベートexcursion、運転手サービスが含まれます。",
+      "packagesDesc": "パッケージにはオーシャンビューのプライベートヴィラ宿泊、終日ダイニング、プライベート・エクスカーション、運転手サービスが含まれます。",
       "suitesRemaining": "残り{count}スイート",
       "reserveCta": "リトリートスイートを予約",
       "drawerTitle": "スパ & ウェルネス予約を取る",
@@ -2356,8 +2336,6 @@
       "drawerDescription": "{deal}の直接投資家会議スイート予約",
       "requestedTitle": "ディールルームをリクエストしました",
       "requestedBody": "創業者/ファンドチームがリクエストと連絡先を受理し、直接ご連絡します。",
-      "referenceLabel": "参照番号: {reference}",
-      "emailLabel": "連絡先メール",
       "targetLabel": "対象機会",
       "fundLabel": "ファンド / 機関名",
       "fundPlaceholder": "例: Apex Global Ventures",
@@ -2412,14 +2390,12 @@
       "drawerDescBroadcast": "認証産業出展者へRFQをブロードキャスト",
       "rfqSubmittedTitle": "RFQを送信しました",
       "rfqSubmittedBody": "技術仕様の照会が記録され、出展者が連絡先を把握しています。",
-      "referenceLabel": "参照番号: {reference}",
       "targetLabel": "対象出展者 / 機械",
       "targetDefault": "該当するすべての重機出展者",
       "companyLabel": "会社名",
       "companyPlaceholder": "例: PT Industri Prima",
       "quantityLabel": "推定数量 / ユニット",
       "quantityPlaceholder": "例: 5台 / 年",
-      "emailLabel": "連絡先メール",
       "specsLabel": "技術仕様 / RFQ範囲",
       "specsPlaceholder": "機械要件、精度公差、電圧基準、予定納期の詳細をご記入ください...",
       "browseCtaOne": "1社の出展ブースを見る",
@@ -2429,6 +2405,12 @@
       "submitting": "送信中…",
       "submitCta": "出展者へRFQを送信",
       "filterAll": "すべての産業"
+    },
+    "common": {
+      "doneCta": "完了",
+      "cancelCta": "キャンセル",
+      "referenceLabel": "参照番号: {reference}",
+      "emailLabel": "連絡先メール"
     }
   }
 }

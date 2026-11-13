@@ -31,6 +31,7 @@ import { type ArchetypeViewProps } from "./IndustrialB2BView";
 
 export function AutomotiveMobilityView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
   const t = useTranslations("archetypeViews.AUTOMOTIVE_MOBILITY");
+  const tCommon = useTranslations("archetypeViews.common");
   const [testDriveDrawerOpen, setTestDriveDrawerOpen] = React.useState(false);
   const [selectedVehicle, setSelectedVehicle] = React.useState<string | null>(null);
   const [testDriveBooked, setTestDriveBooked] = React.useState(false);
@@ -230,7 +231,7 @@ export function AutomotiveMobilityView({ event, locale = "en", onSelectTier }: A
                 }}
                 className="mt-4"
               >
-                {t("doneCta")}
+                {tCommon("doneCta")}
               </Button>
             </div>
           ) : (
@@ -283,7 +284,7 @@ export function AutomotiveMobilityView({ event, locale = "en", onSelectTier }: A
                   variant="outline"
                   onClick={() => setTestDriveDrawerOpen(false)}
                 >
-                  {t("cancelCta")}
+                  {tCommon("cancelCta")}
                 </Button>
                 <Button
                   type="submit"

@@ -1978,17 +1978,16 @@
     "FASHION_RETAIL": {
       "heroBadge": "时尚、美妆与奢侈品零售博览会",
       "heroTitle": "T 台首发、化妆品 OEM 与批发展厅",
-      "heroDescription": "体验设计师现场 runway 系列，提交自有品牌化妆品配方简报，并与认证时尚品牌洽谈批发价格表。",
+      "heroDescription": "体验设计师现场走秀系列，提交自有品牌化妆品配方简报，并与认证时尚品牌洽谈批发价格表。",
       "submitCta": "提交化妆品 OEM 简报",
       "verifiedNote": "已认证的零售买家与自有品牌",
       "featuredEyebrow": "Runway 日程",
       "featuredTitle": "精选系列与展示",
-      "featuredDescription": "主办方发布的 runway 时段与展厅日程。",
+      "featuredDescription": "主办方发布的 走秀时段与展厅日程。",
       "drawerTitle": "化妆品 OEM 与批发采购中心",
       "drawerDescription": "提交自有品牌配方简报，或申请最小起订量（MOQ）批发价格。",
       "dispatchedTitle": "OEM 询价已发送",
       "dispatchedBody": "您为 {brand} 提交的制造简报已安全发送。主办方将跟进后续步骤。",
-      "doneCta": "完成",
       "brandLabel": "设计品牌 / OEM 制造商",
       "channelLabel": "采购渠道",
       "channelOption1": "自有品牌化妆品代工制造",
@@ -1998,7 +1997,6 @@
       "moqOption1": "小批量 / 试产（500 - 2,000 件）",
       "moqOption2": "商业生产（5,000 - 25,000 件）",
       "moqOption3": "企业零售分销（50,000+ 件）",
-      "cancelCta": "取消",
       "submitBriefCta": "提交简报"
     },
     "AUTOMOTIVE_MOBILITY": {
@@ -2015,7 +2013,6 @@
       "drawerDescription": "与认证工厂车手预订封闭赛道演示驾驶或同乘体验。",
       "reservedTitle": "赛道时段已预订",
       "reservedBody": "您对 {vehicle} 的预订已签发。请在 2 号维修区入口出示数字通行证与驾照。",
-      "doneCta": "完成",
       "vehicleLabel": "已选车辆",
       "sessionLabel": "首选赛道时段",
       "sessionOption1": "上午绕桩赛道时段（10:30 - 11:30）",
@@ -2024,7 +2021,6 @@
       "licenseCertLabel": "驾照认证",
       "licenseCertValue": "需持有效国内或国际驾照",
       "safetyNote": "所有车手必须在进入赛道前于维修区 B 简报室完成标准安全简报。",
-      "cancelCta": "取消",
       "confirmCta": "确认预订",
       "filterAll": "全部",
       "powertrainHybrid": "混合动力"
@@ -2044,7 +2040,6 @@
       "drawerDescription": "接收已认证的实体样品色卡、结构测试报告与环境产品声明（EPD）。",
       "sampleTitle": "样品快递订单已创建",
       "sampleBody": "您对 {material} 的实体材料申请已发送至制造商展位。物流跟踪信息将发送至您的注册邮箱。",
-      "doneCta": "完成",
       "materialLabel": "已选材料规格",
       "accreditationLabel": "建筑师 / 工作室认证",
       "accreditOption1": "持牌首席建筑师（IAI / AIA / RIBA）",
@@ -2053,7 +2048,6 @@
       "accreditOption4": "室内设计师 / 空间规划师",
       "dispatchLabel": "寄送地址或展会自提",
       "dispatchDefault": "在 IndoBuildTech 展览 1 号馆样品中心自提",
-      "cancelCta": "取消",
       "confirmCta": "确认寄送申请"
     },
     "ENERGY_INFRASTRUCTURE": {
@@ -2070,7 +2064,6 @@
       "drawerDescription": "获取技术电网互联研究、碳核算基线与特许权文件。",
       "grantedTitle": "资料访问已授权",
       "grantedBody": "{concession} 的技术申报文件已解锁。请下载加密 PPA 简报或前往能源休息室。",
-      "doneCta": "完成",
       "blockLabel": "特许区块",
       "scopeLabel": "申请信息范围",
       "scopeOption1": "购电协议（PPA）框架",
@@ -2079,7 +2072,6 @@
       "complianceLabel": "监管合规保证",
       "complianceValue": "能源与矿产资源部已认证",
       "complianceNote": "所有特许区数据均与国家清洁能源目标及区域输电蓝图同步。",
-      "cancelCta": "取消",
       "confirmCta": "申请技术资料"
     },
     "MEDICAL_SYMPOSIUM": {
@@ -2117,9 +2109,9 @@
     "MEDIA_BROADCAST": {
       "heroBadge": "媒体、广播与专业 AV 技术展",
       "heroTitle": "虚拟制作舞台、SMPTE IP 广播与专业音频",
-      "heroDescription": "体验实时机内 VFX 虚拟制作 LED  volumes，评估未压缩 SMPTE ST 2110 IP 广播路由矩阵，并试听演唱会线阵列扩声系统。",
+      "heroDescription": "体验实时机内 VFX 虚拟制作 LED 影棚，评估未压缩 SMPTE ST 2110 IP 广播路由矩阵，并试听演唱会线阵列扩声系统。",
       "bookCta": "预订虚拟制作演示",
-      "accreditedNote": "已认证的 studio 导演、DIT 与广播工程师",
+      "accreditedNote": "已认证的 演播室导演、DIT 与广播工程师",
       "stagesBadge": "舞台与音频场馆",
       "stagesTitle": "精选 LED 舞台与音响场馆",
       "technicalSpecs": "技术规格",
@@ -2128,7 +2120,6 @@
       "drawerDescription": "与电影摄影机跟踪操作员和音响工程师预订互动动手演示时段。",
       "confirmedTitle": "制作演示已确认",
       "confirmedBody": "您对 {stage} 的预订已配置。请在时段开始前 10 分钟到舞台操作台报到。",
-      "doneCta": "完成",
       "studioLabel": "已选工作室 / 制作场馆",
       "specialtyLabel": "制作专长",
       "specialtyOption1": "机内视觉特效（ICVFX）虚拟制作",
@@ -2138,7 +2129,6 @@
       "accreditationLabel": "行业认证",
       "accreditationValue": "SMPTE / AES / BSC 会员验证",
       "sessionNote": "广播技术时段包含在专家工程师监督下的控制台动手操作。",
-      "cancelCta": "取消",
       "confirmCta": "确认动手体验通行证"
     },
     "SUPPLY_CHAIN_LOGISTICS": {
@@ -2155,7 +2145,6 @@
       "drawerDescription": "申请企业货运费率方案、AGV 仓储车队规格或温控药品时段。",
       "transmittedTitle": "RFP 招标已发送",
       "transmittedBody": "您对 {route} 的货运询价已安全送达承运物流团队。您可在 Logistics Hub Lounge C-04 桌领取官方费率卡。",
-      "doneCta": "完成",
       "targetLabel": "目标物流系统或货运通道",
       "volumeLabel": "货运或自动化规模",
       "volumeOption1": "整箱装载（FCL：20 英尺 / 40 英尺高柜）",
@@ -2165,7 +2154,6 @@
       "complianceLabel": "贸易合规",
       "complianceValue": "经认证经营者（AEO）标准",
       "complianceNote": "所有参展物流承运商均遵守国际海关安全认证与 WCO 安全框架协议。",
-      "cancelCta": "取消",
       "confirmCta": "提交费率询价"
     },
     "AEROSPACE_DEFENSE": {
@@ -2182,7 +2170,6 @@
       "drawerDescription": "核验受限飞行线停机坪访问与机密双边简报的安全证件。",
       "clearanceTitle": "安全许可已验证",
       "clearanceBody": "{asset} 的访问通行证已配置。请前往 C 号安全检查站接受飞行线停机坪护送。",
-      "doneCta": "完成",
       "assetLabel": "航空航天 / 国防资产",
       "credentialLabel": "代表团证件级别",
       "credentialOption1": "认证国防承包商（二级）",
@@ -2192,7 +2179,6 @@
       "securityLabel": "停机坪安全要求",
       "securityValue": "执行飞行线安全法规",
       "securityNote": "所有停机坪访客必须佩戴官方高可视证件，并在飞行线 4 号门出示带照片的身份证明。",
-      "cancelCta": "取消",
       "confirmCta": "验证证件"
     },
     "HOSPITALITY_TOURISM": {
@@ -2200,7 +2186,7 @@
       "heroTitle": "目的地展馆、特邀买家与酒店采购",
       "heroDescription": "通过预先安排的双边配对会议，连接国际旅行批发商、豪华度假村运营商、会议局与航空联盟。",
       "scheduleCta": "预约特邀买家时段",
-      "qualifiedNote": "已预审的出境旅行社与 corporate 买家",
+      "qualifiedNote": "已预审的出境旅行社与 企业买家",
       "showcasesBadge": "目的地展示",
       "showcasesTitle": "旗舰展馆与采购通道",
       "requestCta": "申请买家会面",
@@ -2208,11 +2194,8 @@
       "drawerDescription": "与官方目的地代表和酒店高管预约 20 分钟专属采购时段。",
       "requestedTitle": "买家会面已申请",
       "requestedBody": "您与 {pavilion} 的采购会议申请已记录，主办方已获取您的联系方式。",
-      "referenceLabel": "参考编号：{reference}",
-      "doneCta": "完成",
       "nameLabel": "姓名",
       "namePlaceholder": "例如：Alex Pratama",
-      "emailLabel": "联系邮箱",
       "pavilionLabel": "目的地 / 酒店展馆",
       "categoryLabel": "买家采购类别",
       "categoryOption1": "MICE 企业静修与奖励旅游",
@@ -2222,7 +2205,6 @@
       "credentialLabel": "特邀买家资格核查",
       "credentialValue": "已认证旅游行业专业人士",
       "credentialNote": "特邀买家会议仅限商业旅行社、企业采购负责人与活动主办方。",
-      "cancelCta": "取消",
       "submitCta": "确认会面",
       "sendingCta": "发送中..."
     },
@@ -2248,8 +2230,6 @@
       "drawerDescription": "与 {delegation} 代表团安排正式双边会晤",
       "recordedTitle": "会晤请求已记录",
       "recordedBody": "外交秘书处已收到您的双边备忘录与联系方式，并将直接回复。",
-      "referenceLabel": "参考编号：{reference}",
-      "emailLabel": "联系邮箱",
       "missionLabel": "目标主权使团",
       "ministryLabel": "申请部委 / 机构",
       "ministryPlaceholder": "例如：外交与贸易部",
@@ -2356,8 +2336,6 @@
       "drawerDescription": "为 {deal} 预订直接投资者会议套房",
       "requestedTitle": "交易室已申请",
       "requestedBody": "创始人/基金团队已收到您的请求与联系方式，并将直接回复。",
-      "referenceLabel": "参考编号：{reference}",
-      "emailLabel": "联系邮箱",
       "targetLabel": "目标机会",
       "fundLabel": "基金 / 机构名称",
       "fundPlaceholder": "例如：Apex Global Ventures",
@@ -2412,14 +2390,12 @@
       "drawerDescBroadcast": "向认证工业展商广播 RFQ",
       "rfqSubmittedTitle": "RFQ 提交成功",
       "rfqSubmittedBody": "您的技术规格询价已记录，展商已获取您的联系方式。",
-      "referenceLabel": "参考编号：{reference}",
       "targetLabel": "目标展商 / 机械",
       "targetDefault": "所有匹配的重型设备展商",
       "companyLabel": "公司名称",
       "companyPlaceholder": "例如：PT Industri Prima",
       "quantityLabel": "预计数量 / 单位",
       "quantityPlaceholder": "例如：5 台 / 年",
-      "emailLabel": "联系邮箱",
       "specsLabel": "技术规格 / RFQ 范围",
       "specsPlaceholder": "详细说明您的机械需求、精度公差、电压标准与预计交付时间...",
       "browseCtaOne": "浏览 1 个展位",
@@ -2429,6 +2405,12 @@
       "submitting": "正在发送…",
       "submitCta": "向展商发送询价",
       "filterAll": "全部行业"
+    },
+    "common": {
+      "doneCta": "完成",
+      "cancelCta": "取消",
+      "referenceLabel": "参考编号：{reference}",
+      "emailLabel": "联系邮箱"
     }
   }
 }

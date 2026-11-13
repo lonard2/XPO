@@ -97,6 +97,7 @@ export interface ArchetypeViewProps {
 
 export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize = "LARGE" }: ArchetypeViewProps) {
   const t = useTranslations("archetypeViews.INDUSTRIAL_B2B");
+  const tCommon = useTranslations("archetypeViews.common");
   const [rfqDrawerOpen, setRfqDrawerOpen] = React.useState(false);
   const [selectedBooth, setSelectedBooth] = React.useState<string | null>(null);
   const [rfqSubmitted, setRfqSubmitted] = React.useState(false);
@@ -488,7 +489,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
               {t("rfqSubmittedBody")}
               {rfqReference && (
                 <span className="block mt-1 font-mono">
-                  {t("referenceLabel", { reference: rfqReference })}
+                  {tCommon("referenceLabel", { reference: rfqReference })}
                 </span>
               )}
             </p>
@@ -528,7 +529,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
               </div>
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-foreground">{t("emailLabel")} *</label>
+              <label className="text-xs font-semibold text-foreground">{tCommon("emailLabel")} *</label>
               <input
                 required
                 name="email"

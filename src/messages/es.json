@@ -1988,7 +1988,6 @@
       "drawerDescription": "Envíe briefs de formulación de marca propia o solicite precios mayoristas por cantidad mínima de pedido (MOQ).",
       "dispatchedTitle": "Consulta OEM Enviada",
       "dispatchedBody": "Su brief de fabricación para {brand} se ha transmitido de forma segura. El organizador se pondrá en contacto con los siguientes pasos.",
-      "doneCta": "Hecho",
       "brandLabel": "Casa de Diseño / Fabricante OEM",
       "channelLabel": "Canal de Compras",
       "channelOption1": "Fabricación por Contrato de Cosmética de Marca Propia",
@@ -1998,7 +1997,6 @@
       "moqOption1": "Lote Pequeño / Piloto (500 - 2,000 unidades)",
       "moqOption2": "Producción Comercial (5,000 - 25,000 unidades)",
       "moqOption3": "Distribución Minorista Empresarial (50,000+ unidades)",
-      "cancelCta": "Cancelar",
       "submitBriefCta": "Enviar Brief"
     },
     "AUTOMOTIVE_MOBILITY": {
@@ -2015,7 +2013,6 @@
       "drawerDescription": "Reserve una prueba de conducción en circuito cerrado o una sesión de acompañamiento con pilotos de fábrica acreditados.",
       "reservedTitle": "Sesión de Pista Reservada",
       "reservedBody": "Su reserva para {vehicle} ha sido emitida. Muestre su pase digital y licencia de conducir en la Puerta 2 del Pit Lane.",
-      "doneCta": "Hecho",
       "vehicleLabel": "Vehículo Seleccionado",
       "sessionLabel": "Sesión de Pista Preferida",
       "sessionOption1": "Sesión de Slalom Matutina (10:30 - 11:30)",
@@ -2024,7 +2021,6 @@
       "licenseCertLabel": "Certificación de Licencia de Conducir",
       "licenseCertValue": "Se Requiere Licencia Nacional o Internacional Válida",
       "safetyNote": "Todos los conductores deben completar el briefing de seguridad estándar en la Sala de Briefing B del Paddock antes de entrar al circuito.",
-      "cancelCta": "Cancelar",
       "confirmCta": "Confirmar Reserva",
       "filterAll": "Todos",
       "powertrainHybrid": "Híbrido"
@@ -2044,7 +2040,6 @@
       "drawerDescription": "Reciba muestras físicas verificadas, informes de pruebas estructurales y declaraciones ambientales de producto (EPD).",
       "sampleTitle": "Pedido de Mensajería de Muestras Creado",
       "sampleBody": "Su solicitud de material físico para {material} se ha enviado al stand del fabricante. El seguimiento de entrega se enviará a su correo registrado.",
-      "doneCta": "Hecho",
       "materialLabel": "Especificación de Material Seleccionada",
       "accreditationLabel": "Acreditación de Arquitecto / Estudio",
       "accreditOption1": "Arquitecto Principal con Licencia (IAI / AIA / RIBA)",
@@ -2053,7 +2048,6 @@
       "accreditOption4": "Diseñador de Interiores / Planificador Espacial",
       "dispatchLabel": "Dirección de Envío o Recogida en la Feria",
       "dispatchDefault": "Recogida en el Sample Hub del Pabellón 1 de IndoBuildTech",
-      "cancelCta": "Cancelar",
       "confirmCta": "Confirmar Solicitud de Envío"
     },
     "ENERGY_INFRASTRUCTURE": {
@@ -2070,7 +2064,6 @@
       "drawerDescription": "Acceda a estudios técnicos de interconexión de red, bases de contabilidad de carbono y documentación de derechos de concesión.",
       "grantedTitle": "Acceso al Dossier Concedido",
       "grantedBody": "Los expedientes técnicos de {concession} se han desbloqueado. Descargue el brief PPA cifrado o visite el lounge energético.",
-      "doneCta": "Hecho",
       "blockLabel": "Bloque de Concesión",
       "scopeLabel": "Alcance de Información Solicitado",
       "scopeOption1": "Marco de Contrato de Compra de Energía (PPA)",
@@ -2079,7 +2072,6 @@
       "complianceLabel": "Garantía de Cumplimiento Normativo",
       "complianceValue": "Verificado por el Ministerio de Energía y Recursos Minerales",
       "complianceNote": "Todos los datos de concesión se sincronizan con los objetivos nacionales de energía limpia y los planos regionales de transmisión.",
-      "cancelCta": "Cancelar",
       "confirmCta": "Solicitar Dossier Técnico"
     },
     "MEDICAL_SYMPOSIUM": {
@@ -2128,7 +2120,6 @@
       "drawerDescription": "Reserve una sesión de demostración práctica e interactiva con operadores de tracking de cámara de cine e ingenieros de sonido.",
       "confirmedTitle": "Demo de Producción Confirmada",
       "confirmedBody": "Su reserva para {stage} ha sido aprovisionada. Preséntese en la Consola del Operador de Escenario 10 minutos antes del inicio.",
-      "doneCta": "Hecho",
       "studioLabel": "Estudio / Arena de Producción Seleccionado",
       "specialtyLabel": "Especialidad de Producción",
       "specialtyOption1": "Producción Virtual con Efectos Visuales en Cámara (ICVFX)",
@@ -2138,7 +2129,6 @@
       "accreditationLabel": "Acreditación de la Industria",
       "accreditationValue": "Verificación de Miembro SMPTE / AES / BSC",
       "sessionNote": "Las sesiones de tecnología broadcast incluyen manipulación práctica de consolas bajo supervisión de ingenieros expertos.",
-      "cancelCta": "Cancelar",
       "confirmCta": "Confirmar Pase Práctico"
     },
     "SUPPLY_CHAIN_LOGISTICS": {
@@ -2155,7 +2145,6 @@
       "drawerDescription": "Solicite propuestas de tarifas de carga empresarial, especificaciones de flotas AGV de almacén o franjas farmacéuticas con temperatura controlada.",
       "transmittedTitle": "Licitación RFP Transmitida",
       "transmittedBody": "Su consulta de carga para {route} se ha entregado de forma segura al equipo logístico del transportista. Puede recoger la tarjeta de tarifas oficial en la Mesa C-04 del Logistics Hub Lounge.",
-      "doneCta": "Hecho",
       "targetLabel": "Sistema Logístico o Corredor de Carga Objetivo",
       "volumeLabel": "Volumen de Envío o Automatización",
       "volumeOption1": "Contenedor Completo (FCL: 20ft / 40ft High Cube)",
@@ -2165,7 +2154,6 @@
       "complianceLabel": "Cumplimiento Comercial",
       "complianceValue": "Estándares de Operador Económico Autorizado (AEO)",
       "complianceNote": "Todos los transportistas logísticos participantes cumplen con las acreditaciones internacionales de seguridad aduanera y los protocolos del marco seguro de la OMA.",
-      "cancelCta": "Cancelar",
       "confirmCta": "Enviar Consulta de Tarifa"
     },
     "AEROSPACE_DEFENSE": {
@@ -2182,7 +2170,6 @@
       "drawerDescription": "Verifique credenciales de seguridad para acceso restringido a la plataforma de línea de vuelo y briefings bilaterales clasificados.",
       "clearanceTitle": "Autorización de Seguridad Verificada",
       "clearanceBody": "El pase de acceso para {asset} ha sido aprovisionado. Diríjase al Punto de Control de Seguridad Puerta C para el Escoltaje en Plataforma de Línea de Vuelo.",
-      "doneCta": "Hecho",
       "assetLabel": "Activo Aeroespacial / de Defensa",
       "credentialLabel": "Nivel de Credencial de la Delegación",
       "credentialOption1": "Contratista de Defensa Acreditado (Nivel 2)",
@@ -2192,7 +2179,6 @@
       "securityLabel": "Requisito de Seguridad en Plataforma",
       "securityValue": "Normas de Seguridad de Línea de Vuelo Aplicadas",
       "securityNote": "Todos los visitantes de plataforma deben llevar credenciales oficiales de alta visibilidad y presentar identificación fotográfica en la Puerta 4 de la Línea de Vuelo.",
-      "cancelCta": "Cancelar",
       "confirmCta": "Validar Credenciales"
     },
     "HOSPITALITY_TOURISM": {
@@ -2208,11 +2194,8 @@
       "drawerDescription": "Reserve una sesión de compras dedicada de 20 minutos con delegados oficiales de destino y ejecutivos hoteleros.",
       "requestedTitle": "Cita con Comprador Solicitada",
       "requestedBody": "Su solicitud de reunión de compras con {pavilion} ha quedado registrada y el organizador tiene sus datos de contacto.",
-      "referenceLabel": "Referencia: {reference}",
-      "doneCta": "Hecho",
       "nameLabel": "Nombre Completo",
       "namePlaceholder": "p. ej., Alex Pratama",
-      "emailLabel": "Email de Contacto",
       "pavilionLabel": "Pabellón de Destino / Hospitalidad",
       "categoryLabel": "Categoría de Compras del Comprador",
       "categoryOption1": "Retiros Corporativos MICE y Viajes de Incentivo",
@@ -2222,7 +2205,6 @@
       "credentialLabel": "Verificación de Credencial de Comprador Invitado",
       "credentialValue": "Profesional del Sector Viajes Verificado",
       "credentialNote": "Las reuniones de compradores invitados están estrictamente reservadas a agencias de viajes comerciales, jefes de compras corporativas y organizadores de eventos.",
-      "cancelCta": "Cancelar",
       "submitCta": "Confirmar Cita",
       "sendingCta": "Enviando..."
     },
@@ -2248,8 +2230,6 @@
       "drawerDescription": "Programación formal de audiencia bilateral con la delegación de {delegation}",
       "recordedTitle": "Solicitud de Audiencia Registrada",
       "recordedBody": "La secretaría diplomática tiene su memorando bilateral y datos de contacto, y responderá directamente.",
-      "referenceLabel": "Referencia: {reference}",
-      "emailLabel": "Email de Contacto",
       "missionLabel": "Misión Soberana Objetivo",
       "ministryLabel": "Ministerio / Institución Solicitante",
       "ministryPlaceholder": "p. ej., Ministerio de Asuntos Exteriores y Comercio",
@@ -2356,8 +2336,6 @@
       "drawerDescription": "Reserva de suite de reunión directa con inversores para {deal}",
       "requestedTitle": "Sala de Operaciones Solicitada",
       "requestedBody": "El equipo fundador/fondo tiene su solicitud y datos de contacto, y responderá directamente.",
-      "referenceLabel": "Referencia: {reference}",
-      "emailLabel": "Email de Contacto",
       "targetLabel": "Oportunidad Objetivo",
       "fundLabel": "Nombre del Fondo / Institución",
       "fundPlaceholder": "p. ej., Apex Global Ventures",
@@ -2412,14 +2390,12 @@
       "drawerDescBroadcast": "Difundir RFQ a expositores industriales verificados",
       "rfqSubmittedTitle": "RFQ Enviado con Éxito",
       "rfqSubmittedBody": "Su consulta de especificaciones técnicas está registrada y el expositor tiene sus datos de contacto.",
-      "referenceLabel": "Referencia: {reference}",
       "targetLabel": "Expositor / Máquina Objetivo",
       "targetDefault": "Todos los Expositores de Equipos Pesados Coincidentes",
       "companyLabel": "Nombre de la Empresa",
       "companyPlaceholder": "p. ej., PT Industri Prima",
       "quantityLabel": "Cantidad Estimada / Unidades",
       "quantityPlaceholder": "p. ej., 5 unidades / año",
-      "emailLabel": "Email de Contacto",
       "specsLabel": "Especificaciones Técnicas / Alcance del RFQ",
       "specsPlaceholder": "Detalle sus requisitos de maquinaria, tolerancia de precisión, estándares de voltaje y plazo de entrega previsto...",
       "browseCtaOne": "Explorar 1 Stand de Expositor",
@@ -2429,6 +2405,12 @@
       "submitting": "Transmitiendo…",
       "submitCta": "Enviar RFQ al Expositor",
       "filterAll": "Todas las Industrias"
+    },
+    "common": {
+      "doneCta": "Hecho",
+      "cancelCta": "Cancelar",
+      "referenceLabel": "Referencia: {reference}",
+      "emailLabel": "Email de Contacto"
     }
   }
 }

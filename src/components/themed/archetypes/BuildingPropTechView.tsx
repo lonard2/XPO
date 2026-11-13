@@ -25,6 +25,7 @@ import { type ArchetypeViewProps } from "./IndustrialB2BView";
 
 export function BuildingPropTechView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
   const t = useTranslations("archetypeViews.BUILDING_PROPTECH");
+  const tCommon = useTranslations("archetypeViews.common");
   const [sampleDrawerOpen, setSampleDrawerOpen] = React.useState(false);
   const [selectedMaterial, setSelectedMaterial] = React.useState<string | null>(null);
   const [sampleRequested, setSampleRequested] = React.useState(false);
@@ -204,7 +205,7 @@ export function BuildingPropTechView({ event, locale = "en", onSelectTier }: Arc
                 }}
                 className="mt-4"
               >
-                {t("doneCta")}
+                {tCommon("doneCta")}
               </Button>
             </div>
           ) : (
@@ -256,7 +257,7 @@ export function BuildingPropTechView({ event, locale = "en", onSelectTier }: Arc
                   variant="outline"
                   onClick={() => setSampleDrawerOpen(false)}
                 >
-                  {t("cancelCta")}
+                  {tCommon("cancelCta")}
                 </Button>
                 <Button
                   type="submit"

@@ -1988,7 +1988,6 @@
       "drawerDescription": "Submit private-label formulation briefs or request minimum order quantity (MOQ) wholesale pricing.",
       "dispatchedTitle": "OEM Inquiry Dispatched",
       "dispatchedBody": "Your manufacturing brief for {brand} has been securely transmitted. The organizer will follow up with next steps.",
-      "doneCta": "Done",
       "brandLabel": "Design House / OEM Manufacturer",
       "channelLabel": "Procurement Channel",
       "channelOption1": "Private Label Cosmetics Contract Manufacturing",
@@ -1998,7 +1997,6 @@
       "moqOption1": "Small Batch / Pilot (500 - 2,000 units)",
       "moqOption2": "Commercial Production (5,000 - 25,000 units)",
       "moqOption3": "Enterprise Retail Distribution (50,000+ units)",
-      "cancelCta": "Cancel",
       "submitBriefCta": "Submit Brief"
     },
     "AUTOMOTIVE_MOBILITY": {
@@ -2015,7 +2013,6 @@
       "drawerDescription": "Reserve a closed-circuit demo drive or ride-along session with accredited factory drivers.",
       "reservedTitle": "Track Session Reserved",
       "reservedBody": "Your reservation for {vehicle} has been issued. Present your digital pass and driver license at Pit Lane Gate 2.",
-      "doneCta": "Done",
       "vehicleLabel": "Selected Vehicle",
       "sessionLabel": "Preferred Track Session",
       "sessionOption1": "Morning Slalom Track Session (10:30 - 11:30)",
@@ -2024,7 +2021,6 @@
       "licenseCertLabel": "Driver License Certification",
       "licenseCertValue": "Valid National or International Driver License Required",
       "safetyNote": "All drivers must complete the standard safety briefing at Paddock Briefing Room B prior to circuit entry.",
-      "cancelCta": "Cancel",
       "confirmCta": "Confirm Reservation",
       "filterAll": "All",
       "powertrainHybrid": "Hybrid"
@@ -2044,7 +2040,6 @@
       "drawerDescription": "Receive verified physical sample swatches, structural test reports, and environmental product declarations (EPD).",
       "sampleTitle": "Sample Courier Order Created",
       "sampleBody": "Your physical material request for {material} has been dispatched to the manufacturer booth. Delivery tracking will be delivered to your registered email.",
-      "doneCta": "Done",
       "materialLabel": "Selected Material Specification",
       "accreditationLabel": "Architect / Studio Accreditation",
       "accreditOption1": "Licensed Principal Architect (IAI / AIA / RIBA)",
@@ -2053,7 +2048,6 @@
       "accreditOption4": "Interior Designer / Spatial Planner",
       "dispatchLabel": "Dispatch Address or Exhibition Pick-up",
       "dispatchDefault": "Pick up at IndoBuildTech Exhibition Hall 1 Sample Hub",
-      "cancelCta": "Cancel",
       "confirmCta": "Confirm Dispatch Request"
     },
     "ENERGY_INFRASTRUCTURE": {
@@ -2070,7 +2064,6 @@
       "drawerDescription": "Access technical grid interconnect studies, carbon accounting baselines, and concession rights documentation.",
       "grantedTitle": "Dossier Access Granted",
       "grantedBody": "Technical filings for {concession} have been unlocked. Download the encrypted PPA brief or visit the energy lounge.",
-      "doneCta": "Done",
       "blockLabel": "Concession Block",
       "scopeLabel": "Requested Information Scope",
       "scopeOption1": "Power Purchase Agreement (PPA) Framework",
@@ -2079,7 +2072,6 @@
       "complianceLabel": "Regulatory Compliance Assurance",
       "complianceValue": "Ministry of Energy & Mineral Resources Verified",
       "complianceNote": "All concession data is synchronized with national clean energy targets and regional transmission blueprints.",
-      "cancelCta": "Cancel",
       "confirmCta": "Request Technical Dossier"
     },
     "MEDICAL_SYMPOSIUM": {
@@ -2128,7 +2120,6 @@
       "drawerDescription": "Reserve an interactive hands-on demo session with cinema camera tracking operators and sound engineers.",
       "confirmedTitle": "Production Demo Confirmed",
       "confirmedBody": "Your reservation for {stage} has been provisioned. Report to Stage Operator Console 10 mins before slot start.",
-      "doneCta": "Done",
       "studioLabel": "Selected Studio / Production Arena",
       "specialtyLabel": "Production Specialty",
       "specialtyOption1": "In-Camera Visual Effects (ICVFX) Virtual Production",
@@ -2138,7 +2129,6 @@
       "accreditationLabel": "Industry Accreditation",
       "accreditationValue": "SMPTE / AES / BSC Member Verification",
       "sessionNote": "Broadcast tech sessions feature hands-on console manipulation under expert engineer supervision.",
-      "cancelCta": "Cancel",
       "confirmCta": "Confirm Hands-On Pass"
     },
     "SUPPLY_CHAIN_LOGISTICS": {
@@ -2155,7 +2145,6 @@
       "drawerDescription": "Request enterprise freight tariff proposals, AGV warehouse fleet specs, or temperature-controlled pharma slots.",
       "transmittedTitle": "RFP Tender Transmitted",
       "transmittedBody": "Your freight inquiry for {route} has been securely delivered to the carrier logistics team. You can pick up the official rate card at Logistics Hub Lounge Table C-04.",
-      "doneCta": "Done",
       "targetLabel": "Target Logistics System or Freight Corridor",
       "volumeLabel": "Shipment or Automation Volume",
       "volumeOption1": "Full Container Load (FCL: 20ft / 40ft High Cube)",
@@ -2165,7 +2154,6 @@
       "complianceLabel": "Trade Compliance",
       "complianceValue": "Authorized Economic Operator (AEO) Standards",
       "complianceNote": "All participating logistics carriers adhere to international customs security accreditation and WCO safe framework protocols.",
-      "cancelCta": "Cancel",
       "confirmCta": "Submit Rate Inquiry"
     },
     "AEROSPACE_DEFENSE": {
@@ -2182,7 +2170,6 @@
       "drawerDescription": "Verify security credentials for restricted flight line tarmac access and classified bilateral briefings.",
       "clearanceTitle": "Security Clearance Verified",
       "clearanceBody": "Access pass for {asset} has been provisioned. Proceed to Security Checkpoint Gate C for Flight Line Tarmac Escort.",
-      "doneCta": "Done",
       "assetLabel": "Aerospace / Defense Asset",
       "credentialLabel": "Delegation Credential Level",
       "credentialOption1": "Accredited Defense Contractor (Level 2)",
@@ -2192,7 +2179,6 @@
       "securityLabel": "Tarmac Security Requirement",
       "securityValue": "Flight Line Safety Regulations Enforced",
       "securityNote": "All tarmac visitors must wear official high-visibility credentials and present photographic identification at Flight Line Gate 4.",
-      "cancelCta": "Cancel",
       "confirmCta": "Validate Credentials"
     },
     "HOSPITALITY_TOURISM": {
@@ -2208,11 +2194,8 @@
       "drawerDescription": "Book a dedicated 20-minute procurement session with official destination delegates and hotelier executives.",
       "requestedTitle": "Buyer Appointment Requested",
       "requestedBody": "Your procurement meeting request with {pavilion} is recorded and the organizer has your contact details.",
-      "referenceLabel": "Reference: {reference}",
-      "doneCta": "Done",
       "nameLabel": "Full Name",
       "namePlaceholder": "e.g. Alex Pratama",
-      "emailLabel": "Contact Email",
       "pavilionLabel": "Destination / Hospitality Pavilion",
       "categoryLabel": "Buyer Procurement Category",
       "categoryOption1": "MICE Corporate Retreats & Incentive Trips",
@@ -2222,7 +2205,6 @@
       "credentialLabel": "Hosted Buyer Credential Check",
       "credentialValue": "Verified Travel Industry Professional",
       "credentialNote": "Hosted buyer meetings are strictly reserved for commercial travel agencies, corporate procurement heads, and event organizers.",
-      "cancelCta": "Cancel",
       "submitCta": "Confirm Appointment",
       "sendingCta": "Sending..."
     },
@@ -2248,8 +2230,6 @@
       "drawerDescription": "Formal bilateral audience scheduling with the delegation of {delegation}",
       "recordedTitle": "Audience Request Recorded",
       "recordedBody": "The diplomatic secretariat has your bilateral memorandum and contact details, and will respond directly.",
-      "referenceLabel": "Reference: {reference}",
-      "emailLabel": "Contact Email",
       "missionLabel": "Target Sovereign Mission",
       "ministryLabel": "Requesting Ministry / Institution",
       "ministryPlaceholder": "e.g. Ministry of Foreign Affairs & Trade",
@@ -2356,8 +2336,6 @@
       "drawerDescription": "Direct investor meeting suite booking for {deal}",
       "requestedTitle": "Deal Room Requested",
       "requestedBody": "The founder/fund team has your request and contact details, and will respond directly.",
-      "referenceLabel": "Reference: {reference}",
-      "emailLabel": "Contact Email",
       "targetLabel": "Target Opportunity",
       "fundLabel": "Fund / Institution Name",
       "fundPlaceholder": "e.g. Apex Global Ventures",
@@ -2412,14 +2390,12 @@
       "drawerDescBroadcast": "Broadcast RFQ to verified industrial exhibitors",
       "rfqSubmittedTitle": "RFQ Submitted Successfully",
       "rfqSubmittedBody": "Your technical specification inquiry is recorded and the exhibitor has your contact details.",
-      "referenceLabel": "Reference: {reference}",
       "targetLabel": "Target Exhibitor / Machine",
       "targetDefault": "All Matching Heavy Equipment Exhibitors",
       "companyLabel": "Company Name",
       "companyPlaceholder": "e.g. PT Industri Prima",
       "quantityLabel": "Estimated Quantity / Units",
       "quantityPlaceholder": "e.g. 5 Units / Annual",
-      "emailLabel": "Contact Email",
       "specsLabel": "Technical Specifications / RFQ Scope",
       "specsPlaceholder": "Detail your machinery requirements, precision tolerance, voltage standards, and expected delivery timeline...",
       "browseCtaOne": "Browse 1 Exhibitor Booth",
@@ -2429,6 +2405,12 @@
       "submitting": "Transmitting…",
       "submitCta": "Transmit RFQ to Exhibitor",
       "filterAll": "All Industries"
+    },
+    "common": {
+      "doneCta": "Done",
+      "cancelCta": "Cancel",
+      "referenceLabel": "Reference: {reference}",
+      "emailLabel": "Contact Email"
     }
   }
 }

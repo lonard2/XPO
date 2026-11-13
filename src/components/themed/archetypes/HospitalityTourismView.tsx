@@ -26,6 +26,7 @@ import { submitMeetingRequest } from "@/lib/meetings/client";
 
 export function HospitalityTourismView({ event, locale = "en", onSelectTier, pageSize = "LARGE" }: ArchetypeViewProps) {
   const t = useTranslations("archetypeViews.HOSPITALITY_TOURISM");
+  const tCommon = useTranslations("archetypeViews.common");
   const [buyerDrawerOpen, setBuyerDrawerOpen] = React.useState(false);
   const [selectedPavilion, setSelectedPavilion] = React.useState<string | null>(null);
   const [appointmentBooked, setAppointmentBooked] = React.useState(false);
@@ -207,7 +208,7 @@ export function HospitalityTourismView({ event, locale = "en", onSelectTier, pag
                   {t("requestedBody", { pavilion: selectedPavilion ?? "" })}
                   {appointmentReference && (
                     <span className="block mt-1 font-mono">
-                      {t("referenceLabel", { reference: appointmentReference })}
+                      {tCommon("referenceLabel", { reference: appointmentReference })}
                     </span>
                   )}
                 </p>
@@ -219,7 +220,7 @@ export function HospitalityTourismView({ event, locale = "en", onSelectTier, pag
                 }}
                 className="mt-4"
               >
-                {t("doneCta")}
+                {tCommon("doneCta")}
               </Button>
             </div>
           ) : (
@@ -240,7 +241,7 @@ export function HospitalityTourismView({ event, locale = "en", onSelectTier, pag
                 </div>
                 <div>
                   <label className="text-xs font-semibold text-foreground block mb-1.5">
-                    {t("emailLabel")} *
+                    {tCommon("emailLabel")} *
                   </label>
                   <input
                     required
@@ -300,7 +301,7 @@ export function HospitalityTourismView({ event, locale = "en", onSelectTier, pag
                   variant="outline"
                   onClick={() => setBuyerDrawerOpen(false)}
                 >
-                  {t("cancelCta")}
+                  {tCommon("cancelCta")}
                 </Button>
                 <Button
                   type="submit"

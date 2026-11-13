@@ -26,6 +26,7 @@ import { ShowcaseProgramGrid } from "@/components/themed/ShowcaseProgramGrid";
 
 export function FashionRetailView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
   const t = useTranslations("archetypeViews.FASHION_RETAIL");
+  const tCommon = useTranslations("archetypeViews.common");
   const [oemDrawerOpen, setOemDrawerOpen] = React.useState(false);
   const [selectedBrand, setSelectedBrand] = React.useState<string | null>(null);
   const [rfqSubmitted, setRfqSubmitted] = React.useState(false);
@@ -120,7 +121,7 @@ export function FashionRetailView({ event, locale = "en", onSelectTier }: Archet
                 }}
                 className="mt-4"
               >
-                {t("doneCta")}
+                {tCommon("doneCta")}
               </Button>
             </div>
           ) : (
@@ -171,7 +172,7 @@ export function FashionRetailView({ event, locale = "en", onSelectTier }: Archet
                   variant="outline"
                   onClick={() => setOemDrawerOpen(false)}
                 >
-                  {t("cancelCta")}
+                  {tCommon("cancelCta")}
                 </Button>
                 <Button
                   type="submit"

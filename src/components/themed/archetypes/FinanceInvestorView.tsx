@@ -32,6 +32,7 @@ import { ShowcaseProgramGrid } from "@/components/themed/ShowcaseProgramGrid";
 
 export function FinanceInvestorView({ event, locale = "en", onSelectTier, pageSize = "LARGE" }: ArchetypeViewProps) {
   const t = useTranslations("archetypeViews.FINANCE_INVESTOR");
+  const tCommon = useTranslations("archetypeViews.common");
   const [dealRoomOpen, setDealRoomOpen] = React.useState(false);
   const [selectedDeal, setSelectedDeal] = React.useState<string | null>(null);
   const [bookingConfirmed, setBookingConfirmed] = React.useState(false);
@@ -279,7 +280,7 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier, pageSi
               {t("requestedBody")}
               {bookingReference && (
                 <span className="block mt-1 font-mono">
-                  {t("referenceLabel", { reference: bookingReference })}
+                  {tCommon("referenceLabel", { reference: bookingReference })}
                 </span>
               )}
             </p>
@@ -287,7 +288,7 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier, pageSi
         ) : (
           <form onSubmit={handleDealSubmit} className="space-y-4 text-xs">
             <div className="space-y-1">
-              <label className="font-semibold text-foreground">{t("emailLabel")} *</label>
+              <label className="font-semibold text-foreground">{tCommon("emailLabel")} *</label>
               <input
                 required
                 name="email"

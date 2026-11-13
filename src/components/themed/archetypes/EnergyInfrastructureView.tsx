@@ -27,6 +27,7 @@ import { type ArchetypeViewProps } from "./IndustrialB2BView";
 
 export function EnergyInfrastructureView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
   const t = useTranslations("archetypeViews.ENERGY_INFRASTRUCTURE");
+  const tCommon = useTranslations("archetypeViews.common");
   const [auditDrawerOpen, setAuditDrawerOpen] = React.useState(false);
   const [selectedConcession, setSelectedConcession] = React.useState<string | null>(null);
   const [auditRequested, setAuditRequested] = React.useState(false);
@@ -197,7 +198,7 @@ export function EnergyInfrastructureView({ event, locale = "en", onSelectTier }:
                 }}
                 className="mt-4"
               >
-                {t("doneCta")}
+                {tCommon("doneCta")}
               </Button>
             </div>
           ) : (
@@ -250,7 +251,7 @@ export function EnergyInfrastructureView({ event, locale = "en", onSelectTier }:
                   variant="outline"
                   onClick={() => setAuditDrawerOpen(false)}
                 >
-                  {t("cancelCta")}
+                  {tCommon("cancelCta")}
                 </Button>
                 <Button
                   type="submit"

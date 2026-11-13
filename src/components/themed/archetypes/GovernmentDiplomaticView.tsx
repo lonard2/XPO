@@ -27,6 +27,7 @@ import { submitMeetingRequest } from "@/lib/meetings/client";
 
 export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, pageSize = "LARGE" }: ArchetypeViewProps) {
   const t = useTranslations("archetypeViews.GOVERNMENT_DIPLOMATIC");
+  const tCommon = useTranslations("archetypeViews.common");
   const [bilateralDrawerOpen, setBilateralDrawerOpen] = React.useState(false);
   const [selectedDelegation, setSelectedDelegation] = React.useState<string | null>(null);
   const [scheduled, setScheduled] = React.useState(false);
@@ -320,7 +321,7 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, p
               {t("recordedBody")}
               {scheduleReference && (
                 <span className="block mt-1 font-mono">
-                  {t("referenceLabel", { reference: scheduleReference })}
+                  {tCommon("referenceLabel", { reference: scheduleReference })}
                 </span>
               )}
             </p>
@@ -328,7 +329,7 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, p
         ) : (
           <form onSubmit={handleScheduleSubmit} className="space-y-4 text-xs font-sans">
             <div className="space-y-1">
-              <label className="font-semibold text-foreground">{t("emailLabel")} *</label>
+              <label className="font-semibold text-foreground">{tCommon("emailLabel")} *</label>
               <input
                 required
                 name="email"

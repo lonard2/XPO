@@ -26,6 +26,7 @@ import { type ArchetypeViewProps } from "./IndustrialB2BView";
 
 export function MediaBroadcastView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
   const t = useTranslations("archetypeViews.MEDIA_BROADCAST");
+  const tCommon = useTranslations("archetypeViews.common");
   const [stageDrawerOpen, setStageDrawerOpen] = React.useState(false);
   const [selectedStage, setSelectedStage] = React.useState<string | null>(null);
   const [stageReserved, setStageReserved] = React.useState(false);
@@ -195,7 +196,7 @@ export function MediaBroadcastView({ event, locale = "en", onSelectTier }: Arche
                 }}
                 className="mt-4"
               >
-                {t("doneCta")}
+                {tCommon("doneCta")}
               </Button>
             </div>
           ) : (
@@ -249,7 +250,7 @@ export function MediaBroadcastView({ event, locale = "en", onSelectTier }: Arche
                   variant="outline"
                   onClick={() => setStageDrawerOpen(false)}
                 >
-                  {t("cancelCta")}
+                  {tCommon("cancelCta")}
                 </Button>
                 <Button
                   type="submit"
