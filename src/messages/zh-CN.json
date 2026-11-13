@@ -1680,7 +1680,17 @@
     "updatesPageDesc": "发布此活动的时间线动态。草稿将保留在此处，直到编辑批准其用于活动页面和首页栏目。",
     "dismissNotificationAria": "关闭通知",
     "hidWedgeActive": "HID 读卡器已启用",
-    "meetingWherePlaceholder": "A1 展厅，B-12 桌"
+    "meetingWherePlaceholder": "A1 展厅，B-12 桌",
+    "wizardProgressLabel": "进度：",
+    "wizardProgressValue": "已完成 {percent}%",
+    "wizardDraftTitle": "检测到未保存的活动草稿。",
+    "wizardDraftQuestion": "是否恢复之前的活动配置？",
+    "wizardDraftResume": "恢复草稿",
+    "wizardDraftDiscard": "放弃",
+    "wizardDiscardTitle": "放弃未保存的活动草稿？",
+    "wizardDiscardBody": "确定要放弃已存储的活动草稿吗？所有已配置的标题、场地、展厅分配配额和票务层级将被永久删除。此操作无法撤销。",
+    "wizardDiscardConfirm": "放弃草稿",
+    "wizardStepsAria": "向导步骤"
   },
   "admin": {
     "dashboardTitle": "管理统括中心",

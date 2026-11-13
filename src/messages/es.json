@@ -1680,7 +1680,17 @@
     "updatesPageDesc": "Publique actualizaciones de la cronología de este evento. Los borradores permanecen aquí hasta que la edición los apruebe para la página del evento y la sección de inicio.",
     "dismissNotificationAria": "Descartar notificación",
     "hidWedgeActive": "HID Wedge Activo",
-    "meetingWherePlaceholder": "Sala A1, Mesa B-12"
+    "meetingWherePlaceholder": "Sala A1, Mesa B-12",
+    "wizardProgressLabel": "Progreso:",
+    "wizardProgressValue": "{percent}% Completado",
+    "wizardDraftTitle": "Se detectó un borrador de evento sin guardar.",
+    "wizardDraftQuestion": "¿Desea reanudar la configuración anterior del evento?",
+    "wizardDraftResume": "Reanudar Borrador",
+    "wizardDraftDiscard": "Descartar",
+    "wizardDiscardTitle": "¿Descartar Borrador de Evento Sin Guardar?",
+    "wizardDiscardBody": "¿Está seguro de que desea descartar el borrador guardado del evento? El título, el recinto, las cuotas de asignación de salas y los niveles de entradas configurados se eliminarán de forma permanente. Esta acción no se puede revertir.",
+    "wizardDiscardConfirm": "Descartar Borrador",
+    "wizardStepsAria": "Pasos del Asistente"
   },
   "admin": {
     "dashboardTitle": "Gobernanza y Agregador de Administración",

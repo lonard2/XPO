@@ -1680,7 +1680,17 @@
     "updatesPageDesc": "Post timeline updates for this event. Drafts stay here until editorial approves them for the event page and homepage rail.",
     "dismissNotificationAria": "Dismiss notification",
     "hidWedgeActive": "HID Wedge Active",
-    "meetingWherePlaceholder": "Hall A1, Table B-12"
+    "meetingWherePlaceholder": "Hall A1, Table B-12",
+    "wizardProgressLabel": "Progress:",
+    "wizardProgressValue": "{percent}% Completed",
+    "wizardDraftTitle": "Unsaved Event Draft Detected.",
+    "wizardDraftQuestion": "Would you like to resume your previous event configuration?",
+    "wizardDraftResume": "Resume Draft",
+    "wizardDraftDiscard": "Discard",
+    "wizardDiscardTitle": "Discard Unsaved Event Draft?",
+    "wizardDiscardBody": "Are you sure you want to discard your stored event draft? All previously configured title, venue, hall allocation quotas, and ticket tiers will be permanently removed. This action cannot be reversed.",
+    "wizardDiscardConfirm": "Discard Draft",
+    "wizardStepsAria": "Wizard Steps"
   },
   "admin": {
     "dashboardTitle": "Governance & Admin Agregator",

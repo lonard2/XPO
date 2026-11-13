@@ -1680,7 +1680,17 @@
     "updatesPageDesc": "Veröffentlichen Sie Timeline-Updates für diese Veranstaltung. Entwürfe bleiben hier, bis die Redaktion sie für die Veranstaltungsseite und die Startseitenleiste freigibt.",
     "dismissNotificationAria": "Benachrichtigung schließen",
     "hidWedgeActive": "HID-Wedge aktiv",
-    "meetingWherePlaceholder": "Halle A1, Tisch B-12"
+    "meetingWherePlaceholder": "Halle A1, Tisch B-12",
+    "wizardProgressLabel": "Fortschritt:",
+    "wizardProgressValue": "{percent}% abgeschlossen",
+    "wizardDraftTitle": "Ungespeicherter Veranstaltungsentwurf erkannt.",
+    "wizardDraftQuestion": "Möchten Sie Ihre vorherige Veranstaltungskonfiguration fortsetzen?",
+    "wizardDraftResume": "Entwurf fortsetzen",
+    "wizardDraftDiscard": "Verwerfen",
+    "wizardDiscardTitle": "Ungespeicherten Veranstaltungsentwurf verwerfen?",
+    "wizardDiscardBody": "Möchten Sie Ihren gespeicherten Veranstaltungsentwurf wirklich verwerfen? Alle bisher konfigurierten Titel, Veranstaltungsorte, Hallenkontingente und Ticketstufen werden dauerhaft entfernt. Diese Aktion kann nicht rückgängig gemacht werden.",
+    "wizardDiscardConfirm": "Entwurf verwerfen",
+    "wizardStepsAria": "Assistentenschritte"
   },
   "admin": {
     "dashboardTitle": "Admin-Governance & Aggregator",

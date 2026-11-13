@@ -1680,7 +1680,17 @@
     "updatesPageDesc": "Terbitkan pembaruan linimasa untuk acara ini. Draf tetap di sini hingga editor menyetujuinya untuk halaman acara dan rel beranda.",
     "dismissNotificationAria": "Tutup notifikasi",
     "hidWedgeActive": "HID Wedge Aktif",
-    "meetingWherePlaceholder": "Hall A1, Meja B-12"
+    "meetingWherePlaceholder": "Hall A1, Meja B-12",
+    "wizardProgressLabel": "Kemajuan:",
+    "wizardProgressValue": "{percent}% Selesai",
+    "wizardDraftTitle": "Draf Acara Belum Disimpan Terdeteksi.",
+    "wizardDraftQuestion": "Apakah Anda ingin melanjutkan konfigurasi acara sebelumnya?",
+    "wizardDraftResume": "Lanjutkan Draf",
+    "wizardDraftDiscard": "Buang",
+    "wizardDiscardTitle": "Buang Draf Acara Belum Disimpan?",
+    "wizardDiscardBody": "Apakah Anda yakin ingin membuang draf acara tersimpan? Semua judul, venue, kuota alokasi hall, dan tier tiket yang telah dikonfigurasi akan dihapus permanen. Tindakan ini tidak dapat dibatalkan.",
+    "wizardDiscardConfirm": "Buang Draf",
+    "wizardStepsAria": "Langkah Wizard"
   },
   "admin": {
     "dashboardTitle": "Tata Kelola & Agregator Admin",

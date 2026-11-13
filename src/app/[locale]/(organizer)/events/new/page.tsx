@@ -1099,8 +1099,10 @@ export default function NewEventWizardPage() {
 
         {/* Step Counter Pill */}
         <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/60 border border-border/60 text-xs">
-          <span className="text-muted-foreground font-medium">Progress:</span>
-          <span className="font-bold text-foreground">{Math.round((currentStep / 4) * 100)}% Completed</span>
+          <span className="text-muted-foreground font-medium">{tOrg("wizardProgressLabel")}</span>
+          <span className="font-bold text-foreground">
+            {tOrg("wizardProgressValue", { percent: Math.round((currentStep / 4) * 100) })}
+          </span>
         </div>
       </div>
 
@@ -1110,7 +1112,7 @@ export default function NewEventWizardPage() {
           <div className="flex items-center gap-2.5">
             <Save className="h-4 w-4 text-primary shrink-0" />
             <span>
-              <strong>Unsaved Event Draft Detected.</strong> Would you like to resume your previous event configuration?
+              <strong>{tOrg("wizardDraftTitle")}</strong> {tOrg("wizardDraftQuestion")}
             </span>
           </div>
           <div className="flex items-center gap-2 shrink-0">
@@ -1121,7 +1123,7 @@ export default function NewEventWizardPage() {
               className="min-h-[44px] px-4 text-xs gap-1.5 cursor-pointer font-semibold"
             >
               <RotateCcw className="h-3.5 w-3.5" />
-              <span>Resume Draft</span>
+              <span>{tOrg("wizardDraftResume")}</span>
             </Button>
             <Button
               size="sm"
@@ -1129,7 +1131,7 @@ export default function NewEventWizardPage() {
               onClick={handleDiscardDraft}
               className="min-h-[44px] px-3.5 text-xs text-muted-foreground hover:text-foreground cursor-pointer"
             >
-              Discard
+              {tOrg("wizardDraftDiscard")}
             </Button>
           </div>
         </div>
@@ -1139,12 +1141,12 @@ export default function NewEventWizardPage() {
       <Modal
         isOpen={showDiscardModal}
         onClose={() => setShowDiscardModal(false)}
-        title="Discard Unsaved Event Draft?"
+        title={tOrg("wizardDiscardTitle")}
         size="md"
       >
         <div className="space-y-4 pt-2">
           <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-            Are you sure you want to discard your stored event draft? All previously configured title, venue, hall allocation quotas, and ticket tiers will be permanently removed. This action cannot be reversed.
+            {tOrg("wizardDiscardBody")}
           </p>
           <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-border/60">
             <Button
@@ -1154,7 +1156,7 @@ export default function NewEventWizardPage() {
               onClick={() => setShowDiscardModal(false)}
               className="min-h-[44px] px-4 text-xs font-semibold cursor-pointer"
             >
-              Cancel
+              {tCom("cancel")}
             </Button>
             <Button
               type="button"
@@ -1164,7 +1166,7 @@ export default function NewEventWizardPage() {
               className="min-h-[44px] px-4 text-xs font-semibold cursor-pointer gap-1.5"
             >
               <Trash2 className="h-3.5 w-3.5" />
-              <span>Discard Draft</span>
+              <span>{tOrg("wizardDiscardConfirm")}</span>
             </Button>
           </div>
         </div>
@@ -1248,7 +1250,7 @@ export default function NewEventWizardPage() {
       </Modal>
 
       {/* STEP PROGRESS TRACKER BAR */}
-      <nav aria-label="Wizard Steps" className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3 border-b border-border/80 pb-5">
+      <nav aria-label={tOrg("wizardStepsAria")} className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3 border-b border-border/80 pb-5">
         {WIZARD_STEPS.map((s) => {
           const isCompleted = currentStep > s.step;
           const isCurrent = currentStep === s.step;

@@ -1680,7 +1680,17 @@
     "updatesPageDesc": "このイベントのタイムライン更新を投稿します。下書きは編集部がイベントページとホームページ枠に承認するまでここに残ります。",
     "dismissNotificationAria": "通知を閉じる",
     "hidWedgeActive": "HIDウェッジ有効",
-    "meetingWherePlaceholder": "ホールA1、テーブルB-12"
+    "meetingWherePlaceholder": "ホールA1、テーブルB-12",
+    "wizardProgressLabel": "進捗:",
+    "wizardProgressValue": "{percent}% 完了",
+    "wizardDraftTitle": "未保存のイベント下書きを検出しました。",
+    "wizardDraftQuestion": "以前のイベント設定を再開しますか？",
+    "wizardDraftResume": "下書きを再開",
+    "wizardDraftDiscard": "破棄",
+    "wizardDiscardTitle": "未保存のイベント下書きを破棄しますか？",
+    "wizardDiscardBody": "保存されたイベント下書きを破棄してもよろしいですか？設定済みのタイトル、会場、ホール割り当て枠、チケット階層はすべて完全に削除されます。この操作は取り消せません。",
+    "wizardDiscardConfirm": "下書きを破棄",
+    "wizardStepsAria": "ウィザードのステップ"
   },
   "admin": {
     "dashboardTitle": "管理統括・アグリゲーター",
