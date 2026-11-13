@@ -156,7 +156,7 @@ export default function OrganizerLayout({ children }: OrganizerLayoutProps) {
           </div>
 
           {/* Navigation Links */}
-          <nav aria-label="Organizer Sidebar Navigation" className="space-y-1">
+          <nav aria-label={tOrg("organizerNavAria")} className="space-y-1">
             <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground px-2 mb-2">
               {tOrg("suiteTitle")}
             </div>

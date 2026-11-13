@@ -1191,7 +1191,7 @@ export function CheckInScanner({ defaultEventId }: CheckInScannerProps) {
                           <span className="hidden sm:inline text-slate-600">•</span>
                           <span className="hidden sm:inline-flex items-center gap-1 text-slate-300">
                             <ScanBarcode className="h-3 w-3 text-emerald-400" />
-                            <span>HID Wedge Active</span>
+                            <span>{tOrg("hidWedgeActive")}</span>
                           </span>
                         </div>
                         <span>{tOrg("scannerHmacGuard")}</span>

@@ -1044,7 +1044,7 @@ export default function BoothManagerPage() {
             type="button"
             onClick={() => setToastMessage("")}
             className="text-emerald-600 hover:text-emerald-800 dark:text-emerald-400 p-1 cursor-pointer"
-            aria-label="Dismiss notification"
+            aria-label={tOrg("dismissNotificationAria")}
           >
             <X className="h-4 w-4" />
           </button>
@@ -1667,8 +1667,8 @@ export default function BoothManagerPage() {
                               variant="outline"
                               className="text-xs min-h-[44px] px-2 text-destructive/80 hover:text-destructive hover:border-destructive/40 cursor-pointer"
                               onClick={() => setDeletingBooth(booth)}
-                              title="Decommission Lot"
-                              aria-label={`Decommission booth ${booth.boothNumber}`}
+                              title={tOrg("decommTitleAttr")}
+                              aria-label={tOrg("decommAria", { num: booth.boothNumber })}
                             >
                               <Trash2 className="h-3.5 w-3.5" />
                             </Button>

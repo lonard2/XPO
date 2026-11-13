@@ -1671,7 +1671,16 @@
     "wizardSelectSpace": "Espacio principal del evento",
     "wizardCampusSpaceAllocation": "Asignación de espacios del recinto:",
     "wizardAllocateAllSpaces": "Asignar todos los espacios",
-    "wizardAllSpacesAllocated": "Todos los espacios asignados"
+    "wizardAllSpacesAllocated": "Todos los espacios asignados",
+    "dashboardLoadErrorTitle": "Datos de Operaciones de la Exposición No Disponibles",
+    "dashboardLoadErrorDesc": "No se pudo establecer una conexión segura con la base de datos de operaciones del evento. Sus registros de eventos, asignaciones de stands y listas de check-in permanecen seguros en el almacenamiento.",
+    "dashboardRetry": "Reintentar Conexión",
+    "updatesPageBadge": "Noticias del Evento",
+    "updatesPageTitle": "Actualizaciones",
+    "updatesPageDesc": "Publique actualizaciones de la cronología de este evento. Los borradores permanecen aquí hasta que la edición los apruebe para la página del evento y la sección de inicio.",
+    "dismissNotificationAria": "Descartar notificación",
+    "hidWedgeActive": "HID Wedge Activo",
+    "meetingWherePlaceholder": "Sala A1, Mesa B-12"
   },
   "admin": {
     "dashboardTitle": "Gobernanza y Agregador de Administración",

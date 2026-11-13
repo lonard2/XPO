@@ -1671,7 +1671,16 @@
     "wizardSelectSpace": "メインイベントスペース",
     "wizardCampusSpaceAllocation": "キャンパススペース割り当て:",
     "wizardAllocateAllSpaces": "すべてのキャンパススペースを割り当て",
-    "wizardAllSpacesAllocated": "すべてのスペースを割り当て済み"
+    "wizardAllSpacesAllocated": "すべてのスペースを割り当て済み",
+    "dashboardLoadErrorTitle": "展示運営データを取得できません",
+    "dashboardLoadErrorDesc": "イベント運営データベースへの安全な接続を確立できません。イベント記録、ブース割り当て、チェックイン名簿は安全に保存されています。",
+    "dashboardRetry": "接続を再試行",
+    "updatesPageBadge": "イベントニュース",
+    "updatesPageTitle": "更新情報",
+    "updatesPageDesc": "このイベントのタイムライン更新を投稿します。下書きは編集部がイベントページとホームページ枠に承認するまでここに残ります。",
+    "dismissNotificationAria": "通知を閉じる",
+    "hidWedgeActive": "HIDウェッジ有効",
+    "meetingWherePlaceholder": "ホールA1、テーブルB-12"
   },
   "admin": {
     "dashboardTitle": "管理統括・アグリゲーター",

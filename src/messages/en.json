@@ -1671,7 +1671,16 @@
     "wizardSelectSpace": "Primary Event Space",
     "wizardCampusSpaceAllocation": "Campus Space Allocation:",
     "wizardAllocateAllSpaces": "Allocate All Campus Spaces",
-    "wizardAllSpacesAllocated": "All Spaces Allocated"
+    "wizardAllSpacesAllocated": "All Spaces Allocated",
+    "dashboardLoadErrorTitle": "Exhibition Operations Data Unavailable",
+    "dashboardLoadErrorDesc": "Unable to establish a secure connection to the event operations database. Your event records, booth allocations, and check-in rosters remain safe in storage.",
+    "dashboardRetry": "Retry Connection",
+    "updatesPageBadge": "Event News",
+    "updatesPageTitle": "Updates",
+    "updatesPageDesc": "Post timeline updates for this event. Drafts stay here until editorial approves them for the event page and homepage rail.",
+    "dismissNotificationAria": "Dismiss notification",
+    "hidWedgeActive": "HID Wedge Active",
+    "meetingWherePlaceholder": "Hall A1, Table B-12"
   },
   "admin": {
     "dashboardTitle": "Governance & Admin Agregator",

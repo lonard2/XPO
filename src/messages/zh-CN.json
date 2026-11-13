@@ -1671,7 +1671,16 @@
     "wizardSelectSpace": "主活动空间",
     "wizardCampusSpaceAllocation": "园区空间分配：",
     "wizardAllocateAllSpaces": "分配全部园区空间",
-    "wizardAllSpacesAllocated": "全部分配完毕"
+    "wizardAllSpacesAllocated": "全部分配完毕",
+    "dashboardLoadErrorTitle": "展览运营数据不可用",
+    "dashboardLoadErrorDesc": "无法建立与活动运营数据库的安全连接。您的活动记录、展位分配和签到名册仍安全存储。",
+    "dashboardRetry": "重试连接",
+    "updatesPageBadge": "活动新闻",
+    "updatesPageTitle": "动态更新",
+    "updatesPageDesc": "发布此活动的时间线动态。草稿将保留在此处，直到编辑批准其用于活动页面和首页栏目。",
+    "dismissNotificationAria": "关闭通知",
+    "hidWedgeActive": "HID 读卡器已启用",
+    "meetingWherePlaceholder": "A1 展厅，B-12 桌"
   },
   "admin": {
     "dashboardTitle": "管理统括中心",

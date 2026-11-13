@@ -138,10 +138,10 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
           </div>
           <div className="space-y-2 max-w-lg mx-auto">
             <h2 className="text-xl sm:text-2xl font-bold text-foreground">
-              Exhibition Operations Data Unavailable
+              {tOrg("dashboardLoadErrorTitle")}
             </h2>
             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-              Unable to establish a secure connection to the event operations database. Your event records, booth allocations, and check-in rosters remain safe in storage.
+              {tOrg("dashboardLoadErrorDesc")}
             </p>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
@@ -153,7 +153,7 @@ export default async function OrganizerDashboardPage({ params }: DashboardPagePr
               )}
             >
               <RotateCw className="h-4 w-4" />
-              <span>Retry Connection</span>
+              <span>{tOrg("dashboardRetry")}</span>
             </Link>
           </div>
         </Card>

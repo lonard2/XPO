@@ -53,7 +53,7 @@ function ScheduleFields({
         <Input
           value={location}
           onChange={(e) => setLocation(e.target.value)}
-          placeholder="Hall A1, Table B-12"
+          placeholder={t("meetingWherePlaceholder")}
           maxLength={200}
           className="mt-1 min-h-[40px]"
         />

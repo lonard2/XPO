@@ -1671,7 +1671,16 @@
     "wizardSelectSpace": "Primärer Veranstaltungsbereich",
     "wizardCampusSpaceAllocation": "Campus-Bereichszuweisung:",
     "wizardAllocateAllSpaces": "Alle Campus-Bereiche zuweisen",
-    "wizardAllSpacesAllocated": "Alle Bereiche zugewiesen"
+    "wizardAllSpacesAllocated": "Alle Bereiche zugewiesen",
+    "dashboardLoadErrorTitle": "Daten zum Ausstellungsbetrieb nicht verfügbar",
+    "dashboardLoadErrorDesc": "Es konnte keine sichere Verbindung zur Veranstaltungsdatenbank hergestellt werden. Ihre Veranstaltungsdaten, Standplatzzuweisungen und Check-in-Listen bleiben sicher gespeichert.",
+    "dashboardRetry": "Verbindung erneut versuchen",
+    "updatesPageBadge": "Veranstaltungsnachrichten",
+    "updatesPageTitle": "Aktualisierungen",
+    "updatesPageDesc": "Veröffentlichen Sie Timeline-Updates für diese Veranstaltung. Entwürfe bleiben hier, bis die Redaktion sie für die Veranstaltungsseite und die Startseitenleiste freigibt.",
+    "dismissNotificationAria": "Benachrichtigung schließen",
+    "hidWedgeActive": "HID-Wedge aktiv",
+    "meetingWherePlaceholder": "Halle A1, Tisch B-12"
   },
   "admin": {
     "dashboardTitle": "Admin-Governance & Aggregator",

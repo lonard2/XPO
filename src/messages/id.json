@@ -1671,7 +1671,16 @@
     "wizardSelectSpace": "Ruang Acara Utama",
     "wizardCampusSpaceAllocation": "Alokasi Ruang Kampus:",
     "wizardAllocateAllSpaces": "Alokasikan Semua Ruang Kampus",
-    "wizardAllSpacesAllocated": "Semua Ruang Dialokasikan"
+    "wizardAllSpacesAllocated": "Semua Ruang Dialokasikan",
+    "dashboardLoadErrorTitle": "Data Operasional Pameran Tidak Tersedia",
+    "dashboardLoadErrorDesc": "Tidak dapat membangun koneksi aman ke basis data operasional acara. Catatan acara, alokasi stan, dan daftar check-in Anda tetap aman tersimpan.",
+    "dashboardRetry": "Coba Koneksi Lagi",
+    "updatesPageBadge": "Berita Acara",
+    "updatesPageTitle": "Pembaruan",
+    "updatesPageDesc": "Terbitkan pembaruan linimasa untuk acara ini. Draf tetap di sini hingga editor menyetujuinya untuk halaman acara dan rel beranda.",
+    "dismissNotificationAria": "Tutup notifikasi",
+    "hidWedgeActive": "HID Wedge Aktif",
+    "meetingWherePlaceholder": "Hall A1, Meja B-12"
   },
   "admin": {
     "dashboardTitle": "Tata Kelola & Agregator Admin",
