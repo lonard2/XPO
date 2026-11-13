@@ -37,30 +37,30 @@ import { archTitle, archTag, clusterLabel } from "@/lib/i18n/categories";
 import { cn } from "@/lib/utils";
 
 const COLOR_PRESETS = [
-  { name: "Modern Navy", primary: "#1e3a8a", accent: "#d97706" },
-  { name: "Electric Indigo", primary: "#6366f1", accent: "#06b6d4" },
-  { name: "Emerald Grid", primary: "#059669", accent: "#10b981" },
-  { name: "Amber Industrial", primary: "#ca8a04", accent: "#16a34a" },
-  { name: "Sunset Crimson", primary: "#dc2626", accent: "#f97316" },
-  { name: "Cyber Violet", primary: "#9333ea", accent: "#ec4899" },
-  { name: "Dark Titanium", primary: "#0f172a", accent: "#0284c7" },
+  { labelKey: "colorPresetModernNavy", primary: "#1e3a8a", accent: "#d97706" },
+  { labelKey: "colorPresetElectricIndigo", primary: "#6366f1", accent: "#06b6d4" },
+  { labelKey: "colorPresetEmeraldGrid", primary: "#059669", accent: "#10b981" },
+  { labelKey: "colorPresetAmberIndustrial", primary: "#ca8a04", accent: "#16a34a" },
+  { labelKey: "colorPresetSunsetCrimson", primary: "#dc2626", accent: "#f97316" },
+  { labelKey: "colorPresetCyberViolet", primary: "#9333ea", accent: "#ec4899" },
+  { labelKey: "colorPresetDarkTitanium", primary: "#0f172a", accent: "#0284c7" },
 ];
 
 const HERO_IMAGE_PRESETS = [
   {
-    name: "Industrial Expo Hall",
+    labelKey: "heroPresetIndustrial",
     url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1600&q=80",
   },
   {
-    name: "Tech Keynote Stage",
+    labelKey: "heroPresetTechStage",
     url: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=1600&q=80",
   },
   {
-    name: "Medical Symposium Forum",
+    labelKey: "heroPresetMedical",
     url: "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1600&q=80",
   },
   {
-    name: "Mega Fair Grounds",
+    labelKey: "heroPresetMegaFair",
     url: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1600&q=80",
   },
 ];
@@ -310,6 +310,17 @@ export default function EventCustomizerPage() {
     }
   };
 
+  const previewDatesText = React.useMemo(() => {
+    if (!eventData?.startDate || !eventData?.endDate) return "";
+    const formatDate = (value: string | Date) =>
+      new Date(value).toLocaleDateString(locale, {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+    return `${formatDate(eventData.startDate)} - ${formatDate(eventData.endDate)}`;
+  }, [eventData?.startDate, eventData?.endDate, locale]);
+
   return (
     <div className="space-y-6 max-w-[1800px] mx-auto animate-fade-in">
       {/* Top Header & Fast Actions */}
@@ -321,11 +332,11 @@ export default function EventCustomizerPage() {
               className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
-              <span>Back to Dashboard</span>
+              <span>{tOrg("customizerBack")}</span>
             </Link>
-            <Badge variant="secondary" size="sm" className="font-semibold">Live Customizer</Badge>
+            <Badge variant="secondary" size="sm" className="font-semibold">{tOrg("customizerLive")}</Badge>
             {eventData && (eventData.isPlatformCurated || !eventData.organizerId) && (
-              <Badge variant="outline" size="sm" className="font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 border-amber-500/40 bg-amber-500/10">Platform Curated</Badge>
+              <Badge variant="outline" size="sm" className="font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 border-amber-500/40 bg-amber-500/10">{tOrg("curatedBadge")}</Badge>
             )}
             {eventData && eventData.organizerId && eventData.organizerName && (
               <span className="text-[11px] font-medium text-muted-foreground truncate max-w-[220px]">{eventData.organizerName}</span>
@@ -335,7 +346,7 @@ export default function EventCustomizerPage() {
             {eventData?.title || "Visual Branding Customizer"}
           </h1>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Configure CSS variable theme tokens, typography, hero media, and section visibility with real-time responsive preview.
+            {tOrg("customizerDesc")}
           </p>
         </div>
 
@@ -399,18 +410,18 @@ export default function EventCustomizerPage() {
             <div className="flex items-center justify-between">
               <h2 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
                 <Layers className="h-4 w-4 text-primary" />
-                <span>MICE Event Category</span>
+                <span>{tOrg("customizerCategoryTitle")}</span>
               </h2>
-              <Badge variant="neutral" size="sm">22 Archetypes</Badge>
+              <Badge variant="neutral" size="sm">{tOrg("customizerCategoryCount")}</Badge>
             </div>
 
             <p className="text-xs text-muted-foreground">
-              Select an event category to switch layout behavior, default color tokens, and domain features.
+              {tOrg("customizerCategoryDesc")}
             </p>
 
             <div className="space-y-1">
               <label htmlFor="customizer-archetype-select" className="sr-only">
-                Select MICE Event Category
+                {tOrg("customizerCategoryAria")}
               </label>
               <select
                 id="customizer-archetype-select"
@@ -440,19 +451,19 @@ export default function EventCustomizerPage() {
             <div className="flex items-center justify-between">
               <h2 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
                 <Palette className="h-4 w-4 text-primary" />
-                <span>Primary & Accent Color Tokens</span>
+                <span>{tOrg("customizerColorsTitle")}</span>
               </h2>
             </div>
 
             {/* Quick Presets */}
             <div className="space-y-2">
               <span className="text-xs font-semibold text-muted-foreground block">
-                Quick Palette Presets:
+                {tOrg("customizerPaletteLabel")}
               </span>
               <div className="flex flex-wrap gap-1.5">
                 {COLOR_PRESETS.map((p) => (
                   <button
-                    key={p.name}
+                    key={p.labelKey}
                     type="button"
                     onClick={() => handleApplyPreset(p)}
                     className="flex items-center gap-1.5 px-3 py-1.5 min-h-[44px] sm:min-h-[36px] rounded-md border border-border bg-muted/40 hover:bg-accent text-xs text-foreground transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
@@ -461,7 +472,7 @@ export default function EventCustomizerPage() {
                       className="h-2.5 w-2.5 rounded-full"
                       style={{ backgroundColor: p.primary }}
                     />
-                    <span>{p.name}</span>
+                    <span>{tOrg(p.labelKey)}</span>
                   </button>
                 ))}
               </div>
@@ -471,7 +482,7 @@ export default function EventCustomizerPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-border/60">
               <div className="space-y-1">
                 <label htmlFor="customizer-primary-color" className="block text-xs font-semibold text-foreground">
-                  Primary Brand Color
+                  {tOrg("customizerPrimaryLabel")}
                 </label>
                 <div className="flex items-center gap-2">
                   <input
@@ -480,20 +491,20 @@ export default function EventCustomizerPage() {
                     className="h-9 w-12 rounded cursor-pointer border border-border p-0.5 bg-background"
                     value={primaryColor}
                     onChange={(e) => setPrimaryColor(e.target.value)}
-                    aria-label="Primary Brand Color picker"
+                    aria-label={tOrg("customizerPrimaryPickerAria")}
                   />
                   <Input
                     value={primaryColor}
                     onChange={(e) => setPrimaryColor(e.target.value)}
                     className="font-mono text-xs h-9"
-                    aria-label="Primary Brand Color hex code"
+                    aria-label={tOrg("customizerPrimaryHexAria")}
                   />
                 </div>
               </div>
 
               <div className="space-y-1">
                 <label htmlFor="customizer-accent-color" className="block text-xs font-semibold text-foreground">
-                  Accent Color
+                  {tOrg("customizerAccentLabel")}
                 </label>
                 <div className="flex items-center gap-2">
                   <input
@@ -502,13 +513,13 @@ export default function EventCustomizerPage() {
                     className="h-9 w-12 rounded cursor-pointer border border-border p-0.5 bg-background"
                     value={accentColor}
                     onChange={(e) => setAccentColor(e.target.value)}
-                    aria-label="Accent Color picker"
+                    aria-label={tOrg("customizerAccentPickerAria")}
                   />
                   <Input
                     value={accentColor}
                     onChange={(e) => setAccentColor(e.target.value)}
                     className="font-mono text-xs h-9"
-                    aria-label="Accent Color hex code"
+                    aria-label={tOrg("customizerAccentHexAria")}
                   />
                 </div>
               </div>
@@ -519,15 +530,15 @@ export default function EventCustomizerPage() {
           <Card className="p-5 border-border bg-card space-y-3 shadow-xs">
             <h2 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
               <Type className="h-4 w-4 text-primary" />
-              <span>Event Typography Pairings</span>
+              <span>{tOrg("customizerTypographyTitle")}</span>
             </h2>
 
             <div className="grid grid-cols-2 gap-2">
               {[
-                { id: "font-sans", label: "Modern Sans", desc: "Plus Jakarta Sans / Modern" },
-                { id: "font-serif", label: "Editorial Serif", desc: "Classic & Medical" },
-                { id: "font-mono", label: "Technical Mono", desc: "Tech & Industrial" },
-                { id: "font-legible", label: "Accessible Legible", desc: "High Readability" },
+                { id: "font-sans", labelKey: "customizerFontModernLabel", descKey: "customizerFontModernDesc" },
+                { id: "font-serif", labelKey: "customizerFontSerifLabel", descKey: "customizerFontSerifDesc" },
+                { id: "font-mono", labelKey: "customizerFontMonoLabel", descKey: "customizerFontMonoDesc" },
+                { id: "font-legible", labelKey: "customizerFontLegibleLabel", descKey: "customizerFontLegibleDesc" },
               ].map((f) => (
                 <button
                   type="button"
@@ -540,8 +551,8 @@ export default function EventCustomizerPage() {
                       : "border-border hover:border-primary/40 bg-card"
                   )}
                 >
-                  <div className="text-xs font-bold text-foreground">{f.label}</div>
-                  <div className="text-xs text-muted-foreground mt-0.5">{f.desc}</div>
+                  <div className="text-xs font-bold text-foreground">{tOrg(f.labelKey)}</div>
+                  <div className="text-xs text-muted-foreground mt-0.5">{tOrg(f.descKey)}</div>
                 </button>
               ))}
             </div>
@@ -551,21 +562,21 @@ export default function EventCustomizerPage() {
           <Card className="p-5 border-border bg-card space-y-4 shadow-xs">
             <h2 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
               <ImageIcon className="h-4 w-4 text-primary" />
-              <span>Hero Media & Overlay Controls</span>
+              <span>{tOrg("customizerHeroTitle")}</span>
             </h2>
 
             <Input
               id="customizer-hero-badge-input"
-              label="Custom Hero Badge Label"
-              placeholder="e.g. Official 2027 Flagship Summit"
+              label={tOrg("customizerHeroBadgeLabel")}
+              placeholder={tOrg("customizerHeroBadgePlaceholder")}
               value={heroBadge}
               onChange={(e) => setHeroBadge(e.target.value)}
-              helperText="Overrides default archetype category badge."
+              helperText={tOrg("customizerHeroBadgeHelper")}
             />
 
             <div>
               <label htmlFor="customizer-page-size" className="block text-xs font-semibold text-foreground mb-1.5">
-                Event Page Size
+                {tOrg("wizardPageSize")}
               </label>
               <select
                 id="customizer-page-size"
@@ -573,31 +584,31 @@ export default function EventCustomizerPage() {
                 onChange={(e) => setPageSize(e.target.value)}
                 className="w-full h-11 rounded-md border border-input bg-background px-3 text-xs ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
-                <option value="LARGE">Large - full page</option>
-                <option value="MEDIUM">Medium - full sections, tighter spacing</option>
-                <option value="SMALL">Small - compact essentials</option>
+                <option value="LARGE">{tOrg("wizardPageSizeLarge")}</option>
+                <option value="MEDIUM">{tOrg("wizardPageSizeMedium")}</option>
+                <option value="SMALL">{tOrg("wizardPageSizeSmall")}</option>
               </select>
               <p className="text-[11px] text-muted-foreground mt-1">
-                Chosen by you; the venue only ever suggests.
+                {tOrg("customizerPageSizeHelper")}
               </p>
             </div>
 
             <div>
               <Input
                 id="customizer-hero-image-url"
-                label="Hero Banner Image URL"
+                label={tOrg("wizardHeroImage")}
                 value={heroImageUrl}
                 onChange={(e) => setHeroImageUrl(e.target.value)}
               />
               <div className="flex flex-wrap gap-1.5 mt-2">
                 {HERO_IMAGE_PRESETS.map((hip) => (
                   <button
-                    key={hip.name}
+                    key={hip.labelKey}
                     type="button"
                     onClick={() => setHeroImageUrl(hip.url)}
                     className="text-xs px-3 py-1.5 min-h-[44px] sm:min-h-[36px] bg-muted/60 hover:bg-muted border border-border rounded text-muted-foreground hover:text-foreground cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
                   >
-                    {hip.name}
+                    {tOrg(hip.labelKey)}
                   </button>
                 ))}
               </div>
@@ -606,7 +617,7 @@ export default function EventCustomizerPage() {
             <div className="space-y-1 pt-1">
               <div className="flex items-center justify-between text-xs">
                 <label htmlFor="customizer-overlay-opacity" className="font-semibold text-foreground cursor-pointer">
-                  Banner Overlay Opacity
+                  {tOrg("customizerOverlayLabel")}
                 </label>
                 <span className="font-mono text-muted-foreground">{Math.round(bannerOverlayOpacity * 100)}%</span>
               </div>
@@ -660,15 +671,15 @@ export default function EventCustomizerPage() {
           <Card className="p-5 border-border bg-card space-y-3 shadow-xs">
             <h2 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
               <Sliders className="h-4 w-4 text-primary" />
-              <span>Event Page Section Visibility</span>
+              <span>{tOrg("customizerSectionsTitle")}</span>
             </h2>
 
             <div className="space-y-2 text-xs">
               {[
-                { key: "tickets", label: "Delegate Pass Checkout Drawer" },
-                { key: "agenda", label: "Keynote Track Timetable" },
-                { key: "booths", label: "Exhibitor Floor Directory" },
-                { key: "perks", label: "Attendee Perks & Guidebook Unlock" },
+                { key: "tickets", labelKey: "customizerSectionTickets" },
+                { key: "agenda", labelKey: "customizerSectionAgenda" },
+                { key: "booths", labelKey: "customizerSectionBooths" },
+                { key: "perks", labelKey: "customizerSectionPerks" },
               ].map((sec) => {
                 const isChecked = (sectionsVisibility as any)[sec.key];
                 return (
@@ -676,7 +687,7 @@ export default function EventCustomizerPage() {
                     key={sec.key}
                     className="flex items-center justify-between p-3 min-h-[44px] rounded-lg bg-muted/30 hover:bg-muted/50 border border-border/60 cursor-pointer transition-colors"
                   >
-                    <span className="font-medium text-foreground">{sec.label}</span>
+                    <span className="font-medium text-foreground">{tOrg(sec.labelKey)}</span>
                     <input
                       type="checkbox"
                       role="switch"
@@ -708,13 +719,13 @@ export default function EventCustomizerPage() {
         {/* RIGHT COLUMN: REAL-TIME LIVE PREVIEW FRAME (7 cols on lg) */}
         <div className="lg:col-span-7 sticky top-20">
           <LivePreviewFrame
-            eventTitle={eventData?.title || "Event Title Preview"}
+            eventTitle={eventData?.title || tOrg("customizerEventTitleFallback")}
             tagline={eventData?.tagline}
             eventSlug={eventData?.slug}
             archetype={archetype}
             venueName={eventData?.venue?.name}
             hallName={eventData?.venueHall?.name}
-            datesText="Apr 14 - Apr 17, 2027"
+            datesText={previewDatesText}
             heroImageUrl={heroImageUrl}
             primaryColor={primaryColor}
             accentColor={accentColor}
@@ -731,11 +742,11 @@ export default function EventCustomizerPage() {
       <Modal
         isOpen={showArchetypeModal}
         onClose={() => setShowArchetypeModal(false)}
-        title="Switch MICE Event Category?"
+        title={tOrg("customizerSwitchTitle")}
       >
         <div className="space-y-4">
           <p className="text-sm text-muted-foreground leading-relaxed">
-            Switching to a different event category will reset your custom primary and accent color palette and typography pairings to the default tokens of the selected category.
+            {tOrg("customizerSwitchBody")}
           </p>
           <div className="flex items-center justify-end gap-2 pt-2">
             <Button
@@ -744,7 +755,7 @@ export default function EventCustomizerPage() {
               onClick={() => setShowArchetypeModal(false)}
               className="min-h-[44px] cursor-pointer"
             >
-              Keep Current Customizations
+              {tOrg("customizerSwitchKeep")}
             </Button>
             <Button
               variant="primary"
@@ -752,7 +763,7 @@ export default function EventCustomizerPage() {
               onClick={handleConfirmArchetypeChange}
               className="min-h-[44px] bg-primary text-primary-foreground cursor-pointer"
             >
-              Switch & Apply Category Tokens
+              {tOrg("customizerSwitchApply")}
             </Button>
           </div>
         </div>
