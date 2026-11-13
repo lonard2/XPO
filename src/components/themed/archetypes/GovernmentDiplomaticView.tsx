@@ -211,7 +211,7 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, p
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <Badge variant="outline" size="sm">
-                      {agenda.track || "Plenary Assembly"}
+                      {agenda.track || t("defaultTrack")}
                     </Badge>
                     <span className="text-xs text-muted-foreground flex items-center gap-1">
                       <MapPin className="h-3 w-3" />
@@ -273,7 +273,7 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, p
                     <span className="text-2xl font-bold text-foreground">
                       {tier.price > 0
                         ? formatCurrency(tier.price, (tier.currency as SupportedCurrency) || "IDR", locale)
-                        : "Official Delegation Pass"}
+                        : t("officialDelegationPass")}
                     </span>
                   </div>
                 </CardHeader>
@@ -389,7 +389,7 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, p
                 className="w-full gap-2 font-semibold"
               >
                 <FileCheck className="h-4 w-4" />
-                {scheduleSending ? "Submitting…" : "Submit Protocol Request"}
+                {scheduleSending ? t("submitting") : t("submitCta")}
               </Button>
             </div>
           </form>

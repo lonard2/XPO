@@ -176,7 +176,7 @@ export function MusicFestivalView({ event, locale = "en", onSelectTier }: Archet
                     : "bg-muted text-muted-foreground hover:text-foreground"
                 }`}
               >
-                {st}
+                {st === "ALL" ? t("filterAll") : st}
               </button>
             ))}
           </div>

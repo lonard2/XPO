@@ -50,7 +50,7 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier, pageSi
         type: "DEAL_ROOM",
         requesterName: String(form.get("fund") || ""),
         requesterEmail: String(form.get("email") || ""),
-        target: selectedDeal || "Institutional Deal Room",
+        target: selectedDeal || t("dealRoomDefault"),
         slot: String(form.get("slot") || ""),
         message: `Horizon: ${String(form.get("horizon") || "")}. ${String(form.get("agenda") || "")}`,
       });
@@ -133,7 +133,7 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier, pageSi
             <div className="p-2.5 rounded-md bg-muted/40 border border-border/80 flex items-center justify-between">
               <span>{t("encryptedLabel")}</span>
               <span className="font-mono text-emerald-400 font-semibold">
-                {kycVerified ? "SEC-VERIFIED-PASS" : "PENDING-CONFIRMATION"}
+                {kycVerified ? t("kycVerifiedCode") : t("kycPendingCode")}
               </span>
             </div>
             {!kycVerified && (
@@ -165,7 +165,7 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier, pageSi
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <Badge variant="outline" size="sm" className="font-mono text-xs font-semibold">
-                        {agenda.track || "Institutional Track"}
+                        {agenda.track || t("defaultTrack")}
                       </Badge>
                       <span className="text-xs text-muted-foreground">{agenda.location}</span>
                     </div>
@@ -221,8 +221,8 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier, pageSi
             const priceFormatted =
               tier.price > 0
                 ? formatCurrency(tier.price, (tier.currency || "USD") as SupportedCurrency, locale)
-                : "Complimentary Observer";
-            const tierBadge = tier.tier || (tier.name?.toLowerCase().includes("vip") ? "VIP" : "Standard");
+                : t("complimentaryObserver");
+            const tierBadge = tier.tier || (tier.name?.toLowerCase().includes("vip") ? "VIP" : t("standardTier"));
 
             return (
               <Card key={tier.id} className="border-border hover:border-emerald-500/50 transition-all flex flex-col justify-between">
@@ -302,7 +302,7 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier, pageSi
               <input
                 type="text"
                 readOnly
-                value={selectedDeal || "Institutional Deal Room"}
+                value={selectedDeal || t("dealRoomDefault")}
                 className="w-full px-3 py-2 rounded bg-muted/50 border border-border text-muted-foreground font-mono"
               />
             </div>
@@ -358,7 +358,7 @@ export function FinanceInvestorView({ event, locale = "en", onSelectTier, pageSi
                 className="w-full gap-2 font-semibold min-h-[44px] cursor-pointer"
               >
                 <Lock className="h-4 w-4" />
-                {bookingSending ? "Reserving…" : "Confirm Deal-Room Reservation"}
+                {bookingSending ? t("submitting") : t("submitCta")}
               </Button>
             </div>
           </form>

@@ -1872,7 +1872,8 @@
       "availableCount": "剩余 {count} 张",
       "freeTicket": "免费门票",
       "selectPass": "选择通行证",
-      "availableCountOne": "剩余 1 张"
+      "availableCountOne": "剩余 1 张",
+      "filterAll": "全部专场"
     },
     "MEGA_EXPO_PAVILION": {
       "heroBadge": "全国贸易博览会、多展厅展馆与嘉年华",
@@ -1920,7 +1921,8 @@
       "ticketsDescription": "VIP 通行证包含音乐节快速入场、天空露台观景平台与私人空调洗手间。",
       "leftCount": "剩余 {count} 张",
       "cta": "领取手环通行证",
-      "complimentary": "免费"
+      "complimentary": "免费",
+      "filterAll": "全部舞台"
     },
     "EDUCATION_EDTECH": {
       "heroBadge": "教育、EdTech 与学术峰会",
@@ -2023,7 +2025,9 @@
       "licenseCertValue": "需持有效国内或国际驾照",
       "safetyNote": "所有车手必须在进入赛道前于维修区 B 简报室完成标准安全简报。",
       "cancelCta": "取消",
-      "confirmCta": "确认预订"
+      "confirmCta": "确认预订",
+      "filterAll": "全部",
+      "powertrainHybrid": "混合动力"
     },
     "BUILDING_PROPTECH": {
       "heroBadge": "建筑、建筑设计与 PropTech 博览会",
@@ -2107,7 +2111,8 @@
       "complimentaryPass": "免费通行证",
       "abstractsCtaOne": "阅读 1 篇同行评审摘要",
       "cmeCreditsBadgeOne": "1 CME 学分",
-      "badgesLeftOne": "剩余 1 张证件"
+      "badgesLeftOne": "剩余 1 张证件",
+      "defaultTrack": "全体研讨会"
     },
     "MEDIA_BROADCAST": {
       "heroBadge": "媒体、广播与专业 AV 技术展",
@@ -2253,7 +2258,11 @@
       "agendaLabel": "拟议议程议题",
       "agendaPlaceholder": "双边贸易协定、清洁能源转型伙伴关系或联合外交公报...",
       "delegationsCtaOne": "1 个主权代表团",
-      "credentialsLeftOne": "剩余 1 张证件"
+      "credentialsLeftOne": "剩余 1 张证件",
+      "defaultTrack": "全体会议",
+      "officialDelegationPass": "官方代表团通行证",
+      "submitting": "正在提交…",
+      "submitCta": "提交礼宾申请"
     },
     "FRANCHISE_LICENSING": {
       "heroBadge": "特许经营、零售与中小企业商机",
@@ -2362,7 +2371,15 @@
       "horizonOption2": "500 万 - 1500 万美元",
       "horizonOption3": "1500 万美元以上成长股权",
       "agendaLabel": "讨论议程 / 尽职调查议题",
-      "agendaPlaceholder": "简要说明您的投资论点、当前投资组合协同效应或有关财务指标的具体问题..."
+      "agendaPlaceholder": "简要说明您的投资论点、当前投资组合协同效应或有关财务指标的具体问题...",
+      "kycVerifiedCode": "SEC 验证通行证",
+      "kycPendingCode": "待确认",
+      "defaultTrack": "机构专场",
+      "complimentaryObserver": "免费观察员",
+      "standardTier": "标准",
+      "dealRoomDefault": "机构洽谈室",
+      "submitting": "正在预订…",
+      "submitCta": "确认洽谈室预订"
     },
     "INDUSTRIAL_B2B": {
       "heroBadge": "工业与制造业贸易展区",
@@ -2406,7 +2423,12 @@
       "specsLabel": "技术规格 / RFQ 范围",
       "specsPlaceholder": "详细说明您的机械需求、精度公差、电压标准与预计交付时间...",
       "browseCtaOne": "浏览 1 个展位",
-      "passesLeftOne": "剩余 1 张通行证"
+      "passesLeftOne": "剩余 1 张通行证",
+      "generalIndustry": "通用工业",
+      "defaultTrack": "技术演示",
+      "submitting": "正在发送…",
+      "submitCta": "向展商发送询价",
+      "filterAll": "全部行业"
     }
   }
 }

@@ -134,7 +134,7 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier, pageSize
                     : "bg-muted text-muted-foreground hover:text-foreground"
                 }`}
               >
-                {track}
+                {track === "ALL" ? t("filterAll") : track}
               </button>
             ))}
           </div>

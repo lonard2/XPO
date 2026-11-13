@@ -1872,7 +1872,8 @@
       "availableCount": "{count} disponibles",
       "freeTicket": "Entrada gratuita",
       "selectPass": "Seleccionar pase",
-      "availableCountOne": "1 disponible"
+      "availableCountOne": "1 disponible",
+      "filterAll": "Todas las Sesiones"
     },
     "MEGA_EXPO_PAVILION": {
       "heroBadge": "Feria Nacional de Comercio, Pabellones Multihall y Carnaval",
@@ -1920,7 +1921,8 @@
       "ticketsDescription": "Los pases VIP incluyen entrada rápida al festival, plataformas de observación Skydeck y baños privados climatizados.",
       "leftCount": "Quedan {count}",
       "cta": "Obtener Pase de Pulsera",
-      "complimentary": "Cortesía"
+      "complimentary": "Cortesía",
+      "filterAll": "Todos los Escenarios"
     },
     "EDUCATION_EDTECH": {
       "heroBadge": "Educación, EdTech y Cumbre Académica",
@@ -2023,7 +2025,9 @@
       "licenseCertValue": "Se Requiere Licencia Nacional o Internacional Válida",
       "safetyNote": "Todos los conductores deben completar el briefing de seguridad estándar en la Sala de Briefing B del Paddock antes de entrar al circuito.",
       "cancelCta": "Cancelar",
-      "confirmCta": "Confirmar Reserva"
+      "confirmCta": "Confirmar Reserva",
+      "filterAll": "Todos",
+      "powertrainHybrid": "Híbrido"
     },
     "BUILDING_PROPTECH": {
       "heroBadge": "Expo de Construcción, Arquitectura y PropTech",
@@ -2107,7 +2111,8 @@
       "complimentaryPass": "Pase de Cortesía",
       "abstractsCtaOne": "Leer 1 Resumen Revisado por Pares",
       "cmeCreditsBadgeOne": "1 Crédito CME",
-      "badgesLeftOne": "Queda 1 acreditación"
+      "badgesLeftOne": "Queda 1 acreditación",
+      "defaultTrack": "Simposio Plenario"
     },
     "MEDIA_BROADCAST": {
       "heroBadge": "Mart de Tecnología de Medios, Broadcast y Pro-AV",
@@ -2253,7 +2258,11 @@
       "agendaLabel": "Temas de Agenda Propuestos",
       "agendaPlaceholder": "Acuerdos comerciales bilaterales, alianzas de transición energética limpia o comunicados diplomáticos conjuntos...",
       "delegationsCtaOne": "1 Delegación Soberana",
-      "credentialsLeftOne": "Queda 1 credencial"
+      "credentialsLeftOne": "Queda 1 credencial",
+      "defaultTrack": "Asamblea Plenaria",
+      "officialDelegationPass": "Pase de Delegación Oficial",
+      "submitting": "Enviando…",
+      "submitCta": "Enviar Solicitud de Protocolo"
     },
     "FRANCHISE_LICENSING": {
       "heroBadge": "Oportunidad de Negocio de Franquicia, Retail y Pymes",
@@ -2362,7 +2371,15 @@
       "horizonOption2": "5M - 15M USD",
       "horizonOption3": "15M+ Growth Equity",
       "agendaLabel": "Agenda de Discusión / Temas de Due Diligence",
-      "agendaPlaceholder": "Indique brevemente su tesis de inversión, sinergia de cartera actual o preguntas específicas sobre métricas financieras..."
+      "agendaPlaceholder": "Indique brevemente su tesis de inversión, sinergia de cartera actual o preguntas específicas sobre métricas financieras...",
+      "kycVerifiedCode": "PASE-VERIFICADO-SEC",
+      "kycPendingCode": "CONFIRMACIÓN-PENDIENTE",
+      "defaultTrack": "Sesión Institucional",
+      "complimentaryObserver": "Observador de Cortesía",
+      "standardTier": "Estándar",
+      "dealRoomDefault": "Sala de Acuerdos Institucional",
+      "submitting": "Reservando…",
+      "submitCta": "Confirmar Reserva de Sala de Acuerdos"
     },
     "INDUSTRIAL_B2B": {
       "heroBadge": "Piso Comercial Industrial y de Fabricación",
@@ -2406,7 +2423,12 @@
       "specsLabel": "Especificaciones Técnicas / Alcance del RFQ",
       "specsPlaceholder": "Detalle sus requisitos de maquinaria, tolerancia de precisión, estándares de voltaje y plazo de entrega previsto...",
       "browseCtaOne": "Explorar 1 Stand de Expositor",
-      "passesLeftOne": "Queda 1 pase"
+      "passesLeftOne": "Queda 1 pase",
+      "generalIndustry": "Industria General",
+      "defaultTrack": "Demostración Técnica",
+      "submitting": "Transmitiendo…",
+      "submitCta": "Enviar RFQ al Expositor",
+      "filterAll": "Todas las Industrias"
     }
   }
 }

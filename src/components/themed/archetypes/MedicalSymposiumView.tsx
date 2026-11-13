@@ -256,7 +256,7 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <Badge variant="outline" size="sm">
-                      {agenda.track || "Plenary Symposium"}
+                      {agenda.track || t("defaultTrack")}
                     </Badge>
                     <span className="text-xs text-muted-foreground flex items-center gap-1">
                       <MapPin className="h-3 w-3" />

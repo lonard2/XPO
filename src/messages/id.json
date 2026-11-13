@@ -1872,7 +1872,8 @@
       "availableCount": "{count} Tersedia",
       "freeTicket": "Tiket Gratis",
       "selectPass": "Pilih Pass",
-      "availableCountOne": "1 Tersedia"
+      "availableCountOne": "1 Tersedia",
+      "filterAll": "Semua Jalur"
     },
     "MEGA_EXPO_PAVILION": {
       "heroBadge": "Pekan Raya Dagang Nasional, Paviliun Multi-Hall & Karnaval",
@@ -1920,7 +1921,8 @@
       "ticketsDescription": "Pass VIP mencakup jalur cepat masuk gerbang festival, platform pandang Skydeck, dan toilet berpendingin pribadi.",
       "leftCount": "Sisa {count}",
       "cta": "Ambil Pass Gelang",
-      "complimentary": "Gratis"
+      "complimentary": "Gratis",
+      "filterAll": "Semua Panggung"
     },
     "EDUCATION_EDTECH": {
       "heroBadge": "Pendidikan, EdTech & Summit Akademik",
@@ -2023,7 +2025,9 @@
       "licenseCertValue": "Wajib SIM Nasional atau Internasional yang Berlaku",
       "safetyNote": "Semua pengemudi wajib menyelesaikan briefing keselamatan standar di Paddock Briefing Room B sebelum masuk sirkuit.",
       "cancelCta": "Batal",
-      "confirmCta": "Konfirmasi Reservasi"
+      "confirmCta": "Konfirmasi Reservasi",
+      "filterAll": "Semua",
+      "powertrainHybrid": "Hibrida"
     },
     "BUILDING_PROPTECH": {
       "heroBadge": "Expo Bangunan, Arsitektur & PropTech",
@@ -2107,7 +2111,8 @@
       "complimentaryPass": "Pass Gratis",
       "abstractsCtaOne": "Baca 1 Abstrak Peer-Review",
       "cmeCreditsBadgeOne": "1 Kredit CME",
-      "badgesLeftOne": "Sisa 1 Badge"
+      "badgesLeftOne": "Sisa 1 Badge",
+      "defaultTrack": "Simposium Paripurna"
     },
     "MEDIA_BROADCAST": {
       "heroBadge": "Mart Teknologi Media, Broadcast & Pro-AV",
@@ -2253,7 +2258,11 @@
       "agendaLabel": "Topik Agenda yang Diusulkan",
       "agendaPlaceholder": "Perjanjian perdagangan bilateral, kemitraan transisi energi bersih, atau komunike diplomatik bersama...",
       "delegationsCtaOne": "1 Delegasi Berdaulat",
-      "credentialsLeftOne": "Sisa 1 Kredensial"
+      "credentialsLeftOne": "Sisa 1 Kredensial",
+      "defaultTrack": "Sidang Paripurna",
+      "officialDelegationPass": "Pass Delegasi Resmi",
+      "submitting": "Mengirim…",
+      "submitCta": "Kirim Permintaan Protokol"
     },
     "FRANCHISE_LICENSING": {
       "heroBadge": "Peluang Usaha Waralaba, Ritel & UKM",
@@ -2362,7 +2371,15 @@
       "horizonOption2": "$5M - $15M USD",
       "horizonOption3": "Ekuitas Pertumbuhan $15M+",
       "agendaLabel": "Agenda Diskusi / Topik Due Diligence",
-      "agendaPlaceholder": "Nyatakan tesis investasi Anda secara singkat, sinergi portofolio saat ini, atau pertanyaan spesifik tentang metrik keuangan..."
+      "agendaPlaceholder": "Nyatakan tesis investasi Anda secara singkat, sinergi portofolio saat ini, atau pertanyaan spesifik tentang metrik keuangan...",
+      "kycVerifiedCode": "PASS-TERVERIFIKASI-SEC",
+      "kycPendingCode": "MENUNGGU-KONFIRMASI",
+      "defaultTrack": "Jalur Institusional",
+      "complimentaryObserver": "Pengamat Gratis",
+      "standardTier": "Standar",
+      "dealRoomDefault": "Ruang Kesepakatan Institusional",
+      "submitting": "Memesan…",
+      "submitCta": "Konfirmasi Reservasi Ruang Kesepakatan"
     },
     "INDUSTRIAL_B2B": {
       "heroBadge": "Lantai Dagang Industri & Manufaktur",
@@ -2406,7 +2423,12 @@
       "specsLabel": "Spesifikasi Teknis / Lingkup RFQ",
       "specsPlaceholder": "Jelaskan kebutuhan mesin Anda, toleransi presisi, standar tegangan, dan perkiraan jadwal pengiriman...",
       "browseCtaOne": "Jelajahi 1 Booth Pameran",
-      "passesLeftOne": "Sisa 1 Pass"
+      "passesLeftOne": "Sisa 1 Pass",
+      "generalIndustry": "Industri Umum",
+      "defaultTrack": "Demo Teknis",
+      "submitting": "Mengirim…",
+      "submitCta": "Kirim RFQ ke Peserta Pameran",
+      "filterAll": "Semua Industri"
     }
   }
 }

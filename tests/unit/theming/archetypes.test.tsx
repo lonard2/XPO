@@ -138,6 +138,7 @@ describe("Phase 5: 9 Archetype Specialized Views & EventPageShell", () => {
     expect(rfqBtn).toBeInTheDocument();
     fireEvent.click(rfqBtn);
     expect(screen.getByText("Target Exhibitor / Machine")).toBeInTheDocument();
+    expect(screen.getByText("Transmit RFQ to Exhibitor")).toBeInTheDocument();
 
     // Organizer-written booth specs reach the attendee directory card.
     expect(screen.getByText("6m x 3m")).toBeInTheDocument();

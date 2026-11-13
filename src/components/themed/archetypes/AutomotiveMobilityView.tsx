@@ -141,7 +141,11 @@ export function AutomotiveMobilityView({ event, locale = "en", onSelectTier }: A
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                {type}
+                {type === "ALL"
+                  ? t("filterAll")
+                  : type === "HYBRID"
+                    ? t("powertrainHybrid")
+                    : type}
               </button>
             ))}
           </div>
@@ -155,7 +159,7 @@ export function AutomotiveMobilityView({ event, locale = "en", onSelectTier }: A
                   <Badge variant="outline" className="border-red-500/30 text-red-500 bg-red-500/10 text-xs font-semibold">
                     {vehicle.badge}
                   </Badge>
-                  <span className="text-xs font-mono font-bold text-muted-foreground">{vehicle.powertrain}</span>
+                  <span className="text-xs font-mono font-bold text-muted-foreground">{vehicle.powertrain === "HYBRID" ? t("powertrainHybrid") : vehicle.powertrain}</span>
                 </div>
                 <CardTitle className="text-lg font-bold text-foreground leading-snug">{vehicle.name}</CardTitle>
                 <CardDescription className="text-xs text-muted-foreground">{vehicle.manufacturer}</CardDescription>

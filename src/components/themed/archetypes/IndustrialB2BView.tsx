@@ -109,7 +109,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
 
 
   // Unique industries
-  const industries = ["ALL", ...Array.from(new Set(event.booths.map((b) => b.industry || "General Industry")))];
+  const industries = ["ALL", ...Array.from(new Set(event.booths.map((b) => b.industry || t("generalIndustry"))))];
 
   const filteredBooths = event.booths.filter((booth) => {
     const matchesSearch =
@@ -277,7 +277,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
             >
               {industries.map((ind) => (
                 <option key={ind} value={ind}>
-                  {ind}
+                  {ind === "ALL" ? t("filterAll") : ind}
                 </option>
               ))}
             </select>
@@ -374,7 +374,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <Badge variant="outline" size="sm">
-                      {agenda.track || "Technical Demo"}
+                      {agenda.track || t("defaultTrack")}
                     </Badge>
                     <span className="text-xs text-muted-foreground flex items-center gap-1 font-mono">
                       <MapPin className="h-3 w-3" />
@@ -561,7 +561,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
                 className="w-full gap-2 min-h-[44px] cursor-pointer"
               >
                 <Send className="h-4 w-4" />
-                {rfqSending ? "Transmitting…" : "Transmit RFQ to Exhibitor"}
+                {rfqSending ? t("submitting") : t("submitCta")}
               </Button>
             </div>
           </form>
