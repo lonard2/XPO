@@ -183,7 +183,9 @@ export function PopCultureGamingView({ event, locale = "en", onSelectTier }: Arc
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg">{tier.name}</CardTitle>
                     <Badge variant="secondary" size="sm">
-                      {t("badgesLeft", { count: tier.capacity - tier.soldCount })}
+                      {tier.capacity - tier.soldCount === 1
+                        ? t("badgesLeftOne")
+                        : t("badgesLeft", { count: tier.capacity - tier.soldCount })}
                     </Badge>
                   </div>
                   <div className="mt-2">

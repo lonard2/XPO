@@ -104,7 +104,9 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, p
               className="gap-2 text-xs font-semibold shadow-md"
             >
               <Globe2 className="h-4 w-4" />
-              {t("delegationsCta", { count: delegations.length })}
+              {delegations.length === 1
+                ? t("delegationsCtaOne")
+                : t("delegationsCta", { count: delegations.length })}
             </Button>
 
             <Button
@@ -262,7 +264,9 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, p
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg">{tier.name}</CardTitle>
                     <Badge variant="secondary" size="sm">
-                      {t("credentialsLeft", { count: tier.capacity - tier.soldCount })}
+                      {tier.capacity - tier.soldCount === 1
+                        ? t("credentialsLeftOne")
+                        : t("credentialsLeft", { count: tier.capacity - tier.soldCount })}
                     </Badge>
                   </div>
                   <div className="mt-2">

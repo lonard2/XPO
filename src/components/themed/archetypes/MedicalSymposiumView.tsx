@@ -99,7 +99,9 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
               className="gap-2 text-xs font-sans font-semibold shadow-md"
             >
               <BookOpen className="h-4 w-4" />
-              {t("abstractsCta", { count: abstracts.length })}
+              {abstracts.length === 1
+                ? t("abstractsCtaOne")
+                : t("abstractsCta", { count: abstracts.length })}
             </Button>
 
             <Button
@@ -200,7 +202,9 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
                   <div className="space-y-1.5 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <Badge variant="archetype" size="sm" className="font-sans text-xs font-semibold">
-                        {t("cmeCreditsBadge", { count: abs.cmeCredits })}
+                        {abs.cmeCredits === 1
+                          ? t("cmeCreditsBadgeOne")
+                          : t("cmeCreditsBadge", { count: abs.cmeCredits })}
                       </Badge>
                       <span className="text-xs font-sans text-muted-foreground font-mono">
                         {t("doiLabel", { doi: abs.doi })}
@@ -307,7 +311,9 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg">{tier.name}</CardTitle>
                     <Badge variant="secondary" size="sm">
-                      {t("badgesLeft", { count: tier.capacity - tier.soldCount })}
+                      {tier.capacity - tier.soldCount === 1
+                        ? t("badgesLeftOne")
+                        : t("badgesLeft", { count: tier.capacity - tier.soldCount })}
                     </Badge>
                   </div>
                   <div className="mt-2">

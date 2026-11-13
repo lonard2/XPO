@@ -1846,7 +1846,8 @@
       "badgesLeft": "Sisa {count} Badge",
       "cta": "Dapatkan Pass Konvensi",
       "freeTicket": "Tiket Gratis",
-      "esportsStage": "Panggung Esports"
+      "esportsStage": "Panggung Esports",
+      "badgesLeftOne": "Sisa 1 Badge"
     },
     "TECH_DEV_SUMMIT": {
       "heroBadge": "Keynote Developer, Code Lab & Hackathon 2026",
@@ -1870,7 +1871,8 @@
       "ticketsDescription": "Termasuk akses ke semua rekaman panggung, meja hackathon, dan resepsi networking VIP pembicara.",
       "availableCount": "{count} Tersedia",
       "freeTicket": "Tiket Gratis",
-      "selectPass": "Pilih Pass"
+      "selectPass": "Pilih Pass",
+      "availableCountOne": "1 Tersedia"
     },
     "MEGA_EXPO_PAVILION": {
       "heroBadge": "Pekan Raya Dagang Nasional, Paviliun Multi-Hall & Karnaval",
@@ -1892,7 +1894,9 @@
       "ticketsDescription": "Anak di bawah 100 cm masuk gratis. Pass berlaku untuk semua paviliun komersial dan konser malam.",
       "availableCount": "{count} Tersedia",
       "cta": "Dapatkan Pass Masuk",
-      "freeEntry": "Masuk Gratis"
+      "freeEntry": "Masuk Gratis",
+      "brandsCountOne": "1+ Merek",
+      "availableCountOne": "1 Tersedia"
     },
     "MUSIC_FESTIVAL": {
       "heroBadge": "Festival Live Multi-Panggung & Produksi Visual",
@@ -2100,7 +2104,10 @@
       "ticketsDesc": "Tarif kredensial untuk spesialis medis, fellow, residen, dan tenaga kesehatan terkait.",
       "badgesLeft": "Sisa {count} Badge",
       "cta": "Pilih Pass Delegasi",
-      "complimentaryPass": "Pass Gratis"
+      "complimentaryPass": "Pass Gratis",
+      "abstractsCtaOne": "Baca 1 Abstrak Peer-Review",
+      "cmeCreditsBadgeOne": "1 Kredit CME",
+      "badgesLeftOne": "Sisa 1 Badge"
     },
     "MEDIA_BROADCAST": {
       "heroBadge": "Mart Teknologi Media, Broadcast & Pro-AV",
@@ -2244,7 +2251,9 @@
       "leadLabel": "Menteri / Duta Besar Utama",
       "leadPlaceholder": "Nama Lengkap dan Pangkat Diplomatik",
       "agendaLabel": "Topik Agenda yang Diusulkan",
-      "agendaPlaceholder": "Perjanjian perdagangan bilateral, kemitraan transisi energi bersih, atau komunike diplomatik bersama..."
+      "agendaPlaceholder": "Perjanjian perdagangan bilateral, kemitraan transisi energi bersih, atau komunike diplomatik bersama...",
+      "delegationsCtaOne": "1 Delegasi Berdaulat",
+      "credentialsLeftOne": "Sisa 1 Kredensial"
     },
     "FRANCHISE_LICENSING": {
       "heroBadge": "Peluang Usaha Waralaba, Ritel & UKM",
@@ -2313,7 +2322,9 @@
       "oilLabel": "Preferensi Tekanan & Minyak Esensial Khusus",
       "oilPlaceholder": "Tunjukkan tekanan pilihan Anda, minyak aromaterapi lavender/eucalyptus, atau area fokus target...",
       "confirmCta": "Konfirmasi Janji",
-      "corporateInvitation": "Undangan Korporat"
+      "corporateInvitation": "Undangan Korporat",
+      "itineraryCtaOne": "Lihat 1 Ekskursi",
+      "suitesRemainingOne": "Sisa 1 Suite"
     },
     "FINANCE_INVESTOR": {
       "heroBadge": "Forum Private Equity, Venture Capital & Sovereign",
@@ -2393,7 +2404,9 @@
       "quantityPlaceholder": "mis. 5 Unit / Tahun",
       "emailLabel": "Email Kontak",
       "specsLabel": "Spesifikasi Teknis / Lingkup RFQ",
-      "specsPlaceholder": "Jelaskan kebutuhan mesin Anda, toleransi presisi, standar tegangan, dan perkiraan jadwal pengiriman..."
+      "specsPlaceholder": "Jelaskan kebutuhan mesin Anda, toleransi presisi, standar tegangan, dan perkiraan jadwal pengiriman...",
+      "browseCtaOne": "Jelajahi 1 Booth Pameran",
+      "passesLeftOne": "Sisa 1 Pass"
     }
   }
 }

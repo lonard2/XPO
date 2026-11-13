@@ -145,6 +145,27 @@ describe("Phase 5: 9 Archetype Specialized Views & EventPageShell", () => {
     expect(screen.getByText("ISLAND")).toBeInTheDocument();
   });
 
+  it("renders the singular pass count when one pass remains", () => {
+    const eventWithOnePass = {
+      ...mockBaseEvent,
+      ticketTiers: [
+        {
+          id: "tier-last",
+          name: "Trade Visitor Pass",
+          price: 0,
+          currency: "IDR",
+          capacity: 1,
+          soldCount: 0,
+          benefitsJson: JSON.stringify(["Floor access"]),
+        },
+      ],
+    };
+
+    render(<IndustrialB2BView event={eventWithOnePass} locale="en" />);
+
+    expect(screen.getByText("1 Pass Left")).toBeInTheDocument();
+  });
+
   it("renders TechDevSummitView with multi-track agenda and hackathon RSVP, and no invented stream or bounties", () => {
     render(<TechDevSummitView event={mockBaseEvent} locale="en" />);
 

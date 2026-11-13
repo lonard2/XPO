@@ -1846,7 +1846,8 @@
       "badgesLeft": "剩余 {count} 张证件",
       "cta": "获取大会通行证",
       "freeTicket": "免费门票",
-      "esportsStage": "电竞舞台"
+      "esportsStage": "电竞舞台",
+      "badgesLeftOne": "剩余 1 张证件"
     },
     "TECH_DEV_SUMMIT": {
       "heroBadge": "开发者主题演讲、代码实验室与 2026 黑客松",
@@ -1870,7 +1871,8 @@
       "ticketsDescription": "包含所有舞台录像、黑客松工位以及演讲嘉宾 VIP 交流酒会。",
       "availableCount": "剩余 {count} 张",
       "freeTicket": "免费门票",
-      "selectPass": "选择通行证"
+      "selectPass": "选择通行证",
+      "availableCountOne": "剩余 1 张"
     },
     "MEGA_EXPO_PAVILION": {
       "heroBadge": "全国贸易博览会、多展厅展馆与嘉年华",
@@ -1892,7 +1894,9 @@
       "ticketsDescription": "身高 100 厘米以下儿童免费入场。通行证可进入所有商业展馆与夜间音乐会。",
       "availableCount": "剩余 {count} 张",
       "cta": "获取入场通行证",
-      "freeEntry": "免费入场"
+      "freeEntry": "免费入场",
+      "brandsCountOne": "1+ 品牌",
+      "availableCountOne": "剩余 1 张"
     },
     "MUSIC_FESTIVAL": {
       "heroBadge": "多舞台现场音乐节与视觉制作",
@@ -2100,7 +2104,10 @@
       "ticketsDesc": "面向医学专家、研究员、住院医师与相关医疗专业人员的资格费率。",
       "badgesLeft": "剩余 {count} 张证件",
       "cta": "选择代表通行证",
-      "complimentaryPass": "免费通行证"
+      "complimentaryPass": "免费通行证",
+      "abstractsCtaOne": "阅读 1 篇同行评审摘要",
+      "cmeCreditsBadgeOne": "1 CME 学分",
+      "badgesLeftOne": "剩余 1 张证件"
     },
     "MEDIA_BROADCAST": {
       "heroBadge": "媒体、广播与专业 AV 技术展",
@@ -2244,7 +2251,9 @@
       "leadLabel": "首席部长 / 大使",
       "leadPlaceholder": "全名与外交职衔",
       "agendaLabel": "拟议议程议题",
-      "agendaPlaceholder": "双边贸易协定、清洁能源转型伙伴关系或联合外交公报..."
+      "agendaPlaceholder": "双边贸易协定、清洁能源转型伙伴关系或联合外交公报...",
+      "delegationsCtaOne": "1 个主权代表团",
+      "credentialsLeftOne": "剩余 1 张证件"
     },
     "FRANCHISE_LICENSING": {
       "heroBadge": "特许经营、零售与中小企业商机",
@@ -2313,7 +2322,9 @@
       "oilLabel": "特殊力度与精油偏好",
       "oilPlaceholder": "请说明您偏好的力度、薰衣草/尤加利芳香精油或重点护理部位...",
       "confirmCta": "确认预约",
-      "corporateInvitation": "企业邀请"
+      "corporateInvitation": "企业邀请",
+      "itineraryCtaOne": "查看 1 个短途旅行",
+      "suitesRemainingOne": "剩余 1 间套房"
     },
     "FINANCE_INVESTOR": {
       "heroBadge": "私募股权、风险投资与主权基金论坛",
@@ -2393,7 +2404,9 @@
       "quantityPlaceholder": "例如：5 台 / 年",
       "emailLabel": "联系邮箱",
       "specsLabel": "技术规格 / RFQ 范围",
-      "specsPlaceholder": "详细说明您的机械需求、精度公差、电压标准与预计交付时间..."
+      "specsPlaceholder": "详细说明您的机械需求、精度公差、电压标准与预计交付时间...",
+      "browseCtaOne": "浏览 1 个展位",
+      "passesLeftOne": "剩余 1 张通行证"
     }
   }
 }

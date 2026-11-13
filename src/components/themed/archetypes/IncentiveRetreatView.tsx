@@ -95,7 +95,9 @@ export function IncentiveRetreatView({ event, locale = "en", onSelectTier }: Arc
               className="gap-2 text-xs font-semibold shadow-md"
             >
               <Compass className="h-4 w-4" />
-              {t("itineraryCta", { count: excursions.length })}
+              {excursions.length === 1
+                ? t("itineraryCtaOne")
+                : t("itineraryCta", { count: excursions.length })}
             </Button>
 
             <Button
@@ -237,7 +239,9 @@ export function IncentiveRetreatView({ event, locale = "en", onSelectTier }: Arc
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg">{tier.name}</CardTitle>
                     <Badge variant="success" size="sm">
-                      {t("suitesRemaining", { count: tier.capacity - tier.soldCount })}
+                      {tier.capacity - tier.soldCount === 1
+                        ? t("suitesRemainingOne")
+                        : t("suitesRemaining", { count: tier.capacity - tier.soldCount })}
                     </Badge>
                   </div>
                   <div className="mt-2">

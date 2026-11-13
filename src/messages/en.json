@@ -1846,7 +1846,8 @@
       "badgesLeft": "{count} Badges Left",
       "cta": "Get Convention Pass",
       "freeTicket": "Free Ticket",
-      "esportsStage": "Esports Stage"
+      "esportsStage": "Esports Stage",
+      "badgesLeftOne": "1 Badge Left"
     },
     "TECH_DEV_SUMMIT": {
       "heroBadge": "Developer Keynotes, Code Labs & Hackathon 2026",
@@ -1870,7 +1871,8 @@
       "ticketsDescription": "Includes access to all stage recordings, hackathon desks, and speaker VIP networking receptions.",
       "availableCount": "{count} Available",
       "freeTicket": "Free Ticket",
-      "selectPass": "Select Pass"
+      "selectPass": "Select Pass",
+      "availableCountOne": "1 Available"
     },
     "MEGA_EXPO_PAVILION": {
       "heroBadge": "National Trade Fair, Multi-Hall Pavilions & Carnival",
@@ -1892,7 +1894,9 @@
       "ticketsDescription": "Children under 100cm enter free. Passes grant admission to all commercial pavilions and nightly concerts.",
       "availableCount": "{count} Available",
       "cta": "Get Admission Pass",
-      "freeEntry": "Free Entry"
+      "freeEntry": "Free Entry",
+      "brandsCountOne": "1+ Brand",
+      "availableCountOne": "1 Available"
     },
     "MUSIC_FESTIVAL": {
       "heroBadge": "Multi-Stage Live Festival & Visual Production",
@@ -2100,7 +2104,10 @@
       "ticketsDesc": "Credentialed rates for medical specialists, fellows, residents, and allied healthcare professionals.",
       "badgesLeft": "{count} Badges Left",
       "cta": "Select Delegate Pass",
-      "complimentaryPass": "Complimentary Pass"
+      "complimentaryPass": "Complimentary Pass",
+      "abstractsCtaOne": "Read 1 Peer-Reviewed Abstract",
+      "cmeCreditsBadgeOne": "1 CME Credit",
+      "badgesLeftOne": "1 Badge Left"
     },
     "MEDIA_BROADCAST": {
       "heroBadge": "Media, Broadcast & Pro-AV Technology Mart",
@@ -2244,7 +2251,9 @@
       "leadLabel": "Lead Minister / Ambassador",
       "leadPlaceholder": "Full Name and Diplomatic Rank",
       "agendaLabel": "Proposed Agenda Topics",
-      "agendaPlaceholder": "Bilateral trade agreements, clean energy transition partnerships, or joint diplomatic communiques..."
+      "agendaPlaceholder": "Bilateral trade agreements, clean energy transition partnerships, or joint diplomatic communiques...",
+      "delegationsCtaOne": "1 Sovereign Delegation",
+      "credentialsLeftOne": "1 Credential Left"
     },
     "FRANCHISE_LICENSING": {
       "heroBadge": "Franchise, Retail & SME Business Opportunity",
@@ -2313,7 +2322,9 @@
       "oilLabel": "Special Pressure & Essential Oil Preferences",
       "oilPlaceholder": "Indicate your preferred pressure, lavender/eucalyptus aromatherapy oils, or target focus areas...",
       "confirmCta": "Confirm Appointment",
-      "corporateInvitation": "Corporate Invitation"
+      "corporateInvitation": "Corporate Invitation",
+      "itineraryCtaOne": "View 1 Excursion",
+      "suitesRemainingOne": "1 Suite Remaining"
     },
     "FINANCE_INVESTOR": {
       "heroBadge": "Private Equity, Venture Capital & Sovereign Forum",
@@ -2393,7 +2404,9 @@
       "quantityPlaceholder": "e.g. 5 Units / Annual",
       "emailLabel": "Contact Email",
       "specsLabel": "Technical Specifications / RFQ Scope",
-      "specsPlaceholder": "Detail your machinery requirements, precision tolerance, voltage standards, and expected delivery timeline..."
+      "specsPlaceholder": "Detail your machinery requirements, precision tolerance, voltage standards, and expected delivery timeline...",
+      "browseCtaOne": "Browse 1 Exhibitor Booth",
+      "passesLeftOne": "1 Pass Left"
     }
   }
 }

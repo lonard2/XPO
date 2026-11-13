@@ -252,7 +252,9 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier, pageSize
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg font-sans">{tier.name}</CardTitle>
                     <Badge variant="secondary" size="sm">
-                      {t("availableCount", { count: tier.capacity - tier.soldCount })}
+                      {tier.capacity - tier.soldCount === 1
+                        ? t("availableCountOne")
+                        : t("availableCount", { count: tier.capacity - tier.soldCount })}
                     </Badge>
                   </div>
                   <div className="mt-2">

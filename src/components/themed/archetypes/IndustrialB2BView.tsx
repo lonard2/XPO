@@ -200,7 +200,9 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
               className="gap-2"
             >
               <Search className="h-4 w-4" />
-              {t("browseCta", { count: event.booths.length })}
+              {event.booths.length === 1
+                ? t("browseCtaOne")
+                : t("browseCta", { count: event.booths.length })}
             </Button>
           </div>
         </div>
@@ -426,7 +428,9 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg">{tier.name}</CardTitle>
                     <Badge variant="secondary" size="sm">
-                      {t("passesLeft", { count: tier.capacity - tier.soldCount })}
+                      {tier.capacity - tier.soldCount === 1
+                        ? t("passesLeftOne")
+                        : t("passesLeft", { count: tier.capacity - tier.soldCount })}
                     </Badge>
                   </div>
                   <div className="mt-2">

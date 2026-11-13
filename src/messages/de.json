@@ -1846,7 +1846,8 @@
       "badgesLeft": "Noch {count} Badges",
       "cta": "Convention-Pass erhalten",
       "freeTicket": "Kostenloses Ticket",
-      "esportsStage": "E-Sport-Bühne"
+      "esportsStage": "E-Sport-Bühne",
+      "badgesLeftOne": "Noch 1 Badge"
     },
     "TECH_DEV_SUMMIT": {
       "heroBadge": "Developer-Keynotes, Code Labs & Hackathon 2026",
@@ -1870,7 +1871,8 @@
       "ticketsDescription": "Enthält Zugang zu allen Stage-Aufzeichnungen, Hackathon-Plätzen und VIP-Networking-Empfängen der Speaker.",
       "availableCount": "{count} verfügbar",
       "freeTicket": "Kostenloses Ticket",
-      "selectPass": "Pass wählen"
+      "selectPass": "Pass wählen",
+      "availableCountOne": "1 verfügbar"
     },
     "MEGA_EXPO_PAVILION": {
       "heroBadge": "Nationale Handelsmesse, Mehrhallen-Pavillons & Karneval",
@@ -1892,7 +1894,9 @@
       "ticketsDescription": "Kinder unter 100 cm haben freien Eintritt. Pässe gelten für alle kommerziellen Pavillons und Abendkonzerte.",
       "availableCount": "{count} verfügbar",
       "cta": "Eintrittspass erhalten",
-      "freeEntry": "Freier Eintritt"
+      "freeEntry": "Freier Eintritt",
+      "brandsCountOne": "1+ Marke",
+      "availableCountOne": "1 verfügbar"
     },
     "MUSIC_FESTIVAL": {
       "heroBadge": "Mehrbühnen-Live-Festival & visuelle Produktion",
@@ -2100,7 +2104,10 @@
       "ticketsDesc": "Qualifikationsbezogene Tarife für medizinische Fachärzte, Fellows, Assistenzärzte und allied health professionals.",
       "badgesLeft": "Noch {count} Badges",
       "cta": "Delegiertenpass wählen",
-      "complimentaryPass": "Kostenloser Pass"
+      "complimentaryPass": "Kostenloser Pass",
+      "abstractsCtaOne": "1 Peer-Review-Abstract lesen",
+      "cmeCreditsBadgeOne": "1 CME-Punkt",
+      "badgesLeftOne": "Noch 1 Badge"
     },
     "MEDIA_BROADCAST": {
       "heroBadge": "Medien-, Broadcast- & Pro-AV-Technologiemesse",
@@ -2244,7 +2251,9 @@
       "leadLabel": "Leitender Minister / Botschafter",
       "leadPlaceholder": "Vollständiger Name und diplomatischer Rang",
       "agendaLabel": "Vorgeschlagene Agendathemen",
-      "agendaPlaceholder": "Bilaterale Handelsabkommen, Partnerschaften für saubere Energiewende oder gemeinsame diplomatische Kommuniqués..."
+      "agendaPlaceholder": "Bilaterale Handelsabkommen, Partnerschaften für saubere Energiewende oder gemeinsame diplomatische Kommuniqués...",
+      "delegationsCtaOne": "1 Souveräne Delegation",
+      "credentialsLeftOne": "Noch 1 Nachweis"
     },
     "FRANCHISE_LICENSING": {
       "heroBadge": "Franchise-, Einzelhandels- & KMU-Geschäftschancen",
@@ -2313,7 +2322,9 @@
       "oilLabel": "Besondere Druck- & ätherische Ölpräferenzen",
       "oilPlaceholder": "Geben Sie Ihren bevorzugten Druck, Lavendel-/Eukalyptus-Aromatherapieöle oder Zielbereiche an...",
       "confirmCta": "Termin bestätigen",
-      "corporateInvitation": "Unternehmenseinladung"
+      "corporateInvitation": "Unternehmenseinladung",
+      "itineraryCtaOne": "1 Ausflug ansehen",
+      "suitesRemainingOne": "Noch 1 Suite"
     },
     "FINANCE_INVESTOR": {
       "heroBadge": "Private-Equity-, Venture-Capital- & Sovereign-Forum",
@@ -2393,7 +2404,9 @@
       "quantityPlaceholder": "z. B. 5 Einheiten / Jahr",
       "emailLabel": "Kontakt-E-Mail",
       "specsLabel": "Technische Spezifikationen / RFQ-Umfang",
-      "specsPlaceholder": "Beschreiben Sie Ihre Maschinenanforderungen, Präzisionstoleranzen, Spannungsstandards und den erwarteten Lieferzeitplan..."
+      "specsPlaceholder": "Beschreiben Sie Ihre Maschinenanforderungen, Präzisionstoleranzen, Spannungsstandards und den erwarteten Lieferzeitplan...",
+      "browseCtaOne": "1 Ausstellerstand durchsuchen",
+      "passesLeftOne": "Noch 1 Pass"
     }
   }
 }

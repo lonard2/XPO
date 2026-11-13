@@ -1846,7 +1846,8 @@
       "badgesLeft": "残り{count}枚",
       "cta": "大会パスを取得",
       "freeTicket": "無料チケット",
-      "esportsStage": "eスポーツステージ"
+      "esportsStage": "eスポーツステージ",
+      "badgesLeftOne": "残り1枚"
     },
     "TECH_DEV_SUMMIT": {
       "heroBadge": "開発者キーノート、コードラボ、ハッカソン2026",
@@ -1870,7 +1871,8 @@
       "ticketsDescription": "全ステージ録画、ハッカソンデスク、登壇者VIPネットワーキングレセプションへのアクセスを含みます。",
       "availableCount": "残り{count}枚",
       "freeTicket": "無料チケット",
-      "selectPass": "パスを選択"
+      "selectPass": "パスを選択",
+      "availableCountOne": "残り1枚"
     },
     "MEGA_EXPO_PAVILION": {
       "heroBadge": "全国貿易フェア、マルチホールパビリオン、カーニバル",
@@ -1892,7 +1894,9 @@
       "ticketsDescription": "身長100cm未満の子供は無料。パスはすべての商業パビリオンと夜のコンサートに入場できます。",
       "availableCount": "残り{count}枚",
       "cta": "入場パスを取得",
-      "freeEntry": "無料入場"
+      "freeEntry": "無料入場",
+      "brandsCountOne": "1+ ブランド",
+      "availableCountOne": "残り1枚"
     },
     "MUSIC_FESTIVAL": {
       "heroBadge": "マルチステージ・ライブフェスティバル & ビジュアル制作",
@@ -2100,7 +2104,10 @@
       "ticketsDesc": "医療専門医、フェロー、レジデント、関連医療従事者向けの資格別料金。",
       "badgesLeft": "残り{count}枚",
       "cta": "代表者パスを選択",
-      "complimentaryPass": "無料パス"
+      "complimentaryPass": "無料パス",
+      "abstractsCtaOne": "査読済み抄録を1件読む",
+      "cmeCreditsBadgeOne": "1 CME単位",
+      "badgesLeftOne": "残り1枚"
     },
     "MEDIA_BROADCAST": {
       "heroBadge": "メディア・放送・Pro-AVテクノロジーマート",
@@ -2244,7 +2251,9 @@
       "leadLabel": "首席大臣 / 大使",
       "leadPlaceholder": "氏名と外交階級",
       "agendaLabel": "提案議題",
-      "agendaPlaceholder": "二国間貿易協定、クリーンエネルギー移行パートナーシップ、共同外交コミュニケ..."
+      "agendaPlaceholder": "二国間貿易協定、クリーンエネルギー移行パートナーシップ、共同外交コミュニケ...",
+      "delegationsCtaOne": "主権代表団（1）",
+      "credentialsLeftOne": "残り1枚の資格"
     },
     "FRANCHISE_LICENSING": {
       "heroBadge": "フランチャイズ・小売・SMEビジネス機会",
@@ -2313,7 +2322,9 @@
       "oilLabel": "圧力とエッセンシャルオイルのご希望",
       "oilPlaceholder": "お好みの圧力、ラベンダー/ユーカリのアロマオイル、重点ケア部位をお知らせください...",
       "confirmCta": "予約を確定",
-      "corporateInvitation": "コーポレート招待"
+      "corporateInvitation": "コーポレート招待",
+      "itineraryCtaOne": "エクスカーション1件を見る",
+      "suitesRemainingOne": "残り1スイート"
     },
     "FINANCE_INVESTOR": {
       "heroBadge": "プライベートエクイティ、ベンチャーキャピタル、ソブリンフォーラム",
@@ -2393,7 +2404,9 @@
       "quantityPlaceholder": "例: 5台 / 年",
       "emailLabel": "連絡先メール",
       "specsLabel": "技術仕様 / RFQ範囲",
-      "specsPlaceholder": "機械要件、精度公差、電圧基準、予定納期の詳細をご記入ください..."
+      "specsPlaceholder": "機械要件、精度公差、電圧基準、予定納期の詳細をご記入ください...",
+      "browseCtaOne": "1社の出展ブースを見る",
+      "passesLeftOne": "残り1枚"
     }
   }
 }

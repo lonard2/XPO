@@ -142,7 +142,9 @@ export function MegaExpoPavilionView({ event, locale = "en", onSelectTier }: Arc
             <Card key={pavilion.id} className="border-border hover:border-orange-500 transition-all flex flex-col justify-between">
               <CardHeader className="p-4 pb-2">
                 <Badge variant="archetype" size="sm" className="w-fit mb-2 font-mono">
-                  {t("brandsCount", { count: pavilion.tenantsCount })}
+                  {pavilion.tenantsCount === 1
+                    ? t("brandsCountOne")
+                    : t("brandsCount", { count: pavilion.tenantsCount })}
                 </Badge>
                 <CardTitle className="text-sm font-bold">{pavilion.name}</CardTitle>
                 <CardDescription className="text-xs text-muted-foreground mt-1">
@@ -218,7 +220,9 @@ export function MegaExpoPavilionView({ event, locale = "en", onSelectTier }: Arc
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg">{tier.name}</CardTitle>
                     <Badge variant="secondary" size="sm">
-                      {t("availableCount", { count: tier.capacity - tier.soldCount })}
+                      {tier.capacity - tier.soldCount === 1
+                        ? t("availableCountOne")
+                        : t("availableCount", { count: tier.capacity - tier.soldCount })}
                     </Badge>
                   </div>
                   <div className="mt-2">
