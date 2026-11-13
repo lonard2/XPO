@@ -252,40 +252,40 @@ export function HallFloorMap({
             {/* Main Entrance / Registration Lobby */}
             <rect x="360" y="440" width="180" height="35" fill="#0f172a" stroke="#3b82f6" strokeWidth="2" rx="6" />
             <text x="450" y="462" fill="#60a5fa" fontSize="11" fontWeight="bold" textAnchor="middle" fontFamily="sans-serif">
-              MAIN REGISTRATION LOBBY
+              {tPerks("mapMainLobby")}
             </text>
 
-            {/* VIP Lounge & Barista Station (Top Right) */}
+            {/* {tPerks("mapVipLoungeLabel")} & Barista Station (Top Right) */}
             <rect x="670" y="40" width="190" height="90" fill="#1e1b4b" stroke="#6366f1" strokeWidth="1.5" rx="8" />
             <text x="765" y="75" fill="#a5b4fc" fontSize="12" fontWeight="bold" textAnchor="middle" fontFamily="sans-serif">
-              VIP BUYER LOUNGE
+              {tPerks("mapVipLounge")}
             </text>
             <text x="765" y="95" fill="#818cf8" fontSize="10" textAnchor="middle" fontFamily="sans-serif">
-              Barista Coffee & Meeting Suites
+              {tPerks("mapBarista")}
             </text>
 
             {/* Keynote Plenary Stage (Top Left) */}
             <rect x="40" y="40" width="220" height="110" fill="#022c22" stroke="#10b981" strokeWidth="1.5" rx="8" />
             <text x="150" y="85" fill="#6ee7b7" fontSize="13" fontWeight="bold" textAnchor="middle" fontFamily="sans-serif">
-              PLENARY KEYNOTE STAGE
+              {tPerks("mapPlenary")}
             </text>
             <text x="150" y="105" fill="#34d399" fontSize="10" textAnchor="middle" fontFamily="sans-serif">
-              {hallName || "Main Hall"} - Multi-Track Audio
+              {hallName || "Main Hall"} {tPerks("mapMultiTrack")}
             </text>
 
             {/* Restrooms & Amenities (Bottom Left) */}
             <rect x="40" y="380" width="140" height="60" fill="#1e293b" stroke="#475569" strokeWidth="1" rx="6" />
             <text x="110" y="415" fill="#94a3b8" fontSize="10" fontWeight="bold" textAnchor="middle" fontFamily="sans-serif">
-              RESTROOMS / FIRST AID
+              {tPerks("mapRestrooms")}
             </text>
 
             {/* Food Court & Networking Deck (Top Center) */}
             <rect x="340" y="40" width="220" height="60" fill="#1e293b" stroke="#475569" strokeWidth="1" rx="6" />
             <text x="450" y="75" fill="#cbd5e1" fontSize="11" fontWeight="bold" textAnchor="middle" fontFamily="sans-serif">
-              CAFETERIA & NETWORKING DECK
+              {tPerks("mapCafeteria")}
             </text>
 
-            {/* Interactive Exhibitor Booth Grid (3 rows x 4 cols = 12 booths) */}
+            {/* Interactive {tPerks("mapExhibitorBooth")} Grid (3 rows x 4 cols = 12 booths) */}
             {filteredBooths.slice(0, 12).map((booth, index) => {
               // 4 columns, 3 rows
               const col = index % 4;
@@ -382,15 +382,15 @@ export function HallFloorMap({
         <div className="absolute bottom-3 right-3 bg-slate-900/90 backdrop-blur-xs border border-slate-800 rounded-lg p-2.5 text-xs text-slate-300 space-y-1">
           <div className="flex items-center gap-1.5">
             <div className="h-2.5 w-2.5 rounded-xs bg-blue-600" />
-            <span>Exhibitor Booth</span>
+            <span>{tPerks("mapExhibitorBooth")}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <div className="h-2.5 w-2.5 rounded-xs bg-indigo-600" />
-            <span>VIP Lounge</span>
+            <span>{tPerks("mapVipLoungeLabel")}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <div className="h-2.5 w-2.5 rounded-xs bg-emerald-600" />
-            <span>Keynote Stage</span>
+            <span>{tPerks("mapKeynoteStage")}</span>
           </div>
         </div>
       </div>
@@ -411,7 +411,7 @@ export function HallFloorMap({
                 onClick={() => setSelectedBooth(null)}
                 className="text-xs text-muted-foreground hover:text-foreground cursor-pointer min-h-[36px] px-2.5 py-1 rounded-md hover:bg-muted"
               >
-                Close
+                {tCom("close")}
               </button>
             </div>
             <CardTitle className="text-base sm:text-lg mt-1">
@@ -433,7 +433,7 @@ export function HallFloorMap({
                   rel="noopener noreferrer"
                   className="ml-auto text-primary hover:underline flex items-center gap-1"
                 >
-                  <span>Exhibitor Portal</span>
+                  <span>{tPerks("mapExhibitorPortal")}</span>
                   <ExternalLink className="h-3 w-3" />
                 </a>
               )}

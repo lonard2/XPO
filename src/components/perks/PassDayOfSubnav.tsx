@@ -58,7 +58,7 @@ export function PassDayOfSubnav({
 
   return (
     <nav
-      aria-label="Day of Event Sub-Navigation"
+      aria-label={tPerks("subnavAria")}
       className={cn(
         'sticky top-14 z-30 -mx-4 px-4 py-2.5 bg-background/95 backdrop-blur-md border-b border-border/80 shadow-xs print:hidden',
         className

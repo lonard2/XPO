@@ -65,7 +65,10 @@
     "ADMIN",
     "SHA-256",
     "google/gemini-3.5-flash-lite",
-    "google/gemini-3.7-flash"
+    "google/gemini-3.7-flash",
+    "Page Not Found",
+    "The requested resource could not be found within the XPO MICE ecosystem.",
+    "Return to Discovery"
   ],
   "patterns": [
     "^https?://",

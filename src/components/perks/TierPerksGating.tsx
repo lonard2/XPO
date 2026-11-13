@@ -287,7 +287,7 @@ export function TierPerksGating({
                       </div>
                       <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1">
                         <CheckCircle2 className="h-3 w-3 shrink-0" />
-                        {tPerks("presentCounter") || <span>Present to on-site staff at counter</span>}
+                        {tPerks("presentCounter")}
                       </p>
 
                       <Button
@@ -297,7 +297,7 @@ export function TierPerksGating({
                         className="w-full min-h-[44px] sm:min-h-[36px] text-xs font-semibold gap-1 text-muted-foreground hover:text-foreground cursor-pointer"
                       >
                         <Compass className="h-3 w-3" />
-                        {tPerks("locateMap") || <span>Locate Redemption Hub on Map</span>}
+                        {tPerks("locateMap")}
                       </Button>
 
                       <Button

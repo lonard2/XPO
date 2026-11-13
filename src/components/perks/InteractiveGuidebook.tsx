@@ -142,7 +142,7 @@ export function InteractiveGuidebook({
             {tPerks("liveAgendaAlert") || "Live Schedule & Stage Timetable"}
           </h3>
           <p className="text-xs sm:text-sm text-muted-foreground">
-            Personalize your session itinerary, track keynote speakers, and receive real-time hall updates.
+            {tPerks("guideDesc")}
           </p>
         </div>
 
@@ -169,7 +169,7 @@ export function InteractiveGuidebook({
           <div className="flex items-start gap-2.5">
             <Bell className="h-4 w-4 shrink-0 mt-0.5 text-amber-600 dark:text-amber-400" />
             <div>
-              <span className="font-bold text-amber-900 dark:text-amber-300">Live Stage Alert:</span>
+              <span className="font-bold text-amber-900 dark:text-amber-300">{tPerks("guideLiveAlert")}</span>
               {alerts.map((alert, i) => (
                 <p key={i} className="text-amber-950 dark:text-amber-200/90 mt-0.5 leading-relaxed">
                   {alert}
@@ -295,7 +295,7 @@ export function InteractiveGuidebook({
                     {session.speakerName && (
                       <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                         <User className="h-3.5 w-3.5 text-primary/80" />
-                        <span>Speaker: </span>
+                        <span>{tPerks("guideSpeaker")} </span>
                         <span className="font-medium text-foreground">{session.speakerName}</span>
                         {session.speakerRole && <span>({session.speakerRole})</span>}
                       </div>
@@ -332,8 +332,7 @@ export function InteractiveGuidebook({
                     className="mt-3 pt-3 border-t border-border/60 text-xs text-muted-foreground space-y-2 animate-fade-in"
                   >
                     <p>
-                      Join industry leaders and peer delegates for an interactive session at {session.location}.
-                      Q&A discussion and networking will follow the presentation.
+                      {tPerks("guideJoin", { location: session.location })} {tPerks("guideFollow")}
                     </p>
                   </div>
                 )}

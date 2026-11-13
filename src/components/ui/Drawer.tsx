@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -25,6 +26,7 @@ export function Drawer({
   side = "right",
   className,
 }: DrawerProps) {
+  const tCom = useTranslations("common");
   const visible = Boolean(open ?? isOpen);
 
   React.useEffect(() => {
@@ -80,7 +82,7 @@ export function Drawer({
           <button
             onClick={onClose}
             className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            aria-label="Close panel"
+            aria-label={tCom("closePanel")}
           >
             <X className="h-4 w-4" />
           </button>

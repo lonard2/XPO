@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -34,6 +35,7 @@ export function Modal({
   maxWidth,
   size = "lg",
 }: ModalProps) {
+  const tCom = useTranslations("common");
   const effectiveSize = maxWidth || size;
 
   React.useEffect(() => {
@@ -90,7 +92,7 @@ export function Modal({
           <button
             onClick={onClose}
             className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            aria-label="Close dialog"
+            aria-label={tCom("closeDialog")}
           >
             <X className="h-4 w-4" />
           </button>

@@ -70,6 +70,7 @@ function showcaseLine(e: AdminEventItem): string | null {
 
 export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: AdminEventsConsoleClientProps) {
   const tAdmin = useTranslations("admin");
+  const tCom = useTranslations("common");
   const [events, setEvents] = React.useState<AdminEventItem[]>(initialEvents);
   const [searchQuery, setSearchQuery] = React.useState("");
   const [busyId, setBusyId] = React.useState<string | null>(null);
@@ -387,7 +388,7 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
                   onClick={() => { setAssignFor(null); setAssignTo(""); }}
                   className="h-9 px-2 text-xs cursor-pointer"
                 >
-                  <span>Cancel</span>
+                  <span>{tCom("cancel")}</span>
                 </Button>
               </span>
             ) : (
@@ -466,7 +467,7 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
             className="h-9 gap-1.5 text-xs text-destructive hover:bg-destructive/10 cursor-pointer"
           >
             <Trash2 className="h-3.5 w-3.5" />
-            <span>Delete</span>
+            <span>{tCom("delete")}</span>
           </Button>
         </div>
       </CardContent>
@@ -666,7 +667,7 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
                   }}
                   className="h-9 text-xs cursor-pointer"
                 >
-                  <span>Add</span>
+                  <span>{tAdmin("add")}</span>
                 </Button>
                 <Button
                   type="button"
@@ -733,7 +734,7 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
           </label>
           <div className="flex justify-end gap-2 pt-1">
             <Button type="button" variant="ghost" size="sm" onClick={() => setBlurbFor(null)} className="h-9 text-xs cursor-pointer">
-              <span>Cancel</span>
+              <span>{tCom("cancel")}</span>
             </Button>
             <Button
               type="button"

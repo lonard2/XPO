@@ -301,14 +301,14 @@ export function AuthModal({
 
                 <div className="pt-2 border-t border-border/60">
                   <div className="text-xs font-semibold uppercase text-muted-foreground tracking-wider mb-1.5">
-                    Tier: Attendee
+                    {tAuth("tierAttendee")}
                   </div>
                   <div className="flex flex-wrap gap-1">
                     <span className="text-xs bg-muted/80 px-1.5 py-0.5 rounded text-foreground">
-                      Event Discovery
+                      {tAuth("eventDiscovery")}
                     </span>
                     <span className="text-xs bg-muted/80 px-1.5 py-0.5 rounded text-foreground">
-                      Pass Checkout
+                      {tAuth("passCheckout")}
                     </span>
                   </div>
                 </div>
@@ -350,17 +350,17 @@ export function AuthModal({
 
                 <div className="pt-2 border-t border-border/60">
                   <div className="text-xs font-semibold uppercase text-muted-foreground tracking-wider mb-1.5">
-                    Tier: Organizer
+                    {tAuth("tierOrganizer")}
                   </div>
                   <div className="flex flex-wrap gap-1">
                     <span className="text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded font-medium">
-                      Event Wizard
+                      {tAuth("eventWizard")}
                     </span>
                     <span className="text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded font-medium">
-                      Live Customizer
+                      {tAuth("liveCustomizer")}
                     </span>
                     <span className="text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded font-medium">
-                      QR Scanner
+                      {tAuth("qrScanner")}
                     </span>
                   </div>
                 </div>
@@ -402,17 +402,17 @@ export function AuthModal({
 
                 <div className="pt-2 border-t border-border/60">
                   <div className="text-xs font-semibold uppercase text-muted-foreground tracking-wider mb-1.5">
-                    Tier: SuperAdmin
+                    {tAuth("tierSuperAdmin")}
                   </div>
                   <div className="flex flex-wrap gap-1">
                     <span className="text-xs bg-rose-500/10 text-rose-600 dark:text-rose-400 px-1.5 py-0.5 rounded font-medium">
-                      Venue Ingestion
+                      {tAuth("venueIngestion")}
                     </span>
                     <span className="text-xs bg-rose-500/10 text-rose-600 dark:text-rose-400 px-1.5 py-0.5 rounded font-medium">
-                      Crawler Pipeline
+                      {tAuth("crawlerPipeline")}
                     </span>
                     <span className="text-xs bg-rose-500/10 text-rose-600 dark:text-rose-400 px-1.5 py-0.5 rounded font-medium">
-                      Audit Logs
+                      {tAuth("auditLogs")}
                     </span>
                   </div>
                 </div>

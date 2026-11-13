@@ -73,6 +73,7 @@ export interface DigitalPassQRProps {
 export function DigitalPassQR({ booking, locale = 'en', isDemoPreview = false }: DigitalPassQRProps) {
   const tTickets = useTranslations('tickets');
   const tCommon = useTranslations('common');
+  const tPerks = useTranslations('perks');
   const tMyTickets = useTranslations('myTickets');
 
   const [copiedHash, setCopiedHash] = React.useState(false);
@@ -215,7 +216,7 @@ export function DigitalPassQR({ booking, locale = 'en', isDemoPreview = false }:
               >
                 <Check className="h-2.5 w-2.5" />
                 <span className="hidden xs:inline">{tMyTickets('offlineReady') || 'Offline Ready'}</span>
-                <span className="xs:hidden">Offline</span>
+                <span className="xs:hidden">{tPerks("passOffline")}</span>
               </Badge>
             )}
             {cacheWarning && (
@@ -252,7 +253,7 @@ export function DigitalPassQR({ booking, locale = 'en', isDemoPreview = false }:
                   {booking.ticketTier.name}
                 </Badge>
                 <span className="text-xs text-muted-foreground font-mono">
-                  Ref: {booking.id}
+                  {tPerks("passRef")} {booking.id}
                 </span>
               </div>
               <h3 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">
@@ -476,20 +477,20 @@ export function DigitalPassQR({ booking, locale = 'en', isDemoPreview = false }:
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-400">
               <div>
-                <span className="text-slate-500">Algorithm:</span> HMAC-SHA256 (256-bit)
+                <span className="text-slate-500">{tPerks("passAlgorithm")}</span> {tPerks("passAlgorithmValue")}
               </div>
               <div>
-                <span className="text-slate-500">Verification:</span> Constant-Time (`crypto.timingSafeEqual`)
+                <span className="text-slate-500">{tPerks("passVerification")}</span> {tPerks("passVerificationValue")}
               </div>
               <div>
-                <span className="text-slate-500">Booking ID:</span> {booking.id}
+                <span className="text-slate-500">{tPerks("passBookingId")}</span> {booking.id}
               </div>
               <div>
-                <span className="text-slate-500">Issued Timestamp:</span>{' '}
+                <span className="text-slate-500">{tPerks("passIssuedTimestamp")}</span>{' '}
                 {new Date(booking.createdAt).toISOString()}
               </div>
               <div className="sm:col-span-2 truncate">
-                <span className="text-slate-500">Public Hash:</span> {booking.qrCodeHash}
+                <span className="text-slate-500">{tPerks("passPublicHash")}</span> {booking.qrCodeHash}
               </div>
             </div>
           </div>
@@ -542,7 +543,7 @@ export function DigitalPassQR({ booking, locale = 'en', isDemoPreview = false }:
             {/* Instructions */}
             <div className="space-y-1 text-xs text-slate-700 font-medium">
               <p>{tTickets("holdFlat") || "Hold screen flat under the optical gate or turnstile camera."}</p>
-              <p className="font-mono text-xs text-slate-500">Ref: {booking.id}</p>
+              <p className="font-mono text-xs text-slate-500">{tPerks("passRef")} {booking.id}</p>
             </div>
 
             <Button

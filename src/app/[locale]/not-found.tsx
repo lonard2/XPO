@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import {
   Compass,
   Calendar,
@@ -18,6 +19,7 @@ import { cn } from "@/lib/utils";
 
 export default function LocalizedNotFound() {
   const pathname = usePathname();
+  const tCom = useTranslations("common");
   // Extract locale prefix from pathname, fallback to 'en'
   const matchedLocale = pathname?.split("/")[1];
   const locale = ["en", "ja", "zh-CN", "id", "de", "es"].includes(matchedLocale)
@@ -33,7 +35,7 @@ export default function LocalizedNotFound() {
         </div>
         <div>
           <Badge variant="outline" className="text-xs font-mono font-semibold text-muted-foreground px-3 py-1">
-            HTTP 404 - Resource Not Found
+            {tCom("notFoundHttp")}
           </Badge>
         </div>
       </div>
@@ -41,11 +43,10 @@ export default function LocalizedNotFound() {
       {/* Main Title & Descriptive Guidance */}
       <div className="space-y-3">
         <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-foreground">
-          Page or Exhibition Not Found
+          {tCom("notFoundTitle")}
         </h1>
         <p className="text-xs sm:text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
-          The convention hall, event listing, or digital pass page you requested could not be located.
-          It may have concluded, relocated to another hall, or been updated.
+          {tCom("notFoundDesc")}
         </p>
       </div>
 
@@ -56,21 +57,21 @@ export default function LocalizedNotFound() {
           className={cn(buttonVariants({ variant: "default", size: "default" }), "gap-2 font-semibold text-xs min-h-[40px] px-5 shadow-sm")}
         >
           <Compass className="h-4 w-4" />
-          <span>Return to Discovery</span>
+          <span>{tCom("notFoundReturn")}</span>
         </Link>
         <Link
           href={`/${locale}/events`}
           className={cn(buttonVariants({ variant: "outline", size: "default" }), "gap-2 font-semibold text-xs min-h-[40px] px-5")}
         >
           <Calendar className="h-4 w-4" />
-          <span>Browse Exhibitions</span>
+          <span>{tCom("notFoundBrowse")}</span>
         </Link>
         <Link
           href={`/${locale}/venues`}
           className={cn(buttonVariants({ variant: "ghost", size: "default" }), "gap-2 font-semibold text-xs min-h-[40px] px-4")}
         >
           <Building2 className="h-4 w-4" />
-          <span>Venue Directory</span>
+          <span>{tCom("notFoundVenues")}</span>
         </Link>
       </div>
 
@@ -78,29 +79,29 @@ export default function LocalizedNotFound() {
       <Card className="border-border/80 bg-card/60 p-5 max-w-lg mx-auto text-left space-y-3">
         <div className="text-xs font-semibold text-foreground flex items-center gap-2">
           <Globe2 className="h-4 w-4 text-primary" />
-          <span>Browse by Country Edition:</span>
+          <span>{tCom("notFoundBrowseByEdition")}</span>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
           <Link
             href={`/${locale}/region/id`}
             className="p-2.5 rounded-lg border border-border/60 bg-background/50 hover:bg-muted/80 transition-colors block text-center"
           >
-            <div className="font-semibold text-foreground">Indonesia</div>
-            <div className="text-xs text-muted-foreground mt-0.5">JIExpo • ICE BSD</div>
+            <div className="font-semibold text-foreground">{tCom("notFoundIndonesia")}</div>
+            <div className="text-xs text-muted-foreground mt-0.5">{tCom("notFoundIndonesiaVenues")}</div>
           </Link>
           <Link
             href={`/${locale}/region/jp`}
             className="p-2.5 rounded-lg border border-border/60 bg-background/50 hover:bg-muted/80 transition-colors block text-center"
           >
-            <div className="font-semibold text-foreground">Japan</div>
-            <div className="text-xs text-muted-foreground mt-0.5">Tokyo Big Sight</div>
+            <div className="font-semibold text-foreground">{tCom("notFoundJapan")}</div>
+            <div className="text-xs text-muted-foreground mt-0.5">{tCom("notFoundJapanVenues")}</div>
           </Link>
           <Link
             href={`/${locale}/region/global`}
             className="p-2.5 rounded-lg border border-border/60 bg-background/50 hover:bg-muted/80 transition-colors block text-center"
           >
-            <div className="font-semibold text-foreground">Global</div>
-            <div className="text-xs text-muted-foreground mt-0.5">MBS • Frankfurt</div>
+            <div className="font-semibold text-foreground">{tCom("notFoundGlobal")}</div>
+            <div className="text-xs text-muted-foreground mt-0.5">{tCom("notFoundGlobalVenues")}</div>
           </Link>
         </div>
       </Card>
