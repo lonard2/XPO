@@ -61,7 +61,9 @@
     "Waze",
     "(ID)",
     "(JP)",
-    "/events/"
+    "/events/",
+    "ADMIN",
+    "SHA-256"
   ],
   "patterns": [
     "^https?://",

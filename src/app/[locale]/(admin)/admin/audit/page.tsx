@@ -1,4 +1,5 @@
 import * as React from "react";
+import { getTranslations } from "next-intl/server";
 import {
   ShieldCheck,
   Lock,
@@ -20,6 +21,7 @@ interface AuditPageProps {
 
 export default async function AdminAuditPage({ params }: AuditPageProps) {
   const { locale } = await params;
+  const tAdm = await getTranslations({ locale, namespace: "admin" });
 
   const initialLogs = [
     {
@@ -110,15 +112,15 @@ export default async function AdminAuditPage({ params }: AuditPageProps) {
           <div className="flex items-center gap-2 mb-1.5">
             <Badge variant="destructive" size="sm" className="gap-1">
               <ShieldCheck className="h-3 w-3" />
-              Platform Security & Audit Trail
+              {tAdm("auditBadge")}
             </Badge>
-            <span className="text-xs text-muted-foreground">Immutable Compliance Records</span>
+            <span className="text-xs text-muted-foreground">{tAdm("auditImmutable")}</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-            Platform Security & Governance Audit Logs
+            {tAdm("auditTitle")}
           </h1>
           <p className="text-sm text-muted-foreground mt-1 max-w-3xl">
-            Real-time cryptographic pass validation logs, tamper detection alerts, crawler sync history, and organizer credential attestations.
+            {tAdm("auditDesc")}
           </p>
         </div>
       </div>

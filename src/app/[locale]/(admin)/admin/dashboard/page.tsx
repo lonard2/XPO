@@ -223,10 +223,6 @@ export default async function AdminDashboardPage({ params }: AdminDashboardPageP
             <div className="text-2xl font-black text-foreground tracking-tight">
               {totalEvents}
             </div>
-            <div className="flex items-center gap-1 mt-1 text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
-              <TrendingUp className="h-3 w-3" />
-              <span>+14% MoM schedule growth</span>
-            </div>
           </div>
         </Card>
 
@@ -243,10 +239,6 @@ export default async function AdminDashboardPage({ params }: AdminDashboardPageP
           <div className="mt-3">
             <div className="text-2xl font-black text-foreground tracking-tight">
               {totalDelegates.toLocaleString()}
-            </div>
-            <div className="flex items-center gap-1 mt-1 text-[11px] text-muted-foreground">
-              <CheckCircle2 className="h-3 w-3 text-emerald-500" />
-              <span>100% Cryptographic Passes</span>
             </div>
           </div>
         </Card>
@@ -265,10 +257,6 @@ export default async function AdminDashboardPage({ params }: AdminDashboardPageP
             <div className="text-2xl font-black text-foreground tracking-tight">
               {verifiedOrganizersCount}
             </div>
-            <div className="flex items-center gap-1 mt-1 text-[11px] text-amber-600 dark:text-amber-400 font-medium">
-              <Clock className="h-3 w-3" />
-              <span>3 Pending verification</span>
-            </div>
           </div>
         </Card>
 
@@ -284,11 +272,11 @@ export default async function AdminDashboardPage({ params }: AdminDashboardPageP
           </div>
           <div className="mt-3">
             <div className="text-2xl font-black text-foreground tracking-tight">
-              {totalVenues} <span className="text-sm font-normal text-muted-foreground">/ {totalHalls} Halls</span>
+              {totalVenues} <span className="text-sm font-normal text-muted-foreground">/ {tAdm("hallsCountShort", { count: totalHalls })}</span>
             </div>
             <div className="flex items-center gap-1 mt-1 text-[11px] text-muted-foreground">
               <Layers className="h-3 w-3 text-amber-500" />
-              <span>{(totalFloorAreaSqm || 380000).toLocaleString()} sqm floor area</span>
+              <span>{tAdm("sqmFloorArea", { area: (totalFloorAreaSqm || 0).toLocaleString() })}</span>
             </div>
           </div>
         </Card>
@@ -297,7 +285,7 @@ export default async function AdminDashboardPage({ params }: AdminDashboardPageP
         <Card className="p-4 bg-card/70 backdrop-blur-sm border-border/80 hover:border-primary/40 transition-all">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Platform Gross
+              {tAdm("platformGross")}
             </span>
             <div className="h-8 w-8 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center">
               <CreditCard className="h-4 w-4" />
@@ -306,10 +294,6 @@ export default async function AdminDashboardPage({ params }: AdminDashboardPageP
           <div className="mt-3">
             <div className="text-2xl font-black text-foreground tracking-tight">
               {formatCurrency(totalRevenue, "IDR", locale)}
-            </div>
-            <div className="flex items-center gap-1 mt-1 text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
-              <TrendingUp className="h-3 w-3" />
-              <span>+22% Platform volume</span>
             </div>
           </div>
         </Card>

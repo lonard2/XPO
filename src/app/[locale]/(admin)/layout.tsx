@@ -27,39 +27,39 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const navItems = [
     {
       href: `/${locale}/admin/dashboard`,
-      label: "Governance Dashboard",
+      label: tAdmin("navDashboard"),
       icon: LayoutDashboard,
-      description: "Platform KPIs, organizer queue & audit feed",
+      description: tAdmin("navDashboardDesc"),
     },
     {
       href: `/${locale}/admin/venues`,
-      label: "Global Venue Directory",
+      label: tAdmin("navVenues"),
       icon: Building2,
-      description: "Relational venues, exact halls & GPS visualizer",
+      description: tAdmin("navVenuesDesc"),
     },
     {
       href: `/${locale}/admin/events`,
       label: tAdmin("crumbEvents"),
       icon: CalendarDays,
-      description: "Platform & organizer events, ownership & removal",
+      description: tAdmin("navEventsDesc"),
     },
     {
       href: `/${locale}/admin/homepage`,
       label: tAdmin("homepageRowsTitle"),
       icon: LayoutGrid,
-      description: "Composed homepage rows for each edition",
+      description: tAdmin("navHomepageDesc"),
     },
     {
       href: `/${locale}/admin/crawler`,
-      label: "Ingestion Crawler Engine",
+      label: tAdmin("navCrawler"),
       icon: RefreshCw,
-      description: "Multi-venue schedule scraper & deduplication",
+      description: tAdmin("navCrawlerDesc"),
     },
     {
       href: `/${locale}/admin/audit`,
-      label: "Platform Security Logs",
+      label: tAdmin("navAudit"),
       icon: ShieldCheck,
-      description: "Cryptographic check-in & permission audit trail",
+      description: tAdmin("navAuditDesc"),
     },
   ];
 
@@ -96,9 +96,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         <div className="bg-amber-500/15 border-b border-amber-500/30 px-4 py-2.5 flex items-center justify-between text-xs text-amber-800 dark:text-amber-300">
           <div className="flex items-center gap-2">
             <AlertCircle className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
-            <span>
-              You are currently viewing in <strong>{role}</strong> mode. Venue modifications and ingestion crawlers require <strong>Platform Admin</strong> privileges.
-            </span>
+            <span>{tAdmin("adminModeNotice", { role })}</span>
           </div>
           <Button
             size="sm"
@@ -106,7 +104,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             className="h-7 text-xs border-amber-500/40 text-amber-900 dark:text-amber-200 hover:bg-amber-500/20"
             onClick={() => switchRole("ADMIN")}
           >
-            Switch to Admin Persona
+            {tAdmin("adminSwitchPersona")}
           </Button>
         </div>
       )}
@@ -118,7 +116,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           <div className="p-3.5 rounded-xl border border-border bg-background/70 space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Governance Portal
+                {tAdmin("governancePortal")}
               </span>
               <Badge variant={getRoleBadgeVariant("ADMIN")} size="sm">
                 ADMIN
@@ -133,53 +131,53 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                   {user?.role === "ADMIN" ? user.name : "Platform Administrator"}
                 </h4>
                 <p className="text-xs text-muted-foreground truncate">
-                  XPO System Governance & Audit
+                  {tAdmin("adminGovernanceSubtitle")}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* System Health Indicators */}
+          {/* {tAdmin("systemHealth")} Indicators */}
           <div className="p-3 rounded-xl border border-border/60 bg-muted/30 space-y-2">
             <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               <span className="flex items-center gap-1.5">
                 <Activity className="h-3 w-3 text-emerald-500" />
-                System Health
+                {tAdmin("systemHealth")}
               </span>
-              <span className="text-emerald-500 font-bold">100% Operational</span>
+              <span className="text-emerald-500 font-bold">{tAdmin("systemOperational")}</span>
             </div>
             <div className="space-y-1.5 text-xs">
               <div className="flex items-center justify-between text-muted-foreground">
                 <span className="flex items-center gap-1.5">
                   <Database className="h-3 w-3 text-primary" />
-                  Prisma DB Engine
+                  {tAdmin("prismaDbEngine")}
                 </span>
                 <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-xs font-medium">
-                  <CheckCircle2 className="h-2.5 w-2.5" /> Online
+                  <CheckCircle2 className="h-2.5 w-2.5" /> {tAdmin("statusOnline")}
                 </span>
               </div>
               <div className="flex items-center justify-between text-muted-foreground">
                 <span className="flex items-center gap-1.5">
                   <RefreshCw className="h-3 w-3 text-amber-500" />
-                  Ingestion Scraper
+                  {tAdmin("ingestionScraper")}
                 </span>
                 <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-xs font-medium">
-                  <CheckCircle2 className="h-2.5 w-2.5" /> Standby
+                  <CheckCircle2 className="h-2.5 w-2.5" /> {tAdmin("statusStandby")}
                 </span>
               </div>
               <div className="flex items-center justify-between text-muted-foreground">
                 <span className="flex items-center gap-1.5">
                   <Cpu className="h-3 w-3 text-indigo-500" />
-                  OpenRouter Multi-AI
+                  {tAdmin("openRouterMultiAi")}
                 </span>
                 <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-xs font-medium">
-                  <CheckCircle2 className="h-2.5 w-2.5" /> Active (6 Models)
+                  <CheckCircle2 className="h-2.5 w-2.5" /> {tAdmin("statusActiveModels", { count: 6 })}
                 </span>
               </div>
               <div className="flex items-center justify-between text-muted-foreground">
                 <span className="flex items-center gap-1.5">
                   <Lock className="h-3 w-3 text-rose-500" />
-                  HMAC Pass Verifier
+                  {tAdmin("hmacPassVerifier")}
                 </span>
                 <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-xs font-medium">
                   <CheckCircle2 className="h-2.5 w-2.5" /> SHA-256
@@ -191,7 +189,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           {/* Navigation Links */}
           <div className="space-y-1">
             <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground px-2 mb-2">
-              Platform Administration
+              {tAdmin("platformAdministration")}
             </div>
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -222,21 +220,21 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           {/* Portal Switchers */}
           <div className="pt-4 border-t border-border/70 space-y-1 mt-auto">
             <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground px-2 mb-1">
-              Switch Portals
+              {tAdmin("switchPortals")}
             </div>
             <Link
               href={`/${locale}/dashboard`}
               className="flex items-center gap-2.5 p-2 rounded-lg text-xs text-muted-foreground hover:text-foreground hover:bg-accent/50 transition-colors"
             >
               <Briefcase className="h-4 w-4 text-primary" />
-              <span>Organizer Portal</span>
+              <span>{tAdmin("organizerPortal")}</span>
             </Link>
             <Link
               href={`/${locale}`}
               className="flex items-center gap-2.5 p-2 rounded-lg text-xs text-muted-foreground hover:text-foreground hover:bg-accent/50 transition-colors"
             >
               <Compass className="h-4 w-4 text-emerald-500" />
-              <span>Attendee Event Discovery</span>
+              <span>{tAdmin("attendeeDiscovery")}</span>
             </Link>
           </div>
         </aside>
@@ -252,7 +250,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             >
               {isMobileSidebarOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
             </Button>
-            <span className="text-xs font-bold text-foreground">Platform Governance</span>
+            <span className="text-xs font-bold text-foreground">{tAdmin("platformGovernance")}</span>
           </div>
           <Badge variant={getRoleBadgeVariant("ADMIN")} size="sm">
             ADMIN
@@ -290,7 +288,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                   className="flex items-center gap-3 p-2.5 rounded-lg text-xs font-medium text-muted-foreground hover:text-foreground"
                 >
                   <Briefcase className="h-4 w-4 text-primary" />
-                  <span>Organizer Portal</span>
+                  <span>{tAdmin("organizerPortal")}</span>
                 </Link>
                 <Link
                   href={`/${locale}`}
@@ -298,7 +296,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                   className="flex items-center gap-3 p-2.5 rounded-lg text-xs font-medium text-muted-foreground hover:text-foreground"
                 >
                   <Compass className="h-4 w-4 text-emerald-500" />
-                  <span>Attendee Event Discovery</span>
+                  <span>{tAdmin("attendeeDiscovery")}</span>
                 </Link>
               </div>
             </div>
@@ -315,13 +313,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               <Link href={`/${locale}/admin/crawler`}>
                 <Button size="sm" variant="outline" className="h-8 gap-1.5 text-xs">
                   <RefreshCw className="h-3.5 w-3.5 text-primary" />
-                  <span className="hidden sm:inline">Crawler Engine</span>
+                  <span className="hidden sm:inline">{tAdmin("crawlerEngine")}</span>
                 </Button>
               </Link>
               <Link href={`/${locale}/admin/venues`}>
                 <Button size="sm" variant="primary" className="h-8 gap-1.5 text-xs">
                   <Building2 className="h-3.5 w-3.5" />
-                  <span className="hidden sm:inline">Manage Venues</span>
+                  <span className="hidden sm:inline">{tAdmin("manageVenues")}</span>
                 </Button>
               </Link>
             </div>

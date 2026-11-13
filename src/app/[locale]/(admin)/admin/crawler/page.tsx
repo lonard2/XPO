@@ -1,4 +1,5 @@
 import * as React from "react";
+import { getTranslations } from "next-intl/server";
 import {
   RefreshCw,
   Database,
@@ -21,6 +22,7 @@ interface CrawlerPageProps {
 
 export default async function AdminCrawlerPage({ params }: CrawlerPageProps) {
   const { locale } = await params;
+  const tAdm = await getTranslations({ locale, namespace: "admin" });
   const history = getCrawlHistory();
   const registeredVenues = Object.entries(VENUE_SCRAPER_SOURCES).map(([slug, data]) => ({
     slug,
@@ -38,15 +40,15 @@ export default async function AdminCrawlerPage({ params }: CrawlerPageProps) {
           <div className="flex items-center gap-2 mb-1.5">
             <Badge variant="outline" size="sm" className="gap-1 text-amber-600 dark:text-amber-400 border-amber-500/30">
               <RefreshCw className="h-3 w-3" />
-              Automated Schedule Scraper & Deduplication
+              {tAdm("crawlerBadge")}
             </Badge>
-            <span className="text-xs text-muted-foreground">MICE Ingestion Engine</span>
+            <span className="text-xs text-muted-foreground">{tAdm("crawlerEngineBadge")}</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-            Venue Schedule Ingestion & Crawler Pipeline
+            {tAdm("crawlerTitle")}
           </h1>
           <p className="text-sm text-muted-foreground mt-1 max-w-3xl">
-            Ingest upcoming schedules from premier global and regional convention centers, normalize raw MICE formats, perform deterministic SHA-256 fingerprint deduplication, and stage events for platform publishing.
+            {tAdm("crawlerDesc")}
           </p>
         </div>
       </div>

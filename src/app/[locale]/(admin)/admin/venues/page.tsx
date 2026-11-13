@@ -1,4 +1,5 @@
 import * as React from "react";
+import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import {
   Building2,
@@ -23,6 +24,7 @@ interface AdminVenuesPageProps {
 
 export default async function AdminVenuesPage({ params }: AdminVenuesPageProps) {
   const { locale } = await params;
+  const tAdm = await getTranslations({ locale, namespace: "admin" });
 
   let venuesList: any[] = [];
 
@@ -55,15 +57,15 @@ export default async function AdminVenuesPage({ params }: AdminVenuesPageProps) 
           <div className="flex items-center gap-2 mb-1.5">
             <Badge variant="outline" size="sm" className="gap-1">
               <Building2 className="h-3 w-3 text-primary" />
-              Venue & Hall Directory Governance
+              {tAdm("venueGovernance")}
             </Badge>
-            <span className="text-xs text-muted-foreground">Relational Complex & Stage Hierarchy</span>
+            <span className="text-xs text-muted-foreground">{tAdm("venueHierarchy")}</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-            Global Exhibition & Convention Venue Directory
+            {tAdm("venueDirectoryTitle")}
           </h1>
           <p className="text-sm text-muted-foreground mt-1 max-w-3xl">
-            Create, index, and manage world-class convention complexes across Indonesia, Japan, and international gateways with exact hall capacities, floor area specs, and GPS mapping coordinates.
+            {tAdm("venueDirectoryDesc")}
           </p>
         </div>
       </div>

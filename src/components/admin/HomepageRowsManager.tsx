@@ -368,7 +368,7 @@ export function HomepageRowsManager({ locale }: { locale: string }) {
         isOpen={draft !== null}
         onClose={() => setDraft(null)}
         title={draft?.id ? tAdmin("homepageRowsEditTitle") : tAdmin("homepageRowsNewTitle")}
-        description="Title, subtitle, scope, and an ordered event list."
+        description={tAdmin("homepageRowsDesc")}
         size="lg"
       >
         {draft && (

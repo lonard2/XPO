@@ -1,4 +1,5 @@
 import * as React from "react";
+import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import { Badge } from "@/components/ui/Badge";
 import { CalendarDays } from "lucide-react";
@@ -11,6 +12,7 @@ interface AdminEventsPageProps {
 
 export default async function AdminEventsPage({ params }: AdminEventsPageProps) {
   const { locale } = await params;
+  const tAdm = await getTranslations({ locale, namespace: "admin" });
 
   let eventsList: any[] = [];
   let isLive = true;
@@ -37,21 +39,20 @@ export default async function AdminEventsPage({ params }: AdminEventsPageProps) 
           <div className="flex items-center gap-2 mb-1.5">
             <Badge variant="outline" size="sm" className="gap-1">
               <CalendarDays className="h-3 w-3 text-primary" />
-              Event Governance
+              {tAdm("eventGovernance")}
             </Badge>
-            <span className="text-xs text-muted-foreground">Ownership, Curation & Removal</span>
+            <span className="text-xs text-muted-foreground">{tAdm("eventOwnershipSubtitle")}</span>
             {!isLive && (
               <Badge variant="outline" size="sm" className="text-amber-600 border-amber-500/40">
-                Preview Data
+                {tAdm("previewData")}
               </Badge>
             )}
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-            Platform & Organizer Events
+            {tAdm("platformOrganizerEvents")}
           </h1>
           <p className="text-sm text-muted-foreground mt-1 max-w-3xl">
-            Review every exhibition in the system, release owned events back to
-            platform curation, or permanently remove retired listings.
+{tAdm("eventGovernanceDesc")}
           </p>
         </div>
       </div>
