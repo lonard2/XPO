@@ -1588,7 +1588,7 @@ export default function NewEventWizardPage() {
                 <span>{tOrg("wizardDetailsTitle") || "Primary Event Identity"}</span>
               </h2>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Define the public exhibition title, customized URL path, and executive overview.
+                {tOrg("wizardIdentityDesc")}
               </p>
             </div>
 
@@ -1596,7 +1596,7 @@ export default function NewEventWizardPage() {
               <Input
                 id="wizard-event-title"
                 label={tOrg("wizardEventTitle") || "Exhibition Title"}
-                placeholder="e.g. Indonesia Green Energy & Battery Expo 2027"
+                placeholder={tOrg("wizardTitlePlaceholder")}
                 value={title}
                 onChange={(e) => {
                   handleTitleChange(e.target.value);
@@ -1612,7 +1612,7 @@ export default function NewEventWizardPage() {
                   <Input
                     id="wizard-slug"
                     label={tOrg("wizardSlug") || "URL Slug Identifier"}
-                    placeholder="event-slug-identifier"
+                    placeholder={tOrg("wizardSlugPlaceholder")}
                     value={slug}
                     onChange={(e) => {
                       setIsSlugDirty(true);
@@ -1857,18 +1857,18 @@ export default function NewEventWizardPage() {
                 <span>{tOrg("wizardVenueHalls") || "Hosting Venue & Hall Allocation"}</span>
               </h2>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Select target country edition, flagship convention center, hall assignments, and operational dates.
+                {tOrg("wizardVenueDesc")}
               </p>
             </div>
 
             {/* Country Edition Region Selection Cards */}
             <div className="space-y-2">
               <label className="text-xs font-bold text-foreground uppercase tracking-wider block">
-                Target Regional Country Edition:
+                {tOrg("wizardRegionLabel")}
               </label>
               <div
                 role="radiogroup"
-                aria-label="Select Target Country Region Hub"
+                aria-label={tOrg("wizardRegionAria")}
                 className="grid grid-cols-1 sm:grid-cols-3 gap-3"
               >
                 {[
@@ -2014,9 +2014,9 @@ export default function NewEventWizardPage() {
                 >
                   {selectedVenue?.halls?.map((h) => (
                     <option key={h.id} value={h.id}>
-                      {h.name} · {tSpaceKind(normalizeSpaceKind(h.kind))} {h.capacity ? `(Capacity: ${h.capacity.toLocaleString()} Attendees)` : ""}
+                      {h.name} · {tSpaceKind(normalizeSpaceKind(h.kind))} {h.capacity ? `(${tOrg("wizardHallCapacityOption", { capacity: h.capacity.toLocaleString() })})` : ""}
                     </option>
-                  )) || <option value="">Main Complex Pavilion</option>}
+                  )) || <option value="">{tOrg("wizardCampusTitle")}</option>}
                 </select>
               </div>
             </div>
@@ -2027,11 +2027,11 @@ export default function NewEventWizardPage() {
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-semibold text-foreground">
                     {selectedVenueIsHallVenue
-                      ? "Campus Hall Allocation (Multi-Hall Booking):"
+                      ? tOrg("wizardCampusHallAllocation")
                       : tOrg("wizardCampusSpaceAllocation") || "Campus Space Allocation:"}
                   </span>
                   <span className="text-[11px] text-muted-foreground">
-                    Select all wings reserved for this exhibition
+                    {tOrg("wizardCampusDesc")}
                   </span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
@@ -2065,7 +2065,7 @@ export default function NewEventWizardPage() {
                           <span className="text-xs font-semibold truncate">{h.name}</span>
                         </div>
                         <span className="text-[11px] font-mono tabular-nums shrink-0 text-muted-foreground">
-                          {h.capacity ? `${h.capacity.toLocaleString()} cap` : "Flexible"}
+                          {h.capacity ? tOrg("wizardHallCapacityShort", { capacity: h.capacity.toLocaleString() }) : tOrg("wizardHallFlexible")}
                         </span>
                       </button>
                     );
@@ -2073,10 +2073,10 @@ export default function NewEventWizardPage() {
                 </div>
                 <div className="flex items-center justify-between p-2.5 rounded-lg bg-muted/40 border border-border/60 text-xs">
                   <span className="text-muted-foreground">
-                    Combined Campus Allocation: <strong className="text-foreground">{selectedHalls.length} {selectedHalls.length === 1 ? "Hall" : "Halls"}</strong> ({selectedHalls.map((h) => h.name).join(", ")})
+                    {tOrg("wizardCampusAllocation")} <strong className="text-foreground">{selectedHalls.length} {selectedHalls.length === 1 ? tOrg("wizardHallOne") : tOrg("wizardHallMany")}</strong> ({selectedHalls.map((h) => h.name).join(", ")})
                   </span>
                   <Badge variant="outline" size="sm" className="font-mono text-xs font-bold shrink-0">
-                    {totalHallsCapacity.toLocaleString()} Combined Slots
+                    {tOrg("wizardCampusSlots", { count: totalHallsCapacity.toLocaleString() })}
                   </Badge>
                 </div>
               </div>
@@ -2121,12 +2121,12 @@ export default function NewEventWizardPage() {
             <div className="pt-2 border-t border-border/50 space-y-3">
               <div className="flex items-center justify-between">
                 <label className="text-xs font-bold text-foreground uppercase tracking-wider block">
-                  Convention Operating Window:
+                  {tOrg("wizardOperatingWindow")}
                 </label>
                 {eventDurationDays !== null && (
                   <Badge variant="outline" size="sm" className="font-semibold text-primary border-primary/30 bg-primary/5">
                     <Calendar className="h-3 w-3 mr-1" />
-                    <span>{eventDurationDays} Days Physical Exhibition</span>
+                    <span>{tOrg("wizardPhysicalDays", { days: eventDurationDays })}</span>
                   </Badge>
                 )}
               </div>
