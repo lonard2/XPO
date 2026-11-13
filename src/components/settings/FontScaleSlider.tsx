@@ -40,7 +40,7 @@ export function FontScaleSlider({ className }: { className?: string }) {
             onClick={() => setFontScale(1.0)}
             disabled={!isMounted || fontScale === 1.0}
             className="h-8 px-2 text-xs gap-1.5 text-muted-foreground hover:text-foreground"
-            title="Reset font scale to 100%"
+            title={tSet("fontResetAria")}
           >
             <RotateCcw className="h-3.5 w-3.5" />
             <span className="hidden xs:inline">{tSet("resetDefaults")?.split(" ")?.[0] || "Reset"}</span>
@@ -95,14 +95,14 @@ export function FontScaleSlider({ className }: { className?: string }) {
       {/* Live Preview Box */}
       <div className="rounded-lg bg-muted/40 border border-border/60 p-3.5 space-y-1">
         <span className="text-xs uppercase font-mono tracking-wider text-muted-foreground block mb-1">
-          Live Scale Preview
+          {tSet("fontPreviewTitle")}
         </span>
         <div style={{ fontSize: `${fontScale}rem` }} className="transition-all duration-150">
           <p className="font-semibold text-foreground leading-snug">
-            Exhibition Hall A1: International Manufacturing Keynote
+            {tSet("fontPreviewHeading")}
           </p>
           <p className="text-muted-foreground leading-relaxed mt-1 text-[0.875em]">
-            Present your cryptographic QR pass at Gate 3 for fast-track delegate admission.
+            {tSet("fontPreviewBody")}
           </p>
         </div>
       </div>

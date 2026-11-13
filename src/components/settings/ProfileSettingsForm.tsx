@@ -246,7 +246,7 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input
           label={tSet("fullName") || "Full Name"}
-          placeholder="e.g. Budi Santoso / Kenji Takahashi"
+          placeholder={tSet("profileNamePlaceholder")}
           value={formData.fullName}
           autoComplete="name"
           required
@@ -261,7 +261,7 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
         <Input
           label={tSet("email") || "Email Address"}
           type="email"
-          placeholder="e.g. attendee@company.com"
+          placeholder={tSet("profileEmailPlaceholder")}
           value={formData.email}
           autoComplete="email"
           required
@@ -275,7 +275,7 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
 
         <Input
           label={tSet("organization") || "Organization / Company"}
-          placeholder="e.g. Global Robotics Corp"
+          placeholder={tSet("profileOrgPlaceholder")}
           value={formData.organization}
           autoComplete="organization"
           onChange={(e) => {
@@ -287,7 +287,7 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
 
         <Input
           label={tSet("jobTitle") || "Job Title / Delegate Role"}
-          placeholder="e.g. Chief Technology Officer / Buyer"
+          placeholder={tSet("profileRolePlaceholder")}
           value={formData.jobTitle}
           autoComplete="organization-title"
           onChange={(e) => {
@@ -309,7 +309,7 @@ export function ProfileSettingsForm({ className }: { className?: string }) {
           </div>
           <div className="flex items-center gap-2">
             <span className="text-xs font-mono text-muted-foreground" aria-live="polite">
-              {formData.interests.length} selected
+              {formData.interests.length} {tSet("profileSelected")}
             </span>
             <button
               type="button"

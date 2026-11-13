@@ -250,11 +250,11 @@ export default function SettingsPage({ params }: SettingsPageProps) {
                     google/gemini-3.5-flash-lite
                   </span>
                   <span className="text-xs uppercase font-mono px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold">
-                    Default Copilot
+                    {tSet("modelDefaultCopilot")}
                   </span>
                 </div>
                 <p className="text-muted-foreground leading-relaxed text-xs">
-                  Sub-second token streaming for real-time attendee FAQs, shuttle schedules, and hall wayfinding.
+                  {tSet("modelDefaultCopilotDesc")}
                 </p>
               </div>
 
@@ -264,11 +264,11 @@ export default function SettingsPage({ params }: SettingsPageProps) {
                     google/gemini-3.7-flash
                   </span>
                   <span className="text-xs uppercase font-mono px-1.5 py-0.5 rounded bg-primary/10 text-primary font-bold">
-                    Multi-Modal
+                    {tSet("modelMultiModal")}
                   </span>
                 </div>
                 <p className="text-muted-foreground leading-relaxed text-xs">
-                  Complex reasoning across multi-day exhibition schedules and spatial hall floor maps.
+                  {tSet("modelMultiModalDesc")}
                 </p>
               </div>
             </div>

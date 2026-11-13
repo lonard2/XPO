@@ -63,7 +63,9 @@
     "(JP)",
     "/events/",
     "ADMIN",
-    "SHA-256"
+    "SHA-256",
+    "google/gemini-3.5-flash-lite",
+    "google/gemini-3.7-flash"
   ],
   "patterns": [
     "^https?://",

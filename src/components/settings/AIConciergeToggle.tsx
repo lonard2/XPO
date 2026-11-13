@@ -53,7 +53,7 @@ export function AIConciergeToggle({ className }: { className?: string }) {
           type="button"
           role="switch"
           aria-checked={aiConciergeEnabled}
-          aria-label="Toggle Attendee AI Concierge"
+          aria-label={tSet("aiConciergeToggleAria")}
           onClick={() => setAiConciergeEnabled(!aiConciergeEnabled)}
           className={cn(
             "relative inline-flex h-7 w-12 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 self-start sm:self-auto",
@@ -75,10 +75,10 @@ export function AIConciergeToggle({ className }: { className?: string }) {
           <Navigation className="h-4 w-4 text-primary shrink-0 mt-0.5" />
           <div>
             <span className="text-xs font-semibold text-foreground block">
-              Venue Wayfinding
+              {tSet("aiFeatureWayfinding")}
             </span>
             <p className="text-xs text-muted-foreground leading-normal">
-              Locate specific exhibitor booths, plenary halls, and registration counters.
+              {tSet("aiFeatureWayfindingDesc")}
             </p>
           </div>
         </div>
@@ -87,10 +87,10 @@ export function AIConciergeToggle({ className }: { className?: string }) {
           <Clock className="h-4 w-4 text-primary shrink-0 mt-0.5" />
           <div>
             <span className="text-xs font-semibold text-foreground block">
-              Live Timetable Synthesis
+              {tSet("aiFeatureTimetable")}
             </span>
             <p className="text-xs text-muted-foreground leading-normal">
-              Summarize keynote tracks, speaker panels, and room schedule conflicts.
+              {tSet("aiFeatureTimetableDesc")}
             </p>
           </div>
         </div>
@@ -99,10 +99,10 @@ export function AIConciergeToggle({ className }: { className?: string }) {
           <Sparkles className="h-4 w-4 text-primary shrink-0 mt-0.5" />
           <div>
             <span className="text-xs font-semibold text-foreground block">
-              Multi-Model Gateway
+              {tSet("aiFeatureGateway")}
             </span>
             <p className="text-xs text-muted-foreground leading-normal">
-              Powered by OpenRouter streaming models with intelligent offline fallbacks.
+              {tSet("aiFeatureGatewayDesc")}
             </p>
           </div>
         </div>
@@ -111,10 +111,10 @@ export function AIConciergeToggle({ className }: { className?: string }) {
           <ShieldCheck className="h-4 w-4 text-primary shrink-0 mt-0.5" />
           <div>
             <span className="text-xs font-semibold text-foreground block">
-              Privacy Preserving
+              {tSet("aiFeaturePrivacy")}
             </span>
             <p className="text-xs text-muted-foreground leading-normal">
-              Chat history is kept strictly in local browser state and can be cleared anytime.
+              {tSet("aiFeaturePrivacyDesc")}
             </p>
           </div>
         </div>

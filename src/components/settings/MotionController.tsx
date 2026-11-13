@@ -45,7 +45,7 @@ export function MotionController({ className }: { className?: string }) {
     <div className={cn("space-y-4", className)}>
       <div
         role="radiogroup"
-        aria-label="Motion dynamics selection"
+        aria-label={tSet("motionSelectionAria")}
         className="grid grid-cols-1 sm:grid-cols-3 gap-3"
       >
         {MOTION_OPTIONS.map((opt) => {
@@ -108,10 +108,10 @@ export function MotionController({ className }: { className?: string }) {
           <div className="flex items-center gap-2">
             <Activity className="h-4 w-4 text-primary" />
             <span className="text-xs font-semibold text-foreground uppercase tracking-wider font-mono">
-              Live Motion Test Card
+              {tSet("motionTestTitle")}
             </span>
           </div>
-          <span className="text-xs text-muted-foreground">Hover or tap card below</span>
+          <span className="text-xs text-muted-foreground">{tSet("motionTestHint")}</span>
         </div>
 
         <div
@@ -124,13 +124,13 @@ export function MotionController({ className }: { className?: string }) {
         >
           <div className="flex items-center justify-between">
             <div>
-              <span className="text-xs font-bold text-foreground">Interactive MICE Booth Card</span>
+              <span className="text-xs font-bold text-foreground">{tSet("motionCardTitle")}</span>
               <p className="text-xs text-muted-foreground">
-                Testing {motionMode.toUpperCase()} physics curve & hover dynamics
+                {tSet("motionTesting")} {motionMode.toUpperCase()} {tSet("motionCurve")}
               </p>
             </div>
             <span className="px-2 py-0.5 rounded text-xs font-mono font-semibold bg-primary/10 text-primary border border-primary/20">
-              HALL 4 - B12
+              {tSet("motionHall")}
             </span>
           </div>
         </div>

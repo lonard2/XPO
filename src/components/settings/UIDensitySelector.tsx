@@ -40,7 +40,7 @@ export function UIDensitySelector({ className }: { className?: string }) {
     <div className={cn("space-y-3", className)}>
       <div
         role="radiogroup"
-        aria-label="UI density selection"
+        aria-label={tSet("densitySelectionAria")}
         className="grid grid-cols-1 sm:grid-cols-2 gap-3"
       >
         {DENSITY_OPTIONS.map((opt) => {

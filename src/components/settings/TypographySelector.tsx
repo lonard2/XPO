@@ -64,7 +64,7 @@ export function TypographySelector({ className }: { className?: string }) {
     <div className={cn("space-y-3", className)}>
       <div
         role="radiogroup"
-        aria-label="Typography engine selection"
+        aria-label={tSet("typographySelectionAria")}
         className="grid grid-cols-1 md:grid-cols-2 gap-3"
       >
         {TYPOGRAPHY_OPTIONS.map((opt) => {
@@ -125,7 +125,7 @@ export function TypographySelector({ className }: { className?: string }) {
                     {opt.glyphSample}
                   </span>
                   <span className="text-xs uppercase font-mono text-muted-foreground">
-                    Preview
+                    {tSet("typographyPreview")}
                   </span>
                 </div>
                 <p className={cn("text-xs text-foreground/90 line-clamp-2 leading-relaxed pt-1", opt.fontClass)}>

@@ -48,7 +48,7 @@ export function ThemeModeSelector({ className }: { className?: string }) {
     <div className={cn("space-y-3", className)}>
       <div
         role="radiogroup"
-        aria-label="Theme mode selection"
+        aria-label={tSet("themeSelectionAria")}
         className="grid grid-cols-1 sm:grid-cols-2 gap-3"
       >
         {THEME_OPTIONS.map((opt) => {
