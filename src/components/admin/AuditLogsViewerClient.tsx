@@ -80,14 +80,14 @@ export function AuditLogsViewerClient({
   const getSeverityBadge = (sev: AuditLogDetailed["severity"]) => {
     switch (sev) {
       case "SUCCESS":
-        return <Badge variant="success" size="sm">SUCCESS</Badge>;
+        return <Badge variant="success" size="sm">{tAdmin("severitySuccess")}</Badge>;
       case "WARN":
-        return <Badge variant="warning" size="sm">WARN</Badge>;
+        return <Badge variant="warning" size="sm">{tAdmin("severityWarn")}</Badge>;
       case "ALERT":
-        return <Badge variant="destructive" size="sm">ALERT</Badge>;
+        return <Badge variant="destructive" size="sm">{tAdmin("severityAlert")}</Badge>;
       case "INFO":
       default:
-        return <Badge variant="neutral" size="sm">INFO</Badge>;
+        return <Badge variant="neutral" size="sm">{tAdmin("severityInfo")}</Badge>;
     }
   };
 
@@ -99,12 +99,12 @@ export function AuditLogsViewerClient({
           {/* Category Filter */}
           <div className="flex items-center gap-1 bg-muted/60 p-1 rounded-lg border border-border/60 text-xs">
             {[
-              { id: "ALL", label: "All Categories" },
-              { id: "PASS_VALIDATION", label: "Pass Validations" },
-              { id: "CRAWLER", label: "Crawler Sync" },
-              { id: "VENUE_GOVERNANCE", label: "Venues" },
-              { id: "AUTH_SECURITY", label: "Auth & Roles" },
-              { id: "SECURITY_ALERT", label: "Security Alerts" },
+              { id: "ALL", label: tAdmin("categoryAll") },
+              { id: "PASS_VALIDATION", label: tAdmin("categoryPass") },
+              { id: "CRAWLER", label: tAdmin("categoryCrawler") },
+              { id: "VENUE_GOVERNANCE", label: tAdmin("categoryVenue") },
+              { id: "AUTH_SECURITY", label: tAdmin("categoryAuth") },
+              { id: "SECURITY_ALERT", label: tAdmin("categorySecurity") },
             ].map((cat) => (
               <button
                 key={cat.id}
@@ -126,18 +126,18 @@ export function AuditLogsViewerClient({
             onChange={(e) => setSeverityFilter(e.target.value)}
             className="h-8 px-2.5 rounded-lg border border-border bg-background text-foreground text-xs focus:ring-1 focus:ring-primary"
           >
-            <option value="ALL">All Severities</option>
-            <option value="SUCCESS">SUCCESS Only</option>
-            <option value="INFO">INFO Only</option>
-            <option value="WARN">WARN Only</option>
-            <option value="ALERT">ALERT Only</option>
+            <option value="ALL">{tAdmin("severityAll")}</option>
+            <option value="SUCCESS">{tAdmin("severitySuccessOnly")}</option>
+            <option value="INFO">{tAdmin("severityInfoOnly")}</option>
+            <option value="WARN">{tAdmin("severityWarnOnly")}</option>
+            <option value="ALERT">{tAdmin("severityAlertOnly")}</option>
           </select>
         </div>
 
         {/* Search */}
         <div className="w-full md:w-64">
           <Input
-            placeholder="Search action, actor, target..."
+            placeholder={tAdmin("auditSearchPlaceholder")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             iconPrefix={<Search className="h-4 w-4" />}
@@ -152,16 +152,16 @@ export function AuditLogsViewerClient({
           <div className="flex items-center justify-between">
             <CardTitle className="text-base flex items-center gap-2">
               <FileText className="h-4 w-4 text-primary" />
-              Platform Security Log Feed ({filteredLogs.length} Events)
+              {tAdmin("auditFeedCount", { count: filteredLogs.length })}
             </CardTitle>
-            <span className="text-xs text-muted-foreground">Immutable Append-Only Records</span>
+            <span className="text-xs text-muted-foreground">{tAdmin("auditImmutableBadge")}</span>
           </div>
         </CardHeader>
 
         <CardContent className="pt-0 space-y-3">
           {filteredLogs.length === 0 ? (
             <div className="text-center py-12 border border-dashed border-border rounded-xl text-muted-foreground text-xs">
-              No audit log events found matching the specified filter criteria.
+              {tAdmin("auditEmptyFiltered")}
             </div>
           ) : (
             filteredLogs.map((log) => {
@@ -190,15 +190,15 @@ export function AuditLogsViewerClient({
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs bg-muted/30 p-2.5 rounded-lg border border-border/40">
                     <div>
-                      <span className="text-muted-foreground block text-xs uppercase font-semibold">Actor / Origin</span>
+                      <span className="text-muted-foreground block text-xs uppercase font-semibold">{tAdmin("actorOrigin")}</span>
                       <span className="font-medium text-foreground">{log.actor}</span>
                     </div>
                     <div>
-                      <span className="text-muted-foreground block text-xs uppercase font-semibold">Target Resource</span>
+                      <span className="text-muted-foreground block text-xs uppercase font-semibold">{tAdmin("targetResource")}</span>
                       <span className="font-medium text-foreground">{log.target}</span>
                     </div>
                     <div className="sm:col-span-2 pt-1 border-t border-border/40">
-                      <span className="text-muted-foreground font-medium">Summary: </span>
+                      <span className="text-muted-foreground font-medium">{tAdmin("summaryLabel")} </span>
                       <span className="text-foreground">{log.details}</span>
                     </div>
                   </div>

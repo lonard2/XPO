@@ -233,20 +233,20 @@ export function AdminDashboardClient({
       case "APPROVED":
         return (
           <Badge variant="success" size="sm" className="gap-1">
-            <CheckCircle2 className="h-3 w-3" /> Approved
+            <CheckCircle2 className="h-3 w-3" /> {tAdmin("statusApproved")}
           </Badge>
         );
       case "REJECTED":
         return (
           <Badge variant="destructive" size="sm" className="gap-1">
-            <XCircle className="h-3 w-3" /> Rejected
+            <XCircle className="h-3 w-3" /> {tAdmin("statusRejected")}
           </Badge>
         );
       case "PENDING":
       default:
         return (
           <Badge variant="warning" size="sm" className="gap-1">
-            <Clock className="h-3 w-3" /> Pending Review
+            <Clock className="h-3 w-3" /> {tAdmin("statusPendingReview")}
           </Badge>
         );
     }
@@ -255,14 +255,14 @@ export function AdminDashboardClient({
   const getSeverityBadge = (sev: AuditLogItem["severity"]) => {
     switch (sev) {
       case "SUCCESS":
-        return <Badge variant="success" size="sm">SUCCESS</Badge>;
+        return <Badge variant="success" size="sm">{tAdmin("severitySuccess")}</Badge>;
       case "WARN":
-        return <Badge variant="warning" size="sm">WARN</Badge>;
+        return <Badge variant="warning" size="sm">{tAdmin("severityWarn")}</Badge>;
       case "ALERT":
-        return <Badge variant="destructive" size="sm">ALERT</Badge>;
+        return <Badge variant="destructive" size="sm">{tAdmin("severityAlert")}</Badge>;
       case "INFO":
       default:
-        return <Badge variant="neutral" size="sm">INFO</Badge>;
+        return <Badge variant="neutral" size="sm">{tAdmin("severityInfo")}</Badge>;
     }
   };
 
@@ -276,10 +276,10 @@ export function AdminDashboardClient({
               <div>
                 <div className="flex items-center gap-2">
                   <UserCheck className="h-5 w-5 text-primary" />
-                  <CardTitle className="text-lg">Organizer Verification Governance Queue</CardTitle>
+                  <CardTitle className="text-lg">{tAdmin("verificationQueueTitle")}</CardTitle>
                 </div>
                 <CardDescription className="mt-1 text-xs">
-                  Review and attest organizer credentials, hall occupancy requests, and compliance contracts.
+                  {tAdmin("verificationQueueDesc")}
                 </CardDescription>
               </div>
 
@@ -287,7 +287,7 @@ export function AdminDashboardClient({
               <div className="flex items-center gap-1 bg-muted/60 p-1 rounded-lg border border-border/60 text-xs">
                 {(["ALL", "PENDING", "APPROVED", "REJECTED"] as const).map((tab) => (
                   <button
-                    key={tab}
+                    key={tab === "ALL" ? tAdmin("filterAll") : tab === "PENDING" ? tAdmin("filterPending") : tab === "APPROVED" ? tAdmin("filterApproved") : tAdmin("filterRejected")}
                     onClick={() => setStatusFilter(tab)}
                     className={`px-2.5 py-1 rounded-md font-medium transition-colors ${
                       statusFilter === tab
@@ -295,7 +295,7 @@ export function AdminDashboardClient({
                         : "text-muted-foreground hover:text-foreground"
                     }`}
                   >
-                    {tab}
+                    {tab === "ALL" ? tAdmin("filterAll") : tab === "PENDING" ? tAdmin("filterPending") : tab === "APPROVED" ? tAdmin("filterApproved") : tAdmin("filterRejected")}
                   </button>
                 ))}
               </div>
@@ -304,7 +304,7 @@ export function AdminDashboardClient({
             {/* Search filter */}
             <div className="mt-3">
               <Input
-                placeholder="Search organizers, events, or venues..."
+                placeholder={tAdmin("searchOrganizersPlaceholder")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 iconPrefix={<Search className="h-4 w-4" />}
@@ -316,7 +316,7 @@ export function AdminDashboardClient({
           <CardContent className="space-y-3.5 pt-0">
             {filteredQueue.length === 0 ? (
               <div className="text-center py-10 border border-dashed border-border rounded-xl text-muted-foreground text-xs">
-                No organizer verification requests found matching your filter criteria.
+                {tAdmin("verificationEmpty")}
               </div>
             ) : (
               filteredQueue.map((req) => (
@@ -332,25 +332,25 @@ export function AdminDashboardClient({
                         {getStatusBadge(req.status)}
                       </div>
                       <div className="text-xs text-muted-foreground mt-0.5">
-                        Contact: <span className="text-foreground font-medium">{req.organizerName}</span> ({req.email})
+                        {tAdmin("contactLabel")} <span className="text-foreground font-medium">{req.organizerName}</span> ({req.email})
                       </div>
                     </div>
                     <span className="text-[11px] text-muted-foreground">
-                      Submitted {req.submittedDate}
+                      {tAdmin("submittedLabel")} {req.submittedDate}
                     </span>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs bg-muted/30 p-2.5 rounded-lg border border-border/50">
                     <div>
-                      <span className="text-muted-foreground block text-xs uppercase font-semibold">Event Title</span>
+                      <span className="text-muted-foreground block text-xs uppercase font-semibold">{tAdmin("eventTitleLabel")}</span>
                       <span className="font-medium text-foreground">{req.eventTitle}</span>
                     </div>
                     <div>
-                      <span className="text-muted-foreground block text-xs uppercase font-semibold">Requested Venue</span>
+                      <span className="text-muted-foreground block text-xs uppercase font-semibold">{tAdmin("requestedVenueLabel")}</span>
                       <span className="font-medium text-foreground">{req.requestedVenue}</span>
                     </div>
                     <div className="sm:col-span-2 pt-1 border-t border-border/40 text-[11px] text-muted-foreground">
-                      <span className="font-medium text-foreground">Operational Notes: </span>
+                      <span className="font-medium text-foreground">{tAdmin("operationalNotesLabel")} </span>
                       {req.notes}
                     </div>
                   </div>
@@ -360,9 +360,9 @@ export function AdminDashboardClient({
                     <div className="flex items-center gap-2 p-2 rounded-lg bg-primary/5 border border-primary/20 text-xs">
                       <ShieldCheck className="h-4 w-4 text-primary shrink-0" />
                       <div className="flex-1">
-                        <span className="font-semibold text-foreground">Staged Event Claim: </span>
+                        <span className="font-semibold text-foreground">{tAdmin("stagedClaimLabel")} </span>
                         <span className="text-muted-foreground">
-                          Approving will transfer event ID <span className="font-mono text-foreground font-medium">{req.claimEventId}</span> and set isPlatformCurated: false.
+                          {tAdmin("stagedClaimApprove", { id: req.claimEventId })}
                         </span>
                       </div>
                     </div>
@@ -393,7 +393,7 @@ export function AdminDashboardClient({
                         disabled={processingId === req.id}
                       >
                         <XCircle className="h-3 w-3 mr-1" />
-                        Reject Request
+                        {tAdmin("rejectRequest")}
                       </Button>
                       <Button
                         size="sm"
@@ -404,10 +404,10 @@ export function AdminDashboardClient({
                       >
                         <CheckCircle2 className="h-3 w-3 mr-1" />
                         {processingId === req.id
-                          ? "Transferring..."
+                          ? tAdmin("transferring")
                           : req.claimEventId
-                          ? "Approve & Transfer Event"
-                          : "Approve & Grant Privileges"}
+                          ? tAdmin("approveTransfer")
+                          : tAdmin("approveGrant")}
                       </Button>
                     </div>
                   )}
@@ -427,23 +427,23 @@ export function AdminDashboardClient({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <RefreshCw className="h-5 w-5 text-amber-500" />
-                <CardTitle className="text-base">MICE Ingestion Scraper</CardTitle>
+                <CardTitle className="text-base">{tAdmin("scraperTitle")}</CardTitle>
               </div>
-              <Badge variant="outline" size="sm">7 Venues Registered</Badge>
+              <Badge variant="outline" size="sm">{tAdmin("scraperVenues", { count: 7 })}</Badge>
             </div>
             <CardDescription className="text-xs">
-              Automated ingestion pipeline scraping schedules from JIExpo, ICE BSD, Tokyo Big Sight, Marina Bay Sands, Messe Frankfurt, ExCeL London, and McCormick Place.
+              {tAdmin("scraperDesc")}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3 pt-0">
             <div className="p-3 bg-muted/40 rounded-xl border border-border/60 text-xs space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Fingerprint Algorithm:</span>
-                <span className="font-mono text-xs font-semibold text-foreground">SHA-256 (Venue+Title+Date)</span>
+                <span className="text-muted-foreground">{tAdmin("fingerprintAlgorithm")}</span>
+                <span className="font-mono text-xs font-semibold text-foreground">{tAdmin("fingerprintValue")}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Deduplication State:</span>
-                <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Active In-Memory & DB Hash Check</span>
+                <span className="text-muted-foreground">{tAdmin("dedupState")}</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-semibold">{tAdmin("dedupValue")}</span>
               </div>
             </div>
 
@@ -462,7 +462,7 @@ export function AdminDashboardClient({
                 disabled={isCrawling}
               >
                 <RefreshCw className={`h-3.5 w-3.5 ${isCrawling ? "animate-spin" : ""}`} />
-                {isCrawling ? "Running Batch Crawl..." : "Execute Scheduled Ingestion"}
+                {isCrawling ? tAdmin("runningCrawl") : tAdmin("executeCrawl")}
               </Button>
               <Link href={`/${locale}/admin/crawler`}>
                 <Button variant="outline" size="sm" className="h-8 px-2 text-xs">
@@ -479,14 +479,14 @@ export function AdminDashboardClient({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <ShieldCheck className="h-5 w-5 text-emerald-500" />
-                <CardTitle className="text-base">System Audit & Governance Feed</CardTitle>
+                <CardTitle className="text-base">{tAdmin("auditFeedTitle")}</CardTitle>
               </div>
               <Link href={`/${locale}/admin/audit`} className="text-xs text-primary hover:underline flex items-center gap-0.5">
-                View All <ChevronRight className="h-3 w-3" />
+                {tAdmin("viewAll")} <ChevronRight className="h-3 w-3" />
               </Link>
             </div>
             <CardDescription className="text-xs">
-              Live cryptographic pass check-ins, organizer approvals, and crawler mutations.
+              {tAdmin("auditFeedDesc")}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3 pt-0">
@@ -498,7 +498,7 @@ export function AdminDashboardClient({
                     className="p-3 rounded-lg border border-amber-500/40 bg-amber-500/5 text-xs space-y-1"
                   >
                     <div className="font-bold text-amber-700 dark:text-amber-400">
-                      {sig.kind === "admission-spike" ? "Admission spike" : "Override cluster"} · {sig.eventTitle}
+                      {sig.kind === "admission-spike" ? tAdmin("admissionSpike") : tAdmin("overrideCluster")} · {sig.eventTitle}
                     </div>
                     <p className="text-muted-foreground leading-relaxed">{sig.detail}</p>
                   </div>
@@ -508,7 +508,7 @@ export function AdminDashboardClient({
             <div className="space-y-2.5 max-h-[380px] overflow-y-auto pr-1">
               {logs.length === 0 && (
                 <div className="text-xs text-muted-foreground text-center py-4">
-                  No audit entries recorded yet. Admin and organizer mutations will appear here.
+                  {tAdmin("auditEmpty")}
                 </div>
               )}
               {logs.map((log) => (
@@ -523,7 +523,7 @@ export function AdminDashboardClient({
                     {getSeverityBadge(log.severity)}
                   </div>
                   <div className="text-[11px] text-muted-foreground">
-                    Actor: <span className="text-foreground font-medium">{log.actor}</span>
+                    {tAdmin("actorLabel")} <span className="text-foreground font-medium">{log.actor}</span>
                   </div>
                   <p className="text-[11px] text-foreground leading-relaxed pt-0.5">
                     {log.details}
