@@ -1,83 +1,23 @@
 "use client";
 
-import * as React from "react";
 import { useTranslations } from "next-intl";
 import {
-  Building2,
   Shield,
-  FileCheck,
-  Globe2,
   Lock,
   CheckCircle2,
   Clock,
   MapPin,
   Ticket,
-  ChevronRight,
   Landmark,
-  Scale,
-  Award,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
-import { Drawer } from "@/components/ui/Drawer";
 import { formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
 import type { ArchetypeViewProps } from "./IndustrialB2BView";
-import { submitMeetingRequest } from "@/lib/meetings/client";
 
-export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, pageSize = "LARGE" }: ArchetypeViewProps) {
+export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
   const t = useTranslations("archetypeViews.GOVERNMENT_DIPLOMATIC");
-  const tCommon = useTranslations("archetypeViews.common");
-  const [bilateralDrawerOpen, setBilateralDrawerOpen] = React.useState(false);
-  const [selectedDelegation, setSelectedDelegation] = React.useState<string | null>(null);
-  const [scheduled, setScheduled] = React.useState(false);
-  const [scheduleReference, setScheduleReference] = React.useState<string | null>(null);
-  const [scheduleError, setScheduleError] = React.useState<string | null>(null);
-  const [scheduleSending, setScheduleSending] = React.useState(false);
-
-  const handleScheduleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = new FormData(e.currentTarget);
-    setScheduleSending(true);
-    setScheduleError(null);
-    try {
-      const reference = await submitMeetingRequest({
-        eventId: event.id,
-        type: "BILATERAL_SLOT",
-        requesterName: `${String(form.get("minister") || "")} (${String(form.get("ministry") || "")})`,
-        requesterEmail: String(form.get("email") || ""),
-        target: selectedDelegation || "Delegation",
-        message: String(form.get("agenda") || ""),
-      });
-      setScheduleReference(reference);
-      setScheduled(true);
-    } catch (err) {
-      setScheduleError((err as Error).message);
-    } finally {
-      setScheduleSending(false);
-    }
-  };
-
-  // Diplomatic delegations participating
-  const delegations = [
-    { country: "Republic of Indonesia", head: "Minister of Maritime Affairs & Investment", lounge: "Bilateral Suite Alpha" },
-    { country: "Japan", head: "Special Envoy for Green Transformation", lounge: "Bilateral Suite Beta" },
-    { country: "Federal Republic of Germany", head: "State Secretary for Economic Affairs", lounge: "Bilateral Suite Gamma" },
-    { country: "Republic of Singapore", head: "Senior Minister of State for Trade", lounge: "Bilateral Suite Delta" },
-  ];
-
-  // Protocol requirements
-  const protocolRules = [
-    "Dress Code: Formal Diplomatic Attire (Dark Business Suit, Traditional National Dress, or Black Tie for Gala).",
-    "Security Protocol: Biometric iris scan verification and Level-1 background clearance required at Security Gate 1.",
-    "Media Restrictions: Pool camera only in Plenary Room; Chatham House Rule strictly applies in Working Sessions.",
-  ];
-
-  const handleRequestBilateral = (delCountry: string) => {
-    setSelectedDelegation(delCountry);
-    setScheduled(false);
-    setBilateralDrawerOpen(true);
-  };
 
   return (
     <div className="space-y-12 font-serif">
@@ -96,20 +36,6 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, p
           </p>
 
           <div className="pt-2 flex flex-wrap items-center gap-3 font-sans">
-            <Button
-              variant="archetype"
-              onClick={() => {
-                const el = document.getElementById("bilateral-lounges");
-                el?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="gap-2 text-xs font-semibold shadow-md"
-            >
-              <Globe2 className="h-4 w-4" />
-              {delegations.length === 1
-                ? t("delegationsCtaOne")
-                : t("delegationsCta", { count: delegations.length })}
-            </Button>
-
             <Button
               variant="outline"
               onClick={() => {
@@ -138,65 +64,10 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, p
               {t("securityDesc")}
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-2 text-xs font-sans text-muted-foreground">
-            {protocolRules.map((rule, idx) => (
-              <div key={idx} className="flex items-start gap-2">
-                <CheckCircle2 className="h-3.5 w-3.5 text-sky-400 shrink-0 mt-0.5" />
-                <span>{rule}</span>
-              </div>
-            ))}
-          </CardContent>
         </Card>
       </section>
 
-      {/* 2. Bilateral Delegation Suites & Lounges */}
-      <section id="bilateral-lounges" className="space-y-4">
-        <div>
-          <h3 className="text-xl font-bold text-foreground flex items-center gap-2 font-sans">
-            <Building2 className="h-5 w-5 text-sky-400" />
-            {t("suitesTitle")}
-          </h3>
-          <p className="text-xs font-sans text-muted-foreground">
-            {t("suitesDesc")}
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-sans">
-          {delegations.map((del, i) => (
-            <Card key={i} className="border-border hover:border-sky-500/50 transition-all flex flex-col justify-between">
-              <CardHeader className="pb-2">
-                <div className="flex items-center justify-between text-xs mb-1">
-                  <Badge variant="archetype" size="sm">
-                    {del.country}
-                  </Badge>
-                  <span className="text-muted-foreground font-mono text-xs font-medium">{del.lounge}</span>
-                </div>
-                <CardTitle className="text-base font-bold">{del.head}</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3 text-xs">
-                <div className="p-2.5 rounded bg-muted/40 text-muted-foreground">
-                  {t("capacityNote")}
-                </div>
-                <div className="pt-2">
-                  {pageSize !== "SMALL" && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleRequestBilateral(del.country)}
-                    className="w-full gap-2 text-xs min-h-[40px] cursor-pointer"
-                  >
-                    <FileCheck className="h-3.5 w-3.5" />
-                    {t("bilateralCta")}
-                  </Button>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      {/* 3. Ministerial Assembly Schedule */}
+      {/* 2. Ministerial Assembly Schedule */}
       {event.agendaItems.length > 0 && (
         <section className="space-y-4">
           <h3 className="text-xl font-bold text-foreground flex items-center gap-2 font-sans">
@@ -256,7 +127,7 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, p
             try {
               benefits = JSON.parse(tier.benefitsJson);
             } catch {
-              benefits = ["Plenary summit access", "Delegation lounge entry", "Official communique draft binder"];
+              benefits = [];
             }
 
             return (
@@ -303,99 +174,6 @@ export function GovernmentDiplomaticView({ event, locale = "en", onSelectTier, p
           })}
         </div>
       </section>
-
-      {/* Bilateral Meeting Drawer */}
-      <Drawer
-        isOpen={bilateralDrawerOpen}
-        onClose={() => setBilateralDrawerOpen(false)}
-        title={t("drawerTitle")}
-        description={t("drawerDescription", { delegation: selectedDelegation ?? "" })}
-      >
-        {scheduled ? (
-          <div className="py-12 text-center space-y-3 font-sans animate-fade-in">
-            <div className="h-12 w-12 rounded-full bg-sky-500/20 text-sky-400 flex items-center justify-center mx-auto">
-              <CheckCircle2 className="h-6 w-6" />
-            </div>
-            <h4 className="text-base font-semibold text-foreground">{t("recordedTitle")}</h4>
-            <p className="text-xs text-muted-foreground max-w-xs mx-auto">
-              {t("recordedBody")}
-              {scheduleReference && (
-                <span className="block mt-1 font-mono">
-                  {tCommon("referenceLabel", { reference: scheduleReference })}
-                </span>
-              )}
-            </p>
-          </div>
-        ) : (
-          <form onSubmit={handleScheduleSubmit} className="space-y-4 text-xs font-sans">
-            <div className="space-y-1">
-              <label className="font-semibold text-foreground">{tCommon("emailLabel")} *</label>
-              <input
-                required
-                name="email"
-                type="email"
-                autoComplete="email"
-                placeholder="protocol@ministry.gov"
-                className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary"
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="font-semibold text-foreground">{t("missionLabel")}</label>
-              <input
-                type="text"
-                readOnly
-                value={selectedDelegation || "Delegation"}
-                className="w-full px-3 py-2 rounded bg-muted/50 border border-border text-muted-foreground"
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="font-semibold text-foreground">{t("ministryLabel")} *</label>
-              <input
-                required
-                name="ministry"
-                type="text"
-                placeholder={t("ministryPlaceholder")}
-                className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary"
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="font-semibold text-foreground">{t("leadLabel")} *</label>
-              <input
-                required
-                name="minister"
-                type="text"
-                placeholder={t("leadPlaceholder")}
-                className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary"
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="font-semibold text-foreground">{t("agendaLabel")}</label>
-              <textarea
-                name="agenda"
-                rows={3}
-                placeholder={t("agendaPlaceholder")}
-                className="w-full px-3 py-2 rounded bg-background border border-border focus:ring-1 focus:ring-primary"
-              />
-            </div>
-            {scheduleError && (
-              <p role="alert" className="text-xs text-destructive">
-                {scheduleError}
-              </p>
-            )}
-            <div className="pt-2">
-              <Button
-                type="submit"
-                variant="archetype"
-                disabled={scheduleSending}
-                className="w-full gap-2 font-semibold"
-              >
-                <FileCheck className="h-4 w-4" />
-                {scheduleSending ? t("submitting") : t("submitCta")}
-              </Button>
-            </div>
-          </form>
-        )}
-      </Drawer>
     </div>
   );
 }

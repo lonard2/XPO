@@ -74,7 +74,19 @@ describe("Quality Gate: Event page sizes", () => {
     locale: "en",
     ticketTiers: [],
     agendaItems: [],
-    booths: [],
+    booths: [
+      {
+        id: "booth-small-1",
+        companyName: "Grand Mall Travel Desk",
+        boothNumber: "Atrium 01",
+        hallName: "Main Atrium",
+        industry: "Travel Retail",
+        description: "Hosted buyer appointments",
+        dimensions: "3m x 3m",
+        areaSqm: 9,
+        boothType: "STANDARD",
+      },
+    ],
     perks: [],
   };
 

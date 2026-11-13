@@ -29,36 +29,16 @@ export function AgritechFoodView({ event, locale = "en", onSelectTier }: Archety
   const [batchCode, setBatchCode] = React.useState("LOT-ORGANIC-2026-904");
   const [traceResult, setTraceResult] = React.useState(false);
 
-  // Precision Farming & Agritech Showcase
-  const agriShowcase = [
-    {
-      id: "agri-01",
-      name: "Autonomous High-Precision Crop Sprayer Drone",
-      developer: "PT Nusantara Agritech Robotics",
-      cropFocus: "Paddy, Corn & Palm Plantation",
-      tech: "LiDAR Altitude Radar | 60L Payload | Variable Rate Spraying",
-      booth: "Hall 1 - Booth 115",
-      status: "Live Drone Slalom Demo @ 11:30 Daily",
-    },
-    {
-      id: "agri-02",
-      name: "Smart IoT Hydroponic Vertical Tower Array",
-      developer: "Tokyo Vertical Farms Consortium",
-      cropFocus: "Nutrient-Dense Greens & Microgreens",
-      tech: "Closed-Loop Nutrient Dosing | 95% Less Water | AI Yield Predictor",
-      booth: "Hall 2 - Booth 220",
-      status: "Tasting Bar Active All Day",
-    },
-    {
-      id: "agri-03",
-      name: "Ultra-Cold Pharma & Fresh Produce Refrigerated Corridor",
-      developer: "Global Cold-Chain Logistics Hub",
-      cropFocus: "Export Seafood & Tropical Fruits",
-      tech: "-25°C to +4°C Monitored | Real-time GPS & Temp Telemetry",
-      booth: "Hall 3 - Booth 308",
-      status: "Container Inspection Walkthrough",
-    },
-  ];
+  // Agritech & food exhibitors registered for this event
+  const agriShowcase = event.booths.map((booth) => ({
+    id: booth.id,
+    name: booth.companyName,
+    developer: booth.hallName,
+    cropFocus: booth.industry ?? "",
+    tech: booth.description ?? "",
+    booth: booth.boothNumber,
+    status: booth.dimensions ?? "",
+  }));
 
   return (
     <div className="space-y-12">
@@ -102,65 +82,73 @@ export function AgritechFoodView({ event, locale = "en", onSelectTier }: Archety
       </section>
 
       {/* 2. Precision Equipment & Demos */}
-      <section className="space-y-6">
-        <div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-green-500 uppercase tracking-wider mb-1">
-            <ThermometerSnowflake className="h-4 w-4" />
-            <span>{t("demosBadge")}</span>
+      {agriShowcase.length > 0 && (
+        <section className="space-y-6">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-semibold text-green-500 uppercase tracking-wider mb-1">
+              <ThermometerSnowflake className="h-4 w-4" />
+              <span>{t("demosBadge")}</span>
+            </div>
+            <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+              {t("demosTitle")}
+            </h3>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-            {t("demosTitle")}
-          </h3>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {agriShowcase.map((agri) => (
-            <Card key={agri.id} className="border-border/80 bg-card hover:border-green-500/40 transition-all shadow-xs flex flex-col justify-between">
-              <CardHeader className="space-y-2 pb-3">
-                <div className="flex items-center justify-between">
-                  <Badge variant="outline" className="border-green-500/30 text-green-500 bg-green-500/10 text-xs font-semibold">
-                    {agri.cropFocus}
-                  </Badge>
-                </div>
-                <CardTitle className="text-lg font-bold text-foreground leading-snug">{agri.name}</CardTitle>
-                <CardDescription className="text-xs text-muted-foreground">{agri.developer}</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4 pt-0">
-                <div className="p-3 rounded-lg bg-muted/40 border border-border/60 text-xs font-mono text-foreground space-y-1">
-                  <div className="font-semibold text-green-500 flex items-center gap-1">
-                    <Sprout className="h-3 w-3" /> {t("techArchitecture")}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {agriShowcase.map((agri) => (
+              <Card key={agri.id} className="border-border/80 bg-card hover:border-green-500/40 transition-all shadow-xs flex flex-col justify-between">
+                <CardHeader className="space-y-2 pb-3">
+                  <div className="flex items-center justify-between">
+                    {agri.cropFocus && (
+                      <Badge variant="outline" className="border-green-500/30 text-green-500 bg-green-500/10 text-xs font-semibold">
+                        {agri.cropFocus}
+                      </Badge>
+                    )}
                   </div>
-                  <div>{agri.tech}</div>
-                </div>
+                  <CardTitle className="text-lg font-bold text-foreground leading-snug">{agri.name}</CardTitle>
+                  <CardDescription className="text-xs text-muted-foreground">{agri.developer}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4 pt-0">
+                  {agri.tech && (
+                    <div className="p-3 rounded-lg bg-muted/40 border border-border/60 text-xs font-mono text-foreground space-y-1">
+                      <div className="font-semibold text-green-500 flex items-center gap-1">
+                        <Sprout className="h-3 w-3" /> {t("techArchitecture")}
+                      </div>
+                      <div>{agri.tech}</div>
+                    </div>
+                  )}
 
-                <div className="text-xs text-muted-foreground space-y-1">
-                  <div className="flex items-center gap-1.5">
-                    <MapPin className="h-3.5 w-3.5 text-muted-foreground/80 shrink-0" />
-                    <span>{agri.booth}</span>
+                  <div className="text-xs text-muted-foreground space-y-1">
+                    <div className="flex items-center gap-1.5">
+                      <MapPin className="h-3.5 w-3.5 text-muted-foreground/80 shrink-0" />
+                      <span>{agri.booth}</span>
+                    </div>
+                    {agri.status && (
+                      <div className="flex items-center gap-1.5 font-medium text-foreground">
+                        <Clock className="h-3.5 w-3.5 text-green-500 shrink-0" />
+                        <span>{agri.status}</span>
+                      </div>
+                    )}
                   </div>
-                  <div className="flex items-center gap-1.5 font-medium text-foreground">
-                    <Clock className="h-3.5 w-3.5 text-green-500 shrink-0" />
-                    <span>{agri.status}</span>
-                  </div>
-                </div>
 
-                <Button
-                  onClick={() => {
-                    setTraceResult(false);
-                    setTraceDrawerOpen(true);
-                  }}
-                  variant="outline"
-                  size="sm"
-                  className="w-full border-green-500/30 hover:bg-green-500/10 text-foreground font-semibold min-h-[40px]"
-                >
-                  <ScanLine className="h-3.5 w-3.5 mr-1.5 text-green-500" />
-                  {t("viewHarvestCta")}
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
+                  <Button
+                    onClick={() => {
+                      setTraceResult(false);
+                      setTraceDrawerOpen(true);
+                    }}
+                    variant="outline"
+                    size="sm"
+                    className="w-full border-green-500/30 hover:bg-green-500/10 text-foreground font-semibold min-h-[40px]"
+                  >
+                    <ScanLine className="h-3.5 w-3.5 mr-1.5 text-green-500" />
+                    {t("viewHarvestCta")}
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* 3. Farm-to-Table Traceability Drawer */}
       <Drawer

@@ -1,21 +1,10 @@
 "use client";
 
-import * as React from "react";
 import { useTranslations } from "next-intl";
 import {
   Store,
-  Sparkles,
-  MapPin,
-  Tag,
-  Clock,
-  Car,
   CheckCircle2,
   Ticket,
-  Flame,
-  Percent,
-  Search,
-  Building2,
-  Calendar,
   Layers,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
@@ -24,48 +13,64 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
 import type { ArchetypeViewProps } from "./IndustrialB2BView";
 
+type ExpoBooth = ArchetypeViewProps["event"]["booths"][number];
+
+/**
+ * Groups the event's registered exhibitors by hall so the pavilion directory
+ * reflects the real floor plan instead of a fixed list.
+ */
+function groupPavilionsByHall(booths: ExpoBooth[]) {
+  const halls = new Map<
+    string,
+    { id: string; name: string; tenantsCount: number; industries: Set<string> }
+  >();
+
+  for (const booth of booths) {
+    const hallName = booth.hallName.trim();
+    if (!hallName) continue;
+
+    const hall = halls.get(hallName) ?? {
+      id: hallName,
+      name: hallName,
+      tenantsCount: 0,
+      industries: new Set<string>(),
+    };
+
+    hall.tenantsCount += 1;
+    if (booth.industry) hall.industries.add(booth.industry);
+    halls.set(hallName, hall);
+  }
+
+  return Array.from(halls.values()).map((hall) => ({
+    id: hall.id,
+    name: hall.name,
+    tenantsCount: hall.tenantsCount,
+    theme: Array.from(hall.industries).join(", "),
+  }));
+}
+
 export function MegaExpoPavilionView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
   const t = useTranslations("archetypeViews.MEGA_EXPO_PAVILION");
-  const [selectedPavilion, setSelectedPavilion] = React.useState("ALL");
 
-  // Pavilions directory
-  const pavilions = [
-    { id: "A", name: "Hall A: Automotive & Smart EV Expo", icon: "Car", tenantsCount: 48, theme: "Electric Mobility & Auto Accessories" },
-    { id: "B", name: "Hall B: Consumer Electronics & Smart Home", icon: "Store", tenantsCount: 82, theme: "Smartphones, TVs & Gaming PCs" },
-    { id: "C", name: "Hall C: Nusantara Culinary Village & Food Hall", icon: "Flame", tenantsCount: 120, theme: "Regional Street Foods & Coffee Masters" },
-    { id: "D", name: "Hall D: Home Living, Furniture & Garment Fair", icon: "Building2", tenantsCount: 65, theme: "Batik, Handcrafts & Interior Decor" },
-  ];
-
-  // Nightly Fireworks & Carnival Schedule
-  const nightlyHighlights = [
-    { title: "Spectacular Mega Fireworks Show", time: "21:00 Daily", venue: "Open Space Arena", icon: Sparkles },
-    { title: "Indonesian Cultural Carnival Parade", time: "16:00 & 19:30", venue: "Grand Boulevard", icon: Flame },
-    { title: "Midnight Flash Sale Blitz (Up to 70% Off)", time: "22:00 - 23:30 Sat/Sun", venue: "All Exhibition Halls", icon: Percent },
-  ];
-
-  // Tenant promo radar
-  const promoCoupons = [
-    { store: "Samsung Galaxy Arena", discount: "Cashback up to Rp 2.500.000 + Free Earbuds", hall: "Hall B - Booth 10" },
-    { store: "Hyundai EV Hub", discount: "Special Fair Financing 0% + Free Wallbox Charger", hall: "Hall A - Booth 02" },
-    { store: "Kerak Telor Batavia Legend", discount: "Buy 2 Get 1 Free Promo Voucher", hall: "Hall C - Food Stall 44" },
-  ];
+  // Pavilions directory derived from the halls that actually host registered exhibitors
+  const pavilions = groupPavilionsByHall(event.booths);
 
   return (
     <div className="space-y-12">
       {/* 1. Mega Fair & Pavilion Hero Strip */}
-      <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-4">
-          <div className="flex items-center gap-2 text-xs font-bold text-orange-500 uppercase tracking-wider">
-            <Store className="h-4 w-4" aria-hidden="true" />
-            <span>{t("heroBadge")}</span>
-          </div>
-          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground">
-            {t("heroTitle")}
-          </h2>
-          <p className="text-muted-foreground text-sm leading-relaxed">
-            {event.description}
-          </p>
+      <section className="space-y-4">
+        <div className="flex items-center gap-2 text-xs font-bold text-orange-500 uppercase tracking-wider">
+          <Store className="h-4 w-4" aria-hidden="true" />
+          <span>{t("heroBadge")}</span>
+        </div>
+        <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground">
+          {t("heroTitle")}
+        </h2>
+        <p className="text-muted-foreground text-sm leading-relaxed">
+          {event.description}
+        </p>
 
+        {pavilions.length > 0 && (
           <div className="pt-2 flex flex-wrap items-center gap-3">
             <Button
               variant="archetype"
@@ -78,122 +83,54 @@ export function MegaExpoPavilionView({ event, locale = "en", onSelectTier }: Arc
               <Store className="h-4 w-4" />
               {t("exploreCta")}
             </Button>
-
-            <Button
-              variant="outline"
-              onClick={() => {
-                const el = document.getElementById("promo-radar");
-                el?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="gap-2 text-xs"
-            >
-              <Tag className="h-4 w-4 text-orange-500" />
-              {t("promoRadarCta")}
-            </Button>
           </div>
-        </div>
-
-        {/* Nightly Fireworks & Shows Card */}
-        <Card className="border-border bg-card shadow-md">
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <Badge variant="warning" size="sm" className="gap-1">
-                <Sparkles className="h-3.5 w-3.5" />
-                {t("nightlyBadge")}
-              </Badge>
-              <Flame className="h-4 w-4 text-orange-500" />
-            </div>
-            <CardTitle className="text-base">{t("fireworksTitle")}</CardTitle>
-            <CardDescription className="text-xs">
-              {t("fireworksDescription")}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-3 text-xs">
-            {nightlyHighlights.map((show, i) => (
-              <div key={i} className="p-2.5 rounded-lg bg-muted/40 border border-border/70 space-y-1">
-                <div className="flex items-center justify-between font-semibold text-foreground">
-                  <span>{show.title}</span>
-                  <span className="font-mono text-orange-400">{show.time}</span>
-                </div>
-                <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <MapPin className="h-3 w-3" />
-                  {show.venue}
-                </p>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
+        )}
       </section>
 
       {/* 2. Multi-Pavilion Guide */}
-      <section id="pavilions-guide" className="space-y-4">
-        <div>
-          <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
-            <Layers className="h-5 w-5 text-orange-500" />
-            {t("directoryTitle")}
-          </h3>
-          <p className="text-xs sm:text-sm text-muted-foreground">
-            {t("directoryDescription")}
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {pavilions.map((pavilion) => (
-            <Card key={pavilion.id} className="border-border hover:border-orange-500 transition-all flex flex-col justify-between">
-              <CardHeader className="p-4 pb-2">
-                <Badge variant="archetype" size="sm" className="w-fit mb-2 font-mono">
-                  {pavilion.tenantsCount === 1
-                    ? t("brandsCountOne")
-                    : t("brandsCount", { count: pavilion.tenantsCount })}
-                </Badge>
-                <CardTitle className="text-sm font-bold">{pavilion.name}</CardTitle>
-                <CardDescription className="text-xs text-muted-foreground mt-1">
-                  {pavilion.theme}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="p-4 pt-2">
-                <div className="pt-2 border-t border-border/40 flex justify-between items-center text-xs text-muted-foreground">
-                  <span>{t("airConditioned")}</span>
-                  <span className="text-orange-500 font-semibold cursor-pointer hover:underline">
-                    {t("viewBoothMap")}
-                  </span>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      {/* 3. Promo Radar & Tenant Flash Discounts */}
-      <section id="promo-radar" className="p-6 rounded-xl bg-card border border-border space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Tag className="h-5 w-5 text-orange-500" />
-            <h3 className="text-lg font-bold text-foreground">{t("promoTitle")}</h3>
+      {pavilions.length > 0 && (
+        <section id="pavilions-guide" className="space-y-4">
+          <div>
+            <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
+              <Layers className="h-5 w-5 text-orange-500" />
+              {t("directoryTitle")}
+            </h3>
+            <p className="text-xs sm:text-sm text-muted-foreground">
+              {t("directoryDescription")}
+            </p>
           </div>
-          <Badge variant="success" size="sm">
-            {t("livePromos")}
-          </Badge>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {promoCoupons.map((promo, idx) => (
-            <div key={idx} className="p-4 rounded-lg bg-muted/40 border border-border/70 space-y-2">
-              <div className="flex justify-between items-center text-xs">
-                <span className="font-semibold text-foreground">{promo.store}</span>
-                <span className="font-mono text-xs text-muted-foreground">{promo.hall}</span>
-              </div>
-              <p className="text-xs font-bold text-orange-500">{promo.discount}</p>
-              <div className="pt-1 flex items-center justify-between text-xs text-muted-foreground">
-                <span>{t("presentPass")}</span>
-                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {pavilions.map((pavilion) => (
+              <Card key={pavilion.id} className="border-border hover:border-orange-500 transition-all flex flex-col justify-between">
+                <CardHeader className="p-4 pb-2">
+                  <Badge variant="archetype" size="sm" className="w-fit mb-2 font-mono">
+                    {pavilion.tenantsCount === 1
+                      ? t("brandsCountOne")
+                      : t("brandsCount", { count: pavilion.tenantsCount })}
+                  </Badge>
+                  <CardTitle className="text-sm font-bold">{pavilion.name}</CardTitle>
+                  {pavilion.theme && (
+                    <CardDescription className="text-xs text-muted-foreground mt-1">
+                      {pavilion.theme}
+                    </CardDescription>
+                  )}
+                </CardHeader>
+                <CardContent className="p-4 pt-2">
+                  <div className="pt-2 border-t border-border/40 flex justify-between items-center text-xs text-muted-foreground">
+                    <span>{t("airConditioned")}</span>
+                    <span className="text-orange-500 font-semibold cursor-pointer hover:underline">
+                      {t("viewBoothMap")}
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+      )}
 
-      {/* 4. Ticket Tiers & Mega Fair Pass Selection */}
+      {/* 3. Ticket Tiers & Mega Fair Pass Selection */}
       <section id="tickets-section" className="space-y-6 pt-4 border-t border-border">
         <div>
           <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
@@ -211,7 +148,7 @@ export function MegaExpoPavilionView({ event, locale = "en", onSelectTier }: Arc
             try {
               benefits = JSON.parse(tier.benefitsJson);
             } catch {
-              benefits = ["All exhibition halls entry", "Nightly concert arena access", "Carnival coupon booklet"];
+              benefits = [];
             }
 
             return (

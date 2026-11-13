@@ -31,36 +31,16 @@ export function EducationEdTechView({ event, locale = "en", onSelectTier }: Arch
   const [targetDegree, setTargetDegree] = React.useState("master");
   const [calcResult, setCalcResult] = React.useState(false);
 
-  // University Stalls & Academic Innovation Hub
-  const universityDirectory = [
-    {
-      id: "edu-01",
-      name: "Tokyo Institute of Advanced Technology & AI",
-      location: "Tokyo, Japan",
-      qsRank: "Top 50 Global (Engineering)",
-      programs: "Autonomous Robotics, Quantum Computing & Next-Gen Energy",
-      booth: "Hall 1 - Stall 102",
-      consultation: "Faculty Admissions Advisor On-Site",
-    },
-    {
-      id: "edu-02",
-      name: "Universitas Indonesia Engineering & Health Sciences",
-      location: "Depok / Jakarta, Indonesia",
-      qsRank: "National Tier 1 Research Institution",
-      programs: "Biomedical Systems, Civil Infrastructure & Marine Tech",
-      booth: "Hall 2 - Stall 214",
-      consultation: "LPDP & Government Scholarship Desk",
-    },
-    {
-      id: "edu-03",
-      name: "Global Consortium of European Tech Universities",
-      location: "Frankfurt / London / Zurich",
-      qsRank: "World Leading Technical R&D",
-      programs: "Aerospace Avionics, Sustainable PropTech & AI Ethics",
-      booth: "Hall 3 - Stall 305",
-      consultation: "Erasmus+ & International Exchange Desk",
-    },
-  ];
+  // Institutions and academic programmes exhibiting at this event
+  const universityDirectory = event.booths.map((booth) => ({
+    id: booth.id,
+    name: booth.companyName,
+    location: booth.hallName,
+    qsRank: booth.industry ?? "",
+    programs: booth.description ?? "",
+    booth: booth.boothNumber,
+    consultation: booth.dimensions ?? "",
+  }));
 
   return (
     <div className="space-y-12">
@@ -104,59 +84,67 @@ export function EducationEdTechView({ event, locale = "en", onSelectTier }: Arch
       </section>
 
       {/* 2. University Directory & Stalls */}
-      <section className="space-y-6">
-        <div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-violet-500 uppercase tracking-wider mb-1">
-            <BookOpen className="h-4 w-4" />
-            <span>{t("institutionsBadge")}</span>
+      {universityDirectory.length > 0 && (
+        <section className="space-y-6">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-semibold text-violet-500 uppercase tracking-wider mb-1">
+              <BookOpen className="h-4 w-4" />
+              <span>{t("institutionsBadge")}</span>
+            </div>
+            <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+              {t("directoryTitle")}
+            </h3>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-            {t("directoryTitle")}
-          </h3>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {universityDirectory.map((uni) => (
-            <Card key={uni.id} className="border-border/80 bg-card hover:border-violet-500/40 transition-all shadow-xs flex flex-col justify-between">
-              <CardHeader className="space-y-2 pb-3">
-                <div className="flex items-center justify-between">
-                  <Badge variant="outline" className="border-violet-500/30 text-violet-500 bg-violet-500/10 text-xs font-semibold">
-                    {uni.location}
-                  </Badge>
-                  <span className="text-xs font-mono font-bold text-muted-foreground">{uni.qsRank}</span>
-                </div>
-                <CardTitle className="text-lg font-bold text-foreground leading-snug">{uni.name}</CardTitle>
-                <CardDescription className="text-xs text-muted-foreground">{uni.programs}</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4 pt-0">
-                <div className="text-xs text-muted-foreground space-y-1">
-                  <div className="flex items-center gap-1.5">
-                    <MapPin className="h-3.5 w-3.5 text-muted-foreground/80 shrink-0" />
-                    <span>{uni.booth}</span>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {universityDirectory.map((uni) => (
+              <Card key={uni.id} className="border-border/80 bg-card hover:border-violet-500/40 transition-all shadow-xs flex flex-col justify-between">
+                <CardHeader className="space-y-2 pb-3">
+                  <div className="flex items-center justify-between">
+                    <Badge variant="outline" className="border-violet-500/30 text-violet-500 bg-violet-500/10 text-xs font-semibold">
+                      {uni.location}
+                    </Badge>
+                    {uni.qsRank && (
+                      <span className="text-xs font-mono font-bold text-muted-foreground">{uni.qsRank}</span>
+                    )}
                   </div>
-                  <div className="flex items-center gap-1.5 font-medium text-foreground">
-                    <Clock className="h-3.5 w-3.5 text-violet-500 shrink-0" />
-                    <span>{uni.consultation}</span>
+                  <CardTitle className="text-lg font-bold text-foreground leading-snug">{uni.name}</CardTitle>
+                  {uni.programs && (
+                    <CardDescription className="text-xs text-muted-foreground">{uni.programs}</CardDescription>
+                  )}
+                </CardHeader>
+                <CardContent className="space-y-4 pt-0">
+                  <div className="text-xs text-muted-foreground space-y-1">
+                    <div className="flex items-center gap-1.5">
+                      <MapPin className="h-3.5 w-3.5 text-muted-foreground/80 shrink-0" />
+                      <span>{uni.booth}</span>
+                    </div>
+                    {uni.consultation && (
+                      <div className="flex items-center gap-1.5 font-medium text-foreground">
+                        <Clock className="h-3.5 w-3.5 text-violet-500 shrink-0" />
+                        <span>{uni.consultation}</span>
+                      </div>
+                    )}
                   </div>
-                </div>
 
-                <Button
-                  onClick={() => {
-                    setCalcResult(false);
-                    setScholarshipDrawerOpen(true);
-                  }}
-                  variant="outline"
-                  size="sm"
-                  className="w-full border-violet-500/30 hover:bg-violet-500/10 text-foreground font-semibold min-h-[40px]"
-                >
-                  <Award className="h-3.5 w-3.5 mr-1.5 text-violet-500" />
-                  {t("applyCta")}
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
+                  <Button
+                    onClick={() => {
+                      setCalcResult(false);
+                      setScholarshipDrawerOpen(true);
+                    }}
+                    variant="outline"
+                    size="sm"
+                    className="w-full border-violet-500/30 hover:bg-violet-500/10 text-foreground font-semibold min-h-[40px]"
+                  >
+                    <Award className="h-3.5 w-3.5 mr-1.5 text-violet-500" />
+                    {t("applyCta")}
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* 3. Scholarship Calculator Drawer */}
       <Drawer

@@ -31,42 +31,18 @@ export function FranchiseLicensingView({ event, locale = "en", onSelectTier }: A
   const [investBudget, setInvestBudget] = React.useState("500000000");
   const [calcDone, setCalcDone] = React.useState(false);
 
-  // Franchise Brand Directory & SME Investment Hub
-  const franchiseBrands = [
-    {
-      id: "fran-01",
-      name: "Kopi Nusantara Roasters (Drive-Thru & Cafe)",
-      origin: "Jakarta, Indonesia",
-      industry: "F&B Specialty Coffee",
-      initialCapital: "Rp 350M - 600M",
-      payback: "12 - 16 Months Projected",
-      royalty: "4% Net Sales",
-      booth: "Hall 1 - Franchise Row 102",
-      activeUnits: "240+ Outlets Nationwide",
-    },
-    {
-      id: "fran-02",
-      name: "Tokyo Bento Express & Cloud Kitchen Hub",
-      origin: "Tokyo, Japan",
-      industry: "Quick-Service Restaurant (QSR)",
-      initialCapital: "¥8,000,000 - 15,000,000",
-      payback: "14 - 18 Months Projected",
-      royalty: "5% Master License",
-      booth: "Hall 2 - Booth 204",
-      activeUnits: "85 Outlets in East Asia",
-    },
-    {
-      id: "fran-03",
-      name: "Smart 24/7 Automated Fitness & Wellness Box",
-      origin: "Singapore & Global",
-      industry: "Boutique Fitness & IoT Health",
-      initialCapital: "$75,000 - $120,000 USD",
-      payback: "10 - 14 Months Projected",
-      royalty: "Fixed Tech Subscription",
-      booth: "Hall 3 - Booth 315",
-      activeUnits: "120 Units Regionally",
-    },
-  ];
+  // Franchise concepts and SME investment opportunities exhibiting at this event
+  const franchiseBrands = event.booths.map((booth) => ({
+    id: booth.id,
+    name: booth.companyName,
+    origin: booth.hallName,
+    industry: booth.industry ?? "",
+    initialCapital: "",
+    payback: "",
+    royalty: "",
+    booth: booth.boothNumber,
+    activeUnits: booth.dimensions ?? "",
+  }));
 
   return (
     <div className="space-y-12">
@@ -93,7 +69,7 @@ export function FranchiseLicensingView({ event, locale = "en", onSelectTier }: A
           <div className="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0">
             <Button
               onClick={() => {
-                setSelectedBrand("Kopi Nusantara Roasters (Drive-Thru & Cafe)");
+                setSelectedBrand(event.booths[0]?.companyName ?? "");
                 setCalcDone(false);
                 setCalcDrawerOpen(true);
               }}
@@ -111,71 +87,85 @@ export function FranchiseLicensingView({ event, locale = "en", onSelectTier }: A
       </section>
 
       {/* 2. Franchise Brands Directory */}
-      <section className="space-y-6">
-        <div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-amber-500 uppercase tracking-wider mb-1">
-            <TrendingUp className="h-4 w-4" />
-            <span>{t("conceptsBadge")}</span>
+      {franchiseBrands.length > 0 && (
+        <section className="space-y-6">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-semibold text-amber-500 uppercase tracking-wider mb-1">
+              <TrendingUp className="h-4 w-4" />
+              <span>{t("conceptsBadge")}</span>
+            </div>
+            <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+              {t("conceptsTitle")}
+            </h3>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-            {t("conceptsTitle")}
-          </h3>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {franchiseBrands.map((brand) => (
-            <Card key={brand.id} className="border-border/80 bg-card hover:border-amber-500/40 transition-all shadow-xs flex flex-col justify-between">
-              <CardHeader className="space-y-2 pb-3">
-                <div className="flex items-center justify-between">
-                  <Badge variant="outline" className="border-amber-500/30 text-amber-500 bg-amber-500/10 text-xs font-semibold">
-                    {brand.industry}
-                  </Badge>
-                  <span className="text-xs font-mono font-bold text-muted-foreground">{brand.origin}</span>
-                </div>
-                <CardTitle className="text-lg font-bold text-foreground leading-snug">{brand.name}</CardTitle>
-                <CardDescription className="text-xs text-muted-foreground">{brand.activeUnits}</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4 pt-0">
-                <div className="p-3 rounded-lg bg-muted/40 border border-border/60 text-xs font-mono text-foreground space-y-1.5">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">{t("initialCapital")}</span>
-                    <span className="font-semibold text-foreground">{brand.initialCapital}</span>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {franchiseBrands.map((brand) => (
+              <Card key={brand.id} className="border-border/80 bg-card hover:border-amber-500/40 transition-all shadow-xs flex flex-col justify-between">
+                <CardHeader className="space-y-2 pb-3">
+                  <div className="flex items-center justify-between">
+                    {brand.industry && (
+                      <Badge variant="outline" className="border-amber-500/30 text-amber-500 bg-amber-500/10 text-xs font-semibold">
+                        {brand.industry}
+                      </Badge>
+                    )}
+                    <span className="text-xs font-mono font-bold text-muted-foreground">{brand.origin}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">{t("payback")}</span>
-                    <span className="font-semibold text-emerald-500">{brand.payback}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">{t("royalty")}</span>
-                    <span className="font-semibold text-foreground">{brand.royalty}</span>
-                  </div>
-                </div>
+                  <CardTitle className="text-lg font-bold text-foreground leading-snug">{brand.name}</CardTitle>
+                  {brand.activeUnits && (
+                    <CardDescription className="text-xs text-muted-foreground">{brand.activeUnits}</CardDescription>
+                  )}
+                </CardHeader>
+                <CardContent className="space-y-4 pt-0">
+                  {(brand.initialCapital || brand.payback || brand.royalty) && (
+                    <div className="p-3 rounded-lg bg-muted/40 border border-border/60 text-xs font-mono text-foreground space-y-1.5">
+                      {brand.initialCapital && (
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">{t("initialCapital")}</span>
+                          <span className="font-semibold text-foreground">{brand.initialCapital}</span>
+                        </div>
+                      )}
+                      {brand.payback && (
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">{t("payback")}</span>
+                          <span className="font-semibold text-emerald-500">{brand.payback}</span>
+                        </div>
+                      )}
+                      {brand.royalty && (
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">{t("royalty")}</span>
+                          <span className="font-semibold text-foreground">{brand.royalty}</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
 
-                <div className="text-xs text-muted-foreground space-y-1">
-                  <div className="flex items-center gap-1.5">
-                    <MapPin className="h-3.5 w-3.5 text-muted-foreground/80 shrink-0" />
-                    <span>{brand.booth}</span>
+                  <div className="text-xs text-muted-foreground space-y-1">
+                    <div className="flex items-center gap-1.5">
+                      <MapPin className="h-3.5 w-3.5 text-muted-foreground/80 shrink-0" />
+                      <span>{brand.booth}</span>
+                    </div>
                   </div>
-                </div>
 
-                <Button
-                  onClick={() => {
-                    setSelectedBrand(brand.name);
-                    setCalcDone(false);
-                    setCalcDrawerOpen(true);
-                  }}
-                  variant="outline"
-                  size="sm"
-                  className="w-full border-amber-500/30 hover:bg-amber-500/10 text-foreground font-semibold min-h-[40px]"
-                >
-                  <Handshake className="h-3.5 w-3.5 mr-1.5 text-amber-500" />
-                  {t("discoveryCta")}
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
+                  <Button
+                    onClick={() => {
+                      setSelectedBrand(brand.name);
+                      setCalcDone(false);
+                      setCalcDrawerOpen(true);
+                    }}
+                    variant="outline"
+                    size="sm"
+                    className="w-full border-amber-500/30 hover:bg-amber-500/10 text-foreground font-semibold min-h-[40px]"
+                  >
+                    <Handshake className="h-3.5 w-3.5 mr-1.5 text-amber-500" />
+                    {t("discoveryCta")}
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* 3. Franchise ROI Calculator Drawer */}
       <Drawer

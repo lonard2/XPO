@@ -32,39 +32,17 @@ export function EnergyInfrastructureView({ event, locale = "en", onSelectTier }:
   const [selectedConcession, setSelectedConcession] = React.useState<string | null>(null);
   const [auditRequested, setAuditRequested] = React.useState(false);
 
-  // Power & Resource Concessions Telemetry
-  const concessionBlocks = [
-    {
-      id: "blk-01",
-      name: "North Sumatra Geothermal Block IV",
-      operator: "PT Nusantara GeoPower Utama",
-      capacity: "350 MW Continuous Baseload",
-      type: "Geothermal",
-      esgRating: "AAA Certified Clean Energy",
-      booth: "Hall 1 - Booth 104",
-      status: "Operational Grid Feeder",
-    },
-    {
-      id: "blk-02",
-      name: "Sulawesi High-Purity Nickel Processing Grid",
-      operator: "Apex Industrial Minerals & Metals",
-      capacity: "1.2 GW Captive Renewable Hybrid",
-      type: "Renewable Hybrid",
-      esgRating: "ISO 14064 Carbon Audited",
-      booth: "Hall 2 - Booth 212",
-      status: "Phase 2 Expansion Tender",
-    },
-    {
-      id: "blk-03",
-      name: "Java Offshore Wind & Solar Array Beta",
-      operator: "Global Clean Power Consortium",
-      capacity: "600 MW Peak Marine Generation",
-      type: "Offshore Wind",
-      esgRating: "Green Bond Verified",
-      booth: "Hall 3 - Booth 318",
-      status: "PPAs Ready for Negotiation",
-    },
-  ];
+  // Power and resource concessions exhibiting at this event
+  const concessionBlocks = event.booths.map((booth) => ({
+    id: booth.id,
+    name: booth.companyName,
+    operator: booth.hallName,
+    type: booth.industry ?? "",
+    capacity: booth.dimensions ?? "",
+    esgRating: booth.boothType ?? "",
+    booth: booth.boothNumber,
+    status: booth.description ?? "",
+  }));
 
   return (
     <div className="space-y-12">
@@ -91,7 +69,7 @@ export function EnergyInfrastructureView({ event, locale = "en", onSelectTier }:
           <div className="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0">
             <Button
               onClick={() => {
-                setSelectedConcession("North Sumatra Geothermal Block IV");
+                setSelectedConcession(event.booths[0]?.companyName ?? "");
                 setAuditDrawerOpen(true);
               }}
               size="lg"
@@ -108,66 +86,76 @@ export function EnergyInfrastructureView({ event, locale = "en", onSelectTier }:
       </section>
 
       {/* 2. Grid Output & Telemetry Blocks */}
-      <section className="space-y-6">
-        <div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-amber-500 uppercase tracking-wider mb-1">
-            <Activity className="h-4 w-4" />
-            <span>{t("gridsBadge")}</span>
+      {concessionBlocks.length > 0 && (
+        <section className="space-y-6">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-semibold text-amber-500 uppercase tracking-wider mb-1">
+              <Activity className="h-4 w-4" />
+              <span>{t("gridsBadge")}</span>
+            </div>
+            <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+              {t("rosterTitle")}
+            </h3>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-            {t("rosterTitle")}
-          </h3>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {concessionBlocks.map((blk) => (
-            <Card key={blk.id} className="border-border/80 bg-card hover:border-amber-500/40 transition-all shadow-xs flex flex-col justify-between">
-              <CardHeader className="space-y-2 pb-3">
-                <div className="flex items-center justify-between">
-                  <Badge variant="outline" className="border-amber-500/30 text-amber-500 bg-amber-500/10 text-xs font-semibold">
-                    {blk.type}
-                  </Badge>
-                  <span className="text-xs font-mono font-bold text-emerald-500">{blk.esgRating}</span>
-                </div>
-                <CardTitle className="text-lg font-bold text-foreground leading-snug">{blk.name}</CardTitle>
-                <CardDescription className="text-xs text-muted-foreground">{blk.operator}</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4 pt-0">
-                <div className="p-3 rounded-lg bg-muted/40 border border-border/60 text-xs font-mono text-foreground space-y-1">
-                  <div className="font-semibold text-amber-500 flex items-center gap-1">
-                    <Zap className="h-3 w-3" /> {t("outputLabel")}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {concessionBlocks.map((blk) => (
+              <Card key={blk.id} className="border-border/80 bg-card hover:border-amber-500/40 transition-all shadow-xs flex flex-col justify-between">
+                <CardHeader className="space-y-2 pb-3">
+                  <div className="flex items-center justify-between">
+                    {blk.type && (
+                      <Badge variant="outline" className="border-amber-500/30 text-amber-500 bg-amber-500/10 text-xs font-semibold">
+                        {blk.type}
+                      </Badge>
+                    )}
+                    {blk.esgRating && (
+                      <span className="text-xs font-mono font-bold text-emerald-500">{blk.esgRating}</span>
+                    )}
                   </div>
-                  <div>{blk.capacity}</div>
-                </div>
+                  <CardTitle className="text-lg font-bold text-foreground leading-snug">{blk.name}</CardTitle>
+                  <CardDescription className="text-xs text-muted-foreground">{blk.operator}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4 pt-0">
+                  {blk.capacity && (
+                    <div className="p-3 rounded-lg bg-muted/40 border border-border/60 text-xs font-mono text-foreground space-y-1">
+                      <div className="font-semibold text-amber-500 flex items-center gap-1">
+                        <Zap className="h-3 w-3" /> {t("outputLabel")}
+                      </div>
+                      <div>{blk.capacity}</div>
+                    </div>
+                  )}
 
-                <div className="text-xs text-muted-foreground space-y-1">
-                  <div className="flex items-center gap-1.5">
-                    <MapPin className="h-3.5 w-3.5 text-muted-foreground/80 shrink-0" />
-                    <span>{blk.booth}</span>
+                  <div className="text-xs text-muted-foreground space-y-1">
+                    <div className="flex items-center gap-1.5">
+                      <MapPin className="h-3.5 w-3.5 text-muted-foreground/80 shrink-0" />
+                      <span>{blk.booth}</span>
+                    </div>
+                    {blk.status && (
+                      <div className="flex items-center gap-1.5 font-medium text-foreground">
+                        <TrendingUp className="h-3.5 w-3.5 text-amber-500 shrink-0" />
+                        <span>{blk.status}</span>
+                      </div>
+                    )}
                   </div>
-                  <div className="flex items-center gap-1.5 font-medium text-foreground">
-                    <TrendingUp className="h-3.5 w-3.5 text-amber-500 shrink-0" />
-                    <span>{blk.status}</span>
-                  </div>
-                </div>
 
-                <Button
-                  onClick={() => {
-                    setSelectedConcession(blk.name);
-                    setAuditDrawerOpen(true);
-                  }}
-                  variant="outline"
-                  size="sm"
-                  className="w-full border-amber-500/30 hover:bg-amber-500/10 text-foreground font-semibold min-h-[40px]"
-                >
-                  <FileCheck2 className="h-3.5 w-3.5 mr-1.5 text-amber-500" />
-                  {t("prospectusCta")}
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
+                  <Button
+                    onClick={() => {
+                      setSelectedConcession(blk.name);
+                      setAuditDrawerOpen(true);
+                    }}
+                    variant="outline"
+                    size="sm"
+                    className="w-full border-amber-500/30 hover:bg-amber-500/10 text-foreground font-semibold min-h-[40px]"
+                  >
+                    <FileCheck2 className="h-3.5 w-3.5 mr-1.5 text-amber-500" />
+                    {t("prospectusCta")}
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* 3. ESG & Grid Audit Drawer */}
       <Drawer

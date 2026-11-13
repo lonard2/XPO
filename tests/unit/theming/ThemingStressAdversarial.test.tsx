@@ -279,13 +279,15 @@ describe('Empirical Challenge: Theming Engine & CSS Variable Injection Stress Su
     it('renders MusicFestivalView with empty live stage lineups', () => {
       render(<MusicFestivalView event={mockEmptyEvent} locale="en" />);
       expect(screen.getByText(/Immersive Audio-Visual Stages & Headliner Lineups/i)).toBeInTheDocument();
-      expect(screen.getByText(/Stage Crowd Density/i)).toBeInTheDocument();
+      expect(screen.queryByText(/Stage Crowd Density/i)).toBeNull();
     });
 
     it('renders MegaExpoPavilionView with empty ticket tiers', () => {
       render(<MegaExpoPavilionView event={mockEmptyEvent} locale="en" />);
-      expect(screen.getByText(/Multi-Pavilion Mega Fair, Nightly Fireworks & Flash Promos/i)).toBeInTheDocument();
-      expect(screen.getByText(/Grand Arena Fireworks/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/Multi-Pavilion Mega Fair, Hall Directory & Exhibitor Showcase/i)
+      ).toBeInTheDocument();
+      expect(screen.queryByText(/Grand Arena Fireworks/i)).toBeNull();
     });
 
     it('renders GovernmentDiplomaticView with empty assembly schedules', () => {

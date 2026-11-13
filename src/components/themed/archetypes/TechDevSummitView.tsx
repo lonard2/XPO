@@ -243,7 +243,7 @@ export function TechDevSummitView({ event, locale = "en", onSelectTier, pageSize
             try {
               benefits = JSON.parse(tier.benefitsJson);
             } catch {
-              benefits = ["All keynote tracks access", "Hackathon team desk", "Workshop slide deck repo"];
+              benefits = [];
             }
 
             return (

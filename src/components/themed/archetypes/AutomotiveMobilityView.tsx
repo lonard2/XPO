@@ -35,46 +35,17 @@ export function AutomotiveMobilityView({ event, locale = "en", onSelectTier }: A
   const [testDriveDrawerOpen, setTestDriveDrawerOpen] = React.useState(false);
   const [selectedVehicle, setSelectedVehicle] = React.useState<string | null>(null);
   const [testDriveBooked, setTestDriveBooked] = React.useState(false);
-  const [selectedPowertrain, setSelectedPowertrain] = React.useState("ALL");
 
-  // Premier Concept Vehicles & Track Demo Fleet
-  const vehicleRoster = [
-    {
-      id: "veh-01",
-      name: "Apex GT Electric Hypercar Concept",
-      manufacturer: "Apex Dynamics Mobility",
-      powertrain: "BEV",
-      specs: "1,200 HP | 0-100 km/h: 1.9s | Range: 680 km | 800V Architecture",
-      booth: "Hall 1 - Booth 101",
-      trackSlot: "Closed Circuit Slot: 11:00 & 14:30 Daily",
-      badge: "World Premiere",
-    },
-    {
-      id: "veh-02",
-      name: "Nusantara Volt Urban Commercial AGV",
-      manufacturer: "PT Nusantara EV Solusindo",
-      powertrain: "HYBRID",
-      specs: "Payload: 1,800 kg | Level 4 Autonomous Ready | Swappable 90 kWh Pack",
-      booth: "Hall 2 - Booth 210",
-      trackSlot: "Autonomous Shuttle Demo: Continuous",
-      badge: "Fleet Solution",
-    },
-    {
-      id: "veh-03",
-      name: "Kanto Hydrogen Fuel-Cell SUV",
-      manufacturer: "Kanto Clean Propulsion Lab",
-      powertrain: "FCEV",
-      specs: "700 bar H2 Tank | Refuel: 3 mins | Range: 850 km | Zero Tailpipe Emission",
-      booth: "Hall 3 - Booth 315",
-      trackSlot: "Dyno & Track Slalom: 13:00 Daily",
-      badge: "Next-Gen Clean Energy",
-    },
-  ];
-
-  const filteredVehicles = React.useMemo(() => {
-    if (selectedPowertrain === "ALL") return vehicleRoster;
-    return vehicleRoster.filter((v) => v.powertrain === selectedPowertrain);
-  }, [selectedPowertrain]);
+  // Exhibiting vehicles registered for this event
+  const vehicleRoster = event.booths.map((booth) => ({
+    id: booth.id,
+    name: booth.companyName,
+    manufacturer: booth.hallName,
+    specs: booth.description ?? "",
+    booth: booth.boothNumber,
+    trackSlot: booth.dimensions ?? "",
+    badge: booth.boothType ?? "",
+  }));
 
   return (
     <div className="space-y-12">
@@ -101,7 +72,7 @@ export function AutomotiveMobilityView({ event, locale = "en", onSelectTier }: A
           <div className="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0">
             <Button
               onClick={() => {
-                setSelectedVehicle("Apex GT Electric Hypercar Concept");
+                setSelectedVehicle(event.booths[0]?.companyName ?? "");
                 setTestDriveDrawerOpen(true);
               }}
               size="lg"
@@ -118,89 +89,75 @@ export function AutomotiveMobilityView({ event, locale = "en", onSelectTier }: A
       </section>
 
       {/* 2. Concept Premieres & Fleet Specs */}
-      <section className="space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2 text-xs font-semibold text-red-500 uppercase tracking-wider mb-1">
-              <BatteryCharging className="h-4 w-4" />
-              <span>{t("premieresBadge")}</span>
+      {vehicleRoster.length > 0 && (
+        <section className="space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2 text-xs font-semibold text-red-500 uppercase tracking-wider mb-1">
+                <BatteryCharging className="h-4 w-4" />
+                <span>{t("premieresBadge")}</span>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+                {t("premieresTitle")}
+              </h3>
             </div>
-            <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-              {t("premieresTitle")}
-            </h3>
           </div>
 
-          {/* Powertrain Filter */}
-          <div className="flex items-center gap-1.5 p-1 rounded-lg border border-border bg-muted/30">
-            {["ALL", "BEV", "HYBRID", "FCEV"].map((type) => (
-              <button
-                key={type}
-                onClick={() => setSelectedPowertrain(type)}
-                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors min-h-[36px] ${
-                  selectedPowertrain === type
-                    ? "bg-red-600 text-white shadow-xs font-bold"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {type === "ALL"
-                  ? t("filterAll")
-                  : type === "HYBRID"
-                    ? t("powertrainHybrid")
-                    : type}
-              </button>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {vehicleRoster.map((vehicle) => (
+              <Card key={vehicle.id} className="border-border/80 bg-card hover:border-red-500/40 transition-all shadow-xs flex flex-col justify-between">
+                <CardHeader className="space-y-2 pb-3">
+                  <div className="flex items-center justify-between">
+                    {vehicle.badge && (
+                      <Badge variant="outline" className="border-red-500/30 text-red-500 bg-red-500/10 text-xs font-semibold">
+                        {vehicle.badge}
+                      </Badge>
+                    )}
+                  </div>
+                  <CardTitle className="text-lg font-bold text-foreground leading-snug">{vehicle.name}</CardTitle>
+                  <CardDescription className="text-xs text-muted-foreground">{vehicle.manufacturer}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4 pt-0">
+                  {vehicle.specs && (
+                    <div className="p-3 rounded-lg bg-muted/40 border border-border/60 text-xs font-mono text-foreground space-y-1">
+                      <div className="font-semibold text-red-500/90 flex items-center gap-1">
+                        <Zap className="h-3 w-3" /> {t("technicalSpecs")}
+                      </div>
+                      <div>{vehicle.specs}</div>
+                    </div>
+                  )}
+
+                  <div className="text-xs text-muted-foreground space-y-1">
+                    <div className="flex items-center gap-1.5">
+                      <MapPin className="h-3.5 w-3.5 text-muted-foreground/80 shrink-0" />
+                      <span>{vehicle.booth}</span>
+                    </div>
+                    {vehicle.trackSlot && (
+                      <div className="flex items-center gap-1.5 font-medium text-foreground">
+                        <Clock className="h-3.5 w-3.5 text-red-500 shrink-0" />
+                        <span>{vehicle.trackSlot}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <Button
+                    onClick={() => {
+                      setSelectedVehicle(vehicle.name);
+                      setTestDriveDrawerOpen(true);
+                    }}
+                    variant="outline"
+                    size="sm"
+                    className="w-full border-red-500/30 hover:bg-red-500/10 text-foreground font-semibold min-h-[40px]"
+                  >
+                    <Gauge className="h-3.5 w-3.5 mr-1.5 text-red-500" />
+                    {t("reserveCta")}
+                  </Button>
+                </CardContent>
+              </Card>
             ))}
           </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {filteredVehicles.map((vehicle) => (
-            <Card key={vehicle.id} className="border-border/80 bg-card hover:border-red-500/40 transition-all shadow-xs flex flex-col justify-between">
-              <CardHeader className="space-y-2 pb-3">
-                <div className="flex items-center justify-between">
-                  <Badge variant="outline" className="border-red-500/30 text-red-500 bg-red-500/10 text-xs font-semibold">
-                    {vehicle.badge}
-                  </Badge>
-                  <span className="text-xs font-mono font-bold text-muted-foreground">{vehicle.powertrain === "HYBRID" ? t("powertrainHybrid") : vehicle.powertrain}</span>
-                </div>
-                <CardTitle className="text-lg font-bold text-foreground leading-snug">{vehicle.name}</CardTitle>
-                <CardDescription className="text-xs text-muted-foreground">{vehicle.manufacturer}</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4 pt-0">
-                <div className="p-3 rounded-lg bg-muted/40 border border-border/60 text-xs font-mono text-foreground space-y-1">
-                  <div className="font-semibold text-red-500/90 flex items-center gap-1">
-                    <Zap className="h-3 w-3" /> {t("technicalSpecs")}
-                  </div>
-                  <div>{vehicle.specs}</div>
-                </div>
-
-                <div className="text-xs text-muted-foreground space-y-1">
-                  <div className="flex items-center gap-1.5">
-                    <MapPin className="h-3.5 w-3.5 text-muted-foreground/80 shrink-0" />
-                    <span>{vehicle.booth}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 font-medium text-foreground">
-                    <Clock className="h-3.5 w-3.5 text-red-500 shrink-0" />
-                    <span>{vehicle.trackSlot}</span>
-                  </div>
-                </div>
-
-                <Button
-                  onClick={() => {
-                    setSelectedVehicle(vehicle.name);
-                    setTestDriveDrawerOpen(true);
-                  }}
-                  variant="outline"
-                  size="sm"
-                  className="w-full border-red-500/30 hover:bg-red-500/10 text-foreground font-semibold min-h-[40px]"
-                >
-                  <Gauge className="h-3.5 w-3.5 mr-1.5 text-red-500" />
-                  {t("reserveCta")}
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* 3. Test Drive Booking Drawer */}
       <Drawer

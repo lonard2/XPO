@@ -420,7 +420,7 @@ export function IndustrialB2BView({ event, locale = "en", onSelectTier, pageSize
             try {
               benefits = JSON.parse(tier.benefitsJson);
             } catch {
-              benefits = ["Full exhibition floor access", "Official event guide & badge"];
+              benefits = [];
             }
 
             return (

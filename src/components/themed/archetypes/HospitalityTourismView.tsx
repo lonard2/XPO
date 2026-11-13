@@ -4,17 +4,12 @@ import * as React from "react";
 import { useTranslations } from "next-intl";
 import {
   Plane,
-  Building2,
   CalendarCheck,
-  Compass,
   MapPin,
   Clock,
   CheckCircle2,
   ShieldCheck,
   Globe2,
-  Users,
-  Award,
-  ArrowRight,
   Handshake,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
@@ -57,36 +52,16 @@ export function HospitalityTourismView({ event, locale = "en", onSelectTier, pag
     }
   };
 
-  // Tourism Pavilions & Hospitality Procurement Hub
-  const destinationPavilions = [
-    {
-      id: "dest-01",
-      name: "Wonderful Indonesia Luxury Archipelago Pavilion",
-      region: "Southeast Asia",
-      highlights: "Komodo & Raja Ampat Luxury Charters | Bali Wellness Resorts",
-      buyers: "45 Hosted Buyers Active",
-      booth: "Hall 1 - Central Pavilion",
-      sessions: "1-on-1 Buyer Sessions Every 20 Mins",
-    },
-    {
-      id: "dest-02",
-      name: "Japan National Tourism Organization (JNTO) Hub",
-      region: "East Asia",
-      highlights: "Kanto High-Speed Rail Corridors | Hokkaido Ski Chalets",
-      buyers: "38 Hosted Buyers Active",
-      booth: "Hall 2 - Pavilion 201",
-      sessions: "Incentive Travel Planning Lounge",
-    },
-    {
-      id: "dest-03",
-      name: "Global Airline Alliances & MICE Booking Corridor",
-      region: "International",
-      highlights: "Direct Group Fare Contracts | Convention Air Credits",
-      buyers: "50+ Airline Key Accounts",
-      booth: "Hall 3 - Aviation Concourse",
-      sessions: "Fleet Contract Consultations",
-    },
-  ];
+  // Exhibiting tourism pavilions and hospitality buyers registered for this event
+  const destinationPavilions = event.booths.map((booth) => ({
+    id: booth.id,
+    name: booth.companyName,
+    region: booth.industry ?? "",
+    highlights: booth.description ?? "",
+    buyers: typeof booth.areaSqm === "number" ? `${booth.areaSqm} sqm` : "",
+    booth: booth.boothNumber,
+    sessions: booth.dimensions ?? "",
+  }));
 
   return (
     <div className="space-y-12">
@@ -113,7 +88,7 @@ export function HospitalityTourismView({ event, locale = "en", onSelectTier, pag
           <div className="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0">
             <Button
               onClick={() => {
-                setSelectedPavilion("Wonderful Indonesia Luxury Archipelago Pavilion");
+                setSelectedPavilion(destinationPavilions[0]?.name ?? "");
                 setBuyerDrawerOpen(true);
               }}
               size="lg"
@@ -130,61 +105,71 @@ export function HospitalityTourismView({ event, locale = "en", onSelectTier, pag
       </section>
 
       {/* 2. Destination Pavilions & Matchmaking Hub */}
-      <section className="space-y-6">
-        <div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-cyan-500 uppercase tracking-wider mb-1">
-            <Globe2 className="h-4 w-4" />
-            <span>{t("showcasesBadge")}</span>
+      {destinationPavilions.length > 0 && (
+        <section className="space-y-6">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-semibold text-cyan-500 uppercase tracking-wider mb-1">
+              <Globe2 className="h-4 w-4" />
+              <span>{t("showcasesBadge")}</span>
+            </div>
+            <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+              {t("showcasesTitle")}
+            </h3>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-            {t("showcasesTitle")}
-          </h3>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {destinationPavilions.map((dest) => (
-            <Card key={dest.id} className="border-border/80 bg-card hover:border-cyan-500/40 transition-all shadow-xs flex flex-col justify-between">
-              <CardHeader className="space-y-2 pb-3">
-                <div className="flex items-center justify-between">
-                  <Badge variant="outline" className="border-cyan-500/30 text-cyan-500 bg-cyan-500/10 text-xs font-semibold">
-                    {dest.region}
-                  </Badge>
-                  <span className="text-xs font-mono font-bold text-muted-foreground">{dest.buyers}</span>
-                </div>
-                <CardTitle className="text-lg font-bold text-foreground leading-snug">{dest.name}</CardTitle>
-                <CardDescription className="text-xs text-muted-foreground">{dest.highlights}</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4 pt-0">
-                <div className="text-xs text-muted-foreground space-y-1">
-                  <div className="flex items-center gap-1.5">
-                    <MapPin className="h-3.5 w-3.5 text-muted-foreground/80 shrink-0" />
-                    <span>{dest.booth}</span>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {destinationPavilions.map((dest) => (
+              <Card key={dest.id} className="border-border/80 bg-card hover:border-cyan-500/40 transition-all shadow-xs flex flex-col justify-between">
+                <CardHeader className="space-y-2 pb-3">
+                  <div className="flex items-center justify-between">
+                    {dest.region && (
+                      <Badge variant="outline" className="border-cyan-500/30 text-cyan-500 bg-cyan-500/10 text-xs font-semibold">
+                        {dest.region}
+                      </Badge>
+                    )}
+                    {dest.buyers && (
+                      <span className="text-xs font-mono font-bold text-muted-foreground">{dest.buyers}</span>
+                    )}
                   </div>
-                  <div className="flex items-center gap-1.5 font-medium text-foreground">
-                    <Clock className="h-3.5 w-3.5 text-cyan-500 shrink-0" />
-                    <span>{dest.sessions}</span>
+                  <CardTitle className="text-lg font-bold text-foreground leading-snug">{dest.name}</CardTitle>
+                  {dest.highlights && (
+                    <CardDescription className="text-xs text-muted-foreground">{dest.highlights}</CardDescription>
+                  )}
+                </CardHeader>
+                <CardContent className="space-y-4 pt-0">
+                  <div className="text-xs text-muted-foreground space-y-1">
+                    <div className="flex items-center gap-1.5">
+                      <MapPin className="h-3.5 w-3.5 text-muted-foreground/80 shrink-0" />
+                      <span>{dest.booth}</span>
+                    </div>
+                    {dest.sessions && (
+                      <div className="flex items-center gap-1.5 font-medium text-foreground">
+                        <Clock className="h-3.5 w-3.5 text-cyan-500 shrink-0" />
+                        <span>{dest.sessions}</span>
+                      </div>
+                    )}
                   </div>
-                </div>
 
-                {pageSize !== "SMALL" && (
-                <Button
-                  onClick={() => {
-                    setSelectedPavilion(dest.name);
-                    setBuyerDrawerOpen(true);
-                  }}
-                  variant="outline"
-                  size="sm"
-                  className="w-full border-cyan-500/30 hover:bg-cyan-500/10 text-foreground font-semibold min-h-[40px]"
-                >
-                  <Handshake className="h-3.5 w-3.5 mr-1.5 text-cyan-500" />
-                  {t("requestCta")}
-                </Button>
-                )}
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
+                  {pageSize !== "SMALL" && (
+                  <Button
+                    onClick={() => {
+                      setSelectedPavilion(dest.name);
+                      setBuyerDrawerOpen(true);
+                    }}
+                    variant="outline"
+                    size="sm"
+                    className="w-full border-cyan-500/30 hover:bg-cyan-500/10 text-foreground font-semibold min-h-[40px]"
+                  >
+                    <Handshake className="h-3.5 w-3.5 mr-1.5 text-cyan-500" />
+                    {t("requestCta")}
+                  </Button>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* 3. Hosted Buyer Matchmaking Drawer */}
       <Drawer

@@ -174,7 +174,7 @@ export function PopCultureGamingView({ event, locale = "en", onSelectTier }: Arc
             try {
               benefits = JSON.parse(tier.benefitsJson);
             } catch {
-              benefits = ["Full convention floor access", "Cosplay locker access", "Collectible lanyard"];
+              benefits = [];
             }
 
             return (

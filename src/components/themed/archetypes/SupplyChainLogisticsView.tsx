@@ -10,11 +10,6 @@ import {
   MapPin,
   CheckCircle2,
   ShieldCheck,
-  Award,
-  Users,
-  Search,
-  ArrowRight,
-  TrendingUp,
   FileSpreadsheet,
   Cpu,
 } from "lucide-react";
@@ -31,39 +26,17 @@ export function SupplyChainLogisticsView({ event, locale = "en", onSelectTier }:
   const [selectedRoute, setSelectedRoute] = React.useState<string | null>(null);
   const [rfqSubmitted, setRfqSubmitted] = React.useState(false);
 
-  // Logistics Systems & Fleet Demonstrations
-  const logisticsSystems = [
-    {
-      id: "log-01",
-      name: "High-Speed Pallet AGV & Autonomous Sorting Fleet",
-      provider: "PT Nusantara LogisRobotics",
-      category: "Intralogistics & Warehouse Robotics",
-      specs: "Throughput: 3,500 picks/hour | Fleet: 50 AMRs | Zero Infrastructure Grid",
-      demoSlot: "Live Sortation Arena: Hourly on the half-hour",
-      booth: "Hall 1 - Arena 105",
-      coverage: "National Distribution Centers",
-    },
-    {
-      id: "log-02",
-      name: "Multimodal Southeast Asia Cross-Border Freight Corridor",
-      provider: "Kanto Maritime & Air Cargo Logistics",
-      category: "Freight Forwarding & Customs Fast-Track",
-      specs: "Transit: Jakarta - Tokyo in 4 Days (Ocean) / 8 Hours (Air) | AEO Customs",
-      demoSlot: "Freight Rate Negotiation Desk: Open Daily",
-      booth: "Hall 2 - Booth 218",
-      coverage: "Tokyo Big Sight to Tanjung Priok",
-    },
-    {
-      id: "log-03",
-      name: "Ultra-Cold Pharmaceutical & Vaccine Cold-Chain Corridor",
-      provider: "Global PharmaLogix Network",
-      category: "Cold-Chain Logistics & Life Sciences",
-      specs: "-80°C Cryogenic to +4°C Monitored | GDP & WHO Pre-Qualified",
-      demoSlot: "Cold Container Telemetry Walkthrough: 11:00 & 15:00",
-      booth: "Hall 3 - Booth 310",
-      coverage: "Global Air & Maritime Corridors",
-    },
-  ];
+  // Exhibiting logistics systems and fleet demonstrations registered for this event
+  const logisticsSystems = event.booths.map((booth) => ({
+    id: booth.id,
+    name: booth.companyName,
+    provider: booth.hallName,
+    category: booth.industry ?? "",
+    specs: booth.description ?? "",
+    demoSlot: booth.dimensions ?? "",
+    booth: booth.boothNumber,
+    coverage: typeof booth.areaSqm === "number" ? `${booth.areaSqm} sqm` : "",
+  }));
 
   return (
     <div className="space-y-12">
@@ -90,7 +63,7 @@ export function SupplyChainLogisticsView({ event, locale = "en", onSelectTier }:
           <div className="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0">
             <Button
               onClick={() => {
-                setSelectedRoute("Multimodal Southeast Asia Cross-Border Freight Corridor");
+                setSelectedRoute(logisticsSystems[0]?.name ?? "");
                 setRfqDrawerOpen(true);
               }}
               size="lg"
@@ -107,66 +80,76 @@ export function SupplyChainLogisticsView({ event, locale = "en", onSelectTier }:
       </section>
 
       {/* 2. Logistics Showcase */}
-      <section className="space-y-6">
-        <div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-teal-500 uppercase tracking-wider mb-1">
-            <Boxes className="h-4 w-4" />
-            <span>{t("corridorsBadge")}</span>
+      {logisticsSystems.length > 0 && (
+        <section className="space-y-6">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-semibold text-teal-500 uppercase tracking-wider mb-1">
+              <Boxes className="h-4 w-4" />
+              <span>{t("corridorsBadge")}</span>
+            </div>
+            <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+              {t("corridorsTitle")}
+            </h3>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-            {t("corridorsTitle")}
-          </h3>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {logisticsSystems.map((sys) => (
-            <Card key={sys.id} className="border-border/80 bg-card hover:border-teal-500/40 transition-all shadow-xs flex flex-col justify-between">
-              <CardHeader className="space-y-2 pb-3">
-                <div className="flex items-center justify-between">
-                  <Badge variant="outline" className="border-teal-500/30 text-teal-500 bg-teal-500/10 text-xs font-semibold">
-                    {sys.category}
-                  </Badge>
-                  <span className="text-xs font-mono font-bold text-muted-foreground">{sys.coverage}</span>
-                </div>
-                <CardTitle className="text-lg font-bold text-foreground leading-snug">{sys.name}</CardTitle>
-                <CardDescription className="text-xs text-muted-foreground">{sys.provider}</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4 pt-0">
-                <div className="p-3 rounded-lg bg-muted/40 border border-border/60 text-xs font-mono text-foreground space-y-1">
-                  <div className="font-semibold text-teal-500 flex items-center gap-1">
-                    <Cpu className="h-3 w-3" /> {t("fleetLabel")}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {logisticsSystems.map((sys) => (
+              <Card key={sys.id} className="border-border/80 bg-card hover:border-teal-500/40 transition-all shadow-xs flex flex-col justify-between">
+                <CardHeader className="space-y-2 pb-3">
+                  <div className="flex items-center justify-between">
+                    {sys.category && (
+                      <Badge variant="outline" className="border-teal-500/30 text-teal-500 bg-teal-500/10 text-xs font-semibold">
+                        {sys.category}
+                      </Badge>
+                    )}
+                    {sys.coverage && (
+                      <span className="text-xs font-mono font-bold text-muted-foreground">{sys.coverage}</span>
+                    )}
                   </div>
-                  <div>{sys.specs}</div>
-                </div>
+                  <CardTitle className="text-lg font-bold text-foreground leading-snug">{sys.name}</CardTitle>
+                  <CardDescription className="text-xs text-muted-foreground">{sys.provider}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4 pt-0">
+                  {sys.specs && (
+                    <div className="p-3 rounded-lg bg-muted/40 border border-border/60 text-xs font-mono text-foreground space-y-1">
+                      <div className="font-semibold text-teal-500 flex items-center gap-1">
+                        <Cpu className="h-3 w-3" /> {t("fleetLabel")}
+                      </div>
+                      <div>{sys.specs}</div>
+                    </div>
+                  )}
 
-                <div className="text-xs text-muted-foreground space-y-1">
-                  <div className="flex items-center gap-1.5">
-                    <MapPin className="h-3.5 w-3.5 text-muted-foreground/80 shrink-0" />
-                    <span>{sys.booth}</span>
+                  <div className="text-xs text-muted-foreground space-y-1">
+                    <div className="flex items-center gap-1.5">
+                      <MapPin className="h-3.5 w-3.5 text-muted-foreground/80 shrink-0" />
+                      <span>{sys.booth}</span>
+                    </div>
+                    {sys.demoSlot && (
+                      <div className="flex items-center gap-1.5 font-medium text-foreground">
+                        <Clock className="h-3.5 w-3.5 text-teal-500 shrink-0" />
+                        <span>{sys.demoSlot}</span>
+                      </div>
+                    )}
                   </div>
-                  <div className="flex items-center gap-1.5 font-medium text-foreground">
-                    <Clock className="h-3.5 w-3.5 text-teal-500 shrink-0" />
-                    <span>{sys.demoSlot}</span>
-                  </div>
-                </div>
 
-                <Button
-                  onClick={() => {
-                    setSelectedRoute(sys.name);
-                    setRfqDrawerOpen(true);
-                  }}
-                  variant="outline"
-                  size="sm"
-                  className="w-full border-teal-500/30 hover:bg-teal-500/10 text-foreground font-semibold min-h-[40px]"
-                >
-                  <Container className="h-3.5 w-3.5 mr-1.5 text-teal-500" />
-                  {t("tenderCta")}
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
+                  <Button
+                    onClick={() => {
+                      setSelectedRoute(sys.name);
+                      setRfqDrawerOpen(true);
+                    }}
+                    variant="outline"
+                    size="sm"
+                    className="w-full border-teal-500/30 hover:bg-teal-500/10 text-foreground font-semibold min-h-[40px]"
+                  >
+                    <Container className="h-3.5 w-3.5 mr-1.5 text-teal-500" />
+                    {t("tenderCta")}
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* 3. Freight RFP Drawer */}
       <Drawer

@@ -6,18 +6,11 @@ import {
   Stethoscope,
   Award,
   FileCheck,
-  BookOpen,
   CheckCircle2,
   Clock,
   MapPin,
-  Search,
-  ExternalLink,
-  ShieldAlert,
-  Building,
   GraduationCap,
   Ticket,
-  ChevronDown,
-  ChevronUp,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
@@ -28,50 +21,7 @@ import type { ArchetypeViewProps } from "./IndustrialB2BView";
 
 export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
   const t = useTranslations("archetypeViews.MEDICAL_SYMPOSIUM");
-  const [expandedAbstract, setExpandedAbstract] = React.useState<number | null>(0);
-  const [abstractFilter, setAbstractFilter] = React.useState("");
   const [claimedCme, setClaimedCme] = React.useState(false);
-
-  // Sample peer-reviewed abstracts
-  const abstracts = [
-    {
-      id: 1,
-      title: "Phase III Efficacy of Next-Generation SGLT2 Inhibitors in Cardio-Renal Syndromes",
-      authors: "Prof. Dr. Sarah Jenkins, MD, FACC; Dr. Bambang Sudiro, Sp.JP(K); Dr. Akira Tanaka, MD, PhD",
-      institution: "Asia-Pacific Cardio-Renal Research Consortium",
-      doi: "10.1016/j.apcr.2026.04.108",
-      cmeCredits: 2.5,
-      abstractText:
-        "Background: Cardio-renal metabolic syndrome presents high hospitalization rates in aging demographics. Methods: Double-blind, randomized controlled trial across 34 clinical centers (n=4,280). Results: Primary composite endpoint showed a 32% relative risk reduction (HR 0.68, 95% CI 0.58-0.80, p<0.001) in heart failure hospitalizations over 24 months.",
-    },
-    {
-      id: 2,
-      title: "Novel Biomarkers for Early Detection of Multi-Drug Resistant Pulmonary Infections",
-      authors: "Dr. Elena Rostova, MD, PhD; Dr. Hiroshi Sato, Sp.P(K); Dr. Clara Lin, MBBS",
-      institution: "International Center for Tropical Infectious Diseases",
-      doi: "10.1056/j.ictid.2026.03.042",
-      cmeCredits: 2.0,
-      abstractText:
-        "Background: Rapid diagnostic differentiation in critical care units. Methods: Multiplex PCR and microfluidic biomarker profiling on 1,120 ICU admissions. Results: Sensitivity reached 96.4% with specificity of 98.1%, reducing time-to-targeted-antibiotic from 48h to 2.4h.",
-    },
-    {
-      id: 3,
-      title: "AI-Augmented Robotic Endovascular Interventions: Multi-Center Registry Analysis",
-      authors: "Prof. Michael Sterling, MD, FRCS; Dr. Dian Kartika, Sp.BS(K)",
-      institution: "Global Neurosurgical & Vascular Alliance",
-      doi: "10.1038/s41591-026-03120-x",
-      cmeCredits: 3.0,
-      abstractText:
-        "Background: Catheter navigation precision during complex intracranial aneurysm coiling. Results: Average fluoroscopy exposure time decreased by 41% with 0% vessel perforation in 620 consecutive procedures.",
-    },
-  ];
-
-  const filteredAbstracts = abstracts.filter(
-    (item) =>
-      item.title.toLowerCase().includes(abstractFilter.toLowerCase()) ||
-      item.authors.toLowerCase().includes(abstractFilter.toLowerCase()) ||
-      item.institution.toLowerCase().includes(abstractFilter.toLowerCase())
-  );
 
   return (
     <div className="space-y-12 font-serif">
@@ -90,20 +40,6 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
           </p>
 
           <div className="pt-2 flex flex-wrap items-center gap-3">
-            <Button
-              variant="archetype"
-              onClick={() => {
-                const el = document.getElementById("abstract-reader");
-                el?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="gap-2 text-xs font-sans font-semibold shadow-md"
-            >
-              <BookOpen className="h-4 w-4" />
-              {abstracts.length === 1
-                ? t("abstractsCtaOne")
-                : t("abstractsCta", { count: abstracts.length })}
-            </Button>
-
             <Button
               variant="outline"
               onClick={() => {
@@ -136,15 +72,9 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 text-xs font-sans">
-            <div className="p-3 rounded-lg bg-muted/40 border border-border space-y-1">
-              <div className="flex justify-between items-center font-semibold">
-                <span>{t("totalCreditsLabel")}</span>
-                <span className="text-sm font-bold text-foreground">{t("totalCreditsValue")}</span>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                {t("attendanceNote")}
-              </p>
-            </div>
+            <p className="text-xs text-muted-foreground">
+              {t("attendanceNote")}
+            </p>
 
             {claimedCme ? (
               <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-lg text-emerald-700 dark:text-emerald-300 flex items-center gap-2">
@@ -166,81 +96,7 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
         </Card>
       </section>
 
-      {/* 2. Peer-Reviewed Research Abstract Reader */}
-      <section id="abstract-reader" className="space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h3 className="text-xl font-bold text-foreground flex items-center gap-2 font-sans">
-              <BookOpen className="h-5 w-5 text-[var(--archetype-primary)]" />
-              {t("abstractsTitle")}
-            </h3>
-            <p className="text-xs font-sans text-muted-foreground">
-              {t("abstractsDesc")}
-            </p>
-          </div>
-          <div className="relative w-full sm:w-72 font-sans">
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-            <input
-              type="text"
-              placeholder={t("searchPlaceholder")}
-              value={abstractFilter}
-              onChange={(e) => setAbstractFilter(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 text-xs rounded-md bg-background border border-border focus:ring-1 focus:ring-primary min-h-[38px]"
-            />
-          </div>
-        </div>
-
-        <div className="space-y-3">
-          {filteredAbstracts.map((abs) => {
-            const isExpanded = expandedAbstract === abs.id;
-            return (
-              <Card key={abs.id} className="border-border/80 transition-all overflow-hidden">
-                <div
-                  onClick={() => setExpandedAbstract(isExpanded ? null : abs.id)}
-                  className="p-4 flex items-start justify-between gap-4 cursor-pointer hover:bg-muted/30 transition-colors"
-                >
-                  <div className="space-y-1.5 flex-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <Badge variant="archetype" size="sm" className="font-sans text-xs font-semibold">
-                        {abs.cmeCredits === 1
-                          ? t("cmeCreditsBadgeOne")
-                          : t("cmeCreditsBadge", { count: abs.cmeCredits })}
-                      </Badge>
-                      <span className="text-xs font-sans text-muted-foreground font-mono">
-                        {t("doiLabel", { doi: abs.doi })}
-                      </span>
-                    </div>
-                    <h4 className="text-base font-bold text-foreground">{abs.title}</h4>
-                    <p className="text-xs font-sans text-muted-foreground">{abs.authors}</p>
-                    <p className="text-xs font-sans text-[var(--archetype-primary)] font-semibold">
-                      {abs.institution}
-                    </p>
-                  </div>
-                  <button className="p-1 rounded-md text-muted-foreground cursor-pointer" aria-label={t("toggleDetailsAria")}>
-                    {isExpanded ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
-                  </button>
-                </div>
-
-                {isExpanded && (
-                  <div className="p-4 pt-0 border-t border-border/50 bg-muted/10 space-y-3 font-sans text-xs animate-fade-in">
-                    <div className="p-3 bg-background rounded-md border border-border/80 leading-relaxed text-muted-foreground">
-                      {abs.abstractText}
-                    </div>
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
-                      <span>{t("peerReviewedNote")}</span>
-                      <span className="text-[var(--archetype-primary)] hover:underline cursor-pointer flex items-center gap-1 font-semibold">
-                        {t("downloadPdf")} <ExternalLink className="h-3 w-3" />
-                      </span>
-                    </div>
-                  </div>
-                )}
-              </Card>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* 3. Scientific Plenary Symposia Schedule */}
+      {/* 2. Scientific Plenary Symposia Schedule */}
       {event.agendaItems.length > 0 && (
         <section className="space-y-4">
           <h3 className="text-xl font-bold text-foreground flex items-center gap-2 font-sans">
@@ -284,7 +140,7 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
         </section>
       )}
 
-      {/* 4. Ticket Tiers & Medical Credentials Pass Selection */}
+      {/* 3. Ticket Tiers & Medical Credentials Pass Selection */}
       <section id="tickets-section" className="space-y-6 pt-4 border-t border-border">
         <div>
           <h3 className="text-xl font-bold text-foreground flex items-center gap-2 font-sans">
@@ -302,7 +158,7 @@ export function MedicalSymposiumView({ event, locale = "en", onSelectTier }: Arc
             try {
               benefits = JSON.parse(tier.benefitsJson);
             } catch {
-              benefits = ["Full symposium and exhibition access", "CME certificate issuance", "Symposium luncheon voucher"];
+              benefits = [];
             }
 
             return (

@@ -31,39 +31,17 @@ export function MediaBroadcastView({ event, locale = "en", onSelectTier }: Arche
   const [selectedStage, setSelectedStage] = React.useState<string | null>(null);
   const [stageReserved, setStageReserved] = React.useState(false);
 
-  // Broadcast Systems & Virtual Production Volumes
-  const mediaStages = [
-    {
-      id: "med-01",
-      name: "Ultra-Fine Pitch MicroLED Virtual Production Volume",
-      provider: "Tokyo Pro-AV & Optical Systems",
-      category: "In-Camera VFX & Virtual Production",
-      specs: "1.5mm Pixel Pitch | 7,680Hz Refresh | Sub-Millisecond Gen-Lock",
-      demoSlot: "Live Unreal Engine 5.6 Cam-Track Demo: Hourly",
-      booth: "Hall 1 - Virtual Stage A",
-      badge: "Broadcast Flagship",
-    },
-    {
-      id: "med-02",
-      name: "SMPTE ST 2110 IP Routing & Cloud Studio Hub",
-      provider: "Global Broadcast Transmission Labs",
-      category: "Uncompressed IP Live Video & Audio",
-      specs: "100 Gbps Core Redundant Fabrics | NMOS IS-04/05 Discovery",
-      demoSlot: "Low-Latency Remote OB Truck Shootout: 13:30",
-      booth: "Hall 2 - Stand 210",
-      badge: "IP Broadcast",
-    },
-    {
-      id: "med-03",
-      name: "Immersive Dolby Atmos Concert Sound Stage & Line-Array",
-      provider: "Acoustic Engineering Nusantara",
-      category: "Pro-Audio & Concert Sound Reinforcement",
-      specs: "128 Audio Channels | 142 dB Peak SPL | Phase Linear Array",
-      demoSlot: "Acoustic Tuning & Spatial Audio Shootout: 15:00",
-      booth: "Hall 3 - Audio Arena",
-      badge: "Spatial Audio",
-    },
-  ];
+  // Broadcast, pro-AV and virtual production exhibitors at this event
+  const mediaStages = event.booths.map((booth) => ({
+    id: booth.id,
+    name: booth.companyName,
+    provider: booth.hallName,
+    category: booth.industry ?? "",
+    specs: booth.description ?? "",
+    demoSlot: booth.dimensions ?? "",
+    booth: booth.boothNumber,
+    badge: booth.boothType ?? "",
+  }));
 
   return (
     <div className="space-y-12">
@@ -90,7 +68,7 @@ export function MediaBroadcastView({ event, locale = "en", onSelectTier }: Arche
           <div className="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0">
             <Button
               onClick={() => {
-                setSelectedStage("Ultra-Fine Pitch MicroLED Virtual Production Volume");
+                setSelectedStage(event.booths[0]?.companyName ?? "");
                 setStageReserved(false);
                 setStageDrawerOpen(true);
               }}
@@ -108,67 +86,77 @@ export function MediaBroadcastView({ event, locale = "en", onSelectTier }: Arche
       </section>
 
       {/* 2. Broadcast Stages Showcase */}
-      <section className="space-y-6">
-        <div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-violet-500 uppercase tracking-wider mb-1">
-            <Tv className="h-4 w-4" />
-            <span>{t("stagesBadge")}</span>
+      {mediaStages.length > 0 && (
+        <section className="space-y-6">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-semibold text-violet-500 uppercase tracking-wider mb-1">
+              <Tv className="h-4 w-4" />
+              <span>{t("stagesBadge")}</span>
+            </div>
+            <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+              {t("stagesTitle")}
+            </h3>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-            {t("stagesTitle")}
-          </h3>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {mediaStages.map((stage) => (
-            <Card key={stage.id} className="border-border/80 bg-card hover:border-violet-500/40 transition-all shadow-xs flex flex-col justify-between">
-              <CardHeader className="space-y-2 pb-3">
-                <div className="flex items-center justify-between">
-                  <Badge variant="outline" className="border-violet-500/30 text-violet-500 bg-violet-500/10 text-xs font-semibold">
-                    {stage.badge}
-                  </Badge>
-                  <span className="text-xs font-mono font-bold text-muted-foreground">{stage.category}</span>
-                </div>
-                <CardTitle className="text-lg font-bold text-foreground leading-snug">{stage.name}</CardTitle>
-                <CardDescription className="text-xs text-muted-foreground">{stage.provider}</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4 pt-0">
-                <div className="p-3 rounded-lg bg-muted/40 border border-border/60 text-xs font-mono text-foreground space-y-1">
-                  <div className="font-semibold text-violet-500 flex items-center gap-1">
-                    <Sliders className="h-3 w-3" /> {t("technicalSpecs")}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {mediaStages.map((stage) => (
+              <Card key={stage.id} className="border-border/80 bg-card hover:border-violet-500/40 transition-all shadow-xs flex flex-col justify-between">
+                <CardHeader className="space-y-2 pb-3">
+                  <div className="flex items-center justify-between">
+                    {stage.badge && (
+                      <Badge variant="outline" className="border-violet-500/30 text-violet-500 bg-violet-500/10 text-xs font-semibold">
+                        {stage.badge}
+                      </Badge>
+                    )}
+                    {stage.category && (
+                      <span className="text-xs font-mono font-bold text-muted-foreground">{stage.category}</span>
+                    )}
                   </div>
-                  <div>{stage.specs}</div>
-                </div>
+                  <CardTitle className="text-lg font-bold text-foreground leading-snug">{stage.name}</CardTitle>
+                  <CardDescription className="text-xs text-muted-foreground">{stage.provider}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4 pt-0">
+                  {stage.specs && (
+                    <div className="p-3 rounded-lg bg-muted/40 border border-border/60 text-xs font-mono text-foreground space-y-1">
+                      <div className="font-semibold text-violet-500 flex items-center gap-1">
+                        <Sliders className="h-3 w-3" /> {t("technicalSpecs")}
+                      </div>
+                      <div>{stage.specs}</div>
+                    </div>
+                  )}
 
-                <div className="text-xs text-muted-foreground space-y-1">
-                  <div className="flex items-center gap-1.5">
-                    <MapPin className="h-3.5 w-3.5 text-muted-foreground/80 shrink-0" />
-                    <span>{stage.booth}</span>
+                  <div className="text-xs text-muted-foreground space-y-1">
+                    <div className="flex items-center gap-1.5">
+                      <MapPin className="h-3.5 w-3.5 text-muted-foreground/80 shrink-0" />
+                      <span>{stage.booth}</span>
+                    </div>
+                    {stage.demoSlot && (
+                      <div className="flex items-center gap-1.5 font-medium text-foreground">
+                        <Clock className="h-3.5 w-3.5 text-violet-500 shrink-0" />
+                        <span>{stage.demoSlot}</span>
+                      </div>
+                    )}
                   </div>
-                  <div className="flex items-center gap-1.5 font-medium text-foreground">
-                    <Clock className="h-3.5 w-3.5 text-violet-500 shrink-0" />
-                    <span>{stage.demoSlot}</span>
-                  </div>
-                </div>
 
-                <Button
-                  onClick={() => {
-                    setSelectedStage(stage.name);
-                    setStageReserved(false);
-                    setStageDrawerOpen(true);
-                  }}
-                  variant="outline"
-                  size="sm"
-                  className="w-full border-violet-500/30 hover:bg-violet-500/10 text-foreground font-semibold min-h-[40px]"
-                >
-                  <Video className="h-3.5 w-3.5 mr-1.5 text-violet-500" />
-                  {t("reserveCta")}
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
+                  <Button
+                    onClick={() => {
+                      setSelectedStage(stage.name);
+                      setStageReserved(false);
+                      setStageDrawerOpen(true);
+                    }}
+                    variant="outline"
+                    size="sm"
+                    className="w-full border-violet-500/30 hover:bg-violet-500/10 text-foreground font-semibold min-h-[40px]"
+                  >
+                    <Video className="h-3.5 w-3.5 mr-1.5 text-violet-500" />
+                    {t("reserveCta")}
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* 3. Stage Demo Reservation Drawer */}
       <Drawer

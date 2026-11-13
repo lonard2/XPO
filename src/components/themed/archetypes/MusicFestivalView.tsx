@@ -4,35 +4,21 @@ import * as React from "react";
 import { useTranslations } from "next-intl";
 import {
   Music2,
-  Radio,
   Volume2,
-  Users,
   CreditCard,
   CheckCircle2,
   Clock,
-  MapPin,
   Ticket,
-  Sparkles,
-  Layers,
-  Flame,
-  Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { formatCurrency, type SupportedCurrency } from "@/lib/i18n/formatters";
 import type { ArchetypeViewProps } from "./IndustrialB2BView";
 
 export function MusicFestivalView({ event, locale = "en", onSelectTier }: ArchetypeViewProps) {
   const t = useTranslations("archetypeViews.MUSIC_FESTIVAL");
   const [selectedStage, setSelectedStage] = React.useState("ALL");
-
-  // Stages crowd density
-  const stageDensity = [
-    { stage: "Neon Main Stage", capacity: "85%", status: "High Energy", color: "bg-rose-500" },
-    { stage: "Electro Dome A", capacity: "60%", status: "Moderate Crowd", color: "bg-amber-500" },
-    { stage: "Acoustic Forest Grove", capacity: "35%", status: "Comfortable Flow", color: "bg-emerald-500" },
-  ];
 
   // Extract stages
   const stages = [
@@ -47,78 +33,43 @@ export function MusicFestivalView({ event, locale = "en", onSelectTier }: Archet
   return (
     <div className="space-y-12">
       {/* 1. Live Entertainment Hero Strip */}
-      <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-4">
-          <div className="flex items-center gap-2 text-xs font-bold text-rose-500 uppercase tracking-wider">
-            <Music2 className="h-4 w-4" aria-hidden="true" />
-            <span>{t("heroBadge")}</span>
-          </div>
-          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground">
-            {t("heroTitle")}
-          </h2>
-          <p className="text-muted-foreground text-sm leading-relaxed">
-            {event.description}
-          </p>
-
-          <div className="pt-2 flex flex-wrap items-center gap-3">
-            <Button
-              variant="archetype"
-              onClick={() => {
-                const el = document.getElementById("festival-timetable");
-                el?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="gap-2 text-xs font-semibold shadow-md"
-            >
-              <Clock className="h-4 w-4" />
-              {t("timetableCta")}
-            </Button>
-
-            <Button
-              variant="outline"
-              onClick={() => {
-                const el = document.getElementById("wristband-guide");
-                el?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="gap-2 text-xs"
-            >
-              <CreditCard className="h-4 w-4 text-[var(--archetype-accent)]" />
-              {t("wristbandCta")}
-            </Button>
-          </div>
+      <section className="space-y-4">
+        <div className="flex items-center gap-2 text-xs font-bold text-rose-500 uppercase tracking-wider">
+          <Music2 className="h-4 w-4" aria-hidden="true" />
+          <span>{t("heroBadge")}</span>
         </div>
+        <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground">
+          {t("heroTitle")}
+        </h2>
+        <p className="text-muted-foreground text-sm leading-relaxed">
+          {event.description}
+        </p>
 
-        {/* Real-time Crowd Density Card */}
-        <Card className="border-border bg-card shadow-md">
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <Badge variant="archetype" size="sm" className="gap-1">
-                <Radio className="h-3.5 w-3.5 text-rose-400" />
-                {t("liveTelemetry")}
-              </Badge>
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </div>
-            <CardTitle className="text-base">{t("crowdTitle")}</CardTitle>
-            <CardDescription className="text-xs">
-              {t("crowdDescription")}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-3 text-xs">
-            {stageDensity.map((s, i) => (
-              <div key={i} className="space-y-1">
-                <div className="flex justify-between items-center text-xs">
-                  <span className="font-medium text-foreground">{s.stage}</span>
-                  <span className="text-muted-foreground font-mono">{s.capacity}</span>
-                </div>
-                <div className="w-full h-2 rounded-full bg-muted overflow-hidden">
-                  <div
-                    className={`h-full ${s.color} transition-all duration-500`}
-                    style={{ width: s.capacity }}
-                  />
-                </div>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
+        <div className="pt-2 flex flex-wrap items-center gap-3">
+          <Button
+            variant="archetype"
+            onClick={() => {
+              const el = document.getElementById("festival-timetable");
+              el?.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="gap-2 text-xs font-semibold shadow-md"
+          >
+            <Clock className="h-4 w-4" />
+            {t("timetableCta")}
+          </Button>
+
+          <Button
+            variant="outline"
+            onClick={() => {
+              const el = document.getElementById("wristband-guide");
+              el?.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="gap-2 text-xs"
+          >
+            <CreditCard className="h-4 w-4 text-[var(--archetype-accent)]" />
+            {t("wristbandCta")}
+          </Button>
+        </div>
       </section>
 
       {/* 2. RFID Wristband & Cashless Top-up Instructions */}
@@ -235,7 +186,7 @@ export function MusicFestivalView({ event, locale = "en", onSelectTier }: Archet
             try {
               benefits = JSON.parse(tier.benefitsJson);
             } catch {
-              benefits = ["All-stage entry", "RFID cashless wristband", "Free festival water refill"];
+              benefits = [];
             }
 
             return (

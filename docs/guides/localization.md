@@ -108,6 +108,12 @@ The ratchet covers what the parser sees, not everything. When a phase touches a
 component, check its constants and helper modules by hand. The themed views and
 the organizer wizard both keep copy in local constants.
 
+A local constant can also hold fabricated demo records rather than UI copy. Do
+not translate those records. Source the section from `event.booths`,
+`event.agendaItems`, or organizer showcase data, and hide the section when the
+event provides nothing. Translating an invented clinical abstract or aircraft
+spec would present fabricated content as localized fact.
+
 ## Phase order and ratcheting
 
 | Phase | Scope | Action after |

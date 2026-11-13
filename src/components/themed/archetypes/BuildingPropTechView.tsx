@@ -30,39 +30,17 @@ export function BuildingPropTechView({ event, locale = "en", onSelectTier }: Arc
   const [selectedMaterial, setSelectedMaterial] = React.useState<string | null>(null);
   const [sampleRequested, setSampleRequested] = React.useState(false);
 
-  // Architectural Materials & BIM Assets
-  const materialCatalog = [
-    {
-      id: "mat-01",
-      name: "Ultra-High Performance Carbon-Negative Concrete (UHPC)",
-      manufacturer: "PT Semen Nusantara Inovasi",
-      category: "Structural Facades & Precast",
-      specs: "Compressive Strength: 140 MPa | 65% Recycled Pozzolan | EPD Certified",
-      bimFormat: "Revit 2026 (.rfa) + IFC4",
-      booth: "Hall 1 - Booth 108",
-      cpdCredit: "2.0 IAI / AIA Credits",
-    },
-    {
-      id: "mat-02",
-      name: "Dynamic Electrochromic Solar-Control Glazing",
-      manufacturer: "Tokyo Smart Glass Systems",
-      category: "Building Envelope & Fenestration",
-      specs: "SHGC: 0.09 - 0.41 Tunable | IoT Light Sensor Integration | U-Value: 0.8",
-      bimFormat: "Revit BIM Family + EnergyPlus IDF",
-      booth: "Hall 2 - Booth 215",
-      cpdCredit: "1.5 CPD Hours",
-    },
-    {
-      id: "mat-03",
-      name: "Acoustic Recycled Wood Fiber Composite Panels",
-      manufacturer: "Nordic EcoAcoustics Global",
-      category: "Interior Finishes & Soundproofing",
-      specs: "NRC: 0.95 | Class A Fire Rated | Zero Formaldehyde Outgassing",
-      bimFormat: "Archicad (.gsm) + Revit (.rfa)",
-      booth: "Hall 3 - Booth 302",
-      cpdCredit: "1.0 CPD Hour",
-    },
-  ];
+  // Exhibiting building material & PropTech suppliers registered for this event
+  const materialCatalog = event.booths.map((booth) => ({
+    id: booth.id,
+    name: booth.companyName,
+    manufacturer: booth.hallName,
+    category: booth.industry ?? "",
+    specs: booth.description ?? "",
+    bimFormat: booth.dimensions ?? "",
+    booth: booth.boothNumber,
+    cpdCredit: booth.boothType ?? "",
+  }));
 
   return (
     <div className="space-y-12">
@@ -89,7 +67,7 @@ export function BuildingPropTechView({ event, locale = "en", onSelectTier }: Arc
           <div className="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0">
             <Button
               onClick={() => {
-                setSelectedMaterial("Ultra-High Performance Carbon-Negative Concrete (UHPC)");
+                setSelectedMaterial(event.booths[0]?.companyName ?? "");
                 setSampleDrawerOpen(true);
               }}
               size="lg"
@@ -106,75 +84,83 @@ export function BuildingPropTechView({ event, locale = "en", onSelectTier }: Arc
       </section>
 
       {/* 2. Materials & BIM Roster */}
-      <section className="space-y-6">
-        <div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-sky-500 uppercase tracking-wider mb-1">
-            <Layers className="h-4 w-4" />
-            <span>{t("systemsBadge")}</span>
+      {materialCatalog.length > 0 && (
+        <section className="space-y-6">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-semibold text-sky-500 uppercase tracking-wider mb-1">
+              <Layers className="h-4 w-4" />
+              <span>{t("systemsBadge")}</span>
+            </div>
+            <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+              {t("rosterTitle")}
+            </h3>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-            {t("rosterTitle")}
-          </h3>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {materialCatalog.map((mat) => (
-            <Card key={mat.id} className="border-border/80 bg-card hover:border-sky-500/40 transition-all shadow-xs flex flex-col justify-between">
-              <CardHeader className="space-y-2 pb-3">
-                <div className="flex items-center justify-between">
-                  <Badge variant="outline" className="border-sky-500/30 text-sky-500 bg-sky-500/10 text-xs font-semibold">
-                    {mat.category}
-                  </Badge>
-                  <span className="text-xs font-mono font-bold text-emerald-500">{mat.cpdCredit}</span>
-                </div>
-                <CardTitle className="text-lg font-bold text-foreground leading-snug">{mat.name}</CardTitle>
-                <CardDescription className="text-xs text-muted-foreground">{mat.manufacturer}</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4 pt-0">
-                <div className="p-3 rounded-lg bg-muted/40 border border-border/60 text-xs font-mono text-foreground space-y-1">
-                  <div className="font-semibold text-sky-500 flex items-center gap-1">
-                    <FileCode className="h-3 w-3" /> {t("specificationLabel")}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {materialCatalog.map((mat) => (
+              <Card key={mat.id} className="border-border/80 bg-card hover:border-sky-500/40 transition-all shadow-xs flex flex-col justify-between">
+                <CardHeader className="space-y-2 pb-3">
+                  <div className="flex items-center justify-between">
+                    {mat.category && (
+                      <Badge variant="outline" className="border-sky-500/30 text-sky-500 bg-sky-500/10 text-xs font-semibold">
+                        {mat.category}
+                      </Badge>
+                    )}
+                    {mat.cpdCredit && (
+                      <span className="text-xs font-mono font-bold text-emerald-500">{mat.cpdCredit}</span>
+                    )}
                   </div>
-                  <div>{mat.specs}</div>
-                  <div className="text-muted-foreground pt-1">{t("formatLabel", { format: mat.bimFormat })}</div>
-                </div>
+                  <CardTitle className="text-lg font-bold text-foreground leading-snug">{mat.name}</CardTitle>
+                  <CardDescription className="text-xs text-muted-foreground">{mat.manufacturer}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4 pt-0">
+                  {(mat.specs || mat.bimFormat) && (
+                    <div className="p-3 rounded-lg bg-muted/40 border border-border/60 text-xs font-mono text-foreground space-y-1">
+                      <div className="font-semibold text-sky-500 flex items-center gap-1">
+                        <FileCode className="h-3 w-3" /> {t("specificationLabel")}
+                      </div>
+                      {mat.specs && <div>{mat.specs}</div>}
+                      <div className="text-muted-foreground pt-1">{t("formatLabel", { format: mat.bimFormat })}</div>
+                    </div>
+                  )}
 
-                <div className="text-xs text-muted-foreground space-y-1">
-                  <div className="flex items-center gap-1.5">
-                    <MapPin className="h-3.5 w-3.5 text-muted-foreground/80 shrink-0" />
-                    <span>{mat.booth}</span>
+                  <div className="text-xs text-muted-foreground space-y-1">
+                    <div className="flex items-center gap-1.5">
+                      <MapPin className="h-3.5 w-3.5 text-muted-foreground/80 shrink-0" />
+                      <span>{mat.booth}</span>
+                    </div>
                   </div>
-                </div>
 
-                <div className="flex gap-2">
-                  <Button
-                    onClick={() => {
-                      setSelectedMaterial(mat.name);
-                      setSampleDrawerOpen(true);
-                    }}
-                    variant="outline"
-                    size="sm"
-                    className="flex-1 border-sky-500/30 hover:bg-sky-500/10 text-foreground font-semibold min-h-[40px]"
-                  >
-                    <Package className="h-3.5 w-3.5 mr-1.5 text-sky-500" />
-                    {t("orderSampleCta")}
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="border-border hover:bg-muted font-semibold min-h-[40px] px-3"
-                    onClick={() => {
-                      alert(`Downloading BIM CAD library for ${mat.name}`);
-                    }}
-                  >
-                    <Download className="h-3.5 w-3.5" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={() => {
+                        setSelectedMaterial(mat.name);
+                        setSampleDrawerOpen(true);
+                      }}
+                      variant="outline"
+                      size="sm"
+                      className="flex-1 border-sky-500/30 hover:bg-sky-500/10 text-foreground font-semibold min-h-[40px]"
+                    >
+                      <Package className="h-3.5 w-3.5 mr-1.5 text-sky-500" />
+                      {t("orderSampleCta")}
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="border-border hover:bg-muted font-semibold min-h-[40px] px-3"
+                      onClick={() => {
+                        alert(`Downloading BIM CAD library for ${mat.name}`);
+                      }}
+                    >
+                      <Download className="h-3.5 w-3.5" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* 3. Sample Kit Request Drawer */}
       <Drawer

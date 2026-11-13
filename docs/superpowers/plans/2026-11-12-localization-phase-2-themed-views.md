@@ -27,6 +27,16 @@
 - A translated heading longer than English: check the hero at 390px and 1280px.
 - A view test that asserts English copy: update the test with the new key output.
 
+## Follow-up Resolution
+
+The Phase 2 review raised five follow-up groups. Their resolution:
+
+1. **Singular counts.** Every count that can be one now has an explicit `*One` sibling key in all six locales. The views branch on `count === 1` because the Vitest next-intl mock does not evaluate ICU plurals. Commit `56a089c`.
+2. **Expression strings.** Drawer submit states, tier fallbacks, KYC codes, track fallbacks, and filter sentinels moved into the view namespaces. Commit `2e3c46b`.
+3. **Shared labels.** `Done`, `Cancel`, `Reference: {reference}`, and `Contact Email` moved to `archetypeViews.common` and removed from the view namespaces. Commit `cee1973`.
+4. **Loanwords.** Japanese, Simplified Chinese, and German copy no longer leaves `excursion`, `meet & greet`, `runway`, `studio`, `corporate`, `allied health professionals`, or `restricted Flight-Line` untranslated. Commit `cee1973`.
+5. **Demo record arrays.** These arrays held fabricated records presented as real, including invented clinical abstracts with DOIs and trial results. They were not translated. Each view now derives its records from `event.booths` or `event.agendaItems`, and the section hides when the event provides no data. The rule: a record that the platform cannot source from organizer data does not render.
+
 ---
 
 ### Task 1: SportsOutdoor and FaithPilgrimageCongress

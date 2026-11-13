@@ -13,6 +13,15 @@ import {
   GovernmentDiplomaticView,
   IncentiveRetreatView,
   EducationEdTechView,
+  AerospaceDefenseView,
+  AgritechFoodView,
+  AutomotiveMobilityView,
+  BuildingPropTechView,
+  EnergyInfrastructureView,
+  FranchiseLicensingView,
+  MediaBroadcastView,
+  SupplyChainLogisticsView,
+  HospitalityTourismView,
 } from "@/components/themed/archetypes";
 
 const mockBaseEvent = {
@@ -180,12 +189,14 @@ describe("Phase 5: 9 Archetype Specialized Views & EventPageShell", () => {
     expect(screen.getByText(/RSVP Confirmed/i)).toBeInTheDocument();
   });
 
-  it("renders MedicalSymposiumView with abstract reader, CME credit tracker, and speaker accreditation", () => {
+  it("renders MedicalSymposiumView with the CME tracker and real agenda, and no invented abstracts", () => {
     render(<MedicalSymposiumView event={mockBaseEvent} locale="en" />);
 
     expect(screen.getByText(/Advancing Evidence-Based Medicine/i)).toBeInTheDocument();
     expect(screen.getByText("CME Credit Eligibility")).toBeInTheDocument();
-    expect(screen.getByText(/Phase III Efficacy of Next-Generation SGLT2 Inhibitors/i)).toBeInTheDocument();
+    expect(
+      screen.queryByText(/Phase III Efficacy of Next-Generation SGLT2 Inhibitors/i)
+    ).toBeNull();
 
     const cmeBtn = screen.getByRole("button", { name: /Register CME Physician License ID/i });
     fireEvent.click(cmeBtn);
@@ -214,31 +225,34 @@ describe("Phase 5: 9 Archetype Specialized Views & EventPageShell", () => {
     expect(screen.queryByText("Sakura Artworks")).toBeNull();
   });
 
-  it("renders MusicFestivalView with crowd density telemetry, stage timetable, and cashless guide", () => {
+  it("renders MusicFestivalView with stage timetable and cashless guide, and no invented telemetry", () => {
     render(<MusicFestivalView event={mockBaseEvent} locale="en" />);
 
     expect(screen.getByText(/Immersive Audio-Visual Stages & Headliner Lineups/i)).toBeInTheDocument();
-    expect(screen.getByText("Stage Crowd Density")).toBeInTheDocument();
+    expect(screen.queryByText("Stage Crowd Density")).toBeNull();
     expect(screen.getByText("RFID Wristband & Cashless Ecosystem")).toBeInTheDocument();
-    expect(screen.getByText("Neon Main Stage")).toBeInTheDocument();
+    expect(screen.getAllByText("Main Stage - Hall A1").length).toBeGreaterThan(0);
   });
 
-  it("renders MegaExpoPavilionView with multi-pavilion directory, fireworks schedule, and promo radar", () => {
+  it("renders MegaExpoPavilionView with the real hall directory and no invented shows", () => {
     render(<MegaExpoPavilionView event={mockBaseEvent} locale="en" />);
 
-    expect(screen.getByText(/Multi-Pavilion Mega Fair, Nightly Fireworks & Flash Promos/i)).toBeInTheDocument();
-    expect(screen.getByText("Grand Arena Fireworks")).toBeInTheDocument();
-    expect(screen.getByText("Hall A: Automotive & Smart EV Expo")).toBeInTheDocument();
-    expect(screen.getByText("Samsung Galaxy Arena")).toBeInTheDocument();
+    expect(
+      screen.getByText(/Multi-Pavilion Mega Fair, Hall Directory & Exhibitor Showcase/i)
+    ).toBeInTheDocument();
+    expect(screen.queryByText("Grand Arena Fireworks")).toBeNull();
+    expect(screen.getAllByText("Hall A1").length).toBeGreaterThan(0);
+    expect(screen.getByText("1+ Brand")).toBeInTheDocument();
+    expect(screen.queryByText("Samsung Galaxy Arena")).toBeNull();
   });
 
-  it("renders GovernmentDiplomaticView with protocol briefings, bilateral suites, and treaty agenda", () => {
+  it("renders GovernmentDiplomaticView with the protocol briefing and real agenda, and no invented delegations", () => {
     render(<GovernmentDiplomaticView event={mockBaseEvent} locale="en" />);
 
     expect(screen.getByText(/Bilateral Accords, Climate Compacts & Sovereign Dialogue/i)).toBeInTheDocument();
     expect(screen.getByText("Summit Security Briefing")).toBeInTheDocument();
-    expect(screen.getByText("Republic of Indonesia")).toBeInTheDocument();
-    expect(screen.getByText("Bilateral Suite Alpha")).toBeInTheDocument();
+    expect(screen.queryByText("Republic of Indonesia")).toBeNull();
+    expect(screen.queryByText("Bilateral Suite Alpha")).toBeNull();
   });
 
   it("keeps untracked agenda items visible when the fallback track is selected", () => {
@@ -270,12 +284,61 @@ describe("Phase 5: 9 Archetype Specialized Views & EventPageShell", () => {
     expect(select.value).toBe("doctoral");
   });
 
-  it("renders IncentiveRetreatView with excursion itinerary, wellness spa treatments, and VIP chauffeur notes", () => {
+  it("renders IncentiveRetreatView with the agenda-derived itinerary and no invented spa treatments", () => {
     render(<IncentiveRetreatView event={mockBaseEvent} locale="en" />);
 
     expect(screen.getByText(/Curated Horizon Retreat, Private Excursions & Gala Banquets/i)).toBeInTheDocument();
-    expect(screen.getByText("Private Airport Transfers")).toBeInTheDocument();
-    expect(screen.getByText(/Private Sunset Yacht & Coral Reef Snorkeling/i)).toBeInTheDocument();
-    expect(screen.getByText("Traditional Balinese Herbal Deep-Tissue Massage")).toBeInTheDocument();
+    expect(
+      screen.getAllByText(/Keynote: Smart Automation Architecture/i).length
+    ).toBeGreaterThan(0);
+    expect(screen.queryByText(/Private Sunset Yacht & Coral Reef Snorkeling/i)).toBeNull();
+    expect(screen.queryByText("Traditional Balinese Herbal Deep-Tissue Massage")).toBeNull();
+  });
+
+  it("does not render fabricated demo records in the converted views", () => {
+    const views = [
+      AerospaceDefenseView,
+      AgritechFoodView,
+      AutomotiveMobilityView,
+      BuildingPropTechView,
+      EducationEdTechView,
+      EnergyInfrastructureView,
+      FranchiseLicensingView,
+      MediaBroadcastView,
+      SupplyChainLogisticsView,
+      HospitalityTourismView,
+      MusicFestivalView,
+      MegaExpoPavilionView,
+      GovernmentDiplomaticView,
+      IncentiveRetreatView,
+      MedicalSymposiumView,
+    ];
+
+    const fabricated = [
+      "KF-21 Boramae Next-Gen Multirole Fighter",
+      "Autonomous High-Precision Crop Sprayer Drone",
+      "Apex GT Electric Hypercar Concept",
+      "Ultra-High Performance Carbon-Negative Concrete (UHPC)",
+      "Tokyo Institute of Advanced Technology & AI",
+      "North Sumatra Geothermal Block IV",
+      "Kopi Nusantara Roasters (Drive-Thru & Cafe)",
+      "Ultra-Fine Pitch MicroLED Virtual Production Volume",
+      "Neon Main Stage",
+      "Hall A: Automotive & Smart EV Expo",
+      "Republic of Indonesia",
+      "Private Sunset Yacht & Coral Reef Snorkeling",
+      "Phase III Efficacy of Next-Generation SGLT2 Inhibitors",
+      "Traditional Balinese Herbal Deep-Tissue Massage",
+      "Grand Arena Fireworks",
+      "Samsung Galaxy Arena",
+    ];
+
+    for (const View of views) {
+      const { unmount } = render(<View event={mockBaseEvent} locale="en" />);
+      for (const text of fabricated) {
+        expect(screen.queryByText(text)).toBeNull();
+      }
+      unmount();
+    }
   });
 });
