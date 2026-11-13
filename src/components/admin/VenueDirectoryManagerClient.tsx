@@ -331,11 +331,11 @@ export function VenueDirectoryManagerClient({
   const getRegionBadge = (regCode?: string) => {
     const code = (regCode || "id").toUpperCase();
     if (code === "ID") {
-      return <Badge variant="success" size="sm">Indonesia (ID)</Badge>;
+      return <Badge variant="success" size="sm">{tAdmin("regionId")}</Badge>;
     } else if (code === "JP") {
-      return <Badge variant="destructive" size="sm">Japan (JP)</Badge>;
+      return <Badge variant="destructive" size="sm">{tAdmin("regionJp")}</Badge>;
     }
-    return <Badge variant="archetype" size="sm">Global Hub (GL)</Badge>;
+    return <Badge variant="archetype" size="sm">{tAdmin("regionGlobal")}</Badge>;
   };
 
   return (
@@ -373,7 +373,7 @@ export function VenueDirectoryManagerClient({
         <div className="flex items-center gap-2.5">
           <div className="w-full sm:w-64">
             <Input
-              placeholder="Search by venue name, city, or address..."
+              placeholder={tAdmin("searchVenuePlaceholder")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               iconPrefix={<Search className="h-4 w-4" />}
@@ -387,7 +387,7 @@ export function VenueDirectoryManagerClient({
             className="h-9 gap-1.5 text-xs shrink-0"
           >
             <PlusCircle className="h-4 w-4" />
-            <span>Add Venue</span>
+            <span>{tAdmin("addVenue")}</span>
           </Button>
         </div>
       </div>
@@ -396,7 +396,7 @@ export function VenueDirectoryManagerClient({
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {filteredVenues.length === 0 ? (
           <div className="col-span-full text-center py-16 border border-dashed border-border rounded-xl text-muted-foreground text-sm">
-            No convention complexes found matching your search and filter criteria.
+            {tAdmin("venueEmpty")}
           </div>
         ) : (
           filteredVenues.map((venue) => {
@@ -428,7 +428,7 @@ export function VenueDirectoryManagerClient({
                         size="icon"
                         className="h-8 w-8 text-muted-foreground hover:text-foreground"
                         onClick={() => openEditModal(venue)}
-                        title="Edit Venue"
+                        title={tAdmin("editVenue")}
                       >
                         <Edit className="h-3.5 w-3.5" />
                       </Button>
@@ -437,7 +437,7 @@ export function VenueDirectoryManagerClient({
                         size="icon"
                         className="h-8 w-8 text-destructive/80 hover:text-destructive hover:bg-destructive/10"
                         onClick={() => handleDeleteVenue(venue.id, venue.name)}
-                        title="Delete Venue"
+                        title={tAdmin("deleteVenue")}
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                       </Button>
@@ -455,18 +455,18 @@ export function VenueDirectoryManagerClient({
                     <div className="flex items-center gap-2">
                       <Layers className="h-4 w-4 text-primary shrink-0" />
                       <div>
-                        <span className="text-xs text-muted-foreground block uppercase font-semibold">Indexed Halls</span>
+                        <span className="text-xs text-muted-foreground block uppercase font-semibold">{tAdmin("indexedHalls")}</span>
                         <span className="font-bold text-foreground">
-                          {venue.halls?.length || 0} Halls
+                          {tAdmin("hallsCountShort", { count: venue.halls?.length || 0 })}
                         </span>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
                       <Users className="h-4 w-4 text-emerald-500 shrink-0" />
                       <div>
-                        <span className="text-xs text-muted-foreground block uppercase font-semibold">Max Capacity</span>
+                        <span className="text-xs text-muted-foreground block uppercase font-semibold">{tAdmin("maxCapacity")}</span>
                         <span className="font-bold text-foreground">
-                          {totalCapacity > 0 ? `${totalCapacity.toLocaleString()} seats` : "Flexible"}
+                          {totalCapacity > 0 ? `${totalCapacity.toLocaleString()} seats` : tAdmin("flexible")}
                         </span>
                       </div>
                     </div>
@@ -476,17 +476,17 @@ export function VenueDirectoryManagerClient({
                   {venue.halls && venue.halls.length > 0 && (
                     <div className="space-y-1.5">
                       <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">
-                        Exact Stage & Hall Directory:
+                        {tAdmin("hallDirectory")}
                       </span>
                       <div className="flex flex-wrap gap-1">
                         {venue.halls.slice(0, 5).map((hall, idx) => (
                           <Badge key={idx} variant="outline" size="sm" className="text-xs bg-background/60">
-                            {hall.name} ({hall.capacity ? `${hall.capacity.toLocaleString()}p` : "Hall"})
+                            {hall.name} ({hall.capacity ? `${hall.capacity.toLocaleString()}p` : tAdmin("hallLabel")})
                           </Badge>
                         ))}
                         {venue.halls.length > 5 && (
                           <Badge variant="neutral" size="sm" className="text-xs">
-                            +{venue.halls.length - 5} more
+                            +{venue.halls.length - 5} {tAdmin("more")}
                           </Badge>
                         )}
                       </div>
@@ -511,7 +511,7 @@ export function VenueDirectoryManagerClient({
                     className="flex items-center gap-1 text-primary hover:underline font-medium cursor-pointer"
                   >
                     <MapPin className="h-3.5 w-3.5" />
-                    <span>View GPS Pin</span>
+                    <span>{tAdmin("viewGps")}</span>
                   </button>
 
                   <span className="text-xs text-muted-foreground font-mono">
@@ -528,7 +528,7 @@ export function VenueDirectoryManagerClient({
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={editingVenue ? `Edit Venue: ${editingVenue.name}` : "Create New Exhibition Complex"}
+        title={editingVenue ? tAdmin("editVenueTitle", { name: editingVenue.name }) : tAdmin("createVenueTitle")}
         size="lg"
       >
         <form onSubmit={handleSaveVenue} className="space-y-4 text-xs">
@@ -547,10 +547,10 @@ export function VenueDirectoryManagerClient({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-muted-foreground font-semibold mb-1">
-                Venue Name *
+                {tAdmin("venueNameLabel")}
               </label>
               <Input
-                placeholder="e.g. JIExpo Kemayoran"
+                placeholder={tAdmin("venueNamePlaceholder")}
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 required
@@ -560,31 +560,31 @@ export function VenueDirectoryManagerClient({
 
             <div>
               <label className="block text-muted-foreground font-semibold mb-1">
-                Country / Regional Hub *
+                {tAdmin("countryLabel")}
               </label>
               <select
                 value={formData.regionId}
                 onChange={(e) => setFormData({ ...formData, regionId: e.target.value })}
                 className="w-full h-8 px-2.5 rounded-md border border-input bg-background text-foreground text-xs focus:ring-1 focus:ring-primary"
               >
-                <option value="id">Indonesia (ID - IDR Currency)</option>
-                <option value="jp">Japan (JP - JPY Currency)</option>
-                <option value="global">Global Hubs (GL - USD Currency)</option>
+                <option value="id">{tAdmin("countryId")}</option>
+                <option value="jp">{tAdmin("countryJp")}</option>
+                <option value="global">{tAdmin("countryGlobal")}</option>
               </select>
             </div>
 
             <div>
               <label className="block text-muted-foreground font-semibold mb-1">
-                Presentation Size Suggestion
+                {tAdmin("pageSizeSuggestion")}
               </label>
               <select
                 value={formData.size}
                 onChange={(e) => setFormData({ ...formData, size: e.target.value })}
                 className="w-full h-8 px-2.5 rounded-md border border-input bg-background text-foreground text-xs focus:ring-1 focus:ring-primary"
               >
-                <option value="LARGE">Large - full pages</option>
-                <option value="MEDIUM">Medium - tighter spacing</option>
-                <option value="SMALL">Small - compact suggestion</option>
+                <option value="LARGE">{tAdmin("pageSizeLarge")}</option>
+                <option value="MEDIUM">{tAdmin("pageSizeMedium")}</option>
+                <option value="SMALL">{tAdmin("pageSizeSmall")}</option>
               </select>
             </div>
 
@@ -593,7 +593,7 @@ export function VenueDirectoryManagerClient({
                 {tAdmin("venueTypeField") || "Venue Type"}
               </label>
               <select
-                aria-label="Venue type"
+                aria-label={tAdmin("venueTypeLabel")}
                 value={formData.type}
                 onChange={(e) => setFormData({ ...formData, type: e.target.value })}
                 className="w-full h-8 px-2.5 rounded-md border border-input bg-background text-foreground text-xs focus:ring-1 focus:ring-primary"
@@ -612,7 +612,7 @@ export function VenueDirectoryManagerClient({
               </label>
               <Input
                 type="number"
-                aria-label="Venue capacity"
+                aria-label={tAdmin("venueCapacityLabel")}
                 placeholder="e.g. 1200"
                 value={formData.capacity}
                 onChange={(e) => setFormData({ ...formData, capacity: e.target.value })}
@@ -622,10 +622,10 @@ export function VenueDirectoryManagerClient({
 
             <div>
               <label className="block text-muted-foreground font-semibold mb-1">
-                City *
+                {tAdmin("cityLabel")}
               </label>
               <Input
-                placeholder="e.g. Jakarta, Tokyo, Singapore"
+                placeholder={tAdmin("cityPlaceholder")}
                 value={formData.city}
                 onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                 required
@@ -635,10 +635,10 @@ export function VenueDirectoryManagerClient({
 
             <div>
               <label className="block text-muted-foreground font-semibold mb-1">
-                Full Street Address *
+                {tAdmin("addressLabel")}
               </label>
               <Input
-                placeholder="e.g. Gedung Pusat Niaga Lt. 1, Arena PRJ Kemayoran"
+                placeholder={tAdmin("addressPlaceholder")}
                 value={formData.address}
                 onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                 required
@@ -648,7 +648,7 @@ export function VenueDirectoryManagerClient({
 
             <div>
               <label className="block text-muted-foreground font-semibold mb-1">
-                GPS Latitude (Decimal)
+                {tAdmin("latitudeLabel")}
               </label>
               <Input
                 type="number"
@@ -662,7 +662,7 @@ export function VenueDirectoryManagerClient({
 
             <div>
               <label className="block text-muted-foreground font-semibold mb-1">
-                GPS Longitude (Decimal)
+                {tAdmin("longitudeLabel")}
               </label>
               <Input
                 type="number"
@@ -676,10 +676,10 @@ export function VenueDirectoryManagerClient({
 
             <div className="sm:col-span-2">
               <label className="block text-muted-foreground font-semibold mb-1">
-                Public Transit & Access Instructions
+                {tAdmin("transitLabel")}
               </label>
               <Input
-                placeholder="e.g. KRL Commuter Line to Rajawali Station; TransJakarta Corridor 12 shuttle."
+                placeholder={tAdmin("transitPlaceholder")}
                 value={formData.transitInfo}
                 onChange={(e) => setFormData({ ...formData, transitInfo: e.target.value })}
                 className="h-8 text-xs"
@@ -688,10 +688,10 @@ export function VenueDirectoryManagerClient({
 
             <div className="sm:col-span-2">
               <label className="block text-muted-foreground font-semibold mb-1">
-                Cover Photo URL
+                {tAdmin("coverPhotoLabel")}
               </label>
               <Input
-                placeholder="e.g. https://images.unsplash.com/... or /images/venues/jiexpo.jpg"
+                placeholder={tAdmin("coverPhotoPlaceholder")}
                 value={formData.imageUrl}
                 onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
                 className="h-8 text-xs"
@@ -703,9 +703,9 @@ export function VenueDirectoryManagerClient({
           <div className="pt-4 border-t border-border space-y-3">
             <div className="flex items-center justify-between">
               <div>
-                <h4 className="font-bold text-foreground text-sm">Exact Exhibition Hall Management</h4>
+                <h4 className="font-bold text-foreground text-sm">{tAdmin("hallManagementTitle")}</h4>
                 <p className="text-muted-foreground text-[11px]">
-                  Add individual stages, auditoriums, and convention halls with exact delegate capacity and floor area.
+                  {tAdmin("hallManagementDesc")}
                 </p>
               </div>
               <Button
@@ -716,7 +716,7 @@ export function VenueDirectoryManagerClient({
                 className="h-7 text-xs gap-1"
               >
                 <PlusCircle className="h-3.5 w-3.5" />
-                Add Hall
+                {tAdmin("addHall")}
               </Button>
             </div>
 
@@ -727,9 +727,9 @@ export function VenueDirectoryManagerClient({
                   className="p-2.5 rounded-lg border border-border/80 bg-muted/30 grid grid-cols-12 gap-2 items-center text-xs"
                 >
                   <div className="col-span-5">
-                    <label className="block text-xs text-muted-foreground font-semibold">Hall Name</label>
+                    <label className="block text-xs text-muted-foreground font-semibold">{tAdmin("hallNameLabel")}</label>
                     <Input
-                      placeholder="e.g. Nusantara Hall 2"
+                      placeholder={tAdmin("hallNamePlaceholder")}
                       value={hall.name}
                       onChange={(e) => handleHallChange(idx, "name", e.target.value)}
                       className="h-7 text-xs bg-background"
@@ -737,9 +737,9 @@ export function VenueDirectoryManagerClient({
                     />
                   </div>
                   <div className="col-span-3">
-                    <label className="block text-xs text-muted-foreground font-semibold">Kind</label>
+                    <label className="block text-xs text-muted-foreground font-semibold">{tAdmin("kindLabel")}</label>
                     <select
-                      aria-label="Hall kind"
+                      aria-label={tAdmin("hallKindLabel")}
                       value={hall.kind}
                       onChange={(e) => handleHallChange(idx, "kind", e.target.value)}
                       className="h-7 w-full rounded-md border border-input bg-background px-1.5 text-xs"
@@ -752,7 +752,7 @@ export function VenueDirectoryManagerClient({
                     </select>
                   </div>
                   <div className="col-span-2">
-                    <label className="block text-xs text-muted-foreground font-semibold">Seats</label>
+                    <label className="block text-xs text-muted-foreground font-semibold">{tAdmin("seatsLabel")}</label>
                     <Input
                       type="number"
                       placeholder="3500"
@@ -762,7 +762,7 @@ export function VenueDirectoryManagerClient({
                     />
                   </div>
                   <div className="col-span-1">
-                    <label className="block text-xs text-muted-foreground font-semibold">Sqm</label>
+                    <label className="block text-xs text-muted-foreground font-semibold">{tAdmin("sqmLabel")}</label>
                     <Input
                       type="number"
                       placeholder="5000"
@@ -786,7 +786,7 @@ export function VenueDirectoryManagerClient({
                     )}
                   </div>
                   <div className="col-span-6">
-                    <label className="block text-xs text-muted-foreground font-semibold">Ceiling (m, verified)</label>
+                    <label className="block text-xs text-muted-foreground font-semibold">{tAdmin("ceilingLabel")}</label>
                     <Input
                       type="number"
                       step="0.1"
@@ -797,7 +797,7 @@ export function VenueDirectoryManagerClient({
                     />
                   </div>
                   <div className="col-span-6">
-                    <label className="block text-xs text-muted-foreground font-semibold">Floor load (kN/m², verified)</label>
+                    <label className="block text-xs text-muted-foreground font-semibold">{tAdmin("floorLoadLabel")}</label>
                     <Input
                       type="number"
                       step="0.5"
@@ -819,7 +819,7 @@ export function VenueDirectoryManagerClient({
               size="sm"
               onClick={() => setIsModalOpen(false)}
             >
-              Cancel
+              {tCom("cancel")}
             </Button>
             <Button
               type="submit"
@@ -853,26 +853,26 @@ export function VenueDirectoryManagerClient({
 
               <div className="grid grid-cols-2 gap-3 p-3 bg-background rounded-lg border border-border">
                 <div>
-                  <span className="text-xs uppercase font-semibold text-muted-foreground block">Latitude</span>
+                  <span className="text-xs uppercase font-semibold text-muted-foreground block">{tAdmin("latitude")}</span>
                   <span className="font-mono text-xs font-bold text-foreground">
-                    {mapVenue.latitude ? mapVenue.latitude.toFixed(6) : "N/A (Geo-indexed)"}
+                    {mapVenue.latitude ? mapVenue.latitude.toFixed(6) : tAdmin("geoIndexed")}
                   </span>
                 </div>
                 <div>
-                  <span className="text-xs uppercase font-semibold text-muted-foreground block">Longitude</span>
+                  <span className="text-xs uppercase font-semibold text-muted-foreground block">{tAdmin("longitude")}</span>
                   <span className="font-mono text-xs font-bold text-foreground">
-                    {mapVenue.longitude ? mapVenue.longitude.toFixed(6) : "N/A (Geo-indexed)"}
+                    {mapVenue.longitude ? mapVenue.longitude.toFixed(6) : tAdmin("geoIndexed")}
                   </span>
                 </div>
               </div>
 
               <div className="space-y-1">
-                <span className="text-xs uppercase font-semibold text-muted-foreground block">Full Address</span>
+                <span className="text-xs uppercase font-semibold text-muted-foreground block">{tAdmin("fullAddress")}</span>
                 <p className="text-foreground">{mapVenue.address}</p>
               </div>
 
               <div className="space-y-1">
-                <span className="text-xs uppercase font-semibold text-muted-foreground block">Transit Routing</span>
+                <span className="text-xs uppercase font-semibold text-muted-foreground block">{tAdmin("transitRouting")}</span>
                 <p className="text-muted-foreground leading-relaxed">{mapVenue.transitInfo}</p>
               </div>
             </div>
@@ -886,12 +886,12 @@ export function VenueDirectoryManagerClient({
                 >
                   <Button variant="primary" size="sm" className="gap-1 text-xs">
                     <Navigation className="h-3.5 w-3.5" />
-                    Open in External Maps
+                    {tAdmin("openExternalMaps")}
                   </Button>
                 </a>
               )}
               <Button variant="outline" size="sm" onClick={() => setMapVenue(null)}>
-                Close
+                {tAdmin("close")}
               </Button>
             </div>
           </div>
