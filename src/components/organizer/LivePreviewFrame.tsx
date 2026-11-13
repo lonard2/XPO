@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useLocale, useTranslations } from "next-intl";
 import {
   Monitor,
   Tablet,
@@ -10,8 +11,6 @@ import {
   Ticket,
   Sparkles,
   Users,
-  Coffee,
-  Download,
   Layers,
 } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
@@ -47,144 +46,26 @@ interface LivePreviewFrameProps {
     currency: string;
     capacity: number;
   }>;
-}
-
-function getCategoryFeatureSnippet(arch: string) {
-  switch (arch) {
-    case "TECH_DEV_SUMMIT":
-      return {
-        title: "Developer Sandbox & Livestream Tracks",
-        desc: "Live code walkthroughs, API sandboxes, GitHub speaker badges, and multi-track streaming keynotes.",
-        tags: ["GitHub CI/CD", "Rust/Wasm", "LLM Fine-Tuning", "Cloud Native"],
-      };
-    case "MEDICAL_SYMPOSIUM":
-      return {
-        title: "Peer-Reviewed Clinical Abstracts & CME Credits",
-        desc: "18.5 Accredited CME credit points, blinded peer-review abstract portal, and scientific breakout rooms.",
-        tags: ["18.5 CME Credits", "Abstract Reader", "Double-Blind Review", "Clinical Trials"],
-      };
-    case "FINANCE_INVESTOR":
-      return {
-        title: "Private Deal-Rooms & Institutional Pitch Decks",
-        desc: "High-security deal-rooms with NDA clearance, startup pitch stage, and encrypted buyer VIP passes.",
-        tags: ["Private Deal-Room", "Pitch Decks", "Accredited Investor Pass", "Seed to Series B"],
-      };
-    case "POP_CULTURE_GAMING":
-      return {
-        title: "Creator Alley, Cosplay Rules & Esports Arena",
-        desc: "Cosplay catwalk guidelines, creator alley table reservation, and 120Hz esports tournament spectator zones.",
-        tags: ["Cosplay Catwalk", "Artist Alley", "Esports Mainstage", "Merch Wishlist"],
-      };
-    case "MUSIC_FESTIVAL":
-      return {
-        title: "Real-Time Multi-Stage Timeline & Crowd Density",
-        desc: "Live set times across 4 acoustic stages, real-time gate crowd meter, and RFID pass credentials.",
-        tags: ["Live Stage Times", "Crowd Density Meter", "Acoustic Arena", "Wristband Access"],
-      };
-    case "MEGA_EXPO_PAVILION":
-      return {
-        title: "Multi-Pavilion Fair Map & Midnight Fireworks",
-        desc: "Over 500+ commercial tenant booths, nightly fireworks schedules, and digital food-court promo vouchers.",
-        tags: ["Pavilion Map", "Fireworks Schedule", "500+ Tenants", "Tenant Promos"],
-      };
-    case "AUTOMOTIVE_MOBILITY":
-      return {
-        title: "Test Drive Booking & EV Concept Reveals",
-        desc: "Dedicated circuit slot booking, high-voltage battery charging specs, and concept vehicle debuts.",
-        tags: ["Track Test Drives", "Concept Debuts", "EV Superchargers", "OEM Supply"],
-      };
-    case "ENERGY_INFRASTRUCTURE":
-      return {
-        title: "Clean Grid Concession Maps & Mining Heavy Machinery",
-        desc: "Renewable energy concession mapping, smart solar/wind grids, and heavy mining machinery demonstrations.",
-        tags: ["Concession Maps", "Green Grids", "Hydrogen Fuel", "Heavy Machinery"],
-      };
-    case "AGRITECH_FOOD":
-      return {
-        title: "Smart Precision Farming & Cold-Chain Logistics",
-        desc: "Drone precision spray demos, IoT soil telemetry, cold-chain transport networks, and tasting pavilions.",
-        tags: ["Smart Agriculture", "Cold-Chain Logistics", "Drone Demos", "Culinary Pavilion"],
-      };
-    case "HOSPITALITY_TOURISM":
-      return {
-        title: "B2B Buyer Appointments & Hotelier Procurement",
-        desc: "Curated 1-on-1 buyer matching, global airline route displays, and luxury hospitality amenities procurement.",
-        tags: ["Buyer Matchmaking", "Hotel Procurement", "Airline Routes", "Destination Pavilions"],
-      };
-    case "EDUCATION_EDTECH":
-      return {
-        title: "Global University Directory & STEM Labs",
-        desc: "International university admissions booths, scholarship grant counseling, and interactive STEM labs.",
-        tags: ["University Stalls", "Scholarship Grants", "STEM Research", "EdTech Sandboxes"],
-      };
-    case "FASHION_RETAIL":
-      return {
-        title: "Runway Premieres & Cosmetic OEM Pavilions",
-        desc: "Haute couture runway scheduling, cosmetic formulation labs, and bulk wholesale buyer pre-orders.",
-        tags: ["Runway Shows", "Cosmetic OEM", "Wholesale Pre-Orders", "Luxury Pavilion"],
-      };
-    case "GOVERNMENT_DIPLOMATIC":
-      return {
-        title: "Diplomatic Protocol & Bilateral Delegation Lounges",
-        desc: "High-security ministerial briefing rooms, protocol scheduling, and bilateral delegation access control.",
-        tags: ["Protocol Briefings", "Bilateral Lounges", "Ministerial Access", "Diplomatic Passes"],
-      };
-    case "INCENTIVE_RETREAT":
-      return {
-        title: "Curated Excursions & Gala Seating Charts",
-        desc: "Executive wellness itinerary planners, seaside excursion routes, and waterfront gala seating maps.",
-        tags: ["Daily Itineraries", "Gala Seating Chart", "Wellness Tracks", "VIP Excursions"],
-      };
-    case "BUILDING_PROPTECH":
-      return {
-        title: "BIM Modeling, Architectural Specs & PropTech Suite",
-        desc: "Smart building automation, sustainable architectural materials, and BIM software demonstrations.",
-        tags: ["BIM Demos", "Smart PropTech", "Building Materials", "Green Architecture"],
-      };
-    case "AEROSPACE_DEFENSE":
-      return {
-        title: "Flight Demonstrations, Avionics & Defense Pavilion",
-        desc: "Commercial aircraft systems, tactical defense avionics, autonomous UAV runways, and procurement lounges.",
-        tags: ["Avionics Radar", "Flight Demos", "Defense Systems", "Bilateral Procurement"],
-      };
-    case "SUPPLY_CHAIN_LOGISTICS":
-      return {
-        title: "Autonomous Warehousing & Multi-Modal Freight Hub",
-        desc: "Automated guided vehicles, port container logistics, cold-chain monitoring, and supply route tracking.",
-        tags: ["Fleet Telematics", "Cold Chain", "Port Logistics", "Warehouse AGVs"],
-      };
-    case "FRANCHISE_LICENSING":
-      return {
-        title: "Franchise Brand Discovery & SME Licensing Roster",
-        desc: "Master franchise rights, retail concept showcases, turnkey business models, and investor deal suites.",
-        tags: ["Master Franchise", "Brand Licensing", "Turnkey Models", "Investor Suites"],
-      };
-    case "FAITH_PILGRIMAGE_CONGRESS":
-      return {
-        title: "Hajj & Umrah Travel Services & Halal Expo Pavilion",
-        desc: "Pilgrimage visa operators, certified halal supply networks, and spiritual community congregation spaces.",
-        tags: ["Pilgrimage Logistics", "Halal Certification", "Travel Packages", "Community Forum"],
-      };
-    case "SPORTS_OUTDOOR":
-      return {
-        title: "Athletic Gear Arenas & Outdoor Adventure Circuit",
-        desc: "Live sportswear catwalks, interactive obstacle courses, gym equipment testing, and outdoor expeditions.",
-        tags: ["Gear Testing", "Sportswear Arenas", "Trail Obstacles", "Fitness Stages"],
-      };
-    case "MEDIA_BROADCAST":
-      return {
-        title: "Virtual Production Volumes & 8K Broadcast Stage",
-        desc: "LED virtual production walls, professional audio consoles, camera rigs, and low-latency broadcast transmission.",
-        tags: ["LED Volumes", "8K Broadcast", "Pro-AV Gear", "Studio Master Control"],
-      };
-    case "INDUSTRIAL_B2B":
-    default:
-      return {
-        title: "Heavy Machinery Specs & RFQ Quote Drawer",
-        desc: "Live CNC machine tooling demonstrations, robotic automation specs, and instant supplier RFQ submissions.",
-        tags: ["Machinery Specs", "RFQ Quotes", "Exhibitor Booths", "B2B Procurement"],
-      };
-  }
+  agendaItems?: Array<{
+    id?: string;
+    title: string;
+    location?: string;
+    startTime?: string | Date;
+    endTime?: string | Date;
+    track?: string | null;
+    speakerName?: string | null;
+  }>;
+  booths?: Array<{
+    id?: string;
+    companyName: string;
+    boothNumber: string;
+    hallName?: string;
+  }>;
+  perks?: Array<{
+    id?: string;
+    title: string;
+    description: string;
+  }>;
 }
 
 export function LivePreviewFrame({
@@ -192,10 +73,10 @@ export function LivePreviewFrame({
   tagline,
   eventSlug,
   archetype,
-  venueName = "JIExpo Kemayoran",
-  hallName = "Hall A1 (Main Exhibition)",
-  datesText = "Apr 14 - Apr 17, 2027",
-  heroImageUrl = "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1600&q=80",
+  venueName = "",
+  hallName = "",
+  datesText = "",
+  heroImageUrl = "",
   primaryColor,
   accentColor,
   fontFamily,
@@ -207,17 +88,27 @@ export function LivePreviewFrame({
     tickets: true,
     perks: true,
   },
-  ticketTiers = [
-    { name: "Standard Visitor Pass", price: 0, currency: "IDR", capacity: 3500 },
-    { name: "VIP Delegate Pass", price: 750000, currency: "IDR", capacity: 400 },
-  ],
+  ticketTiers = [],
+  agendaItems = [],
+  booths = [],
+  perks = [],
 }: LivePreviewFrameProps) {
+  const t = useTranslations("organizer");
+  const locale = useLocale();
   const [viewport, setViewport] = React.useState<ViewportMode>("desktop");
   const [heroFailed, setHeroFailed] = React.useState(false);
   React.useEffect(() => {
     setHeroFailed(false);
   }, [heroImageUrl]);
   const tokens = getArchetypeTokens(archetype as MiceArchetype);
+  const totalPassCapacity = ticketTiers.reduce((sum, tier) => sum + tier.capacity, 0);
+  const formatTime = (value?: string | Date) =>
+    value
+      ? new Date(value).toLocaleTimeString(locale, {
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : "";
 
   const getViewportWidthClass = () => {
     switch (viewport) {
@@ -255,10 +146,10 @@ export function LivePreviewFrame({
       <div className="w-full flex items-center justify-between px-2">
         <div className="flex items-center gap-2">
           <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-            Responsive Live Canvas
+            {t("previewCanvasTitle")}
           </span>
           <Badge variant="outline" size="sm" className="hidden sm:inline-flex text-xs">
-            WYSIWYG 1:1 Rendering
+            {t("previewCanvasBadge")}
           </Badge>
         </div>
 
@@ -273,10 +164,10 @@ export function LivePreviewFrame({
                 ? "bg-card text-foreground font-semibold shadow-xs"
                 : "text-muted-foreground hover:text-foreground"
             )}
-            aria-label="Desktop viewport"
+            aria-label={t("previewDesktopAria")}
           >
             <Monitor className="h-4 w-4" />
-            <span className="hidden sm:inline text-xs">Desktop (100%)</span>
+            <span className="hidden sm:inline text-xs">{t("previewDesktopLabel")}</span>
           </button>
 
           <button
@@ -288,10 +179,10 @@ export function LivePreviewFrame({
                 ? "bg-card text-foreground font-semibold shadow-xs"
                 : "text-muted-foreground hover:text-foreground"
             )}
-            aria-label="Tablet viewport"
+            aria-label={t("previewTabletAria")}
           >
             <Tablet className="h-4 w-4" />
-            <span className="hidden sm:inline text-xs">Tablet (768px)</span>
+            <span className="hidden sm:inline text-xs">{t("previewTabletLabel")}</span>
           </button>
 
           <button
@@ -303,10 +194,10 @@ export function LivePreviewFrame({
                 ? "bg-card text-foreground font-semibold shadow-xs"
                 : "text-muted-foreground hover:text-foreground"
             )}
-            aria-label="Mobile viewport"
+            aria-label={t("previewMobileAria")}
           >
             <Smartphone className="h-4 w-4" />
-            <span className="hidden sm:inline text-xs">Mobile (375px)</span>
+            <span className="hidden sm:inline text-xs">{t("previewMobileLabel")}</span>
           </button>
         </div>
       </div>
@@ -364,7 +255,7 @@ export function LivePreviewFrame({
               />
               {heroFailed && (
                 <p className="absolute top-3 left-3 z-20 text-[11px] text-white/80 bg-black/50 px-2 py-1 rounded-md">
-                  Hero image unavailable — showing brand gradient.
+                  {t("previewHeroFallback")}
                 </p>
               )}
 
@@ -386,7 +277,7 @@ export function LivePreviewFrame({
                   <span
                     className="text-xs font-semibold px-2 py-0.5 rounded-full border border-white/30 text-white/90"
                   >
-                    Verified MICE Exhibition
+                    {t("previewVerifiedBadge")}
                   </span>
                 </div>
 
@@ -425,7 +316,7 @@ export function LivePreviewFrame({
                   style={{ backgroundColor: primaryColor }}
                 >
                   <Ticket className="h-3.5 w-3.5" />
-                  <span>Reserve Delegate Pass</span>
+                  <span>{t("previewReserveCta")}</span>
                 </button>
 
                 <button
@@ -435,51 +326,22 @@ export function LivePreviewFrame({
                   className="px-3 py-2 rounded-lg text-xs font-medium border border-border bg-card transition-colors flex items-center gap-1.5 pointer-events-none"
                 >
                   <Sparkles className="h-3.5 w-3.5" style={{ color: accentColor }} />
-                  <span>Interactive Floor Plan</span>
+                  <span>{t("previewFloorPlan")}</span>
                 </button>
               </div>
 
               <div className="text-xs text-muted-foreground flex items-center gap-1">
                 <Users className="h-3.5 w-3.5" />
-                <span>3,900+ registered delegates</span>
+                <span>{t("previewPassCapacity", { count: totalPassCapacity.toLocaleString() })}</span>
               </div>
             </div>
-
-            {/* CATEGORY-SPECIFIC DOMAIN FEATURE HIGHLIGHT */}
-            {(() => {
-              const feat = getCategoryFeatureSnippet(archetype as string);
-              return (
-                <div className="mx-5 sm:mx-8 p-4 rounded-xl border border-primary/20 bg-primary/5 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Sparkles className="h-4 w-4" style={{ color: primaryColor }} />
-                      <span className="text-xs font-bold text-foreground">{feat.title}</span>
-                    </div>
-                    <Badge variant="archetype" size="sm">{tokens.displayName}</Badge>
-                  </div>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    {feat.desc}
-                  </p>
-                  <div className="flex flex-wrap gap-1.5 pt-1">
-                    {feat.tags.map((t) => (
-                      <span
-                        key={t}
-                        className="text-xs font-medium px-2 py-0.5 rounded-md border border-border/80 bg-background/80 text-foreground"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              );
-            })()}
 
             {/* SECTION 1: TICKET TIERS */}
             {sectionsVisibility.tickets && (
               <div className="px-5 sm:px-8 space-y-3">
                 <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
                   <Ticket className="h-4 w-4" style={{ color: primaryColor }} />
-                  <span>Delegate & Buyer Pass Tiers</span>
+                  <span>{t("previewPassTiers")}</span>
                 </h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -497,15 +359,15 @@ export function LivePreviewFrame({
                         <div>
                           <div className="text-xs font-bold text-foreground">{tier.name}</div>
                           <div className="text-sm font-bold mt-1" style={{ color: primaryColor }}>
-                            {tier.price === 0 ? "Complimentary" : `${tier.currency} ${tier.price.toLocaleString()}`}
+                            {tier.price === 0 ? t("previewComplimentary") : `${tier.currency} ${tier.price.toLocaleString()}`}
                           </div>
                         </div>
                         <span className="text-xs font-mono text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
-                          Cap: {tier.capacity}
+                          {t("previewCap", { capacity: tier.capacity })}
                         </span>
                       </div>
                       <div className="pt-2 border-t border-border/60 text-xs text-muted-foreground">
-                        Instant HMAC QR Pass & Guidebook Access
+                        {t("previewPassFeature")}
                       </div>
                     </div>
                   ))}
@@ -514,35 +376,24 @@ export function LivePreviewFrame({
             )}
 
             {/* SECTION 2: KEYNOTE TIMETABLE */}
-            {sectionsVisibility.agenda && (
+            {sectionsVisibility.agenda && agendaItems.length > 0 && (
               <div className="px-5 sm:px-8 space-y-3">
                 <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
                   <Calendar className="h-4 w-4" style={{ color: primaryColor }} />
-                  <span>Featured Keynote Tracks & Timetable</span>
+                  <span>{t("previewKeynoteTracks")}</span>
                 </h3>
 
                 <div className="space-y-2">
-                  {[
-                    {
-                      time: "09:30 - 10:45",
-                      title: "Opening Plenary: Global Battery Tech & Green Grid Standards",
-                      speaker: "Plenary Stage Keynote Track",
-                      stage: "Plenary Stage - Hall A1",
-                    },
-                    {
-                      time: "11:15 - 12:30",
-                      title: "Cross-Border Procurement & Industrial Machinery Logistics",
-                      speaker: "B2B Procurement Session",
-                      stage: "Procurement Theatre 2",
-                    },
-                  ].map((session) => (
-                    <div key={session.title} className="p-3 bg-muted/40 rounded-lg border border-border/80 text-xs space-y-1">
+                  {agendaItems.map((session, idx) => (
+                    <div key={session.id || `${session.title}-${idx}`} className="p-3 bg-muted/40 rounded-lg border border-border/80 text-xs space-y-1">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="font-semibold text-primary">{session.time}</span>
-                        <span className="text-muted-foreground">{session.stage}</span>
+                        <span className="font-semibold text-primary">
+                          {formatTime(session.startTime)} - {formatTime(session.endTime)}
+                        </span>
+                        <span className="text-muted-foreground">{session.location}</span>
                       </div>
                       <div className="font-bold text-foreground">{session.title}</div>
-                      <div className="text-xs text-muted-foreground">{session.speaker}</div>
+                      <div className="text-xs text-muted-foreground">{session.speakerName || session.track}</div>
                     </div>
                   ))}
                 </div>
@@ -550,22 +401,20 @@ export function LivePreviewFrame({
             )}
 
             {/* SECTION 3: EXHIBITOR BOOTHS */}
-            {sectionsVisibility.booths && (
+            {sectionsVisibility.booths && booths.length > 0 && (
               <div className="px-5 sm:px-8 space-y-3">
                 <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
                   <Layers className="h-4 w-4" style={{ color: primaryColor }} />
-                  <span>Featured Exhibitors & Floor Booths</span>
+                  <span>{t("previewExhibitors")}</span>
                 </h3>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                  {[
-                    { name: "Exhibition Floor Lot B01", booth: "Hall A1 - B01" },
-                    { name: "Robotics Pavilion Lot B04", booth: "Hall A1 - B04" },
-                    { name: "Clean Energy Grid Lot C12", booth: "Hall A2 - C12" },
-                  ].map((ex) => (
-                    <div key={ex.name} className="p-2.5 bg-card border border-border rounded-lg text-xs">
-                      <div className="font-semibold text-foreground truncate">{ex.name}</div>
-                      <div className="text-xs text-muted-foreground font-mono mt-0.5">{ex.booth}</div>
+                  {booths.map((ex, idx) => (
+                    <div key={ex.id || `${ex.companyName}-${idx}`} className="p-2.5 bg-card border border-border rounded-lg text-xs">
+                      <div className="font-semibold text-foreground truncate">{ex.companyName}</div>
+                      <div className="text-xs text-muted-foreground font-mono mt-0.5">
+                        {[ex.hallName, ex.boothNumber].filter(Boolean).join(" · ")}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -573,28 +422,26 @@ export function LivePreviewFrame({
             )}
 
             {/* SECTION 4: ATTENDEE PERKS */}
-            {sectionsVisibility.perks && (
+            {sectionsVisibility.perks && perks.length > 0 && (
               <div className="px-5 sm:px-8 space-y-3">
                 <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
                   <Sparkles className="h-4 w-4" style={{ color: accentColor }} />
-                  <span>Attendee Perks & Exclusive Guidebook Treats</span>
+                  <span>{t("previewPerks")}</span>
                 </h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  <div className="p-2.5 bg-emerald-500/5 border border-emerald-500/20 rounded-lg text-xs flex items-center gap-2">
-                    <Coffee className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                    <div>
-                      <div className="font-semibold text-foreground">VIP Lounge & Artisan Barista</div>
-                      <div className="text-xs text-muted-foreground">Unlocked with VIP Buyer pass</div>
+                  {perks.map((perk, idx) => (
+                    <div
+                      key={perk.id || `${perk.title}-${idx}`}
+                      className="p-2.5 bg-emerald-500/5 border border-emerald-500/20 rounded-lg text-xs flex items-center gap-2"
+                    >
+                      <Sparkles className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                      <div>
+                        <div className="font-semibold text-foreground">{perk.title}</div>
+                        <div className="text-xs text-muted-foreground">{perk.description}</div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="p-2.5 bg-primary/5 border border-primary/20 rounded-lg text-xs flex items-center gap-2">
-                    <Download className="h-4 w-4 text-primary shrink-0" />
-                    <div>
-                      <div className="font-semibold text-foreground">Speaker Slide Decks & Whitepapers</div>
-                      <div className="text-xs text-muted-foreground">Digital pass cloud unlock</div>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             )}

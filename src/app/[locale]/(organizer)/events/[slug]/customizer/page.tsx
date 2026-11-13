@@ -734,6 +734,9 @@ export default function EventCustomizerPage() {
             bannerOverlayOpacity={bannerOverlayOpacity}
             sectionsVisibility={sectionsVisibility}
             ticketTiers={eventData?.ticketTiers}
+            agendaItems={eventData?.agendaItems}
+            booths={eventData?.booths}
+            perks={eventData?.perks}
           />
         </div>
       </div>

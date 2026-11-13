@@ -56,6 +56,31 @@ describe("Phase 9 Component: LivePreviewFrame Real-Time Visual Customizer", () =
         primaryColor="#6366f1"
         accentColor="#06b6d4"
         fontFamily="font-sans"
+        agendaItems={[
+          {
+            id: "agenda-1",
+            title: "Opening Keynote",
+            location: "Hall A1",
+            startTime: "2027-04-14T09:00:00Z",
+            endTime: "2027-04-14T10:00:00Z",
+            speakerName: "Keynote Speaker",
+          },
+        ]}
+        booths={[
+          {
+            id: "booth-1",
+            companyName: "Acme Robotics",
+            boothNumber: "B01",
+            hallName: "Hall A1",
+          },
+        ]}
+        perks={[
+          {
+            id: "perk-1",
+            title: "VIP Lounge",
+            description: "Access with VIP pass",
+          },
+        ]}
         sectionsVisibility={{
           agenda: true,
           booths: true,
