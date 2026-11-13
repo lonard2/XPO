@@ -4,25 +4,26 @@ description: Institutional Digital Ecosystem for Global MICE Events, Venues & Pa
 colors:
   primary: "#1d4ed8"
   primary-hover: "#2563eb"
-  primary-dark: "#3b82f6"
-  background-light: "#f8fafc"
-  background-dark: "#090d16"
-  surface-light: "#ffffff"
-  surface-dark: "#0f172a"
-  surface-dark-subtle: "#1e293b"
-  border-light: "#e2e8f0"
-  border-dark: "#1e293b"
-  text-light-primary: "#0f172a"
-  text-light-muted: "#64748b"
-  text-dark-primary: "#f8fafc"
-  text-dark-muted: "#94a3b8"
-  emerald-verified: "#10b981"
-  amber-warning: "#f59e0b"
-  rose-destructive: "#e11d48"
+  primary-foreground: "#f8fafc"
+  background: "#f8fafc"
+  foreground: "#0f172a"
+  card: "#ffffff"
+  muted: "#f1f5f9"
+  muted-foreground: "#475569"
+  border: "#e2e8f0"
+  input: "#e2e8f0"
+  ring: "#2563eb"
   success: "#10b981"
   warning: "#f59e0b"
   destructive: "#e11d48"
   info: "#0284c7"
+  dark-background: "#090d16"
+  dark-foreground: "#f8fafc"
+  dark-card: "#0f172a"
+  dark-border: "#1e293b"
+  dark-muted-foreground: "#94a3b8"
+  archetype-primary: "#2563eb"
+  archetype-accent: "#0ea5e9"
   category-industrial: "#2563eb"
   category-tech: "#6366f1"
   category-medical: "#0d9488"
@@ -45,314 +46,295 @@ colors:
   category-aerospace: "#1e3a8a"
   category-faith: "#047857"
   category-sports: "#ea580c"
-  archetype-industrial-primary: "#2563eb"
-  archetype-industrial-accent: "#f59e0b"
-  archetype-industrial-bg: "#0f172a"
-  archetype-industrial-surface: "#1e293b"
-  archetype-industrial-border: "#3b82f6"
-  archetype-tech-primary: "#6366f1"
-  archetype-tech-accent: "#06b6d4"
-  archetype-tech-bg: "#090d16"
-  archetype-tech-surface: "#131b2e"
-  archetype-tech-border: "#818cf8"
-  archetype-medical-primary: "#0d9488"
-  archetype-medical-accent: "#10b981"
-  archetype-medical-bg: "#f8fafc"
-  archetype-medical-surface: "#ffffff"
-  archetype-medical-border: "#2dd4bf"
-  archetype-finance-primary: "#1e3a8a"
-  archetype-finance-accent: "#10b981"
-  archetype-finance-bg: "#0a0f1d"
-  archetype-finance-surface: "#111827"
-  archetype-finance-border: "#10b981"
-  archetype-popculture-primary: "#9333ea"
-  archetype-popculture-accent: "#ec4899"
-  archetype-popculture-bg: "#180828"
-  archetype-popculture-surface: "#2d124d"
-  archetype-popculture-border: "#c084fc"
-  archetype-music-primary: "#e11d48"
-  archetype-music-accent: "#8b5cf6"
-  archetype-music-bg: "#110714"
-  archetype-music-surface: "#260c2c"
-  archetype-music-border: "#fb7185"
-  archetype-megaexpo-primary: "#ea580c"
-  archetype-megaexpo-accent: "#16a34a"
-  archetype-megaexpo-bg: "#0c121e"
-  archetype-megaexpo-surface: "#162032"
-  archetype-megaexpo-border: "#fb923c"
-  archetype-diplomatic-primary: "#0284c7"
-  archetype-diplomatic-accent: "#ca8a04"
-  archetype-diplomatic-bg: "#020617"
-  archetype-diplomatic-surface: "#0f172a"
-  archetype-diplomatic-border: "#38bdf8"
-  archetype-retreat-primary: "#059669"
-  archetype-retreat-accent: "#d97706"
-  archetype-retreat-bg: "#062016"
-  archetype-retreat-surface: "#0e3828"
-  archetype-retreat-border: "#10b981"
-  archetype-automotive-primary: "#dc2626"
-  archetype-automotive-accent: "#f97316"
-  archetype-automotive-bg: "#09090b"
-  archetype-automotive-surface: "#18181b"
-  archetype-automotive-border: "#f87171"
-  archetype-energy-primary: "#d97706"
-  archetype-energy-accent: "#16a34a"
-  archetype-energy-bg: "#0c0a09"
-  archetype-energy-surface: "#1c1917"
-  archetype-energy-border: "#f59e0b"
-  archetype-agritech-primary: "#16a34a"
-  archetype-agritech-accent: "#84cc16"
-  archetype-agritech-bg: "#052e16"
-  archetype-agritech-surface: "#064e3b"
-  archetype-agritech-border: "#22c55e"
-  archetype-hospitality-primary: "#0891b2"
-  archetype-hospitality-accent: "#38bdf8"
-  archetype-hospitality-bg: "#083344"
-  archetype-hospitality-surface: "#0e7490"
-  archetype-hospitality-border: "#06b6d4"
-  archetype-education-primary: "#7c3aed"
-  archetype-education-accent: "#a855f7"
-  archetype-education-bg: "#1e1b4b"
-  archetype-education-surface: "#312e81"
-  archetype-education-border: "#8b5cf6"
-  archetype-fashion-primary: "#db2777"
-  archetype-fashion-accent: "#4f46e5"
-  archetype-fashion-bg: "#2e1065"
-  archetype-fashion-surface: "#3b0764"
-  archetype-fashion-border: "#ec4899"
 typography:
-  font-sans:
-    fontFamily: "Font-Sans, Plus Jakarta Sans, system-ui, sans-serif"
-  font-serif:
-    fontFamily: "Font-Serif, Newsreader, Georgia, serif"
-  font-mono:
-    fontFamily: "Font-Mono, JetBrains Mono, monospace"
-  font-legible:
-    fontFamily: "Font-Legible, Atkinson Hyperlegible, sans-serif"
   display:
     fontFamily: "Plus Jakarta Sans, system-ui, sans-serif"
-    fontSize: "clamp(2.25rem, 5vw, 3.75rem)"
+    fontSize: "3rem"
     fontWeight: 800
     lineHeight: 1.1
-    letterSpacing: "-0.025em"
+    letterSpacing: "-0.02em"
   headline:
     fontFamily: "Plus Jakarta Sans, system-ui, sans-serif"
-    fontSize: "clamp(1.5rem, 3vw, 2.25rem)"
+    fontSize: "1.5rem"
     fontWeight: 700
     lineHeight: 1.2
-    letterSpacing: "-0.02em"
+    letterSpacing: "-0.01em"
   title:
     fontFamily: "Plus Jakarta Sans, system-ui, sans-serif"
-    fontSize: "1.125rem"
-    fontWeight: 600
-    lineHeight: 1.4
-    letterSpacing: "-0.01em"
+    fontSize: "1rem"
+    fontWeight: 700
+    lineHeight: 1.3
+    letterSpacing: "0em"
   body:
     fontFamily: "Plus Jakarta Sans, system-ui, sans-serif"
     fontSize: "0.875rem"
     fontWeight: 400
     lineHeight: 1.6
-    letterSpacing: "normal"
+    letterSpacing: "0em"
   label:
     fontFamily: "Plus Jakarta Sans, system-ui, sans-serif"
     fontSize: "0.75rem"
     fontWeight: 600
     lineHeight: 1.2
-    letterSpacing: "0.025em"
-  caption:
-    fontFamily: "Plus Jakarta Sans, system-ui, sans-serif"
-    fontSize: "0.6875rem"
-    fontWeight: 500
-    lineHeight: 1.3
-    letterSpacing: "0.02em"
+    letterSpacing: "0.05em"
 rounded:
   sm: "4px"
-  md: "8px"
-  lg: "12px"
-  xl: "16px"
-  2xl: "24px"
-  3xl: "32px"
+  md: "6px"
+  lg: "8px"
+  xl: "12px"
+  2xl: "16px"
+  3xl: "24px"
   full: "9999px"
 spacing:
-  xs: "4px"
-  sm: "8px"
-  md: "16px"
-  lg: "24px"
-  xl: "32px"
-  2xl: "48px"
+  1: "4px"
+  2: "8px"
+  3: "12px"
+  4: "16px"
+  6: "24px"
+  8: "32px"
+  12: "48px"
+  16: "64px"
 components:
   button-primary:
     backgroundColor: "{colors.primary}"
-    textColor: "#ffffff"
-    rounded: "{rounded.md}"
-    padding: "8px 16px"
+    textColor: "{colors.primary-foreground}"
+    rounded: "{rounded.lg}"
+    padding: "0 16px"
+    height: "40px"
   button-primary-hover:
     backgroundColor: "{colors.primary-hover}"
-  button-secondary:
-    backgroundColor: "{colors.surface-dark-subtle}"
-    textColor: "{colors.text-dark-primary}"
+  button-outline:
+    backgroundColor: "{colors.background}"
+    textColor: "{colors.foreground}"
+    rounded: "{rounded.lg}"
+    padding: "0 16px"
+    height: "40px"
+  button-ghost:
+    backgroundColor: "transparent"
+    textColor: "{colors.foreground}"
+    rounded: "{rounded.lg}"
+    padding: "0 16px"
+    height: "40px"
+  input-default:
+    backgroundColor: "{colors.background}"
+    textColor: "{colors.foreground}"
     rounded: "{rounded.md}"
-    padding: "8px 16px"
-  card-standard:
-    backgroundColor: "{colors.surface-light}"
-    textColor: "{colors.text-light-primary}"
+    padding: "8px 12px"
+    height: "40px"
+  card-default:
+    backgroundColor: "{colors.card}"
+    textColor: "{colors.foreground}"
     rounded: "{rounded.2xl}"
-    padding: "20px"
+    padding: "24px"
+  badge-pill:
+    backgroundColor: "{colors.muted}"
+    textColor: "{colors.muted-foreground}"
+    rounded: "{rounded.full}"
+    padding: "2px 10px"
 ---
 
-# Design System: The Modern Trade Pavilion
+# Design System: XPO MICE Digital Ecosystem
 
-## 1. Overview
+## Overview
 
-**Creative North Star: The Modern Trade Pavilion**  
-XPO is designed around the architectural clarity, institutional precision, and frictionless wayfinding of world-class convention complexes (e.g., JIExpo Kemayoran, Tokyo Big Sight, Marina Bay Sands).
+**Creative North Star: "The Modern Trade Pavilion"**
 
-The interface balances dense, operational MICE data (ceiling heights, floor loadings, hall indices, timetables) with elegant, legible visual hierarchy. The tone is authoritative and executive, avoiding consumer clutter, cartoonish illustrations, and artificial AI tropes.
+XPO is built around the architectural clarity, institutional precision, and frictionless wayfinding of a world-class convention complex. The interface should feel like the building itself: a legible concourse, a well-marked hall directory, a trade floor organized so a delegate can cross it without asking for directions.
 
-### Core Tenets:
-1. **Architectural & Tactile**: Clean 1px structural borders, subtle tonal background shifts (`bg-muted/40`), high-contrast micro-labels, and full-surface touch targets.
-2. **Spatial Reality**: Every event, pass, and schedule is explicitly mapped to its exact physical Hall, Wing, and Transit Hub.
-3. **Turnstile-Ready High Contrast**: Critical identification surfaces (digital passes, gate check-in scanners, QR badges) maintain WCAG AAA optical contrast ratios (12:1 to 21:1) for rapid scanning under bright sunlight.
-4. **Institutional Cleanliness**: Zero emojis in production code, vector SVGs from `lucide-react` exclusively, and zero em-dashes in copy.
+The voice is authoritative and architectural. Dense operational data, including ceiling clearances, floor loadings, hall indices, timetables, and pass references, is presented with the same calm hierarchy as a printed exhibition guide. Nothing decorative competes with the information a delegate, organizer, or venue operator needs in the moment.
 
----
+The system favors structural borders, tonal surface shifts, and generous touch targets over ornament. It is institutional without being cold, and precise without becoming a console. Consumer-ticketing playfulness, cartoon illustration, and artificial intelligence jargon are outside the world.
 
-## 2. Colors
+**Key Characteristics:**
+- Architectural, legible, and executive in tone.
+- Operational density with an 11px metadata floor.
+- 1px structural borders with ambient, state-driven shadows.
+- Exact hall and venue naming carried onto every relevant surface.
+- High-contrast credential surfaces for turnstile scanning.
+- Light and dark modes driven by the same semantic tokens.
 
-XPO utilizes a dual-layer color system: an enterprise slate neutral foundation paired with 22 specialized MICE category identity palettes.
+## Colors
 
-### Core Neutral & Semantic Palette:
-- **Primary Action**: `#1d4ed8` (Default Action, light mode) / `#3b82f6` (Dark Mode Accent). Hover is rendered as `bg-primary/90`, which reads as a lighter step (`#2563eb`-ish) over light surfaces.
-- **Background Surfaces**: Light `#f8fafc` / Dark `#090d16` (Deep Slate Obsidian).
-- **Card Surfaces**: Light `#ffffff` / Dark `#0f172a` / Sub-surface `#1e293b`.
-- **Structural Borders**: Light `#e2e8f0` / Dark `#1e293b` (1px clean demarcation).
-- **Semantic Success**: `--success` `#10b981` (Emerald 500) for verified gate pass authentication and operational states.
-- **Semantic Warning**: `--warning` `#f59e0b` (Amber 500) for capacity alerts and standby notices.
-- **Semantic Destructive**: `--destructive` `#e11d48` (Rose 600) for cancellations, errors, and pass revocations.
-- **Semantic Info**: `--info` `#0284c7` (Sky 500) for protocol briefings, guidance, and informational tracks.
+The palette pairs an institutional slate foundation with 22 category identity palettes. The primary blue is deliberately deeper than a typical product blue because the tinted chip pairings must clear AA for small text.
 
-### 22 MICE Domain Category Archetypes:
-Each of the 22 MICE event categories defines a dedicated CSS variable scope, grouped into 6 industry clusters:
+### Primary
+- **Institutional Cobalt** (#1d4ed8): Primary actions, active navigation, focus rings, and the default credential accent. The deeper step was chosen so `text-primary` on a `bg-primary/10` tint clears 4.5:1 for small text.
+- **Cobalt Lift** (#2563eb): Hover and pressed states, dark-mode primary, and the brighter accent used on dark surfaces.
 
-| Category | Primary Color | Accent Hue | Typical Surface Theme |
+### Neutral
+- **Paper** (#f8fafc): Light-mode page background.
+- **Ink** (#0f172a): Primary text and headings in light mode.
+- **White Card** (#ffffff): Raised card and panel surfaces in light mode.
+- **Slate Wash** (#f1f5f9): Muted panels, chips, table stripes, and secondary buttons.
+- **Slate Text** (#475569): Secondary text, descriptions, and metadata. Chosen over slate 500 so small text clears AA on muted and tinted surfaces.
+- **Structure Line** (#e2e8f0): The 1px border that defines cards, inputs, dividers, and table edges.
+- **Obsidian** (#090d16): Dark-mode page background.
+- **Deep Slate Card** (#0f172a): Dark-mode card surface.
+- **Night Border** (#1e293b): Dark-mode structural border.
+- **Night Text** (#f8fafc): Dark-mode primary text.
+- **Night Muted** (#94a3b8): Dark-mode secondary text.
+
+### Semantic
+- **Verified Emerald** (#10b981): Successful pass verification, confirmed bookings, and operational health.
+- **Attention Amber** (#f59e0b): Capacity warnings, standby notices, and low-availability states.
+- **Revocation Rose** (#e11d48): Cancellations, errors, and revoked passes.
+- **Protocol Sky** (#0284c7): Informational notices, guidance, and diplomatic protocol accents.
+
+### 22 MICE Category Palettes
+Each category sets `--archetype-primary`, `--archetype-accent`, and a surface family for its themed event page. The palette is applied through CSS variables, never hardcoded per component.
+
+| Category | Primary | Accent | Surface Character |
 |---|:---:|:---:|---|
-| **Industrial & Manufacturing B2B** | `#2563eb` (Steel Blue) | `#f59e0b` (Amber) | Heavy machinery slate |
-| **Tech, AI & Developer Summit** | `#6366f1` (Indigo) | `#06b6d4` (Cyan) | Obsidian terminal dark |
-| **Medical & Healthcare Symposium** | `#0d9488` (Teal) | `#10b981` (Emerald) | Clean clinical white/slate |
-| **Financial & Investor Forum** | `#1e3a8a` (Deep Navy) | `#d97706` (Gold) | Institutional boardroom dark |
-| **Pop Culture & Gaming Expo** | `#9333ea` (Purple) | `#ec4899` (Magenta) | Vibrant neon arena |
-| **Music Festival & Arena Concert** | `#e11d48` (Rose) | `#8b5cf6` (Violet) | Stage black & velvet |
-| **Mega Exposition & Pavilion** | `#ea580c` (Orange) | `#16a34a` (Green) | Multi-pavilion fairground |
-| **Government & Diplomatic Summit** | `#0284c7` (Sky Blue) | `#ca8a04` (Bronze) | Protocol navy |
-| **Incentive & Corporate Retreat** | `#059669` (Emerald) | `#d97706` (Warm Stone)| Botanical sanctuary |
-| **Automotive & Mobility Show** | `#dc2626` (Crimson) | `#2563eb` (Blue) | High-gloss motor dark |
-| **Energy & Green Infrastructure** | `#d97706` (Gold) | `#10b981` (Green) | Grid power & earth |
-| **Agriculture & Food Expo** | `#16a34a` (Forest) | `#f59e0b` (Harvest) | Organic harvest |
-| **Hospitality & Travel Mart** | `#0891b2` (Cyan) | `#f97316` (Coral) | Maritime gateway |
-| **Education & EdTech Summit** | `#7c3aed` (Violet) | `#0284c7` (Cobalt) | Academic campus |
-| **Fashion & Luxury Retail** | `#db2777` (Fuchsia) | `#4f46e5` (Indigo) | Runway editorial |
-| **Building, Architecture & PropTech** | `#0284c7` (Sky Blue) | `#f59e0b` (Amber) | Material spec slate |
-| **Media, Broadcast & Pro-AV** | `#7c3aed` (Violet) | `#06b6d4` (Cyan) | Studio control room |
-| **Supply Chain, Logistics & Packaging** | `#0d9488` (Teal) | `#3b82f6` (Blue) | Warehouse grid |
-| **Franchise, Retail & SME Business** | `#ca8a04` (Bronze) | `#16a34a` (Green) | High-street retail |
-| **Aerospace, Aviation & Defense** | `#1e3a8a` (Deep Navy) | `#06b6d4` (Cyan) | Flight deck steel |
-| **Faith, Pilgrimage & Community** | `#047857` (Emerald) | `#d97706` (Warm Gold) | Contemplative stone |
-| **Sports, Fitness & Outdoor** | `#ea580c` (Orange) | `#0284c7` (Sky Blue) | Track and field |
+| Industrial & Manufacturing B2B | #2563eb | #f59e0b | Heavy machinery slate |
+| Tech, AI & Developer Summit | #6366f1 | #06b6d4 | Obsidian terminal dark |
+| Medical & Healthcare Symposium | #0d9488 | #10b981 | Clinical white and slate |
+| Financial & Investor Forum | #1e3a8a | #d97706 | Institutional boardroom dark |
+| Pop Culture & Gaming Expo | #9333ea | #ec4899 | Vibrant neon arena |
+| Music Festival & Arena Concert | #e11d48 | #8b5cf6 | Stage black and velvet |
+| Mega Exposition & Pavilion | #ea580c | #16a34a | Multi-pavilion fairground |
+| Government & Diplomatic Summit | #0284c7 | #ca8a04 | Protocol navy |
+| Incentive & Corporate Retreat | #059669 | #d97706 | Botanical sanctuary |
+| Automotive & Mobility Show | #dc2626 | #2563eb | High-gloss motor dark |
+| Energy & Green Infrastructure | #d97706 | #10b981 | Grid power and earth |
+| Agriculture & Food Expo | #16a34a | #f59e0b | Organic harvest |
+| Hospitality & Travel Mart | #0891b2 | #f97316 | Maritime gateway |
+| Education & EdTech Summit | #7c3aed | #0284c7 | Academic campus |
+| Fashion & Luxury Retail | #db2777 | #4f46e5 | Runway editorial |
+| Building, Architecture & PropTech | #0284c7 | #f59e0b | Material specification slate |
+| Media, Broadcast & Pro-AV | #7c3aed | #06b6d4 | Studio control room |
+| Supply Chain, Logistics & Packaging | #0d9488 | #3b82f6 | Warehouse grid |
+| Franchise, Retail & SME Business | #ca8a04 | #16a34a | High-street retail |
+| Aerospace, Aviation & Defense | #1e3a8a | #06b6d4 | Flight deck steel |
+| Faith, Pilgrimage & Community | #047857 | #d97706 | Contemplative stone |
+| Sports, Fitness & Outdoor | #ea580c | #0284c7 | Track and field |
 
----
+### Named Rules
+**The One Accent Rule.** A screen carries one category accent and one primary action color. Category palettes color identity, not every control. The primary cobalt remains the action color inside themed pages unless the category explicitly owns the action.
 
-## 3. Typography
+**The Contrast First Rule.** A tinted text pairing is acceptable only when it clears AA at its rendered size. The primary and muted text values were darkened for this reason and must not be brightened back for aesthetics.
 
-The typographic engine uses modern variable fonts configured via `next/font` and CSS variables:
+## Typography
 
-### Font Stacks:
-- **Primary Sans (`var(--font-sans)`)**: `Plus Jakarta Sans`, `-apple-system`, `BlinkMacSystemFont`, `sans-serif`. Used for all primary headlines, navigation, card titles, and body copy.
-- **Editorial Serif (`var(--font-serif)`)**: `Newsreader`, `Charter`, `Georgia`, `serif`. Used for keynote abstracts, press releases, and executive statements.
-- **Engineering Mono (`var(--font-mono)`)**: `JetBrains Mono`, `Fira Code`, `Menlo`, `monospace`. Used for cryptographic pass hashes, turnstile references, timestamps, and technical hall specs.
-- **Accessible Legible (`var(--font-legible)`)**: `Atkinson Hyperlegible`, `sans-serif`. Accessible high-legibility option in Settings.
+**Display Font:** Plus Jakarta Sans (with system-ui, sans-serif)
+**Body Font:** Plus Jakarta Sans (with system-ui, sans-serif)
+**Editorial Font:** Newsreader (with Charter, Georgia, serif)
+**Mono Font:** JetBrains Mono (with Fira Code, Menlo, monospace)
+**Accessible Font:** Atkinson Hyperlegible (with Segoe UI, Tahoma, sans-serif)
 
-### Scale & Hierarchy:
-- **Display Hero**: `text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight` (36px to 48px+).
-- **Section Heading**: `text-xl sm:text-2xl font-bold tracking-tight text-foreground` (20px to 24px).
-- **Card Title**: `text-base font-bold text-foreground` (16px, semibold/bold).
-- **Body & Descriptions**: `text-xs sm:text-sm text-muted-foreground leading-relaxed` (12px to 14px).
-- **Micro-Labels & Metadata**: `text-xs` (12px) / `text-[11px]` (11px minimum legibility floor).
+**Character:** A geometric, institutional sans carries the operational interface. Newsreader adds a measured editorial voice to keynotes, abstracts, and executive statements. JetBrains Mono is reserved for references, hashes, timestamps, and technical hall data, where character alignment matters.
 
----
+### Hierarchy
+- **Display** (800, 3rem, 1.1, -0.02em): Page heroes and event titles on large screens. Clamps down to 2rem on mobile.
+- **Headline** (700, 1.5rem, 1.2): Section headings and major panel titles.
+- **Title** (700, 1rem, 1.3): Card titles, drawer headings, and list leaders.
+- **Body** (400, 0.875rem, 1.6): Descriptions, abstracts, and supporting copy. Keep long reading lines near 65 to 75 characters.
+- **Label** (600, 0.75rem, 0.05em, uppercase when used as a category or section eyebrow): Micro-labels, table headers, badge text, and metadata.
 
-## 4. Layout
+### Named Rules
+**The 11px Floor Rule.** Supplementary metadata never drops below 11px. If a value cannot fit at 11px, remove information or restructure the layout; do not shrink the type.
 
-### Responsive Breakpoints & Viewport Rules:
-- **Mobile (`< 768px`)**:
-  - Anchored bottom navigation for one-handed thumb ergonomics.
-  - Sticky segmented day-of subnav bar (`[ Pass | Treats | Timetable | Map ]`).
-  - Full-width swipeable cards and compact accordion rows.
-- **Tablet (`768px - 1024px`)**:
-  - 2-column discovery grids (`md:grid-cols-2`).
-  - Hybrid dual-pane split views for agenda sessions and floor maps.
-- **Desktop & Ultrawide (`> 1024px / 1280px / 1600px+`)**:
-  - Expansive multi-column layouts: `lg:grid-cols-3 xl:grid-cols-4`.
-  - Max container limits: `max-w-7xl mx-auto` or fluid `3xl:max-w-[1800px]` to eliminate awkward empty whitespace.
-  - Side-by-side live preview panels for the Organizer Customizer.
+**The Mono Reserve Rule.** Monospace is for machine-readable and reference values: pass references, DOI strings, timestamps, coordinates, and hall specifications. Body copy stays in the sans.
 
----
+## Layout
 
-## 5. Elevation & Depth
+The layout is a fluid institutional grid. Content sits in a centered container with responsive gutters; wide surfaces expand toward 1800px rather than leaving dead space on ultrawide displays.
 
-XPO avoids heavy, artificial drop shadows, relying instead on **tactile 1px structural borders and subtle ambient elevation**:
+- **Mobile (< 768px):** one column, anchored bottom navigation, sticky day-of subnavigation on event pages, full-width cards, and bottom sheets instead of large modals. Touch targets are at least 44px.
+- **Tablet (768px to 1024px):** two-column discovery and venue grids, collapsible sidebars, and split agenda views.
+- **Desktop (1024px to 1280px):** three- and four-column grids, side-by-side customizer and preview, and high-density data tables.
+- **Ultrawide (1600px and above):** four- and five-column grids with a fluid container up to 1800px.
 
-- **Card Base**: `border border-border/80 bg-card shadow-xs`.
-- **Card Hover State**: `hover:border-primary/60 hover:shadow-md transition-all duration-200`.
-- **Floating Modals & Drawers**: `bg-background/95 backdrop-blur-md shadow-2xl border border-border`.
-- **Turnstile Scanner Mode**: Pure monochrome fullscreen overlay (`bg-black/90 backdrop-blur-sm`).
-- **Print Mode**: `@media print { box-shadow: none; border-color: black; }` for crisp physical badge printing.
+Spacing follows a 4px base rhythm. Section separation is typically 48px to 64px, card padding is 16px to 24px, and compact density reduces card padding to 12px. The density setting changes padding through `--card-padding`; it does not change type size.
 
----
+### Named Rules
+**The Full-Width Rule.** Desktop layouts use the available width. A three-column grid on a 1600px screen is a failure unless the content genuinely stops at three columns.
 
-## 6. Shapes
+**The Thumb-Zone Rule.** On mobile, primary navigation and the pass action live within the bottom third of the screen.
 
-- **Base Radius Token**: `--radius: 0.5rem` (8px).
-- **Cards & Banners**: `rounded-2xl` (16px) to `rounded-3xl` (24px) for prominent content containers.
-- **Buttons & Interactive Pills**: `rounded-xl` (12px) / `rounded-lg` (8px) for buttons and inputs.
-- **Badges & Status Dots**: `rounded-full` (pills) with `text-xs font-semibold px-2.5 py-0.5`.
-- **QR Code Containers**: `rounded-2xl border border-slate-200 bg-white p-6 shadow-inner`.
+## Elevation & Depth
 
----
+Depth is structural first and ambient second. Surfaces are flat at rest, defined by a 1px border and a tonal surface shift. Shadows appear as a response to state: hover, elevation, or focus. The system does not use heavy drop shadows to separate content that a border already separates.
 
-## 7. Components
+### Shadow Vocabulary
+- **`shadow-xs`** (`0 1px 2px 0 rgb(0 0 0 / 0.05)`): Resting cards, inputs, and badges.
+- **`shadow-sm`** (`0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)`): Buttons and small raised controls.
+- **`shadow-md`** (`0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)`): Hovered cards and floating panels.
+- **`shadow-2xl`** (`0 25px 50px -12px rgb(0 0 0 / 0.25)`): Modals, drawers, and the live preview frame.
+- **Expressive hover lift** (`translateY(-4px) scale(1.01)` plus a primary-tinted ambient shadow): Interactive cards in Expressive motion mode only.
 
-### A. Buttons (`src/components/ui/Button.tsx`):
-- `default` / `primary`: High-contrast `bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl`.
-- `outline`: `border border-border/80 bg-background hover:bg-muted text-foreground rounded-xl`.
-- `ghost`: Transparent background with subtle hover highlight.
-- `destructive`: `bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-xl`.
+### Named Rules
+**The Border-First Rule.** A surface earns a shadow only when it leaves the page plane or responds to a pointer. At rest, a 1px border does the separating.
 
-### B. Interactive Cards (Stretched Link Standard):
-- All discovery, venue, and pass cards use the accessible stretched link pattern:  
-  `<Link href="..." className="after:absolute after:inset-0">` on the primary title, with secondary action buttons nested using `relative z-10`.
+**The Motion Mode Rule.** Hover lift and press scale follow the user's motion setting: off, subtle, or expressive. Do not hardcode a lift that ignores the setting.
 
-### C. Digital Pass & Barcode QR:
-- Vector SVG matrix rendered locally via constant-time HMAC-SHA256 hash.
-- High-contrast 21:1 pure black-on-white modal for optical turnstile scanners.
-- Client-side offline caching in `localStorage`.
+## Shapes
 
-### D. Multi-Device Live Preview Frame:
-- Live WYSIWYG branding customizer with mobile (390px), tablet (768px), and desktop (1280px) responsive viewport toggles.
+The form language is architectural: soft rectangles, clean edges, and circular status marks. Corners are rounded but never pill-shaped except for badges, chips, and filter tabs.
 
----
+- **Base radius:** 8px (`--radius`).
+- **Cards and banners:** 16px (`rounded-2xl`) to 24px (`rounded-3xl`).
+- **Buttons and inputs:** 6px to 8px (`rounded-md` to `rounded-lg`).
+- **Badges, chips, and filter tabs:** fully rounded (`rounded-full`).
+- **Pass and QR containers:** 16px with a white field and an inner border for optical contrast.
+- **Borders:** 1px at 80% border opacity for resting surfaces; full border opacity on focus and active states.
 
-## 8. Do's and Don'ts
+### Named Rules
+**The Soft Rectangle Rule.** Content containers are soft rectangles. Pills are reserved for status, filters, and compact actions, not for primary content cards.
+
+## Components
+
+### Buttons
+- **Shape:** 8px radius, 40px default height, 32px small, 48px large.
+- **Primary:** Institutional Cobalt background with Paper text, medium weight, 16px horizontal padding. Hover drops to 90% opacity; active scales to 0.98.
+- **Outline:** Paper background, 1px Structure Line border, Ink text. Hover fills with the Slate Wash accent.
+- **Ghost:** Transparent at rest, Slate Wash on hover. Used for tertiary actions and icon buttons.
+- **Archetype:** Category primary background with white text. Used inside a themed event page for the page's own primary action.
+- **Focus:** 2px ring in the primary color with a 2px offset. Never remove the focus ring.
+
+### Cards and Containers
+- **Corner Style:** 16px radius.
+- **Background:** White Card in light mode, Deep Slate Card in dark mode.
+- **Border:** 1px Structure Line at 80% opacity.
+- **Shadow Strategy:** `shadow-xs` at rest; `shadow-md` on hover for interactive cards.
+- **Internal Padding:** 24px comfortable, 12px compact, driven by `--card-padding`.
+
+### Inputs and Fields
+- **Style:** 40px height, 6px radius, 1px Structure Line border, Paper background, 14px text.
+- **Focus:** 2px ring in the primary color with a 2px offset; border shifts to the ring color.
+- **Error:** Revocation Rose border and a 12px error line below the field, wired with `aria-invalid` and `aria-describedby`.
+- **Disabled:** 50% opacity with a not-allowed cursor.
+
+### Chips and Badges
+- **Style:** Fully rounded, 12px semibold text, 2px by 10px padding.
+- **Default:** Slate Wash background with Slate Text.
+- **Semantic:** Emerald, Amber, Sky, and Rose tinted surfaces for verified, warning, info, and destructive states.
+- **Archetype:** Category surface with category primary text and a category border.
+
+### Navigation
+- **Top bar:** 64px tall, sticky, Paper or Obsidian surface with a 1px bottom border. Brand mark at the left, primary navigation in the center, region and account controls at the right.
+- **Mobile:** Bottom navigation with icon and label, 44px minimum targets, and a safe-area inset.
+- **Active state:** Primary color text and a subtle primary tint, never a filled pill across the whole item.
+
+### Digital Pass
+The pass is the signature component. A white card with a 16px radius, a high-contrast QR matrix, the event and hall name, the pass reference in mono, and a status badge. It is designed to be read by a turnstile scanner in bright light: pure black on white for the code field, no gradients over the code, and a 21:1 contrast target.
+
+### Live Preview Frame
+The organizer customizer uses a device frame with mobile (390px), tablet (768px), and desktop (1280px) toggles. The frame carries the real event hero, palette, typography, and section visibility. It is a preview of the actual page, not a stylized mockup.
+
+## Do's and Don'ts
 
 ### Do:
-- **Do** use vector SVG icons from `lucide-react` with precise sizing (`h-3.5 w-3.5`, `h-4 w-4`).
-- **Do** co-locate exact Hall names (`venueHall.name`) alongside venue titles on all discovery and pass surfaces.
-- **Do** provide full-card touchability via stretched links on mobile event cards.
-- **Do** support both Light and Dark mode seamlessly with semantic design tokens.
-- **Do** maintain a minimum legibility floor of `text-[11px]` for supplementary metadata.
+- **Do** use vector SVG icons from `lucide-react` at 14px, 16px, or 20px, with `aria-hidden` on decorative icons.
+- **Do** co-locate the exact hall name with the venue name on discovery, pass, and timetable surfaces.
+- **Do** keep touch targets at 44px or larger on mobile, including icon-only controls.
+- **Do** support light and dark mode through the semantic tokens, not hardcoded colors.
+- **Do** keep the 11px metadata floor and the 65 to 75 character reading line.
+- **Do** show a visible focus ring on every interactive element.
 
 ### Don't:
-- **Don't** use emojis anywhere in production code or UI copy.
-- **Don't** use em-dashes (`—`) in copy.
-- **Don't** use artificial AI buzzwords (e.g. "Command & Intelligence", "Command Center"). Use institutional terms ("Organizer Portal", "Event Management Hub").
-- **Don't** nest `<button>` inside `<Link>`. Use `buttonVariants` for accessible anchor buttons.
-- **Don't** call React hooks conditionally inside `try/catch` blocks.
+- **Don't** use emojis in production code or copy.
+- **Don't** use em dashes in copy.
+- **Don't** use artificial intelligence buzzwords such as "Command Center" or "Command and Intelligence". Use institutional terms: Organizer Portal, Event Management Hub, Event Categories, Attendee Perks and Guidebook.
+- **Don't** nest a `<button>` inside a `<Link>`; use `buttonVariants` for accessible anchor buttons.
+- **Don't** brighten the primary or muted text back to a value that fails AA on tinted chips.
+- **Don't** put gradients or imagery behind a QR code or a pass reference.
