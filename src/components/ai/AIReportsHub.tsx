@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import {
   Sparkles,
@@ -115,6 +116,7 @@ const REPORT_TYPE_CONFIG: Record<
 type StructuredReportData = any;
 
 export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIReportsHubProps) {
+  const tAi = useTranslations("ai");
   // State
   const [selectedModel, setSelectedModel] = React.useState<OpenRouterModel>("google/gemini-3.7-flash");
   const [selectedReportType, setSelectedReportType] = React.useState<ReportType>("DAILY_DIGEST");
@@ -337,25 +339,25 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
         <div>
           <div className="flex items-center gap-2.5 flex-wrap">
             <span className="text-xs font-bold uppercase tracking-wider text-primary">
-              AI Multi-Model Intelligence Suite
+              {tAi("reportsSuiteBadge")}
             </span>
             <Badge variant="archetype" size="sm">
-              OpenRouter Multi-Model Gateway
+              {tAi("reportsGateway")}
             </Badge>
             {(event.isPlatformCurated || !event.organizerId) && (
               <Badge variant="outline" size="sm" className="font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 border-amber-500/40 bg-amber-500/10">
-                Platform Curated
+                {tAi("reportsCurated")}
               </Badge>
             )}
             <Badge variant="success" size="sm">
-              6 Enterprise Models Online
+              {tAi("reportsModelsOnline", { count: 6 })}
             </Badge>
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mt-1.5">
-            Event Intelligence & Analytics Reports
+            {tAi("reportsTitle")}
           </h1>
           <p className="text-xs sm:text-sm text-muted-foreground mt-1 max-w-3xl">
-            Synthesize real-time registrations, gate foot-traffic, and attendee feedback across Google Gemini, DeepSeek, Qwen, and OpenAI models.
+            {tAi("reportsDesc")}
           </p>
         </div>
 
@@ -365,7 +367,7 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
             className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-1.5 h-9 text-xs cursor-pointer")}
           >
             <ChevronRight className="h-4 w-4 rotate-180" />
-            <span>Back to Dashboard</span>
+            <span>{tAi("backToDashboard")}</span>
           </Link>
           <Link
             href={`/${locale}/events/${event.slug}`}
@@ -374,7 +376,7 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
             className={cn(buttonVariants({ variant: "secondary", size: "sm" }), "gap-1.5 h-9 text-xs cursor-pointer")}
           >
             <ExternalLink className="h-3.5 w-3.5" />
-            <span>Public Page</span>
+            <span>{tAi("publicPage")}</span>
           </Link>
         </div>
       </div>
@@ -386,8 +388,8 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
             <Users className="h-4 w-4" />
           </div>
           <div className="min-w-0">
-            <div className="text-xs uppercase font-semibold text-muted-foreground">Bookings</div>
-            <div className="text-sm font-bold text-foreground truncate">{event.totalBookings.toLocaleString()} delegates</div>
+            <div className="text-xs uppercase font-semibold text-muted-foreground">{tAi("bookings")}</div>
+            <div className="text-sm font-bold text-foreground truncate">{event.totalBookings.toLocaleString()} {tAi("delegates")}</div>
           </div>
         </div>
 
@@ -396,7 +398,7 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
             <CheckCircle2 className="h-4 w-4" />
           </div>
           <div className="min-w-0">
-            <div className="text-xs uppercase font-semibold text-muted-foreground">Gate Check-In</div>
+            <div className="text-xs uppercase font-semibold text-muted-foreground">{tAi("gateCheckIn")}</div>
             <div className="text-sm font-bold text-foreground truncate">
               {event.checkInRatePercent}% ({event.totalCheckedIn})
             </div>
@@ -408,9 +410,9 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
             <Store className="h-4 w-4" />
           </div>
           <div className="min-w-0">
-            <div className="text-xs uppercase font-semibold text-muted-foreground">Booths / Halls</div>
+            <div className="text-xs uppercase font-semibold text-muted-foreground">{tAi("boothsHalls")}</div>
             <div className="text-sm font-bold text-foreground truncate">
-              {event.booths.length} booths ({event.venue.name})
+              {tAi("boothsCount", { count: event.booths.length })} ({event.venue.name})
             </div>
           </div>
         </div>
@@ -420,7 +422,7 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
             <CreditCard className="h-4 w-4" />
           </div>
           <div className="min-w-0">
-            <div className="text-xs uppercase font-semibold text-muted-foreground">Ticket Volume</div>
+            <div className="text-xs uppercase font-semibold text-muted-foreground">{tAi("ticketVolume")}</div>
             <div className="text-sm font-bold text-foreground truncate">
               {formatCurrency(event.grossRevenue, event.currency as any, locale)}
             </div>
@@ -434,14 +436,14 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
           <div>
             <h2 className="text-base font-bold text-foreground flex items-center gap-2">
               <Cpu className="h-4 w-4 text-primary" />
-              <span>Select OpenRouter Foundation Model</span>
+              <span>{tAi("selectModelTitle")}</span>
             </h2>
             <p className="text-xs text-muted-foreground">
-              Choose an AI engine optimized for your analytical depth, latency, or multilingual requirements.
+              {tAi("selectModelDesc")}
             </p>
           </div>
           <Badge variant="outline" size="sm" className="text-xs font-semibold">
-            Selected: {currentModelSpec.displayName}
+            {tAi("selected")} {currentModelSpec.displayName}
           </Badge>
         </div>
 
@@ -480,7 +482,7 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
                       <div className="text-xs text-muted-foreground mt-0.5">{spec.provider}</div>
                     </div>
                     {isRecommended ? (
-                      <Badge variant="success" size="sm">Recommended</Badge>
+                      <Badge variant="success" size="sm">{tAi("recommended")}</Badge>
                     ) : (
                       <Badge variant={spec.badgeVariant} size="sm">
                         {spec.speedRating}
@@ -503,8 +505,8 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
                 </div>
 
                 <div className="mt-3.5 pt-2.5 border-t border-border/60 flex items-center justify-between text-xs text-muted-foreground">
-                  <span>Context: {(spec.contextWindow / 1000).toFixed(0)}k tokens</span>
-                  <span className="font-semibold text-primary">{spec.latencyClass.toUpperCase()} TIER</span>
+                  <span>{tAi("context")} {tAi("contextTokens", { count: (spec.contextWindow / 1000).toFixed(0) })}</span>
+                  <span className="font-semibold text-primary">{spec.latencyClass.toUpperCase()} {tAi("tier")}</span>
                 </div>
               </div>
             );
@@ -517,10 +519,10 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
         <div>
           <h2 className="text-base font-bold text-foreground flex items-center gap-2">
             <Layers className="h-4 w-4 text-primary" />
-            <span>Select Report Category</span>
+            <span>{tAi("selectCategoryTitle")}</span>
           </h2>
           <p className="text-xs text-muted-foreground">
-            Choose the analytical lens and structured Zod schema for output generation.
+            {tAi("selectCategoryDesc")}
           </p>
         </div>
 
@@ -551,7 +553,7 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
                       </div>
                       {isSelected && (
                         <Badge variant="archetype" size="sm">
-                          Active
+                          {tAi("active")}
                         </Badge>
                       )}
                     </div>
@@ -565,7 +567,7 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
 
                   <div className="mt-4 pt-3 border-t border-border/60">
                     <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
-                      Suggested Focus Prompts
+                      {tAi("suggestedPrompts")}
                     </div>
                     <div className="flex flex-wrap gap-1">
                       {config.samplePrompts.slice(0, 1).map((prompt, idx) => (
@@ -596,10 +598,10 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
         <div>
           <label htmlFor="focus-prompt-input" className="text-xs font-bold text-foreground flex items-center gap-1.5">
             <Terminal className="h-3.5 w-3.5 text-primary" />
-            <span>Targeted Focus Area & Custom Analysis Prompt (Optional)</span>
+            <span>{tAi("focusTitle")}</span>
           </label>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Instruct {currentModelSpec.displayName} to prioritize specific halls, exhibitors, keynote sessions, or financial thresholds.
+            {tAi("focusInstruct", { model: currentModelSpec.displayName })}
           </p>
         </div>
 
@@ -614,7 +616,7 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
           />
 
           <div className="flex flex-wrap gap-1.5 items-center">
-            <span className="text-xs text-muted-foreground font-medium">Quick suggestions:</span>
+            <span className="text-xs text-muted-foreground font-medium">{tAi("quickSuggestions")}</span>
             {currentReportConfig.samplePrompts.map((sample, idx) => (
               <button
                 key={idx}
@@ -631,7 +633,7 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
                 onClick={() => setFocusArea("")}
                 className="text-xs text-muted-foreground hover:text-foreground underline ml-1 cursor-pointer"
               >
-                Clear
+                {tAi("clear")}
               </button>
             )}
           </div>
@@ -641,7 +643,7 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <Info className="h-4 w-4 text-primary shrink-0" />
             <span>
-              Generating with <strong>{currentModelSpec.displayName}</strong> for <strong>{currentReportConfig.title}</strong>
+              {tAi("generatingWith", { model: currentModelSpec.displayName, category: currentReportConfig.title })}
             </span>
           </div>
 
@@ -654,7 +656,7 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
                 onClick={handleAbort}
               >
                 <RotateCcw className="h-3.5 w-3.5" />
-                <span>Abort Generation</span>
+                <span>{tAi("abort")}</span>
               </Button>
             ) : (
               <Button
@@ -664,7 +666,7 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
                 onClick={handleGenerateReport}
               >
                 <Sparkles className="h-4 w-4" />
-                <span>Synthesize AI Report</span>
+                <span>{tAi("synthesize")}</span>
               </Button>
             )}
           </div>
@@ -677,16 +679,16 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
           <div className="flex items-center gap-2">
             <h2 className="text-base font-bold text-foreground flex items-center gap-2">
               <FileText className="h-4 w-4 text-primary" />
-              <span>Intelligence Output & Verified Metrics</span>
+              <span>{tAi("outputTitle")}</span>
             </h2>
             {isGenerating && (
               <Badge variant="warning" size="sm" className="animate-pulse">
-                Streaming Tokens...
+                {tAi("streaming")}
               </Badge>
             )}
             {!isGenerating && streamedText && !generationError && (
               <Badge variant="success" size="sm">
-                Generated
+                {tAi("generated")}
               </Badge>
             )}
           </div>
@@ -695,7 +697,7 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
             <div className="flex items-center gap-1.5 flex-wrap">
               <Button variant="outline" size="sm" className="h-8 text-xs gap-1.5 cursor-pointer" onClick={handleCopy}>
                 {copied ? <Check className="h-3.5 w-3.5 text-emerald-500" /> : <Copy className="h-3.5 w-3.5" />}
-                <span>{copied ? "Copied" : "Copy Markdown"}</span>
+                <span>{copied ? tAi("copied") : tAi("copyMarkdown")}</span>
               </Button>
 
               <Button
@@ -705,7 +707,7 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
                 onClick={handleDownloadMarkdown}
               >
                 <Download className="h-3.5 w-3.5" />
-                <span>Export .md</span>
+                <span>{tAi("exportMd")}</span>
               </Button>
 
               <Button
@@ -715,7 +717,7 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
                 onClick={handleDownloadJSON}
               >
                 <Download className="h-3.5 w-3.5 text-purple-500" />
-                <span>Export JSON</span>
+                <span>{tAi("exportJson")}</span>
               </Button>
             </div>
           )}
@@ -725,15 +727,15 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
           <TabsList className="bg-muted/60 p-1">
             <TabsTrigger value="report" className="text-xs gap-1.5 cursor-pointer">
               <FileText className="h-3.5 w-3.5" />
-              <span>Executive Report</span>
+              <span>{tAi("executiveReport")}</span>
             </TabsTrigger>
             <TabsTrigger value="kpi" className="text-xs gap-1.5 cursor-pointer" disabled={!structuredData}>
               <BarChart3 className="h-3.5 w-3.5" />
-              <span>Key Operational Metrics</span>
+              <span>{tAi("keyMetrics")}</span>
             </TabsTrigger>
             <TabsTrigger value="raw" className="text-xs gap-1.5 cursor-pointer" disabled={!structuredData}>
               <Terminal className="h-3.5 w-3.5" />
-              <span>Structured Metrics Export</span>
+              <span>{tAi("structuredMetrics")}</span>
             </TabsTrigger>
           </TabsList>
 
@@ -755,7 +757,7 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
                         className="h-8 text-xs gap-1.5 cursor-pointer"
                       >
                         <RefreshCw className="h-3 w-3" />
-                        <span>Retry Synthesis</span>
+                        <span>{tAi("retry")}</span>
                       </Button>
                     </div>
                   )}
@@ -769,9 +771,9 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
                     <Sparkles className="h-6 w-6" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-foreground">No Report Generated Yet</h3>
+                    <h3 className="text-sm font-bold text-foreground">{tAi("noReportTitle")}</h3>
                     <p className="text-xs text-muted-foreground mt-1 max-w-md">
-                      Select your preferred foundation model and report category above, then click &quot;Synthesize AI Report&quot; to generate grounded analytics.
+                      {tAi("noReportDesc")}
                     </p>
                   </div>
                   <Button
@@ -781,7 +783,7 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
                     onClick={handleGenerateReport}
                   >
                     <Sparkles className="h-3.5 w-3.5" />
-                    <span>Run Default Analysis</span>
+                    <span>{tAi("runDefault")}</span>
                   </Button>
                 </div>
               )}
@@ -796,39 +798,39 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
                 {selectedReportType === "DAILY_DIGEST" && (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <Card className="p-4 bg-card border-border shadow-xs">
-                      <div className="text-xs text-muted-foreground font-medium">Sentiment Index</div>
+                      <div className="text-xs text-muted-foreground font-medium">{tAi("sentimentIndex")}</div>
                       <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">
-                        {(((structuredData as DailyExecutiveDigest)?.sentimentScore ?? 0.85) * 100).toFixed(0)}% Positive
+                        {(((structuredData as DailyExecutiveDigest)?.sentimentScore ?? 0.85) * 100).toFixed(0)}{tAi("positive")}
                       </div>
-                      <p className="text-xs text-muted-foreground mt-1">Based on attendee sentiment sampling</p>
+                      <p className="text-xs text-muted-foreground mt-1">{tAi("sentimentNote")}</p>
                     </Card>
 
                     <Card className="p-4 bg-card border-border shadow-xs">
-                      <div className="text-xs text-muted-foreground font-medium">Foot-Traffic Encounters</div>
+                      <div className="text-xs text-muted-foreground font-medium">{tAi("footTraffic")}</div>
                       <div className="text-2xl font-bold text-foreground mt-1">
                         {((structuredData as DailyExecutiveDigest)?.footTrafficIndex ?? 0).toLocaleString()}
                       </div>
-                      <p className="text-xs text-muted-foreground mt-1">Total delegate floor density index</p>
+                      <p className="text-xs text-muted-foreground mt-1">{tAi("footTrafficNote")}</p>
                     </Card>
 
                     <Card className="p-4 bg-card border-border shadow-xs">
-                      <div className="text-xs text-muted-foreground font-medium">Gate Check-In Rate</div>
+                      <div className="text-xs text-muted-foreground font-medium">{tAi("gateRate")}</div>
                       <div className="text-2xl font-bold text-primary mt-1">
                         {(structuredData as DailyExecutiveDigest)?.registrationVelocity?.checkInRatePercent ?? 0}%
                       </div>
                       <p className="text-xs text-muted-foreground mt-1">
-                        {(structuredData as DailyExecutiveDigest)?.registrationVelocity?.totalCheckedIn ?? 0} delegates scanned
+                        {(structuredData as DailyExecutiveDigest)?.registrationVelocity?.totalCheckedIn ?? 0} {tAi("delegatesScanned")}
                       </p>
                     </Card>
 
                     <Card className="p-4 bg-card border-border shadow-xs">
-                      <div className="text-xs text-muted-foreground font-medium">Gross Revenue Pacing</div>
+                      <div className="text-xs text-muted-foreground font-medium">{tAi("revenuePacing")}</div>
                       <div className="text-2xl font-bold text-foreground truncate mt-1">
                         {(structuredData as DailyExecutiveDigest)?.revenueMetrics?.currency || "IDR"}{" "}
                         {((structuredData as DailyExecutiveDigest)?.revenueMetrics?.grossRevenue ?? 0).toLocaleString()}
                       </div>
                       <p className="text-xs text-muted-foreground mt-1">
-                        Top tier: {(structuredData as DailyExecutiveDigest)?.revenueMetrics?.topTierByRevenue || "General Admission"}
+                        {tAi("topTier")} {(structuredData as DailyExecutiveDigest)?.revenueMetrics?.topTierByRevenue || tAi("generalAdmission")}
                       </p>
                     </Card>
                   </div>
@@ -837,27 +839,27 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
                 {selectedReportType === "SENTIMENT" && (
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <Card className="p-4 bg-card border-border shadow-xs">
-                      <div className="text-xs text-muted-foreground font-medium">Overall CSAT Score</div>
+                      <div className="text-xs text-muted-foreground font-medium">{tAi("csat")}</div>
                       <div className="text-3xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">
                         {(structuredData as SentimentFeedback)?.attendeeSatisfactionIndex ?? 85}/100
                       </div>
-                      <p className="text-xs text-muted-foreground mt-1">Aggregate attendee satisfaction score</p>
+                      <p className="text-xs text-muted-foreground mt-1">{tAi("csatNote")}</p>
                     </Card>
 
                     <Card className="p-4 bg-card border-border shadow-xs">
-                      <div className="text-xs text-muted-foreground font-medium">Wi-Fi Quality Rating</div>
+                      <div className="text-xs text-muted-foreground font-medium">{tAi("wifi")}</div>
                       <div className="text-2xl font-bold text-foreground mt-1">
-                        {(structuredData as SentimentFeedback)?.facilitiesFeedback?.wifiQuality || "Good"}
+                        {(structuredData as SentimentFeedback)?.facilitiesFeedback?.wifiQuality || tAi("good")}
                       </div>
-                      <p className="text-xs text-muted-foreground mt-1">On-premise network telemetry</p>
+                      <p className="text-xs text-muted-foreground mt-1">{tAi("wifiNote")}</p>
                     </Card>
 
                     <Card className="p-4 bg-card border-border shadow-xs">
-                      <div className="text-xs text-muted-foreground font-medium">Wayfinding Clarity</div>
+                      <div className="text-xs text-muted-foreground font-medium">{tAi("wayfinding")}</div>
                       <div className="text-2xl font-bold text-foreground mt-1">
-                        {(structuredData as SentimentFeedback)?.facilitiesFeedback?.wayfindingClarity || "Clear"}
+                        {(structuredData as SentimentFeedback)?.facilitiesFeedback?.wayfindingClarity || tAi("clearRating")}
                       </div>
-                      <p className="text-xs text-muted-foreground mt-1">Hall and booth navigation assessment</p>
+                      <p className="text-xs text-muted-foreground mt-1">{tAi("wayfindingNote")}</p>
                     </Card>
                   </div>
                 )}
@@ -865,15 +867,15 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
                 {selectedReportType === "FOOT_TRAFFIC" && (
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <Card className="p-4 bg-card border-border shadow-xs">
-                      <div className="text-xs text-muted-foreground font-medium">Overall Congestion Level</div>
+                      <div className="text-xs text-muted-foreground font-medium">{tAi("congestion")}</div>
                       <div className="text-2xl font-bold text-amber-600 dark:text-amber-400 mt-1">
-                        {(structuredData as FootTrafficOptimization)?.overallCongestionLevel || "Moderate"}
+                        {(structuredData as FootTrafficOptimization)?.overallCongestionLevel || tAi("moderate")}
                       </div>
-                      <p className="text-xs text-muted-foreground mt-1">Active floor heuristic evaluation</p>
+                      <p className="text-xs text-muted-foreground mt-1">{tAi("congestionNote")}</p>
                     </Card>
 
                     <Card className="p-4 bg-card border-border col-span-2 shadow-xs">
-                      <div className="text-xs text-muted-foreground font-medium">Peak Congestion Windows</div>
+                      <div className="text-xs text-muted-foreground font-medium">{tAi("peakWindows")}</div>
                       <div className="mt-2 flex flex-wrap gap-2">
                         {((structuredData as FootTrafficOptimization)?.peakCongestionHours || ["10:00 - 11:30", "14:00 - 15:30"]).map((hour, i) => (
                           <Badge key={i} variant="warning" size="sm">
@@ -888,7 +890,7 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
                 {/* Recommendations Checklist */}
                 <Card className="p-5 bg-card border-border space-y-3 shadow-xs">
                   <h3 className="text-xs font-bold text-foreground uppercase tracking-wider">
-                    Recommended Action Items & Mitigations
+                    {tAi("actionItems")}
                   </h3>
                   <div className="space-y-2">
                     {((structuredData?.recommendedActions ||
@@ -908,7 +910,7 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
               </div>
             ) : (
               <div className="p-12 text-center text-xs text-muted-foreground">
-                Generate a report to unlock structured KPI summary cards.
+                {tAi("generateToUnlock")}
               </div>
             )}
           </TabsContent>
@@ -930,14 +932,14 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
           <div>
             <h2 className="text-base font-bold text-foreground flex items-center gap-2">
               <History className="h-4 w-4 text-primary" />
-              <span>Saved Reports History</span>
+              <span>{tAi("savedTitle")}</span>
             </h2>
             <p className="text-xs text-muted-foreground">
-              Audit and review historical digests synthesized for this event.
+              {tAi("savedDesc")}
             </p>
           </div>
           <Badge variant="outline" size="sm">
-            {savedReports.length} reports archived
+            {tAi("reportsArchived", { count: savedReports.length })}
           </Badge>
         </div>
 
@@ -974,7 +976,7 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
                       <button
                         type="button"
                         onClick={(e) => handleDeleteHistoryItem(item.id, e)}
-                        title="Delete report"
+                        title={tAi("deleteReport")}
                         className="text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity p-1 cursor-pointer"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
@@ -993,7 +995,7 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
                   </div>
 
                   <div className="mt-3 pt-2 border-t border-border/60 flex items-center justify-between text-xs text-primary">
-                    <span>View Report</span>
+                    <span>{tAi("viewReport")}</span>
                     <ChevronRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" />
                   </div>
                 </div>
@@ -1003,7 +1005,7 @@ export function AIReportsHub({ event, initialReports = [], locale = "en" }: AIRe
         ) : (
           <div className="p-8 text-center border border-dashed border-border rounded-xl bg-card/40">
             <div className="text-xs text-muted-foreground">
-              No historical reports saved yet. Reports generated via the synthesizer will be archived here automatically.
+              {tAi("noSaved")}
             </div>
           </div>
         )}

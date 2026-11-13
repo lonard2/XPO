@@ -254,13 +254,13 @@ export function AttendeeAIConcierge({ locale = "en", eventContext }: AttendeeAIC
       {/* Floating Action Button (FAB) */}
       {!isOpen && showLauncher && (
         <aside
-          aria-label="Floating AI Concierge Launcher"
+          aria-label={tAi("conciergeLauncher")}
           className="fixed bottom-24 right-5 md:bottom-6 md:right-6 z-40 animate-fade-in"
         >
           <button
             type="button"
             onClick={() => setIsOpen(true)}
-            aria-label="Open Attendee AI Concierge"
+            aria-label={tAi("conciergeOpen")}
             className="relative flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 border border-primary/20"
           >
             <Bot className="h-5 w-5 stroke-[2.2]" />
@@ -276,7 +276,7 @@ export function AttendeeAIConcierge({ locale = "en", eventContext }: AttendeeAIC
       {isOpen && (
         <section
           role="dialog"
-          aria-label="Attendee AI Concierge Chat Dialog"
+          aria-label={tAi("conciergeDialog")}
           aria-modal="true"
           className={cn(
             "fixed z-50 bottom-24 right-3 sm:right-6 md:bottom-6 md:left-6 md:right-auto flex flex-col rounded-2xl border border-border bg-card shadow-2xl overflow-hidden transition-all duration-300 animate-fade-in",
@@ -294,14 +294,14 @@ export function AttendeeAIConcierge({ locale = "en", eventContext }: AttendeeAIC
               <div>
                 <div className="flex items-center gap-1.5">
                   <h3 className="text-xs sm:text-sm font-bold text-foreground">
-                    Attendee AI Concierge
+                    {tAi("conciergeTitle")}
                   </h3>
                   <Badge variant="success" className="text-xs px-1.5 py-0 h-4">
-                    Online
+                    {tAi("conciergeOnline")}
                   </Badge>
                 </div>
                 <span className="text-xs text-muted-foreground font-mono">
-                  Gemini 3.5 Flash Lite
+                  {tAi("conciergeModel")}
                 </span>
               </div>
             </div>
@@ -312,7 +312,7 @@ export function AttendeeAIConcierge({ locale = "en", eventContext }: AttendeeAIC
                 size="icon"
                 onClick={handleClearHistory}
                 className="h-7 w-7 text-muted-foreground hover:text-foreground"
-                title="Clear chat history"
+                title={tAi("conciergeClear")}
               >
                 <RotateCcw className="h-3.5 w-3.5" />
               </Button>
@@ -330,7 +330,7 @@ export function AttendeeAIConcierge({ locale = "en", eventContext }: AttendeeAIC
                 size="icon"
                 onClick={() => setIsOpen(false)}
                 className="h-7 w-7 text-muted-foreground hover:text-foreground"
-                title="Close concierge"
+                title={tAi("conciergeClose")}
               >
                 <X className="h-4 w-4" />
               </Button>
@@ -363,7 +363,7 @@ export function AttendeeAIConcierge({ locale = "en", eventContext }: AttendeeAIC
                             <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
                             <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse delay-75" />
                             <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse delay-150" />
-                            <span className="ml-1 text-[11px]">Synthesizing schedule & transit...</span>
+                            <span className="ml-1 text-[11px]">{tAi("conciergeSynthesizing")}</span>
                           </div>
                         )}
                       </div>
@@ -414,7 +414,7 @@ export function AttendeeAIConcierge({ locale = "en", eventContext }: AttendeeAIC
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Ask about schedule, transit, halls..."
+              placeholder={tAi("conciergePlaceholder")}
               disabled={isStreaming}
               className="flex-1 bg-muted/60 border border-input rounded-xl px-3.5 py-2 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:bg-background transition-all"
             />
@@ -426,7 +426,7 @@ export function AttendeeAIConcierge({ locale = "en", eventContext }: AttendeeAIC
               className="h-9 px-3 rounded-xl shrink-0 gap-1.5"
             >
               <Send className="h-3.5 w-3.5" />
-              <span className="sr-only sm:not-sr-only text-xs">Send</span>
+              <span className="sr-only sm:not-sr-only text-xs">{tAi("conciergeSend")}</span>
             </Button>
           </form>
         </section>
