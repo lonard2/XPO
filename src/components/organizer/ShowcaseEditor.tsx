@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { Plus, Trash2, Radio, Bell, Layers, CheckCircle2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -21,9 +22,19 @@ interface ShowcaseEditorProps {
 
 const PROGRAM_KINDS = ["bounty", "lineup", "runway", "pitch", "demo", "generic"] as const;
 
+const PROGRAM_KIND_LABELS: Record<(typeof PROGRAM_KINDS)[number], string> = {
+  bounty: "showcaseKindBounty",
+  lineup: "showcaseKindLineup",
+  runway: "showcaseKindRunway",
+  pitch: "showcaseKindPitch",
+  demo: "showcaseKindDemo",
+  generic: "showcaseKindGeneric",
+};
+
 const emptyProgram = (): ShowcaseProgram => ({ kind: "generic", title: "", detail: "", sponsor: "" });
 
 export function ShowcaseEditor({ eventId, initialJson, className }: ShowcaseEditorProps) {
+  const t = useTranslations("organizer");
   const initial = React.useMemo(() => parseShowcase(initialJson), [initialJson]);
   const [livestreamUrl, setLivestreamUrl] = React.useState(initial.livestreamUrl || "");
   const [livestreamLive, setLivestreamLive] = React.useState(initial.livestreamLive);
@@ -44,7 +55,7 @@ export function ShowcaseEditor({ eventId, initialJson, className }: ShowcaseEdit
     setSaving(true);
     setFeedback(null);
     if (!attested) {
-      setFeedback({ type: "error", text: "Confirm accuracy first: check the attestation box." });
+      setFeedback({ type: "error", text: t("showcaseConfirmFirst") });
       setSaving(false);
       return;
     }
@@ -57,7 +68,7 @@ export function ShowcaseEditor({ eventId, initialJson, className }: ShowcaseEdit
     };
     const checked = validateShowcase(payload);
     if (!checked.ok) {
-      const first = Object.values(checked.issues || {})[0] || "Invalid content.";
+      const first = Object.values(checked.issues || {})[0] || t("showcaseInvalid");
       setFeedback({ type: "error", text: first });
       setSaving(false);
       return;
@@ -69,8 +80,8 @@ export function ShowcaseEditor({ eventId, initialJson, className }: ShowcaseEdit
         body: JSON.stringify({ ...checked.data, attested: true }),
       });
       const data = await res.json();
-      if (!res.ok || !data.success) throw new Error(data.error || "Save failed.");
-      setFeedback({ type: "success", text: "Showcase content saved. Sections render where data exists." });
+      if (!res.ok || !data.success) throw new Error(data.error || t("showcaseSaveFailed"));
+      setFeedback({ type: "success", text: t("showcaseSaved") });
     } catch (err) {
       setFeedback({ type: "error", text: (err as Error).message });
     } finally {
@@ -83,20 +94,20 @@ export function ShowcaseEditor({ eventId, initialJson, className }: ShowcaseEdit
       <div>
         <h4 className="text-sm font-bold text-foreground flex items-center gap-2">
           <Radio className="h-4 w-4 text-primary" />
-          Showcase Content
+          {t("showcaseTitle")}
         </h4>
         <p className="text-xs text-muted-foreground mt-0.5">
-          Organizer-entered rows only. Empty sections stay hidden on the event page — nothing invented.
+          {t("showcaseDesc")}
         </p>
       </div>
 
       {/* Livestream */}
       <div className="space-y-2 pt-3 border-t border-border/60">
         <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">
-          Livestream
+          {t("showcaseLivestream")}
         </span>
         <Input
-          label="Stream URL"
+          label={t("showcaseStreamUrl")}
           placeholder="https://…"
           value={livestreamUrl}
           onChange={(e) => setLivestreamUrl(e.target.value)}
@@ -108,7 +119,7 @@ export function ShowcaseEditor({ eventId, initialJson, className }: ShowcaseEdit
             onChange={(e) => setLivestreamLive(e.target.checked)}
             className="h-4 w-4 accent-primary"
           />
-          Currently live
+          {t("showcaseLive")}
         </label>
       </div>
 
@@ -116,7 +127,7 @@ export function ShowcaseEditor({ eventId, initialJson, className }: ShowcaseEdit
       <div className="space-y-2 pt-3 border-t border-border/60">
         <div className="flex items-center justify-between">
           <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-            Program Rows ({programs.length}/{SHOWCASE_LIMITS.programs})
+            {t("showcaseProgramRows", { count: programs.length, max: SHOWCASE_LIMITS.programs })}
           </span>
           <Button
             type="button"
@@ -126,31 +137,31 @@ export function ShowcaseEditor({ eventId, initialJson, className }: ShowcaseEdit
             onClick={() => setPrograms((p) => [...p, emptyProgram()])}
             className="h-8 gap-1 text-xs cursor-pointer"
           >
-            <Plus className="h-3.5 w-3.5" /> Add row
+            <Plus className="h-3.5 w-3.5" /> {t("showcaseAddRow")}
           </Button>
         </div>
         {programs.map((p, i) => (
           <div key={i} className="grid grid-cols-12 gap-2 rounded-lg border border-border/60 bg-muted/30 p-2.5">
             <select
-              aria-label="Program kind"
+              aria-label={t("showcaseKind")}
               value={p.kind}
               onChange={(e) => updateProgram(i, { kind: e.target.value as ShowcaseProgram["kind"] })}
               className="col-span-4 sm:col-span-3 h-9 rounded-md border border-input bg-background px-1.5 text-xs min-h-[44px] sm:min-h-[36px]"
             >
               {PROGRAM_KINDS.map((k) => (
-                <option key={k} value={k}>{k}</option>
+                <option key={k} value={k}>{t(PROGRAM_KIND_LABELS[k])}</option>
               ))}
             </select>
             <Input
-              aria-label="Program title"
-              placeholder="Title"
+              aria-label={t("showcaseProgramTitle")}
+              placeholder={t("showcaseTitleLabel")}
               value={p.title}
               onChange={(e) => updateProgram(i, { title: e.target.value })}
               className="col-span-7 sm:col-span-4 h-9 text-xs"
             />
             <Input
-              aria-label="Program detail"
-              placeholder="Detail"
+              aria-label={t("showcaseDetail")}
+              placeholder={t("showcaseDetailLabel")}
               value={p.detail || ""}
               onChange={(e) => updateProgram(i, { detail: e.target.value })}
               className="col-span-10 sm:col-span-4 h-9 text-xs"
@@ -160,7 +171,7 @@ export function ShowcaseEditor({ eventId, initialJson, className }: ShowcaseEdit
                 type="button"
                 variant="ghost"
                 size="icon"
-                aria-label={`Remove program row ${i + 1}`}
+                aria-label={t("showcaseRemoveProgramAria", { num: i + 1 })}
                 onClick={() => setPrograms((prev) => prev.filter((_, idx) => idx !== i))}
                 className="h-9 w-9 min-h-[44px] min-w-[44px] text-destructive hover:bg-destructive/10"
               >
@@ -168,8 +179,8 @@ export function ShowcaseEditor({ eventId, initialJson, className }: ShowcaseEdit
               </Button>
             </div>
             <Input
-              aria-label="Program sponsor (optional)"
-              placeholder="Sponsor (optional)"
+              aria-label={t("showcaseSponsor")}
+              placeholder={t("showcaseSponsorLabel")}
               value={p.sponsor || ""}
               onChange={(e) => updateProgram(i, { sponsor: e.target.value })}
               className="col-span-12 h-9 text-xs"
@@ -182,7 +193,7 @@ export function ShowcaseEditor({ eventId, initialJson, className }: ShowcaseEdit
       <div className="space-y-2 pt-3 border-t border-border/60">
         <div className="flex items-center justify-between">
           <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-            <Bell className="h-3.5 w-3.5" /> Alerts ({alerts.length}/{SHOWCASE_LIMITS.alerts})
+            <Bell className="h-3.5 w-3.5" /> {t("showcaseAlerts", { count: alerts.length, max: SHOWCASE_LIMITS.alerts })}
           </span>
           <Button
             type="button"
@@ -192,14 +203,14 @@ export function ShowcaseEditor({ eventId, initialJson, className }: ShowcaseEdit
             onClick={() => setAlerts((a) => [...a, ""])}
             className="h-8 gap-1 text-xs cursor-pointer"
           >
-            <Plus className="h-3.5 w-3.5" /> Add alert
+            <Plus className="h-3.5 w-3.5" /> {t("showcaseAddAlert")}
           </Button>
         </div>
         {alerts.map((a, i) => (
           <div key={i} className="flex items-center gap-2">
             <Input
-              aria-label={`Alert ${i + 1}`}
-              placeholder="Announcement text"
+              aria-label={t("showcaseAlertAria", { num: i + 1 })}
+              placeholder={t("showcaseAnnouncement")}
               value={a}
               onChange={(e) => setAlerts((prev) => prev.map((x, idx) => (idx === i ? e.target.value : x)))}
               className="h-9 text-xs"
@@ -208,7 +219,7 @@ export function ShowcaseEditor({ eventId, initialJson, className }: ShowcaseEdit
               type="button"
               variant="ghost"
               size="icon"
-              aria-label={`Remove alert ${i + 1}`}
+              aria-label={t("showcaseRemoveAlertAria", { num: i + 1 })}
               onClick={() => setAlerts((prev) => prev.filter((_, idx) => idx !== i))}
               className="h-9 w-9 min-h-[44px] min-w-[44px] shrink-0 text-destructive hover:bg-destructive/10"
             >
@@ -222,7 +233,7 @@ export function ShowcaseEditor({ eventId, initialJson, className }: ShowcaseEdit
       <div className="space-y-2 pt-3 border-t border-border/60">
         <div className="flex items-center justify-between">
           <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-            <Layers className="h-3.5 w-3.5" /> Channels ({channels.length}/{SHOWCASE_LIMITS.channels})
+            <Layers className="h-3.5 w-3.5" /> {t("showcaseChannels", { count: channels.length, max: SHOWCASE_LIMITS.channels })}
           </span>
           <Button
             type="button"
@@ -232,21 +243,21 @@ export function ShowcaseEditor({ eventId, initialJson, className }: ShowcaseEdit
             onClick={() => setChannels((c) => [...c, { code: "", lang: "", note: "" }])}
             className="h-8 gap-1 text-xs cursor-pointer"
           >
-            <Plus className="h-3.5 w-3.5" /> Add channel
+            <Plus className="h-3.5 w-3.5" /> {t("showcaseAddChannel")}
           </Button>
         </div>
         {channels.map((c, i) => (
           <div key={i} className="grid grid-cols-12 gap-2">
             <Input
-              aria-label={`Channel ${i + 1} code`}
-              placeholder="CH 1"
+              aria-label={t("showcaseChannelCodeAria", { num: i + 1 })}
+              placeholder={t("showcaseChannelCode")}
               value={c.code}
               onChange={(e) => setChannels((prev) => prev.map((x, idx) => (idx === i ? { ...x, code: e.target.value } : x)))}
               className="col-span-3 h-9 text-xs"
             />
             <Input
-              aria-label={`Channel ${i + 1} language`}
-              placeholder="Language"
+              aria-label={t("showcaseChannelLanguageAria", { num: i + 1 })}
+              placeholder={t("showcaseLanguage")}
               value={c.lang}
               onChange={(e) => setChannels((prev) => prev.map((x, idx) => (idx === i ? { ...x, lang: e.target.value } : x)))}
               className="col-span-6 h-9 text-xs"
@@ -256,7 +267,7 @@ export function ShowcaseEditor({ eventId, initialJson, className }: ShowcaseEdit
                 type="button"
                 variant="ghost"
                 size="icon"
-                aria-label={`Remove channel ${i + 1}`}
+                aria-label={t("showcaseRemoveChannelAria", { num: i + 1 })}
                 onClick={() => setChannels((prev) => prev.filter((_, idx) => idx !== i))}
                 className="h-9 w-9 min-h-[44px] min-w-[44px] text-destructive hover:bg-destructive/10"
               >
@@ -285,7 +296,7 @@ export function ShowcaseEditor({ eventId, initialJson, className }: ShowcaseEdit
 
       <div className="flex items-center justify-between pt-1">
         <Badge variant="outline" size="sm" className="text-[11px] text-muted-foreground">
-          Only filled rows publish
+          {t("showcaseFilledOnly")}
         </Badge>
         <Button
           type="button"
@@ -293,7 +304,7 @@ export function ShowcaseEditor({ eventId, initialJson, className }: ShowcaseEdit
           disabled={saving}
           className="gap-1.5 text-xs font-semibold min-h-[44px] cursor-pointer"
         >
-          {saving ? "Saving…" : "Save Showcase"}
+          {saving ? t("showcaseSaving") : t("showcaseSave")}
         </Button>
       </div>
 
@@ -305,10 +316,9 @@ export function ShowcaseEditor({ eventId, initialJson, className }: ShowcaseEdit
           className="mt-0.5 h-4 w-4 accent-primary shrink-0"
         />
         <span className="text-muted-foreground">
-          <span className="font-semibold text-foreground">I confirm this content is accurate</span> for
-          publication on the event page.
+          <span className="font-semibold text-foreground">{t("showcaseAttest")}</span> {t("showcaseAttestFor")}
           {lastAttestation && (
-            <span className="block mt-0.5">Last attested by {lastAttestation}.</span>
+            <span className="block mt-0.5">{t("showcaseLastAttested", { name: lastAttestation })}</span>
           )}
         </span>
       </label>
