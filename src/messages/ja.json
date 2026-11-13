@@ -1924,7 +1924,8 @@
     "updatesDeleteConfirm": "この更新を削除しますか？スロットに配置されている場合はホームページ枠から外れます。",
     "updatesDeleteFailed": "削除に失敗しました",
     "updatesStatusDraft": "下書き",
-    "updatesStatusApproved": "承認済み"
+    "updatesStatusApproved": "承認済み",
+    "wizardTierBenefitsPlaceholder": "フロアアクセス、VIPラウンジ、ガラディナー"
   },
   "admin": {
     "dashboardTitle": "管理統括・アグリゲーター",

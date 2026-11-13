@@ -1924,7 +1924,8 @@
     "updatesDeleteConfirm": "Delete this update? It will leave the homepage rail if slotted.",
     "updatesDeleteFailed": "Delete failed",
     "updatesStatusDraft": "Draft",
-    "updatesStatusApproved": "Approved"
+    "updatesStatusApproved": "Approved",
+    "wizardTierBenefitsPlaceholder": "Floor Access, VIP Lounge, Gala Dinner"
   },
   "admin": {
     "dashboardTitle": "Governance & Admin Agregator",

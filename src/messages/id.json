@@ -1924,7 +1924,8 @@
     "updatesDeleteConfirm": "Hapus pembaruan ini? Pembaruan akan keluar dari rel beranda jika sudah dijadwalkan.",
     "updatesDeleteFailed": "Gagal menghapus",
     "updatesStatusDraft": "Draf",
-    "updatesStatusApproved": "Disetujui"
+    "updatesStatusApproved": "Disetujui",
+    "wizardTierBenefitsPlaceholder": "Akses Lantai, Lounge VIP, Makan Malam Gala"
   },
   "admin": {
     "dashboardTitle": "Tata Kelola & Agregator Admin",

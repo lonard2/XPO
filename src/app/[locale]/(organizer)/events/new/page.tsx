@@ -2432,7 +2432,7 @@ export default function NewEventWizardPage() {
                     <Input
                       id={`wizard-tier-benefits-${idx}`}
                       label={tOrg("wizardTierBenefits") || "Included Benefits (comma separated)"}
-                      placeholder="Floor Access, VIP Lounge, Gala Dinner"
+                      placeholder={tOrg("wizardTierBenefitsPlaceholder")}
                       value={tier.benefits}
                       onChange={(e) => handleUpdateTier(tier.id, "benefits", e.target.value)}
                     />

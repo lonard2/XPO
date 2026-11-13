@@ -1924,7 +1924,8 @@
     "updatesDeleteConfirm": "Dieses Update löschen? Es wird aus der Startseitenleiste entfernt, falls eingeplant.",
     "updatesDeleteFailed": "Löschen fehlgeschlagen",
     "updatesStatusDraft": "Entwurf",
-    "updatesStatusApproved": "Genehmigt"
+    "updatesStatusApproved": "Genehmigt",
+    "wizardTierBenefitsPlaceholder": "Hallenzugang, VIP-Lounge, Gala-Dinner"
   },
   "admin": {
     "dashboardTitle": "Admin-Governance & Aggregator",

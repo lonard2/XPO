@@ -60,7 +60,8 @@
     "Apple Maps",
     "Waze",
     "(ID)",
-    "(JP)"
+    "(JP)",
+    "/events/"
   ],
   "patterns": [
     "^https?://",

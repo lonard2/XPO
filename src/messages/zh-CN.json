@@ -1924,7 +1924,8 @@
     "updatesDeleteConfirm": "删除此动态？如果已排入首页栏目，将被移除。",
     "updatesDeleteFailed": "删除失败",
     "updatesStatusDraft": "草稿",
-    "updatesStatusApproved": "已批准"
+    "updatesStatusApproved": "已批准",
+    "wizardTierBenefitsPlaceholder": "展区访问、VIP 休息室、晚宴"
   },
   "admin": {
     "dashboardTitle": "管理统括中心",

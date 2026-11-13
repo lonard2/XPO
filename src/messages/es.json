@@ -1924,7 +1924,8 @@
     "updatesDeleteConfirm": "¿Eliminar esta actualización? Saldrá de la sección de inicio si está programada.",
     "updatesDeleteFailed": "Error al eliminar",
     "updatesStatusDraft": "Borrador",
-    "updatesStatusApproved": "Aprobado"
+    "updatesStatusApproved": "Aprobado",
+    "wizardTierBenefitsPlaceholder": "Acceso a la Feria, Lounge VIP, Cena de Gala"
   },
   "admin": {
     "dashboardTitle": "Gobernanza y Agregador de Administración",
