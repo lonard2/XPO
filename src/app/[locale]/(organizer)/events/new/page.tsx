@@ -250,12 +250,12 @@ const CLUSTER_FILTERS = [
 ];
 
 const BRANDING_PALETTES = [
-  { label: "Classic Industrial", primary: "#0284c7", accent: "#f59e0b" },
-  { label: "Frontier Tech", primary: "#4f46e5", accent: "#06b6d4" },
-  { label: "Clinical Health", primary: "#0d9488", accent: "#10b981" },
-  { label: "Luxury Retail", primary: "#db2777", accent: "#4f46e5" },
-  { label: "Stage & Concert", primary: "#e11d48", accent: "#8b5cf6" },
-  { label: "Enterprise Gold", primary: "#1e3a8a", accent: "#d97706" },
+  { labelKey: "paletteClassicIndustrial", primary: "#0284c7", accent: "#f59e0b" },
+  { labelKey: "paletteFrontierTech", primary: "#4f46e5", accent: "#06b6d4" },
+  { labelKey: "paletteClinicalHealth", primary: "#0d9488", accent: "#10b981" },
+  { labelKey: "paletteLuxuryRetail", primary: "#db2777", accent: "#4f46e5" },
+  { labelKey: "paletteStageConcert", primary: "#e11d48", accent: "#8b5cf6" },
+  { labelKey: "paletteEnterpriseGold", primary: "#1e3a8a", accent: "#d97706" },
 ];
 
 export default function NewEventWizardPage() {
@@ -1874,24 +1874,24 @@ export default function NewEventWizardPage() {
                 {[
                   {
                     id: "id",
-                    code: "IDR (Rp)",
+                    code: tReg("id.currency"),
                     name: `${tReg("id.name")} (${tReg("id.code")})`,
                     desc: "JIExpo, ICE BSD, JCC, NICE PIK 2",
-                    currency: "Indonesian Rupiah",
+                    currency: tOrg("wizardRegionIdCurrency"),
                   },
                   {
                     id: "jp",
-                    code: "JPY (¥)",
+                    code: tReg("jp.currency"),
                     name: `${tReg("jp.name")} (${tReg("jp.code")})`,
                     desc: "Tokyo Big Sight, Makuhari Messe, Pacifico",
-                    currency: "Japanese Yen",
+                    currency: tOrg("wizardRegionJpCurrency"),
                   },
                   {
                     id: "global",
-                    code: "USD ($)",
+                    code: tOrg("wizardCurrencyUsd"),
                     name: `${tReg("global.name")} (${tReg("global.code")})`,
                     desc: "Marina Bay Sands, Messe Frankfurt, ExCeL",
-                    currency: "US Dollar",
+                    currency: tOrg("wizardRegionGlobalCurrency"),
                   },
                 ].map((r) => (
                   <button
@@ -2194,7 +2194,7 @@ export default function NewEventWizardPage() {
           <div className="p-3.5 bg-muted/40 border border-border/70 rounded-xl flex flex-wrap items-center gap-2 text-xs">
             <span className="font-semibold text-foreground flex items-center gap-1.5 mr-1">
               <Sparkles className="h-3.5 w-3.5 text-primary" />
-              <span>Pass Presets:</span>
+              <span>{tOrg("wizardPassPresets")}</span>
             </span>
             <Button
               type="button"
@@ -2203,18 +2203,18 @@ export default function NewEventWizardPage() {
               onClick={() => {
                 const freeTier: TicketTierDraft = {
                   id: `tier-${Date.now()}`,
-                  name: "Complimentary Trade Visitor Pass",
+                  name: tOrg("wizardPresetFreeName"),
                   price: 0,
                   currency: regionId === "jp" ? "JPY" : regionId === "global" ? "USD" : "IDR",
                   capacity: 2500,
-                  benefits: "General Floor Access, Digital Guidebook, Open Keynotes",
+                  benefits: tOrg("wizardPresetFreeBenefits"),
                   meetingQuota: 0,
                 };
                 setTicketTiers([...ticketTiers, freeTier]);
               }}
               className="text-xs min-h-[44px] sm:min-h-[36px] px-3.5 cursor-pointer bg-background"
             >
-              + Free Trade Pass
+              {tOrg("wizardPresetFree")}
             </Button>
             <Button
               type="button"
@@ -2223,18 +2223,18 @@ export default function NewEventWizardPage() {
               onClick={() => {
                 const vipTier: TicketTierDraft = {
                   id: `tier-${Date.now()}`,
-                  name: "VIP Procurement Delegate Pass",
+                  name: tOrg("wizardPresetVipName"),
                   price: regionId === "jp" ? 25000 : regionId === "global" ? 200 : 1500000,
                   currency: regionId === "jp" ? "JPY" : regionId === "global" ? "USD" : "IDR",
                   capacity: 250,
-                  benefits: "Fast-Track Gate, VIP Lounge, B2B Matchmaking, Gala Dinner",
+                  benefits: tOrg("wizardPresetVipBenefits"),
                   meetingQuota: 0,
                 };
                 setTicketTiers([...ticketTiers, vipTier]);
               }}
               className="text-xs min-h-[44px] sm:min-h-[36px] px-3.5 cursor-pointer bg-background"
             >
-              + VIP Buyer Pass
+              {tOrg("wizardPresetVip")}
             </Button>
             <Button
               type="button"
@@ -2243,18 +2243,18 @@ export default function NewEventWizardPage() {
               onClick={() => {
                 const allAccessTier: TicketTierDraft = {
                   id: `tier-${Date.now()}`,
-                  name: "All-Access Speaker & Sponsor Pass",
+                  name: tOrg("wizardPresetAllName"),
                   price: regionId === "jp" ? 45000 : regionId === "global" ? 400 : 3000000,
                   currency: regionId === "jp" ? "JPY" : regionId === "global" ? "USD" : "IDR",
                   capacity: 100,
-                  benefits: "Backstage Access, Speaker Lounge, Keynote Slides, VIP Parking",
+                  benefits: tOrg("wizardPresetAllBenefits"),
                   meetingQuota: 0,
                 };
                 setTicketTiers([...ticketTiers, allAccessTier]);
               }}
               className="text-xs min-h-[44px] sm:min-h-[36px] px-3.5 cursor-pointer bg-background"
             >
-              + All-Access Pass
+              {tOrg("wizardPresetAllAccess")}
             </Button>
           </div>
 
@@ -2265,19 +2265,24 @@ export default function NewEventWizardPage() {
                 <div className="flex items-center gap-2 font-semibold text-foreground">
                   <Building2 className="h-4 w-4 text-primary shrink-0" />
                   <span className="truncate">
-                    Physical Hall Allocation: {selectedHalls.map((h) => h.name).join(", ")}
+                    {tOrg("wizardHallAllocationLabel", { halls: selectedHalls.map((h) => h.name).join(", ") })}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
                   <span className="text-muted-foreground font-medium">
-                    Allocated: {totalTicketCapacity.toLocaleString()} / {(totalHallsCapacity || 0).toLocaleString()} slots
+                    {tOrg("wizardAllocatedLabel", {
+                      used: totalTicketCapacity.toLocaleString(),
+                      total: (totalHallsCapacity || 0).toLocaleString(),
+                    })}
                   </span>
                   <Badge
                     variant={isCapacityExceeded ? "destructive" : "outline"}
                     size="sm"
                     className="font-mono text-xs font-bold"
                   >
-                    {totalHallsCapacity ? Math.round((totalTicketCapacity / totalHallsCapacity) * 100) : 0}% Allocated
+                    {tOrg("wizardPercentAllocated", {
+                      percent: totalHallsCapacity ? Math.round((totalTicketCapacity / totalHallsCapacity) * 100) : 0,
+                    })}
                   </Badge>
                 </div>
               </div>
@@ -2285,11 +2290,16 @@ export default function NewEventWizardPage() {
               {/* Allocation Progress Bar */}
               <div
                 role="progressbar"
-                aria-label="Hall Capacity Allocation"
+                aria-label={tOrg("wizardHallAllocationAria")}
                 aria-valuenow={totalTicketCapacity}
                 aria-valuemin={0}
                 aria-valuemax={totalHallsCapacity || 100}
-                aria-valuetext={`${totalHallsCapacity ? Math.round((totalTicketCapacity / totalHallsCapacity) * 100) : 0}% (${totalTicketCapacity} of ${totalHallsCapacity} allocated seats across ${selectedHalls.length} halls)`}
+                aria-valuetext={tOrg("wizardHallAllocationValue", {
+                  percent: totalHallsCapacity ? Math.round((totalTicketCapacity / totalHallsCapacity) * 100) : 0,
+                  used: totalTicketCapacity,
+                  total: totalHallsCapacity,
+                  halls: selectedHalls.length,
+                })}
                 className="h-2.5 w-full bg-muted rounded-full overflow-hidden"
               >
                 <div
@@ -2310,7 +2320,12 @@ export default function NewEventWizardPage() {
                 <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg flex items-start gap-2.5 text-xs text-amber-700 dark:text-amber-400 animate-fade-in">
                   <AlertTriangle className="h-4 w-4 shrink-0 mt-0.5" />
                   <span>
-                    <strong>Capacity Alert:</strong> Total ticket pass allocation ({totalTicketCapacity.toLocaleString()}) exceeds the combined physical limit of {selectedHalls.map((h) => h.name).join(", ")} ({(totalHallsCapacity || 0).toLocaleString()}). Consider allocating additional halls in Step 2 or adjusting pass capacities.
+                    <strong>{tOrg("wizardCapacityAlertTitle")}</strong>{" "}
+                    {tOrg("wizardCapacityAlertBody", {
+                      used: totalTicketCapacity.toLocaleString(),
+                      halls: selectedHalls.map((h) => h.name).join(", "),
+                      total: (totalHallsCapacity || 0).toLocaleString(),
+                    })}
                   </span>
                 </div>
               )}
@@ -2333,7 +2348,7 @@ export default function NewEventWizardPage() {
                       {tOrg("wizardTierBadge", { num: idx + 1 }) || `Tier #${idx + 1}`}
                     </Badge>
                     <span className="text-xs font-semibold text-foreground">
-                      {tier.name || "Untitled Tier"}
+                      {tier.name || tOrg("wizardUntitledTier")}
                     </span>
                   </div>
                   {ticketTiers.length > 1 && (
@@ -2353,7 +2368,7 @@ export default function NewEventWizardPage() {
                     <Input
                       id={`wizard-tier-name-${idx}`}
                       label={tOrg("wizardTierName") || "Pass Tier Name"}
-                      placeholder="e.g. Standard Trade Visitor Pass"
+                      placeholder={tOrg("wizardTierNamePlaceholder")}
                       value={tier.name}
                       onChange={(e) => {
                         handleUpdateTier(tier.id, "name", e.target.value);
@@ -2408,9 +2423,9 @@ export default function NewEventWizardPage() {
                       value={tier.currency}
                       onChange={(e) => handleUpdateTier(tier.id, "currency", e.target.value)}
                     >
-                      <option value="IDR">IDR (Rp)</option>
-                      <option value="JPY">JPY (¥)</option>
-                      <option value="USD">USD ($)</option>
+                      <option value="IDR">{tReg("id.currency")}</option>
+                      <option value="JPY">{tReg("jp.currency")}</option>
+                      <option value="USD">{tOrg("wizardCurrencyUsd")}</option>
                     </select>
                   </div>
                   <div className="sm:col-span-1">
@@ -2439,7 +2454,7 @@ export default function NewEventWizardPage() {
                 {/* Benefits Chips Preview */}
                 {tier.benefits && (
                   <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                    <span className="text-[11px] text-muted-foreground mr-1">Perks:</span>
+                    <span className="text-[11px] text-muted-foreground mr-1">{tOrg("wizardPerksLabel")}</span>
                     {tier.benefits.split(",").map((b, bIdx) => {
                       const clean = b.trim();
                       if (!clean) return null;
@@ -2469,19 +2484,19 @@ export default function NewEventWizardPage() {
                   <span>{tOrg("wizardBrandingTitle") || "Visual Branding & Palette"}</span>
                 </h2>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  Select color accents and hero imagery to personalize your event landing page.
+                  {tOrg("wizardBrandingDesc")}
                 </p>
               </div>
 
               {/* Colorway Presets */}
               <div className="space-y-2">
                 <label className="text-xs font-semibold text-foreground block">
-                  Quick Palette Swatches:
+                  {tOrg("wizardPaletteLabel")}
                 </label>
                 <div className="grid grid-cols-3 gap-2">
                   {BRANDING_PALETTES.map((pal) => (
                     <button
-                      key={pal.label}
+                      key={pal.labelKey}
                       type="button"
                       onClick={() => {
                         setPrimaryColor(pal.primary);
@@ -2498,7 +2513,7 @@ export default function NewEventWizardPage() {
                         <span className="h-4 w-4 rounded-full border border-background shrink-0" style={{ backgroundColor: pal.primary }} />
                         <span className="h-4 w-4 rounded-full border border-background shrink-0" style={{ backgroundColor: pal.accent }} />
                       </div>
-                      <span className="truncate text-[11px] font-medium text-foreground">{pal.label}</span>
+                      <span className="truncate text-[11px] font-medium text-foreground">{tOrg(pal.labelKey)}</span>
                     </button>
                   ))}
                 </div>
@@ -2520,7 +2535,7 @@ export default function NewEventWizardPage() {
                     />
                     <Input
                       id="wizard-primary-color-text"
-                      aria-label="Primary accent color hex code"
+                      aria-label={tOrg("wizardPrimaryHexAria")}
                       value={primaryColor}
                       onChange={(e) => setPrimaryColor(e.target.value)}
                       className="font-mono min-h-[44px]"
@@ -2542,7 +2557,7 @@ export default function NewEventWizardPage() {
                     />
                     <Input
                       id="wizard-accent-color-text"
-                      aria-label="Secondary accent color hex code"
+                      aria-label={tOrg("wizardAccentHexAria")}
                       value={accentColor}
                       onChange={(e) => setAccentColor(e.target.value)}
                       className="font-mono min-h-[44px]"
