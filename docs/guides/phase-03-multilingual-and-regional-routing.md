@@ -204,3 +204,27 @@ With Phase 3 complete:
 * Indonesia, Japan, and Global Hub regional portals are live with complete venue and transit metadata.
 * All formatters are verified against ISO and IANA timezone specifications.
 * The codebase is ready for **Phase 4: Attendee Discovery Engine & Faceted Search**.
+
+---
+
+## 8. Localization Coverage Program (2026-11-11 onward)
+
+The original Phase 3 established routing, formatters, and regional hubs. A later
+coverage program closed the remaining hardcoded English surface by surface. It
+runs as five phases documented in `docs/guides/localization.md`:
+
+| Phase | Scope | Result |
+|---|---|---|
+| 0 | Audit, allowlist, baseline, ratchet | 1,259 hardcoded strings recorded |
+| 1 | Attendee chrome | 1,259 to 1,165 |
+| 2 | 22 themed category views | 1,165 to 640 |
+| 3 | Organizer portal | 640 to 456 |
+| 4 | Admin, settings, AI, legal | Pending |
+
+The organizer pass localized the event wizard, publication authority, live
+customizer, preview frame, showcase editor, event updates editor, dashboard
+error state, and scanner and inbox labels. It also replaced fabricated preview
+records with event data. The audit reports zero hardcoded UI strings in every
+organizer file, and `scripts/i18n-baseline.json` now records 456 hardcoded and
+20 untranslated values.
+

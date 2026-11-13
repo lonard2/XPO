@@ -130,3 +130,36 @@ hardcoded count fell.
 
 Legal copy in Phase 4 is translated but flagged for legal review. Keep the
 English source as the reference until that review happens.
+
+## Phase 3: organizer portal
+
+The organizer portal is localized under the existing `organizer` namespace.
+Keys are grouped by surface prefix so the wizard file stays navigable:
+
+- `wizard*`: wizard chrome, identity, venue, passes, capacity, branding, summary.
+- `authority*`: admin publication authority and ownership.
+- `customizer*`: live customizer controls, palette presets, and typography.
+- `preview*`: live preview frame chrome.
+- `showcase*`: organizer-authored showcase rows, alerts, and channels.
+- `updates*`: event news editor.
+- `dashboard*`: dashboard error recovery.
+
+The baseline moved from 640 to 456 hardcoded strings while the untranslated
+value count held at 20. Every organizer file now reports zero hardcoded UI
+strings.
+
+Rules learned in this phase:
+
+- Remove the English fallback once the key exists. `tOrg("key") || "English"`
+  keeps the literal visible to the audit and hides a missing translation.
+- Merge a sentence split across JSX into one ICU message. The capacity alert is
+  one key with `{used}`, `{halls}`, and `{total}`, not three fragments.
+- Localize placeholders and `aria-label` values. They are user-facing copy.
+- Do not localize fabricated preview data. Replace it with event data and hide
+  the section when the event provides none. The preview frame now derives
+  agenda, exhibitors, perks, dates, and pass capacity from the event.
+- Keep currency labels in the `regions` namespace instead of duplicating them
+  per surface.
+- The parity test parses each bundle once. Re-reading six JSON files inside a
+  per-key loop pushed the test past its timeout as the bundles grew.
+

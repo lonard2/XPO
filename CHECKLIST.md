@@ -240,3 +240,19 @@ This master checklist tracks the development, testing, UX refinements, and educa
 - [x] Keep branding and venue saves independent, and never change page size, archetype, booths, agenda, or tickets from the route.
 - [x] Add the `venueReassignment` namespace in all six locales and document the feature in `docs/guides/venue-reassignment.md`.
 - [x] **Verification**: route integration tests (`tests/integration/venue-reassignment.test.ts`, 5 tests), card tests (`tests/unit/organizer/VenueReassignmentCard.test.tsx`, 5 tests), mount and copy rules (`tests/unit/a11y/customizer-venue-card.test.ts`, 2 tests), and locale parity (`tests/unit/i18n/message-parity.test.ts`). Full suite and production build pass.
+
+---
+
+### Localization Coverage Program: Phase 3 Organizer Portal (2026-11-13)
+*Focus: localize the organizer wizard, publication authority, customizer, preview frame, showcase editor, updates editor, and organizer shell.*
+- [x] Localize organizer shell, dashboard error state, updates page, scanner badge, and meeting placeholder (`d73e56f`).
+- [x] Localize wizard chrome and draft recovery (`600d81f`).
+- [x] Localize publication authority (`30ba57d`).
+- [x] Localize wizard identity and venue allocation (`cc05b98`).
+- [x] Localize passes, capacity, perks, and branding (`041c70f`).
+- [x] Localize summary and preview header (`87c7c6a`).
+- [x] Localize customizer controls, palette, typography, and section visibility (`9f6ba99`).
+- [x] Localize the live preview frame and replace fabricated preview records with event data (`f3d0a4d`).
+- [x] Localize showcase editor (`579e029`).
+- [x] Localize event updates editor (`0dce8c5`).
+- [x] **Verification**: audit baseline 640 to 456 hardcoded strings, untranslated held at 20, zero hardcoded UI strings in organizer files; `tests/unit/i18n` 94 tests and `tests/unit/organizer` plus `tests/unit/components` 538 tests pass; full unit suite 1,027 passed with only the five DB-dependent admin tests and the pre-existing crawler test failing because Postgres and the Docker daemon are down; `npx tsc --noEmit` clean; `npm run build` succeeds.
