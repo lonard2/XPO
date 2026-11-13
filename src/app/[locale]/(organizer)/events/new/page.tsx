@@ -1369,20 +1369,20 @@ export default function NewEventWizardPage() {
                 <div>
                   <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
                     <ShieldCheck className="h-4 w-4 text-primary" />
-                    <span>Event Publication Authority & Ownership</span>
+                    <span>{tOrg("authorityTitle")}</span>
                   </h2>
                   <p className="text-xs text-muted-foreground mt-0.5">
-                    Configure institutional publication rights: official platform-curated showcase or assign to a tenant account.
+                    {tOrg("authorityDesc")}
                   </p>
                 </div>
                 <Badge variant="outline" size="sm" className="w-fit text-[11px] font-semibold text-primary border-primary/30 bg-primary/5">
-                  Admin Authority
+                  {tOrg("authorityBadge")}
                 </Badge>
               </div>
 
               <div
                 role="radiogroup"
-                aria-label="Event Publication Authority"
+                aria-label={tOrg("authorityAria")}
                 className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3"
               >
                 {/* Option 1: Platform-Curated / Official Venue Listing */}
@@ -1409,15 +1409,15 @@ export default function NewEventWizardPage() {
                         {isPlatformCurated && <div className="h-1.5 w-1.5 rounded-full bg-white" />}
                       </div>
                       <span className="text-xs font-bold text-foreground">
-                        Platform-Curated / Official Venue Listing
+                        {tOrg("authorityCuratedTitle")}
                       </span>
                     </div>
                     <Badge variant="default" size="sm" className="text-[11px] font-semibold bg-primary/20 text-primary border-primary/30">
-                      Default
+                      {tOrg("authorityCuratedBadge")}
                     </Badge>
                   </div>
                   <p className="text-[11px] text-muted-foreground leading-relaxed pl-6">
-                    Appears as an official exhibition listing with a verified badge. Does not hijack or bind to registered tenant accounts.
+                    {tOrg("authorityCuratedDesc")}
                   </p>
                 </button>
 
@@ -1445,15 +1445,15 @@ export default function NewEventWizardPage() {
                         {authorityMode === "delegated" && <div className="h-1.5 w-1.5 rounded-full bg-white" />}
                       </div>
                       <span className="text-xs font-bold text-foreground">
-                        Assign to Registered Organizer
+                        {tOrg("authorityDelegatedTitle")}
                       </span>
                     </div>
                     <Badge variant="secondary" size="sm" className="text-[11px] font-semibold">
-                      Account Delegation
+                      {tOrg("authorityDelegatedBadge")}
                     </Badge>
                   </div>
                   <p className="text-[11px] text-muted-foreground leading-relaxed pl-6">
-                    Bind this exhibition directly to an existing registered organizer account.
+                    {tOrg("authorityDelegatedDesc")}
                   </p>
                 </button>
 
@@ -1481,15 +1481,15 @@ export default function NewEventWizardPage() {
                         {authorityMode === "self" && <div className="h-1.5 w-1.5 rounded-full bg-white" />}
                       </div>
                       <span className="text-xs font-bold text-foreground">
-                        Admin-Managed Event
+                        {tOrg("authoritySelfTitle")}
                       </span>
                     </div>
                     <Badge variant="secondary" size="sm" className="text-[11px] font-semibold">
-                      My Account
+                      {tOrg("authoritySelfBadge")}
                     </Badge>
                   </div>
                   <p className="text-[11px] text-muted-foreground leading-relaxed pl-6">
-                    Owned by your admin account. Add, modify, and delete freely without organizer involvement.
+                    {tOrg("authoritySelfDesc")}
                   </p>
                 </button>
                 {/* Option 4: Simple Listing (no operations) */}
@@ -1516,15 +1516,15 @@ export default function NewEventWizardPage() {
                         {authorityMode === "listing" && <div className="h-1.5 w-1.5 rounded-full bg-white" />}
                       </div>
                       <span className="text-xs font-bold text-foreground">
-                        Simple Listing
+                        {tOrg("authorityListingTitle")}
                       </span>
                     </div>
                     <Badge variant="secondary" size="sm" className="text-[11px] font-semibold">
-                      No Operations
+                      {tOrg("authorityListingBadge")}
                     </Badge>
                   </div>
                   <p className="text-[11px] text-muted-foreground leading-relaxed pl-6">
-                    A plain customizable event page without dashboard, booth, or scanner operations.
+                    {tOrg("authorityListingDesc")}
                   </p>
                 </button>
               </div>
@@ -1537,17 +1537,17 @@ export default function NewEventWizardPage() {
                       {user?.name || user?.email || "Admin"}
                     </Badge>
                     <span className="text-muted-foreground">
-                      This exhibition will be owned by your admin account.
+                      {tOrg("authorityOwnedNote")}
                     </span>
                   </div>
                   {authorityMode === "listing" && (
                     <Input
                       id="wizard-external-url"
-                      label="Official listing URL"
-                      placeholder="https://organizer.example/event"
+                      label={tOrg("authorityExternalUrlLabel")}
+                      placeholder={tOrg("authorityExternalUrlPlaceholder")}
                       value={externalUrl}
                       onChange={(e) => setExternalUrl(e.target.value)}
-                      helperText="Off-platform registration link shown on the event page. Leave empty to show the listing without a link."
+                      helperText={tOrg("authorityExternalUrlHelper")}
                       className="min-h-[44px] pt-2"
                     />
                   )}
@@ -1556,11 +1556,11 @@ export default function NewEventWizardPage() {
                 <div className="space-y-1.5 pt-2 border-t border-border/50">
                   <Input
                     id="wizard-organizer-name"
-                    label="Public Organizer / Entity Name"
-                    placeholder="e.g. Jakarta International Expo, Debindo ITE, GAIKINDO"
+                    label={tOrg("authorityOrganizerNameLabel")}
+                    placeholder={tOrg("authorityOrganizerNamePlaceholder")}
                     value={organizerName}
                     onChange={(e) => setOrganizerName(e.target.value)}
-                    helperText="Appears on attendee discovery cards, hero banners, and official verification badges."
+                    helperText={tOrg("authorityOrganizerNameHelper")}
                     className="min-h-[44px]"
                   />
                 </div>
@@ -1568,11 +1568,11 @@ export default function NewEventWizardPage() {
                 <div className="space-y-1.5 pt-2 border-t border-border/50">
                   <Input
                     id="wizard-target-organizer-id"
-                    label="Target Organizer Account ID"
-                    placeholder="e.g. cmt2sfr7n0000laeaurwdwe44 or organizer@xpo.com"
+                    label={tOrg("authorityTargetIdLabel")}
+                    placeholder={tOrg("authorityTargetIdPlaceholder")}
                     value={targetOrganizerId}
                     onChange={(e) => setTargetOrganizerId(e.target.value)}
-                    helperText="Specify the user ID or registered email of the organizer who will own and manage this exhibition."
+                    helperText={tOrg("authorityTargetIdHelper")}
                     className="min-h-[44px]"
                   />
                 </div>
