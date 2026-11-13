@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { Search, PlusCircle, Undo2, Trash2, PenLine } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/Card";
@@ -68,6 +69,7 @@ function showcaseLine(e: AdminEventItem): string | null {
 }
 
 export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: AdminEventsConsoleClientProps) {
+  const tAdmin = useTranslations("admin");
   const [events, setEvents] = React.useState<AdminEventItem[]>(initialEvents);
   const [searchQuery, setSearchQuery] = React.useState("");
   const [busyId, setBusyId] = React.useState<string | null>(null);
@@ -119,7 +121,7 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
     confirmText: string
   ) => {
     if (!isLive) {
-      setFeedback({ type: "error", text: "Preview data is read-only. Connect the database to manage events." });
+      setFeedback({ type: "error", text: tAdmin("previewReadOnly") });
       return;
     }
     if (!confirm(confirmText)) return;
@@ -156,7 +158,7 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
         body: JSON.stringify({ organizerId: assignTo }),
       });
       const data = await res.json();
-      if (!res.ok || !data.success) throw new Error(data.error || "Assign failed");
+      if (!res.ok || !data.success) throw new Error(data.error || tAdmin("assignFailed"));
       setEvents((prev) => prev.map((e) => (e.id === id ? data.event : e)));
       setAssignFor(null);
       setAssignTo("");
@@ -179,7 +181,7 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
   const runBlurbSave = async () => {
     if (!blurbFor) return;
     if (!isLive) {
-      setFeedback({ type: "error", text: "Preview data is read-only. Connect the database to manage events." });
+      setFeedback({ type: "error", text: tAdmin("previewReadOnly") });
       return;
     }
     setBusyId(blurbFor.id);
@@ -253,7 +255,7 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
 
   const runModerate = async (updateId: string, approved: boolean) => {
     if (!isLive) {
-      setFeedback({ type: "error", text: "Preview data is read-only. Connect the database to manage events." });
+      setFeedback({ type: "error", text: tAdmin("previewReadOnly") });
       return;
     }
     setBusyId(updateId);
@@ -277,7 +279,7 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
 
   const runSaveSlots = async () => {
     if (!isLive) {
-      setFeedback({ type: "error", text: "Preview data is read-only. Connect the database to manage events." });
+      setFeedback({ type: "error", text: tAdmin("previewReadOnly") });
       return;
     }
     setBusyId(`slots-${slotRegion}`);
@@ -304,7 +306,7 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
     patch: { pageSize?: string | null; visibility?: string }
   ) => {
     if (!isLive) {
-      setFeedback({ type: "error", text: "Preview data is read-only. Connect the database to manage events." });
+      setFeedback({ type: "error", text: tAdmin("previewReadOnly") });
       return;
     }
     setBusyId(id);
@@ -334,7 +336,7 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
             <span className="text-sm font-bold text-foreground truncate">{e.title}</span>
             {isCurated(e) ? (
               <Badge variant="outline" className="text-[11px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 border-amber-500/40 bg-amber-500/10">
-                Platform Curated
+                {tAdmin("eventsPlatformCurated")}
               </Badge>
             ) : (
               <Badge variant="outline" className="text-[11px] font-semibold text-primary border-primary/40 bg-primary/5">
@@ -361,7 +363,7 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
                   onChange={(ev) => setAssignTo(ev.target.value)}
                   className="h-9 rounded-lg border border-input bg-background px-2 text-xs min-h-[44px] sm:min-h-[36px] max-w-[180px]"
                 >
-                  <option value="">Select organizer…</option>
+                  <option value="">{tAdmin("selectOrganizer")}</option>
                   {organizers.map((o) => (
                     <option key={o.id} value={o.id}>
                       {o.organization || o.name}
@@ -376,7 +378,7 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
                   onClick={() => runAssign(e.id)}
                   className="h-9 gap-1.5 text-xs cursor-pointer"
                 >
-                  <span>Confirm</span>
+                  <span>{tAdmin("confirm")}</span>
                 </Button>
                 <Button
                   type="button"
@@ -398,7 +400,7 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
                 className="h-9 gap-1.5 text-xs cursor-pointer"
               >
                 <PlusCircle className="h-3.5 w-3.5" />
-                <span>Assign</span>
+                <span>{tAdmin("assign")}</span>
               </Button>
             )
           ) : (
@@ -407,11 +409,11 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
               variant="outline"
               size="sm"
               disabled={busyId === e.id}
-              onClick={() => runAction(e.id, "release", `Release '${e.title}' back to platform curation? It will leave the organizer portal.`)}
+              onClick={() => runAction(e.id, "release", tAdmin("releaseConfirm", { title: e.title }))}
               className="h-9 gap-1.5 text-xs cursor-pointer"
             >
               <Undo2 className="h-3.5 w-3.5" />
-              <span>Release</span>
+              <span>{tAdmin("release")}</span>
             </Button>
           )}
           <Button
@@ -423,7 +425,7 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
             className="h-9 gap-1.5 text-xs cursor-pointer"
           >
             <PenLine className="h-3.5 w-3.5" />
-            <span>Editorial</span>
+            <span>{tAdmin("editorial")}</span>
           </Button>
           <select
             aria-label={`Page size for ${e.title}`}
@@ -432,28 +434,28 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
             onChange={(ev) => runPresentation(e.id, { pageSize: ev.target.value || null })}
             className="h-9 rounded-lg border border-input bg-background px-2 text-xs min-h-[44px] sm:min-h-[36px] max-w-[130px] cursor-pointer"
           >
-            <option value="">Tier: venue</option>
-            <option value="LARGE">Tier: large</option>
-            <option value="MEDIUM">Tier: medium</option>
-            <option value="SMALL">Tier: small</option>
+            <option value="">{tAdmin("tierVenue")}</option>
+            <option value="LARGE">{tAdmin("tierLarge")}</option>
+            <option value="MEDIUM">{tAdmin("tierMedium")}</option>
+            <option value="SMALL">{tAdmin("tierSmall")}</option>
           </select>
           <select
             aria-label={`Visibility for ${e.title}`}
             value={e.visibility || "PUBLIC"}
             disabled={busyId === e.id || !isLive}
             onChange={(ev) => {
-              if (confirm(`Set '${e.title}' visibility to ${ev.target.value}? Discreet hides identity; hidden unlists.`)) {
+              if (confirm(tAdmin("visibilityConfirm", { title: e.title, visibility: ev.target.value }))) {
                 runPresentation(e.id, { visibility: ev.target.value });
               }
             }}
             className="h-9 rounded-lg border border-input bg-background px-2 text-xs min-h-[44px] sm:min-h-[36px] max-w-[130px] cursor-pointer"
           >
-            <option value="PUBLIC">Public</option>
-            <option value="DISCREET">Discreet</option>
-            <option value="HIDDEN">Hidden</option>
+            <option value="PUBLIC">{tAdmin("visibilityPublic")}</option>
+            <option value="DISCREET">{tAdmin("visibilityDiscreet")}</option>
+            <option value="HIDDEN">{tAdmin("visibilityHidden")}</option>
           </select>
           {!isLive && (
-            <span className="text-[11px] text-muted-foreground">Preview data is read-only.</span>
+            <span className="text-[11px] text-muted-foreground">{tAdmin("previewReadOnly")}</span>
           )}
           <Button
             type="button"
@@ -480,7 +482,7 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
       <p className="text-xs text-muted-foreground -mt-2">{desc}</p>
       {list.length === 0 ? (
         <p className="text-xs text-muted-foreground rounded-xl border border-dashed border-border/80 p-4 text-center">
-          No events in this group.
+          {tAdmin("noEventsInGroup")}
         </p>
       ) : (
         <div className="space-y-2">{list.map(renderRow)}</div>
@@ -502,19 +504,19 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
     <div className="space-y-8">
       <Tabs value={tab} onValueChange={openNewsTab}>
         <TabsList>
-          <TabsTrigger value="events">Events</TabsTrigger>
-          <TabsTrigger value="news" disabled={!isLive}>News review</TabsTrigger>
+          <TabsTrigger value="events">{tAdmin("eventsTab")}</TabsTrigger>
+          <TabsTrigger value="news" disabled={!isLive}>{tAdmin("newsReviewTab")}</TabsTrigger>
         </TabsList>
         {!isLive && (
-          <p className="text-[11px] text-muted-foreground">Preview data is read-only.</p>
+          <p className="text-[11px] text-muted-foreground">{tAdmin("previewReadOnly")}</p>
         )}
         <TabsContent value="events">
       <div className="flex flex-col sm:flex-row gap-3 sm:items-center justify-between">
         <div className="relative w-full sm:max-w-sm">
           <Search className="h-4 w-4 absolute left-3 top-3 text-muted-foreground pointer-events-none" />
           <Input
-            aria-label="Search events"
-            placeholder="Search by title or venue..."
+            aria-label={tAdmin("searchEvents")}
+            placeholder={tAdmin("searchEventsPlaceholder")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-9 h-11 min-h-[44px]"
@@ -525,7 +527,7 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
           className={cn("inline-flex items-center justify-center gap-1.5 rounded-xl border border-border/80 bg-background px-4 text-xs font-semibold hover:bg-muted min-h-[44px] sm:min-h-[36px]")}
         >
           <PlusCircle className="h-4 w-4" />
-          <span>Create via Wizard</span>
+          <span>{tAdmin("createViaWizard")}</span>
         </Link>
       </div>
 
@@ -540,8 +542,8 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
         </p>
       )}
 
-      {renderGroup("Organizer Events", "Owned by organizers. Release returns one to platform curation.", owned)}
-      {renderGroup("Platform-Curated Events", "Owned by XPO Platform Administration. Assign an organizer via API to move one.", curated)}
+      {renderGroup(tAdmin("organizerEventsGroup"), tAdmin("organizerEventsGroupDesc"), owned)}
+      {renderGroup(tAdmin("curatedEventsGroup"), tAdmin("curatedEventsGroupDesc"), curated)}
         </TabsContent>
         <TabsContent value="news">
           <div className="space-y-4">
@@ -563,10 +565,10 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
               ))}
             </div>
             {reviewLoading ? (
-              <p className="text-xs text-muted-foreground">Loading updates…</p>
+              <p className="text-xs text-muted-foreground">{tAdmin("loadingUpdates")}</p>
             ) : reviewItems.length === 0 ? (
               <p className="text-xs text-muted-foreground rounded-xl border border-dashed border-border/80 p-4 text-center">
-                No updates in this state.
+                {tAdmin("noUpdatesInState")}
               </p>
             ) : (
               <div className="space-y-2">
@@ -598,7 +600,7 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
             <div className="rounded-2xl border border-border/80 p-4 space-y-3">
               <div className="space-y-1.5">
                 <label htmlFor="news-slot-region" className="block text-xs font-medium text-foreground">
-                  Slots for region
+                  {tAdmin("slotsForRegion")}
                 </label>
                 <select
                   id="news-slot-region"
@@ -609,13 +611,13 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
                   }}
                   className="h-9 rounded-lg border border-input bg-background px-2 text-xs min-h-[44px] sm:min-h-[36px] max-w-[220px]"
                 >
-                  <option value="id">Indonesia (id)</option>
-                  <option value="jp">Japan (jp)</option>
-                  <option value="global">Global (global)</option>
+                  <option value="id">{tAdmin("regionIndonesia")}</option>
+                  <option value="jp">{tAdmin("regionJapan")}</option>
+                  <option value="global">{tAdmin("regionGlobal")}</option>
                 </select>
               </div>
               {slotIds.length === 0 ? (
-                <p className="text-xs text-muted-foreground">No slots saved for this region.</p>
+                <p className="text-xs text-muted-foreground">{tAdmin("noSlotsSaved")}</p>
               ) : (
                 <ul className="space-y-1.5">
                   {slotIds.map((id, idx) => (
@@ -629,7 +631,7 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
                         onClick={() => setSlotIds((prev) => prev.filter((s) => s !== id))}
                         className="h-8 px-2 text-xs cursor-pointer"
                       >
-                        <span>Remove</span>
+                        <span>{tAdmin("remove")}</span>
                       </Button>
                     </li>
                   ))}
@@ -637,12 +639,12 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
               )}
               <div className="flex flex-wrap items-center gap-2">
                 <select
-                  aria-label="Add approved update to slots"
+                  aria-label={tAdmin("addApprovedUpdateToSlots")}
                   value={slotAddId}
                   onChange={(ev) => setSlotAddId(ev.target.value)}
                   className="h-9 rounded-lg border border-input bg-background px-2 text-xs min-h-[44px] sm:min-h-[36px] max-w-[260px]"
                 >
-                  <option value="">Add approved update…</option>
+                  <option value="">{tAdmin("addApprovedUpdate")}</option>
                   {slotOptions
                     .filter((o) => !slotIds.includes(o.id))
                     .map((o) => (
@@ -674,7 +676,7 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
                   onClick={runSaveSlots}
                   className="h-9 text-xs cursor-pointer"
                 >
-                  <span>Save slots</span>
+                  <span>{tAdmin("saveSlots")}</span>
                 </Button>
               </div>
             </div>
@@ -685,14 +687,14 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
       <Modal
         isOpen={blurbFor !== null}
         onClose={() => setBlurbFor(null)}
-        title={blurbFor ? `Editorial blurb — ${blurbFor.title}` : "Editorial blurb"}
-        description="Carousel footnote. Renders only when approved; empty locales fall back to the default."
+        title={blurbFor ? tAdmin("editorialBlurbTitle", { title: blurbFor.title }) : tAdmin("editorialBlurb")}
+        description={tAdmin("carouselFootnote")}
         size="lg"
       >
         <div className="space-y-4">
           <div className="space-y-1.5">
             <label htmlFor="blurb-default" className="block text-xs font-medium text-foreground">
-              Default blurb (English) <span className="text-muted-foreground font-mono">{blurbText.length}/280</span>
+              {tAdmin("defaultBlurb")} <span className="text-muted-foreground font-mono">{blurbText.length}/280</span>
             </label>
             <textarea
               id="blurb-default"
@@ -700,7 +702,7 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
               maxLength={280}
               value={blurbText}
               onChange={(ev) => setBlurbText(ev.target.value)}
-              placeholder="Editors pick: why this event matters."
+              placeholder={tAdmin("editorsPickPlaceholder")}
               className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors"
             />
           </div>
@@ -715,7 +717,7 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
                 maxLength={280}
                 value={blurbI18n[code] ?? ""}
                 onChange={(ev) => setBlurbI18n((prev) => ({ ...prev, [code]: ev.target.value }))}
-                placeholder="Empty falls back to the default."
+                placeholder={tAdmin("emptyFallsBack")}
                 className="flex min-h-[64px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors"
               />
             </div>
@@ -727,7 +729,7 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
               onChange={(ev) => setBlurbApproved(ev.target.checked)}
               className="h-4 w-4 rounded border-input accent-primary"
             />
-            Approved for carousel
+            {tAdmin("approvedForCarousel")}
           </label>
           <div className="flex justify-end gap-2 pt-1">
             <Button type="button" variant="ghost" size="sm" onClick={() => setBlurbFor(null)} className="h-9 text-xs cursor-pointer">
@@ -741,7 +743,7 @@ export function AdminEventsConsoleClient({ initialEvents, locale, isLive }: Admi
               onClick={runBlurbSave}
               className="h-9 text-xs cursor-pointer"
             >
-              <span>Save</span>
+              <span>{tAdmin("save")}</span>
             </Button>
           </div>
         </div>
