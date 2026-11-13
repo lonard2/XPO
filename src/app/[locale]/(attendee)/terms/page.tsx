@@ -20,10 +20,10 @@ interface TermsPageProps {
 
 export async function generateMetadata({ params }: TermsPageProps) {
   const { locale } = await params;
+  const tLegal = await getTranslations({ locale, namespace: "legal" });
   return {
-    title: "Terms of Service | XPO MICE Digital Ecosystem",
-    description:
-      "Institutional terms of service, delegate pass verification regulations, and organizer obligations for the XPO platform.",
+    title: tLegal("termsMetaTitle"),
+    description: tLegal("termsMetaDescription"),
   };
 }
 
@@ -32,6 +32,7 @@ export default async function TermsPage({ params }: TermsPageProps) {
   setRequestLocale(locale);
   const tCom = await getTranslations({ locale, namespace: "common" });
   const tFoot = await getTranslations({ locale, namespace: "footer" });
+  const tLegal = await getTranslations({ locale, namespace: "legal" });
   const crumbs = [
     { label: tCom("home") || "Home", href: `/${locale}` },
     { label: tFoot("termsOfService") || "Terms of Service", href: `/${locale}/terms` },
@@ -48,16 +49,15 @@ export default async function TermsPage({ params }: TermsPageProps) {
           <div className="flex items-center gap-2">
             <Badge variant="outline" className="text-xs font-semibold gap-1.5 py-0.5">
               <Scale className="h-3.5 w-3.5 text-primary" />
-              <span>Legal Standards</span>
+              <span>{tLegal("termsBadge")}</span>
             </Badge>
-            <span className="text-xs text-muted-foreground font-mono">Effective: 2026-09-01</span>
+            <span className="text-xs text-muted-foreground font-mono">{tLegal("termsEffective")}</span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-foreground">
-            Terms of Service
+            {tLegal("termsTitle")}
           </h1>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            These terms govern your access to the XPO MICE Digital Ecosystem, digital pass reservation,
-            organizer management tools, and physical event turnstile admittance.
+            {tLegal("termsIntro")}
           </p>
         </div>
       </div>
@@ -69,10 +69,8 @@ export default async function TermsPage({ params }: TermsPageProps) {
             <FileText className="h-5 w-5" />
           </div>
           <div className="space-y-1 text-xs sm:text-sm text-muted-foreground leading-relaxed">
-            <strong className="text-foreground font-semibold block">Binding Agreement</strong>
-            By accessing XPO, purchasing or reserving an exhibition pass, or utilizing the Organizer Portal
-            and door scanner console, you agree to these Terms of Service. If you are acting on behalf of an
-            exhibitor or enterprise organization, you represent that you possess authority to bind that entity.
+            <strong className="text-foreground font-semibold block">{tLegal("termsBindingTitle")}</strong>
+            {tLegal("termsBindingBody")}
           </div>
         </div>
       </Card>
@@ -82,35 +80,31 @@ export default async function TermsPage({ params }: TermsPageProps) {
         <section className="space-y-2">
           <h2 className="text-base sm:text-lg font-bold text-foreground flex items-center gap-2">
             <Ticket className="h-4 w-4 text-primary shrink-0" />
-            <span>1. Pass Reservation & Digital Verification</span>
+            <span>{tLegal("termsS1Title")}</span>
           </h2>
           <p>
-            All event passes issued through XPO are authenticated via unique cryptographic HMAC-SHA256 signatures.
-            Passes are personal to the designated attendee unless explicitly reassigned through authorized organizer
-            channels. Replicating, tampering with, or attempting double-scans of pass barcodes at physical turnstiles
-            is strictly prohibited and may result in immediate revocation without refund.
+            {tLegal("termsS1Body")}
           </p>
         </section>
 
         <section className="space-y-2">
           <h2 className="text-base sm:text-lg font-bold text-foreground flex items-center gap-2">
             <Store className="h-4 w-4 text-primary shrink-0" />
-            <span>2. Organizer & Exhibitor Obligations</span>
+            <span>{tLegal("termsS2Title")}</span>
           </h2>
-          <p>Organizers and exhibitors publishing events or allocating booth lots on XPO agree to:</p>
+          <p>{tLegal("termsS2Intro")}</p>
           <ul className="list-disc pl-5 space-y-1 pt-1">
             <li>
-              Provide accurate exhibition metadata, hall indices, floor load limits, and ticketing tiers.
+              {tLegal("termsS2Li1")}
             </li>
             <li>
-              Adhere to safety, security, and fire protocols specified by the host convention complex.
+              {tLegal("termsS2Li2")}
             </li>
             <li>
-              Ensure exhibitor booth representations and imported CSV rosters do not infringe third-party
-              intellectual property rights.
+              {tLegal("termsS2Li3")}
             </li>
             <li>
-              Operate door check-in scanner consoles responsibly and promptly report counterfeit pass anomalies.
+              {tLegal("termsS2Li4")}
             </li>
           </ul>
         </section>
@@ -118,42 +112,33 @@ export default async function TermsPage({ params }: TermsPageProps) {
         <section className="space-y-2">
           <h2 className="text-base sm:text-lg font-bold text-foreground flex items-center gap-2">
             <ShieldCheck className="h-4 w-4 text-primary shrink-0" />
-            <span>3. System Availability & Turnstile Redundancy</span>
+            <span>{tLegal("termsS3Title")}</span>
           </h2>
           <p>
-            XPO provides offline pass caching (`localStorage`) designed to maintain turnstile throughput during
-            intermittent network dropouts. While XPO strives for 99.9% platform availability, we are not liable
-            for local venue Wi-Fi outages, device hardware failures, or physical entrance delays beyond our direct
-            software control.
+            {tLegal("termsS3Body")}
           </p>
         </section>
 
         <section className="space-y-2">
           <h2 className="text-base sm:text-lg font-bold text-foreground flex items-center gap-2">
             <Scale className="h-4 w-4 text-primary shrink-0" />
-            <span>4. Limitation of Liability & Force Majeure</span>
+            <span>{tLegal("termsS4Title")}</span>
           </h2>
           <p>
-            To the maximum extent permitted by law, XPO shall not be liable for indirect, incidental, or consequential
-            damages arising from event cancellations, schedule shifts, or convention hall access restrictions imposed
-            by venue authorities or government protocol. In cases of force majeure (including natural events or emergency
-            facility closures), organizer refund policies apply directly.
+            {tLegal("termsS4Body")}
           </p>
         </section>
 
         <section className="space-y-2">
           <h2 className="text-base sm:text-lg font-bold text-foreground flex items-center gap-2">
             <Compass className="h-4 w-4 text-primary shrink-0" />
-            <span>5. Regional Jurisdiction</span>
+            <span>{tLegal("termsS5Title")}</span>
           </h2>
           <p>
-            These terms are governed by the laws applicable to the host territory of the relevant event: the Republic
-            of Indonesia for events hosted at Indonesian venues, Japanese law for events in Japan, and Singapore or
-            relevant international gateway jurisdiction for global convention facilities.
+            {tLegal("termsS5Body")}
           </p>
           <p className="pt-2">
-            Legal inquiries regarding these terms should be addressed to:{" "}
-            <span className="font-mono text-foreground font-semibold">legal@xpo-mice.org</span>.
+            {tLegal("termsContact", { email: "legal@xpo-mice.org" })}
           </p>
         </section>
       </div>
@@ -165,13 +150,13 @@ export default async function TermsPage({ params }: TermsPageProps) {
           className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-2 text-xs font-semibold")}
         >
           <Compass className="h-3.5 w-3.5" />
-          <span>Return to Homepage</span>
+          <span>{tLegal("termsReturn")}</span>
         </Link>
         <Link
           href={`/${locale}/privacy`}
           className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "text-xs font-semibold")}
         >
-          <span>View Privacy Policy</span>
+          <span>{tLegal("termsPrivacyLink")}</span>
         </Link>
       </div>
     </div>

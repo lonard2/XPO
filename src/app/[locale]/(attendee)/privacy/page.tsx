@@ -20,10 +20,10 @@ interface PrivacyPageProps {
 
 export async function generateMetadata({ params }: PrivacyPageProps) {
   const { locale } = await params;
+  const tLegal = await getTranslations({ locale, namespace: "legal" });
   return {
-    title: "Privacy Policy | XPO MICE Digital Ecosystem",
-    description:
-      "Institutional privacy policy, delegate data protection, and GDPR/CCPA compliance standards for the XPO platform.",
+    title: tLegal("privacyMetaTitle"),
+    description: tLegal("privacyMetaDescription"),
   };
 }
 
@@ -32,6 +32,7 @@ export default async function PrivacyPage({ params }: PrivacyPageProps) {
   setRequestLocale(locale);
   const tCom = await getTranslations({ locale, namespace: "common" });
   const tFoot = await getTranslations({ locale, namespace: "footer" });
+  const tLegal = await getTranslations({ locale, namespace: "legal" });
   const crumbs = [
     { label: tCom("home") || "Home", href: `/${locale}` },
     { label: tFoot("privacyPolicy") || "Privacy Policy", href: `/${locale}/privacy` },
@@ -48,16 +49,15 @@ export default async function PrivacyPage({ params }: PrivacyPageProps) {
           <div className="flex items-center gap-2">
             <Badge variant="outline" className="text-xs font-semibold gap-1.5 py-0.5">
               <ShieldCheck className="h-3.5 w-3.5 text-emerald-500" />
-              <span>Institutional Governance</span>
+              <span>{tLegal("privacyBadge")}</span>
             </Badge>
-            <span className="text-xs text-muted-foreground font-mono">Effective: 2026-09-01</span>
+            <span className="text-xs text-muted-foreground font-mono">{tLegal("privacyEffective")}</span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-foreground">
-            Privacy Policy
+            {tLegal("privacyTitle")}
           </h1>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            This policy outlines how the XPO MICE Digital Ecosystem collects, processes, verifies,
-            and protects personal information for attendees, organizers, and exhibitors.
+            {tLegal("privacyIntro")}
           </p>
         </div>
       </div>
@@ -69,11 +69,8 @@ export default async function PrivacyPage({ params }: PrivacyPageProps) {
             <Lock className="h-5 w-5" />
           </div>
           <div className="space-y-1 text-xs sm:text-sm text-muted-foreground leading-relaxed">
-            <strong className="text-foreground font-semibold block">Commitment to Data Minimization</strong>
-            XPO operates strictly under data minimization principles. We process only delegate data
-            essential for ticket booking, cryptographic pass verification at physical turnstiles,
-            exhibitor booth allocations, and convention hall crowd management. We do not sell delegate
-            or organizer records to third-party brokers.
+            <strong className="text-foreground font-semibold block">{tLegal("privacyMinTitle")}</strong>
+            {tLegal("privacyMinBody")}
           </div>
         </div>
       </Card>
@@ -83,25 +80,21 @@ export default async function PrivacyPage({ params }: PrivacyPageProps) {
         <section className="space-y-2">
           <h2 className="text-base sm:text-lg font-bold text-foreground flex items-center gap-2">
             <Database className="h-4 w-4 text-primary shrink-0" />
-            <span>1. Information We Collect</span>
+            <span>{tLegal("privacyS1Title")}</span>
           </h2>
-          <p>We collect information provided directly during platform interaction, including:</p>
+          <p>{tLegal("privacyS1Intro")}</p>
           <ul className="list-disc pl-5 space-y-1 pt-1">
             <li>
-              <strong className="text-foreground font-medium">Delegate & Attendee Data:</strong> Full name,
-              work email, job title, company affiliation, dietary preferences, and selected ticket tiers.
+              <strong className="text-foreground font-medium">{tLegal("privacyS1Li1Title")}</strong> {tLegal("privacyS1Li1Body")}
             </li>
             <li>
-              <strong className="text-foreground font-medium">Cryptographic Pass Tokens:</strong> Salted
-              HMAC-SHA256 signature hashes generated for offline gate turnstile verification.
+              <strong className="text-foreground font-medium">{tLegal("privacyS1Li2Title")}</strong> {tLegal("privacyS1Li2Body")}
             </li>
             <li>
-              <strong className="text-foreground font-medium">Exhibitor & Organizer Data:</strong> Company
-              tax identifiers, booth allocation rosters, floor staff names, and billing records.
+              <strong className="text-foreground font-medium">{tLegal("privacyS1Li3Title")}</strong> {tLegal("privacyS1Li3Body")}
             </li>
             <li>
-              <strong className="text-foreground font-medium">Operational Device Telemetry:</strong> Anonymized
-              browser language, country edition selection (`id`, `jp`, `global`), and accessibility settings.
+              <strong className="text-foreground font-medium">{tLegal("privacyS1Li4Title")}</strong> {tLegal("privacyS1Li4Body")}
             </li>
           </ul>
         </section>
@@ -109,21 +102,18 @@ export default async function PrivacyPage({ params }: PrivacyPageProps) {
         <section className="space-y-2">
           <h2 className="text-base sm:text-lg font-bold text-foreground flex items-center gap-2">
             <Server className="h-4 w-4 text-primary shrink-0" />
-            <span>2. Legal Basis and Purpose of Processing</span>
+            <span>{tLegal("privacyS2Title")}</span>
           </h2>
-          <p>We process delegate records pursuant to GDPR Article 6(1) and applicable international laws:</p>
+          <p>{tLegal("privacyS2Intro")}</p>
           <ul className="list-disc pl-5 space-y-1 pt-1">
             <li>
-              <strong className="text-foreground font-medium">Contract Performance:</strong> To issue digital
-              event passes, process registration reservations, and deliver access guidebooks.
+              <strong className="text-foreground font-medium">{tLegal("privacyS2Li1Title")}</strong> {tLegal("privacyS2Li1Body")}
             </li>
             <li>
-              <strong className="text-foreground font-medium">Legitimate Security Interests:</strong> To detect
-              counterfeit QR passes, prevent double-scanning at entry gates, and audit convention hall capacity.
+              <strong className="text-foreground font-medium">{tLegal("privacyS2Li2Title")}</strong> {tLegal("privacyS2Li2Body")}
             </li>
             <li>
-              <strong className="text-foreground font-medium">Compliance with Venue Regulations:</strong> Meeting
-              safety quotas and mandatory fire regulations set by partnered convention complexes.
+              <strong className="text-foreground font-medium">{tLegal("privacyS2Li3Title")}</strong> {tLegal("privacyS2Li3Body")}
             </li>
           </ul>
         </section>
@@ -131,43 +121,33 @@ export default async function PrivacyPage({ params }: PrivacyPageProps) {
         <section className="space-y-2">
           <h2 className="text-base sm:text-lg font-bold text-foreground flex items-center gap-2">
             <Eye className="h-4 w-4 text-primary shrink-0" />
-            <span>3. Offline Storage & Cryptographic Verification</span>
+            <span>{tLegal("privacyS3Title")}</span>
           </h2>
           <p>
-            Digital passes utilize local client-side caching in `localStorage` to ensure attendees can present
-            valid entry barcodes without active cellular or Wi-Fi connectivity inside convention halls. Pass
-            payloads contain tamper-evident cryptographic HMAC signatures that can be verified instantly by door
-            scanner consoles without transmitting personal profile data over public networks.
+            {tLegal("privacyS3Body")}
           </p>
         </section>
 
         <section className="space-y-2">
           <h2 className="text-base sm:text-lg font-bold text-foreground flex items-center gap-2">
             <ShieldCheck className="h-4 w-4 text-primary shrink-0" />
-            <span>4. Third-Party Sharing and Physical Venues</span>
+            <span>{tLegal("privacyS4Title")}</span>
           </h2>
           <p>
-            Personal data is disclosed only to verified convention venues (such as JIExpo Kemayoran, Tokyo Big
-            Sight, ICE BSD City, or Marina Bay Sands) and accredited event organizers strictly for badge printing,
-            physical admittance, and authorized security screening. We enforce strict contractual safeguards with
-            all host venues.
+            {tLegal("privacyS4Body")}
           </p>
         </section>
 
         <section className="space-y-2">
           <h2 className="text-base sm:text-lg font-bold text-foreground flex items-center gap-2">
             <Lock className="h-4 w-4 text-primary shrink-0" />
-            <span>5. Delegate Rights and Data Retention</span>
+            <span>{tLegal("privacyS5Title")}</span>
           </h2>
           <p>
-            Under GDPR, CCPA, and regional data protection regulations, delegates possess the right to access,
-            rectify, export, or request erasure of personal data. Check-in audit logs are retained for 90 days
-            post-event for security dispute resolution, after which registration metadata is irreversibly
-            anonymized or purged.
+            {tLegal("privacyS5Body")}
           </p>
           <p className="pt-2">
-            To submit a data access or deletion request, contact the XPO Platform Governance Office at:{" "}
-            <span className="font-mono text-foreground font-semibold">governance@xpo-mice.org</span>.
+            {tLegal("privacyContact", { email: "governance@xpo-mice.org" })}
           </p>
         </section>
       </div>
@@ -179,13 +159,13 @@ export default async function PrivacyPage({ params }: PrivacyPageProps) {
           className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-2 text-xs font-semibold")}
         >
           <Compass className="h-3.5 w-3.5" />
-          <span>Return to Homepage</span>
+          <span>{tLegal("privacyReturn")}</span>
         </Link>
         <Link
           href={`/${locale}/terms`}
           className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "text-xs font-semibold")}
         >
-          <span>View Terms of Service</span>
+          <span>{tLegal("privacyTermsLink")}</span>
         </Link>
       </div>
     </div>
