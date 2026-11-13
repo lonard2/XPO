@@ -2583,24 +2583,32 @@ export default function NewEventWizardPage() {
                   <span>{tOrg("wizardSummaryTitle") || "Pre-Flight Launch Verification"}</span>
                 </h2>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  Confirm all operational parameters before publishing to the digital ecosystem.
+                  {tOrg("wizardSummaryDesc")}
                 </p>
               </div>
 
               <div className="space-y-3 text-xs">
                 <div className="flex items-start justify-between gap-3 p-2.5 rounded-lg bg-muted/40">
                   <div>
-                    <span className="text-muted-foreground block text-[11px]">Exhibition Title:</span>
+                    <span className="text-muted-foreground block text-[11px]">{tOrg("wizardSummaryTitleLabel")}</span>
                     <span className="font-bold text-foreground text-sm">{title}</span>
                     {isAdmin && (
                       <span className="text-[11px] text-primary font-medium block mt-0.5">
                         {isPlatformCurated
-                          ? `Platform-Curated (${organizerName.trim() || "Official Listing"})`
+                          ? tOrg("wizardSummaryAuthorityCurated", {
+                              organizer: organizerName.trim() || tOrg("wizardSummaryOfficialListing"),
+                            })
                           : authorityMode === "listing"
-                            ? `Simple Listing (${user?.name || "Admin Account"})`
+                            ? tOrg("wizardSummaryAuthorityListing", {
+                                account: user?.name || tOrg("wizardSummaryAdminAccount"),
+                              })
                             : authorityMode === "self"
-                            ? `Admin-Managed (${user?.name || "Admin Account"})`
-                            : `Assigned Organizer: ${targetOrganizerId.trim() || "Unspecified"}`}
+                            ? tOrg("wizardSummaryAuthoritySelf", {
+                                account: user?.name || tOrg("wizardSummaryAdminAccount"),
+                              })
+                            : tOrg("wizardSummaryAuthorityAssigned", {
+                                organizer: targetOrganizerId.trim() || tOrg("wizardSummaryUnspecified"),
+                              })}
                       </span>
                     )}
                   </div>
@@ -2611,33 +2619,35 @@ export default function NewEventWizardPage() {
 
                 <div className="grid grid-cols-2 gap-2 text-xs">
                   <div className="p-2.5 rounded-lg bg-muted/30">
-                    <span className="text-muted-foreground block text-[11px]">Venue & Hall:</span>
+                    <span className="text-muted-foreground block text-[11px]">{tOrg("wizardSummaryVenueLabel")}</span>
                     <span className="font-semibold text-foreground truncate block">
-                      {selectedVenue?.name || "Selected Venue"}
+                      {selectedVenue?.name || tOrg("wizardSummarySelectedVenue")}
                     </span>
                     <span className="text-[11px] text-muted-foreground truncate block">
-                      {selectedHall?.name || "Main Complex"}
+                      {selectedHall?.name || tOrg("wizardSummaryMainComplex")}
                     </span>
                   </div>
                   <div className="p-2.5 rounded-lg bg-muted/30">
-                    <span className="text-muted-foreground block text-[11px]">Operating Dates:</span>
+                    <span className="text-muted-foreground block text-[11px]">{tOrg("wizardSummaryDatesLabel")}</span>
                     <span className="font-semibold text-foreground block">
-                      {startDate} to {endDate}
+                      {startDate} {tOrg("wizardSummaryTo")} {endDate}
                     </span>
                     <span className="text-[11px] text-muted-foreground block">
-                      {eventDurationDays ? `${eventDurationDays} Days Window` : "Single Day"}
+                      {eventDurationDays
+                        ? tOrg("wizardSummaryDaysWindow", { days: eventDurationDays })
+                        : tOrg("wizardSummarySingleDay")}
                     </span>
                   </div>
                 </div>
 
                 <div className="p-2.5 rounded-lg bg-muted/30">
                   <span className="text-muted-foreground block text-[11px] mb-1">
-                    Pass Tiers ({ticketTiers.length} configured):
+                    {tOrg("wizardSummaryPassTiers", { count: ticketTiers.length })}
                   </span>
                   <div className="flex flex-wrap gap-1.5">
                     {ticketTiers.map((t) => (
                       <span key={t.id} className="px-2 py-0.5 rounded-md text-[11px] bg-background border border-border/60 text-foreground font-medium">
-                        {t.name}: {t.price === 0 ? "Free" : `${t.currency} ${t.price.toLocaleString()}`} ({t.capacity} slots)
+                        {t.name}: {t.price === 0 ? tOrg("wizardSummaryFree") : `${t.currency} ${t.price.toLocaleString()}`} ({tOrg("wizardSummarySlots", { capacity: t.capacity })})
                       </span>
                     ))}
                   </div>
@@ -2651,10 +2661,10 @@ export default function NewEventWizardPage() {
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
                 <Sparkles className="h-4 w-4 text-primary" />
-                <span>Live Multi-Device Visual Simulation</span>
+                <span>{tOrg("wizardSummaryPreviewTitle")}</span>
               </h2>
               <Badge variant="outline" size="sm" className="text-xs font-semibold text-primary border-primary/30 bg-primary/5">
-                Real-Time Preview
+                {tOrg("wizardSummaryPreviewBadge")}
               </Badge>
             </div>
             <LivePreviewFrame
