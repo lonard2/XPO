@@ -800,7 +800,9 @@
     "startsInOneDay": "Empieza mañana",
     "sessions": "Sesiones",
     "sessionsNotPublished": "El organizador no ha publicado los horarios de las sesiones.",
-    "gettingThere": "Acceso"
+    "gettingThere": "Acceso",
+    "includeConcluded": "Incluir eventos finalizados",
+    "addLive": "Añadir en curso: {title}"
   },
   "tickets": {
     "bookPass": "Reservar Pase de Entrada",

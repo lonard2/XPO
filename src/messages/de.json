@@ -800,7 +800,9 @@
     "startsInOneDay": "Beginnt morgen",
     "sessions": "Sitzungen",
     "sessionsNotPublished": "Sitzungszeiten wurden vom Veranstalter nicht veröffentlicht.",
-    "gettingThere": "Anreise"
+    "gettingThere": "Anreise",
+    "includeConcluded": "Beendete Veranstaltungen einschließen",
+    "addLive": "Laufende hinzufügen: {title}"
   },
   "tickets": {
     "bookPass": "Einlasspass buchen",

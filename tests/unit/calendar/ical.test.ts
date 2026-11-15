@@ -104,12 +104,43 @@ describe('RFC 5545 iCal Calendar Generator', () => {
 
   it('generates valid RFC 4180 CSV and plain text itineraries', () => {
     const csv = generateCsvSchedule(sampleEvents);
-    expect(csv).toContain('Title,Archetype,Venue,Hall,City,Start Date,End Date,Currency,Lowest Price');
-    expect(csv).toContain('Manufacturing Indonesia 2026,INDUSTRIAL_B2B,JIExpo Kemayoran,Hall A1-A3,Jakarta');
+    expect(csv).toContain('Title,Category,Venue,Hall,City,Start Date,End Date,Currency,Lowest Price');
+    expect(csv).toContain('Manufacturing Indonesia 2026,Industrial B2B & Machinery,JIExpo Kemayoran,Hall A1-A3,Jakarta');
 
     const plainText = generatePlainTextSchedule(sampleEvents);
-    expect(plainText).toContain('XPO MICE Master Schedule (2 confirmed exhibitions)');
+    expect(plainText).toContain('XPO MICE Event Calendar (2 confirmed exhibitions)');
     expect(plainText).toContain('1. Manufacturing Indonesia 2026');
     expect(plainText).toContain('2. Tokyo AI & Robotics Summit 2026');
+  });
+});
+
+
+describe('Calendar export planning', () => {
+  const multiDayEvent: EventSummary = {
+    id: 'multi-day',
+    title: 'Multi Day Expo',
+    slug: 'multi-day-expo',
+    archetype: 'INDUSTRIAL_B2B',
+    startDate: new Date('2026-08-20T09:00:00Z'),
+    endDate: new Date('2026-08-23T18:00:00Z'),
+    venueName: 'JIExpo Kemayoran',
+    venueHallName: 'Hall A1',
+    cityName: 'Jakarta',
+    regionCode: 'id',
+    lowestPrice: 0,
+    currency: 'IDR',
+  };
+
+  it('writes all-day dates and an event URL for multi-day shows', () => {
+    const ical = generateICalCalendar([multiDayEvent], 'XPO Calendar', 'https://xpo.events/en');
+    expect(ical).toContain('DTSTART;VALUE=DATE:20260820');
+    expect(ical).toContain('DTEND;VALUE=DATE:20260824');
+    expect(ical).toContain('URL:https://xpo.events/en/events/multi-day-expo');
+    expect(ical).toContain('Category: Industrial B2B & Machinery');
+  });
+
+  it('uses all-day Google dates for a multi-day show', () => {
+    const url = decodeURIComponent(generateGoogleCalendarUrl(multiDayEvent));
+    expect(url).toContain('dates=20260820/20260824');
   });
 });

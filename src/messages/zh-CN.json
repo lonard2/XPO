@@ -800,7 +800,9 @@
     "startsInOneDay": "明天开始",
     "sessions": "场次",
     "sessionsNotPublished": "主办方尚未发布场次时间。",
-    "gettingThere": "交通"
+    "gettingThere": "交通",
+    "includeConcluded": "包含已结束活动",
+    "addLive": "添加进行中活动：{title}"
   },
   "tickets": {
     "bookPass": "预订入场通行证",

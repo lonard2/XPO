@@ -53,6 +53,8 @@ export interface CalendarInteractiveViewProps {
   region: string;
   initialArchetype?: string;
   initialVenue?: string;
+  /** Server-resolved site origin for calendar and event links. */
+  eventDetailsOrigin?: string;
 }
 
 type CalendarMonthGroup = {
@@ -67,6 +69,7 @@ export function CalendarInteractiveView({
   region,
   initialArchetype = 'all',
   initialVenue = 'all',
+  eventDetailsOrigin = 'https://xpo-mice.com',
 }: CalendarInteractiveViewProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -90,6 +93,7 @@ export function CalendarInteractiveView({
   const [filtersExpanded, setFiltersExpanded] = React.useState(initialArchetype !== 'all');
   const [pastExpanded, setPastExpanded] = React.useState(false);
   const [expandedSessions, setExpandedSessions] = React.useState<Set<string>>(new Set());
+  const [includeConcludedInExport, setIncludeConcludedInExport] = React.useState(false);
   const exportMenuRef = React.useRef<HTMLDivElement>(null);
   const exportTriggerRef = React.useRef<HTMLButtonElement>(null);
 
@@ -98,7 +102,9 @@ export function CalendarInteractiveView({
     if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key)) return;
     e.preventDefault();
     const items = Array.from(
-      exportMenuRef.current?.querySelectorAll('[role="menuitem"]') || []
+      exportMenuRef.current?.querySelectorAll(
+        '[role="menuitem"], [role="menuitemcheckbox"]'
+      ) || []
     ) as HTMLElement[];
     if (items.length === 0) return;
     const active = document.activeElement as HTMLElement | null;
@@ -289,15 +295,30 @@ export function CalendarInteractiveView({
   const timezone = getTimeZoneForRegion(region);
 
   const nextUpcomingEvent = React.useMemo(() => {
-    // Stubs never headline exports or calendar links: no title, no slug.
+    // "Next" means the next event that has not started. An event ending today
+    // is live, not next, and must not headline a planning export.
     const full = filteredEvents.filter((evt): evt is EventSummary => !isScheduleStub(evt));
-    if (full.length === 0) return null;
     const now = new Date().getTime();
     const sorted = [...full].sort(
       (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
     );
-    return sorted.find((e) => new Date(e.endDate).getTime() >= now) || sorted[0];
+    return sorted.find((event) => new Date(event.startDate).getTime() > now) || null;
   }, [filteredEvents]);
+
+  const liveEvent = React.useMemo(() => {
+    const full = filteredEvents.filter((evt): evt is EventSummary => !isScheduleStub(evt));
+    const now = new Date().getTime();
+    return (
+      full.find((event) => {
+        const start = new Date(event.startDate).getTime();
+        const end = new Date(event.endDate).getTime();
+        return start <= now && end >= now;
+      }) || null
+    );
+  }, [filteredEvents]);
+
+  const nextExportEvent = nextUpcomingEvent ?? liveEvent;
+  const exportIsLive = !nextUpcomingEvent && Boolean(liveEvent);
 
   // The page's lead answer: the event a delegate can attend right now, or the
   // next one that opens. Concluded events never qualify.
@@ -328,17 +349,17 @@ export function CalendarInteractiveView({
       )
     : 0;
 
-  // Export handlers: surface failures inline instead of closing silently. The
-  // single-event links need a real site origin for the details URL, never the
-  // region timezone (a past bug produced Asia/Jakarta/events/slug dead links).
-  const eventDetailsOrigin =
-    typeof window !== 'undefined' ? `${window.location.origin}/${locale}` : `https://xpo-mice.com/${locale}`;
-
   // Exports carry full rows only: stubs have no title, slug, or venue to
-  // serialize, and must never leak identity into downloaded files.
+  // serialize, and must never leak identity into downloaded files. Concluded
+  // events are opt-in so the default export is a planning artifact.
   const exportableEvents = React.useMemo(
-    () => filteredEvents.filter((evt): evt is EventSummary => !isScheduleStub(evt)),
-    [filteredEvents]
+    () =>
+      filteredEvents.filter((evt): evt is EventSummary => {
+        if (isScheduleStub(evt)) return false;
+        if (includeConcludedInExport) return true;
+        return !getEventTemporalStatus(evt.startDate, evt.endDate).isPast;
+      }),
+    [filteredEvents, includeConcludedInExport]
   );
 
   const handleExportICal = () => {
@@ -346,7 +367,7 @@ export function CalendarInteractiveView({
     setExportError(null);
     const filename = `xpo-${region}-schedule.ics`;
     const calendarTitle = `XPO MICE ${tReg(`${region}.name`)} Event Calendar`;
-    const ok = downloadICalFile(exportableEvents, filename, calendarTitle);
+    const ok = downloadICalFile(exportableEvents, filename, calendarTitle, eventDetailsOrigin);
     if (!ok) {
       setIsExporting(false);
       setExportError(tCal('exportFailed') || 'Export failed. No events to export or your browser blocked the download.');
@@ -595,7 +616,7 @@ export function CalendarInteractiveView({
                   </span>
                 </Link>
                 <a
-                  href={generateGoogleCalendarUrl(evt, eventDetailsOrigin)}
+                  href={generateGoogleCalendarUrl(evt, eventDetailsOrigin, timezone)}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`${tCal('googleCalendar') || 'Google Calendar'}: ${evt.title}`}
@@ -826,11 +847,11 @@ export function CalendarInteractiveView({
               variant="outline"
               size="sm"
               onClick={handleExportICal}
-              disabled={isExporting || filteredEvents.length === 0}
+              disabled={isExporting || exportableEvents.length === 0}
               className="gap-1.5 text-xs font-semibold cursor-pointer min-h-[44px] sm:min-h-[36px]"
             >
               <Download className="h-3.5 w-3.5 text-primary" />
-              <span>{isExporting ? (tCal('generating') || 'Generating .ics...') : `${tCal('exportICal') || 'Export iCal (.ics)'} · ${filteredEvents.length}`}</span>
+              <span>{isExporting ? (tCal('generating') || 'Generating .ics...') : `${tCal('exportICal') || 'Export iCal (.ics)'} · ${exportableEvents.length}`}</span>
             </Button>
 
             <Button
@@ -840,7 +861,7 @@ export function CalendarInteractiveView({
               disabled={filteredEvents.length === 0}
               className="px-2 text-xs font-semibold cursor-pointer min-h-[44px] sm:min-h-[36px]"
               aria-label={tCal('moreExportFormats') || 'More export formats'}
-              aria-haspopup="true"
+              aria-haspopup="menu"
               aria-expanded={exportOpen}
               aria-controls="calendar-export-menu"
               ref={exportTriggerRef}
@@ -856,15 +877,36 @@ export function CalendarInteractiveView({
                 aria-orientation="vertical"
                 onKeyDown={handleExportMenuKeyDown}
               >
+                <button
+                  type="button"
+                  role="menuitemcheckbox"
+                  aria-checked={includeConcludedInExport}
+                  onClick={() => setIncludeConcludedInExport((prev) => !prev)}
+                  className="w-full flex items-center justify-between gap-2 px-2 py-2 rounded-lg text-left text-xs font-medium text-foreground hover:bg-muted/80 transition-colors cursor-pointer"
+                >
+                  <span>{tCal('includeConcluded') || 'Include concluded events'}</span>
+                  <span
+                    className={cn(
+                      'flex h-4 w-4 items-center justify-center rounded border',
+                      includeConcludedInExport
+                        ? 'border-primary bg-primary text-primary-foreground'
+                        : 'border-border'
+                    )}
+                    aria-hidden="true"
+                  >
+                    {includeConcludedInExport && <Check className="h-3 w-3" />}
+                  </span>
+                </button>
+
                 {/* Group 1: whole filtered set */}
                 <p className="px-2 pt-1 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-                  {tCal('exportBulkGroup') || 'Full filtered set'} ({filteredEvents.length})
+                  {tCal('exportBulkGroup') || 'Full filtered set'} ({exportableEvents.length})
                 </p>
                 {/* Option 1: .ics download */}
                 <button
                   type="button"
                   onClick={handleExportICal}
-                  disabled={isExporting}
+                  disabled={isExporting || exportableEvents.length === 0}
                   role="menuitem"
                   className="w-full flex items-start gap-2.5 p-2 rounded-lg text-left hover:bg-muted/80 transition-colors cursor-pointer group"
                 >
@@ -876,22 +918,22 @@ export function CalendarInteractiveView({
                       {isExporting ? (tCal('generatingICal') || 'Generating iCalendar...') : (tCal('icalFile') || 'iCalendar File (.ics)')}
                     </div>
                     <p className="text-[11px] text-muted-foreground line-clamp-1">
-                      {(tCal('icalApps') || 'Apple Calendar, Outlook, Thunderbird')} · {tCal('eventsCount', { count: filteredEvents.length })}
+                      {(tCal('icalApps') || 'Apple Calendar, Outlook, Thunderbird')} · {tCal('eventsCount', { count: exportableEvents.length })}
                     </p>
                   </div>
                 </button>
 
                 {/* Group 2: one event only */}
-                {nextUpcomingEvent && (
+                {nextExportEvent && (
                   <p className="px-2 pt-1 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
                     {tCal('exportSingleGroup') || 'Single event'}
                   </p>
                 )}
 
                 {/* Option 2: Google Calendar */}
-                {nextUpcomingEvent && (
+                {nextExportEvent && (
                   <a
-                    href={generateGoogleCalendarUrl(nextUpcomingEvent, eventDetailsOrigin)}
+                    href={generateGoogleCalendarUrl(nextExportEvent, eventDetailsOrigin, timezone)}
                     target="_blank"
                     rel="noopener noreferrer"
                     role="menuitem"
@@ -907,16 +949,16 @@ export function CalendarInteractiveView({
                         <ExternalLink className="h-3 w-3 opacity-60" />
                       </div>
                       <p className="text-[11px] text-muted-foreground line-clamp-1">
-                        {tCal('addNext', { title: nextUpcomingEvent.title }) || `Add next: ${nextUpcomingEvent.title}`}
+                        {exportIsLive ? (tCal('addLive', { title: nextExportEvent.title }) || `Add live: ${nextExportEvent.title}`) : (tCal('addNext', { title: nextExportEvent.title }) || `Add next: ${nextExportEvent.title}`)}
                       </p>
                     </div>
                   </a>
                 )}
 
                 {/* Option 3: Outlook 365 Web */}
-                {nextUpcomingEvent && (
+                {nextExportEvent && (
                   <a
-                    href={generateOutlookWebUrl(nextUpcomingEvent, eventDetailsOrigin)}
+                    href={generateOutlookWebUrl(nextExportEvent, eventDetailsOrigin)}
                     target="_blank"
                     rel="noopener noreferrer"
                     role="menuitem"
@@ -932,7 +974,7 @@ export function CalendarInteractiveView({
                         <ExternalLink className="h-3 w-3 opacity-60" />
                       </div>
                       <p className="text-[11px] text-muted-foreground line-clamp-1">
-                        {tCal('addNext', { title: nextUpcomingEvent.title }) || `Add next: ${nextUpcomingEvent.title}`}
+                        {exportIsLive ? (tCal('addLive', { title: nextExportEvent.title }) || `Add live: ${nextExportEvent.title}`) : (tCal('addNext', { title: nextExportEvent.title }) || `Add next: ${nextExportEvent.title}`)}
                       </p>
                     </div>
                   </a>
@@ -942,6 +984,7 @@ export function CalendarInteractiveView({
                 <button
                   type="button"
                   onClick={handleExportCsv}
+                  disabled={exportableEvents.length === 0}
                   role="menuitem"
                   className="w-full flex items-start gap-2.5 p-2 rounded-lg text-left hover:bg-muted/80 transition-colors cursor-pointer group"
                 >
@@ -953,7 +996,7 @@ export function CalendarInteractiveView({
                       {tCal('csvFile') || 'CSV Spreadsheet (.csv)'}
                     </div>
                     <p className="text-[11px] text-muted-foreground line-clamp-1">
-                      {(tCal('csvDesc') || 'RFC 4180 format for Excel and Sheets')} · {tCal('eventsCount', { count: filteredEvents.length })}
+                      {(tCal('csvDesc') || 'RFC 4180 format for Excel and Sheets')} · {tCal('eventsCount', { count: exportableEvents.length })}
                     </p>
                   </div>
                 </button>
@@ -962,6 +1005,7 @@ export function CalendarInteractiveView({
                 <button
                   type="button"
                   onClick={handleCopyPlainText}
+                  disabled={exportableEvents.length === 0}
                   role="menuitem"
                   className="w-full flex items-start gap-2.5 p-2 rounded-lg text-left hover:bg-muted/80 transition-colors cursor-pointer group"
                 >
@@ -977,7 +1021,7 @@ export function CalendarInteractiveView({
                       {copiedText ? (tCal('copiedTitle') || 'Schedule Copied!') : (tCal('copyTitle') || 'Copy Text Summary')}
                     </div>
                     <p className="text-[11px] text-muted-foreground line-clamp-1">
-                      {copiedText ? (tCal('copiedDesc') || 'Ready to paste into chat or docs') : `${tCal('copyDesc') || 'Plain-text agenda'} · ${filteredEvents.length} events`}
+                      {copiedText ? (tCal('copiedDesc') || 'Ready to paste into chat or docs') : `${tCal('copyDesc') || 'Plain-text agenda'} · ${exportableEvents.length} events`}
                     </p>
                   </div>
                 </button>

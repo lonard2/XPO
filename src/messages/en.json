@@ -800,7 +800,9 @@
     "startsInOneDay": "Starts tomorrow",
     "sessions": "Sessions",
     "sessionsNotPublished": "Session times not published by the organizer.",
-    "gettingThere": "Access"
+    "gettingThere": "Access",
+    "includeConcluded": "Include concluded events",
+    "addLive": "Add live: {title}"
   },
   "tickets": {
     "bookPass": "Book Ticket Pass",

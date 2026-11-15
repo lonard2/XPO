@@ -800,7 +800,9 @@
     "startsInOneDay": "Mulai besok",
     "sessions": "Sesi",
     "sessionsNotPublished": "Jadwal sesi belum dipublikasikan oleh penyelenggara.",
-    "gettingThere": "Akses"
+    "gettingThere": "Akses",
+    "includeConcluded": "Sertakan acara yang telah berakhir",
+    "addLive": "Tambahkan yang berlangsung: {title}"
   },
   "tickets": {
     "bookPass": "Pesan Pas Masuk",

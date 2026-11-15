@@ -48,6 +48,9 @@ const mockMessages: Record<string, Record<string, string>> = {
     concluded: 'Concluded',
     liveNow: 'Live now',
     viewRecap: 'View recap',
+    includeConcluded: 'Include concluded events',
+    addNext: 'Add next: {title}',
+    addLive: 'Add live: {title}',
     pastEvents: 'Past events',
     hidePast: 'Hide past events',
     nextUp: 'Next up',
@@ -95,8 +98,8 @@ describe('CalendarInteractiveView Component', () => {
       title: 'Manufacturing Indonesia 2026',
       slug: 'manufacturing-indonesia-2026',
       archetype: 'INDUSTRIAL_B2B',
-      startDate: new Date('2026-08-20T09:00:00Z'),
-      endDate: new Date('2026-08-23T18:00:00Z'),
+      startDate: new Date('2026-12-10T09:00:00Z'),
+      endDate: new Date('2026-12-13T18:00:00Z'),
       venueName: 'JIExpo Kemayoran',
       venueHallName: 'Hall A1',
       cityName: 'Jakarta',
@@ -110,8 +113,8 @@ describe('CalendarInteractiveView Component', () => {
       title: 'Asia AI Summit 2026',
       slug: 'asia-ai-summit-2026',
       archetype: 'TECH_DEV_SUMMIT',
-      startDate: new Date('2026-08-25T09:00:00Z'),
-      endDate: new Date('2026-08-27T18:00:00Z'),
+      startDate: new Date('2026-12-15T09:00:00Z'),
+      endDate: new Date('2026-12-17T18:00:00Z'),
       venueName: 'ICE BSD City',
       venueHallName: 'Nusantara Hall',
       cityName: 'Tangerang',
@@ -195,7 +198,7 @@ describe('CalendarInteractiveView Component', () => {
     expandPastEvents();
     expect(screen.getAllByText('Manufacturing Indonesia 2026').length).toBeGreaterThan(0);
     expect(screen.getAllByText('Asia AI Summit 2026').length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/August 2026/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/December 2026/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/All Venues/i)).toBeInTheDocument();
   });
 
@@ -208,11 +211,11 @@ describe('CalendarInteractiveView Component', () => {
       />
     );
 
-    const jiexpoBtn = screen.getByText('JIExpo Kemayoran');
+    const jiexpoBtn = screen.getByRole('button', { name: /JIExpo Kemayoran/i });
     fireEvent.click(jiexpoBtn);
     expandPastEvents();
 
-    expect(screen.getByText('Manufacturing Indonesia 2026')).toBeInTheDocument();
+    expect(screen.getAllByText('Manufacturing Indonesia 2026').length).toBeGreaterThan(0);
     expect(screen.queryByText('Asia AI Summit 2026')).not.toBeInTheDocument();
   });
 
@@ -233,7 +236,8 @@ describe('CalendarInteractiveView Component', () => {
     expect(downloadSpy).toHaveBeenCalledWith(
       mockEvents,
       'xpo-id-schedule.ics',
-      'XPO MICE Indonesia Event Calendar'
+      'XPO MICE Indonesia Event Calendar',
+      'https://xpo-mice.com'
     );
   });
 
@@ -329,7 +333,7 @@ describe('CalendarInteractiveView Component', () => {
       />
     );
 
-    fireEvent.click(screen.getByText('JIExpo Kemayoran'));
+    fireEvent.click(screen.getByRole('button', { name: /JIExpo Kemayoran/i }));
 
     expect(mockReplace).toHaveBeenCalled();
     const lastUrl = mockReplace.mock.calls[mockReplace.mock.calls.length - 1][0] as string;
@@ -396,7 +400,7 @@ describe('CalendarInteractiveView Component', () => {
       />
     );
 
-    fireEvent.click(screen.getByText('JIExpo Kemayoran'));
+    fireEvent.click(screen.getByRole('button', { name: /JIExpo Kemayoran/i }));
 
     const dismiss = screen.getByRole('button', { name: /remove venue filter/i });
     expect(dismiss.className).toContain('min-h-[44px]');
@@ -538,5 +542,70 @@ describe('CalendarInteractiveView timetable depth', () => {
     const sessionsButton = screen.getByRole('button', { name: /sessions \(1\)/i });
     fireEvent.click(sessionsButton);
     expect(screen.getByText('Opening Keynote')).toBeInTheDocument();
+  });
+});
+
+
+describe('CalendarInteractiveView export scope', () => {
+  it('keeps concluded events out of the export until the delegate opts in', () => {
+    const past = {
+      id: 'past-export',
+      title: 'Past Export Expo',
+      slug: 'past-export',
+      archetype: 'INDUSTRIAL_B2B',
+      startDate: new Date('2026-01-10T09:00:00Z'),
+      endDate: new Date('2026-01-12T18:00:00Z'),
+      venueName: 'JIExpo Kemayoran',
+      venueHallName: 'Hall A1',
+      cityName: 'Jakarta',
+      regionCode: 'id',
+      lowestPrice: 0,
+      currency: 'IDR',
+    } as EventSummary;
+
+    render(
+      <CalendarInteractiveView initialEvents={[past]} locale="en" region="id" />
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: /more export formats/i }));
+    expect(screen.getByText(/full filtered set \(0\)/i)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('menuitemcheckbox', { name: /include concluded events/i }));
+    expect(screen.getByText(/full filtered set \(1\)/i)).toBeInTheDocument();
+  });
+
+  it('adds the next future event, not the one ending today, to a calendar', () => {
+    const live = {
+      id: 'live-event',
+      title: 'Live Expo',
+      slug: 'live-event',
+      archetype: 'SPORTS_OUTDOOR',
+      startDate: new Date('2026-11-14T09:00:00Z'),
+      endDate: new Date('2026-11-16T18:00:00Z'),
+      venueName: 'GBK',
+      venueHallName: 'Hall A',
+      cityName: 'Jakarta',
+      regionCode: 'id',
+      lowestPrice: 0,
+      currency: 'IDR',
+    } as EventSummary;
+    const future = {
+      ...live,
+      id: 'future-event',
+      title: 'Future Expo',
+      slug: 'future-event',
+      startDate: new Date('2026-12-20T09:00:00Z'),
+      endDate: new Date('2026-12-22T18:00:00Z'),
+    } as EventSummary;
+
+    render(
+      <CalendarInteractiveView initialEvents={[live, future]} locale="en" region="id" />
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: /more export formats/i }));
+    const gcal = screen.getByRole('menuitem', { name: /google calendar/i });
+    const href = decodeURIComponent(gcal.getAttribute('href') || '');
+    expect(href).toContain('future-event');
+    expect(href).not.toContain('live-event');
   });
 });

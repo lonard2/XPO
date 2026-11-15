@@ -6,6 +6,7 @@ import { Breadcrumbs, BreadcrumbJsonLd } from "@/components/layout/Breadcrumbs";
 import { db } from '@/lib/db';
 import { scheduleWhere, toScheduleRows, isScheduleStub, type ScheduleStub } from '@/lib/discovery/presentation';
 import { normalizeRegion, regionForLocale, resolveActiveRegion } from '@/lib/i18n/geo';
+import { siteBaseUrl } from '@/lib/seo/site';
 import { FALLBACK_EVENTS } from '@/lib/discovery/fallbackData';
 import { CalendarInteractiveView } from '@/components/discovery/CalendarInteractiveView';
 import { Badge } from '@/components/ui/Badge';
@@ -66,6 +67,7 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
       include: {
         venue: true,
         venueHall: true,
+        ticketTiers: true,
         agendaItems: { orderBy: { startTime: 'asc' } },
       },
       orderBy: { startDate: 'asc' },
@@ -101,8 +103,13 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
     cityName: e.venue?.city || 'Jakarta',
     regionCode: region,
     isFeatured: Boolean(e.isFeatured),
-    lowestPrice: 0,
-    currency: region === 'id' ? 'IDR' : region === 'jp' ? 'JPY' : 'USD',
+    lowestPrice:
+      (e.ticketTiers || []).length > 0
+        ? Math.min(...(e.ticketTiers || []).map((tier: any) => tier.price))
+        : 0,
+    currency:
+      (e.ticketTiers || [])[0]?.currency ||
+      (region === 'id' ? 'IDR' : region === 'jp' ? 'JPY' : 'USD'),
     agendaItems: (e.agendaItems || []).map((item: any) => ({
       id: item.id,
       title: item.title,
@@ -149,6 +156,7 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
           region={region}
           initialArchetype={archetype}
           initialVenue={initialVenue}
+          eventDetailsOrigin={`${siteBaseUrl()}/${locale}`}
         />
       </div>
     </div>

@@ -800,7 +800,9 @@
     "startsInOneDay": "明日開始",
     "sessions": "セッション",
     "sessionsNotPublished": "セッション時間は主催者から公開されていません。",
-    "gettingThere": "アクセス"
+    "gettingThere": "アクセス",
+    "includeConcluded": "終了したイベントを含める",
+    "addLive": "開催中を追加: {title}"
   },
   "tickets": {
     "bookPass": "入場パスを予約",
