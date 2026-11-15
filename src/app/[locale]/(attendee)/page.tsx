@@ -32,7 +32,7 @@ import { resolveEditorialBlurb } from '@/lib/discovery/editorial';
 import { selectRailItems } from '@/lib/news/feed';
 import { ResponsiveRow } from '@/components/discovery/ResponsiveRow';
 import { CrossRegionRail } from '@/components/discovery/CrossRegionRail';
-import { pickRailRegion, chooseRailRegion, railCandidates, rankRailEvents, mergeRows, withoutHeroLead } from '@/lib/homepage/rows';
+import { pickRailRegion, chooseRailRegion, railCandidates, rankRailEvents, mergeRows, withoutHeroSlides } from '@/lib/homepage/rows';
 import { resolveEditorRows } from '@/lib/homepage/editorRows';
 import { type BannerSlide, type DiscoveryEvent, type VenueWithEvents } from '@/types/discovery';
 
@@ -265,13 +265,11 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
   }
   const attendableEvents = filterAttendable(featuredEvents, now);
   const concludedEvents = featuredEvents.filter((event) => !attendableEvents.includes(event));
-  // The hero already leads with the most imminent event; the featured row
-  // shows what remains so the same card does not appear twice in a row.
-  const featuredRowEvents = withoutHeroLead(
-    attendableEvents,
-    bannerSlides[0]?.id,
-    bannerSlides[0]?.slug
-  );
+  // The hero rotates through every attendable event, so the featured row
+  // excludes all of them rather than only the lead slide. When every
+  // attendable event is already in the hero, the row shows a spotlight note
+  // instead of duplicating cards.
+  const featuredRowEvents = withoutHeroSlides(attendableEvents, bannerSlides);
 
   // Cross-region rail: one other region per UTC day, ranked by real demand
   // (confirmed or checked-in bookings) with a featured fallback. The daily
@@ -472,11 +470,24 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
               </Link>
             </div>
           </div>
+        ) : featuredRowEvents.length === 0 ? (
+          <div className="rounded-2xl border border-border/80 bg-muted/20 p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <p className="text-xs sm:text-sm text-muted-foreground text-pretty">
+              {tHome('allEventsInSpotlight') || 'All current events are in the spotlight above.'}
+            </p>
+            <Link
+              href={`/${locale}/events`}
+              className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'min-h-[44px] sm:min-h-[36px] text-xs font-semibold gap-1.5 self-start sm:self-auto')}
+            >
+              <span>{tHome('browseAllRegionsEvents') || tNav('events') || 'Browse All Exhibitions'}</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
         ) : (
           <ResponsiveRow
             className="stagger-children"
             label={tHome('featuredInRegion') || 'Featured events'}
-            singleClassName="max-w-sm"
+            singleClassName="max-w-2xl"
           >
             {featuredRowEvents.map((event, idx) => (
               <EventCard key={event.id} event={event} locale={locale} priority={idx < 3} />
