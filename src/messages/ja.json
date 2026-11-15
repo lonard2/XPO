@@ -797,7 +797,10 @@
     "endsToday": "本日開始",
     "hidePast": "過去のイベントを隠す",
     "pastEvents": "過去のイベント（{count}）",
-    "startsInOneDay": "明日開始"
+    "startsInOneDay": "明日開始",
+    "sessions": "セッション",
+    "sessionsNotPublished": "セッション時間は主催者から公開されていません。",
+    "gettingThere": "アクセス"
   },
   "tickets": {
     "bookPass": "入場パスを予約",

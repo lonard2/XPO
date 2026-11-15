@@ -127,11 +127,24 @@ export interface EventSummary {
   endDate: Date | string;
   venueName?: string;
   venueHallName?: string | null;
+  venueSlug?: string | null;
   cityName?: string;
   regionCode?: string;
   lowestPrice?: number;
   currency?: string;
   isFeatured?: boolean;
+  /** Organizer-published sessions, when the calendar query includes them. */
+  agendaItems?: Array<{
+    id: string;
+    title: string;
+    startTime: Date | string;
+    endTime: Date | string;
+    location: string;
+    track?: string | null;
+    speakerName?: string | null;
+  }>;
+  /** Venue transit notes, when the venue record carries them. */
+  transitInfo?: string | null;
 }
 
 export interface VenueWithEvents {

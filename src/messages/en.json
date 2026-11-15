@@ -797,7 +797,10 @@
     "endsToday": "Starts today",
     "hidePast": "Hide past events",
     "pastEvents": "{count, plural, one {Past event} other {Past events}} ({count})",
-    "startsInOneDay": "Starts tomorrow"
+    "startsInOneDay": "Starts tomorrow",
+    "sessions": "Sessions",
+    "sessionsNotPublished": "Session times not published by the organizer.",
+    "gettingThere": "Access"
   },
   "tickets": {
     "bookPass": "Book Ticket Pass",

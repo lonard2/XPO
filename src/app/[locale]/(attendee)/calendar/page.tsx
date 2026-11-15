@@ -66,6 +66,7 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
       include: {
         venue: true,
         venueHall: true,
+        agendaItems: { orderBy: { startTime: 'asc' } },
       },
       orderBy: { startDate: 'asc' },
     });
@@ -95,11 +96,22 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
     endDate: e.endDate,
     venueName: e.venue?.name || 'Grand Convention Hall',
     venueHallName: e.venueHall?.name || null,
+    venueSlug: e.venue?.slug || null,
+    transitInfo: e.venue?.transitInfo || null,
     cityName: e.venue?.city || 'Jakarta',
     regionCode: region,
     isFeatured: Boolean(e.isFeatured),
     lowestPrice: 0,
     currency: region === 'id' ? 'IDR' : region === 'jp' ? 'JPY' : 'USD',
+    agendaItems: (e.agendaItems || []).map((item: any) => ({
+      id: item.id,
+      title: item.title,
+      startTime: item.startTime,
+      endTime: item.endTime,
+      location: item.location,
+      track: item.track,
+      speakerName: item.speakerName,
+    })),
   }));
 
   const crumbs = [

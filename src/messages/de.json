@@ -797,7 +797,10 @@
     "endsToday": "Beginnt heute",
     "hidePast": "Vergangene Veranstaltungen ausblenden",
     "pastEvents": "Vergangene Veranstaltungen ({count})",
-    "startsInOneDay": "Beginnt morgen"
+    "startsInOneDay": "Beginnt morgen",
+    "sessions": "Sitzungen",
+    "sessionsNotPublished": "Sitzungszeiten wurden vom Veranstalter nicht veröffentlicht.",
+    "gettingThere": "Anreise"
   },
   "tickets": {
     "bookPass": "Einlasspass buchen",

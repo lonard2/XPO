@@ -797,7 +797,10 @@
     "endsToday": "今日开始",
     "hidePast": "隐藏往期活动",
     "pastEvents": "往期活动（{count}）",
-    "startsInOneDay": "明天开始"
+    "startsInOneDay": "明天开始",
+    "sessions": "场次",
+    "sessionsNotPublished": "主办方尚未发布场次时间。",
+    "gettingThere": "交通"
   },
   "tickets": {
     "bookPass": "预订入场通行证",

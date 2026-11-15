@@ -797,7 +797,10 @@
     "endsToday": "Mulai hari ini",
     "hidePast": "Sembunyikan acara lampau",
     "pastEvents": "Acara lampau ({count})",
-    "startsInOneDay": "Mulai besok"
+    "startsInOneDay": "Mulai besok",
+    "sessions": "Sesi",
+    "sessionsNotPublished": "Jadwal sesi belum dipublikasikan oleh penyelenggara.",
+    "gettingThere": "Akses"
   },
   "tickets": {
     "bookPass": "Pesan Pas Masuk",

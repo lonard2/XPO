@@ -20,6 +20,7 @@ import {
   Copy,
   CalendarPlus,
   Mail,
+  Clock,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Badge } from '@/components/ui/Badge';
@@ -27,7 +28,9 @@ import { Button, buttonVariants } from '@/components/ui/Button';
 import { EventCalendarWidget } from '@/components/discovery/EventCalendarWidget';
 import { EventCategoryPills } from '@/components/discovery/EventCategoryPills';
 import {
+  formatDate,
   formatDateRange,
+  formatTime,
   getEventTemporalStatus,
   getTimeZoneForRegion,
 } from '@/lib/i18n/formatters';
@@ -86,6 +89,7 @@ export function CalendarInteractiveView({
   // timetable stays the workspace lead; it opens when a category is active.
   const [filtersExpanded, setFiltersExpanded] = React.useState(initialArchetype !== 'all');
   const [pastExpanded, setPastExpanded] = React.useState(false);
+  const [expandedSessions, setExpandedSessions] = React.useState<Set<string>>(new Set());
   const exportMenuRef = React.useRef<HTMLDivElement>(null);
   const exportTriggerRef = React.useRef<HTMLButtonElement>(null);
 
@@ -213,6 +217,15 @@ export function CalendarInteractiveView({
     const newQuery = params.toString();
     const newUrl = newQuery ? `${pathname}?${newQuery}` : pathname;
     router.replace(newUrl, { scroll: false });
+  };
+
+  const toggleSessions = (id: string) => {
+    setExpandedSessions((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
   };
 
   const handleResetFilters = () => {
@@ -479,11 +492,9 @@ export function CalendarInteractiveView({
                       </Badge>
                     )}
                   </div>
-                  {evt.venueHallName && (
-                    <span className="text-xs font-medium text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
-                      {evt.venueHallName}
-                    </span>
-                  )}
+                  <span className="text-xs font-medium text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
+                    {evt.venueHallName || tEvents('hallDefault') || 'Main Exhibition Halls'}
+                  </span>
                 </div>
 
                 <h4 className="text-sm font-bold text-foreground hover:text-primary transition-colors line-clamp-2">
@@ -506,7 +517,61 @@ export function CalendarInteractiveView({
                     <CalendarIcon className="h-3.5 w-3.5 text-primary shrink-0" />
                     <span>{dateRange}</span>
                   </div>
+                  {evt.transitInfo && (
+                    <div className="flex items-start gap-1.5">
+                      <MapPin className="h-3.5 w-3.5 text-primary/80 shrink-0 mt-0.5" />
+                      <span className="line-clamp-1" title={evt.transitInfo}>
+                        {evt.transitInfo}
+                      </span>
+                    </div>
+                  )}
                 </div>
+
+                {evt.agendaItems && evt.agendaItems.length > 0 ? (
+                  <div className="pt-1">
+                    <button
+                      type="button"
+                      onClick={() => toggleSessions(evt.id)}
+                      aria-expanded={expandedSessions.has(evt.id)}
+                      className="relative z-10 inline-flex items-center gap-1.5 text-xs font-semibold text-primary min-h-[44px] sm:min-h-[32px] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm"
+                    >
+                      <Clock className="h-3.5 w-3.5" />
+                      {tCal('sessions') || 'Sessions'} ({evt.agendaItems.length})
+                      <ChevronDown
+                        className={cn(
+                          'h-3.5 w-3.5 transition-transform duration-200',
+                          expandedSessions.has(evt.id) && 'rotate-180'
+                        )}
+                      />
+                    </button>
+                    {expandedSessions.has(evt.id) && (
+                      <ul className="space-y-2 pt-1">
+                        {evt.agendaItems.map((item) => (
+                          <li
+                            key={item.id}
+                            className="rounded-lg border border-border/60 bg-background/60 p-2"
+                          >
+                            <p className="text-xs font-semibold text-foreground">{item.title}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {formatDate(item.startTime, locale, timezone)} ·{' '}
+                              {formatTime(item.startTime, locale, timezone)}–
+                              {formatTime(item.endTime, locale, timezone)}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              {item.location}
+                              {item.track ? ` · ${item.track}` : ''}
+                            </p>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                ) : !temporal.isPast ? (
+                  <p className="text-xs text-muted-foreground">
+                    {tCal('sessionsNotPublished') ||
+                      'Session times not published by the organizer.'}
+                  </p>
+                ) : null}
               </div>
 
               <div className="pt-2 border-t border-border/60 flex items-center gap-1.5">

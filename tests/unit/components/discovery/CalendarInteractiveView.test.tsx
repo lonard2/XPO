@@ -67,6 +67,10 @@ const mockMessages: Record<string, Record<string, string>> = {
     'id.name': 'Indonesia',
   },
   archetypes: {},
+  events: {
+    hallDefault: 'Main Exhibition Halls',
+    title: 'Events',
+  },
   discovery: {
     allArchetypes: 'All (15)',
   },
@@ -492,5 +496,47 @@ describe('CalendarInteractiveView schedule order', () => {
     expect(screen.getAllByText('Future Expo').length).toBeGreaterThan(0);
     expect(screen.queryByText('Past Expo')).toBeNull();
     expect(screen.getByRole('button', { name: /past events/i })).toBeInTheDocument();
+  });
+});
+
+
+describe('CalendarInteractiveView timetable depth', () => {
+  it('renders published sessions and a hall fallback on the card', () => {
+    const event = {
+      id: 'sessions',
+      title: 'Session Expo',
+      slug: 'session-expo',
+      archetype: 'TECH_DEV_SUMMIT',
+      startDate: new Date('2026-12-10T09:00:00Z'),
+      endDate: new Date('2026-12-12T18:00:00Z'),
+      venueName: 'ICE BSD City',
+      venueHallName: null,
+      cityName: 'Tangerang',
+      regionCode: 'id',
+      lowestPrice: 0,
+      currency: 'IDR',
+      agendaItems: [
+        {
+          id: 'session-1',
+          title: 'Opening Keynote',
+          startTime: new Date('2026-12-10T10:00:00Z'),
+          endTime: new Date('2026-12-10T11:00:00Z'),
+          location: 'Hall A',
+        },
+      ],
+    } as EventSummary;
+
+    render(
+      <CalendarInteractiveView
+        initialEvents={[event]}
+        locale="en"
+        region="id"
+      />
+    );
+
+    expect(screen.getAllByText('Main Exhibition Halls').length).toBeGreaterThan(0);
+    const sessionsButton = screen.getByRole('button', { name: /sessions \(1\)/i });
+    fireEvent.click(sessionsButton);
+    expect(screen.getByText('Opening Keynote')).toBeInTheDocument();
   });
 });
