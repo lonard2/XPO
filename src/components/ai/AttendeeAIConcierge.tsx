@@ -19,6 +19,7 @@ import { useSettings } from "@/components/settings/SettingsProvider";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { useTranslations } from "next-intl";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 interface ChatMessage {
@@ -57,6 +58,10 @@ export function AttendeeAIConcierge({ locale = "en", eventContext }: AttendeeAIC
   }
 
   const { aiConciergeEnabled, isMounted } = useSettings();
+  const pathname = usePathname();
+  // Event detail pages carry a sticky pass drawer at bottom-16 (64px) with a
+  // roughly 72px height. The launcher clears it instead of covering Book Pass.
+  const isEventDetail = /\/events\/[^/]+\/?$/.test(pathname ?? "");
   const [isOpen, setIsOpen] = React.useState(false);
   const [isExpanded, setIsExpanded] = React.useState(false);
   const [inputValue, setInputValue] = React.useState("");
@@ -255,7 +260,10 @@ export function AttendeeAIConcierge({ locale = "en", eventContext }: AttendeeAIC
       {!isOpen && showLauncher && (
         <aside
           aria-label={tAi("conciergeLauncher")}
-          className="fixed bottom-24 right-5 md:bottom-6 md:right-6 z-40 animate-fade-in"
+          className={cn(
+            "fixed right-5 md:bottom-6 md:right-6 z-40 animate-fade-in",
+            isEventDetail ? "bottom-36" : "bottom-24"
+          )}
         >
           <button
             type="button"

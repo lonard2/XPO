@@ -9,6 +9,10 @@ const SHELL_SOURCE = path.resolve(
   __dirname,
   "../../../src/components/themed/EventPageShell.tsx"
 );
+const CONCIERGE_SOURCE = path.resolve(
+  __dirname,
+  "../../../src/components/ai/AttendeeAIConcierge.tsx"
+);
 
 const baseProps = {
   id: "evt-temporal-1",
@@ -188,6 +192,24 @@ describe("Event page temporal state", () => {
     expect(window.location.search).toContain("section=agenda");
 
     window.history.replaceState(null, "", before);
+  });
+
+  it("leaves the mobile action to the sticky drawer", () => {
+    render(
+      <EventPageShell {...baseProps} temporalStatus="UPCOMING">
+        <div>child</div>
+      </EventPageShell>
+    );
+
+    const ctas = screen.getAllByRole("button", { name: "Reserve Passes & Tickets" });
+    expect(ctas.some((cta) => cta.className.includes("md:inline-flex"))).toBe(true);
+    const heroCta = ctas.find((cta) => cta.className.includes("md:inline-flex"))!;
+    expect(heroCta.className).toContain("hidden");
+  });
+
+  it("raises the concierge launcher above the event drawer", () => {
+    const concierge = fs.readFileSync(CONCIERGE_SOURCE, "utf8");
+    expect(concierge).toContain('isEventDetail ? "bottom-36" : "bottom-24"');
   });
 
   it("offsets the sticky section bar below the global header and fades its mobile edge", () => {

@@ -639,7 +639,7 @@ export function EventPageShell({
                 size="lg"
                 variant="archetype"
                 onClick={() => handleOpenCheckout()}
-                className="gap-2 font-semibold shadow-lg text-white cursor-pointer min-h-[44px]"
+                className="hidden md:inline-flex gap-2 font-semibold shadow-lg text-white cursor-pointer min-h-[44px]"
               >
                 <Ticket className="h-4 w-4" aria-hidden="true" />
                 {tEvents("reservePasses") || "Reserve Passes & Tickets"}
