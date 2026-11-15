@@ -45,6 +45,14 @@ export interface EventPerkSummary {
   iconName?: string | null;
 }
 
+export type EventSectionId = "overview" | "agenda" | "floorMap" | "tickets";
+
+const EVENT_SECTION_IDS: EventSectionId[] = ["overview", "agenda", "floorMap", "tickets"];
+
+function isEventSectionId(value: string | null): value is EventSectionId {
+  return value !== null && (EVENT_SECTION_IDS as string[]).includes(value);
+}
+
 export interface EventPageShellProps {
   id: string;
   title: string;
@@ -93,6 +101,8 @@ export interface EventPageShellProps {
   venueTransitInfo?: string | null;
   /** Venue region code used for local transit guidance. */
   regionCode?: string;
+  /** Server-resolved `?section=` value so deep links render the right panel. */
+  initialSection?: EventSectionId | string | null;
 }
 
 export function EventPageShell({
@@ -132,15 +142,44 @@ export function EventPageShell({
   perks = [],
   venueTransitInfo = null,
   regionCode = "ID",
+  initialSection = null,
 }: EventPageShellProps) {
   const [isCopied, setIsCopied] = React.useState(false);
   const [checkoutDrawerOpen, setCheckoutDrawerOpen] = React.useState(false);
   const [preselectedTierId, setPreselectedTierId] = React.useState<string | null>(null);
-  const [activeTab, setActiveTab] = React.useState<"overview" | "agenda" | "floorMap" | "tickets">("overview");
+  const [activeTab, setActiveTab] = React.useState<EventSectionId>(() => {
+    if (isEventSectionId(initialSection) && !(initialSection === "floorMap" && pageSize === "SMALL")) {
+      return initialSection;
+    }
+    return "overview";
+  });
   const [heroFailed, setHeroFailed] = React.useState(false);
   React.useEffect(() => {
     setHeroFailed(false);
   }, [heroImageUrl]);
+
+  // Section state is addressable: `?section=agenda` survives a reload, a share,
+  // and the browser back button. History is updated natively so the App Router
+  // does not re-render the server tree for an in-page switch.
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+    const syncFromUrl = () => {
+      const section = new URLSearchParams(window.location.search).get("section");
+      if (!isEventSectionId(section)) return;
+      setActiveTab(section === "floorMap" && pageSize === "SMALL" ? "overview" : section);
+    };
+    window.addEventListener("popstate", syncFromUrl);
+    return () => window.removeEventListener("popstate", syncFromUrl);
+  }, [pageSize]);
+
+  const setSection = React.useCallback((section: EventSectionId) => {
+    setActiveTab(section);
+    if (typeof window === "undefined") return;
+    const url = new URL(window.location.href);
+    if (url.searchParams.get("section") === section) return;
+    url.searchParams.set("section", section);
+    window.history.pushState({ section }, "", url.toString());
+  }, []);
 
   const tEvents = useTranslations("events");
   const tCommon = useTranslations("common");
@@ -631,19 +670,19 @@ export function EventPageShell({
       </header>
 
       {/* 3. Sub-Navigation Tabs Bar (outside the header: sticky works) */}
-      <div className="border-t border-white/10 bg-black/40 backdrop-blur-md sticky top-0 z-30">
-        <div className="container">
-          <nav className="flex items-center gap-1 sm:gap-2 overflow-x-auto py-2.5 scrollbar-none" aria-label={tEvents("sectionsAria")}>
+      <div className="border-t border-white/10 bg-black/40 backdrop-blur-md sticky top-16 z-30">
+        <div className="container relative">
+          <nav className="flex items-center gap-1 sm:gap-2 overflow-x-auto py-2.5 pr-12 md:pr-0 scrollbar-none" aria-label={tEvents("sectionsAria")}>
             <button
               type="button"
-              onClick={() => setActiveTab("overview")}
+              onClick={() => setSection("overview")}
               className={cn(
                 "flex items-center gap-2 px-3.5 py-2.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[44px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
                 activeTab === "overview"
                   ? "bg-white/20 text-white shadow-xs border border-white/30"
                   : "text-slate-300 hover:text-white hover:bg-white/10"
               )}
-              aria-current={activeTab === "overview" ? "page" : undefined}
+              aria-current={activeTab === "overview" ? "true" : undefined}
             >
               <Layers className="h-4 w-4" />
               <span>{tEvents("overview") || "Overview"}</span>
@@ -651,14 +690,14 @@ export function EventPageShell({
 
             <button
               type="button"
-              onClick={() => setActiveTab("agenda")}
+              onClick={() => setSection("agenda")}
               className={cn(
                 "flex items-center gap-2 px-3.5 py-2.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[44px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
                 activeTab === "agenda"
                   ? "bg-white/20 text-white shadow-xs border border-white/30"
                   : "text-slate-300 hover:text-white hover:bg-white/10"
               )}
-              aria-current={activeTab === "agenda" ? "page" : undefined}
+              aria-current={activeTab === "agenda" ? "true" : undefined}
             >
               <Clock className="h-4 w-4" />
               <span>{tEvents("agenda") || "Agenda & Timetable"}</span>
@@ -673,14 +712,14 @@ export function EventPageShell({
             {pageSize !== "SMALL" && (
             <button
               type="button"
-              onClick={() => setActiveTab("floorMap")}
+              onClick={() => setSection("floorMap")}
               className={cn(
                 "flex items-center gap-2 px-3.5 py-2.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[44px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
                 activeTab === "floorMap"
                   ? "bg-white/20 text-white shadow-xs border border-white/30"
                   : "text-slate-300 hover:text-white hover:bg-white/10"
               )}
-              aria-current={activeTab === "floorMap" ? "page" : undefined}
+              aria-current={activeTab === "floorMap" ? "true" : undefined}
             >
               <MapIcon className="h-4 w-4" />
               <span>{tEvents("floorMap") || "Floor Map & Halls"}</span>
@@ -694,14 +733,14 @@ export function EventPageShell({
 
             <button
               type="button"
-              onClick={() => setActiveTab("tickets")}
+              onClick={() => setSection("tickets")}
               className={cn(
                 "flex items-center gap-2 px-3.5 py-2.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[44px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
                 activeTab === "tickets"
                   ? "bg-white/20 text-white shadow-xs border border-white/30"
                   : "text-slate-300 hover:text-white hover:bg-white/10"
               )}
-              aria-current={activeTab === "tickets" ? "page" : undefined}
+              aria-current={activeTab === "tickets" ? "true" : undefined}
             >
               <Ticket className="h-4 w-4" />
               <span>{tEvents("tickets") || "Ticket Passes"}</span>
@@ -712,6 +751,11 @@ export function EventPageShell({
               )}
             </button>
           </nav>
+          {/* Mobile edge fade: signals that the tab rail scrolls instead of clipping silently. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-black/70 to-transparent md:hidden"
+          />
         </div>
       </div>
 
@@ -781,7 +825,7 @@ export function EventPageShell({
                     {agendaItems.length > 0 && (
                       <Button
                         variant="outline"
-                        onClick={() => setActiveTab("agenda")}
+                        onClick={() => setSection("agenda")}
                         className="gap-2 font-semibold min-h-[44px] cursor-pointer"
                       >
                         <Clock className="h-4 w-4" aria-hidden="true" />
@@ -915,7 +959,7 @@ export function EventPageShell({
                         <Button
                           size="lg"
                           variant="archetype"
-                          onClick={() => setActiveTab("tickets")}
+                          onClick={() => setSection("tickets")}
                           className="font-semibold gap-2 min-h-[44px] cursor-pointer shadow-md"
                         >
                           <Ticket className="h-4 w-4" />
@@ -990,7 +1034,7 @@ export function EventPageShell({
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => setActiveTab("tickets")}
+                      onClick={() => setSection("tickets")}
                       className="text-xs font-semibold gap-1.5 min-h-[44px] cursor-pointer"
                     >
                       <Ticket className="h-3.5 w-3.5" />

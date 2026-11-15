@@ -1,7 +1,14 @@
 import React from "react";
 import { describe, it, expect } from "vitest";
+import * as fs from "fs";
+import * as path from "path";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { EventPageShell } from "@/components/themed/EventPageShell";
+
+const SHELL_SOURCE = path.resolve(
+  __dirname,
+  "../../../src/components/themed/EventPageShell.tsx"
+);
 
 const baseProps = {
   id: "evt-temporal-1",
@@ -145,6 +152,48 @@ describe("Event page temporal state", () => {
     );
 
     expect(screen.queryByText("Attendee perks")).toBeNull();
+  });
+
+  it("renders the section named in the URL", () => {
+    render(
+      <EventPageShell {...baseProps} temporalStatus="LIVE" initialSection="agenda">
+        <div>child</div>
+      </EventPageShell>
+    );
+
+    expect(screen.getByText("Programme not published")).toBeInTheDocument();
+    expect(screen.queryByText("child")).toBeNull();
+  });
+
+  it("falls back to overview when a deep link targets a hidden section", () => {
+    render(
+      <EventPageShell {...baseProps} pageSize="SMALL" initialSection="floorMap">
+        <div>child</div>
+      </EventPageShell>
+    );
+
+    expect(screen.getByText("child")).toBeInTheDocument();
+    expect(screen.queryByText(/Floor Map/)).toBeNull();
+  });
+
+  it("writes the active section into the URL", () => {
+    const before = window.location.href;
+    render(
+      <EventPageShell {...baseProps} temporalStatus="UPCOMING">
+        <div>child</div>
+      </EventPageShell>
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /Agenda & Timetable/ }));
+    expect(window.location.search).toContain("section=agenda");
+
+    window.history.replaceState(null, "", before);
+  });
+
+  it("offsets the sticky section bar below the global header and fades its mobile edge", () => {
+    const shell = fs.readFileSync(SHELL_SOURCE, "utf8");
+    expect(shell).toContain("sticky top-16 z-30");
+    expect(shell).toContain("pointer-events-none absolute inset-y-0 right-0 w-12");
   });
 
   it("describes a concluded event without promising future publication", () => {

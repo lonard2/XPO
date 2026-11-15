@@ -48,6 +48,7 @@ interface EventPageProps {
     locale: string;
     slug: string;
   }>;
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 // Map every archetype 1-to-1 to its dedicated specialized view
@@ -158,8 +159,9 @@ export async function generateStaticParams() {
   ];
 }
 
-export default async function EventDetailPage({ params }: EventPageProps) {
+export default async function EventDetailPage({ params, searchParams }: EventPageProps) {
   const { locale, slug } = await params;
+  const { section } = searchParams ? await searchParams : {};
   setRequestLocale(locale);
 
   let event = null;
@@ -341,6 +343,7 @@ export default async function EventDetailPage({ params }: EventPageProps) {
       perks={event.perks || []}
       venueTransitInfo={event.venue.transitInfo}
       regionCode={eventRegionCode}
+      initialSection={typeof section === "string" ? section : null}
     >
       <ArchetypeView event={event} locale={locale} pageSize={resolvedPageSize} />
       <EventOrganizerSection event={event} locale={locale} />
