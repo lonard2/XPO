@@ -33,6 +33,7 @@ import {
   formatDateRange,
   formatTime,
   getEventTemporalStatus,
+  getTimeZoneAbbreviation,
   getTimeZoneForRegion,
 } from '@/lib/i18n/formatters';
 import { getArchetypeTokens, getReadableArchetypeLabel, type MiceArchetype } from '@/lib/theming';
@@ -655,7 +656,7 @@ export function CalendarInteractiveView({
   );
 
   return (
-    <div className="space-y-8">
+    <div className="flex flex-col gap-8">
       {/* 1. Interactive Calendar Matrix & Day Timetable Widget (Workspace Lead) */}
       <EventCalendarWidget
         events={filteredEvents}
@@ -663,13 +664,14 @@ export function CalendarInteractiveView({
         regionCode={region}
         isCalendarPage={true}
         onJumpToDate={handleWidgetDateSelect}
+        className="order-2 lg:order-1"
       />
 
       {/* 2. Next up: the present-tense answer before the archive */}
       {nextAttendableEvent && (
         <section
           aria-labelledby="calendar-next-up"
-          className="rounded-2xl border border-primary/20 bg-primary/5 p-4 sm:p-5"
+          className="order-1 lg:order-2 rounded-2xl border border-primary/20 bg-primary/5 p-4 sm:p-5"
         >
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div className="space-y-1.5 min-w-0">
@@ -734,7 +736,7 @@ export function CalendarInteractiveView({
       )}
 
       {/* 3. Taxonomy & Filter Controls */}
-      <div className="space-y-4 pt-2">
+      <div className="order-3 space-y-4 pt-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <h2 className="text-sm sm:text-base font-bold text-foreground">
@@ -767,6 +769,7 @@ export function CalendarInteractiveView({
             locale={locale}
             activeCategoryId={selectedArchetype}
             onSelectCategory={handleSelectCategory}
+            showHeader={false}
           />
         )}
 
@@ -829,8 +832,8 @@ export function CalendarInteractiveView({
         )}
       </div>
 
-      {/* 3. Chronological Schedule Chunked by Month Milestones */}
-      <div className="space-y-6 pt-6 border-t border-border/80">
+      {/* 4. Chronological Schedule Chunked by Month Milestones */}
+      <div className="order-4 space-y-6 pt-6 border-t border-border/80">
         {/* Section Header & Export Control */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
@@ -847,7 +850,7 @@ export function CalendarInteractiveView({
                   `${filteredEvents.length} confirmed MICE trade exhibitions & keynotes in ${tReg(`${region}.name`)}.`}
             </p>
             <p className="text-[11px] text-muted-foreground">
-              {tCal('exportTimezoneNote') || 'All dates shown in'} {timezone}
+              {tCal('exportTimezoneNote') || 'All dates shown in'} {getTimeZoneAbbreviation(timezone)}
             </p>
           </div>
 
@@ -1100,7 +1103,7 @@ export function CalendarInteractiveView({
           </div>
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-background to-transparent flex items-center justify-end pr-1 sm:hidden"
+            className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-background to-transparent flex items-center justify-end pr-1"
           >
             <ChevronRight className="h-4 w-4 text-muted-foreground" />
           </div>

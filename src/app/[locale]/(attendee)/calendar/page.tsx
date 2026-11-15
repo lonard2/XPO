@@ -64,6 +64,7 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
   const tCal = await getTranslations({ locale, namespace: 'calendar' });
   const tCom = await getTranslations({ locale, namespace: 'common' });
   const tReg = await getTranslations({ locale, namespace: 'regions' });
+  const tDisc = await getTranslations({ locale, namespace: 'discovery' });
 
   const headerList = await headers();
   const cookieStore = await cookies();
@@ -162,9 +163,9 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
         {/* Breadcrumb & Navigation */}
         <div className="flex items-center justify-between gap-4">
           <Breadcrumbs items={crumbs} />
-          <Badge variant="outline" className="text-xs font-semibold gap-1.5 uppercase px-2.5 py-1">
+          <Badge variant="outline" className="hidden sm:inline-flex text-xs font-semibold gap-1.5 uppercase px-2.5 py-1">
             <CalendarIcon className="h-3.5 w-3.5 text-primary" />
-            <span>{tReg(`${region}.name`)} · {tCal('title') || 'Event Calendar'}</span>
+            <span>{tDisc('editionContext', { region: tReg(`${region}.name`) })}</span>
           </Badge>
         </div>
         <BreadcrumbJsonLd items={crumbs} />

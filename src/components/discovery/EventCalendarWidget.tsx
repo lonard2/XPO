@@ -359,7 +359,7 @@ export function EventCalendarWidget({
         </div>
 
         {/* Right: Events on Selected Date (7 cols) */}
-        <div className="lg:col-span-7 flex flex-col justify-between space-y-3">
+        <div className="lg:col-span-7 flex flex-col justify-start space-y-3">
           <div className="flex items-center justify-between border-b border-border/60 pb-2">
             <span className="text-xs font-bold text-foreground">
               {tCal('eventsOnDate') || 'Schedule for'} {selectedDateFormatted}

@@ -136,6 +136,8 @@ export interface EventCategoryPillsProps {
   activeCategoryId?: string;
   onSelectCategory?: (categoryId: string) => void;
   className?: string;
+  /** Hide the standalone section header when embedded in another surface. */
+  showHeader?: boolean;
 }
 
 export function EventCategoryPills({
@@ -143,6 +145,7 @@ export function EventCategoryPills({
   activeCategoryId,
   onSelectCategory,
   className,
+  showHeader = true,
 }: EventCategoryPillsProps) {
   const tArch = useTranslations('archetypes');
   const tDisc = useTranslations('discovery');
@@ -278,6 +281,7 @@ export function EventCategoryPills({
   return (
     <div className={cn('w-full space-y-4 sm:space-y-6', className)}>
       {/* Section Header */}
+      {showHeader && (
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-border/80 pb-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-primary uppercase tracking-wider mb-1">
@@ -300,6 +304,7 @@ export function EventCategoryPills({
           <ArrowRight className="h-3.5 w-3.5" />
         </Link>
       </div>
+      )}
 
       {/* Segmented Cluster Tabs (Spacious, Touch-Friendly Thumb Zone on Mobile and Tablet) */}
       <div
