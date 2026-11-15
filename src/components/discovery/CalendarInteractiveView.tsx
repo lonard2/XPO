@@ -1049,12 +1049,12 @@ export function CalendarInteractiveView({
               className={cn(
                 'min-h-[44px] sm:min-h-[36px] px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all whitespace-nowrap cursor-pointer flex items-center gap-1.5',
                 selectedVenue === 'all'
-                  ? 'border-primary bg-primary text-primary-foreground shadow-xs'
+                  ? 'border-primary bg-primary text-white dark:text-slate-950 shadow-xs'
                   : 'border-border/80 bg-background text-muted-foreground hover:bg-muted hover:text-foreground'
               )}
             >
               <span>{tCal('allVenues') || 'All Venues'}</span>
-              <span className="opacity-80 text-xs font-mono">({archetypeFilteredEvents.length})</span>
+              <span className="text-xs font-mono">({archetypeFilteredEvents.length})</span>
             </button>
 
             {availableVenues.map((venueName) => {
@@ -1069,12 +1069,12 @@ export function CalendarInteractiveView({
                   className={cn(
                     'min-h-[44px] sm:min-h-[36px] px-3 py-1.5 rounded-lg text-xs font-medium border transition-all whitespace-nowrap cursor-pointer flex items-center gap-1.5',
                     isSelected
-                      ? 'border-primary bg-primary text-primary-foreground font-semibold shadow-xs'
+                      ? 'border-primary bg-primary text-white dark:text-slate-950 font-semibold shadow-xs'
                       : 'border-border/80 bg-background text-muted-foreground hover:bg-muted hover:text-foreground'
                   )}
                 >
                   <span>{venueName}</span>
-                  <span className="opacity-80 text-xs font-mono">({count})</span>
+                  <span className="text-xs font-mono">({count})</span>
                 </button>
               );
             })}

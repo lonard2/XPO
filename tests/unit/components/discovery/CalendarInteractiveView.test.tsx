@@ -609,3 +609,77 @@ describe('CalendarInteractiveView export scope', () => {
     expect(href).not.toContain('live-event');
   });
 });
+
+
+describe('CalendarInteractiveView export origin and dark pill', () => {
+  it('uses the server-provided origin for export links', () => {
+    render(
+      <CalendarInteractiveView
+        initialEvents={[
+          {
+            id: 'origin-event',
+            title: 'Origin Expo',
+            slug: 'origin-expo',
+            archetype: 'TECH_DEV_SUMMIT',
+            startDate: new Date('2026-12-20T09:00:00Z'),
+            endDate: new Date('2026-12-22T18:00:00Z'),
+            venueName: 'ICE BSD City',
+            venueHallName: 'Hall A',
+            cityName: 'Tangerang',
+            regionCode: 'id',
+            lowestPrice: 0,
+            currency: 'IDR',
+          } as EventSummary,
+        ]}
+        locale="en"
+        region="id"
+        eventDetailsOrigin="https://xpo.events/en"
+      />
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: /more export formats/i }));
+    const gcal = screen.getByRole('menuitem', { name: /google calendar/i });
+    const href = decodeURIComponent(gcal.getAttribute('href') || '');
+    expect(href).toContain('https://xpo.events/en/events/origin-expo');
+  });
+
+  it('uses a dark-mode-safe foreground on the active venue pill', () => {
+    const events = [
+      {
+        id: 'pill-1',
+        title: 'Pill Expo One',
+        slug: 'pill-expo-one',
+        archetype: 'INDUSTRIAL_B2B',
+        startDate: new Date('2026-12-10T09:00:00Z'),
+        endDate: new Date('2026-12-12T18:00:00Z'),
+        venueName: 'JIExpo Kemayoran',
+        venueHallName: 'Hall A1',
+        cityName: 'Jakarta',
+        regionCode: 'id',
+        lowestPrice: 0,
+        currency: 'IDR',
+      },
+      {
+        id: 'pill-2',
+        title: 'Pill Expo Two',
+        slug: 'pill-expo-two',
+        archetype: 'TECH_DEV_SUMMIT',
+        startDate: new Date('2026-12-15T09:00:00Z'),
+        endDate: new Date('2026-12-17T18:00:00Z'),
+        venueName: 'ICE BSD City',
+        venueHallName: 'Hall B',
+        cityName: 'Tangerang',
+        regionCode: 'id',
+        lowestPrice: 0,
+        currency: 'IDR',
+      },
+    ] as EventSummary[];
+
+    render(
+      <CalendarInteractiveView initialEvents={events} locale="en" region="id" />
+    );
+
+    const allVenues = screen.getByRole('button', { name: /all venues/i });
+    expect(allVenues.className).toContain('dark:text-slate-950');
+  });
+});
