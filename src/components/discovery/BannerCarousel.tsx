@@ -463,7 +463,7 @@ export function BannerCarousel({
                     'hidden sm:inline-flex bg-white/10 hover:bg-white/20 text-white border-white/30 backdrop-blur-md cursor-pointer'
                   )}
                 >
-                  <span>{tHome('viewFullSchedule') || 'View Full Schedule'}</span>
+                  <span>{tHome('browseAllRegionsEvents') || 'Browse exhibitions'}</span>
                 </Link>
               </>
             )}

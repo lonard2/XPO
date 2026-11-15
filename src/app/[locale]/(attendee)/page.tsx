@@ -62,6 +62,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
   const tReg = await getTranslations({ locale, namespace: 'regions' });
   const tNav = await getTranslations({ locale, namespace: 'nav' });
   const tHero = await getTranslations({ locale, namespace: 'hero' });
+  const tVen = await getTranslations({ locale, namespace: 'venues' });
 
   // Filter fallback data specifically for the active region
   const regionFallbackVenues = FALLBACK_VENUES.filter((v) => {
@@ -435,7 +436,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
             href={`/${locale}/events`}
             className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'self-start sm:self-auto min-h-[44px] sm:min-h-[36px] gap-1.5 text-xs font-semibold')}
           >
-            <span>{tHome('viewFullSchedule') || 'View Full Schedule'}</span>
+            <span>{tHome('browseAllRegionsEvents') || 'Browse exhibitions'}</span>
             <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
@@ -466,7 +467,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
                 className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'min-h-[44px] sm:min-h-[36px] text-xs font-semibold gap-1.5')}
               >
                 <Building2 className="h-3.5 w-3.5" />
-                <span>{tNav('venues') || 'Venue Directory'}</span>
+                <span>{tVen('viewAllVenues') || 'View all venues'}</span>
               </Link>
             </div>
           </div>
@@ -635,7 +636,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
                 href={`/${locale}/venues`}
                 className={cn(buttonVariants({ variant: 'primary', size: 'sm' }), 'min-h-[44px] sm:min-h-[36px] gap-2 font-semibold')}
               >
-                <span>{tHome('attendeeCta') || 'Explore Venues & Halls'}</span>
+                <span>{tVen('viewAllVenues') || 'View all venues'}</span>
                 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>
@@ -710,7 +711,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
             href={`/${locale}/events`}
             className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'min-h-[44px] sm:min-h-[36px] whitespace-nowrap gap-2 text-xs')}
           >
-            <span>{tHome('conciergeBannerBtn') || 'Browse upcoming passes'}</span>
+            <span>{tHome('browseAllRegionsEvents') || 'Browse exhibitions'}</span>
             <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
