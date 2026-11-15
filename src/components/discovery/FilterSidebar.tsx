@@ -275,7 +275,7 @@ export function FilterSidebar({
                 >
                   {city}
                   {count !== undefined && (
-                    <span className="ml-1 text-[11px] font-mono opacity-70">({count})</span>
+                    <span className="ml-1 text-[11px] font-mono">({count})</span>
                   )}
                 </button>
               );
@@ -405,7 +405,7 @@ export function FilterSidebar({
                                   : item.displayName}
                               </span>
                               {subtitle && (
-                                <span className="block truncate text-[11px] font-normal opacity-80">
+                                <span className="block truncate text-[11px] font-normal">
                                   {subtitle}
                                 </span>
                               )}
@@ -453,7 +453,7 @@ export function FilterSidebar({
               >
                 {fmt.label}
                 {count !== undefined && (
-                  <span className="ml-1 text-[11px] font-mono opacity-70">({count})</span>
+                  <span className="ml-1 text-[11px] font-mono">({count})</span>
                 )}
               </button>
             );
