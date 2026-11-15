@@ -165,7 +165,10 @@ export function EventPageShell({
     if (typeof window === "undefined") return;
     const syncFromUrl = () => {
       const section = new URLSearchParams(window.location.search).get("section");
-      if (!isEventSectionId(section)) return;
+      if (!isEventSectionId(section)) {
+        setActiveTab("overview");
+        return;
+      }
       setActiveTab(section === "floorMap" && pageSize === "SMALL" ? "overview" : section);
     };
     window.addEventListener("popstate", syncFromUrl);
@@ -581,9 +584,9 @@ export function EventPageShell({
 
             <div className="flex items-center gap-3 bg-white/5 rounded-lg p-3 border border-white/10">
               <MapPin className="h-5 w-5 text-[var(--archetype-accent)] shrink-0" aria-hidden="true" />
-              <div>
+              <div className="min-w-0 flex-1">
                 <p className="text-xs uppercase tracking-wider text-slate-400 font-semibold">{tCommon("venue") || "Venue & Location"}</p>
-                <p className="font-semibold text-white truncate max-w-[180px]">
+                <p className="font-semibold text-white truncate">
                   {venue.name}, {venue.city}
                 </p>
               </div>
@@ -591,9 +594,9 @@ export function EventPageShell({
 
             <div className="flex items-center gap-3 bg-white/5 rounded-lg p-3 border border-white/10">
               <Building2 className="h-5 w-5 text-[var(--archetype-accent)] shrink-0" aria-hidden="true" />
-              <div>
+              <div className="min-w-0 flex-1">
                 <p className="text-xs uppercase tracking-wider text-slate-400 font-semibold">{tEvents("hallOrWing") || "Hall / Wing"}</p>
-                <p className="font-semibold text-white truncate max-w-[180px]">
+                <p className="font-semibold text-white truncate">
                   {venue.hallName || tEvents("hallDefault") || "Main Exhibition Halls"}
                 </p>
               </div>
@@ -801,7 +804,9 @@ export function EventPageShell({
                       )}
                       <span className="inline-flex items-center gap-1.5">
                         <MapPin className="h-4 w-4 shrink-0" aria-hidden="true" />
-                        {venue.hallName || tEvents("hallDefault")}, {venue.name}
+                        {format === "VIRTUAL"
+                          ? tEvents("formatVirtual") || "Virtual"
+                          : `${venue.hallName || tEvents("hallDefault")}, ${venue.name}`}
                       </span>
                       <span className="inline-flex items-center gap-1.5">
                         <Ticket className="h-4 w-4 shrink-0" aria-hidden="true" />
@@ -889,6 +894,7 @@ export function EventPageShell({
             )}
 
             {/* Exact hall and transit path: the page's stated differentiator. */}
+            {format !== "VIRTUAL" && (
             <section id="venue-transit" aria-labelledby="venue-transit-heading" className="space-y-4 scroll-mt-24">
               <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
                 <div className="space-y-1">
@@ -918,6 +924,7 @@ export function EventPageShell({
                 regionCode={regionCode}
               />
             </section>
+            )}
 
             {children}
 

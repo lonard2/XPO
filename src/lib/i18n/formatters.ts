@@ -413,12 +413,18 @@ export function getEventDayProgress(
 
   const dayKey = (date: Date): string => {
     try {
-      return new Intl.DateTimeFormat('en-CA', {
+      const parts = new Intl.DateTimeFormat('en-CA', {
         timeZone,
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
-      }).format(date);
+      }).formatToParts(date);
+      const value = (type: string) => parts.find((part) => part.type === type)?.value;
+      const year = value('year');
+      const month = value('month');
+      const day = value('day');
+      if (year && month && day) return `${year}-${month}-${day}`;
+      return date.toISOString().slice(0, 10);
     } catch {
       return date.toISOString().slice(0, 10);
     }

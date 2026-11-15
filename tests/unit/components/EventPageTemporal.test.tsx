@@ -180,6 +180,23 @@ describe("Event page temporal state", () => {
     expect(screen.queryByText(/Floor Map/)).toBeNull();
   });
 
+  it("returns to overview when back reaches a URL without a section", () => {
+    const before = window.location.href;
+    window.history.replaceState(null, "", "/en/events/test?section=agenda");
+    render(
+      <EventPageShell {...baseProps} temporalStatus="LIVE" initialSection="agenda">
+        <div>child</div>
+      </EventPageShell>
+    );
+
+    window.history.replaceState(null, "", "/en/events/test");
+    fireEvent.popState(window);
+
+    expect(screen.getByText("child")).toBeInTheDocument();
+
+    window.history.replaceState(null, "", before);
+  });
+
   it("writes the active section into the URL", () => {
     const before = window.location.href;
     render(
