@@ -741,7 +741,7 @@
     "guideTitle": "Guía del Calendario de Eventos",
     "guideSubtitle": "Seleccione una fecha para ver las exposiciones activas y ponencias magistrales.",
     "fullTimetable": "Horario Completo Multi-Pista",
-    "monthView": "Vista Mensual",
+    "monthView": "Agenda de eventos",
     "exportICal": "Exportar a iCal",
     "exportGoogle": "Añadir a Google Calendar",
     "today": "Hoy",
@@ -802,7 +802,8 @@
     "sessionsNotPublished": "El organizador no ha publicado los horarios de las sesiones.",
     "gettingThere": "Acceso",
     "includeConcluded": "Incluir eventos finalizados",
-    "addLive": "Añadir en curso: {title}"
+    "addLive": "Añadir en curso: {title}",
+    "calendarGridAria": "Fechas del calendario para {month}"
   },
   "tickets": {
     "bookPass": "Reservar Pase de Entrada",

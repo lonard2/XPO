@@ -741,7 +741,7 @@
     "guideTitle": "Veranstaltungskalender-Leitfaden",
     "guideSubtitle": "Wählen Sie ein Datum, um laufende Messen und Keynotes anzuzeigen.",
     "fullTimetable": "Vollständiger Multi-Track-Zeitplan",
-    "monthView": "Monatsübersicht",
+    "monthView": "Veranstaltungsplan",
     "exportICal": "Als iCal exportieren",
     "exportGoogle": "Zu Google Kalender hinzufügen",
     "today": "Heute",
@@ -802,7 +802,8 @@
     "sessionsNotPublished": "Sitzungszeiten wurden vom Veranstalter nicht veröffentlicht.",
     "gettingThere": "Anreise",
     "includeConcluded": "Beendete Veranstaltungen einschließen",
-    "addLive": "Laufende hinzufügen: {title}"
+    "addLive": "Laufende hinzufügen: {title}",
+    "calendarGridAria": "Kalenderdaten für {month}"
   },
   "tickets": {
     "bookPass": "Einlasspass buchen",

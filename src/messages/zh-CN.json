@@ -741,7 +741,7 @@
     "guideTitle": "活动日历指南",
     "guideSubtitle": "选择日期以预览正在进行的展会和主旨演讲。",
     "fullTimetable": "多轨道完整时间表",
-    "monthView": "月度日程",
+    "monthView": "活动日程",
     "exportICal": "导出为 iCal",
     "exportGoogle": "添加到谷歌日历",
     "today": "今天",
@@ -802,7 +802,8 @@
     "sessionsNotPublished": "主办方尚未发布场次时间。",
     "gettingThere": "交通",
     "includeConcluded": "包含已结束活动",
-    "addLive": "添加进行中活动：{title}"
+    "addLive": "添加进行中活动：{title}",
+    "calendarGridAria": "{month}日历日期"
   },
   "tickets": {
     "bookPass": "预订入场通行证",

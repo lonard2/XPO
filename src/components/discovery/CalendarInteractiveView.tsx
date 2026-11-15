@@ -15,6 +15,7 @@ import {
   RotateCcw,
   Check,
   ChevronDown,
+  ChevronRight,
   ExternalLink,
   FileSpreadsheet,
   Copy,
@@ -94,6 +95,7 @@ export function CalendarInteractiveView({
   const [pastExpanded, setPastExpanded] = React.useState(false);
   const [expandedSessions, setExpandedSessions] = React.useState<Set<string>>(new Set());
   const [includeConcludedInExport, setIncludeConcludedInExport] = React.useState(false);
+  const [exportMenuUp, setExportMenuUp] = React.useState(false);
   const exportMenuRef = React.useRef<HTMLDivElement>(null);
   const exportTriggerRef = React.useRef<HTMLButtonElement>(null);
 
@@ -362,6 +364,12 @@ export function CalendarInteractiveView({
     [filteredEvents, includeConcludedInExport]
   );
 
+  const toggleExportMenu = () => {
+    const rect = exportTriggerRef.current?.getBoundingClientRect();
+    setExportMenuUp(Boolean(rect && rect.bottom > window.innerHeight * 0.6));
+    setExportOpen((prev) => !prev);
+  };
+
   const handleExportICal = () => {
     setIsExporting(true);
     setExportError(null);
@@ -427,7 +435,7 @@ export function CalendarInteractiveView({
       className="space-y-4 scroll-mt-24"
     >
       {/* Sticky Milestone Header */}
-      <div className="sticky top-14 z-10 bg-background/95 backdrop-blur-sm py-2 border-b border-border/80 flex items-center justify-between">
+      <div className="sticky top-16 z-10 bg-background/95 backdrop-blur-sm py-2 border-b border-border/80 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="h-2 w-2 rounded-full bg-primary" />
           <h3 className="text-sm sm:text-base font-bold text-foreground capitalize">
@@ -435,7 +443,9 @@ export function CalendarInteractiveView({
           </h3>
         </div>
         <Badge variant="outline" className="text-xs font-semibold">
-          {monthGroup.events.length} {tEvents('title')?.split('&')?.[0]?.trim() || 'Events'}
+          {monthGroup.events.length === 1
+            ? tCal('eventsCountOne') || '1 event'
+            : tCal('eventsCount', { count: monthGroup.events.length })}
         </Badge>
       </div>
 
@@ -621,7 +631,7 @@ export function CalendarInteractiveView({
                   rel="noopener noreferrer"
                   aria-label={`${tCal('googleCalendar') || 'Google Calendar'}: ${evt.title}`}
                   title={tCal('googleCalendar') || 'Google Calendar'}
-                  className="relative z-10 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-border text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                  className="relative z-10 inline-flex h-11 w-11 min-h-[44px] min-w-[44px] sm:h-9 sm:w-9 sm:min-h-[36px] sm:min-w-[36px] shrink-0 items-center justify-center rounded-md border border-border text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
                 >
                   <CalendarPlus className="h-4 w-4" />
                 </a>
@@ -631,7 +641,7 @@ export function CalendarInteractiveView({
                   rel="noopener noreferrer"
                   aria-label={`${tCal('outlookWeb') || 'Outlook 365 Web'}: ${evt.title}`}
                   title={tCal('outlookWeb') || 'Outlook 365 Web'}
-                  className="relative z-10 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-border text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                  className="relative z-10 inline-flex h-11 w-11 min-h-[44px] min-w-[44px] sm:h-9 sm:w-9 sm:min-h-[36px] sm:min-w-[36px] shrink-0 items-center justify-center rounded-md border border-border text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
                 >
                   <Mail className="h-4 w-4" />
                 </a>
@@ -652,7 +662,7 @@ export function CalendarInteractiveView({
         locale={locale}
         regionCode={region}
         isCalendarPage={true}
-        onSelectDate={handleWidgetDateSelect}
+        onJumpToDate={handleWidgetDateSelect}
       />
 
       {/* 2. Next up: the present-tense answer before the archive */}
@@ -857,9 +867,10 @@ export function CalendarInteractiveView({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setExportOpen(!exportOpen)}
+              id="calendar-export-trigger"
+              onClick={toggleExportMenu}
               disabled={filteredEvents.length === 0}
-              className="px-2 text-xs font-semibold cursor-pointer min-h-[44px] sm:min-h-[36px]"
+              className="px-2 text-xs font-semibold cursor-pointer min-h-[44px] min-w-[44px] sm:min-h-[36px] sm:min-w-[36px]"
               aria-label={tCal('moreExportFormats') || 'More export formats'}
               aria-haspopup="menu"
               aria-expanded={exportOpen}
@@ -872,8 +883,12 @@ export function CalendarInteractiveView({
             {exportOpen && (
               <div
                 id="calendar-export-menu"
-                className="absolute right-0 top-full mt-2 w-72 sm:w-80 rounded-xl border border-border/80 bg-popover/95 backdrop-blur-md p-1.5 shadow-lg z-30 space-y-1 animate-in fade-in-50 zoom-in-95"
+                className={cn(
+                  'absolute right-0 w-72 sm:w-80 rounded-xl border border-border/80 bg-popover/95 backdrop-blur-md p-1.5 shadow-lg z-30 space-y-1 animate-in fade-in-50 zoom-in-95',
+                  exportMenuUp ? 'bottom-full mb-2' : 'top-full mt-2'
+                )}
                 role="menu"
+                aria-labelledby="calendar-export-trigger"
                 aria-orientation="vertical"
                 onKeyDown={handleExportMenuKeyDown}
               >
@@ -1033,11 +1048,15 @@ export function CalendarInteractiveView({
               {exportError}
             </p>
           )}
+          <p role="status" aria-live="polite" className="sr-only">
+            {copiedText ? tCal('copiedTitle') || 'Schedule copied' : ''}
+          </p>
         </div>
 
         {/* Venue Filter Bar */}
         {availableVenues.length > 1 && (
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+          <div className="relative">
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 pr-10 scrollbar-none">
             <span className="text-xs font-semibold text-muted-foreground shrink-0 flex items-center gap-1">
               <Building2 className="h-3.5 w-3.5" />
               <span>{tCal('filterVenue') || 'Venue:'}</span>
@@ -1078,6 +1097,13 @@ export function CalendarInteractiveView({
                 </button>
               );
             })}
+          </div>
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-background to-transparent flex items-center justify-end pr-1 sm:hidden"
+          >
+            <ChevronRight className="h-4 w-4 text-muted-foreground" />
+          </div>
           </div>
         )}
 

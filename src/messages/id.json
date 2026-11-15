@@ -741,7 +741,7 @@
     "guideTitle": "Panduan Kalender Acara",
     "guideSubtitle": "Pilih tanggal untuk melihat pratinjau pameran aktif dan sesi utama.",
     "fullTimetable": "Jadwal Lengkap Multi-Jalur",
-    "monthView": "Jadwal Bulanan",
+    "monthView": "Jadwal acara",
     "exportICal": "Ekspor ke iCal",
     "exportGoogle": "Tambahkan ke Google Calendar",
     "today": "Hari Ini",
@@ -802,7 +802,8 @@
     "sessionsNotPublished": "Jadwal sesi belum dipublikasikan oleh penyelenggara.",
     "gettingThere": "Akses",
     "includeConcluded": "Sertakan acara yang telah berakhir",
-    "addLive": "Tambahkan yang berlangsung: {title}"
+    "addLive": "Tambahkan yang berlangsung: {title}",
+    "calendarGridAria": "Tanggal kalender untuk {month}"
   },
   "tickets": {
     "bookPass": "Pesan Pas Masuk",

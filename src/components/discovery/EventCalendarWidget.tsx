@@ -27,6 +27,8 @@ export interface EventCalendarWidgetProps {
   isCalendarPage?: boolean;
   className?: string;
   onSelectDate?: (date: Date) => void;
+  /** Optional jump handler; day selection should not scroll the page. */
+  onJumpToDate?: (date: Date) => void;
 }
 
 function toISODateInTimezone(d: Date | string, tz: string): string {
@@ -54,6 +56,7 @@ export function EventCalendarWidget({
   isCalendarPage = false,
   className,
   onSelectDate,
+  onJumpToDate,
 }: EventCalendarWidgetProps) {
   const tCal = useTranslations('calendar');
   const tTickets = useTranslations('tickets');
@@ -65,7 +68,10 @@ export function EventCalendarWidget({
     return Array.from({ length: 7 }, (_, i) => {
       const d = new Date(sunday);
       d.setDate(sunday.getDate() + i);
-      return d.toLocaleDateString(locale, { weekday: 'narrow' });
+      return {
+        narrow: d.toLocaleDateString(locale, { weekday: 'narrow' }),
+        full: d.toLocaleDateString(locale, { weekday: 'long' }),
+      };
     });
   }, [locale]);
 
@@ -167,6 +173,29 @@ export function EventCalendarWidget({
     }).length;
   };
 
+  const selectedInMonth =
+    selectedDate.getMonth() === month && selectedDate.getFullYear() === year;
+
+  const handleCalendarKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    const supported = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'];
+    if (!supported.includes(event.key)) return;
+    const buttons = Array.from(
+      event.currentTarget.querySelectorAll<HTMLButtonElement>('button[data-day]')
+    );
+    if (buttons.length === 0) return;
+    const current = document.activeElement as HTMLButtonElement | null;
+    const index = current ? buttons.indexOf(current) : -1;
+    let next = index;
+    if (event.key === 'ArrowLeft') next = index <= 0 ? 0 : index - 1;
+    if (event.key === 'ArrowRight') next = index < 0 ? 0 : Math.min(index + 1, buttons.length - 1);
+    if (event.key === 'ArrowUp') next = Math.max(0, index - 7);
+    if (event.key === 'ArrowDown') next = Math.min(buttons.length - 1, index + 7);
+    if (event.key === 'Home') next = 0;
+    if (event.key === 'End') next = buttons.length - 1;
+    event.preventDefault();
+    buttons[next]?.focus();
+  };
+
   const isSelected = (date: Date | null) => {
     if (!date) return false;
     return (
@@ -194,7 +223,7 @@ export function EventCalendarWidget({
   });
 
   return (
-    <div className={cn('w-full space-y-4 rounded-2xl border border-border/80 bg-card p-5 sm:p-6 shadow-sm', className)}>
+    <div className={cn('w-full space-y-4 rounded-2xl border border-border/80 bg-card p-4 sm:p-6 shadow-sm', className)}>
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/60 pb-3">
         <div className="flex items-center gap-2 text-foreground">
@@ -225,7 +254,7 @@ export function EventCalendarWidget({
       {/* Dual Pane Layout (Calendar Matrix Left, Events Right) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-1">
         {/* Left: Mini Calendar Grid (5 cols) */}
-        <div className="lg:col-span-5 rounded-xl border border-border/70 bg-background/50 p-4 space-y-3">
+        <div className="lg:col-span-5 rounded-xl border border-border/70 bg-background/50 p-1.5 sm:p-4 space-y-3 overflow-x-auto">
           {/* Month Controller */}
           <div className="flex items-center justify-between">
             <h3 className="text-xs font-bold uppercase tracking-wider text-foreground capitalize">
@@ -243,15 +272,21 @@ export function EventCalendarWidget({
 
           {/* One grid: weekday headers and day cells live in real rows so a screen
               reader can announce column position instead of a bag of buttons. */}
-          <div role="grid" aria-label={`Calendar dates for ${monthName}`} className="grid grid-cols-7 gap-1">
+          <div
+            role="grid"
+            aria-label={tCal('calendarGridAria', { month: monthName }) || `Calendar dates for ${monthName}`}
+            className="grid grid-cols-7 gap-0 sm:gap-1 min-w-[308px]"
+            onKeyDown={handleCalendarKeyDown}
+          >
             <div role="row" className="contents">
               {weekdayLabels.map((label, i) => (
                 <span
                   key={i}
                   role="columnheader"
+                  aria-label={label.full}
                   className="text-center text-xs font-bold text-muted-foreground uppercase"
                 >
-                  {label}
+                  {label.narrow}
                 </span>
               ))}
             </div>
@@ -260,7 +295,7 @@ export function EventCalendarWidget({
               <div role="row" key={`week-${weekIndex}`} className="contents">
                 {week.map((cell, idx) => {
               if (!cell.dayNumber || !cell.date) {
-                return <div key={`empty-${weekIndex}-${idx}`} role="gridcell" aria-hidden="true" className="h-10 min-h-[44px] sm:h-9 sm:min-h-[36px]" />;
+                return <div key={`empty-${weekIndex}-${idx}`} role="gridcell" aria-hidden="true" className="h-11 min-h-[44px] sm:h-9 sm:min-h-[36px]" />;
               }
 
               const hasEvents = hasEventOnDay(cell.date);
@@ -280,11 +315,13 @@ export function EventCalendarWidget({
                     }
                   }}
                   type="button"
+                  data-day={cell.dayNumber}
+                  tabIndex={active || (!selectedInMonth && cell.dayNumber === 1) ? 0 : -1}
                   aria-label={`${cellDateStr}${hasEvents ? `, ${dayCount} ${tCal('eventsScheduled') || 'events scheduled'}` : ''}`}
                   aria-pressed={active}
                   aria-current={today ? 'date' : undefined}
                   className={cn(
-                    'relative flex h-10 w-full min-h-[44px] sm:h-9 sm:min-h-[36px] flex-col items-center justify-center rounded-lg text-xs font-semibold transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
+                    'relative flex h-11 w-full min-w-[44px] min-h-[44px] sm:h-9 sm:min-h-[36px] flex-col items-center justify-center rounded-lg text-xs font-semibold transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary',
                     active
                       ? 'bg-primary text-primary-foreground shadow-xs font-bold'
                       : today
@@ -445,7 +482,7 @@ export function EventCalendarWidget({
                         const targetDate = new Date(nearestUpcomingEvent.startDate);
                         setSelectedDate(targetDate);
                         setViewMonth(new Date(targetDate.getFullYear(), targetDate.getMonth(), 1));
-                        onSelectDate?.(targetDate);
+                        onJumpToDate?.(targetDate);
                       }}
                       className="inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:underline cursor-pointer bg-primary/10 hover:bg-primary/20 px-3.5 py-2 min-h-[44px] sm:min-h-[36px] rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                     >

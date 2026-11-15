@@ -208,3 +208,35 @@ describe('EventCalendarWidget grid semantics', () => {
     }
   });
 });
+
+
+describe('EventCalendarWidget keyboard grid', () => {
+  it('gives column headers a full weekday name and keeps one day in the tab order', () => {
+    const { container } = render(
+      <EventCalendarWidget events={mockEvents} locale="en" regionCode="id" />
+    );
+
+    const headers = Array.from(container.querySelectorAll('[role="columnheader"]'));
+    expect(headers.length).toBe(7);
+    headers.forEach((header) => {
+      expect((header.getAttribute('aria-label') || '').length).toBeGreaterThan(1);
+    });
+
+    const tabbableDays = container.querySelectorAll('button[data-day][tabindex="0"]');
+    expect(tabbableDays.length).toBe(1);
+  });
+
+  it('moves focus across day cells with arrow keys', () => {
+    const { container } = render(
+      <EventCalendarWidget events={mockEvents} locale="en" regionCode="id" />
+    );
+
+    const grid = container.querySelector('[role="grid"]') as HTMLElement;
+    const days = Array.from(
+      container.querySelectorAll<HTMLButtonElement>('button[data-day]')
+    );
+    days[0].focus();
+    fireEvent.keyDown(grid, { key: 'ArrowRight' });
+    expect(document.activeElement).toBe(days[1]);
+  });
+});

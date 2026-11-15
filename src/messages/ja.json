@@ -741,7 +741,7 @@
     "guideTitle": "イベントカレンダーガイド",
     "guideSubtitle": "日付を選択して開催中の展示会や基調講演を確認できます。",
     "fullTimetable": "全トラック総合タイムテーブル",
-    "monthView": "月間スケジュール",
+    "monthView": "イベントスケジュール",
     "exportICal": "iCal形式で書き出し",
     "exportGoogle": "Googleカレンダーに追加",
     "today": "今日",
@@ -802,7 +802,8 @@
     "sessionsNotPublished": "セッション時間は主催者から公開されていません。",
     "gettingThere": "アクセス",
     "includeConcluded": "終了したイベントを含める",
-    "addLive": "開催中を追加: {title}"
+    "addLive": "開催中を追加: {title}",
+    "calendarGridAria": "{month}のカレンダー日付"
   },
   "tickets": {
     "bookPass": "入場パスを予約",

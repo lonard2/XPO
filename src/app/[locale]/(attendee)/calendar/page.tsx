@@ -10,8 +10,7 @@ import { siteBaseUrl } from '@/lib/seo/site';
 import { FALLBACK_EVENTS } from '@/lib/discovery/fallbackData';
 import { CalendarInteractiveView } from '@/components/discovery/CalendarInteractiveView';
 import { Badge } from '@/components/ui/Badge';
-import { Calendar as CalendarIcon, ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
+import { Calendar as CalendarIcon } from 'lucide-react';
 import { type EventSummary } from '@/types/discovery';
 
 interface CalendarPageProps {
@@ -21,9 +20,40 @@ interface CalendarPageProps {
 
 export async function generateMetadata({ params }: CalendarPageProps) {
   const { locale } = await params;
+  const tCal = await getTranslations({ locale, namespace: 'calendar' });
+  const base = siteBaseUrl();
+  const canonical = `${base}/${locale}/calendar`;
+  const title = tCal('title') || 'Interactive Event Calendar';
+  const description =
+    tCal('subtitle') ||
+    'Browse comprehensive MICE trade show calendars, multi-track keynote timetables, and exhibition schedules.';
+
+  const languages: Record<string, string> = {
+    en: `${base}/en/calendar`,
+    id: `${base}/id/calendar`,
+    ja: `${base}/ja/calendar`,
+    'zh-CN': `${base}/zh-CN/calendar`,
+    de: `${base}/de/calendar`,
+    es: `${base}/es/calendar`,
+    'x-default': `${base}/en/calendar`,
+  };
+
   return {
-    title: `Event Calendar & Timetable | XPO (${locale.toUpperCase()})`,
-    description: 'Browse comprehensive MICE trade show calendars, multi-track keynote timetables, and exhibition schedules.',
+    title,
+    description,
+    alternates: { canonical, languages },
+    openGraph: {
+      type: 'website',
+      url: canonical,
+      siteName: 'XPO MICE Platform',
+      title,
+      description,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+    },
   };
 }
 

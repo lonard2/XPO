@@ -741,7 +741,7 @@
     "guideTitle": "Event Calendar Guide",
     "guideSubtitle": "Select a date to preview active exhibitions and keynotes.",
     "fullTimetable": "Full Multi-Track Timetable",
-    "monthView": "Monthly Schedule",
+    "monthView": "Event schedule",
     "exportICal": "Export to iCal",
     "exportGoogle": "Add to Google Calendar",
     "today": "Today",
@@ -802,7 +802,8 @@
     "sessionsNotPublished": "Session times not published by the organizer.",
     "gettingThere": "Access",
     "includeConcluded": "Include concluded events",
-    "addLive": "Add live: {title}"
+    "addLive": "Add live: {title}",
+    "calendarGridAria": "Calendar dates for {month}"
   },
   "tickets": {
     "bookPass": "Book Ticket Pass",
