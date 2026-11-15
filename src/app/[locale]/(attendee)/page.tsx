@@ -479,7 +479,7 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
           <ResponsiveRow
             className="stagger-children"
             label={tHome('featuredInRegion') || 'Featured events'}
-            singleClassName="max-w-2xl"
+            singleClassName="max-w-md"
           >
             {featuredRowEvents.map((event, idx) => (
               <EventCard key={event.id} event={event} locale={locale} priority={idx < 3} />
