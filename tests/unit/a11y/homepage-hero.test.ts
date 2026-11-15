@@ -47,9 +47,11 @@ describe("Quality Gate: homepage hero hierarchy", () => {
     expect(banner).toContain("prefers-reduced-motion");
   });
 
-  it("reserves a mobile safe zone under the hero CTA", () => {
-    expect(banner).toContain("pb-28");
-    expect(banner).toContain("pt-12");
+  it("keeps the mobile pass action above the bottom navigation", () => {
+    expect(banner).toContain("min-h-[340px]");
+    expect(banner).toContain("pt-8");
+    expect(banner).toContain("pb-12");
+    expect(banner).toContain("hidden sm:inline-flex");
   });
 
   it("gives every focusable element a visible 2px outline", () => {

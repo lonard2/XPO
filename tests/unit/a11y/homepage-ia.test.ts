@@ -23,7 +23,7 @@ describe("Quality Gate: homepage closing action", () => {
   });
 
   it("de-duplicates the hero lead from the featured row", () => {
-    expect(page).toContain("withoutHeroLead");
+    expect(page).toContain("withoutHeroSlides");
     expect(page).toContain("featuredRowEvents");
   });
 
@@ -36,7 +36,7 @@ describe("Quality Gate: homepage closing action", () => {
 
   it("keeps the featured CTA clear of the floating concierge on phones", () => {
     const lines = page.split("\n");
-    const idx = lines.findIndex((line) => line.includes("viewFullSchedule"));
+    const idx = lines.findIndex((line) => line.includes("browseAllRegionsEvents"));
     expect(idx).toBeGreaterThan(-1);
     const block = lines.slice(Math.max(0, idx - 4), idx + 4).join("\n");
     expect(block).toContain("self-start");
@@ -45,7 +45,7 @@ describe("Quality Gate: homepage closing action", () => {
   it("keeps main event rows on the normal grid card", () => {
     expect(page).not.toContain("featuredRowEvents.length <= 2 ? 'horizontal' : 'grid'");
     expect(page).not.toContain("row.items.length <= 2 ? 'horizontal' : 'grid'");
-    expect(page).toContain('singleClassName="max-w-sm"');
+    expect(page).toContain('singleClassName="max-w-2xl"');
   });
 
   it("does not cap the venue directory at six", () => {

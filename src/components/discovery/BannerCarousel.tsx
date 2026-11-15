@@ -283,12 +283,21 @@ export function BannerCarousel({
             never sit under a running CSS animation (assistive tech
             evaluates animated text against the wrong background). */}
         <div className="hero-crossfade-in absolute inset-0 lg:relative lg:min-h-[520px]">
-        {/* Slide Image Layer */}
-        {slide.heroImageUrl ? (
+        {/* Slide Image Layer: the gradient is the fallback when the remote
+            image fails, so a dead URL never leaves a solid black panel. The
+            image is decorative; the adjacent H2 carries the event name. */}
+        <div
+          className="absolute inset-0 h-full w-full"
+          style={{
+            background: `radial-gradient(circle at 70% 30%, ${archetypeTokens.primary}55 0%, #030712 85%)`,
+          }}
+        />
+        {slide.heroImageUrl && (
           <img
             key={slide.id}
             src={slide.heroImageUrl}
-            alt={slide.title}
+            alt=""
+            aria-hidden="true"
             fetchPriority={currentIndex === 0 ? 'high' : 'auto'}
             loading={currentIndex === 0 ? 'eager' : 'lazy'}
             className={cn(
@@ -296,13 +305,6 @@ export function BannerCarousel({
               "hero-drift",
               temporalStatus.isPast && "grayscale-[35%] opacity-75"
             )}
-          />
-        ) : (
-          <div
-            className="absolute inset-0 h-full w-full"
-            style={{
-              background: `radial-gradient(circle at 70% 30%, ${archetypeTokens.primary}55 0%, #030712 85%)`,
-            }}
           />
         )}
 
