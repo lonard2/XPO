@@ -26,15 +26,97 @@ export interface EventsExplorerProps {
   initialEvents: DiscoveryEvent[];
   locale: string;
   initialFilters?: Partial<FilterState>;
+  /** Edition the page is anchored to, for example "id". */
+  editionRegion?: string;
+  /** True when the initial region is the edition context, not an explicit filter. */
+  regionIsEdition?: boolean;
+  /** Human label for the edition context, for example "Indonesia edition". */
+  editionLabel?: string | null;
+  /** Date scope restored by Reset All Filters. */
+  defaultDateRange?: string;
 }
 
 export const INITIAL_PAGE_SIZE = 12;
 export const PAGE_SIZE_INCREMENT = 12;
 
+/**
+ * Shared facet predicate. `ignore` lets the facet counts relax one group at a
+ * time, so a rail can show what is reachable without the current selection.
+ */
+function matchesFilters(
+  event: DiscoveryEvent,
+  filters: FilterState,
+  ignore?: keyof FilterState
+): boolean {
+  if (ignore !== 'keyword' && filters.keyword.trim()) {
+    const query = filters.keyword.toLowerCase().trim();
+    const titleMatch = event.title.toLowerCase().includes(query);
+    const taglineMatch = event.tagline?.toLowerCase().includes(query) ?? false;
+    const descMatch = event.description.toLowerCase().includes(query);
+    const venueMatch = event.venue?.name.toLowerCase().includes(query) ?? false;
+    const cityMatch = event.venue?.city.toLowerCase().includes(query) ?? false;
+
+    if (!titleMatch && !taglineMatch && !descMatch && !venueMatch && !cityMatch) {
+      return false;
+    }
+  }
+
+  if (ignore !== 'region' && filters.region !== 'all') {
+    const targetRegion = filters.region.toLowerCase();
+    const eventRegion = (event.region?.code || event.regionId || '').toLowerCase();
+    if (targetRegion === 'id' && eventRegion !== 'id') return false;
+    if (targetRegion === 'jp' && eventRegion !== 'jp') return false;
+    if (targetRegion === 'global' && !['gl', 'global'].includes(eventRegion)) return false;
+  }
+
+  if (ignore !== 'city' && filters.city !== 'all') {
+    const targetCity = filters.city.toLowerCase().trim();
+    const eventCity = event.venue?.city?.toLowerCase().trim() || '';
+    if (eventCity !== targetCity && !eventCity.includes(targetCity)) {
+      return false;
+    }
+  }
+
+  if (ignore !== 'archetype' && filters.archetype !== 'all') {
+    const selectedArchetypes = filters.archetype
+      .split(',')
+      .map((s) => s.trim().toUpperCase())
+      .filter(Boolean);
+    if (
+      selectedArchetypes.length > 0 &&
+      !selectedArchetypes.includes(event.archetype.toUpperCase())
+    ) {
+      return false;
+    }
+  }
+
+  if (ignore !== 'format' && filters.format !== 'all') {
+    if (event.format.toUpperCase() !== filters.format.toUpperCase()) {
+      return false;
+    }
+  }
+
+  if (ignore !== 'scale' && filters.scale !== 'all') {
+    if (event.scale.toUpperCase() !== filters.scale.toUpperCase()) {
+      return false;
+    }
+  }
+
+  if (ignore !== 'dateRange' && !matchesDateRange(event, filters.dateRange)) {
+    return false;
+  }
+
+  return true;
+}
+
 export function EventsExplorer({
   initialEvents,
   locale,
   initialFilters,
+  editionRegion = 'id',
+  regionIsEdition = false,
+  editionLabel = null,
+  defaultDateRange = 'all',
 }: EventsExplorerProps) {
   const tDisc = useTranslations('discovery');
   const tCom = useTranslations('common');
@@ -51,10 +133,11 @@ export function EventsExplorer({
     const archetype = searchParams.get('archetype') || initialFilters?.archetype || 'all';
     const format = searchParams.get('format') || initialFilters?.format || 'all';
     const scale = searchParams.get('scale') || initialFilters?.scale || 'all';
-    const dateRange = searchParams.get('dateRange') || initialFilters?.dateRange || 'all';
+    const dateRange =
+      searchParams.get('dateRange') || initialFilters?.dateRange || defaultDateRange;
 
     return { keyword: q, region, city, archetype, format, scale, dateRange };
-  }, [searchParams, initialFilters]);
+  }, [searchParams, initialFilters, defaultDateRange]);
 
   const [filters, setFilters] = React.useState<FilterState>(parseQueryFilters);
   const [sortBy, setSortBy] = React.useState<string>(() => searchParams.get('sortBy') || 'date_asc');
@@ -105,25 +188,38 @@ export function EventsExplorer({
       const params = new URLSearchParams();
 
       if (newFilters.keyword.trim()) params.set('q', newFilters.keyword.trim());
-      if (newFilters.region !== 'all') params.set('region', newFilters.region);
+      // Serialize "all" explicitly so a shared or reloaded URL does not snap
+      // back to the edition region. The edition itself stays implicit: sorting
+      // or searching must not turn context into a chip the delegate never chose.
+      const regionIsStillEdition =
+        regionIsEdition && newFilters.region === editionRegion;
+      if (!regionIsStillEdition) params.set('region', newFilters.region);
       if (newFilters.city !== 'all') params.set('city', newFilters.city);
       if (newFilters.archetype !== 'all') params.set('archetype', newFilters.archetype);
       if (newFilters.format !== 'all') params.set('format', newFilters.format);
       if (newFilters.scale !== 'all') params.set('scale', newFilters.scale);
-      if (newFilters.dateRange !== 'all') params.set('dateRange', newFilters.dateRange);
+      if (newFilters.dateRange !== defaultDateRange) params.set('dateRange', newFilters.dateRange);
       if (newSort !== 'date_asc') params.set('sortBy', newSort);
+
+      // Filtering must not discard an in-progress shortlist.
+      const currentCompare = new URLSearchParams(window.location.search).get('compare');
+      if (currentCompare) params.set('compare', currentCompare);
 
       const queryString = params.toString();
       const targetUrl = queryString ? `${pathname}?${queryString}` : pathname;
       router.replace(targetUrl, { scroll: false });
     },
-    [pathname, router]
+    [pathname, router, defaultDateRange, regionIsEdition, editionRegion]
   );
 
   const handleFilterChange = (newFilters: FilterState) => {
     setFilters(newFilters);
-    if (newFilters.region !== 'all' && typeof document !== 'undefined') {
-      document.cookie = `xpo_region=${newFilters.region}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
+    if (typeof document !== 'undefined') {
+      if (newFilters.region === 'all') {
+        document.cookie = 'xpo_region=; path=/; max-age=0; SameSite=Lax';
+      } else {
+        document.cookie = `xpo_region=${newFilters.region}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
+      }
     }
     updateUrlQuery(newFilters, sortBy);
   };
@@ -141,99 +237,48 @@ export function EventsExplorer({
       archetype: 'all',
       format: 'all',
       scale: 'all',
-      dateRange: 'all',
+      dateRange: defaultDateRange,
     };
+    if (typeof document !== 'undefined') {
+      document.cookie = 'xpo_region=; path=/; max-age=0; SameSite=Lax';
+    }
     setFilters(emptyFilters);
     updateUrlQuery(emptyFilters, sortBy);
   };
 
   // Filter and Sort Events
   const filteredAndSortedEvents = React.useMemo(() => {
-    return initialEvents.filter((event) => {
-      // 1. Keyword search (title, tagline, description, venue, city)
-      if (filters.keyword.trim()) {
-        const query = filters.keyword.toLowerCase().trim();
-        const titleMatch = event.title.toLowerCase().includes(query);
-        const taglineMatch = event.tagline?.toLowerCase().includes(query) ?? false;
-        const descMatch = event.description.toLowerCase().includes(query);
-        const venueMatch = event.venue?.name.toLowerCase().includes(query) ?? false;
-        const cityMatch = event.venue?.city.toLowerCase().includes(query) ?? false;
-
-        if (!titleMatch && !taglineMatch && !descMatch && !venueMatch && !cityMatch) {
-          return false;
+    return initialEvents
+      .filter((event) => matchesFilters(event, filters))
+      .sort((a, b) => {
+        if (sortBy === 'date_asc') {
+          return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
         }
-      }
-
-      // 2. Region Hub filter
-      if (filters.region !== 'all') {
-        const targetRegion = filters.region.toLowerCase();
-        const eventRegion = (event.region?.code || event.regionId || '').toLowerCase();
-        if (targetRegion === 'id' && eventRegion !== 'id') return false;
-        if (targetRegion === 'jp' && eventRegion !== 'jp') return false;
-        if (targetRegion === 'global' && !['gl', 'global'].includes(eventRegion)) return false;
-      }
-
-      // 3. City filter
-      if (filters.city !== 'all') {
-        const targetCity = filters.city.toLowerCase().trim();
-        const eventCity = event.venue?.city?.toLowerCase().trim() || '';
-        if (eventCity !== targetCity && !eventCity.includes(targetCity)) {
-          return false;
+        if (sortBy === 'date_desc') {
+          return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
         }
-      }
-
-      // 4. MICE Category Archetype filter (Supports multi-select comma-separated)
-      if (filters.archetype !== 'all') {
-        const selectedArchetypes = filters.archetype
-          .split(',')
-          .map((s) => s.trim().toUpperCase())
-          .filter(Boolean);
-        if (selectedArchetypes.length > 0 && !selectedArchetypes.includes(event.archetype.toUpperCase())) {
-          return false;
+        if (sortBy === 'featured') {
+          return (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0);
         }
-      }
-
-      // 5. Event Format filter
-      if (filters.format !== 'all') {
-        if (event.format.toUpperCase() !== filters.format.toUpperCase()) {
-          return false;
+        if (sortBy === 'title_asc') {
+          return a.title.localeCompare(b.title);
         }
-      }
-
-      // 6. Scale filter
-      if (filters.scale !== 'all') {
-        if (event.scale.toUpperCase() !== filters.scale.toUpperCase()) {
-          return false;
+        if (sortBy === 'price_asc' || sortBy === 'price_desc') {
+          const pa = lowestPriceOf(a);
+          const pb = lowestPriceOf(b);
+          return sortBy === 'price_asc' ? pa - pb : pb - pa;
         }
-      }
-
-      // 7. Date Range filter
-      if (!matchesDateRange(event, filters.dateRange)) return false;
-
-      return true;
-    }).sort((a, b) => {
-      if (sortBy === 'date_asc') {
-        return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
-      }
-      if (sortBy === 'date_desc') {
-        return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
-      }
-      if (sortBy === 'featured') {
-        return (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0);
-      }
-      if (sortBy === 'title_asc') {
-        return a.title.localeCompare(b.title);
-      }
-      if (sortBy === 'price_asc' || sortBy === 'price_desc') {
-        const pa = lowestPriceOf(a);
-        const pb = lowestPriceOf(b);
-        return sortBy === 'price_asc' ? pa - pb : pb - pa;
-      }
-      if (sortBy === 'ending_soon') {
-        return new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
-      }
-      return 0;
-    });
+        if (sortBy === 'ending_soon') {
+          // Active runs come first; concluded runs only appear when the delegate
+          // opts into past events, and then they trail the list.
+          const now = Date.now();
+          const aPast = new Date(a.endDate).getTime() < now;
+          const bPast = new Date(b.endDate).getTime() < now;
+          if (aPast !== bPast) return aPast ? 1 : -1;
+          return new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
+        }
+        return 0;
+      });
   }, [initialEvents, filters, sortBy]);
 
   // Compute category / region counts
@@ -278,6 +323,11 @@ export function EventsExplorer({
     return filteredAndSortedEvents.slice(0, visibleCount);
   }, [filteredAndSortedEvents, visibleCount]);
 
+  // The edition is context, not a filter the delegate applied. It stops being
+  // context once the delegate explicitly chooses another region or all regions.
+  const regionIsEditionContext = Boolean(regionIsEdition) && filters.region === editionRegion;
+  const editionContextLabel = filters.region === 'all' ? null : editionLabel;
+
   return (
     <div className="flex flex-col gap-8 pb-16">
       {/* Faceted Filter & Search Toolbar */}
@@ -293,6 +343,9 @@ export function EventsExplorer({
             onOpenMobileFilters={() => setIsMobileDrawerOpen(true)}
             viewMode={viewMode}
             onViewModeChange={setViewMode}
+            editionLabel={editionContextLabel}
+            regionIsEdition={regionIsEditionContext}
+            defaultDateRange={defaultDateRange}
           />
         </div>
       </section>
@@ -308,6 +361,8 @@ export function EventsExplorer({
               onReset={handleResetFilters}
               availableCities={availableCities}
               counts={categoryCounts}
+              regionIsEdition={regionIsEditionContext}
+              defaultDateRange={defaultDateRange}
             />
           </aside>
 
@@ -484,6 +539,8 @@ export function EventsExplorer({
               }}
               availableCities={availableCities}
               counts={categoryCounts}
+              regionIsEdition={regionIsEditionContext}
+              defaultDateRange={defaultDateRange}
             />
           </div>
           <div className="sticky bottom-0 bg-background/95 backdrop-blur-md border-t border-border pt-3 pb-2 z-10">

@@ -20,6 +20,13 @@ describe("matchesDateRange", () => {
     }
   });
 
+  it("active keeps ongoing and upcoming but drops concluded", () => {
+    expect(matchesDateRange(past, "active", now)).toBe(false);
+    expect(matchesDateRange(ongoing, "active", now)).toBe(true);
+    expect(matchesDateRange(soon, "active", now)).toBe(true);
+    expect(matchesDateRange(far, "active", now)).toBe(true);
+  });
+
   it("splits upcoming, ongoing, and concluded", () => {
     expect(matchesDateRange(past, "upcoming", now)).toBe(false);
     expect(matchesDateRange(ongoing, "upcoming", now)).toBe(false);

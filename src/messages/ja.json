@@ -444,7 +444,10 @@
     "activeFiltersAria": "有効なフィルター",
     "showingCount": "{total}件中{shown}件の展示会を表示",
     "loadMore": "さらに展示会を読み込む",
-    "selectedCountOne": "1件選択"
+    "selectedCountOne": "1件選択",
+    "activeExhibitions": "開催中・開催予定",
+    "allDatesIncludingPast": "すべての日程（過去を含む）",
+    "editionContext": "{region}版"
   },
   "events": {
     "title": "イベント一覧＆スケジュール",

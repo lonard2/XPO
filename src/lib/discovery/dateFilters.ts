@@ -7,6 +7,7 @@
  */
 
 export const DATE_RANGE_IDS = [
+  "active",
   "all",
   "upcoming",
   "ongoing",
@@ -21,6 +22,29 @@ export const DATE_RANGE_IDS = [
 ] as const;
 
 export type DateRangeId = (typeof DATE_RANGE_IDS)[number];
+
+/** Product default: ongoing plus upcoming. Concluded events stay opt-in. */
+export const DEFAULT_DATE_RANGE: DateRangeId = "active";
+
+/** Translation keys for the date scopes, shared by the rail, chips, and count line. */
+export const DATE_RANGE_LABEL_KEYS: Record<string, string> = {
+  active: "activeExhibitions",
+  all: "allDatesIncludingPast",
+  upcoming: "upcomingExhibitions",
+  ongoing: "ongoingExhibitions",
+  concluded: "concludedExhibitions",
+  next_7_days: "next7Days",
+  next_30_days: "next30Days",
+  next_90_days: "next90Days",
+  this_week: "thisWeek",
+  this_month: "thisMonth",
+  next_month: "nextMonth",
+  this_year: "thisYear",
+};
+
+export function isDateRangeId(value: string | null | undefined): value is DateRangeId {
+  return Boolean(value) && (DATE_RANGE_IDS as readonly string[]).includes(value as string);
+}
 
 export interface DatedEvent {
   startDate: Date | string;
@@ -62,6 +86,8 @@ export function matchesDateRange(
   const nowMs = now.getTime();
 
   switch (range) {
+    case "active":
+      return span.end >= nowMs;
     case "upcoming":
       return span.start > nowMs;
     case "ongoing":

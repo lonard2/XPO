@@ -444,7 +444,10 @@
     "activeFiltersAria": "Active filters",
     "showingCount": "Showing {shown} of {total} exhibitions",
     "loadMore": "Load More Exhibitions",
-    "selectedCountOne": "1 selected"
+    "selectedCountOne": "1 selected",
+    "activeExhibitions": "Current & Upcoming",
+    "allDatesIncludingPast": "All Dates (include past)",
+    "editionContext": "{region} edition"
   },
   "events": {
     "title": "Event Directory & Timetable",

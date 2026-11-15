@@ -8,10 +8,12 @@ import {
   ArrowUpDown,
   LayoutGrid,
   List,
+  Globe,
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useTranslations } from 'next-intl';
 import { ActiveFilterChips } from '@/components/discovery/ActiveFilterChips';
+import { DATE_RANGE_LABEL_KEYS, DEFAULT_DATE_RANGE } from '@/lib/discovery/dateFilters';
 import { type FilterState } from '@/types/discovery';
 import { cn } from '@/lib/utils';
 
@@ -25,6 +27,12 @@ export interface FacetedFilterBarProps {
   onOpenMobileFilters: () => void;
   viewMode?: 'grid' | 'table';
   onViewModeChange?: (mode: 'grid' | 'table') => void;
+  /** Edition context label; null hides it. */
+  editionLabel?: string | null;
+  /** True when the region filter is the edition context, not a user filter. */
+  regionIsEdition?: boolean;
+  /** Date scope that counts as the product default, not an active filter. */
+  defaultDateRange?: string;
   className?: string;
 }
 
@@ -38,6 +46,9 @@ export function FacetedFilterBar({
   onOpenMobileFilters,
   viewMode = 'grid',
   onViewModeChange,
+  editionLabel = null,
+  regionIsEdition = false,
+  defaultDateRange = DEFAULT_DATE_RANGE,
   className,
 }: FacetedFilterBarProps) {
   const tDisc = useTranslations('discovery');
@@ -127,12 +138,15 @@ export function FacetedFilterBar({
 
   const activeFilterCount =
     (filters.keyword.trim() ? 1 : 0) +
-    (filters.region !== 'all' ? 1 : 0) +
+    (filters.region !== 'all' && !regionIsEdition ? 1 : 0) +
     (filters.city !== 'all' ? 1 : 0) +
     (filters.archetype !== 'all' ? 1 : 0) +
     (filters.format !== 'all' ? 1 : 0) +
     (filters.scale !== 'all' ? 1 : 0) +
-    (filters.dateRange !== 'all' ? 1 : 0);
+    (filters.dateRange !== 'all' && filters.dateRange !== defaultDateRange ? 1 : 0);
+
+  const scopeLabel =
+    tDisc(DATE_RANGE_LABEL_KEYS[filters.dateRange] || 'allDates') || 'All Dates';
 
   return (
     <div role="toolbar" className={cn('space-y-3', className)} aria-label={tDisc('searchToolbarAria') || 'Search and filter toolbar'}>
@@ -252,11 +266,25 @@ export function FacetedFilterBar({
           filters={filters}
           onRemoveFilter={handleRemoveChip}
           onClearAll={onReset}
+          regionIsEdition={regionIsEdition}
+          defaultDateRange={defaultDateRange}
         />
 
-        <span className="text-xs text-muted-foreground sm:ml-auto whitespace-nowrap">
-          {tEvents('showingResults') || 'Showing'} <strong className="text-foreground font-semibold">{totalResults}</strong> {totalResults === 1 ? (tEvents('unitSingular') || 'exhibition') : (tEvents('unitPlural') || 'exhibitions')}
-        </span>
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 sm:ml-auto">
+          {editionLabel && (
+            <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+              <Globe className="h-3 w-3 shrink-0" aria-hidden="true" />
+              {editionLabel}
+            </span>
+          )}
+          <span className="text-xs text-muted-foreground whitespace-nowrap">
+            {scopeLabel} · {tEvents('showingResults') || 'Showing'}{' '}
+            <strong className="text-foreground font-semibold">{totalResults}</strong>{' '}
+            {totalResults === 1
+              ? tEvents('unitSingular') || 'exhibition'
+              : tEvents('unitPlural') || 'exhibitions'}
+          </span>
+        </div>
       </div>
     </div>
   );

@@ -444,7 +444,10 @@
     "activeFiltersAria": "Filtros activos",
     "showingCount": "Mostrando {shown} de {total} exposiciones",
     "loadMore": "Cargar más exposiciones",
-    "selectedCountOne": "1 seleccionado"
+    "selectedCountOne": "1 seleccionado",
+    "activeExhibitions": "En curso y próximos",
+    "allDatesIncludingPast": "Todas las fechas (incluye pasadas)",
+    "editionContext": "Edición {region}"
   },
   "events": {
     "title": "Directorio de Eventos y Calendario",

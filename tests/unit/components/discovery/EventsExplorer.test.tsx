@@ -277,3 +277,89 @@ describe('Discovery Component: EventsExplorer Integration', () => {
   });
 });
 
+
+describe('Discovery Component: default scope and edition context', () => {
+  it('hides concluded events under the active default scope', () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-11-15T10:00:00Z'));
+
+    render(
+      <EventsExplorer
+        initialEvents={FALLBACK_EVENTS}
+        locale="en"
+        initialFilters={{ dateRange: 'active' }}
+      />
+    );
+
+    expect(
+      screen.getByText('Tokyo International Robotics & Mechatronics Expo 2026')
+    ).toBeInTheDocument();
+    expect(screen.queryByText('Asia AI & Cloud Developer Summit 2026')).toBeNull();
+
+    vi.useRealTimers();
+  });
+
+  it('serializes All Regional Hubs as region=all so reload does not re-pin the edition', () => {
+    mockReplace.mockClear();
+    render(<EventsExplorer initialEvents={FALLBACK_EVENTS} locale="en" />);
+
+    fireEvent.click(screen.getByRole('button', { name: /all regional hubs/i }));
+
+    expect(mockReplace).toHaveBeenCalled();
+    const target = mockReplace.mock.calls.at(-1)?.[0] as string;
+    expect(target).toContain('region=all');
+  });
+
+  it('treats the edition region as context, not an active filter chip', () => {
+    render(
+      <EventsExplorer
+        initialEvents={FALLBACK_EVENTS}
+        locale="en"
+        initialFilters={{ region: 'id' }}
+        editionRegion="id"
+        regionIsEdition
+        editionLabel="Indonesia edition"
+      />
+    );
+
+    expect(screen.getByText('Indonesia edition')).toBeInTheDocument();
+    expect(screen.queryByLabelText('Remove filter: Indonesia')).toBeNull();
+  });
+
+  it('does not turn the edition into a URL filter when sorting', () => {
+    mockReplace.mockClear();
+    render(
+      <EventsExplorer
+        initialEvents={FALLBACK_EVENTS}
+        locale="en"
+        initialFilters={{ region: 'id' }}
+        editionRegion="id"
+        regionIsEdition
+        editionLabel="Indonesia edition"
+      />
+    );
+
+    fireEvent.change(screen.getByLabelText(/sort events/i), {
+      target: { value: 'title_asc' },
+    });
+
+    const target = mockReplace.mock.calls.at(-1)?.[0] as string;
+    expect(target).not.toContain('region=');
+    expect(target).toContain('sortBy=title_asc');
+  });
+
+  it('still shows a chip when the delegate explicitly filters to another region', () => {
+    render(
+      <EventsExplorer
+        initialEvents={FALLBACK_EVENTS}
+        locale="en"
+        initialFilters={{ region: 'jp' }}
+        editionRegion="id"
+        regionIsEdition
+        editionLabel="Indonesia edition"
+      />
+    );
+
+    expect(screen.getByLabelText('Remove filter: Japan')).toBeInTheDocument();
+  });
+});

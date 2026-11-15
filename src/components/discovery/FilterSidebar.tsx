@@ -17,6 +17,7 @@ import { useTranslations } from 'next-intl';
 import { ALL_MICE_ARCHETYPES, ARCHETYPE_DEFAULTS, ARCHETYPE_METAS, ARCHETYPE_SUBTITLES, MICE_INDUSTRY_CLUSTERS, type MiceArchetype, type MiceIndustryCluster } from '@/lib/theming';
 import { archDescription, clusterLabel } from '@/lib/i18n/categories';
 import { ICON_MAP } from '@/components/discovery/EventCategoryPills';
+import { DEFAULT_DATE_RANGE } from '@/lib/discovery/dateFilters';
 import { type FilterState } from '@/types/discovery';
 import { cn } from '@/lib/utils';
 
@@ -31,6 +32,10 @@ export interface FilterSidebarProps {
     formats?: Record<string, number>;
     scales?: Record<string, number>;
   };
+  /** The edition region is context, not a user filter. */
+  regionIsEdition?: boolean;
+  /** The product default date scope, not an active filter. */
+  defaultDateRange?: string;
   className?: string;
 }
 
@@ -42,6 +47,8 @@ export function FilterSidebar({
   onReset,
   availableCities = [],
   counts,
+  regionIsEdition = false,
+  defaultDateRange = DEFAULT_DATE_RANGE,
   className,
 }: FilterSidebarProps) {
   const tDisc = useTranslations('discovery');
@@ -131,7 +138,8 @@ export function FilterSidebar({
   ];
 
   const dateOptions = [
-    { id: 'all', label: tDisc('allDates') || 'All Dates' },
+    { id: 'active', label: tDisc('activeExhibitions') || 'Current & Upcoming' },
+    { id: 'all', label: tDisc('allDatesIncludingPast') || 'All Dates (include past)' },
     { id: 'upcoming', label: tDisc('upcomingExhibitions') || 'Upcoming Exhibitions' },
     { id: 'ongoing', label: tDisc('ongoingExhibitions') || 'Happening Now' },
     { id: 'concluded', label: tDisc('concludedExhibitions') || 'Concluded' },
@@ -145,11 +153,11 @@ export function FilterSidebar({
   ];
 
   const hasActiveFilters =
-    filters.region !== 'all' ||
+    (filters.region !== 'all' && !regionIsEdition) ||
     filters.archetype !== 'all' ||
     filters.format !== 'all' ||
     filters.scale !== 'all' ||
-    filters.dateRange !== 'all' ||
+    (filters.dateRange !== 'all' && filters.dateRange !== defaultDateRange) ||
     filters.city !== 'all' ||
     (filters.keyword && filters.keyword.trim().length > 0);
 

@@ -12,9 +12,10 @@ import {
 } from 'lucide-react';
 import { db } from '@/lib/db';
 import { listingWhere } from '@/lib/discovery/presentation';
-import { resolveActiveRegion } from '@/lib/i18n/geo';
+import { normalizeRegion, regionForLocale, resolveActiveRegion } from '@/lib/i18n/geo';
 import { EventsExplorer } from '@/components/discovery/EventsExplorer';
 import { FALLBACK_EVENTS } from '@/lib/discovery/fallbackData';
+import { DEFAULT_DATE_RANGE, isDateRangeId } from '@/lib/discovery/dateFilters';
 import { type DiscoveryEvent } from '@/types/discovery';
 
 export interface EventsPageProps {
@@ -38,16 +39,35 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
   const headerList = await headers();
   const cookieStore = await cookies();
 
-  const explicitRegion = typeof rawSearchParams.region === 'string' ? rawSearchParams.region : undefined;
-  const activeRegion = resolveActiveRegion({
-    locale,
-    explicitRegion,
-    cookieRegion: cookieStore.get('xpo_region')?.value,
-    geoRegion: headerList.get('x-xpo-region'),
-  });
+  const rawRegionParam =
+    typeof rawSearchParams.region === 'string' ? rawSearchParams.region : undefined;
+  const explicitRegion = normalizeRegion(rawRegionParam);
+  const isAllRegions = rawRegionParam === 'all';
+
+  // The URL locale pins the edition for `id` and `ja`; a stale cookie from an
+  // earlier filter click must not override it. Other locales still honor the
+  // explicit cookie, query, and geo resolution.
+  const localeRegion = regionForLocale(locale);
+  const activeRegion =
+    localeRegion ??
+    resolveActiveRegion({
+      locale,
+      explicitRegion,
+      cookieRegion: cookieStore.get('xpo_region')?.value,
+      geoRegion: headerList.get('x-xpo-region'),
+    });
+
+  const initialRegion = isAllRegions ? 'all' : explicitRegion ?? activeRegion;
+  const regionIsEdition = !isAllRegions && !explicitRegion;
+
+  const rawDateRange =
+    typeof rawSearchParams.dateRange === 'string' ? rawSearchParams.dateRange : undefined;
+  const initialDateRange = isDateRangeId(rawDateRange) ? rawDateRange : DEFAULT_DATE_RANGE;
 
   const tEvents = await getTranslations({ locale, namespace: 'events' });
   const tCom = await getTranslations({ locale, namespace: 'common' });
+  const tReg = await getTranslations({ locale, namespace: 'regions' });
+  const tDisc = await getTranslations({ locale, namespace: 'discovery' });
   const crumbs = [
     { label: tCom('home') || 'Home', href: `/${locale}` },
     { label: tEvents('breadcrumbsTitle') || 'Events & Exhibitions', href: `/${locale}/events` },
@@ -82,12 +102,12 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
 
   const initialFilters = {
     keyword: typeof rawSearchParams.q === 'string' ? rawSearchParams.q : '',
-    region: activeRegion,
+    region: initialRegion,
     city: typeof rawSearchParams.city === 'string' ? rawSearchParams.city : 'all',
     archetype: typeof rawSearchParams.archetype === 'string' ? rawSearchParams.archetype : 'all',
     format: typeof rawSearchParams.format === 'string' ? rawSearchParams.format : 'all',
     scale: typeof rawSearchParams.scale === 'string' ? rawSearchParams.scale : 'all',
-    dateRange: typeof rawSearchParams.dateRange === 'string' ? rawSearchParams.dateRange : 'all',
+    dateRange: initialDateRange,
   };
 
   return (
@@ -123,6 +143,12 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
           initialEvents={eventsList}
           locale={locale}
           initialFilters={initialFilters}
+          editionRegion={activeRegion}
+          regionIsEdition={regionIsEdition}
+          editionLabel={tDisc('editionContext', {
+            region: tReg(`${activeRegion}.name`),
+          })}
+          defaultDateRange={DEFAULT_DATE_RANGE}
         />
       </Suspense>
     </div>

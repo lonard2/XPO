@@ -444,7 +444,10 @@
     "activeFiltersAria": "Filter aktif",
     "showingCount": "Menampilkan {shown} dari {total} pameran",
     "loadMore": "Muat Pameran Lainnya",
-    "selectedCountOne": "1 dipilih"
+    "selectedCountOne": "1 dipilih",
+    "activeExhibitions": "Sedang Berlangsung & Mendatang",
+    "allDatesIncludingPast": "Semua Tanggal (termasuk lampau)",
+    "editionContext": "Edisi {region}"
   },
   "events": {
     "title": "Direktori Acara & Jadwal",

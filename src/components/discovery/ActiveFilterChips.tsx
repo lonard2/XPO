@@ -5,6 +5,7 @@ import { X, RotateCcw, Tag, Globe, Calendar, Layers, Briefcase } from 'lucide-re
 import { Button } from '@/components/ui/Button';
 import { useTranslations } from 'next-intl';
 import { getArchetypeTokens } from '@/lib/theming';
+import { DATE_RANGE_LABEL_KEYS, DEFAULT_DATE_RANGE } from '@/lib/discovery/dateFilters';
 import { type FilterState } from '@/types/discovery';
 import { cn } from '@/lib/utils';
 
@@ -12,6 +13,10 @@ export interface ActiveFilterChipsProps {
   filters: FilterState;
   onRemoveFilter: (key: keyof FilterState, valueToRemove?: string) => void;
   onClearAll: () => void;
+  /** The edition region is context, not a chip the delegate applied. */
+  regionIsEdition?: boolean;
+  /** The product default scope is context, not an active chip. */
+  defaultDateRange?: string;
   className?: string;
 }
 
@@ -19,6 +24,8 @@ export function ActiveFilterChips({
   filters,
   onRemoveFilter,
   onClearAll,
+  regionIsEdition = false,
+  defaultDateRange = DEFAULT_DATE_RANGE,
   className,
 }: ActiveFilterChipsProps) {
   const tDisc = useTranslations('discovery');
@@ -44,7 +51,7 @@ export function ActiveFilterChips({
     });
   }
 
-  if (filters.region && filters.region !== 'all') {
+  if (filters.region && filters.region !== 'all' && !regionIsEdition) {
     const regKey = filters.region.toLowerCase();
     const localizedName = tReg(`${regKey}.name`) || `${filters.region.toUpperCase()} Hub`;
     activeChips.push({
@@ -103,20 +110,12 @@ export function ActiveFilterChips({
     });
   }
 
-  if (filters.dateRange && filters.dateRange !== 'all') {
-    const dateKeys: Record<string, string> = {
-      upcoming: 'upcomingExhibitions',
-      ongoing: 'ongoingExhibitions',
-      concluded: 'concludedExhibitions',
-      next_7_days: 'next7Days',
-      next_30_days: 'next30Days',
-      next_90_days: 'next90Days',
-      this_week: 'thisWeek',
-      this_month: 'thisMonth',
-      next_month: 'nextMonth',
-      this_year: 'thisYear',
-    };
-    const dateKey = dateKeys[filters.dateRange] || 'allDates';
+  if (
+    filters.dateRange &&
+    filters.dateRange !== 'all' &&
+    filters.dateRange !== defaultDateRange
+  ) {
+    const dateKey = DATE_RANGE_LABEL_KEYS[filters.dateRange] || 'allDates';
     activeChips.push({
       key: 'dateRange',
       label: tDisc(dateKey) || filters.dateRange,
