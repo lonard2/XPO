@@ -541,7 +541,18 @@
     "curatedListingBody": "Listado curado del directorio MICE, verificado por la administración de XPO",
     "registeredOrganizer": "Organizador registrado en el ecosistema XPO MICE",
     "governanceCurated": "Gobernanza: directorio curado",
-    "accountActive": "Estado de la cuenta: inquilino organizador activo"
+    "accountActive": "Estado de la cuenta: inquilino organizador activo",
+    "liveNow": "En vivo hoy",
+    "finalDay": "Último día",
+    "dayOfDays": "Día {current} de {total}",
+    "closesAt": "Cierra a las {time}",
+    "eventConcluded": "Este evento ha finalizado",
+    "browseRelatedEvents": "Ver eventos relacionados",
+    "browseEvents": "Ver eventos",
+    "programmeNotPublished": "Programa no publicado",
+    "programmeNotPublishedLive": "El organizador no ha publicado el horario de hoy. Contacte con el organizador para conocer el programa actual.",
+    "programmeNotPublishedPast": "El organizador no publicó un programa para este evento.",
+    "contactOrganizer": "Contactar con el organizador"
   },
   "venues": {
     "title": "Recintos Feriales y Directorio de Pabellones",

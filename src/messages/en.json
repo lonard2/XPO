@@ -541,7 +541,18 @@
     "curatedListingBody": "Curated MICE Directory Listing - Verified by XPO Platform Administration",
     "registeredOrganizer": "Registered Event Organizer on XPO MICE Ecosystem",
     "governanceCurated": "Governance: Curated Directory",
-    "accountActive": "Account Status: Active Organizer Tenant"
+    "accountActive": "Account Status: Active Organizer Tenant",
+    "liveNow": "Live Today",
+    "finalDay": "Final Day",
+    "dayOfDays": "Day {current} of {total}",
+    "closesAt": "Closes {time}",
+    "eventConcluded": "This event has concluded",
+    "browseRelatedEvents": "Browse related events",
+    "browseEvents": "Browse events",
+    "programmeNotPublished": "Programme not published",
+    "programmeNotPublishedLive": "The organizer has not published today's timetable. Contact the organizer for the current schedule.",
+    "programmeNotPublishedPast": "The organizer did not publish a timetable for this event.",
+    "contactOrganizer": "Contact the organizer"
   },
   "venues": {
     "title": "Convention Centers & Hall Directory",

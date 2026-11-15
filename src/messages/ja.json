@@ -541,7 +541,18 @@
     "curatedListingBody": "XPOプラットフォーム管理者が認証したMICEディレクトリ掲載",
     "registeredOrganizer": "XPO MICEエコシステム登録主催者",
     "governanceCurated": "ガバナンス: 選定ディレクトリ",
-    "accountActive": "アカウント状態: 有効な主催者テナント"
+    "accountActive": "アカウント状態: 有効な主催者テナント",
+    "liveNow": "本日開催中",
+    "finalDay": "最終日",
+    "dayOfDays": "{total}日間の{current}日目",
+    "closesAt": "{time} 終了",
+    "eventConcluded": "このイベントは終了しました",
+    "browseRelatedEvents": "関連イベントを見る",
+    "browseEvents": "イベントを見る",
+    "programmeNotPublished": "プログラム未公開",
+    "programmeNotPublishedLive": "主催者は本日のタイムテーブルを公開していません。最新のスケジュールは主催者にお問い合わせください。",
+    "programmeNotPublishedPast": "主催者はこのイベントのタイムテーブルを公開していません。",
+    "contactOrganizer": "主催者に問い合わせる"
   },
   "venues": {
     "title": "コンベンションセンター＆ホール一覧",

@@ -78,6 +78,28 @@ export function getTimeZoneForRegion(regionCode: string): string {
 }
 
 /**
+ * Short, delegate-recognisable label for a hub timezone.
+ *
+ * Intl renders Asia/Jakarta as "GMT+7", which is correct but not what a Jakarta
+ * delegate reads on a ticket. The abbreviations below match local usage; an
+ * unknown zone falls back to UTC rather than guessing.
+ */
+export function getTimeZoneAbbreviation(timeZone: string): string {
+  switch (timeZone) {
+    case 'Asia/Jakarta':
+      return 'WIB';
+    case 'Asia/Tokyo':
+      return 'JST';
+    case 'Asia/Singapore':
+      return 'SGT';
+    case 'Europe/Berlin':
+      return 'CET';
+    default:
+      return 'UTC';
+  }
+}
+
+/**
  * Maps a regional hub identifier to its default display currency.
  */
 export function getCurrencyForRegion(regionCode: string): SupportedCurrency {
@@ -361,3 +383,60 @@ export function getEventTemporalStatus(
   };
 }
 
+export interface EventDayProgress {
+  /** 1-based calendar day of the event in its hub timezone. */
+  dayNumber: number;
+  /** Inclusive calendar-day span between start and end. */
+  totalDays: number;
+  isFinalDay: boolean;
+}
+
+/**
+ * Calendar-day position of `now` inside an event run, measured in the event's
+ * hub timezone rather than UTC.
+ *
+ * A Jakarta expo that opens at 09:00 WIB starts at 02:00 UTC, so a UTC day
+ * boundary would report the wrong day for the first and last hours of each
+ * session. Comparing `en-CA` calendar keys (YYYY-MM-DD) keeps the answer tied
+ * to the wall clock a delegate is standing in.
+ */
+export function getEventDayProgress(
+  startDate: Date | string,
+  endDate: Date | string,
+  timeZone: string = DEFAULT_TIMEZONE,
+  now: Date = new Date()
+): EventDayProgress | null {
+  const start = typeof startDate === 'string' ? new Date(startDate) : startDate;
+  const end = typeof endDate === 'string' ? new Date(endDate) : endDate;
+
+  if (isNaN(start.getTime()) || isNaN(end.getTime())) return null;
+
+  const dayKey = (date: Date): string => {
+    try {
+      return new Intl.DateTimeFormat('en-CA', {
+        timeZone,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      }).format(date);
+    } catch {
+      return date.toISOString().slice(0, 10);
+    }
+  };
+
+  const keyToUtc = (key: string): number => {
+    const [year, month, day] = key.split('-').map(Number);
+    return Date.UTC(year, (month || 1) - 1, day || 1);
+  };
+
+  const startUtc = keyToUtc(dayKey(start));
+  const endUtc = keyToUtc(dayKey(end));
+  const nowUtc = keyToUtc(dayKey(now));
+
+  const dayMs = 24 * 60 * 60 * 1000;
+  const totalDays = Math.max(1, Math.round((endUtc - startUtc) / dayMs) + 1);
+  const rawDay = Math.round((nowUtc - startUtc) / dayMs) + 1;
+  const dayNumber = Math.min(Math.max(rawDay, 1), totalDays);
+
+  return { dayNumber, totalDays, isFinalDay: dayNumber === totalDays };
+}

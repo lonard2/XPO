@@ -9,6 +9,13 @@ import { resolvePageSize, resolveDetailVisibility, listingWhere } from "@/lib/di
 import { EventOrganizerSection } from "@/components/discovery/EventOrganizerSection";
 import { generateEventJsonLd } from "@/lib/seo/jsonLd";
 import { siteBaseUrl } from "@/lib/seo/site";
+import {
+  formatTime,
+  getEventDayProgress,
+  getEventTemporalStatus,
+  getTimeZoneAbbreviation,
+  getTimeZoneForRegion,
+} from "@/lib/i18n/formatters";
 
 
 import {
@@ -269,6 +276,22 @@ export default async function EventDetailPage({ params }: EventPageProps) {
     venueSize: (event.venue as { size?: string | null } | null)?.size ?? null,
   });
 
+  // Temporal truth is resolved once, on the server, and handed to the shell.
+  // The shell must never infer status from a client clock: a pass sold to a
+  // closed event is the failure this state exists to prevent.
+  const temporal = getEventTemporalStatus(event.startDate, event.endDate);
+  const eventRegionCode =
+    event.venue?.region?.code ?? (locale === "id" ? "id" : locale === "ja" ? "jp" : "global");
+  const eventTimeZone = getTimeZoneForRegion(eventRegionCode);
+  // Day index follows the same calendar convention as the date range shown in
+  // the hero (the stored UTC run), so "Day 4 of 4" never contradicts "Nov 12 – 15".
+  const dayProgress = temporal.isLive
+    ? getEventDayProgress(event.startDate, event.endDate)
+    : null;
+  const closesAtLabel = temporal.isLive
+    ? `${formatTime(event.endDate, locale, eventTimeZone)} ${getTimeZoneAbbreviation(eventTimeZone)}`
+    : null;
+
   return (
     <>
       {!unlisted && (
@@ -310,6 +333,11 @@ export default async function EventDetailPage({ params }: EventPageProps) {
       externalUrl={event.externalUrl}
       newsUpdates={newsUpdates}
       pageSize={resolvedPageSize}
+      temporalStatus={temporal.status}
+      dayProgress={dayProgress}
+      closesAtLabel={closesAtLabel}
+      organizerName={event.organizer?.name ?? event.organizerName ?? null}
+      organizerEmail={event.organizer?.email ?? null}
     >
       <ArchetypeView event={event} locale={locale} pageSize={resolvedPageSize} />
       <EventOrganizerSection event={event} locale={locale} />

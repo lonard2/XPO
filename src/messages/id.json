@@ -541,7 +541,18 @@
     "curatedListingBody": "Daftar Direktori MICE Terkurasi - Diverifikasi oleh Administrasi Platform XPO",
     "registeredOrganizer": "Penyelenggara Acara Terdaftar di Ekosistem XPO MICE",
     "governanceCurated": "Tata kelola: Direktori Terkurasi",
-    "accountActive": "Status akun: Penyewa Penyelenggara Aktif"
+    "accountActive": "Status akun: Penyewa Penyelenggara Aktif",
+    "liveNow": "Berlangsung Hari Ini",
+    "finalDay": "Hari Terakhir",
+    "dayOfDays": "Hari {current} dari {total}",
+    "closesAt": "Tutup pukul {time}",
+    "eventConcluded": "Acara ini telah berakhir",
+    "browseRelatedEvents": "Jelajahi acara terkait",
+    "browseEvents": "Jelajahi acara",
+    "programmeNotPublished": "Program belum dipublikasikan",
+    "programmeNotPublishedLive": "Penyelenggara belum mempublikasikan jadwal hari ini. Hubungi penyelenggara untuk jadwal terkini.",
+    "programmeNotPublishedPast": "Penyelenggara tidak mempublikasikan jadwal untuk acara ini.",
+    "contactOrganizer": "Hubungi penyelenggara"
   },
   "venues": {
     "title": "Pusat Konvensi & Direktori Hall",

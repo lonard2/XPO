@@ -541,7 +541,18 @@
     "curatedListingBody": "由 XPO 平台管理团队认证的 MICE 精选目录",
     "registeredOrganizer": "XPO MICE 生态注册活动主办方",
     "governanceCurated": "治理：精选目录",
-    "accountActive": "账户状态：活跃主办方租户"
+    "accountActive": "账户状态：活跃主办方租户",
+    "liveNow": "今日进行中",
+    "finalDay": "最后一天",
+    "dayOfDays": "第 {current} 天，共 {total} 天",
+    "closesAt": "{time} 结束",
+    "eventConcluded": "本活动已结束",
+    "browseRelatedEvents": "浏览相关活动",
+    "browseEvents": "浏览活动",
+    "programmeNotPublished": "日程尚未发布",
+    "programmeNotPublishedLive": "主办方尚未发布今日日程。请联系主办方获取最新安排。",
+    "programmeNotPublishedPast": "主办方未发布本活动的日程。",
+    "contactOrganizer": "联系主办方"
   },
   "venues": {
     "title": "会展中心与展厅名录",

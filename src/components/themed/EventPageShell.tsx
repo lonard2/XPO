@@ -68,6 +68,15 @@ export interface EventPageShellProps {
   newsUpdates?: Array<{ id: string; title: string; body: string; approvedAt: string | null }>;
   /** Explicit presentation tier (resolved by the page: choice → venue → LARGE). */
   pageSize?: "LARGE" | "MEDIUM" | "SMALL" | string;
+  /** Server-resolved temporal state. The shell never infers this from a client clock. */
+  temporalStatus?: "UPCOMING" | "LIVE" | "PAST";
+  /** Calendar-day position while the event is live. */
+  dayProgress?: { dayNumber: number; totalDays: number; isFinalDay: boolean } | null;
+  /** Local closing time with hub abbreviation, for example "18:00 WIB". */
+  closesAtLabel?: string | null;
+  /** Public organizer identity for honest empty states and contact paths. */
+  organizerName?: string | null;
+  organizerEmail?: string | null;
 }
 
 export function EventPageShell({
@@ -99,6 +108,11 @@ export function EventPageShell({
   externalUrl = null,
   newsUpdates = [],
   pageSize = "LARGE",
+  temporalStatus = "UPCOMING",
+  dayProgress = null,
+  closesAtLabel = null,
+  organizerName = null,
+  organizerEmail = null,
 }: EventPageShellProps) {
   const [isCopied, setIsCopied] = React.useState(false);
   const [checkoutDrawerOpen, setCheckoutDrawerOpen] = React.useState(false);
@@ -127,6 +141,11 @@ export function EventPageShell({
   const cssVariables = getArchetypeCssVariables(safeArchetype, resolvedBranding);
   const archetypeMeta = ARCHETYPE_METAS[safeArchetype] || ARCHETYPE_METAS.INDUSTRIAL_B2B;
 
+  const isLive = temporalStatus === "LIVE";
+  const isConcluded = temporalStatus === "PAST";
+  const isFinalDay = isLive && Boolean(dayProgress?.isFinalDay);
+  const relatedEventsHref = `/${locale}/events?archetype=${safeArchetype}`;
+
   const handleShare = async () => {
     if (typeof window !== "undefined") {
       try {
@@ -151,7 +170,7 @@ export function EventPageShell({
   };
 
   const handleOpenCheckout = (tierId?: string) => {
-    if (isListingOnly) return;
+    if (isListingOnly || isConcluded) return;
     if (onBookPassClick) {
       onBookPassClick();
       return;
@@ -306,7 +325,7 @@ export function EventPageShell({
                 )}
               </div>
 
-              {!isListingOnly && (
+              {!isListingOnly && !isConcluded && (
                 <div className="pt-6 mt-4 border-t border-border/60">
                   {isSoldOut ? (
                     <WaitlistForm eventId={id} tierId={tier.id} tierName={tier.name} />
@@ -403,7 +422,32 @@ export function EventPageShell({
               {archetypeDisplayTitle}
             </span>
 
-            {(resolvedBranding.heroBadge || isFeatured) && (
+            {isLive && (
+              <Badge
+                variant="outline"
+                size="sm"
+                className="font-semibold shadow-xs border-white/30 bg-white/10 text-white gap-1.5"
+              >
+                <span className="relative flex h-2 w-2" aria-hidden="true">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+                </span>
+                {isFinalDay ? tEvents("finalDay") : tEvents("liveNow")}
+              </Badge>
+            )}
+
+            {isConcluded && (
+              <Badge
+                variant="outline"
+                size="sm"
+                className="font-semibold shadow-xs border-white/30 bg-white/10 text-white gap-1.5"
+              >
+                <Clock className="h-3 w-3" aria-hidden="true" />
+                {tEvents("concluded") || "Concluded"}
+              </Badge>
+            )}
+
+            {!isLive && !isConcluded && (resolvedBranding.heroBadge || isFeatured) && (
               <Badge variant="warning" size="sm" className="font-semibold shadow-xs">
                 {resolvedBranding.heroBadge || tEvents("featured") || "Featured Event"}
               </Badge>
@@ -440,9 +484,33 @@ export function EventPageShell({
           <div className="mt-6 pt-6 border-t border-white/10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs sm:text-sm text-slate-200 stagger-children">
             <div className="flex items-center gap-3 bg-white/5 rounded-lg p-3 border border-white/10">
               <Calendar className="h-5 w-5 text-[var(--archetype-accent)] shrink-0" aria-hidden="true" />
-              <div>
-                <p className="text-xs uppercase tracking-wider text-slate-400 font-semibold">{tCommon("date") || "Dates"}</p>
-                <p className="font-semibold text-white">{formattedDate}</p>
+              <div className="min-w-0">
+                <p className="text-xs uppercase tracking-wider text-slate-400 font-semibold">
+                  {isLive
+                    ? isFinalDay
+                      ? tEvents("finalDay") || "Final Day"
+                      : tEvents("liveNow") || "Live Today"
+                    : isConcluded
+                      ? tEvents("concluded") || "Concluded"
+                      : tCommon("date") || "Dates"}
+                </p>
+                {isLive && dayProgress ? (
+                  <>
+                    <p className="font-semibold text-white">
+                      {tEvents("dayOfDays", {
+                        current: dayProgress.dayNumber,
+                        total: dayProgress.totalDays,
+                      })}
+                    </p>
+                    {closesAtLabel && (
+                      <p className="text-xs text-slate-300">
+                        {tEvents("closesAt", { time: closesAtLabel })}
+                      </p>
+                    )}
+                  </>
+                ) : (
+                  <p className="font-semibold text-white">{formattedDate}</p>
+                )}
               </div>
             </div>
 
@@ -477,7 +545,29 @@ export function EventPageShell({
 
           {/* Action CTAs */}
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            {isListingOnly ? (
+            {isConcluded ? (
+              <>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  disabled
+                  className="gap-2 font-semibold border-white/20 bg-white/5 text-white/70 min-h-[44px] cursor-not-allowed"
+                >
+                  <Clock className="h-4 w-4" aria-hidden="true" />
+                  {tEvents("eventConcluded") || "This event has concluded"}
+                </Button>
+                <Link
+                  href={relatedEventsHref}
+                  className={cn(
+                    buttonVariants({ variant: "archetype", size: "lg" }),
+                    "gap-2 font-semibold shadow-lg min-h-[44px]"
+                  )}
+                >
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                  {tEvents("browseRelatedEvents") || "Browse related events"}
+                </Link>
+              </>
+            ) : isListingOnly ? (
               listingCta
             ) : (
               <Button
@@ -632,27 +722,42 @@ export function EventPageShell({
                     </p>
                   </div>
                   <div className="flex flex-wrap items-center gap-3 shrink-0">
-                    <Button
-                      size="lg"
-                      variant="archetype"
-                      onClick={() => setActiveTab("tickets")}
-                      className="font-semibold gap-2 min-h-[44px] cursor-pointer shadow-md"
-                    >
-                      <Ticket className="h-4 w-4" />
-                      <span>{tEvents("checkPassTiers") || "View Pass Tiers"} ({ticketTiers.length})</span>
-                    </Button>
-                    {isListingOnly ? (
-                      listingCta
-                    ) : (
-                      <Button
-                        size="lg"
-                        variant="outline"
-                        onClick={() => handleOpenCheckout()}
-                        className="font-semibold gap-2 min-h-[44px] cursor-pointer"
+                    {isConcluded ? (
+                      <Link
+                        href={relatedEventsHref}
+                        className={cn(
+                          buttonVariants({ variant: "archetype", size: "lg" }),
+                          "font-semibold gap-2 min-h-[44px] shadow-md"
+                        )}
                       >
-                        <span>{tEvents("reservePasses") || "Reserve Passes"}</span>
                         <ArrowRight className="h-4 w-4" />
-                      </Button>
+                        <span>{tEvents("browseRelatedEvents") || "Browse related events"}</span>
+                      </Link>
+                    ) : (
+                      <>
+                        <Button
+                          size="lg"
+                          variant="archetype"
+                          onClick={() => setActiveTab("tickets")}
+                          className="font-semibold gap-2 min-h-[44px] cursor-pointer shadow-md"
+                        >
+                          <Ticket className="h-4 w-4" />
+                          <span>{tEvents("checkPassTiers") || "View Pass Tiers"} ({ticketTiers.length})</span>
+                        </Button>
+                        {isListingOnly ? (
+                          listingCta
+                        ) : (
+                          <Button
+                            size="lg"
+                            variant="outline"
+                            onClick={() => handleOpenCheckout()}
+                            className="font-semibold gap-2 min-h-[44px] cursor-pointer"
+                          >
+                            <span>{tEvents("reservePasses") || "Reserve Passes"}</span>
+                            <ArrowRight className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </>
                     )}
                   </div>
                 </div>
@@ -678,13 +783,32 @@ export function EventPageShell({
                 </div>
                 <div className="space-y-1">
                   <h3 className="text-base font-bold text-foreground">
-                    {tEvents("noAgendaPublished") || "Timetable in preparation"}
+                    {isLive || isConcluded
+                      ? tEvents("programmeNotPublished") || "Programme not published"
+                      : tEvents("noAgendaPublished") || "Timetable in preparation"}
                   </h3>
                   <p className="text-xs sm:text-sm text-muted-foreground">
-                    {tEvents("noAgendaPublishedDesc") || "The detailed session schedule and speaker tracks will be announced closer to the event opening."}
+                    {isConcluded
+                      ? tEvents("programmeNotPublishedPast") ||
+                        "The organizer did not publish a timetable for this event."
+                      : isLive
+                        ? tEvents("programmeNotPublishedLive") ||
+                          "The organizer has not published today's timetable. Contact the organizer for the current schedule."
+                        : tEvents("noAgendaPublishedDesc") ||
+                          "The detailed session schedule and speaker tracks will be announced closer to the event opening."}
                   </p>
+                  {organizerEmail && (
+                    <a
+                      href={`mailto:${organizerEmail}`}
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline min-h-[44px]"
+                    >
+                      <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+                      {tEvents("contactOrganizer") || "Contact the organizer"}
+                      {organizerName ? ` (${organizerName})` : ""}
+                    </a>
+                  )}
                 </div>
-                {ticketTiers && ticketTiers.length > 0 && (
+                {!isConcluded && ticketTiers && ticketTiers.length > 0 && (
                   <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
                     <Button
                       variant="outline"
@@ -771,12 +895,25 @@ export function EventPageShell({
           <div className="min-w-0 flex-1">
             <p className="text-xs text-muted-foreground truncate">{title}</p>
             <p className="text-sm font-bold text-foreground">
-              {isListingOnly
-                ? tEvents("externalListing") || "External listing"
-                : formattedPrice}
+              {isConcluded
+                ? tEvents("concluded") || "Concluded"
+                : isListingOnly
+                  ? tEvents("externalListing") || "External listing"
+                  : formattedPrice}
             </p>
           </div>
-          {isListingOnly ? (
+          {isConcluded ? (
+            <Link
+              href={relatedEventsHref}
+              className={cn(
+                buttonVariants({ variant: "archetype", size: "default" }),
+                "shrink-0 font-semibold gap-1.5 shadow-md min-h-[44px]"
+              )}
+            >
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              {tEvents("browseEvents") || "Browse events"}
+            </Link>
+          ) : isListingOnly ? (
             externalUrl ? (
               <a
                 href={externalUrl}

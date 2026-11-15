@@ -12,6 +12,8 @@ import {
   isValidCurrency,
   normalizeLocale,
   getEventTemporalStatus,
+  getEventDayProgress,
+  getTimeZoneAbbreviation,
   SUPPORTED_LOCALES,
   SUPPORTED_CURRENCIES,
 } from "@/lib/i18n/formatters";
@@ -259,5 +261,41 @@ describe("formatDateRange hydration stability", () => {
 
     expect(range).toBe("Nov 5 – 9, 2026");
     expect(/[\u2009\u202F\u00A0]/.test(range)).toBe(false);
+  });
+});
+
+describe("Event day progress", () => {
+  it("counts inclusive calendar days in the event hub timezone", () => {
+    const progress = getEventDayProgress(
+      "2026-11-12T01:00:00.000Z",
+      "2026-11-15T11:00:00.000Z",
+      "Asia/Jakarta",
+      new Date("2026-11-15T03:00:00.000Z")
+    );
+
+    expect(progress).toEqual({ dayNumber: 4, totalDays: 4, isFinalDay: true });
+  });
+
+  it("does not round a short overnight run into two days in Jakarta", () => {
+    // 20:00Z to 02:00Z is two UTC dates but a single WIB date (Nov 13).
+    const progress = getEventDayProgress(
+      "2026-11-12T20:00:00.000Z",
+      "2026-11-13T02:00:00.000Z",
+      "Asia/Jakarta",
+      new Date("2026-11-12T23:00:00.000Z")
+    );
+
+    expect(progress).toEqual({ dayNumber: 1, totalDays: 1, isFinalDay: true });
+  });
+
+  it("returns null for invalid dates", () => {
+    expect(getEventDayProgress("not-a-date", "2026-11-15T11:00:00.000Z")).toBeNull();
+  });
+
+  it("labels hub timezones in the form delegates read", () => {
+    expect(getTimeZoneAbbreviation("Asia/Jakarta")).toBe("WIB");
+    expect(getTimeZoneAbbreviation("Asia/Tokyo")).toBe("JST");
+    expect(getTimeZoneAbbreviation("Europe/Berlin")).toBe("CET");
+    expect(getTimeZoneAbbreviation("America/New_York")).toBe("UTC");
   });
 });

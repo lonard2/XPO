@@ -541,7 +541,18 @@
     "curatedListingBody": "Kuratierter MICE-Verzeichniseintrag - von der XPO-Plattformadministration verifiziert",
     "registeredOrganizer": "Registrierter Veranstalter im XPO MICE-Ökosystem",
     "governanceCurated": "Governance: Kuratiertes Verzeichnis",
-    "accountActive": "Kontostatus: Aktiver Veranstalter-Mandant"
+    "accountActive": "Kontostatus: Aktiver Veranstalter-Mandant",
+    "liveNow": "Heute live",
+    "finalDay": "Letzter Tag",
+    "dayOfDays": "Tag {current} von {total}",
+    "closesAt": "Endet um {time}",
+    "eventConcluded": "Diese Veranstaltung ist beendet",
+    "browseRelatedEvents": "Ähnliche Veranstaltungen ansehen",
+    "browseEvents": "Veranstaltungen ansehen",
+    "programmeNotPublished": "Programm nicht veröffentlicht",
+    "programmeNotPublishedLive": "Der Veranstalter hat den heutigen Zeitplan nicht veröffentlicht. Aktuelle Zeiten erfahren Sie beim Veranstalter.",
+    "programmeNotPublishedPast": "Der Veranstalter hat für diese Veranstaltung keinen Zeitplan veröffentlicht.",
+    "contactOrganizer": "Veranstalter kontaktieren"
   },
   "venues": {
     "title": "Kongresszentren & Hallenverzeichnis",
