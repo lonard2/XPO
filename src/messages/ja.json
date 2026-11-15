@@ -447,7 +447,15 @@
     "selectedCountOne": "1件選択",
     "activeExhibitions": "開催中・開催予定",
     "allDatesIncludingPast": "すべての日程（過去を含む）",
-    "editionContext": "{region}版"
+    "editionContext": "{region}版",
+    "compareDesc": "日程、ホール、形式、パス入場を並べて比較します。",
+    "compareAttribute": "項目",
+    "compareAction": "比較（{count}）",
+    "compareViewEvent": "イベントを見る",
+    "compareAdded": "{title}を比較に追加しました。",
+    "compareRemoved": "{title}を比較から削除しました。",
+    "compareFull": "比較は上限（4件中4件）です。追加するには1件削除してください。",
+    "compareSelectTwo": "比較するには2件以上選択してください。"
   },
   "events": {
     "title": "イベント一覧＆スケジュール",

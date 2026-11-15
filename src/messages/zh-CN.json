@@ -447,7 +447,15 @@
     "selectedCountOne": "已选 1 项",
     "activeExhibitions": "进行中与即将举行",
     "allDatesIncludingPast": "所有日期（含已结束）",
-    "editionContext": "{region}版"
+    "editionContext": "{region}版",
+    "compareDesc": "并排比较日期、展厅、形式和入场票种。",
+    "compareAttribute": "项目",
+    "compareAction": "比较（{count}）",
+    "compareViewEvent": "查看活动",
+    "compareAdded": "已将{title}加入比较。",
+    "compareRemoved": "已将{title}移出比较。",
+    "compareFull": "比较已满（4/4）。请移除一个活动后再添加。",
+    "compareSelectTwo": "请至少选择两个活动进行比较。"
   },
   "events": {
     "title": "展会名录与日程",

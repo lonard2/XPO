@@ -447,7 +447,15 @@
     "selectedCountOne": "1 seleccionado",
     "activeExhibitions": "En curso y próximos",
     "allDatesIncludingPast": "Todas las fechas (incluye pasadas)",
-    "editionContext": "Edición {region}"
+    "editionContext": "Edición {region}",
+    "compareDesc": "Compare fechas, salas, formatos y acceso con pase en paralelo.",
+    "compareAttribute": "Atributo",
+    "compareAction": "Comparar ({count})",
+    "compareViewEvent": "Ver evento",
+    "compareAdded": "{title} se añadió a la comparación.",
+    "compareRemoved": "{title} se eliminó de la comparación.",
+    "compareFull": "La comparación está completa (4 de 4). Elimine un evento para añadir otro.",
+    "compareSelectTwo": "Seleccione al menos dos eventos para comparar."
   },
   "events": {
     "title": "Directorio de Eventos y Calendario",

@@ -447,7 +447,15 @@
     "selectedCountOne": "1 dipilih",
     "activeExhibitions": "Sedang Berlangsung & Mendatang",
     "allDatesIncludingPast": "Semua Tanggal (termasuk lampau)",
-    "editionContext": "Edisi {region}"
+    "editionContext": "Edisi {region}",
+    "compareDesc": "Bandingkan tanggal, hall, format, dan akses tiket secara berdampingan.",
+    "compareAttribute": "Atribut",
+    "compareAction": "Bandingkan ({count})",
+    "compareViewEvent": "Lihat acara",
+    "compareAdded": "{title} ditambahkan ke perbandingan.",
+    "compareRemoved": "{title} dihapus dari perbandingan.",
+    "compareFull": "Perbandingan penuh (4 dari 4). Hapus satu acara untuk menambah.",
+    "compareSelectTwo": "Pilih minimal dua acara untuk dibandingkan."
   },
   "events": {
     "title": "Direktori Acara & Jadwal",

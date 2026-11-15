@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import Link from 'next/link';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import {
   Calendar,
@@ -18,6 +19,7 @@ import { EventCard } from '@/components/discovery/EventCard';
 import { EventTableView } from '@/components/discovery/EventTableView';
 import { FacetedFilterBar } from '@/components/discovery/FacetedFilterBar';
 import { FilterSidebar } from '@/components/discovery/FilterSidebar';
+import { EventCompareDialog } from '@/components/discovery/EventCompareDialog';
 import { useTranslations } from 'next-intl';
 import { matchesDateRange } from '@/lib/discovery/dateFilters';
 import { type DiscoveryEvent, type FilterState } from '@/types/discovery';
@@ -149,6 +151,8 @@ export function EventsExplorer({
     const raw = searchParams.get('compare') || '';
     return raw.split(',').map((s) => s.trim()).filter(Boolean);
   });
+  const [compareOpen, setCompareOpen] = React.useState(false);
+  const [shortlistNotice, setShortlistNotice] = React.useState('');
 
   const lowestPriceOf = (e: { ticketTiers?: Array<{ price: number }>; lowestPrice?: number }) => {
     if (typeof e.lowestPrice === 'number') return e.lowestPrice;
@@ -159,14 +163,35 @@ export function EventsExplorer({
   };
 
   const toggleShortlist = (id: string) => {
-    setShortlist((prev) => {
-      const next = prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id].slice(0, 4);
-      const params = new URLSearchParams(window.location.search);
-      if (next.length > 0) params.set('compare', next.join(','));
-      else params.delete('compare');
-      window.history.replaceState(null, '', `${window.location.pathname}?${params.toString()}`);
-      return next;
-    });
+    const event = initialEvents.find((candidate) => candidate.id === id);
+    const title = event?.title || '';
+
+    if (!shortlist.includes(id) && shortlist.length >= 4) {
+      setShortlistNotice(
+        tDisc('compareFull') ||
+          'Comparison is full (4 of 4). Remove an event to add another.'
+      );
+      return;
+    }
+
+    const removing = shortlist.includes(id);
+    const next = removing ? shortlist.filter((x) => x !== id) : [...shortlist, id];
+    setShortlist(next);
+    setShortlistNotice(
+      removing
+        ? tDisc('compareRemoved', { title }) || `${title} removed from comparison.`
+        : tDisc('compareAdded', { title }) || `${title} added to comparison.`
+    );
+
+    const params = new URLSearchParams(window.location.search);
+    if (next.length > 0) params.set('compare', next.join(','));
+    else params.delete('compare');
+    const query = params.toString();
+    window.history.replaceState(
+      null,
+      '',
+      `${window.location.pathname}${query ? `?${query}` : ''}`
+    );
   };
 
   // Reset pagination when filters or sort change
@@ -328,6 +353,14 @@ export function EventsExplorer({
   const regionIsEditionContext = Boolean(regionIsEdition) && filters.region === editionRegion;
   const editionContextLabel = filters.region === 'all' ? null : editionLabel;
 
+  const compareEvents = React.useMemo(
+    () =>
+      shortlist
+        .map((id) => initialEvents.find((event) => event.id === id))
+        .filter((event): event is DiscoveryEvent => Boolean(event)),
+    [shortlist, initialEvents]
+  );
+
   return (
     <div className="flex flex-col gap-8 pb-16">
       {/* Faceted Filter & Search Toolbar */}
@@ -466,27 +499,54 @@ export function EventsExplorer({
         <div
           role="region"
           aria-label={tDisc('shortlistCompareTitle') || 'Event shortlist comparison'}
-          className="fixed bottom-4 inset-x-4 sm:inset-x-auto sm:right-6 sm:w-[420px] z-40 rounded-2xl border border-border/80 bg-background/95 backdrop-blur-md shadow-2xl p-4 space-y-3 animate-fade-in"
+          className="fixed bottom-4 inset-x-4 sm:inset-x-auto sm:right-6 sm:w-[440px] z-40 rounded-2xl border border-border/80 bg-background/95 backdrop-blur-md shadow-2xl p-4 space-y-3 animate-fade-in"
         >
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-1.5 text-xs font-bold text-foreground">
               <Scale className="h-3.5 w-3.5 text-primary" />
               <span>{tDisc('shortlistCompareTitle') || 'Compare Events'} ({shortlist.length}/4)</span>
             </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => {
-                const params = new URLSearchParams(window.location.search);
-                params.delete('compare');
-                window.history.replaceState(null, '', `${window.location.pathname}?${params.toString()}`);
-                setShortlist([]);
-              }}
-              className="h-8 px-2 text-xs text-muted-foreground hover:text-foreground cursor-pointer"
-            >
-              {tDisc('clearAll') || 'Clear all'}
-            </Button>
+            <div className="flex items-center gap-1.5">
+              <Button
+                size="sm"
+                onClick={() => setCompareOpen(true)}
+                disabled={shortlist.length < 2}
+                className="h-8 gap-1.5 text-xs font-semibold cursor-pointer"
+              >
+                <Scale className="h-3.5 w-3.5" />
+                {tDisc('compareAction', { count: shortlist.length }) ||
+                  `Compare (${shortlist.length})`}
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  const params = new URLSearchParams(window.location.search);
+                  params.delete('compare');
+                  const query = params.toString();
+                  window.history.replaceState(
+                    null,
+                    '',
+                    `${window.location.pathname}${query ? `?${query}` : ''}`
+                  );
+                  setShortlist([]);
+                  setShortlistNotice('');
+                }}
+                className="h-8 px-2 text-xs text-muted-foreground hover:text-foreground cursor-pointer"
+              >
+                {tDisc('clearAll') || 'Clear all'}
+              </Button>
+            </div>
           </div>
+          {shortlistNotice ? (
+            <p role="status" aria-live="polite" className="text-xs text-muted-foreground">
+              {shortlistNotice}
+            </p>
+          ) : shortlist.length === 1 ? (
+            <p className="text-xs text-muted-foreground">
+              {tDisc('compareSelectTwo') || 'Select at least two events to compare.'}
+            </p>
+          ) : null}
           <ul className="space-y-2 max-h-56 overflow-y-auto pr-1">
             {shortlist.map((id) => {
               const evt = initialEvents.find((e) => e.id === id);
@@ -495,7 +555,12 @@ export function EventsExplorer({
               return (
                 <li key={id} className="flex items-start justify-between gap-2 rounded-xl border border-border/60 bg-card p-2.5 text-xs">
                   <div className="min-w-0 space-y-0.5">
-                    <p className="font-bold text-foreground line-clamp-1">{evt.title}</p>
+                    <Link
+                      href={`/${locale}/events/${evt.slug}`}
+                      className="block font-bold text-foreground line-clamp-1 hover:text-primary transition-colors"
+                    >
+                      {evt.title}
+                    </Link>
                     <p className="text-muted-foreground truncate">
                       {(evt as any).venue?.name || ''}{(evt as any).venueHall ? ` • ${(evt as any).venueHall.name}` : ''} · {formatDateRange(evt.startDate, evt.endDate, locale)}
                     </p>
@@ -517,6 +582,14 @@ export function EventsExplorer({
           </ul>
         </div>
       )}
+
+      <EventCompareDialog
+        isOpen={compareOpen}
+        onClose={() => setCompareOpen(false)}
+        events={compareEvents}
+        locale={locale}
+        onRemove={toggleShortlist}
+      />
 
       {/* Mobile / Tablet Filter Drawer */}
       <Drawer

@@ -1,6 +1,6 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render, screen, fireEvent, act, within } from '@testing-library/react';
 import { EventsExplorer } from '@/components/discovery/EventsExplorer';
 import { FALLBACK_EVENTS } from '@/lib/discovery/fallbackData';
 
@@ -361,5 +361,48 @@ describe('Discovery Component: default scope and edition context', () => {
     );
 
     expect(screen.getByLabelText('Remove filter: Japan')).toBeInTheDocument();
+  });
+});
+
+
+describe('Discovery Component: comparison surface', () => {
+  it('opens a real side-by-side comparison from the tray', () => {
+    render(<EventsExplorer initialEvents={FALLBACK_EVENTS} locale="en" />);
+
+    const compareButtons = screen.getAllByLabelText('Compare this event');
+    fireEvent.click(compareButtons[0]);
+    fireEvent.click(compareButtons[1]);
+
+    fireEvent.click(screen.getByRole('button', { name: /Compare \(2\)/i }));
+
+    const dialog = screen.getByRole('dialog');
+    expect(dialog).toBeInTheDocument();
+    expect(within(dialog).getByRole('table')).toBeInTheDocument();
+    expect(within(dialog).getAllByRole('link', { name: /View event/i })).toHaveLength(2);
+  });
+
+  it('announces the 4 of 4 limit instead of silently dropping a fifth event', () => {
+    render(<EventsExplorer initialEvents={FALLBACK_EVENTS} locale="en" />);
+
+    const compareButtons = screen.getAllByLabelText('Compare this event');
+    for (let i = 0; i < 5; i += 1) {
+      fireEvent.click(compareButtons[i]);
+    }
+
+    expect(screen.getByRole('status')).toHaveTextContent(/full \(4 of 4\)/i);
+  });
+
+  it('removes an event from the comparison dialog', () => {
+    render(<EventsExplorer initialEvents={FALLBACK_EVENTS} locale="en" />);
+
+    const compareButtons = screen.getAllByLabelText('Compare this event');
+    fireEvent.click(compareButtons[0]);
+    fireEvent.click(compareButtons[1]);
+    fireEvent.click(screen.getByRole('button', { name: /Compare \(2\)/i }));
+
+    const dialog = screen.getByRole('dialog');
+    fireEvent.click(within(dialog).getAllByLabelText(/Remove from comparison/i)[0]);
+
+    expect(within(dialog).getAllByRole('link', { name: /View event/i })).toHaveLength(1);
   });
 });

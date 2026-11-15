@@ -447,7 +447,15 @@
     "selectedCountOne": "1 ausgewählt",
     "activeExhibitions": "Laufend & bevorstehend",
     "allDatesIncludingPast": "Alle Termine (inkl. vergangen)",
-    "editionContext": "{region}-Edition"
+    "editionContext": "{region}-Edition",
+    "compareDesc": "Termine, Hallen, Formate und Passzugang nebeneinander vergleichen.",
+    "compareAttribute": "Merkmal",
+    "compareAction": "Vergleichen ({count})",
+    "compareViewEvent": "Veranstaltung ansehen",
+    "compareAdded": "{title} wurde zum Vergleich hinzugefügt.",
+    "compareRemoved": "{title} wurde aus dem Vergleich entfernt.",
+    "compareFull": "Der Vergleich ist voll (4 von 4). Entfernen Sie eine Veranstaltung, um eine weitere hinzuzufügen.",
+    "compareSelectTwo": "Wählen Sie mindestens zwei Veranstaltungen zum Vergleichen."
   },
   "events": {
     "title": "Messeverzeichnis & Kalender",

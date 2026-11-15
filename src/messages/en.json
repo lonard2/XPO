@@ -447,7 +447,15 @@
     "selectedCountOne": "1 selected",
     "activeExhibitions": "Current & Upcoming",
     "allDatesIncludingPast": "All Dates (include past)",
-    "editionContext": "{region} edition"
+    "editionContext": "{region} edition",
+    "compareDesc": "Compare dates, halls, formats, and pass entry side by side.",
+    "compareAttribute": "Attribute",
+    "compareAction": "Compare ({count})",
+    "compareViewEvent": "View event",
+    "compareAdded": "{title} added to comparison.",
+    "compareRemoved": "{title} removed from comparison.",
+    "compareFull": "Comparison is full (4 of 4). Remove an event to add another.",
+    "compareSelectTwo": "Select at least two events to compare."
   },
   "events": {
     "title": "Event Directory & Timetable",
