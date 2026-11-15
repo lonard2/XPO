@@ -332,7 +332,7 @@ export function CalendarInteractiveView({
     setIsExporting(true);
     setExportError(null);
     const filename = `xpo-${region}-schedule.ics`;
-    const calendarTitle = `XPO MICE ${region.toUpperCase()} Master Timetable`;
+    const calendarTitle = `XPO MICE ${tReg(`${region}.name`)} Event Calendar`;
     const ok = downloadICalFile(exportableEvents, filename, calendarTitle);
     if (!ok) {
       setIsExporting(false);
@@ -742,7 +742,13 @@ export function CalendarInteractiveView({
               {tCal('monthView') || 'Chronological Schedule Overview'}
             </h2>
             <p className="text-xs sm:text-sm text-muted-foreground">
-              {tCal('confirmedScheduleDesc', { count: filteredEvents.length, region: region.toUpperCase() }) || `${filteredEvents.length} confirmed MICE trade exhibitions & keynotes in ${region.toUpperCase()}.`}
+              {filteredEvents.length === 0
+                ? tCal('noEventsFoundDesc') || 'No confirmed trade shows match your active filters.'
+                : tCal('confirmedScheduleDesc', {
+                    count: filteredEvents.length,
+                    region: tReg(`${region}.name`),
+                  }) ||
+                  `${filteredEvents.length} confirmed MICE trade exhibitions & keynotes in ${tReg(`${region}.name`)}.`}
             </p>
             <p className="text-[11px] text-muted-foreground">
               {tCal('exportTimezoneNote') || 'All dates shown in'} {timezone}

@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { cookies, headers } from 'next/headers';
+import { redirect } from 'next/navigation';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { Breadcrumbs, BreadcrumbJsonLd } from "@/components/layout/Breadcrumbs";
 import { db } from '@/lib/db';
 import { scheduleWhere, toScheduleRows, isScheduleStub, type ScheduleStub } from '@/lib/discovery/presentation';
-import { resolveActiveRegion } from '@/lib/i18n/geo';
+import { normalizeRegion, regionForLocale, resolveActiveRegion } from '@/lib/i18n/geo';
 import { FALLBACK_EVENTS } from '@/lib/discovery/fallbackData';
 import { CalendarInteractiveView } from '@/components/discovery/CalendarInteractiveView';
 import { Badge } from '@/components/ui/Badge';
@@ -31,26 +32,34 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
 
   const tCal = await getTranslations({ locale, namespace: 'calendar' });
   const tCom = await getTranslations({ locale, namespace: 'common' });
+  const tReg = await getTranslations({ locale, namespace: 'regions' });
 
   const headerList = await headers();
   const cookieStore = await cookies();
   const rawSearchParams = await searchParams;
 
-  const region = resolveActiveRegion({
-    locale,
-    explicitRegion: rawSearchParams.region,
-    cookieRegion: cookieStore.get('xpo_region')?.value,
-    geoRegion: headerList.get('x-xpo-region'),
-  });
+  const rawRegion = rawSearchParams.region;
+  const localeRegion = regionForLocale(locale);
+  const region =
+    localeRegion ??
+    resolveActiveRegion({
+      locale,
+      explicitRegion: rawRegion,
+      cookieRegion: cookieStore.get('xpo_region')?.value,
+      geoRegion: headerList.get('x-xpo-region'),
+    });
+
+  // The edition is part of the URL, not a hidden cookie. A pasted link must
+  // reproduce the same country even after the visitor changes editions.
+  if (!normalizeRegion(rawRegion)) {
+    redirect(`/${locale}/calendar?region=${region}`);
+  }
   const archetype = rawSearchParams.archetype || 'all';
   const initialVenue = rawSearchParams.venue || 'all';
 
   let events: any[] = [];
   try {
-    const whereClause: any = { ...scheduleWhere() };
-    if (region && region !== 'global') {
-      whereClause.venue = { regionId: region };
-    }
+    const whereClause: any = { ...scheduleWhere(), venue: { regionId: region } };
 
     events = await db.event.findMany({
       where: whereClause,
@@ -106,7 +115,7 @@ export default async function CalendarPage({ params, searchParams }: CalendarPag
           <Breadcrumbs items={crumbs} />
           <Badge variant="outline" className="text-xs font-semibold gap-1.5 uppercase px-2.5 py-1">
             <CalendarIcon className="h-3.5 w-3.5 text-primary" />
-            <span>{region.toUpperCase()} {tCal('title') || 'Master Timetable'}</span>
+            <span>{tReg(`${region}.name`)} · {tCal('title') || 'Event Calendar'}</span>
           </Badge>
         </div>
         <BreadcrumbJsonLd items={crumbs} />

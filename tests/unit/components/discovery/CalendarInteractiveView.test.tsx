@@ -64,6 +64,7 @@ const mockMessages: Record<string, Record<string, string>> = {
   },
   regions: {
     upcomingEvents: 'All confirmed events ordered by start date.',
+    'id.name': 'Indonesia',
   },
   archetypes: {},
   discovery: {
@@ -228,7 +229,7 @@ describe('CalendarInteractiveView Component', () => {
     expect(downloadSpy).toHaveBeenCalledWith(
       mockEvents,
       'xpo-id-schedule.ics',
-      'XPO MICE ID Master Timetable'
+      'XPO MICE Indonesia Event Calendar'
     );
   });
 
