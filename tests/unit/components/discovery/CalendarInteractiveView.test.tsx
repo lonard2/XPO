@@ -48,6 +48,11 @@ const mockMessages: Record<string, Record<string, string>> = {
     concluded: 'Concluded',
     liveNow: 'Live now',
     viewRecap: 'View recap',
+    pastEvents: 'Past events',
+    hidePast: 'Hide past events',
+    nextUp: 'Next up',
+    startsInDays: 'Starts in days',
+    endsToday: 'Starts today',
   },
   common: {
     back: 'Back',
@@ -116,6 +121,11 @@ describe('CalendarInteractiveView Component', () => {
     vi.clearAllMocks();
   });
 
+  const expandPastEvents = () => {
+    const button = screen.queryByRole('button', { name: /past events/i });
+    if (button) fireEvent.click(button);
+  };
+
   it("renders discreet occupancy in the month list without links or identity", () => {
     const stub = {
       id: "evt-cal-discreet",
@@ -177,6 +187,7 @@ describe('CalendarInteractiveView Component', () => {
       />
     );
 
+    expandPastEvents();
     expect(screen.getAllByText('Manufacturing Indonesia 2026').length).toBeGreaterThan(0);
     expect(screen.getAllByText('Asia AI Summit 2026').length).toBeGreaterThan(0);
     expect(screen.getAllByText(/August 2026/i).length).toBeGreaterThan(0);
@@ -194,6 +205,7 @@ describe('CalendarInteractiveView Component', () => {
 
     const jiexpoBtn = screen.getByText('JIExpo Kemayoran');
     fireEvent.click(jiexpoBtn);
+    expandPastEvents();
 
     expect(screen.getByText('Manufacturing Indonesia 2026')).toBeInTheDocument();
     expect(screen.queryByText('Asia AI Summit 2026')).not.toBeInTheDocument();
@@ -289,6 +301,7 @@ describe('CalendarInteractiveView Component', () => {
       />
     );
 
+    expandPastEvents();
     const googleLinks = screen.getAllByRole('link', { name: /google calendar:/i });
     const outlookLinks = screen.getAllByRole('link', { name: /outlook 365 web:/i });
 
@@ -399,6 +412,11 @@ describe('CalendarInteractiveView Component', () => {
 
 
 describe('CalendarInteractiveView temporal state', () => {
+  const expandPastEvents = () => {
+    const button = screen.queryByRole('button', { name: /past events/i });
+    if (button) fireEvent.click(button);
+  };
+
   it('gives concluded month cards a recap action instead of a pass CTA', () => {
     const pastEvent: EventSummary = {
       id: 'past-event',
@@ -423,7 +441,55 @@ describe('CalendarInteractiveView temporal state', () => {
       />
     );
 
+    expandPastEvents();
     expect(screen.getAllByText('View recap').length).toBeGreaterThan(0);
     expect(screen.queryByText('View Event & Tickets')).toBeNull();
+  });
+});
+
+
+describe('CalendarInteractiveView schedule order', () => {
+  it('leads with the next attendable event and hides concluded months', () => {
+    const past = {
+      id: 'past',
+      title: 'Past Expo',
+      slug: 'past-expo',
+      archetype: 'INDUSTRIAL_B2B',
+      startDate: new Date('2026-01-10T09:00:00Z'),
+      endDate: new Date('2026-01-12T18:00:00Z'),
+      venueName: 'JIExpo Kemayoran',
+      venueHallName: 'Hall A1',
+      cityName: 'Jakarta',
+      regionCode: 'id',
+      lowestPrice: 0,
+      currency: 'IDR',
+    } as EventSummary;
+    const future = {
+      id: 'future',
+      title: 'Future Expo',
+      slug: 'future-expo',
+      archetype: 'TECH_DEV_SUMMIT',
+      startDate: new Date('2026-12-10T09:00:00Z'),
+      endDate: new Date('2026-12-12T18:00:00Z'),
+      venueName: 'ICE BSD City',
+      venueHallName: 'Nusantara Hall',
+      cityName: 'Tangerang',
+      regionCode: 'id',
+      lowestPrice: 0,
+      currency: 'IDR',
+    } as EventSummary;
+
+    render(
+      <CalendarInteractiveView
+        initialEvents={[past, future]}
+        locale="en"
+        region="id"
+      />
+    );
+
+    expect(screen.getByText('Next up')).toBeInTheDocument();
+    expect(screen.getAllByText('Future Expo').length).toBeGreaterThan(0);
+    expect(screen.queryByText('Past Expo')).toBeNull();
+    expect(screen.getByRole('button', { name: /past events/i })).toBeInTheDocument();
   });
 });

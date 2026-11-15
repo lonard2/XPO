@@ -791,7 +791,13 @@
     "eventsCount": "{count, plural, other {#}} 场活动",
     "concluded": "已结束",
     "liveNow": "进行中",
-    "viewRecap": "查看回顾"
+    "viewRecap": "查看回顾",
+    "nextUp": "即将举行",
+    "startsInDays": "{count}天后开始",
+    "endsToday": "今日开始",
+    "hidePast": "隐藏往期活动",
+    "pastEvents": "往期活动（{count}）",
+    "startsInOneDay": "明天开始"
   },
   "tickets": {
     "bookPass": "预订入场通行证",

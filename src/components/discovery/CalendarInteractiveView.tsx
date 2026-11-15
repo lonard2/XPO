@@ -52,6 +52,12 @@ export interface CalendarInteractiveViewProps {
   initialVenue?: string;
 }
 
+type CalendarMonthGroup = {
+  key: string;
+  monthTitle: string;
+  events: Array<EventSummary | ScheduleStub>;
+};
+
 export function CalendarInteractiveView({
   initialEvents,
   locale,
@@ -79,6 +85,7 @@ export function CalendarInteractiveView({
   // The 22-tile vertical explorer collapses behind a disclosure so the
   // timetable stays the workspace lead; it opens when a category is active.
   const [filtersExpanded, setFiltersExpanded] = React.useState(initialArchetype !== 'all');
+  const [pastExpanded, setPastExpanded] = React.useState(false);
   const exportMenuRef = React.useRef<HTMLDivElement>(null);
   const exportTriggerRef = React.useRef<HTMLButtonElement>(null);
 
@@ -222,7 +229,7 @@ export function CalendarInteractiveView({
 
   // Group filtered events by Year-Month for chronological schedule chunking
   const eventsByMonth = React.useMemo(() => {
-    const groups: { [key: string]: { key: string; monthTitle: string; events: Array<EventSummary | ScheduleStub> } } = {};
+    const groups: { [key: string]: CalendarMonthGroup } = {};
     const sorted = [...filteredEvents].sort(
       (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
     );
@@ -241,6 +248,31 @@ export function CalendarInteractiveView({
     return Object.values(groups);
   }, [filteredEvents, locale]);
 
+  // Current and future months lead; concluded months are available behind one
+  // disclosure instead of being the page's default reading order.
+  const currentMonthGroups = React.useMemo(() => {
+    const now = new Date();
+    const currentMonthStart = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
+    return eventsByMonth.filter((group) => {
+      const [year, month] = group.key.split('-').map(Number);
+      return new Date(year, month - 1, 1).getTime() >= currentMonthStart;
+    });
+  }, [eventsByMonth]);
+
+  const pastMonthGroups = React.useMemo(() => {
+    const now = new Date();
+    const currentMonthStart = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
+    return eventsByMonth.filter((group) => {
+      const [year, month] = group.key.split('-').map(Number);
+      return new Date(year, month - 1, 1).getTime() < currentMonthStart;
+    });
+  }, [eventsByMonth]);
+
+  const pastEventCount = React.useMemo(
+    () => pastMonthGroups.reduce((sum, group) => sum + group.events.length, 0),
+    [pastMonthGroups]
+  );
+
   const timezone = getTimeZoneForRegion(region);
 
   const nextUpcomingEvent = React.useMemo(() => {
@@ -253,6 +285,35 @@ export function CalendarInteractiveView({
     );
     return sorted.find((e) => new Date(e.endDate).getTime() >= now) || sorted[0];
   }, [filteredEvents]);
+
+  // The page's lead answer: the event a delegate can attend right now, or the
+  // next one that opens. Concluded events never qualify.
+  const nextAttendableEvent = React.useMemo(() => {
+    const full = filteredEvents.filter((evt): evt is EventSummary => !isScheduleStub(evt));
+    if (full.length === 0) return null;
+    const now = new Date().getTime();
+    const sorted = [...full].sort(
+      (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+    );
+    const live = sorted.find((event) => {
+      const start = new Date(event.startDate).getTime();
+      const end = new Date(event.endDate).getTime();
+      return start <= now && end >= now;
+    });
+    if (live) return { event: live, live: true };
+    const upcoming = sorted.find((event) => new Date(event.startDate).getTime() > now);
+    return upcoming ? { event: upcoming, live: false } : null;
+  }, [filteredEvents]);
+
+  const nextAttendableDays = nextAttendableEvent
+    ? Math.max(
+        0,
+        Math.ceil(
+          (new Date(nextAttendableEvent.event.startDate).getTime() - Date.now()) /
+            (1000 * 60 * 60 * 24)
+        )
+      )
+    : 0;
 
   // Export handlers: surface failures inline instead of closing silently. The
   // single-event links need a real site origin for the details URL, never the
@@ -325,6 +386,178 @@ export function CalendarInteractiveView({
       ? getArchetypeTokens(selectedArchetype as MiceArchetype)
       : null;
 
+  const renderMonthGroup = (monthGroup: CalendarMonthGroup) => (
+    <div
+      key={monthGroup.key}
+      id={`month-${monthGroup.key}`}
+      className="space-y-4 scroll-mt-24"
+    >
+      {/* Sticky Milestone Header */}
+      <div className="sticky top-14 z-10 bg-background/95 backdrop-blur-sm py-2 border-b border-border/80 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="h-2 w-2 rounded-full bg-primary" />
+          <h3 className="text-sm sm:text-base font-bold text-foreground capitalize">
+            {monthGroup.monthTitle}
+          </h3>
+        </div>
+        <Badge variant="outline" className="text-xs font-semibold">
+          {monthGroup.events.length} {tEvents('title')?.split('&')?.[0]?.trim() || 'Events'}
+        </Badge>
+      </div>
+
+      {/* Event Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        {monthGroup.events.map((evt) => {
+          if (isScheduleStub(evt)) {
+            return (
+              <div
+                key={evt.id}
+                className="flex flex-col justify-between rounded-xl border border-dashed border-border/80 bg-muted/20 p-4 space-y-2"
+              >
+                <span className="text-xs font-semibold text-muted-foreground bg-muted px-2 py-0.5 rounded self-start">
+                  {evt.venueHallName}
+                </span>
+                <p className="text-sm font-bold text-foreground">{tCom('discreetEventLabel')}</p>
+                <p className="text-xs text-muted-foreground">
+                  {formatDateRange(evt.startDate, evt.endDate, locale, timezone)}
+                </p>
+              </div>
+            );
+          }
+          const tokens = getArchetypeTokens(evt.archetype);
+          // Same readable-tone rule as EventCard: raw primaries
+          // fail 4.5:1 on light surfaces for several hues.
+          const labelTones = getReadableArchetypeLabel(tokens.primary);
+          const dateRange = formatDateRange(evt.startDate, evt.endDate, locale, timezone);
+          const temporal = getEventTemporalStatus(evt.startDate, evt.endDate);
+
+          let archetypeTitle = tokens.displayName;
+          try {
+            if (tArch && typeof (tArch as any).raw === 'function') {
+              const raw = (tArch as any).raw(evt.archetype);
+              if (raw?.title) archetypeTitle = raw.title;
+            }
+          } catch {
+            // fallback
+          }
+
+          return (
+            <div
+              key={evt.id}
+              data-temporal={temporal.status.toLowerCase()}
+              className={cn(
+                'group relative flex flex-col justify-between rounded-xl border p-4 transition-all shadow-xs space-y-3',
+                temporal.isPast
+                  ? 'border-border/60 bg-muted/20'
+                  : 'border-border/80 bg-card hover:border-primary/50'
+              )}
+            >
+              <div className="space-y-2">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <Badge
+                      variant="outline"
+                      className="text-xs font-semibold uppercase py-1 text-[var(--archetype-label)] dark:text-[var(--archetype-label-dark)]"
+                      style={{
+                        "--archetype-label": labelTones.light,
+                        "--archetype-label-dark": labelTones.dark,
+                        borderColor: `${tokens.primary}55`,
+                        backgroundColor: `${tokens.primary}12`,
+                      } as React.CSSProperties}
+                    >
+                      {archetypeTitle}
+                    </Badge>
+                    {temporal.isPast && (
+                      <Badge variant="secondary" className="text-xs font-semibold">
+                        {tCal('concluded') || 'Concluded'}
+                      </Badge>
+                    )}
+                    {temporal.isLive && (
+                      <Badge variant="success" className="text-xs font-semibold gap-1">
+                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" aria-hidden="true" />
+                        {tCal('liveNow') || 'Live now'}
+                      </Badge>
+                    )}
+                  </div>
+                  {evt.venueHallName && (
+                    <span className="text-xs font-medium text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
+                      {evt.venueHallName}
+                    </span>
+                  )}
+                </div>
+
+                <h4 className="text-sm font-bold text-foreground hover:text-primary transition-colors line-clamp-2">
+                  <Link
+                    href={`/${locale}/events/${evt.slug}`}
+                    className="after:absolute after:inset-0"
+                  >
+                    {evt.title}
+                  </Link>
+                </h4>
+
+                <div className="space-y-1 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-1.5">
+                    <Building2 className="h-3.5 w-3.5 text-primary/80 shrink-0" />
+                    <span className="truncate">
+                      {evt.venueName} ({evt.cityName})
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-foreground font-medium">
+                    <CalendarIcon className="h-3.5 w-3.5 text-primary shrink-0" />
+                    <span>{dateRange}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-2 border-t border-border/60 flex items-center gap-1.5">
+                <Link
+                  href={`/${locale}/events/${evt.slug}`}
+                  className={buttonVariants({
+                    variant: temporal.isPast ? 'outline' : 'default',
+                    size: 'sm',
+                    className: 'relative z-10 flex-1 gap-1.5 text-xs font-semibold min-h-[44px] sm:min-h-[36px] cursor-pointer',
+                  })}
+                >
+                  {temporal.isPast ? (
+                    <ExternalLink className="h-3.5 w-3.5" />
+                  ) : (
+                    <Ticket className="h-3.5 w-3.5" />
+                  )}
+                  <span>
+                    {temporal.isPast
+                      ? tCal('viewRecap') || 'View recap'
+                      : tTix('viewPass') || 'View Event & Tickets'}
+                  </span>
+                </Link>
+                <a
+                  href={generateGoogleCalendarUrl(evt, eventDetailsOrigin)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${tCal('googleCalendar') || 'Google Calendar'}: ${evt.title}`}
+                  title={tCal('googleCalendar') || 'Google Calendar'}
+                  className="relative z-10 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-border text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                >
+                  <CalendarPlus className="h-4 w-4" />
+                </a>
+                <a
+                  href={generateOutlookWebUrl(evt, eventDetailsOrigin)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${tCal('outlookWeb') || 'Outlook 365 Web'}: ${evt.title}`}
+                  title={tCal('outlookWeb') || 'Outlook 365 Web'}
+                  className="relative z-10 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-border text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                >
+                  <Mail className="h-4 w-4" />
+                </a>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+
+  );
+
   return (
     <div className="space-y-8">
       {/* 1. Interactive Calendar Matrix & Day Timetable Widget (Workspace Lead) */}
@@ -336,7 +569,75 @@ export function CalendarInteractiveView({
         onSelectDate={handleWidgetDateSelect}
       />
 
-      {/* 2. Taxonomy & Filter Controls */}
+      {/* 2. Next up: the present-tense answer before the archive */}
+      {nextAttendableEvent && (
+        <section
+          aria-labelledby="calendar-next-up"
+          className="rounded-2xl border border-primary/20 bg-primary/5 p-4 sm:p-5"
+        >
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div className="space-y-1.5 min-w-0">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-primary">
+                  <CalendarIcon className="h-3.5 w-3.5" aria-hidden="true" />
+                  {tCal('nextUp') || 'Next up'}
+                </span>
+                {nextAttendableEvent.live ? (
+                  <Badge variant="success" className="text-xs font-semibold gap-1">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" aria-hidden="true" />
+                    {tCal('liveNow') || 'Live now'}
+                  </Badge>
+                ) : (
+                  <span className="text-xs font-medium text-muted-foreground">
+                    {nextAttendableDays === 0
+                      ? tCal('endsToday') || 'Starts today'
+                      : nextAttendableDays === 1
+                        ? tCal('startsInOneDay') || 'Starts tomorrow'
+                        : tCal('startsInDays', { count: nextAttendableDays })}
+                  </span>
+                )}
+              </div>
+              <h2
+                id="calendar-next-up"
+                className="text-lg sm:text-xl font-bold tracking-tight text-foreground line-clamp-2"
+              >
+                <Link
+                  href={`/${locale}/events/${nextAttendableEvent.event.slug}`}
+                  className="hover:text-primary transition-colors"
+                >
+                  {nextAttendableEvent.event.title}
+                </Link>
+              </h2>
+              <p className="text-xs sm:text-sm text-muted-foreground">
+                {formatDateRange(
+                  nextAttendableEvent.event.startDate,
+                  nextAttendableEvent.event.endDate,
+                  locale,
+                  timezone
+                )}
+                {' · '}
+                {nextAttendableEvent.event.venueName}
+                {' · '}
+                {nextAttendableEvent.event.venueHallName ||
+                  tEvents('hallDefault') ||
+                  'Main Exhibition Halls'}
+              </p>
+            </div>
+            <Link
+              href={`/${locale}/events/${nextAttendableEvent.event.slug}`}
+              className={buttonVariants({
+                size: 'sm',
+                className: 'shrink-0 gap-1.5 text-xs font-semibold min-h-[44px] sm:min-h-[36px]',
+              })}
+            >
+              <Ticket className="h-3.5 w-3.5" />
+              {tTix('viewPass') || 'View Event & Tickets'}
+            </Link>
+          </div>
+        </section>
+      )}
+
+      {/* 3. Taxonomy & Filter Controls */}
       <div className="space-y-4 pt-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
@@ -668,176 +969,29 @@ export function CalendarInteractiveView({
         {/* Monthly Chunked Event Groups */}
         {eventsByMonth.length > 0 ? (
           <div className="space-y-8">
-            {eventsByMonth.map((monthGroup) => (
-              <div
-                key={monthGroup.key}
-                id={`month-${monthGroup.key}`}
-                className="space-y-4 scroll-mt-24"
-              >
-                {/* Sticky Milestone Header */}
-                <div className="sticky top-14 z-10 bg-background/95 backdrop-blur-sm py-2 border-b border-border/80 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="h-2 w-2 rounded-full bg-primary" />
-                    <h3 className="text-sm sm:text-base font-bold text-foreground capitalize">
-                      {monthGroup.monthTitle}
-                    </h3>
-                  </div>
-                  <Badge variant="outline" className="text-xs font-semibold">
-                    {monthGroup.events.length} {tEvents('title')?.split('&')?.[0]?.trim() || 'Events'}
-                  </Badge>
-                </div>
-
-                {/* Event Cards Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                  {monthGroup.events.map((evt) => {
-                    if (isScheduleStub(evt)) {
-                      return (
-                        <div
-                          key={evt.id}
-                          className="flex flex-col justify-between rounded-xl border border-dashed border-border/80 bg-muted/20 p-4 space-y-2"
-                        >
-                          <span className="text-xs font-semibold text-muted-foreground bg-muted px-2 py-0.5 rounded self-start">
-                            {evt.venueHallName}
-                          </span>
-                          <p className="text-sm font-bold text-foreground">{tCom('discreetEventLabel')}</p>
-                          <p className="text-xs text-muted-foreground">
-                            {formatDateRange(evt.startDate, evt.endDate, locale, timezone)}
-                          </p>
-                        </div>
-                      );
-                    }
-                    const tokens = getArchetypeTokens(evt.archetype);
-                    // Same readable-tone rule as EventCard: raw primaries
-                    // fail 4.5:1 on light surfaces for several hues.
-                    const labelTones = getReadableArchetypeLabel(tokens.primary);
-                    const dateRange = formatDateRange(evt.startDate, evt.endDate, locale, timezone);
-                    const temporal = getEventTemporalStatus(evt.startDate, evt.endDate);
-
-                    let archetypeTitle = tokens.displayName;
-                    try {
-                      if (tArch && typeof (tArch as any).raw === 'function') {
-                        const raw = (tArch as any).raw(evt.archetype);
-                        if (raw?.title) archetypeTitle = raw.title;
-                      }
-                    } catch {
-                      // fallback
-                    }
-
-                    return (
-                      <div
-                        key={evt.id}
-                        data-temporal={temporal.status.toLowerCase()}
-                        className={cn(
-                          'group relative flex flex-col justify-between rounded-xl border p-4 transition-all shadow-xs space-y-3',
-                          temporal.isPast
-                            ? 'border-border/60 bg-muted/20'
-                            : 'border-border/80 bg-card hover:border-primary/50'
-                        )}
-                      >
-                        <div className="space-y-2">
-                          <div className="flex items-start justify-between gap-2">
-                            <div className="flex flex-wrap items-center gap-1.5">
-                              <Badge
-                                variant="outline"
-                                className="text-xs font-semibold uppercase py-1 text-[var(--archetype-label)] dark:text-[var(--archetype-label-dark)]"
-                                style={{
-                                  "--archetype-label": labelTones.light,
-                                  "--archetype-label-dark": labelTones.dark,
-                                  borderColor: `${tokens.primary}55`,
-                                  backgroundColor: `${tokens.primary}12`,
-                                } as React.CSSProperties}
-                              >
-                                {archetypeTitle}
-                              </Badge>
-                              {temporal.isPast && (
-                                <Badge variant="secondary" className="text-xs font-semibold">
-                                  {tCal('concluded') || 'Concluded'}
-                                </Badge>
-                              )}
-                              {temporal.isLive && (
-                                <Badge variant="success" className="text-xs font-semibold gap-1">
-                                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" aria-hidden="true" />
-                                  {tCal('liveNow') || 'Live now'}
-                                </Badge>
-                              )}
-                            </div>
-                            {evt.venueHallName && (
-                              <span className="text-xs font-medium text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
-                                {evt.venueHallName}
-                              </span>
-                            )}
-                          </div>
-
-                          <h4 className="text-sm font-bold text-foreground hover:text-primary transition-colors line-clamp-2">
-                            <Link
-                              href={`/${locale}/events/${evt.slug}`}
-                              className="after:absolute after:inset-0"
-                            >
-                              {evt.title}
-                            </Link>
-                          </h4>
-
-                          <div className="space-y-1 text-xs text-muted-foreground">
-                            <div className="flex items-center gap-1.5">
-                              <Building2 className="h-3.5 w-3.5 text-primary/80 shrink-0" />
-                              <span className="truncate">
-                                {evt.venueName} ({evt.cityName})
-                              </span>
-                            </div>
-                            <div className="flex items-center gap-1.5 text-foreground font-medium">
-                              <CalendarIcon className="h-3.5 w-3.5 text-primary shrink-0" />
-                              <span>{dateRange}</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="pt-2 border-t border-border/60 flex items-center gap-1.5">
-                          <Link
-                            href={`/${locale}/events/${evt.slug}`}
-                            className={buttonVariants({
-                              variant: temporal.isPast ? 'outline' : 'default',
-                              size: 'sm',
-                              className: 'relative z-10 flex-1 gap-1.5 text-xs font-semibold min-h-[44px] sm:min-h-[36px] cursor-pointer',
-                            })}
-                          >
-                            {temporal.isPast ? (
-                              <ExternalLink className="h-3.5 w-3.5" />
-                            ) : (
-                              <Ticket className="h-3.5 w-3.5" />
-                            )}
-                            <span>
-                              {temporal.isPast
-                                ? tCal('viewRecap') || 'View recap'
-                                : tTix('viewPass') || 'View Event & Tickets'}
-                            </span>
-                          </Link>
-                          <a
-                            href={generateGoogleCalendarUrl(evt, eventDetailsOrigin)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label={`${tCal('googleCalendar') || 'Google Calendar'}: ${evt.title}`}
-                            title={tCal('googleCalendar') || 'Google Calendar'}
-                            className="relative z-10 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-border text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
-                          >
-                            <CalendarPlus className="h-4 w-4" />
-                          </a>
-                          <a
-                            href={generateOutlookWebUrl(evt, eventDetailsOrigin)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label={`${tCal('outlookWeb') || 'Outlook 365 Web'}: ${evt.title}`}
-                            title={tCal('outlookWeb') || 'Outlook 365 Web'}
-                            className="relative z-10 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-border text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
-                          >
-                            <Mail className="h-4 w-4" />
-                          </a>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
+            {currentMonthGroups.map(renderMonthGroup)}
+            {pastMonthGroups.length > 0 && (
+              <div className="space-y-4 pt-2">
+                <Button
+                  variant="outline"
+                  onClick={() => setPastExpanded((prev) => !prev)}
+                  aria-expanded={pastExpanded}
+                  className="gap-1.5 text-xs font-semibold cursor-pointer min-h-[44px]"
+                >
+                  <RotateCcw className="h-3.5 w-3.5" />
+                  <span>
+                    {pastExpanded
+                      ? tCal('hidePast') || 'Hide past events'
+                      : tCal('pastEvents', { count: pastEventCount }) ||
+                        `Past events (${pastEventCount})`}
+                  </span>
+                  <ChevronDown
+                    className={cn('h-3.5 w-3.5 transition-transform duration-200', pastExpanded && 'rotate-180')}
+                  />
+                </Button>
+                {pastExpanded && pastMonthGroups.map(renderMonthGroup)}
               </div>
-            ))}
+            )}
           </div>
         ) : (
           <div className="rounded-2xl border border-dashed border-border/80 p-8 text-center space-y-3 bg-muted/10">

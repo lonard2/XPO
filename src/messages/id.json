@@ -791,7 +791,13 @@
     "eventsCount": "{count, plural, other {# acara}}",
     "concluded": "Selesai",
     "liveNow": "Sedang berlangsung",
-    "viewRecap": "Lihat ringkasan"
+    "viewRecap": "Lihat ringkasan",
+    "nextUp": "Berikutnya",
+    "startsInDays": "Mulai dalam {count} hari",
+    "endsToday": "Mulai hari ini",
+    "hidePast": "Sembunyikan acara lampau",
+    "pastEvents": "Acara lampau ({count})",
+    "startsInOneDay": "Mulai besok"
   },
   "tickets": {
     "bookPass": "Pesan Pas Masuk",

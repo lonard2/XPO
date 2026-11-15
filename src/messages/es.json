@@ -791,7 +791,13 @@
     "eventsCount": "{count, plural, one {# evento} other {# eventos}}",
     "concluded": "Finalizado",
     "liveNow": "En curso",
-    "viewRecap": "Ver resumen"
+    "viewRecap": "Ver resumen",
+    "nextUp": "Próximamente",
+    "startsInDays": "Empieza en {count} días",
+    "endsToday": "Empieza hoy",
+    "hidePast": "Ocultar eventos pasados",
+    "pastEvents": "Eventos pasados ({count})",
+    "startsInOneDay": "Empieza mañana"
   },
   "tickets": {
     "bookPass": "Reservar Pase de Entrada",
