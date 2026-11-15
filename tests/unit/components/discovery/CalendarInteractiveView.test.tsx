@@ -45,6 +45,9 @@ const mockMessages: Record<string, Record<string, string>> = {
     copyTitle: 'Copy Text Summary',
     googleCalendar: 'Google Calendar',
     outlookWeb: 'Outlook 365 Web',
+    concluded: 'Concluded',
+    liveNow: 'Live now',
+    viewRecap: 'View recap',
   },
   common: {
     back: 'Back',
@@ -391,5 +394,36 @@ describe('CalendarInteractiveView Component', () => {
     (items[0] as HTMLElement).focus();
     fireEvent.keyDown(menu, { key: 'ArrowDown' });
     expect(document.activeElement).toBe(items[1]);
+  });
+});
+
+
+describe('CalendarInteractiveView temporal state', () => {
+  it('gives concluded month cards a recap action instead of a pass CTA', () => {
+    const pastEvent: EventSummary = {
+      id: 'past-event',
+      title: 'Concluded Expo 2026',
+      slug: 'concluded-expo-2026',
+      archetype: 'INDUSTRIAL_B2B',
+      startDate: new Date('2026-01-10T09:00:00Z'),
+      endDate: new Date('2026-01-12T18:00:00Z'),
+      venueName: 'JIExpo Kemayoran',
+      venueHallName: 'Hall A1',
+      cityName: 'Jakarta',
+      regionCode: 'id',
+      lowestPrice: 0,
+      currency: 'IDR',
+    };
+
+    render(
+      <CalendarInteractiveView
+        initialEvents={[pastEvent]}
+        locale="en"
+        region="id"
+      />
+    );
+
+    expect(screen.getAllByText('View recap').length).toBeGreaterThan(0);
+    expect(screen.queryByText('View Event & Tickets')).toBeNull();
   });
 });

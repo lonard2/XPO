@@ -789,7 +789,9 @@
     "eventsCountZero": "No events",
     "eventsCountOne": "1 event",
     "eventsCount": "{count, plural, one {# event} other {# events}}",
-    "concluded": "Concluded"
+    "concluded": "Concluded",
+    "liveNow": "Live now",
+    "viewRecap": "View recap"
   },
   "tickets": {
     "bookPass": "Book Ticket Pass",

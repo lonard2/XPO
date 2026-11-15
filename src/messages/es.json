@@ -789,7 +789,9 @@
     "eventsCountZero": "Sin eventos",
     "eventsCountOne": "1 evento",
     "eventsCount": "{count, plural, one {# evento} other {# eventos}}",
-    "concluded": "Finalizado"
+    "concluded": "Finalizado",
+    "liveNow": "En curso",
+    "viewRecap": "Ver resumen"
   },
   "tickets": {
     "bookPass": "Reservar Pase de Entrada",

@@ -789,7 +789,9 @@
     "eventsCountZero": "暂无活动",
     "eventsCountOne": "1 场活动",
     "eventsCount": "{count, plural, other {#}} 场活动",
-    "concluded": "已结束"
+    "concluded": "已结束",
+    "liveNow": "进行中",
+    "viewRecap": "查看回顾"
   },
   "tickets": {
     "bookPass": "预订入场通行证",

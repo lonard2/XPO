@@ -789,7 +789,9 @@
     "eventsCountZero": "Tidak ada acara",
     "eventsCountOne": "1 acara",
     "eventsCount": "{count, plural, other {# acara}}",
-    "concluded": "Selesai"
+    "concluded": "Selesai",
+    "liveNow": "Sedang berlangsung",
+    "viewRecap": "Lihat ringkasan"
   },
   "tickets": {
     "bookPass": "Pesan Pas Masuk",

@@ -26,7 +26,11 @@ import { Badge } from '@/components/ui/Badge';
 import { Button, buttonVariants } from '@/components/ui/Button';
 import { EventCalendarWidget } from '@/components/discovery/EventCalendarWidget';
 import { EventCategoryPills } from '@/components/discovery/EventCategoryPills';
-import { formatDateRange, getTimeZoneForRegion } from '@/lib/i18n/formatters';
+import {
+  formatDateRange,
+  getEventTemporalStatus,
+  getTimeZoneForRegion,
+} from '@/lib/i18n/formatters';
 import { getArchetypeTokens, getReadableArchetypeLabel, type MiceArchetype } from '@/lib/theming';
 import { archTitle } from '@/lib/i18n/categories';
 import { type EventSummary } from '@/types/discovery';
@@ -707,6 +711,7 @@ export function CalendarInteractiveView({
                     // fail 4.5:1 on light surfaces for several hues.
                     const labelTones = getReadableArchetypeLabel(tokens.primary);
                     const dateRange = formatDateRange(evt.startDate, evt.endDate, locale, timezone);
+                    const temporal = getEventTemporalStatus(evt.startDate, evt.endDate);
 
                     let archetypeTitle = tokens.displayName;
                     try {
@@ -721,22 +726,41 @@ export function CalendarInteractiveView({
                     return (
                       <div
                         key={evt.id}
-                        className="group relative flex flex-col justify-between rounded-xl border border-border/80 bg-card p-4 hover:border-primary/50 transition-all shadow-xs space-y-3"
+                        data-temporal={temporal.status.toLowerCase()}
+                        className={cn(
+                          'group relative flex flex-col justify-between rounded-xl border p-4 transition-all shadow-xs space-y-3',
+                          temporal.isPast
+                            ? 'border-border/60 bg-muted/20'
+                            : 'border-border/80 bg-card hover:border-primary/50'
+                        )}
                       >
                         <div className="space-y-2">
-                          <div className="flex items-center justify-between gap-2">
-                            <Badge
-                              variant="outline"
-                              className="text-xs font-semibold uppercase text-[var(--archetype-label)] dark:text-[var(--archetype-label-dark)]"
-                              style={{
-                                "--archetype-label": labelTones.light,
-                                "--archetype-label-dark": labelTones.dark,
-                                borderColor: `${tokens.primary}55`,
-                                backgroundColor: `${tokens.primary}12`,
-                              } as React.CSSProperties}
-                            >
-                              {archetypeTitle}
-                            </Badge>
+                          <div className="flex items-start justify-between gap-2">
+                            <div className="flex flex-wrap items-center gap-1.5">
+                              <Badge
+                                variant="outline"
+                                className="text-xs font-semibold uppercase py-1 text-[var(--archetype-label)] dark:text-[var(--archetype-label-dark)]"
+                                style={{
+                                  "--archetype-label": labelTones.light,
+                                  "--archetype-label-dark": labelTones.dark,
+                                  borderColor: `${tokens.primary}55`,
+                                  backgroundColor: `${tokens.primary}12`,
+                                } as React.CSSProperties}
+                              >
+                                {archetypeTitle}
+                              </Badge>
+                              {temporal.isPast && (
+                                <Badge variant="secondary" className="text-xs font-semibold">
+                                  {tCal('concluded') || 'Concluded'}
+                                </Badge>
+                              )}
+                              {temporal.isLive && (
+                                <Badge variant="success" className="text-xs font-semibold gap-1">
+                                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" aria-hidden="true" />
+                                  {tCal('liveNow') || 'Live now'}
+                                </Badge>
+                              )}
+                            </div>
                             {evt.venueHallName && (
                               <span className="text-xs font-medium text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
                                 {evt.venueHallName}
@@ -744,7 +768,7 @@ export function CalendarInteractiveView({
                             )}
                           </div>
 
-                          <h4 className="text-sm font-bold text-foreground hover:text-primary transition-colors line-clamp-1">
+                          <h4 className="text-sm font-bold text-foreground hover:text-primary transition-colors line-clamp-2">
                             <Link
                               href={`/${locale}/events/${evt.slug}`}
                               className="after:absolute after:inset-0"
@@ -771,12 +795,21 @@ export function CalendarInteractiveView({
                           <Link
                             href={`/${locale}/events/${evt.slug}`}
                             className={buttonVariants({
+                              variant: temporal.isPast ? 'outline' : 'default',
                               size: 'sm',
                               className: 'relative z-10 flex-1 gap-1.5 text-xs font-semibold min-h-[44px] sm:min-h-[36px] cursor-pointer',
                             })}
                           >
-                            <Ticket className="h-3.5 w-3.5" />
-                            <span>{tTix('viewPass') || 'View Event & Tickets'}</span>
+                            {temporal.isPast ? (
+                              <ExternalLink className="h-3.5 w-3.5" />
+                            ) : (
+                              <Ticket className="h-3.5 w-3.5" />
+                            )}
+                            <span>
+                              {temporal.isPast
+                                ? tCal('viewRecap') || 'View recap'
+                                : tTix('viewPass') || 'View Event & Tickets'}
+                            </span>
                           </Link>
                           <a
                             href={generateGoogleCalendarUrl(evt, eventDetailsOrigin)}
