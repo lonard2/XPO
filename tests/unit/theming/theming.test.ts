@@ -298,3 +298,20 @@ describe("Contrast helpers for arbitrary colour surfaces", () => {
     expect(getContrastTextColor(tokens.primary)).toBe("#0f172a");
   });
 });
+
+describe("Archetype action contrast", () => {
+  it("keeps every archetype action pair at AA for small text", () => {
+    for (const archetype of ARCHETYPE_LIST) {
+      const vars = getArchetypeCssVariables(archetype);
+      expect(
+        getContrastRatio(vars["--archetype-ink"], vars["--archetype-action"])
+      ).toBeGreaterThanOrEqual(4.5);
+    }
+  });
+
+  it("puts dark ink on the Sports & Outdoor orange instead of white", () => {
+    const vars = getArchetypeCssVariables("SPORTS_OUTDOOR");
+    expect(vars["--archetype-ink"]).toBe("#0f172a");
+    expect(vars["--archetype-action"]).toBe("#ea580c");
+  });
+});

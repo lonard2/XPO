@@ -87,6 +87,8 @@
 
     /* Dynamic Archetype Fallbacks */
     --archetype-primary: #2563eb;
+    --archetype-action: #2563eb;
+    --archetype-ink: #ffffff;
     --archetype-accent: #0ea5e9;
     --archetype-bg: #f8fafc;
     --archetype-surface: #ffffff;
@@ -145,6 +147,8 @@
     /* Dark surfaces need a lighter archetype ink: the light-mode #2563eb only reaches
        3.5:1 against --archetype-surface. Themed event views override this inline. */
     --archetype-primary: #60a5fa;
+    --archetype-action: #60a5fa;
+    --archetype-ink: #0f172a;
   }
 
   .high-contrast {

@@ -639,7 +639,7 @@ export function EventPageShell({
                 size="lg"
                 variant="archetype"
                 onClick={() => handleOpenCheckout()}
-                className="hidden md:inline-flex gap-2 font-semibold shadow-lg text-white cursor-pointer min-h-[44px]"
+                className="hidden md:inline-flex gap-2 font-semibold shadow-lg cursor-pointer min-h-[44px]"
               >
                 <Ticket className="h-4 w-4" aria-hidden="true" />
                 {tEvents("reservePasses") || "Reserve Passes & Tickets"}
@@ -670,7 +670,7 @@ export function EventPageShell({
       </header>
 
       {/* 3. Sub-Navigation Tabs Bar (outside the header: sticky works) */}
-      <div className="border-t border-white/10 bg-black/40 backdrop-blur-md sticky top-16 z-30">
+      <div className="border-t border-border bg-card/95 backdrop-blur-md sticky top-16 z-30">
         <div className="container relative">
           <nav className="flex items-center gap-1 sm:gap-2 overflow-x-auto py-2.5 pr-12 md:pr-0 scrollbar-none" aria-label={tEvents("sectionsAria")}>
             <button
@@ -679,8 +679,8 @@ export function EventPageShell({
               className={cn(
                 "flex items-center gap-2 px-3.5 py-2.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[44px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
                 activeTab === "overview"
-                  ? "bg-white/20 text-white shadow-xs border border-white/30"
-                  : "text-slate-300 hover:text-white hover:bg-white/10"
+                  ? "bg-foreground/10 text-foreground shadow-xs border border-border"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
               )}
               aria-current={activeTab === "overview" ? "true" : undefined}
             >
@@ -694,15 +694,15 @@ export function EventPageShell({
               className={cn(
                 "flex items-center gap-2 px-3.5 py-2.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[44px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
                 activeTab === "agenda"
-                  ? "bg-white/20 text-white shadow-xs border border-white/30"
-                  : "text-slate-300 hover:text-white hover:bg-white/10"
+                  ? "bg-foreground/10 text-foreground shadow-xs border border-border"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
               )}
               aria-current={activeTab === "agenda" ? "true" : undefined}
             >
               <Clock className="h-4 w-4" />
               <span>{tEvents("agenda") || "Agenda & Timetable"}</span>
               {agendaItems.length > 0 && (
-                <span className="flex h-5 px-1.5 items-center justify-center rounded-full bg-white/20 text-xs font-mono">
+                <span className="flex h-5 px-1.5 items-center justify-center rounded-full bg-foreground/10 text-foreground text-xs font-mono">
                   {agendaItems.length}
                 </span>
               )}
@@ -716,15 +716,15 @@ export function EventPageShell({
               className={cn(
                 "flex items-center gap-2 px-3.5 py-2.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[44px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
                 activeTab === "floorMap"
-                  ? "bg-white/20 text-white shadow-xs border border-white/30"
-                  : "text-slate-300 hover:text-white hover:bg-white/10"
+                  ? "bg-foreground/10 text-foreground shadow-xs border border-border"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
               )}
               aria-current={activeTab === "floorMap" ? "true" : undefined}
             >
               <MapIcon className="h-4 w-4" />
               <span>{tEvents("floorMap") || "Floor Map & Halls"}</span>
               {booths.length > 0 && (
-                <span className="flex h-5 px-1.5 items-center justify-center rounded-full bg-white/20 text-xs font-mono">
+                <span className="flex h-5 px-1.5 items-center justify-center rounded-full bg-foreground/10 text-foreground text-xs font-mono">
                   {booths.length}
                 </span>
               )}
@@ -737,15 +737,15 @@ export function EventPageShell({
               className={cn(
                 "flex items-center gap-2 px-3.5 py-2.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[44px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
                 activeTab === "tickets"
-                  ? "bg-white/20 text-white shadow-xs border border-white/30"
-                  : "text-slate-300 hover:text-white hover:bg-white/10"
+                  ? "bg-foreground/10 text-foreground shadow-xs border border-border"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
               )}
               aria-current={activeTab === "tickets" ? "true" : undefined}
             >
               <Ticket className="h-4 w-4" />
               <span>{tEvents("tickets") || "Ticket Passes"}</span>
               {ticketTiers.length > 0 && (
-                <span className="flex h-5 px-1.5 items-center justify-center rounded-full bg-white/20 text-xs font-mono">
+                <span className="flex h-5 px-1.5 items-center justify-center rounded-full bg-foreground/10 text-foreground text-xs font-mono">
                   {ticketTiers.length}
                 </span>
               )}
@@ -754,7 +754,7 @@ export function EventPageShell({
           {/* Mobile edge fade: signals that the tab rail scrolls instead of clipping silently. */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-black/70 to-transparent md:hidden"
+            className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-card to-transparent md:hidden"
           />
         </div>
       </div>

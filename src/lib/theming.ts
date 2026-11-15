@@ -862,8 +862,14 @@ export function getArchetypeCssVariables(
   overrides?: BrandingConfig
 ): Record<string, string> {
   const tokens = getArchetypeTokens(archetype, overrides);
+  // Identity colour is chosen for recognition, not legibility. The action pair
+  // keeps the hue but nudges the surface until its ink reaches 4.5:1, so a pass
+  // CTA is readable without turning the archetype into a neutral button.
+  const action = getReadableBadgeColors(tokens.primary);
   return {
     "--archetype-primary": tokens.primary,
+    "--archetype-action": action.background,
+    "--archetype-ink": action.color,
     "--archetype-accent": tokens.accent,
     "--archetype-bg": tokens.background,
     "--archetype-surface": tokens.surface,
