@@ -82,11 +82,10 @@ export function MajorVenuesUpcomingSection({
     ...activeVenues,
     ...venues.filter((venue) => attendableEventsFor(venue).length === 0),
   ];
-  const visibleVenues = showAllVenues
-    ? orderedVenues
-    : orderedVenues.slice(0, Math.min(Math.max(activeVenues.length + 1, 3), 6));
+  const hasMobileOverflow = orderedVenues.length > 3;
+  const hasDesktopOverflow = orderedVenues.length > 6;
 
-  const renderDirectoryRow = (venue: VenueWithEvents) => {
+  const renderDirectoryRow = (venue: VenueWithEvents, index: number) => {
     const nextEvent = attendableEventsFor(venue)[0];
     const venueType = normalizeVenueType(venue.type);
     const spaceCount = countSpaces(venue.halls, venueType);
@@ -100,7 +99,14 @@ export function MajorVenuesUpcomingSection({
       : null;
 
     return (
-      <li key={venue.id} className="border-b border-border/60 last:border-0">
+      <li
+        key={venue.id}
+        className={cn(
+          "border-b border-border/60 last:border-0",
+          !showAllVenues && index >= 6 && "hidden",
+          !showAllVenues && index >= 3 && index < 6 && "hidden md:block"
+        )}
+      >
         <Link
           href={`/${locale}/venues/${venue.slug}`}
           className="flex min-h-[64px] flex-col gap-1 px-4 py-3 transition-colors hover:bg-muted/30 md:grid md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:items-center md:gap-4"
@@ -375,9 +381,9 @@ export function MajorVenuesUpcomingSection({
               {orderedVenues.length}
             </span>
           </div>
-          <ul>{visibleVenues.map(renderDirectoryRow)}</ul>
-          {visibleVenues.length < orderedVenues.length && (
-            <div className="border-t border-border/70 p-2">
+          <ul>{orderedVenues.map((venue, index) => renderDirectoryRow(venue, index))}</ul>
+          {(hasMobileOverflow || hasDesktopOverflow) && (
+            <div className={cn("border-t border-border/70 p-2", !hasDesktopOverflow && "md:hidden")}>
               <button
                 type="button"
                 onClick={() => setShowAllVenues((current) => !current)}

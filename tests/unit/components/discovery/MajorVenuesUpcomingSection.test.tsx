@@ -326,7 +326,7 @@ describe('MajorVenuesUpcomingSection', () => {
     expect(screen.queryByText(/0 Halls/i)).toBeNull();
   });
 
-  it('shows a compact directory first and reveals the rest on demand', () => {
+  it('hides the fourth row on mobile and the seventh row on desktop until expanded', () => {
     const manyQuiet: VenueWithEvents[] = Array.from({ length: 9 }, (_, index) => ({
       ...concludedOnlyVenues[0],
       id: `quiet-${index}`,
@@ -342,13 +342,15 @@ describe('MajorVenuesUpcomingSection', () => {
       />
     );
 
-    expect(
-      container.querySelectorAll('[data-venue-directory] li').length
-    ).toBe(3);
+    const rows = container.querySelectorAll('[data-venue-directory] li');
+    expect(rows.length).toBe(9);
+    expect(rows[2].className).not.toContain('hidden');
+    expect(rows[3].className).toContain('hidden md:block');
+    expect(rows[6].className).toContain('hidden');
+
     fireEvent.click(screen.getByRole('button', { name: /Show all 9 venues/i }));
-    expect(
-      container.querySelectorAll('[data-venue-directory] li').length
-    ).toBe(9);
+    expect(rows[3].className).not.toContain('hidden md:block');
+    expect(rows[6].className).not.toContain('hidden');
   });
 
   it('returns null gracefully when empty venues array is provided', () => {
