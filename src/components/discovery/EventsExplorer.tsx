@@ -21,7 +21,7 @@ import { FacetedFilterBar } from '@/components/discovery/FacetedFilterBar';
 import { FilterSidebar } from '@/components/discovery/FilterSidebar';
 import { EventCompareDialog } from '@/components/discovery/EventCompareDialog';
 import { useTranslations } from 'next-intl';
-import { matchesDateRange } from '@/lib/discovery/dateFilters';
+import { DATE_RANGE_IDS, matchesDateRange } from '@/lib/discovery/dateFilters';
 import { type DiscoveryEvent, type FilterState } from '@/types/discovery';
 
 export interface EventsExplorerProps {
@@ -306,23 +306,59 @@ export function EventsExplorer({
       });
   }, [initialEvents, filters, sortBy]);
 
-  // Compute category / region counts
+  // Facet counts are scoped: each group relaxes its own selection so the rail
+  // reports what is reachable without the current choice, not global inventory.
   const categoryCounts = React.useMemo(() => {
     const archetypes: Record<string, number> = {};
-    const regions: Record<string, number> = { all: initialEvents.length, id: 0, jp: 0, global: 0 };
+    const regions: Record<string, number> = { all: 0, id: 0, jp: 0, global: 0 };
+    const formats: Record<string, number> = { IN_PERSON: 0, HYBRID: 0, VIRTUAL: 0 };
+    const scales: Record<string, number> = {
+      GLOBAL_MEGA: 0,
+      LARGE: 0,
+      MEDIUM: 0,
+      EXECUTIVE: 0,
+    };
+    const cities: Record<string, number> = {};
+    const dates: Record<string, number> = {};
 
     for (const evt of initialEvents) {
-      const arch = evt.archetype.toUpperCase();
-      archetypes[arch] = (archetypes[arch] || 0) + 1;
+      if (matchesFilters(evt, filters, 'region')) {
+        regions.all += 1;
+        const reg = (evt.region?.code || evt.regionId || '').toLowerCase();
+        if (reg === 'id') regions.id += 1;
+        if (reg === 'jp') regions.jp += 1;
+        if (reg === 'gl' || reg === 'global') regions.global += 1;
+      }
 
-      const reg = (evt.region?.code || evt.regionId || '').toLowerCase();
-      if (reg === 'id') regions.id++;
-      if (reg === 'jp') regions.jp++;
-      if (reg === 'gl' || reg === 'global') regions.global++;
+      if (matchesFilters(evt, filters, 'archetype')) {
+        const arch = evt.archetype.toUpperCase();
+        archetypes[arch] = (archetypes[arch] || 0) + 1;
+      }
+
+      if (matchesFilters(evt, filters, 'format')) {
+        const format = evt.format.toUpperCase();
+        formats[format] = (formats[format] || 0) + 1;
+      }
+
+      if (matchesFilters(evt, filters, 'scale')) {
+        const scale = evt.scale.toUpperCase();
+        scales[scale] = (scales[scale] || 0) + 1;
+      }
+
+      if (matchesFilters(evt, filters, 'city') && evt.venue?.city) {
+        const city = evt.venue.city;
+        cities[city] = (cities[city] || 0) + 1;
+      }
+
+      for (const dateId of DATE_RANGE_IDS) {
+        if (matchesFilters(evt, { ...filters, dateRange: dateId })) {
+          dates[dateId] = (dates[dateId] || 0) + 1;
+        }
+      }
     }
 
-    return { archetypes, regions };
-  }, [initialEvents]);
+    return { archetypes, regions, formats, scales, cities, dates };
+  }, [initialEvents, filters]);
 
   // Compute distinct available cities from events, scoped to active region
   const availableCities = React.useMemo(() => {
@@ -352,6 +388,59 @@ export function EventsExplorer({
   // context once the delegate explicitly chooses another region or all regions.
   const regionIsEditionContext = Boolean(regionIsEdition) && filters.region === editionRegion;
   const editionContextLabel = filters.region === 'all' ? null : editionLabel;
+
+  // When the combination yields nothing, name the one filter that would restore
+  // results instead of blaming "keywords" unconditionally.
+  const nearestMatch = React.useMemo(() => {
+    if (filteredAndSortedEvents.length > 0) return null;
+
+    const keys: Array<keyof FilterState> = [
+      'keyword',
+      'region',
+      'city',
+      'archetype',
+      'format',
+      'scale',
+      'dateRange',
+    ];
+    const isActive = (key: keyof FilterState) => {
+      if (key === 'keyword') return filters.keyword.trim().length > 0;
+      if (key === 'region') return filters.region !== 'all' && !regionIsEditionContext;
+      if (key === 'dateRange') {
+        return filters.dateRange !== 'all' && filters.dateRange !== defaultDateRange;
+      }
+      return filters[key] !== 'all';
+    };
+
+    for (const key of keys) {
+      if (!isActive(key)) continue;
+      const relaxed: FilterState = {
+        ...filters,
+        [key]: key === 'keyword' ? '' : 'all',
+      };
+      const count = initialEvents.filter((event) => matchesFilters(event, relaxed)).length;
+      if (count > 0) return { key, count };
+    }
+    return null;
+  }, [
+    filteredAndSortedEvents.length,
+    initialEvents,
+    filters,
+    regionIsEditionContext,
+    defaultDateRange,
+  ]);
+
+  const nearestFilterLabel = nearestMatch
+    ? {
+        keyword: tDisc('filterByKeyword') || 'Keyword Search',
+        region: tDisc('filterByRegion') || 'Country Edition',
+        city: tDisc('city') || 'City',
+        archetype: tDisc('filterByArchetype') || 'Event Category',
+        format: tDisc('format') || 'Format',
+        scale: tDisc('scale') || 'Scale',
+        dateRange: tDisc('dateRange') || 'Date Range',
+      }[nearestMatch.key]
+    : '';
 
   const compareEvents = React.useMemo(
     () =>
@@ -413,6 +502,14 @@ export function EventsExplorer({
                   <p className="text-xs sm:text-sm text-muted-foreground">
                     {tDisc('noMatchingDesc') || 'We could not find any events matching your selected criteria. Try adjusting keywords or clearing active filters.'}
                   </p>
+                  {nearestMatch && (
+                    <p className="text-xs font-medium text-foreground">
+                      {tDisc('nearestMatch', {
+                        count: nearestMatch.count,
+                        filter: nearestFilterLabel,
+                      })}
+                    </p>
+                  )}
                 </div>
                 <Button
                   variant="outline"

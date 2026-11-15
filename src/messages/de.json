@@ -455,7 +455,8 @@
     "compareAdded": "{title} wurde zum Vergleich hinzugefügt.",
     "compareRemoved": "{title} wurde aus dem Vergleich entfernt.",
     "compareFull": "Der Vergleich ist voll (4 von 4). Entfernen Sie eine Veranstaltung, um eine weitere hinzuzufügen.",
-    "compareSelectTwo": "Wählen Sie mindestens zwei Veranstaltungen zum Vergleichen."
+    "compareSelectTwo": "Wählen Sie mindestens zwei Veranstaltungen zum Vergleichen.",
+    "nearestMatch": "Ohne den Filter {filter} passen {count} Messen."
   },
   "events": {
     "title": "Messeverzeichnis & Kalender",

@@ -406,3 +406,21 @@ describe('Discovery Component: comparison surface', () => {
     expect(within(dialog).getAllByRole('link', { name: /View event/i })).toHaveLength(1);
   });
 });
+
+
+describe('Discovery Component: scoped facet counts', () => {
+  it('disables empty facets and names the filter that would restore results', () => {
+    render(
+      <EventsExplorer
+        initialEvents={FALLBACK_EVENTS}
+        locale="en"
+        initialFilters={{ dateRange: 'all', format: 'VIRTUAL' }}
+      />
+    );
+
+    expect(
+      screen.getByText(/match without the Event Format filter/i)
+    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /japan/i })).toBeDisabled();
+  });
+});

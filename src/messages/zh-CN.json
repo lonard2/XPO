@@ -455,7 +455,8 @@
     "compareAdded": "已将{title}加入比较。",
     "compareRemoved": "已将{title}移出比较。",
     "compareFull": "比较已满（4/4）。请移除一个活动后再添加。",
-    "compareSelectTwo": "请至少选择两个活动进行比较。"
+    "compareSelectTwo": "请至少选择两个活动进行比较。",
+    "nearestMatch": "移除{filter}筛选后有{count}个活动符合条件。"
   },
   "events": {
     "title": "展会名录与日程",

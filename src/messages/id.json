@@ -455,7 +455,8 @@
     "compareAdded": "{title} ditambahkan ke perbandingan.",
     "compareRemoved": "{title} dihapus dari perbandingan.",
     "compareFull": "Perbandingan penuh (4 dari 4). Hapus satu acara untuk menambah.",
-    "compareSelectTwo": "Pilih minimal dua acara untuk dibandingkan."
+    "compareSelectTwo": "Pilih minimal dua acara untuk dibandingkan.",
+    "nearestMatch": "{count} pameran cocok tanpa filter {filter}."
   },
   "events": {
     "title": "Direktori Acara & Jadwal",

@@ -455,7 +455,8 @@
     "compareAdded": "{title} added to comparison.",
     "compareRemoved": "{title} removed from comparison.",
     "compareFull": "Comparison is full (4 of 4). Remove an event to add another.",
-    "compareSelectTwo": "Select at least two events to compare."
+    "compareSelectTwo": "Select at least two events to compare.",
+    "nearestMatch": "{count} exhibitions match without the {filter} filter."
   },
   "events": {
     "title": "Event Directory & Timetable",

@@ -31,6 +31,8 @@ export interface FilterSidebarProps {
     regions?: Record<string, number>;
     formats?: Record<string, number>;
     scales?: Record<string, number>;
+    cities?: Record<string, number>;
+    dates?: Record<string, number>;
   };
   /** The edition region is context, not a user filter. */
   regionIsEdition?: boolean;
@@ -193,16 +195,20 @@ export function FilterSidebar({
           {regionalHubs.map((hub) => {
             const isSelected = filters.region === hub.id;
             const count = counts?.regions?.[hub.id];
+            const isUnavailable = count === 0 && hub.id !== 'all' && !isSelected;
             return (
               <button
                 key={hub.id}
                 type="button"
                 onClick={() => handleFilterChange('region', hub.id)}
+                disabled={isUnavailable}
+                aria-disabled={isUnavailable}
                 className={cn(
                   'w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left cursor-pointer',
                   isSelected
                     ? 'bg-primary/10 text-primary font-semibold'
-                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                    : 'text-muted-foreground hover:bg-muted hover:text-foreground',
+                  isUnavailable && 'opacity-40 cursor-not-allowed hover:bg-transparent'
                 )}
               >
                 <div className="flex items-center gap-2">
@@ -249,20 +255,28 @@ export function FilterSidebar({
               const isSelected =
                 filters.city.toLowerCase() === city.toLowerCase() ||
                 (filters.city !== 'all' && city.toLowerCase().includes(filters.city.toLowerCase()));
+              const count = counts?.cities?.[city];
+              const isUnavailable = count === 0 && !isSelected;
               return (
                 <button
                   key={city}
                   type="button"
                   onClick={() => handleFilterChange('city', isSelected ? 'all' : city)}
+                  disabled={isUnavailable}
+                  aria-disabled={isUnavailable}
                   className={cn(
                     'px-2.5 py-1 rounded-lg text-xs font-medium border text-center transition-colors cursor-pointer truncate max-w-full',
                     isSelected
                       ? 'border-primary bg-primary/10 text-primary font-semibold'
-                      : 'border-border/60 bg-card text-muted-foreground hover:bg-muted hover:text-foreground'
+                      : 'border-border/60 bg-card text-muted-foreground hover:bg-muted hover:text-foreground',
+                    isUnavailable && 'opacity-40 cursor-not-allowed hover:bg-card'
                   )}
                   title={city}
                 >
                   {city}
+                  {count !== undefined && (
+                    <span className="ml-1 text-[11px] font-mono opacity-70">({count})</span>
+                  )}
                 </button>
               );
             })}
@@ -351,6 +365,7 @@ export function FilterSidebar({
                       const Icon = (meta && ICON_MAP[meta.accentIcon]) || Briefcase;
                       const isSelected = selectedArchetypes.includes(archKey);
                       const count = counts?.archetypes?.[archKey];
+                      const isUnavailable = count === 0 && !isSelected;
                       const subtitle = archDescription(tArch, archKey as string, ARCHETYPE_SUBTITLES[archKey as MiceArchetype]);
 
                       return (
@@ -359,11 +374,14 @@ export function FilterSidebar({
                           type="button"
                           onClick={() => handleToggleArchetype(archKey)}
                           aria-pressed={isSelected}
+                          disabled={isUnavailable}
+                          aria-disabled={isUnavailable}
                           className={cn(
                             'w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left cursor-pointer min-h-[44px]',
                             isSelected
                               ? 'bg-primary/10 text-primary font-semibold'
-                              : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                              : 'text-muted-foreground hover:bg-muted hover:text-foreground',
+                            isUnavailable && 'opacity-40 cursor-not-allowed hover:bg-transparent'
                           )}
                         >
                           <div className="flex items-center gap-2 min-w-0">
@@ -416,19 +434,27 @@ export function FilterSidebar({
         <div className="grid grid-cols-2 gap-1.5">
           {formatOptions.map((fmt) => {
             const isSelected = filters.format === fmt.id;
+            const count = fmt.id === 'all' ? undefined : counts?.formats?.[fmt.id];
+            const isUnavailable = count === 0 && !isSelected;
             return (
               <button
                 key={fmt.id}
                 type="button"
                 onClick={() => handleFilterChange('format', fmt.id)}
+                disabled={isUnavailable}
+                aria-disabled={isUnavailable}
                 className={cn(
                   'px-2.5 py-1.5 rounded-lg text-xs font-medium border text-center transition-colors cursor-pointer',
                   isSelected
                     ? 'border-primary bg-primary/10 text-primary font-semibold'
-                    : 'border-border/60 bg-card text-muted-foreground hover:bg-muted hover:text-foreground'
+                    : 'border-border/60 bg-card text-muted-foreground hover:bg-muted hover:text-foreground',
+                  isUnavailable && 'opacity-40 cursor-not-allowed hover:bg-card'
                 )}
               >
                 {fmt.label}
+                {count !== undefined && (
+                  <span className="ml-1 text-[11px] font-mono opacity-70">({count})</span>
+                )}
               </button>
             );
           })}
@@ -444,20 +470,30 @@ export function FilterSidebar({
         <div className="space-y-1">
           {scaleOptions.map((sc) => {
             const isSelected = filters.scale === sc.id;
+            const count = sc.id === 'all' ? undefined : counts?.scales?.[sc.id];
+            const isUnavailable = count === 0 && !isSelected;
             return (
               <button
                 key={sc.id}
                 type="button"
                 onClick={() => handleFilterChange('scale', sc.id)}
+                disabled={isUnavailable}
+                aria-disabled={isUnavailable}
                 className={cn(
                   'w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left cursor-pointer',
                   isSelected
                     ? 'bg-primary/10 text-primary font-semibold'
-                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                    : 'text-muted-foreground hover:bg-muted hover:text-foreground',
+                  isUnavailable && 'opacity-40 cursor-not-allowed hover:bg-transparent'
                 )}
               >
                 <span>{sc.label}</span>
-                {isSelected && <Check className="h-3 w-3 text-primary" />}
+                <span className="flex items-center gap-1.5">
+                  {count !== undefined && (
+                    <span className="text-xs text-muted-foreground font-mono">({count})</span>
+                  )}
+                  {isSelected && <Check className="h-3 w-3 text-primary" />}
+                </span>
               </button>
             );
           })}
@@ -473,20 +509,30 @@ export function FilterSidebar({
         <div className="space-y-1">
           {dateOptions.map((dt) => {
             const isSelected = filters.dateRange === dt.id;
+            const count = counts?.dates?.[dt.id];
+            const isUnavailable = count === 0 && !isSelected;
             return (
               <button
                 key={dt.id}
                 type="button"
                 onClick={() => handleFilterChange('dateRange', dt.id)}
+                disabled={isUnavailable}
+                aria-disabled={isUnavailable}
                 className={cn(
                   'w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left cursor-pointer',
                   isSelected
                     ? 'bg-primary/10 text-primary font-semibold'
-                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                    : 'text-muted-foreground hover:bg-muted hover:text-foreground',
+                  isUnavailable && 'opacity-40 cursor-not-allowed hover:bg-transparent'
                 )}
               >
                 <span>{dt.label}</span>
-                {isSelected && <Check className="h-3 w-3 text-primary" />}
+                <span className="flex items-center gap-1.5">
+                  {count !== undefined && (
+                    <span className="text-xs text-muted-foreground font-mono">({count})</span>
+                  )}
+                  {isSelected && <Check className="h-3 w-3 text-primary" />}
+                </span>
               </button>
             );
           })}

@@ -455,7 +455,8 @@
     "compareAdded": "{title} se añadió a la comparación.",
     "compareRemoved": "{title} se eliminó de la comparación.",
     "compareFull": "La comparación está completa (4 de 4). Elimine un evento para añadir otro.",
-    "compareSelectTwo": "Seleccione al menos dos eventos para comparar."
+    "compareSelectTwo": "Seleccione al menos dos eventos para comparar.",
+    "nearestMatch": "Sin el filtro {filter} coinciden {count} eventos."
   },
   "events": {
     "title": "Directorio de Eventos y Calendario",

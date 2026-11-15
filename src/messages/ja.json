@@ -455,7 +455,8 @@
     "compareAdded": "{title}を比較に追加しました。",
     "compareRemoved": "{title}を比較から削除しました。",
     "compareFull": "比較は上限（4件中4件）です。追加するには1件削除してください。",
-    "compareSelectTwo": "比較するには2件以上選択してください。"
+    "compareSelectTwo": "比較するには2件以上選択してください。",
+    "nearestMatch": "{filter}フィルターを外すと{count}件の展示会が該当します。"
   },
   "events": {
     "title": "イベント一覧＆スケジュール",
