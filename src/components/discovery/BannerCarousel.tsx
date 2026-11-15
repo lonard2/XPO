@@ -273,7 +273,7 @@ export function BannerCarousel({
           if (e.target === e.currentTarget) clearPrevIndex();
         }}
         className={cn(
-          "relative min-h-[420px] sm:min-h-[480px] lg:min-h-[520px] flex flex-col justify-end p-5 pt-12 pb-28 sm:p-8 sm:pb-20 lg:p-12 overflow-hidden",
+          "relative min-h-[340px] sm:min-h-[480px] lg:min-h-[520px] flex flex-col justify-end p-5 pt-8 pb-12 sm:p-8 sm:pb-20 lg:p-12 overflow-hidden",
           "lg:grid lg:grid-cols-[1fr_1.4fr] lg:justify-stretch lg:gap-0 lg:p-0",
           hidden && "absolute inset-0 pointer-events-none"
         )}
@@ -351,13 +351,13 @@ export function BannerCarousel({
           </div>
 
           {/* Event Title */}
-          <h2 className="text-xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-white leading-[1.18] drop-shadow-md text-balance">
+          <h2 className="text-lg sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-white leading-[1.18] drop-shadow-md text-balance">
             {slide.title}
           </h2>
 
           {/* Event Tagline */}
           {slide.tagline && (
-            <p className="text-xs sm:text-sm lg:text-base text-slate-200 line-clamp-2 max-w-xl leading-relaxed drop-shadow-sm text-pretty">
+            <p className="text-xs sm:text-sm lg:text-base text-slate-200 line-clamp-1 sm:line-clamp-2 max-w-xl leading-relaxed drop-shadow-sm text-pretty">
               {slide.tagline}
             </p>
           )}
@@ -436,7 +436,7 @@ export function BannerCarousel({
                   href={`/${locale}/events/${slide.slug}#agenda`}
                   className={cn(
                     buttonVariants({ variant: 'outline', size: 'lg' }),
-                    'bg-white/10 hover:bg-white/20 text-white border-white/30 backdrop-blur-md cursor-pointer gap-2'
+                    'hidden sm:inline-flex bg-white/10 hover:bg-white/20 text-white border-white/30 backdrop-blur-md cursor-pointer gap-2'
                   )}
                 >
                   <Radio className="h-4 w-4 text-emerald-400" />
@@ -460,7 +460,7 @@ export function BannerCarousel({
                   href={`/${locale}/events`}
                   className={cn(
                     buttonVariants({ variant: 'outline', size: 'lg' }),
-                    'bg-white/10 hover:bg-white/20 text-white border-white/30 backdrop-blur-md cursor-pointer'
+                    'hidden sm:inline-flex bg-white/10 hover:bg-white/20 text-white border-white/30 backdrop-blur-md cursor-pointer'
                   )}
                 >
                   <span>{tHome('viewFullSchedule') || 'View Full Schedule'}</span>
