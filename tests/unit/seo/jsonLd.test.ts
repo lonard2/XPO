@@ -4,6 +4,7 @@ import {
   generatePlaceJsonLd,
   generateBreadcrumbJsonLd,
   generateMiceWebsiteJsonLd,
+  generateEventListJsonLd,
   getEventTypeFromArchetype,
   getAttendanceMode,
   type SeoEventInput,
@@ -163,5 +164,28 @@ describe("Phase 12 Unit: Schema.org JSON-LD MICE Metadata & PWA Manifest", () =>
     expect(pwaManifest.background_color).toBe("#0a0f1d");
     expect(pwaManifest.icons?.length).toBeGreaterThanOrEqual(4);
     expect(pwaManifest.shortcuts?.length).toBeGreaterThanOrEqual(3);
+  });
+});
+
+
+describe("Event directory ItemList", () => {
+  it("describes the discovery page as a list of events", () => {
+    const list = generateEventListJsonLd(
+      [
+        { title: "Jakarta Sports & Outdoor Adventure Expo 2026", slug: "jakarta-sports-outdoor-2026" },
+        { title: "Nusantara Faith & Community Congress 2026", slug: "nusantara-faith-congress-2026" },
+      ],
+      "ja"
+    );
+
+    expect(list["@context"]).toBe("https://schema.org");
+    expect(list["@type"]).toBe("ItemList");
+    expect(list.numberOfItems).toBe(2);
+    expect((list.itemListElement as Array<Record<string, unknown>>)[0]).toMatchObject({
+      "@type": "ListItem",
+      position: 1,
+      url: "https://xpo.events/ja/events/jakarta-sports-outdoor-2026",
+      name: "Jakarta Sports & Outdoor Adventure Expo 2026",
+    });
   });
 });

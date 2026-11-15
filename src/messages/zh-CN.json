@@ -456,7 +456,9 @@
     "compareRemoved": "已将{title}移出比较。",
     "compareFull": "比较已满（4/4）。请移除一个活动后再添加。",
     "compareSelectTwo": "请至少选择两个活动进行比较。",
-    "nearestMatch": "移除{filter}筛选后有{count}个活动符合条件。"
+    "nearestMatch": "移除{filter}筛选后有{count}个活动符合条件。",
+    "filterDrawerDesc": "按地区、类别、形式、规模和日期筛选活动。",
+    "resultsHeading": "活动结果"
   },
   "events": {
     "title": "展会名录与日程",
@@ -531,8 +533,8 @@
     "freePass": "免费贸易通行证",
     "fromPrice": "起",
     "mainVenue": "主会场",
-    "sortPriceAsc": "价格从低到高",
-    "sortPriceDesc": "价格从高到低",
+    "sortPriceAsc": "价格：从低到高（按币种）",
+    "sortPriceDesc": "价格：从高到低（按币种）",
     "sortEndingSoon": "即将结束",
     "formatInPerson": "现场",
     "formatHybrid": "混合",

@@ -269,3 +269,32 @@ export function generateMiceWebsiteJsonLd(
     },
   };
 }
+
+export interface SeoEventListItem {
+  title: string;
+  slug: string;
+}
+
+/**
+ * ItemList for a discovery page. Search engines use this to understand that
+ * the page is a curated directory rather than a single event.
+ */
+export function generateEventListJsonLd(
+  events: SeoEventListItem[],
+  locale: string,
+  baseUrl: string = DEFAULT_BASE_URL,
+  listName: string = "MICE Events & Trade Exhibitions"
+): Record<string, unknown> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: listName,
+    numberOfItems: events.length,
+    itemListElement: events.slice(0, 50).map((event, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: `${baseUrl}/${locale}/events/${event.slug}`,
+      name: event.title,
+    })),
+  };
+}

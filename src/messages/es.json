@@ -456,7 +456,9 @@
     "compareRemoved": "{title} se eliminó de la comparación.",
     "compareFull": "La comparación está completa (4 de 4). Elimine un evento para añadir otro.",
     "compareSelectTwo": "Seleccione al menos dos eventos para comparar.",
-    "nearestMatch": "Sin el filtro {filter} coinciden {count} eventos."
+    "nearestMatch": "Sin el filtro {filter} coinciden {count} eventos.",
+    "filterDrawerDesc": "Filtre eventos por región, categoría, formato, escala y fecha.",
+    "resultsHeading": "Resultados de eventos"
   },
   "events": {
     "title": "Directorio de Eventos y Calendario",
@@ -531,8 +533,8 @@
     "freePass": "Pase comercial gratis",
     "fromPrice": "Desde",
     "mainVenue": "Sede principal",
-    "sortPriceAsc": "Precio: menor primero",
-    "sortPriceDesc": "Precio: mayor primero",
+    "sortPriceAsc": "Precio: Menor primero (por moneda)",
+    "sortPriceDesc": "Precio: Mayor primero (por moneda)",
     "sortEndingSoon": "Termina pronto",
     "formatInPerson": "Presencial",
     "formatHybrid": "Híbrido",

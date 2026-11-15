@@ -456,7 +456,9 @@
     "compareRemoved": "{title} dihapus dari perbandingan.",
     "compareFull": "Perbandingan penuh (4 dari 4). Hapus satu acara untuk menambah.",
     "compareSelectTwo": "Pilih minimal dua acara untuk dibandingkan.",
-    "nearestMatch": "{count} pameran cocok tanpa filter {filter}."
+    "nearestMatch": "{count} pameran cocok tanpa filter {filter}.",
+    "filterDrawerDesc": "Filter pameran berdasarkan wilayah, kategori, format, skala, dan tanggal.",
+    "resultsHeading": "Hasil acara"
   },
   "events": {
     "title": "Direktori Acara & Jadwal",
@@ -531,8 +533,8 @@
     "freePass": "Pass Dagang Gratis",
     "fromPrice": "Mulai",
     "mainVenue": "Venue Utama",
-    "sortPriceAsc": "Harga: Termurah",
-    "sortPriceDesc": "Harga: Termahal",
+    "sortPriceAsc": "Harga: Terendah (per mata uang)",
+    "sortPriceDesc": "Harga: Tertinggi (per mata uang)",
     "sortEndingSoon": "Segera Berakhir",
     "formatInPerson": "Langsung",
     "formatHybrid": "Hibrida",

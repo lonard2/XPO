@@ -424,3 +424,70 @@ describe('Discovery Component: scoped facet counts', () => {
     expect(screen.getByRole('button', { name: /japan/i })).toBeDisabled();
   });
 });
+
+
+describe('Discovery Component: currency-aware price sort and dialog semantics', () => {
+  it('groups price sort by currency instead of subtracting unlike units', () => {
+    const idrEvent = {
+      ...FALLBACK_EVENTS[0],
+      id: 'price-idr',
+      title: 'IDR Price Event',
+      regionId: 'id',
+      ticketTiers: [{ id: 't-idr', name: 'Pass', price: 500000, currency: 'IDR' }],
+    };
+    const usdEvent = {
+      ...FALLBACK_EVENTS[1],
+      id: 'price-usd',
+      title: 'USD Price Event',
+      regionId: 'global',
+      ticketTiers: [{ id: 't-usd', name: 'Pass', price: 100, currency: 'USD' }],
+    };
+
+    render(
+      <EventsExplorer
+        initialEvents={[idrEvent, usdEvent] as never}
+        locale="en"
+        initialFilters={{ dateRange: 'all' }}
+      />
+    );
+
+    fireEvent.change(screen.getByLabelText(/sort events/i), {
+      target: { value: 'price_asc' },
+    });
+
+    const headings = screen
+      .getAllByRole('heading', { level: 3 })
+      .map((heading) => heading.textContent || '');
+    expect(headings.indexOf('IDR Price Event')).toBeLessThan(
+      headings.indexOf('USD Price Event')
+    );
+  });
+
+  it('names the mobile filter dialog and exposes a results heading', () => {
+    render(
+      <EventsExplorer
+        initialEvents={FALLBACK_EVENTS}
+        locale="en"
+        initialFilters={{ dateRange: 'all' }}
+      />
+    );
+
+    expect(
+      screen.getByRole('heading', { level: 2, name: /Event results/i })
+    ).toBeInTheDocument();
+
+    fireEvent.click(
+      screen.getByRole('button', { name: /open filter sidebar drawer/i })
+    );
+
+    const dialog = screen.getByRole('dialog');
+    const labelledBy = dialog.getAttribute('aria-labelledby');
+    expect(labelledBy).toBeTruthy();
+    expect(document.getElementById(labelledBy as string)).toHaveTextContent(
+      /Filter Events/i
+    );
+    expect(
+      screen.getByText(/Filter exhibitions by region, category, format, scale, and date/i)
+    ).toBeInTheDocument();
+  });
+});

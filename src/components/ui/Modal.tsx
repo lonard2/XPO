@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useTranslations } from "next-intl";
 import { X } from "lucide-react";
+import { useFocusTrap } from "@/lib/a11y/focusTrap";
 import { cn } from "@/lib/utils";
 
 interface ModalProps {
@@ -37,24 +38,8 @@ export function Modal({
 }: ModalProps) {
   const tCom = useTranslations("common");
   const effectiveSize = maxWidth || size;
-
-  React.useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen) {
-        onClose();
-      }
-    };
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-      window.addEventListener("keydown", handleKeyDown);
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isOpen, onClose]);
-
   const titleId = React.useId();
+  const panelRef = useFocusTrap<HTMLDivElement>(isOpen, onClose);
 
   if (!isOpen) return null;
 
@@ -74,6 +59,7 @@ export function Modal({
 
       {/* Modal Card */}
       <div
+        ref={panelRef}
         className={cn(
           "relative z-50 w-full rounded-xl border border-border bg-card p-6 shadow-2xl transition-all duration-200 animate-fade-in",
           maxWidthMap[effectiveSize],

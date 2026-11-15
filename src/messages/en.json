@@ -456,7 +456,9 @@
     "compareRemoved": "{title} removed from comparison.",
     "compareFull": "Comparison is full (4 of 4). Remove an event to add another.",
     "compareSelectTwo": "Select at least two events to compare.",
-    "nearestMatch": "{count} exhibitions match without the {filter} filter."
+    "nearestMatch": "{count} exhibitions match without the {filter} filter.",
+    "filterDrawerDesc": "Filter exhibitions by region, category, format, scale, and date.",
+    "resultsHeading": "Event results"
   },
   "events": {
     "title": "Event Directory & Timetable",
@@ -531,8 +533,8 @@
     "freePass": "Free Trade Pass",
     "fromPrice": "From",
     "mainVenue": "Main Venue",
-    "sortPriceAsc": "Price: Lowest First",
-    "sortPriceDesc": "Price: Highest First",
+    "sortPriceAsc": "Price: Lowest First (by currency)",
+    "sortPriceDesc": "Price: Highest First (by currency)",
     "sortEndingSoon": "Ending Soon",
     "formatInPerson": "In Person",
     "formatHybrid": "Hybrid",

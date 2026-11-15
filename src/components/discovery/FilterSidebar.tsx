@@ -187,10 +187,10 @@ export function FilterSidebar({
 
       {/* 1. Regional Localization Hub Filter */}
       <div className="space-y-2.5">
-        <label className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
+        <h3 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
           <Globe className="h-3.5 w-3.5 text-primary" />
           <span>{tDisc('regionalHub') || tDisc('filterByRegion') || 'Regional Hub'}</span>
-        </label>
+        </h3>
         <div className="space-y-1">
           {regionalHubs.map((hub) => {
             const isSelected = filters.region === hub.id;
@@ -234,10 +234,10 @@ export function FilterSidebar({
       {/* 2. City / Host Metropolis Filter */}
       {availableCities.length > 0 && (
         <div className="space-y-2.5">
-          <label className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
             <MapPin className="h-3.5 w-3.5 text-primary" />
             <span>{tDisc('city')}</span>
-          </label>
+          </h3>
           <div className="flex flex-wrap gap-1.5 max-h-36 overflow-y-auto pr-1">
             <button
               type="button"
@@ -287,10 +287,10 @@ export function FilterSidebar({
       {/* 3. MICE Category Archetype Filter (Grouped into 4 Industry Clusters) */}
       <div className="space-y-2.5">
         <div className="flex items-center justify-between">
-          <label className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
             <Briefcase className="h-3.5 w-3.5 text-primary" />
             <span>{tDisc('verticalsTitle') || tDisc('filterByArchetype') || 'Explore by Event Category'}</span>
-          </label>
+          </h3>
           {selectedArchetypes.length > 0 && (
             <span className="text-xs text-primary font-semibold font-mono">
               {selectedArchetypes.length === 1
@@ -427,10 +427,10 @@ export function FilterSidebar({
 
       {/* 3. Event Format Filter */}
       <div className="space-y-2.5">
-        <label className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
+        <h3 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
           <Layers className="h-3.5 w-3.5 text-primary" />
           <span>{tDisc('format') || tDisc('filterByFormat') || 'Format'}</span>
-        </label>
+        </h3>
         <div className="grid grid-cols-2 gap-1.5">
           {formatOptions.map((fmt) => {
             const isSelected = filters.format === fmt.id;
@@ -463,10 +463,10 @@ export function FilterSidebar({
 
       {/* 4. Event Scale Filter */}
       <div className="space-y-2.5">
-        <label className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
+        <h3 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
           <Layers className="h-3.5 w-3.5 text-primary" />
           <span>{tDisc('scale') || tDisc('filterByScale') || 'Exhibition Scale'}</span>
-        </label>
+        </h3>
         <div className="space-y-1">
           {scaleOptions.map((sc) => {
             const isSelected = filters.scale === sc.id;
@@ -502,10 +502,10 @@ export function FilterSidebar({
 
       {/* 5. Timeline Date Range Filter */}
       <div className="space-y-2.5">
-        <label className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
+        <h3 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
           <Calendar className="h-3.5 w-3.5 text-primary" />
           <span>{tDisc('timeline') || tDisc('dateRange') || 'Timeline'}</span>
-        </label>
+        </h3>
         <div className="space-y-1">
           {dateOptions.map((dt) => {
             const isSelected = filters.dateRange === dt.id;

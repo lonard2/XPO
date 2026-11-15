@@ -1,16 +1,11 @@
 import { Suspense } from 'react';
-import Link from 'next/link';
 import { cookies, headers } from 'next/headers';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { Breadcrumbs, BreadcrumbJsonLd } from '@/components/layout/Breadcrumbs';
-import {
-  Compass,
-  ArrowLeft,
-  Calendar,
-  Building2,
-  Globe,
-} from 'lucide-react';
+import { Compass } from 'lucide-react';
 import { db } from '@/lib/db';
+import { generateEventListJsonLd } from '@/lib/seo/jsonLd';
+import { siteBaseUrl } from '@/lib/seo/site';
 import { listingWhere } from '@/lib/discovery/presentation';
 import { normalizeRegion, regionForLocale, resolveActiveRegion } from '@/lib/i18n/geo';
 import { EventsExplorer } from '@/components/discovery/EventsExplorer';
@@ -25,9 +20,40 @@ export interface EventsPageProps {
 
 export async function generateMetadata({ params }: EventsPageProps) {
   const { locale } = await params;
+  const tEvents = await getTranslations({ locale, namespace: 'events' });
+  const base = siteBaseUrl();
+  const canonical = `${base}/${locale}/events`;
+  const title = tEvents('eventsTitle') || 'MICE Events & International Expos';
+  const description =
+    tEvents('eventsSubtitle') ||
+    'Search, filter, and discover premier international conventions, B2B trade shows, and developer summits across Indonesia, Japan, and global hubs.';
+
+  const languages: Record<string, string> = {
+    en: `${base}/en/events`,
+    id: `${base}/id/events`,
+    ja: `${base}/ja/events`,
+    'zh-CN': `${base}/zh-CN/events`,
+    de: `${base}/de/events`,
+    es: `${base}/es/events`,
+    'x-default': `${base}/en/events`,
+  };
+
   return {
-    title: 'Explore MICE Events & Trade Exhibitions | XPO',
-    description: 'Search, filter, and discover premier international conventions, B2B trade shows, and developer summits across Indonesia, Japan, and global hubs.',
+    title,
+    description,
+    alternates: { canonical, languages },
+    openGraph: {
+      type: 'website',
+      url: canonical,
+      siteName: 'XPO MICE Platform',
+      title,
+      description,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+    },
   };
 }
 
@@ -110,8 +136,19 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
     dateRange: initialDateRange,
   };
 
+  const itemListJsonLd = generateEventListJsonLd(
+    eventsList.map((event) => ({ title: event.title, slug: event.slug })),
+    locale,
+    siteBaseUrl(),
+    tEvents('eventsTitle')
+  );
+
   return (
     <div className="flex flex-col gap-6">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
+      />
       <Breadcrumbs variant="strip" items={crumbs} />
       <BreadcrumbJsonLd items={crumbs} />
 

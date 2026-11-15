@@ -40,7 +40,6 @@ export function EventCompareDialog({
   const tDisc = useTranslations('discovery');
   const tEvents = useTranslations('events');
   const tCom = useTranslations('common');
-  const tVen = useTranslations('venues');
 
   React.useEffect(() => {
     if (isOpen && events.length === 0) onClose();
@@ -223,7 +222,7 @@ export function EventCompareDialog({
             </tr>
             <tr>
               <th scope="row" className="py-3 pr-3 text-xs font-semibold text-muted-foreground">
-                {tVen('transitGuide') || 'Transit'}
+                {tEvents('venueAndTransit') || 'Transit'}
               </th>
               {events.map((event) => (
                 <td key={event.id} className="py-3 pr-3 align-top text-muted-foreground">

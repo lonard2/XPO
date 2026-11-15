@@ -166,6 +166,13 @@ export function EventsExplorer({
     return 0;
   };
 
+  // Price is only comparable inside one currency. Grouping by currency keeps
+  // IDR, JPY, and USD from being subtracted as if they shared a unit.
+  const currencyOf = (event: DiscoveryEvent): string => {
+    const tierCurrency = event.ticketTiers?.find((tier) => tier.currency)?.currency;
+    return (tierCurrency || event.region?.currency || 'IDR').toUpperCase();
+  };
+
   const toggleShortlist = (id: string) => {
     const event = initialEvents.find((candidate) => candidate.id === id);
     const title = event?.title || '';
@@ -295,6 +302,9 @@ export function EventsExplorer({
           return a.title.localeCompare(b.title);
         }
         if (sortBy === 'price_asc' || sortBy === 'price_desc') {
+          const currencyA = currencyOf(a);
+          const currencyB = currencyOf(b);
+          if (currencyA !== currencyB) return currencyA.localeCompare(currencyB);
           const pa = lowestPriceOf(a);
           const pb = lowestPriceOf(b);
           return sortBy === 'price_asc' ? pa - pb : pb - pa;
@@ -496,6 +506,7 @@ export function EventsExplorer({
 
           {/* Right Event Grid or Table */}
           <main className="lg:col-span-9 space-y-6">
+            <h2 className="sr-only">{tDisc('resultsHeading') || 'Event results'}</h2>
             {filteredAndSortedEvents.length === 0 ? (
               <div className="rounded-3xl border border-dashed border-border/80 bg-card/50 p-10 sm:p-14 text-center space-y-4">
                 <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-muted mx-auto text-muted-foreground">
@@ -699,7 +710,7 @@ export function EventsExplorer({
         isOpen={isMobileDrawerOpen}
         onClose={() => setIsMobileDrawerOpen(false)}
         title={tDisc('filterEvents') || 'Filter & Refine Events'}
-        description={tDisc('filterByRegion') || 'Filter exhibitions by region, archetype category, format, and scale.'}
+        description={tDisc('filterDrawerDesc') || 'Filter exhibitions by region, category, format, scale, and date.'}
         side="bottom"
       >
         <div className="flex flex-col max-h-[75vh]">

@@ -456,7 +456,9 @@
     "compareRemoved": "{title} wurde aus dem Vergleich entfernt.",
     "compareFull": "Der Vergleich ist voll (4 von 4). Entfernen Sie eine Veranstaltung, um eine weitere hinzuzufügen.",
     "compareSelectTwo": "Wählen Sie mindestens zwei Veranstaltungen zum Vergleichen.",
-    "nearestMatch": "Ohne den Filter {filter} passen {count} Messen."
+    "nearestMatch": "Ohne den Filter {filter} passen {count} Messen.",
+    "filterDrawerDesc": "Filtern Sie Messen nach Region, Kategorie, Format, Größe und Datum.",
+    "resultsHeading": "Veranstaltungsergebnisse"
   },
   "events": {
     "title": "Messeverzeichnis & Kalender",
@@ -531,8 +533,8 @@
     "freePass": "Gratis-Messepass",
     "fromPrice": "Ab",
     "mainVenue": "Hauptvenue",
-    "sortPriceAsc": "Preis aufsteigend",
-    "sortPriceDesc": "Preis absteigend",
+    "sortPriceAsc": "Preis: Aufsteigend (je Währung)",
+    "sortPriceDesc": "Preis: Absteigend (je Währung)",
     "sortEndingSoon": "Endet bald",
     "formatInPerson": "Vor Ort",
     "formatHybrid": "Hybrid",

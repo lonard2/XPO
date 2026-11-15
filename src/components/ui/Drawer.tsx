@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useTranslations } from "next-intl";
 import { X } from "lucide-react";
+import { useFocusTrap } from "@/lib/a11y/focusTrap";
 import { cn } from "@/lib/utils";
 
 interface DrawerProps {
@@ -28,27 +29,18 @@ export function Drawer({
 }: DrawerProps) {
   const tCom = useTranslations("common");
   const visible = Boolean(open ?? isOpen);
-
-  React.useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && visible) {
-        onClose();
-      }
-    };
-    if (visible) {
-      document.body.style.overflow = "hidden";
-      window.addEventListener("keydown", handleKeyDown);
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [visible, onClose]);
+  const titleId = React.useId();
+  const panelRef = useFocusTrap<HTMLDivElement>(visible, onClose);
 
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex" role="dialog" aria-modal="true">
+    <div
+      className="fixed inset-0 z-50 flex"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={title ? titleId : undefined}
+    >
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity animate-fade-in"
@@ -58,6 +50,7 @@ export function Drawer({
 
       {/* Drawer Body */}
       <div
+        ref={panelRef}
         className={cn(
           "relative z-50 flex flex-col bg-card border-border shadow-2xl transition-all duration-300",
           side === "right" &&
@@ -76,7 +69,11 @@ export function Drawer({
 
         <div className="flex items-center justify-between p-5 border-b border-border/60">
           <div>
-            {title && <h2 className="text-base font-semibold text-foreground">{title}</h2>}
+            {title && (
+              <h2 id={titleId} className="text-base font-semibold text-foreground">
+                {title}
+              </h2>
+            )}
             {description && <p className="text-xs text-muted-foreground mt-0.5">{description}</p>}
           </div>
           <button
