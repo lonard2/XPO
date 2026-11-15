@@ -564,7 +564,8 @@
     "floorPlanNotPublishedLive": "Der Veranstalter hat für diese Veranstaltung keinen Hallenplan veröffentlicht.",
     "floorPlanNotPublishedPast": "Der Veranstalter hat für diese Veranstaltung keinen Hallenplan veröffentlicht.",
     "noPassesPublishedPast": "Für diese Veranstaltung wurden keine Passkategorien veröffentlicht.",
-    "noPassesPublishedPastDesc": "Der Veranstalter hat für diese Veranstaltung keine Passkategorien veröffentlicht."
+    "noPassesPublishedPastDesc": "Der Veranstalter hat für diese Veranstaltung keine Passkategorien veröffentlicht.",
+    "passSalesClosed": "Der Passverkauf für diese Veranstaltung ist beendet."
   },
   "venues": {
     "title": "Kongresszentren & Hallenverzeichnis",

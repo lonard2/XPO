@@ -932,8 +932,8 @@ export function EventPageShell({
               <EventNewsTimeline items={newsUpdates} locale={locale} />
             )}
 
-            {/* Overview Pass Tiers Callout Banner */}
-            {ticketTiers && ticketTiers.length > 0 && (
+            {/* Overview Pass Tiers Callout Banner: a sales surface, so it closes with sales. */}
+            {ticketTiers && ticketTiers.length > 0 && !isConcluded && (
               <section id="tickets-section" className="pt-8 border-t border-border/80">
                 <div className="rounded-2xl border border-primary/20 bg-gradient-to-r from-primary/5 via-card to-card p-6 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm">
                   <div className="space-y-2 max-w-xl">
@@ -1109,10 +1109,15 @@ export function EventPageShell({
                   <span>{tTickets("ticketTiers") || "Pass Tiers"}</span>
                 </div>
                 <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-                  {tTickets("checkoutTitle") || "Select Your Admission Tier"}
+                  {isConcluded
+                    ? tTickets("ticketTiers") || "Pass Tiers"
+                    : tTickets("checkoutTitle") || "Select Your Admission Tier"}
                 </h2>
                 <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-                  {tTickets("digitalPassSubtitle") || "Cryptographically verified QR passes issued immediately upon reservation."}
+                  {isConcluded
+                    ? tEvents("passSalesClosed") || "Pass sales are closed for this event."
+                    : tTickets("digitalPassSubtitle") ||
+                      "Cryptographically verified QR passes issued immediately upon reservation."}
                 </p>
               </div>
             </div>

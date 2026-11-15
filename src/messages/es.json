@@ -564,7 +564,8 @@
     "floorPlanNotPublishedLive": "El organizador no ha publicado el plano de salas de este evento.",
     "floorPlanNotPublishedPast": "El organizador no publicó el plano de salas de este evento.",
     "noPassesPublishedPast": "No se publicaron categorías de pase para este evento.",
-    "noPassesPublishedPastDesc": "El organizador no publicó categorías de pase para este evento."
+    "noPassesPublishedPastDesc": "El organizador no publicó categorías de pase para este evento.",
+    "passSalesClosed": "La venta de pases para este evento está cerrada."
   },
   "venues": {
     "title": "Recintos Feriales y Directorio de Pabellones",

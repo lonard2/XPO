@@ -564,7 +564,8 @@
     "floorPlanNotPublishedLive": "Penyelenggara belum mempublikasikan denah hall untuk acara ini.",
     "floorPlanNotPublishedPast": "Penyelenggara tidak mempublikasikan denah hall untuk acara ini.",
     "noPassesPublishedPast": "Kategori tiket tidak dipublikasikan untuk acara ini.",
-    "noPassesPublishedPastDesc": "Penyelenggara tidak mempublikasikan kategori tiket untuk acara ini."
+    "noPassesPublishedPastDesc": "Penyelenggara tidak mempublikasikan kategori tiket untuk acara ini.",
+    "passSalesClosed": "Penjualan tiket ditutup untuk acara ini."
   },
   "venues": {
     "title": "Pusat Konvensi & Direktori Hall",

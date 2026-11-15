@@ -564,7 +564,8 @@
     "floorPlanNotPublishedLive": "主催者はこのイベントのホールレイアウトを公開していません。",
     "floorPlanNotPublishedPast": "主催者はこのイベントのホールレイアウトを公開していませんでした。",
     "noPassesPublishedPast": "このイベントのパス区分は公開されていませんでした。",
-    "noPassesPublishedPastDesc": "主催者はこのイベントのパス区分を公開していませんでした。"
+    "noPassesPublishedPastDesc": "主催者はこのイベントのパス区分を公開していませんでした。",
+    "passSalesClosed": "このイベントのパス販売は終了しました。"
   },
   "venues": {
     "title": "コンベンションセンター＆ホール一覧",

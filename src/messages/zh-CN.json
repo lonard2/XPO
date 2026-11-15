@@ -564,7 +564,8 @@
     "floorPlanNotPublishedLive": "主办方尚未发布本活动的展厅布局。",
     "floorPlanNotPublishedPast": "主办方未发布本活动的展厅布局。",
     "noPassesPublishedPast": "本活动未发布票种。",
-    "noPassesPublishedPastDesc": "主办方未发布本活动的票种。"
+    "noPassesPublishedPastDesc": "主办方未发布本活动的票种。",
+    "passSalesClosed": "本活动的门票销售已结束。"
   },
   "venues": {
     "title": "会展中心与展厅名录",

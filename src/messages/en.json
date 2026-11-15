@@ -564,7 +564,8 @@
     "floorPlanNotPublishedLive": "The organizer has not published a hall layout for this event.",
     "floorPlanNotPublishedPast": "The organizer did not publish a hall layout for this event.",
     "noPassesPublishedPast": "Pass tiers were not published for this event.",
-    "noPassesPublishedPastDesc": "The organizer did not publish pass tiers for this event."
+    "noPassesPublishedPastDesc": "The organizer did not publish pass tiers for this event.",
+    "passSalesClosed": "Pass sales are closed for this event."
   },
   "venues": {
     "title": "Convention Centers & Hall Directory",

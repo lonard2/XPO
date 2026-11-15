@@ -235,6 +235,19 @@ describe("Event page temporal state", () => {
     expect(shell).toContain("pointer-events-none absolute inset-y-0 right-0 w-12");
   });
 
+  it("closes pass sales copy on a concluded event", () => {
+    render(
+      <EventPageShell {...baseProps} temporalStatus="PAST">
+        <div>child</div>
+      </EventPageShell>
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /Ticket Passes/ }));
+
+    expect(screen.getByText("Pass sales are closed for this event.")).toBeInTheDocument();
+    expect(screen.queryByText("Select Your Admission Tier")).toBeNull();
+  });
+
   it("describes a concluded event without promising future publication", () => {
     render(
       <EventPageShell {...baseProps} temporalStatus="PAST">
