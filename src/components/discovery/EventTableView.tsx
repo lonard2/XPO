@@ -88,7 +88,7 @@ export const EventTableView = React.memo(function EventTableView({
                 className="hover:bg-muted/30 transition-colors group"
               >
                 {/* 1. Exhibition Title & Archetype Badge */}
-                <td className="p-[var(--table-cell-padding,0.875rem_1rem)] max-w-[280px]">
+                <td className="p-[var(--table-cell-padding,0.875rem_1rem)] max-w-[360px]">
                   <div className="space-y-1">
                     <div className="flex items-center gap-1.5 flex-wrap">
                       <span
@@ -113,7 +113,7 @@ export const EventTableView = React.memo(function EventTableView({
 
                     <Link
                       href={`/${locale}/events/${event.slug}`}
-                      className="font-bold text-foreground hover:text-primary transition-colors hover:underline line-clamp-2 block text-xs sm:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 rounded-sm"
+                      className="font-bold text-foreground hover:text-primary transition-colors hover:underline line-clamp-3 block text-xs sm:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 rounded-sm"
                     >
                       {event.title}
                     </Link>

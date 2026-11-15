@@ -153,6 +153,10 @@ export function EventsExplorer({
   });
   const [compareOpen, setCompareOpen] = React.useState(false);
   const [shortlistNotice, setShortlistNotice] = React.useState('');
+  const shortlistRef = React.useRef(shortlist);
+  React.useEffect(() => {
+    shortlistRef.current = shortlist;
+  }, [shortlist]);
 
   const lowestPriceOf = (e: { ticketTiers?: Array<{ price: number }>; lowestPrice?: number }) => {
     if (typeof e.lowestPrice === 'number') return e.lowestPrice;
@@ -165,8 +169,9 @@ export function EventsExplorer({
   const toggleShortlist = (id: string) => {
     const event = initialEvents.find((candidate) => candidate.id === id);
     const title = event?.title || '';
+    const current = shortlistRef.current;
 
-    if (!shortlist.includes(id) && shortlist.length >= 4) {
+    if (!current.includes(id) && current.length >= 4) {
       setShortlistNotice(
         tDisc('compareFull') ||
           'Comparison is full (4 of 4). Remove an event to add another.'
@@ -174,8 +179,9 @@ export function EventsExplorer({
       return;
     }
 
-    const removing = shortlist.includes(id);
-    const next = removing ? shortlist.filter((x) => x !== id) : [...shortlist, id];
+    const removing = current.includes(id);
+    const next = removing ? current.filter((x) => x !== id) : [...current, id];
+    shortlistRef.current = next;
     setShortlist(next);
     setShortlistNotice(
       removing
@@ -596,7 +602,7 @@ export function EventsExplorer({
         <div
           role="region"
           aria-label={tDisc('shortlistCompareTitle') || 'Event shortlist comparison'}
-          className="fixed bottom-4 inset-x-4 sm:inset-x-auto sm:right-6 sm:w-[440px] z-40 rounded-2xl border border-border/80 bg-background/95 backdrop-blur-md shadow-2xl p-4 space-y-3 animate-fade-in"
+          className="fixed bottom-20 inset-x-4 sm:bottom-6 sm:inset-x-auto sm:right-6 sm:w-[440px] z-40 max-h-[60vh] overflow-y-auto rounded-2xl border border-border/80 bg-background/95 backdrop-blur-md shadow-2xl p-4 space-y-3 animate-fade-in"
         >
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-1.5 text-xs font-bold text-foreground">

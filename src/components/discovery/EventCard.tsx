@@ -272,9 +272,9 @@ export const EventCard = React.memo(function EventCard({
             <span className="font-medium text-foreground tabular-nums">{dateRangeDisplay}</span>
           </div>
 
-          <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+          <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[11px] text-muted-foreground">
             <span
-              className="font-bold uppercase tracking-wider truncate text-[var(--archetype-label)] dark:text-[var(--archetype-label-dark)]"
+              className="font-bold uppercase tracking-wider text-[var(--archetype-label)] dark:text-[var(--archetype-label-dark)]"
               style={{ "--archetype-label": labelTones.light, "--archetype-label-dark": labelTones.dark } as React.CSSProperties}
             >
               {archetypeBadgeLabel}
@@ -290,7 +290,7 @@ export const EventCard = React.memo(function EventCard({
           </div>
 
           <div className="flex items-start gap-2">
-            <h3 className="text-base font-bold text-foreground leading-snug line-clamp-2 text-balance group-hover:text-primary transition-colors flex-1">
+            <h3 className="text-base font-bold text-foreground leading-snug line-clamp-3 text-balance group-hover:text-primary transition-colors flex-1">
               <Link
                 href={`/${locale}/events/${event.slug}`}
                 className="hover:underline after:absolute after:inset-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-sm"

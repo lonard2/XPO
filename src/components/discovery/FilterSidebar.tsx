@@ -177,7 +177,7 @@ export function FilterSidebar({
             variant="ghost"
             size="sm"
             onClick={onReset}
-            className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground gap-1 cursor-pointer"
+            className="h-11 min-h-[44px] px-2 text-xs text-muted-foreground hover:text-foreground gap-1 cursor-pointer"
           >
             <RotateCcw className="h-3 w-3" />
             <span>{tCom('clear') || 'Reset'}</span>
@@ -204,7 +204,7 @@ export function FilterSidebar({
                 disabled={isUnavailable}
                 aria-disabled={isUnavailable}
                 className={cn(
-                  'w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left cursor-pointer',
+                  'w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left cursor-pointer min-h-[44px]',
                   isSelected
                     ? 'bg-primary/10 text-primary font-semibold'
                     : 'text-muted-foreground hover:bg-muted hover:text-foreground',
@@ -243,7 +243,7 @@ export function FilterSidebar({
               type="button"
               onClick={() => handleFilterChange('city', 'all')}
               className={cn(
-                'px-2.5 py-1 rounded-lg text-xs font-medium border text-center transition-colors cursor-pointer',
+                'px-2.5 py-1 rounded-lg text-xs font-medium border text-center transition-colors cursor-pointer min-h-[44px] inline-flex items-center justify-center',
                 filters.city === 'all'
                   ? 'border-primary bg-primary/10 text-primary font-semibold'
                   : 'border-border/60 bg-card text-muted-foreground hover:bg-muted hover:text-foreground'
@@ -265,7 +265,7 @@ export function FilterSidebar({
                   disabled={isUnavailable}
                   aria-disabled={isUnavailable}
                   className={cn(
-                    'px-2.5 py-1 rounded-lg text-xs font-medium border text-center transition-colors cursor-pointer truncate max-w-full',
+                    'px-2.5 py-1 rounded-lg text-xs font-medium border text-center transition-colors cursor-pointer truncate max-w-full min-h-[44px] inline-flex items-center justify-center',
                     isSelected
                       ? 'border-primary bg-primary/10 text-primary font-semibold'
                       : 'border-border/60 bg-card text-muted-foreground hover:bg-muted hover:text-foreground',
@@ -306,7 +306,7 @@ export function FilterSidebar({
             type="button"
             onClick={() => handleToggleArchetype('all')}
             className={cn(
-              'w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left cursor-pointer',
+              'w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left cursor-pointer min-h-[44px]',
               selectedArchetypes.length === 0
                 ? 'bg-primary/10 text-primary font-semibold'
                 : 'text-muted-foreground hover:bg-muted hover:text-foreground'
@@ -338,7 +338,7 @@ export function FilterSidebar({
                   type="button"
                   onClick={() => toggleCluster(cluster.id)}
                   aria-expanded={!isCollapsed}
-                  className="w-full flex items-center justify-between px-2 py-1 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors cursor-pointer rounded-md focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary"
+                  className="w-full flex items-center justify-between px-2 py-1 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors cursor-pointer rounded-md min-h-[44px] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary"
                 >
                   <span className="uppercase tracking-wider truncate text-[11px]">{clusterLabel(tOrg, cluster.id, cluster.shortLabel)}</span>
                   <div className="flex items-center gap-1.5 shrink-0 ml-2">
@@ -444,7 +444,7 @@ export function FilterSidebar({
                 disabled={isUnavailable}
                 aria-disabled={isUnavailable}
                 className={cn(
-                  'px-2.5 py-1.5 rounded-lg text-xs font-medium border text-center transition-colors cursor-pointer',
+                  'px-2.5 py-1.5 rounded-lg text-xs font-medium border text-center transition-colors cursor-pointer min-h-[44px]',
                   isSelected
                     ? 'border-primary bg-primary/10 text-primary font-semibold'
                     : 'border-border/60 bg-card text-muted-foreground hover:bg-muted hover:text-foreground',
@@ -480,7 +480,7 @@ export function FilterSidebar({
                 disabled={isUnavailable}
                 aria-disabled={isUnavailable}
                 className={cn(
-                  'w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left cursor-pointer',
+                  'w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left cursor-pointer min-h-[44px]',
                   isSelected
                     ? 'bg-primary/10 text-primary font-semibold'
                     : 'text-muted-foreground hover:bg-muted hover:text-foreground',
@@ -519,7 +519,7 @@ export function FilterSidebar({
                 disabled={isUnavailable}
                 aria-disabled={isUnavailable}
                 className={cn(
-                  'w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left cursor-pointer',
+                  'w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left cursor-pointer min-h-[44px]',
                   isSelected
                     ? 'bg-primary/10 text-primary font-semibold'
                     : 'text-muted-foreground hover:bg-muted hover:text-foreground',
