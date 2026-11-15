@@ -23,7 +23,7 @@ describe("Quality Gate: homepage closing action", () => {
   });
 
   it("de-duplicates the hero lead from the featured row", () => {
-    expect(page).toContain("withoutHeroSlides");
+    expect(page).toContain("withoutHeroLead");
     expect(page).toContain("featuredRowEvents");
   });
 

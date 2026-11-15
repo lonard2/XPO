@@ -8,7 +8,6 @@ import {
   mergeRows,
   resolveRowCopy,
   withoutHeroLead,
-  withoutHeroSlides,
 } from "@/lib/homepage/rows";
 
 const event = (
@@ -146,35 +145,6 @@ describe("Homepage row resolvers", () => {
   it("keeps every event when no hero lead is known", () => {
     const events = [{ id: "a" }, { id: "b" }];
     expect(withoutHeroLead(events, undefined)).toEqual(events);
-  });
-
-  it("drops every carousel event, not just the lead slide", () => {
-    const events = [
-      { id: "a", slug: "a" },
-      { id: "b", slug: "b" },
-      { id: "c", slug: "c" },
-    ];
-    expect(
-      withoutHeroSlides(events, [
-        { id: "a", slug: "a" },
-        { id: "b", slug: "b" },
-      ]).map((event) => event.id)
-    ).toEqual(["c"]);
-  });
-
-  it("returns an empty list when every attendable event is in the hero", () => {
-    expect(
-      withoutHeroSlides(
-        [
-          { id: "a", slug: "a" },
-          { id: "b", slug: "b" },
-        ],
-        [
-          { id: "a", slug: "a" },
-          { id: "b", slug: "b" },
-        ]
-      )
-    ).toEqual([]);
   });
 
   it("resolves row copy by exact locale with a default fallback", () => {

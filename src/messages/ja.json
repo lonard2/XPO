@@ -203,8 +203,7 @@
     "alsoHappeningSubtitle": "このエディション以外の注目イベント",
     "exploreRegion": "地域を見る",
     "hallWayfindingBadge": "ホール案内",
-    "instantTurnstileBadge": "即時入場",
-    "allEventsInSpotlight": "現在のイベントはすべて上のスポットライトに表示されています。"
+    "instantTurnstileBadge": "即時入場"
   },
   "regions": {
     "title": "国・地域版エディション",

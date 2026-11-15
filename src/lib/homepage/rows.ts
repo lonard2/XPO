@@ -103,27 +103,6 @@ export function withoutHeroLead<T extends { id: string; slug?: string }>(
   return rest.length > 0 ? rest : events;
 }
 
-/**
- * Removes every event currently in the hero carousel from the featured row.
- * The carousel rotates, so excluding only the lead slide lets the same event
- * reappear in the featured row when another slide is active. If every
- * attendable event is already in the hero, return an empty list and let the
- * page show the spotlight note instead of duplicating cards.
- */
-export function withoutHeroSlides<T extends { id: string; slug?: string }>(
-  events: T[],
-  slides: Array<{ id: string; slug?: string }>
-): T[] {
-  if (slides.length === 0) return events;
-  const ids = new Set(slides.map((slide) => slide.id));
-  const slugs = new Set(
-    slides.map((slide) => slide.slug).filter((slug): slug is string => Boolean(slug))
-  );
-  return events.filter(
-    (event) => !ids.has(event.id) && !(event.slug ? slugs.has(event.slug) : false)
-  );
-}
-
 export interface MergeableRow {
   regionId: string | null;
   position: number;
