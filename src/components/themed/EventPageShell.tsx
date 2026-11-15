@@ -24,6 +24,7 @@ import { WaitlistForm } from "@/components/tickets/WaitlistForm";
 import { type TicketTierItem } from "@/components/tickets/TierSelector";
 import { HallFloorMap, type BoothItem } from "@/components/perks/HallFloorMap";
 import { InteractiveGuidebook, type AgendaSessionItem } from "@/components/perks/InteractiveGuidebook";
+import { VenueTransitHub } from "@/components/discovery/VenueTransitHub";
 import { cn } from "@/lib/utils";
 
 export interface EventVenueData {
@@ -33,6 +34,15 @@ export interface EventVenueData {
   city: string;
   address?: string;
   hallName?: string | null;
+}
+
+/** Organizer-published perk. Absent data renders no perks section. */
+export interface EventPerkSummary {
+  id: string;
+  title: string;
+  description: string;
+  tierRequired?: string | null;
+  iconName?: string | null;
 }
 
 export interface EventPageShellProps {
@@ -77,6 +87,12 @@ export interface EventPageShellProps {
   /** Public organizer identity for honest empty states and contact paths. */
   organizerName?: string | null;
   organizerEmail?: string | null;
+  /** Organizer-published perks; empty means the section is absent. */
+  perks?: EventPerkSummary[];
+  /** Venue transit notes, when the venue record carries them. */
+  venueTransitInfo?: string | null;
+  /** Venue region code used for local transit guidance. */
+  regionCode?: string;
 }
 
 export function EventPageShell({
@@ -113,6 +129,9 @@ export function EventPageShell({
   closesAtLabel = null,
   organizerName = null,
   organizerEmail = null,
+  perks = [],
+  venueTransitInfo = null,
+  regionCode = "ID",
 }: EventPageShellProps) {
   const [isCopied, setIsCopied] = React.useState(false);
   const [checkoutDrawerOpen, setCheckoutDrawerOpen] = React.useState(false);
@@ -245,10 +264,17 @@ export function EventPageShell({
           </div>
           <div className="space-y-1">
             <h3 className="text-base font-bold text-foreground">
-              {tEvents("noPassesPublished") || "Pass details in preparation"}
+              {isConcluded
+                ? tEvents("noPassesPublishedPast") ||
+                  "Pass tiers were not published for this event."
+                : tEvents("noPassesPublished") || "Pass details in preparation"}
             </h3>
             <p className="text-xs sm:text-sm text-muted-foreground">
-              {tEvents("noPassesPublishedDesc") || "Pass allocations and pricing tiers will be published once finalized by the organizer."}
+              {isConcluded
+                ? tEvents("noPassesPublishedPastDesc") ||
+                  "The organizer did not publish pass tiers for this event."
+                : tEvents("noPassesPublishedDesc") ||
+                  "Pass allocations and pricing tiers will be published once finalized by the organizer."}
             </p>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
@@ -698,6 +724,157 @@ export function EventPageShell({
         {/* Tab 1: Overview & Archetype Specialized View */}
         {activeTab === "overview" && (
           <div className={cn("space-y-12", pageSize !== "LARGE" && "space-y-8")}>
+            {/* Day-of status: what is on, where, and until when. Only while live. */}
+            {isLive && (
+              <section
+                aria-labelledby="day-of-heading"
+                className="rounded-2xl border border-border bg-card p-5 sm:p-6 shadow-sm"
+              >
+                <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
+                  <div className="space-y-2 max-w-2xl">
+                    <div className="flex items-center gap-2 text-xs font-semibold text-primary uppercase tracking-wider">
+                      <Clock className="h-4 w-4" aria-hidden="true" />
+                      <span>{tEvents("todayAtEvent") || "Today at the event"}</span>
+                    </div>
+                    <h2
+                      id="day-of-heading"
+                      className="text-xl sm:text-2xl font-bold tracking-tight text-foreground"
+                    >
+                      {isFinalDay ? tEvents("finalDay") : tEvents("liveNow")}
+                      {dayProgress
+                        ? ` · ${tEvents("dayOfDays", {
+                            current: dayProgress.dayNumber,
+                            total: dayProgress.totalDays,
+                          })}`
+                        : ""}
+                    </h2>
+                    <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs sm:text-sm text-muted-foreground">
+                      {closesAtLabel && (
+                        <span className="inline-flex items-center gap-1.5">
+                          <Clock className="h-4 w-4 shrink-0" aria-hidden="true" />
+                          {tEvents("closesAt", { time: closesAtLabel })}
+                        </span>
+                      )}
+                      <span className="inline-flex items-center gap-1.5">
+                        <MapPin className="h-4 w-4 shrink-0" aria-hidden="true" />
+                        {venue.hallName || tEvents("hallDefault")}, {venue.name}
+                      </span>
+                      <span className="inline-flex items-center gap-1.5">
+                        <Ticket className="h-4 w-4 shrink-0" aria-hidden="true" />
+                        {agendaItems.length > 0
+                          ? tEvents("sessionsScheduled", { count: agendaItems.length })
+                          : tEvents("programmeNotPublished")}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-3 shrink-0">
+                    <Link
+                      href={`/${locale}/venues/${venue.slug}#venue-transit`}
+                      className={cn(
+                        buttonVariants({ variant: "outline", size: "default" }),
+                        "gap-2 font-semibold min-h-[44px]"
+                      )}
+                    >
+                      <MapPin className="h-4 w-4" aria-hidden="true" />
+                      {tEvents("viewVenueTransit") || "View venue & transit"}
+                    </Link>
+                    {agendaItems.length > 0 && (
+                      <Button
+                        variant="outline"
+                        onClick={() => setActiveTab("agenda")}
+                        className="gap-2 font-semibold min-h-[44px] cursor-pointer"
+                      >
+                        <Clock className="h-4 w-4" aria-hidden="true" />
+                        {tEvents("viewTimetable") || "View full timetable"}
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* Today's programme is first-class while live, not only behind a tab. */}
+            {isLive && agendaItems.length > 0 && (
+              <section id="today-programme" className="space-y-4 scroll-mt-24">
+                <InteractiveGuidebook
+                  agendaItems={agendaItems}
+                  eventTitle={title}
+                  locale={locale}
+                  alerts={showcaseAlerts}
+                />
+              </section>
+            )}
+
+            {/* Published perks only. No synthesized benefits. */}
+            {perks.length > 0 && (
+              <section aria-labelledby="perks-heading" className="space-y-4">
+                <div className="space-y-1">
+                  <h2
+                    id="perks-heading"
+                    className="text-xl sm:text-2xl font-bold tracking-tight text-foreground"
+                  >
+                    {tEvents("perksTitle") || "Attendee perks"}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
+                    {tEvents("perksSubtitle") || "Published by the organizer for this event."}
+                  </p>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {perks.map((perk) => (
+                    <Card key={perk.id} className="h-full border-border/80 bg-card p-5 shadow-sm">
+                      <div className="flex items-start gap-3">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                          <Sparkles className="h-5 w-5" aria-hidden="true" />
+                        </div>
+                        <div className="space-y-1.5 min-w-0">
+                          <h3 className="text-sm font-bold text-foreground">{perk.title}</h3>
+                          <p className="text-xs text-muted-foreground leading-relaxed">
+                            {perk.description}
+                          </p>
+                          {perk.tierRequired && (
+                            <Badge variant="outline" size="sm" className="font-semibold">
+                              {tPerks("tierRequired") || "Tier Required"}: {perk.tierRequired}
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Exact hall and transit path: the page's stated differentiator. */}
+            <section id="venue-transit" aria-labelledby="venue-transit-heading" className="space-y-4 scroll-mt-24">
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+                <div className="space-y-1">
+                  <h2
+                    id="venue-transit-heading"
+                    className="text-xl sm:text-2xl font-bold tracking-tight text-foreground"
+                  >
+                    {tEvents("venueAndTransit") || "Venue & transit"}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
+                    {venue.name} · {venue.hallName || tEvents("hallDefault")} · {venue.city}
+                  </p>
+                </div>
+                <Link
+                  href={`/${locale}/venues/${venue.slug}`}
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline min-h-[44px]"
+                >
+                  <Building2 className="h-4 w-4" aria-hidden="true" />
+                  {tEvents("exploreVenueDetails") || "Explore Venue Details"}
+                </Link>
+              </div>
+              <VenueTransitHub
+                venueName={venue.name}
+                address={venue.address ?? ""}
+                transitInfo={venueTransitInfo}
+                city={venue.city}
+                regionCode={regionCode}
+              />
+            </section>
+
             {children}
 
             {(newsUpdates?.length ?? 0) > 0 && (
@@ -843,10 +1020,19 @@ export function EventPageShell({
                 </div>
                 <div className="space-y-1">
                   <h3 className="text-base font-bold text-foreground">
-                    {tEvents("noBoothsPublished") || "Floor plan in preparation"}
+                    {isLive || isConcluded
+                      ? tEvents("floorPlanNotPublished") || "Floor plan not published"
+                      : tEvents("noBoothsPublished") || "Floor plan in preparation"}
                   </h3>
                   <p className="text-xs sm:text-sm text-muted-foreground">
-                    {tEvents("noBoothsPublishedDesc") || "Exhibitor booth allocations and hall layouts are currently being mapped."}
+                    {isConcluded
+                      ? tEvents("floorPlanNotPublishedPast") ||
+                        "The organizer did not publish a hall layout for this event."
+                      : isLive
+                        ? tEvents("floorPlanNotPublishedLive") ||
+                          "The organizer has not published a hall layout for this event."
+                        : tEvents("noBoothsPublishedDesc") ||
+                          "Exhibitor booth allocations and hall layouts are currently being mapped."}
                   </p>
                 </div>
                 <div className="flex flex-wrap items-center justify-center gap-2 pt-2">

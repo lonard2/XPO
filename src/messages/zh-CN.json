@@ -552,7 +552,19 @@
     "programmeNotPublished": "日程尚未发布",
     "programmeNotPublishedLive": "主办方尚未发布今日日程。请联系主办方获取最新安排。",
     "programmeNotPublishedPast": "主办方未发布本活动的日程。",
-    "contactOrganizer": "联系主办方"
+    "contactOrganizer": "联系主办方",
+    "todayAtEvent": "今日活动信息",
+    "sessionsScheduled": "已安排场次：{count}",
+    "viewTimetable": "查看完整日程",
+    "venueAndTransit": "场馆与交通",
+    "viewVenueTransit": "查看场馆与交通",
+    "perksTitle": "参会者权益",
+    "perksSubtitle": "由主办方为本活动发布。",
+    "floorPlanNotPublished": "平面图尚未发布",
+    "floorPlanNotPublishedLive": "主办方尚未发布本活动的展厅布局。",
+    "floorPlanNotPublishedPast": "主办方未发布本活动的展厅布局。",
+    "noPassesPublishedPast": "本活动未发布票种。",
+    "noPassesPublishedPastDesc": "主办方未发布本活动的票种。"
   },
   "venues": {
     "title": "会展中心与展厅名录",

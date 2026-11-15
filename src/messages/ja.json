@@ -552,7 +552,19 @@
     "programmeNotPublished": "プログラム未公開",
     "programmeNotPublishedLive": "主催者は本日のタイムテーブルを公開していません。最新のスケジュールは主催者にお問い合わせください。",
     "programmeNotPublishedPast": "主催者はこのイベントのタイムテーブルを公開していません。",
-    "contactOrganizer": "主催者に問い合わせる"
+    "contactOrganizer": "主催者に問い合わせる",
+    "todayAtEvent": "本日のイベント情報",
+    "sessionsScheduled": "予定セッション数: {count}",
+    "viewTimetable": "タイムテーブル全体を見る",
+    "venueAndTransit": "会場とアクセス",
+    "viewVenueTransit": "会場とアクセスを見る",
+    "perksTitle": "来場者特典",
+    "perksSubtitle": "主催者がこのイベント向けに公開した特典です。",
+    "floorPlanNotPublished": "フロアマップ未公開",
+    "floorPlanNotPublishedLive": "主催者はこのイベントのホールレイアウトを公開していません。",
+    "floorPlanNotPublishedPast": "主催者はこのイベントのホールレイアウトを公開していませんでした。",
+    "noPassesPublishedPast": "このイベントのパス区分は公開されていませんでした。",
+    "noPassesPublishedPastDesc": "主催者はこのイベントのパス区分を公開していませんでした。"
   },
   "venues": {
     "title": "コンベンションセンター＆ホール一覧",

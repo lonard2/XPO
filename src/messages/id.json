@@ -552,7 +552,19 @@
     "programmeNotPublished": "Program belum dipublikasikan",
     "programmeNotPublishedLive": "Penyelenggara belum mempublikasikan jadwal hari ini. Hubungi penyelenggara untuk jadwal terkini.",
     "programmeNotPublishedPast": "Penyelenggara tidak mempublikasikan jadwal untuk acara ini.",
-    "contactOrganizer": "Hubungi penyelenggara"
+    "contactOrganizer": "Hubungi penyelenggara",
+    "todayAtEvent": "Hari ini di acara",
+    "sessionsScheduled": "Sesi terjadwal: {count}",
+    "viewTimetable": "Lihat jadwal lengkap",
+    "venueAndTransit": "Venue & transportasi",
+    "viewVenueTransit": "Lihat venue & transportasi",
+    "perksTitle": "Fasilitas peserta",
+    "perksSubtitle": "Dipublikasikan oleh penyelenggara untuk acara ini.",
+    "floorPlanNotPublished": "Denah belum dipublikasikan",
+    "floorPlanNotPublishedLive": "Penyelenggara belum mempublikasikan denah hall untuk acara ini.",
+    "floorPlanNotPublishedPast": "Penyelenggara tidak mempublikasikan denah hall untuk acara ini.",
+    "noPassesPublishedPast": "Kategori tiket tidak dipublikasikan untuk acara ini.",
+    "noPassesPublishedPastDesc": "Penyelenggara tidak mempublikasikan kategori tiket untuk acara ini."
   },
   "venues": {
     "title": "Pusat Konvensi & Direktori Hall",

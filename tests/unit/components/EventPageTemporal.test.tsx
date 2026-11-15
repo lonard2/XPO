@@ -71,7 +71,7 @@ describe("Event page temporal state", () => {
 
     expect(screen.getAllByText("Final Day").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("Day 4 of 4")).toBeInTheDocument();
-    expect(screen.getByText("Closes 18:00 WIB")).toBeInTheDocument();
+    expect(screen.getAllByText("Closes 18:00 WIB").length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText("Reserve Passes & Tickets").length).toBeGreaterThanOrEqual(1);
   });
 
@@ -98,6 +98,53 @@ describe("Event page temporal state", () => {
       "href",
       "mailto:events@example.com"
     );
+  });
+
+  it("leads with the day-of guide when live data exists", () => {
+    render(
+      <EventPageShell
+        {...baseProps}
+        temporalStatus="LIVE"
+        dayProgress={{ dayNumber: 2, totalDays: 4, isFinalDay: false }}
+        closesAtLabel="01:00 AM WIB"
+        agendaItems={[
+          {
+            id: "agenda-1",
+            title: "Trail Gear Trial",
+            location: "Hall A",
+            startTime: new Date("2026-11-13T03:00:00Z"),
+            endTime: new Date("2026-11-13T04:00:00Z"),
+          },
+        ]}
+        perks={[
+          {
+            id: "perk-1",
+            title: "Gear Check",
+            description: "Free bag storage for trial participants.",
+          },
+        ]}
+        venueTransitInfo="KRL to Senayan"
+        regionCode="ID"
+      >
+        <div>child</div>
+      </EventPageShell>
+    );
+
+    expect(screen.getByText("Today at the event")).toBeInTheDocument();
+    expect(screen.getByText("Sessions scheduled: 1")).toBeInTheDocument();
+    expect(screen.getByText("Trail Gear Trial")).toBeInTheDocument();
+    expect(screen.getByText("Gear Check")).toBeInTheDocument();
+    expect(screen.getByText("Venue & transit")).toBeInTheDocument();
+  });
+
+  it("hides the perks section when the organizer published none", () => {
+    render(
+      <EventPageShell {...baseProps} temporalStatus="LIVE">
+        <div>child</div>
+      </EventPageShell>
+    );
+
+    expect(screen.queryByText("Attendee perks")).toBeNull();
   });
 
   it("describes a concluded event without promising future publication", () => {

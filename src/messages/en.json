@@ -552,7 +552,19 @@
     "programmeNotPublished": "Programme not published",
     "programmeNotPublishedLive": "The organizer has not published today's timetable. Contact the organizer for the current schedule.",
     "programmeNotPublishedPast": "The organizer did not publish a timetable for this event.",
-    "contactOrganizer": "Contact the organizer"
+    "contactOrganizer": "Contact the organizer",
+    "todayAtEvent": "Today at the event",
+    "sessionsScheduled": "Sessions scheduled: {count}",
+    "viewTimetable": "View full timetable",
+    "venueAndTransit": "Venue & transit",
+    "viewVenueTransit": "View venue & transit",
+    "perksTitle": "Attendee perks",
+    "perksSubtitle": "Published by the organizer for this event.",
+    "floorPlanNotPublished": "Floor plan not published",
+    "floorPlanNotPublishedLive": "The organizer has not published a hall layout for this event.",
+    "floorPlanNotPublishedPast": "The organizer did not publish a hall layout for this event.",
+    "noPassesPublishedPast": "Pass tiers were not published for this event.",
+    "noPassesPublishedPastDesc": "The organizer did not publish pass tiers for this event."
   },
   "venues": {
     "title": "Convention Centers & Hall Directory",

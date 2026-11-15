@@ -552,7 +552,19 @@
     "programmeNotPublished": "Programa no publicado",
     "programmeNotPublishedLive": "El organizador no ha publicado el horario de hoy. Contacte con el organizador para conocer el programa actual.",
     "programmeNotPublishedPast": "El organizador no publicó un programa para este evento.",
-    "contactOrganizer": "Contactar con el organizador"
+    "contactOrganizer": "Contactar con el organizador",
+    "todayAtEvent": "Hoy en el evento",
+    "sessionsScheduled": "Sesiones programadas: {count}",
+    "viewTimetable": "Ver programa completo",
+    "venueAndTransit": "Sede y transporte",
+    "viewVenueTransit": "Ver sede y transporte",
+    "perksTitle": "Ventajas para asistentes",
+    "perksSubtitle": "Publicadas por el organizador para este evento.",
+    "floorPlanNotPublished": "Plano no publicado",
+    "floorPlanNotPublishedLive": "El organizador no ha publicado el plano de salas de este evento.",
+    "floorPlanNotPublishedPast": "El organizador no publicó el plano de salas de este evento.",
+    "noPassesPublishedPast": "No se publicaron categorías de pase para este evento.",
+    "noPassesPublishedPastDesc": "El organizador no publicó categorías de pase para este evento."
   },
   "venues": {
     "title": "Recintos Feriales y Directorio de Pabellones",

@@ -552,7 +552,19 @@
     "programmeNotPublished": "Programm nicht veröffentlicht",
     "programmeNotPublishedLive": "Der Veranstalter hat den heutigen Zeitplan nicht veröffentlicht. Aktuelle Zeiten erfahren Sie beim Veranstalter.",
     "programmeNotPublishedPast": "Der Veranstalter hat für diese Veranstaltung keinen Zeitplan veröffentlicht.",
-    "contactOrganizer": "Veranstalter kontaktieren"
+    "contactOrganizer": "Veranstalter kontaktieren",
+    "todayAtEvent": "Heute auf der Veranstaltung",
+    "sessionsScheduled": "Geplante Sitzungen: {count}",
+    "viewTimetable": "Vollständigen Zeitplan ansehen",
+    "venueAndTransit": "Veranstaltungsort & Anreise",
+    "viewVenueTransit": "Veranstaltungsort & Anreise ansehen",
+    "perksTitle": "Vorteile für Teilnehmende",
+    "perksSubtitle": "Vom Veranstalter für diese Veranstaltung veröffentlicht.",
+    "floorPlanNotPublished": "Hallenplan nicht veröffentlicht",
+    "floorPlanNotPublishedLive": "Der Veranstalter hat für diese Veranstaltung keinen Hallenplan veröffentlicht.",
+    "floorPlanNotPublishedPast": "Der Veranstalter hat für diese Veranstaltung keinen Hallenplan veröffentlicht.",
+    "noPassesPublishedPast": "Für diese Veranstaltung wurden keine Passkategorien veröffentlicht.",
+    "noPassesPublishedPastDesc": "Der Veranstalter hat für diese Veranstaltung keine Passkategorien veröffentlicht."
   },
   "venues": {
     "title": "Kongresszentren & Hallenverzeichnis",

@@ -338,6 +338,9 @@ export default async function EventDetailPage({ params }: EventPageProps) {
       closesAtLabel={closesAtLabel}
       organizerName={event.organizer?.name ?? event.organizerName ?? null}
       organizerEmail={event.organizer?.email ?? null}
+      perks={event.perks || []}
+      venueTransitInfo={event.venue.transitInfo}
+      regionCode={eventRegionCode}
     >
       <ArchetypeView event={event} locale={locale} pageSize={resolvedPageSize} />
       <EventOrganizerSection event={event} locale={locale} />
