@@ -84,7 +84,7 @@ export function MajorVenuesUpcomingSection({
   ];
   const visibleVenues = showAllVenues
     ? orderedVenues
-    : orderedVenues.slice(0, 6);
+    : orderedVenues.slice(0, Math.min(Math.max(activeVenues.length + 1, 3), 6));
 
   const renderDirectoryRow = (venue: VenueWithEvents) => {
     const nextEvent = attendableEventsFor(venue)[0];
@@ -376,7 +376,7 @@ export function MajorVenuesUpcomingSection({
             </span>
           </div>
           <ul>{visibleVenues.map(renderDirectoryRow)}</ul>
-          {orderedVenues.length > 6 && (
+          {visibleVenues.length < orderedVenues.length && (
             <div className="border-t border-border/70 p-2">
               <button
                 type="button"

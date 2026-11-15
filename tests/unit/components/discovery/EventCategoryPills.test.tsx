@@ -49,7 +49,7 @@ describe('EventCategoryPills', () => {
     const allTab = tabs[0];
     expect(allTab).toHaveAttribute('aria-selected', 'true');
     expect(allTab).toHaveTextContent(/All Categories/i);
-    expect(allTab).toHaveTextContent('8');
+    expect(allTab).toHaveTextContent('22');
 
     expect(screen.getByRole('tab', { name: /Heavy Industry/i })).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: /Digital & Tech/i })).toBeInTheDocument();

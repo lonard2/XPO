@@ -335,9 +335,7 @@ export function EventCategoryPills({
                 : 'bg-muted text-muted-foreground'
             )}
           >
-            {showAllCategories
-              ? ARCHETYPE_LIST.length
-              : REPRESENTATIVE_CATEGORIES.length}
+            {ARCHETYPE_LIST.length}
           </span>
         </button>
 
