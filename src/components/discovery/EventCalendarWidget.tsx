@@ -14,7 +14,7 @@ import {
 import { Badge } from '@/components/ui/Badge';
 import { Button, buttonVariants } from '@/components/ui/Button';
 import { useTranslations } from 'next-intl';
-import { formatDateRange, getTimeZoneForRegion } from '@/lib/i18n/formatters';
+import { formatDateRange, getEventTemporalStatus, getTimeZoneForRegion, normalizeEventEndDate } from '@/lib/i18n/formatters';
 import { getArchetypeTokens, getReadableArchetypeLabel } from '@/lib/theming';
 import { type EventSummary } from '@/types/discovery';
 import { type ScheduleStub, isScheduleStub } from '@/lib/discovery/presentation';
@@ -130,7 +130,7 @@ export function EventCalendarWidget({
     const selStr = toISODateInTimezone(selectedDate, timezone);
     return events.filter((evt) => {
       const startStr = toISODateInTimezone(evt.startDate, timezone);
-      const endStr = toISODateInTimezone(evt.endDate, timezone);
+      const endStr = toISODateInTimezone(normalizeEventEndDate(evt.endDate), timezone);
       return selStr >= startStr && selStr <= endStr;
     });
   }, [events, selectedDate, timezone]);
@@ -162,7 +162,7 @@ export function EventCalendarWidget({
     const dayStr = toISODateInTimezone(date, timezone);
     return events.filter((evt) => {
       const startStr = toISODateInTimezone(evt.startDate, timezone);
-      const endStr = toISODateInTimezone(evt.endDate, timezone);
+      const endStr = toISODateInTimezone(normalizeEventEndDate(evt.endDate), timezone);
       return dayStr >= startStr && dayStr <= endStr;
     }).length;
   };
@@ -364,6 +364,7 @@ export function EventCalendarWidget({
                 // as EventCard): the derived tones keep the hue at 4.5:1.
                 const labelTones = getReadableArchetypeLabel(tokens.primary);
                 const dates = formatDateRange(evt.startDate, evt.endDate, locale, timezone);
+                const temporal = getEventTemporalStatus(evt.startDate, evt.endDate);
 
                 return (
                   <div
@@ -407,18 +408,24 @@ export function EventCalendarWidget({
                       </div>
                     </div>
 
-                    <Link
-                      href={`/${locale}/events/${evt.slug}`}
-                      className={buttonVariants({
-                        variant: 'outline',
-                        size: 'sm',
-                        className: 'relative z-10 gap-1.5 text-xs font-semibold min-h-[44px] sm:min-h-[36px] px-3 shrink-0 cursor-pointer',
-                      })}
-                    >
-                      <Ticket className="h-3.5 w-3.5" />
-                      <span>{tTickets('viewPass') || 'Pass'}</span>
-                      <ArrowRight className="h-3 w-3" />
-                    </Link>
+                    {temporal.isPast ? (
+                      <Badge variant="secondary" className="relative z-10 shrink-0 text-xs font-semibold">
+                        {tCal('concluded')}
+                      </Badge>
+                    ) : (
+                      <Link
+                        href={`/${locale}/events/${evt.slug}`}
+                        className={buttonVariants({
+                          variant: 'outline',
+                          size: 'sm',
+                          className: 'relative z-10 gap-1.5 text-xs font-semibold min-h-[44px] sm:min-h-[36px] px-3 shrink-0 cursor-pointer',
+                        })}
+                      >
+                        <Ticket className="h-3.5 w-3.5" />
+                        <span>{tTickets('viewPass') || 'Pass'}</span>
+                        <ArrowRight className="h-3 w-3" />
+                      </Link>
+                    )}
                   </div>
                 );
               })

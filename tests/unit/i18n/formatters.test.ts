@@ -83,8 +83,9 @@ describe("i18n Formatters: Date & Time Range Formatting", () => {
     expect(rangeId).toContain("2026");
   });
 
-  it("shifts date accurately when crossing midnight across timezones", () => {
-    // 2026-09-17T18:00:00Z in UTC is Sep 17, but in Asia/Jakarta (UTC+7) it is Sep 18 01:00
+  it("keeps the intended end date when a late UTC end time would roll past midnight", () => {
+    // 2026-09-17T18:00:00Z is 01:00 on Sep 18 in Asia/Jakarta. Event end times
+    // are calendar end-of-day values, so the range must still end on Sep 17.
     const start = new Date("2026-09-14T09:00:00Z");
     const end = new Date("2026-09-17T18:00:00Z");
 
@@ -92,7 +93,7 @@ describe("i18n Formatters: Date & Time Range Formatting", () => {
     expect(rangeUtc).toMatch(/14.*17/);
 
     const rangeWib = formatDateRange(start, end, "en", "Asia/Jakarta");
-    expect(rangeWib).toMatch(/14.*18/);
+    expect(rangeWib).toMatch(/14.*17/);
   });
 
   it("formats cross-month date ranges correctly", () => {
@@ -256,7 +257,7 @@ describe("formatDateRange hydration stability", () => {
       "Asia/Jakarta"
     );
 
-    expect(range).toBe("Nov 5 – 10, 2026");
+    expect(range).toBe("Nov 5 – 9, 2026");
     expect(/[\u2009\u202F\u00A0]/.test(range)).toBe(false);
   });
 });

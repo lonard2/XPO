@@ -66,7 +66,7 @@ export function HeroSearchBar({
     e.preventDefault();
     const trimmed = query.trim();
     const targetUrl = trimmed
-      ? `/${locale}/events?keyword=${encodeURIComponent(trimmed)}`
+      ? `/${locale}/events?q=${encodeURIComponent(trimmed)}`
       : `/${locale}/events`;
     if (router?.push) {
       router.push(targetUrl);
@@ -80,7 +80,7 @@ export function HeroSearchBar({
     const targetUrl =
       tag.type === 'archetype'
         ? `/${locale}/events?archetype=${encodeURIComponent(tag.query)}`
-        : `/${locale}/events?keyword=${encodeURIComponent(tag.query)}`;
+        : `/${locale}/events?q=${encodeURIComponent(tag.query)}`;
     if (router?.push) {
       router.push(targetUrl);
     } else if (typeof window !== 'undefined') {

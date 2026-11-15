@@ -37,7 +37,7 @@ describe('Discovery Component: HeroSearchBar (Homepage Search Cockpit)', () => {
     const submitBtn = screen.getByRole('button', { name: /search/i });
     fireEvent.click(submitBtn);
 
-    expect(mockPush).toHaveBeenCalledWith('/en/events?keyword=Robotics%20Summit');
+    expect(mockPush).toHaveBeenCalledWith('/en/events?q=Robotics%20Summit');
   });
 
   it('T1.3: clicking a quick suggestion tag navigates directly to filtered events', () => {

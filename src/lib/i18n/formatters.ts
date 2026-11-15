@@ -158,6 +158,22 @@ function normalizeRangeSpacing(value: string): string {
   return value.replace(/[\u2009\u202F\u00A0]/g, ' ');
 }
 
+/**
+ * Event end times are stored as instants. Seed and organizer forms often use a
+ * late-afternoon UTC time for "end of day"; in positive-offset regions that
+ * instant rolls past midnight and the range renders one day too long. Treat an
+ * end time at or after 12:00Z as the UTC calendar day and pin it to midday, so
+ * every supported MICE timezone renders the intended end date.
+ */
+export function normalizeEventEndDate(date: Date | string): Date {
+  const d = typeof date === 'string' ? new Date(date) : new Date(date.getTime());
+  if (isNaN(d.getTime())) return d;
+  if (d.getUTCHours() >= 12) {
+    return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), 12, 0, 0));
+  }
+  return d;
+}
+
 export function formatDateRange(
   startDate: Date | string,
   endDate: Date | string,
@@ -166,7 +182,7 @@ export function formatDateRange(
 ): string {
   const safeLocale = normalizeLocale(locale);
   const start = typeof startDate === 'string' ? new Date(startDate) : startDate;
-  const end = typeof endDate === 'string' ? new Date(endDate) : endDate;
+  const end = normalizeEventEndDate(endDate);
 
   if (!start || isNaN(start.getTime())) {
     return 'Invalid Date';

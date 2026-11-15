@@ -750,7 +750,8 @@
     "jumpTo": "Lompat ke {title}",
     "eventsCountZero": "Tidak ada acara",
     "eventsCountOne": "1 acara",
-    "eventsCount": "{count, plural, other {# acara}}"
+    "eventsCount": "{count, plural, other {# acara}}",
+    "concluded": "Selesai"
   },
   "tickets": {
     "bookPass": "Pesan Pas Masuk",
